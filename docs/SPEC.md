@@ -10,6 +10,7 @@
 - `/` today's paper (renders `content/latest.json`)
 - `/archive` list of past editions by date; `/e/YYYY-MM-DD` renders that edition
 - `/editor` About the editor: who T. A. Bhide is, what he does, the rules; linked from the byline, folio, editor's note and foot, never on the front page
+- `/poster/today`, `/poster/edition`, `/poster/masthead`, `/poster/night`, `/poster/clock` open that poster directly (for a screensaver or a spare screen); an open poster reloads itself when the next edition goes live and hides the cursor when the mouse is still
 - `/today` one-screen view for the phone (see Poster mode)
 - Every page responsive: phone first (70% of reading is on a Nothing Phone 3 in Chrome), laptop properly designed (MacBook), not a stretched phone.
 

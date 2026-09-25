@@ -21,6 +21,10 @@
     {
       "source": "/editor",
       "destination": "/"
+    },
+    {
+      "source": "/poster/:name",
+      "destination": "/"
     }
   ],
   "functions": {

@@ -903,7 +903,7 @@ function closePoster() {
   const P = $("#poster"); if (P.hidden) return;
   P.hidden = true; clearInterval(pTimer); POSTER = null;
   try { document.fullscreenElement && document.exitFullscreen(); } catch {}
-  if (location.pathname === "/today" || new URLSearchParams(location.search).has("poster")) history.replaceState(null, "", "/");
+  if (location.pathname === "/today" || location.pathname.startsWith("/poster/") || new URLSearchParams(location.search).has("poster")) history.replaceState(null, "", "/");
 }
 
 // ------------------------------------------------------------------ archive
@@ -1030,6 +1030,20 @@ ${memo ? `<section><h2>In his own words</h2>${memo}</section>` : ""}
 }
 
 // ------------------------------------------------------------------ boot
+// Each poster has its own address, /poster/<name>, for a screen or a screensaver that should open straight to it.
+const POSTER_NAMES = { today: "today", edition: "edition", framed: "edition", heads: "edition", masthead: "mast", mast: "mast", night: "night", clock: "clock" };
+// A poster left open (a screensaver, a spare screen) reloads itself when the next edition goes live, and hides the
+// cursor when the mouse is still.
+function posterKiosk() {
+  setInterval(async () => {
+    if ($("#poster").hidden) return;
+    try { const h = await getJSON("/api/health"); if (h.edition && E && h.edition > E.date) location.reload(); } catch {}
+  }, 10 * 60 * 1000);
+  let idle;
+  const wake = () => { $("#poster").classList.remove("idle"); clearTimeout(idle); idle = setTimeout(() => $("#poster").classList.add("idle"), 3000); };
+  addEventListener("mousemove", wake); wake();
+}
+
 function route() {
   const p = location.pathname.replace(/\/+$/, "") || "/";
   const m = p.match(/^\/e\/(\d{4}-\d{2}-\d{2})$/);
@@ -1037,6 +1051,8 @@ function route() {
   if (p === "/archive") return { kind: "archive" };
   if (p === "/editor") return { kind: "editor" };
   if (p === "/today") return { kind: "today" };
+  const pm = p.match(/^\/poster\/([a-z]+)$/);
+  if (pm) return { kind: "poster", poster: POSTER_NAMES[pm[1]] || "today" };
   return { kind: "home" };
 }
 
@@ -1051,7 +1067,7 @@ async function boot() {
   const P0 = window.PRE0 || {};
   const ed = ROUTE.kind === "archive" || ROUTE.kind === "editor" ? null : (ROUTE.kind !== "edition" && P0.latest) || getJSON(ROUTE.kind === "edition" ? `/content/editions/${ROUTE.date}.json` : "/content/latest.json");
   ed?.catch(() => {});
-  if (ROUTE.kind === "home" || ROUTE.kind === "today") for (const k of LIVE_KEYS) PRE[k] = (P0.live?.[k] || getJSON(`/api/live/${k}`)).catch(() => null);
+  if (ROUTE.kind === "home" || ROUTE.kind === "today" || ROUTE.kind === "poster") for (const k of LIVE_KEYS) PRE[k] = (P0.live?.[k] || getJSON(`/api/live/${k}`)).catch(() => null);
   try { CFG = await (P0.cfg || getJSON("/config/house.json")); }
   catch { $("#main").innerHTML = `<p class="notice">The paper could not be loaded. Try again in a minute.</p>`; return; }
   if (ROUTE.kind === "archive") return renderArchive();
@@ -1072,9 +1088,8 @@ async function boot() {
   // First paint with the snapshot, then fetch live.
   for (const [k, s] of Object.entries(E.snapshot || {})) if (s?.value) LIVE[k] = { ...s, stale: true };
   render();
-  const poster = new URLSearchParams(location.search).get("poster");
-  if (ROUTE.kind === "today") openPoster("today");
-  else if (poster) openPoster(poster);
+  const poster = ROUTE.kind === "poster" ? ROUTE.poster : ROUTE.kind === "today" ? "today" : POSTER_NAMES[new URLSearchParams(location.search).get("poster")];
+  if (poster) { openPoster(poster); posterKiosk(); }
   setInterval(tick, 1000);
   if (ROUTE.kind !== "edition") {
     await refreshLive();

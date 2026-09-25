@@ -474,6 +474,8 @@ details.desk summary{font:700 12px var(--sans);letter-spacing:.14em;text-transfo
 .poster.fit{height:100dvh;overflow:hidden;padding:clamp(14px,2.4vw,32px)}
 .pclose{position:fixed;top:12px;right:12px;width:36px;height:36px;border:0;border-radius:50%;background:var(--surface);color:var(--ink);font:400 22px/1 var(--sans);cursor:pointer;z-index:2;opacity:.8}
 .pclose:hover{opacity:1}
+.poster.idle,.poster.idle *{cursor:none}
+.poster.idle .pclose{opacity:0;transition:opacity .4s}
 .framed .fm .yr{font-size:clamp(64px,15vh,170px)}
 .framed .fm .the{font-size:clamp(24px,4.2vh,44px)}
 @media (max-height:860px) and (min-width:721px){
