@@ -25,6 +25,10 @@
     {
       "source": "/poster/:name",
       "destination": "/"
+    },
+    {
+      "source": "/pulse",
+      "destination": "/markets"
     }
   ],
   "functions": {
@@ -37,6 +41,10 @@
     "api/live/[key].js": {
       "includeFiles": "config/{house.json,nifty500.csv}",
       "maxDuration": 20
+    },
+    "api/pulse.js": {
+      "includeFiles": "config/pulse.json",
+      "maxDuration": 45
     }
   },
   "headers": [

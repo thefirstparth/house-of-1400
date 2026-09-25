@@ -851,3 +851,4 @@ table.wk tr:last-child td,table.wk tr:last-child th{border-bottom:0}
 .signal .sg-src:hover{color:var(--f)}
 @media (max-width:720px){.signal{grid-template-columns:1fr;gap:6px}.signal .sg-src{grid-column:auto;grid-row:auto}}
 .sechead{flex-wrap:nowrap}.sechead>div{min-width:0}
+.run-r a.pl{border:1.5px solid var(--rule);border-radius:999px;padding:6px 13px;font:700 12.5px/1 var(--sans);color:var(--ink);text-decoration:none}.run-r a.pl:hover{border-color:var(--ink)}
