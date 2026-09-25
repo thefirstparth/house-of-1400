@@ -1,16 +1,16 @@
 # RUNBOOK: the daily edition
 
 ## Schedule
-Four scheduled runs a day, 29 minutes apart. Each one first checks whether today's edition is already live and exits at once if it is, so only one does the work.
+Four scheduled runs a day, 29 minutes apart, from 14:00 IST. Each one first checks whether today's edition is already live and exits at once if it is, so only one does the work.
 
 | Run | IST | UTC cron |
 |---|---|---|
-| Main | 13:15 | `45 7 * * *` |
-| Retry 1 | 13:44 | `14 8 * * *` |
-| Retry 2 | 14:13 | `43 8 * * *` |
-| Retry 3 | 14:42 | `12 9 * * *` |
+| Main | 14:00 | `30 8 * * *` |
+| Retry 1 | 14:29 | `59 8 * * *` |
+| Retry 2 | 14:58 | `28 9 * * *` |
+| Retry 3 | 15:27 | `57 9 * * *` |
 
-The main run starts at 13:15 so the paper is live by about 14:00. The printed "Information cut" is the time research actually ended.
+The information cut is 14:00 IST: the paper covers news up to 14:00 and prints "Information cut 14:00 IST". Research starts at the cut, so the paper is usually live by about 14:45; until then the site shows the previous edition.
 
 Prompt for each scheduled task:
 > Open the house-of-1400 repo. Follow docs/RUNBOOK.md exactly as a daily run. Obey the daily-run rules in CLAUDE.md.
@@ -33,7 +33,7 @@ If `RUN_KEY` is missing or `/api/live` answers 401, record that, skip the snapsh
 2. **Load context:** `config/house.json`, `ledger/story-ledger.json`, the last 3 editions, recent votes from `/api/votes` (with `RUN_KEY`, skip if unavailable). Work out the weekday profile.
 3. **Live snapshot:** `node scripts/snapshot.mjs content/editions/YYYY-MM-DD.json` calls every `/api/live/*` function on our Vercel site (with `RUN_KEY`) and stores the results under `snapshot` (fallback values with `as_of`). Never call the third-party APIs directly in a daily run.
 4. **Chronology:** build the ordered fixture timelines (EDITORIAL.md, Sports chronology). Save them in memory for every section.
-5. **Research:** broad discovery across every beat and the must-know floor, then verify likely items. Google Trends terms come from `/api/live/trends` (in the snapshot); research what actually happened for each and write the line in English. Betting candidates come from `node scripts/betting-candidates.mjs` (Polymarket plus a polite Kalshi crawl, about 3 minutes; run it early, in the background).
+5. **Research:** broad discovery across every beat and the must-know floor, then verify likely items. Google Trends terms come from `/api/live/trends` (in the snapshot); research what actually happened for each and write the line in English. Betting candidates come from `node scripts/betting-candidates.mjs` (Polymarket, a few seconds).
 6. **Select and rank** with the Parth test, the must-know floor, the day profile, votes and the ledger ("what changed?").
 7. **Write** every section to the schema: short version, long version where useful, why it matters, sources. Editor's note only on big days. House Note always.
 8. **Validate in code** (`npm run validate`): JSON schema; every substantive story has a source URL; NEXT/LAST consistent everywhere and no earlier confirmed fixture exists; no duplicate thread across sections (including trends and betting), with refill; banned-pattern scan (em dash, banned words, process phrases); no empty strings or placeholders. Fix and re-validate. Never publish a failing edition.
@@ -45,7 +45,7 @@ If `RUN_KEY` is missing or `/api/live` answers 401, record that, skip the snapsh
 - Any step fails: fix what can be fixed within the run and continue. If the run cannot publish, stop cleanly. The next retry picks it up.
 - If research is partial, publish with fewer stories rather than nothing, as long as validation passes.
 - A live function failing never blocks the edition; the snapshot records it.
-- If all four runs fail, the site keeps yesterday's edition and shows a small "Today's paper is late" line automatically after 15:15 IST. This is the last resort.
+- If all four runs fail, the site keeps yesterday's edition and shows a small "Today's paper is late" line automatically after 16:30 IST. This is the last resort.
 
 ## Your Desk
 Only if Gmail and Google Calendar tools are available in the run. If they are not, omit the section. Never write personal data anywhere except the edition JSON in this private repo.

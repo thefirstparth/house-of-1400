@@ -555,7 +555,8 @@ function render() {
   h += secWrap("namma", storiesBlock("namma"), `${CFG.paper.home_city} · fuller on Fri, Sat, Sun`);
   h += secWrap("screen", screenBlock(), "English and Hindi · theatre and OTT");
   h += secWrap("talk", `<div data-live="talk">${talkBlock()}</div>`, "What people are searching for");
-  h += secWrap("betting", `<div data-live="betting">${bettingBlock()}</div>`, "What the world is betting on · Polymarket and Kalshi");
+  const markets = [...new Set((E.betting || []).map(b => b.source || "Polymarket"))].join(" and ") || "Polymarket";
+  h += secWrap("betting", `<div data-live="betting">${bettingBlock()}</div>`, `What the world is betting on · ${markets}`);
   h += secWrap("bye", byeBlock(), "Watch and do");
   h += deskBlock();
   if (E.editor_note) h += `<div class="editor">${esc(E.editor_note)}<span>${esc(CFG.paper.editor.signature)}</span></div>`;
@@ -852,7 +853,7 @@ async function boot() {
   } else {
     const today = istDate();
     const hm = new Date().toLocaleTimeString("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false });
-    if (E.date < today && hm >= "15:15") { $("#late").textContent = `Today's paper is late. This is the edition of ${longDate(E.date)}.`; $("#late").hidden = false; }
+    if (E.date < today && hm >= "16:30") { $("#late").textContent = `Today's paper is late. This is the edition of ${longDate(E.date)}.`; $("#late").hidden = false; }
   }
   // First paint with the snapshot, then fetch live.
   for (const [k, s] of Object.entries(E.snapshot || {})) if (s?.value) LIVE[k] = { ...s, stale: true };

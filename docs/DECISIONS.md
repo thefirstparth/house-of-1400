@@ -10,7 +10,7 @@ Settled with Parth between 24 and 25 Sep 2026. Change only with his say-so, and 
 - Archive: yes.
 
 ## Live vs static
-- Static: the news, written daily, info cut around 13:55 IST.
+- Static: the news, written daily, information cut at 14:00 IST.
 - Live: markets, weather, fixtures and countdowns, tables, trends, betting odds. Fetched on open, refreshed every 5 minutes, countdowns tick, subtle motion only.
 - Never live scores. During a match or session: "On now, go watch" and a refresh button for that block.
 - Free APIs, tested before the build. Never a wrong or empty field: primary, backup, snapshot, hide.
@@ -52,7 +52,7 @@ Settled with Parth between 24 and 25 Sep 2026. Change only with his say-so, and 
 - Night mode optional, still paper-like.
 
 ## Operations
-- Daily runs at 13:15, 13:44, 14:13, 14:42 IST. Each exits if today's edition is already live.
+- Daily runs at 14:00, 14:29, 14:58 and 15:27 IST (changed 25 Sep; were 13:15 to 14:42). Information cut 14:00. Each exits if today's edition is already live. The "late" line shows after 16:30.
 - Yesterday's paper stays up only as the last resort, with a "late" line.
 - Budget: lean, but never at the cost of missing something.
 
@@ -99,3 +99,8 @@ Made without Parth, per the build prompt. Change any of them freely.
 - **The Betting Window** shows 8 to 10 markets from Polymarket and Kalshi in a compact two-column list. Kalshi has no volume sort (12,000+ open events, rate-limited), so the daily run crawls it with `scripts/betting-candidates.mjs` and the page refreshes the chosen ids live (`/api/live/betting?ids=pm:...,ks:...`). Threshold ladders and 99%-settled markets are dropped.
 - **Fixture "Where"** prints only when confirmed, inline after the fixture; there is no empty column.
 - **Editorial rules tightened** in EDITORIAL.md for Wider Pitch, Sidelines, Screen & Stage (start from popularity charts), Talk of the Day and The Betting Window.
+
+## 25 Sep 2026, later
+- **Polymarket only for The Betting Window** (Parth). Kalshi needed a 3-minute rate-limited crawl each run for little extra; `scripts/betting-candidates.mjs --kalshi` keeps it available, and the page still refreshes any `ks:` ids an edition carries.
+- **Schedule** 14:00, 14:29, 14:58, 15:27 IST with the information cut at 14:00 (Parth). The "late" line moves from 15:15 to 16:30.
+- **The validator enforces the review's minimums** so a daily run cannot repeat them by accident: Wider Pitch and Sidelines at least 2 items, Screen & Stage at least 3 titles (5 on Friday to Sunday), Talk of the Day at least 5 plus 5 in English with search volume, The Betting Window 8 to 10, Ledger driver notes, cut 14:00. A run may waive one only with a written reason in `coverage_waivers` (never printed).

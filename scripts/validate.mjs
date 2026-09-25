@@ -124,6 +124,31 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     }
   }
 
+  // Coverage minimums from Parth's review of 25 Sep. Each can be waived only with a written reason in
+  // coverage_waivers.<key> (never printed), so a thin section is a decision, not an accident.
+  const weekend = ["fri", "sat", "sun"].includes(E.weekday);
+  const count = id => (E.sections?.[id]?.stories?.length || 0) + (E.sections?.[id]?.briefs?.length || 0);
+  const need = [
+    ["pitch", count("pitch") >= 2, "The Wider Pitch needs at least 2 items"],
+    ["sidelines", count("sidelines") >= 2, "The Sidelines needs at least 2 items"],
+    ["screen", (E.screen || []).filter(x => !x.coming_soon).length >= (weekend ? 5 : 3), `Screen & Stage needs at least ${weekend ? 5 : 3} current titles`],
+    ["talk", (E.trends?.india?.length || 0) >= 5 && (E.trends?.world?.length || 0) >= 5, "Talk of the Day needs at least 5 India and 5 world trends"],
+    ["betting", (E.betting?.length || 0) >= 8, "The Betting Window needs 8 to 10 markets"],
+    ["ledger_notes", ["Sensex", "Nifty 50", "Nasdaq-100"].some(n => E.sections?.ledger?.data?.notes?.[n]), "The Ledger needs driver notes (sections.ledger.data.notes) for the indices"],
+  ];
+  for (const [key, met, msg] of need) if (!met && !E.coverage_waivers?.[key]) errors.push(`coverage: ${msg}, or explain in coverage_waivers.${key}`);
+  if ((E.betting?.length || 0) > 10) errors.push("coverage: The Betting Window shows at most 10 markets");
+
+  // Talk of the Day is written in English, with search volume.
+  const latin = t => /^[\x20-\x7E\u00C0-\u024F\u2018-\u201D\u2013\u2026₹]+$/.test(t || "");
+  for (const [k, list] of [["india", E.trends?.india], ["world", E.trends?.world]]) (list || []).forEach((t, i) => {
+    if (!latin(t.term) || !latin(t.what)) errors.push(`trends.${k}[${i}]: write the term and the line in English`);
+    if (!t.traffic) errors.push(`trends.${k}[${i}]: add traffic (search volume, e.g. "10K+")`);
+  });
+
+  // The information cut is 14:00 IST (runs start then).
+  if (E.cut_ist !== "14:00" && !E.coverage_waivers?.cut) errors.push(`cut_ist is ${E.cut_ist}; the information cut is 14:00`);
+
   // Ledger: a thread only reprints if a key fact changed or a new fact was added.
   if (ledger?.threads?.length) {
     const byId = new Map(ledger.threads.map(t => [t.thread_id, t]));

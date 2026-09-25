@@ -796,6 +796,14 @@
           }
         }
       }
+    },
+    "coverage_waivers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 10
+      },
+      "$comment": "Not printed. A reason a coverage minimum is not met today (validate.mjs)."
     }
   }
 }

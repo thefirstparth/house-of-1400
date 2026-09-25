@@ -313,8 +313,7 @@
   },
   "betting": {
     "sources": [
-      "polymarket",
-      "kalshi"
+      "polymarket"
     ],
     "target": 10,
     "exclude": [
@@ -328,7 +327,10 @@
       "celebrity"
     ],
     "override": "include an excluded market only if it clearly affects Parth",
-    "show": 10
+    "show": 10,
+    "optional_sources": [
+      "kalshi (scripts/betting-candidates.mjs --kalshi)"
+    ]
   },
   "day_profiles": {
     "mon": {

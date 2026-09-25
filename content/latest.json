@@ -4391,5 +4391,8 @@
       "source": "Polymarket",
       "url": "https://polymarket.com/event/brazil-presidential-election"
     }
-  ]
+  ],
+  "coverage_waivers": {
+    "cut": "Edition No. 1 was researched and published during the build session at 06:40 IST, before the 14:00 schedule existed."
+  }
 }

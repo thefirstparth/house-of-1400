@@ -1,7 +1,7 @@
-// Daily run helper for The Betting Window. Pulls Polymarket's busiest events and crawls every open Kalshi
-// event (Kalshi has no volume sort), applies config exclusions, merges near-duplicates and ranks by
-// 24-hour dollar volume. Prints candidates as JSON; the editor picks 8 to 10 for the edition.
-// Usage: node scripts/betting-candidates.mjs [--top 30] [--kalshi-pages 80]
+// Daily run helper for The Betting Window. Pulls Polymarket's busiest events, applies config exclusions,
+// merges near-duplicates and ranks by 24-hour volume. Prints candidates as JSON; the editor picks 8 to 10.
+// --kalshi also crawls every open Kalshi event (no volume sort in its API, about 3 minutes). Off by default.
+// Usage: node scripts/betting-candidates.mjs [--top 30] [--kalshi [--kalshi-pages 80]]
 import { ensureProxy } from "./proxy.mjs";
 ensureProxy();
 const { filterBetting, filterKalshi, getJSON, shapePolymarket } = await import("../lib/live.js");
@@ -23,7 +23,7 @@ const pm = filterBetting(await getJSON("https://gamma-api.polymarket.com/events?
 console.error(`polymarket: ${pm.length} after exclusions`);
 
 let ks = [], cursor = "", pages = 0;
-try {
+if (process.argv.includes("--kalshi")) try {
   do {
     const j = await polite(`https://api.elections.kalshi.com/trade-api/v2/events?with_nested_markets=true&status=open&limit=200${cursor ? `&cursor=${cursor}` : ""}`);
     ks.push(...filterKalshi(j.events || []));
