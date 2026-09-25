@@ -5,9 +5,9 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/archive", "destination": "/index.html" },
-    { "source": "/today", "destination": "/index.html" },
-    { "source": "/e/:date", "destination": "/index.html" }
+    { "source": "/archive", "destination": "/" },
+    { "source": "/today", "destination": "/" },
+    { "source": "/e/:date", "destination": "/" }
   ],
   "functions": {
     "api/health.js": { "includeFiles": "content/latest.json" },
