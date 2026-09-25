@@ -926,39 +926,105 @@ async function renderArchive() {
 
 // ------------------------------------------------------------------ about the editor
 // A page of its own, linked from the byline, the editor's note and the foot of the paper. Never on the front page.
+// Laid out as a golden-age newspaper profile: framed portrait, pull quote, a day at the desk, the red pencil at work.
 async function renderEditor() {
   const name = CFG.paper.editor.signature.replace(", Editor", "");
   document.title = `${name} · The House of 1400`;
-  $("#run-date").textContent = "About the editor";
+  $("#run-date").textContent = "Profile";
   $("#run-vol").textContent = CFG.paper.home_city;
   $("#run-cut").innerHTML = `<a class="backlink" href="/">Today's paper</a>`;
   $("#motto").textContent = CFG.paper.motto;
-  $("#profile").textContent = "The person on the byline";
+  $("#profile").textContent = "The man on the byline";
   $("#layout").style.display = "block";
   $("#rail").hidden = true; $("#idx").hidden = true;
+  // A typewriter face for his memos and a hand for his corrections, loaded on this page only.
+  if (!document.getElementById("ed-fonts")) {
+    const l = document.createElement("link");
+    l.id = "ed-fonts"; l.rel = "stylesheet";
+    l.href = "https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Courier+Prime&display=swap";
+    document.head.appendChild(l);
+  }
+  const day = [
+    ["14:00", "Closes the information cut. Anything later waits for tomorrow, and he does not accept appeals."],
+    ["14:05", "Reads the front pages of the national papers, all leanings, and notes what leads two or more."],
+    ["14:15", "Reads the regulators' notices and the money pages. Anything that changes what people pay, earn, save or insure goes on the list."],
+    ["14:20", "Asks why every stock that fell off a cliff fell off it. “Financial stocks were weak” is not an answer."],
+    ["14:30", "Picks the lead. Writes At a Glance. Fixes every time to the minute in IST."],
+    ["14:40", "Hands the pages to the checker, a program that reads for sources, dates, duplicates and banned words. He calls it the night desk."],
+    ["14:45", "The paper goes live. On a big day he signs a short note at the end. On an ordinary day he says nothing, which he considers a courtesy."],
+  ];
+  const proofs = [
+    { typed: `The company <s>unveiled</s><ins>launched</ins> a <s>pivotal</s> new phone <s>amid robust demand</s><ins>as sales rose 12%</ins>.`, note: "Say what happened. Adjectives are not news." },
+    { typed: `Experts say the move <s>underscores the growing importance of</s><ins>matters for</ins> AI.`, note: "Which experts? Name them or cut them." },
+    { typed: `Madrid play Villarreal on Sunday <s>—</s><ins title="full stop">⊙</ins> Kick-off is TBC.`, note: "No em dashes in this house." },
+  ];
+  const quirks = [
+    ["Tea", "Two cups, at 13:30 and 16:00. Never at the desk."],
+    ["“Reportedly”", "Allowed only with a name attached."],
+    ["Exclamation marks", "One per decade, held in reserve for a Madrid title."],
+    ["Headlines that ask a question", "The answer is usually no, so he does not print them."],
+    ["Formula 1 on a Saturday", "A matter of public record. See his note of 25 September."],
+    ["The moustache", "Denies it."],
+  ];
   const rules = [
     ["The two tests", "Would Parth be annoyed tomorrow if this were missing? Would a well-informed person in India be caught out not knowing it? A story that passes either one prints."],
     ["Next means next", "Every club, player and race gets one timeline, sorted. The next match is the earliest confirmed one, whatever the headlines say about a bigger game later."],
-    ["Times to the minute", "Venue time, then UTC, then IST. Two sources that disagree by half an hour send him to a third. If the third does not settle it, the paper prints \u201ctime TBC\u201d and moves on."],
+    ["Times to the minute", "Venue time, then UTC, then IST. Two sources that disagree by half an hour send him to a third. If the third does not settle it, the paper prints “time TBC” and moves on."],
     ["Once is enough", "A story reprints only when a fact has changed. He keeps a ledger of every thread the paper has run and checks it before anything goes in."],
     ["No filler", "A section with nothing worth printing is removed. The paper never tells you what it could not find."],
-    ["Plain words", "He has a list of words he will not print, from pivotal to landscape, and he enforces it. No em dashes. No tidy moral at the end of a story."],
+    ["Money and institutions", "He does not follow politics and neither does the reader, but a rule that changes what you pay, or a row inside the body that runs elections, is news. It prints, plainly."],
   ];
-  let note = "";
-  try { const L = await getJSON("/content/latest.json"); if (L.editor_note) note = `<figure class="ed-quote"><blockquote>${esc(L.editor_note)}</blockquote><figcaption>${esc(CFG.paper.editor.signature)} · ${esc(longDate(L.date))}</figcaption></figure>`; } catch {}
+  let memo = "";
+  try {
+    const L = await getJSON("/content/latest.json");
+    if (L.editor_note) memo = `<figure class="ed-memo"><div class="memo-head"><span>MEMORANDUM</span><span>From: ${esc(name)}</span><span>To: The reader</span><span>Date: ${esc(longDate(L.date))}</span></div><blockquote>${esc(L.editor_note)}</blockquote><div class="memo-init" aria-hidden="true">TAB</div></figure>`;
+  } catch {}
   $("#main").innerHTML = `<article class="about">
-<div class="ed-head"><img class="ed-portrait" src="/bhide.svg" alt="A drawn portrait of T. A. Bhide: side-parted hair, round spectacles, one raised eyebrow, a red pencil behind his ear" width="128" height="128"><div><div class="kick">About the editor</div><h1>${esc(name)}</h1><p class="deck">${esc(CFG.paper.editor.full_name)} edits The House of 1400, an afternoon paper with a circulation of one. He is strict about rules and quick to correct the reader, and very proud of his education. He is also, as he would be the first to point out, fictional.</p></div></div>
-<section><h2>Who he is</h2>
-<p>Bhide is an editor of the old school, the kind that ran city desks when a paper had to be right before it could be first. He believes a newspaper is a set of rules kept every day, and that the reader should never have to wonder whether the paper checked. He reads everything twice. He has opinions about commas.</p>
-<p>His name is a small tribute to a famous society secretary of Indian television, a man who also believed that rules exist to be read aloud. The resemblance ends at the moustache, which the editor denies having.</p></section>
-<section><h2>What he does each day</h2>
-<p>At 14:00 IST he closes the information cut. Anything that happened after that waits for tomorrow. He reads the day across football, Formula 1, cricket, tennis, markets, technology, Bengaluru and the world, then decides what one reader needs before a shift that runs from 17:00 to 02:00.</p>
-<p>He picks the lead. He writes the At a Glance lines. He fixes every time in IST. He chooses the ten prediction markets worth a look and the handful of searches worth explaining. On a big day he signs a short note at the end of the paper. On an ordinary day he says nothing, which he considers a courtesy.</p></section>
-<section><h2>What sets him apart</h2>
-<ol class="ed-rules">${rules.map(([t, d]) => `<li><b>${esc(t)}</b><span>${esc(d)}</span></li>`).join("")}</ol></section>
-${note ? `<section><h2>In his own words</h2>${note}</section>` : ""}
+<header class="ed-open">
+  <figure class="ed-frame"><div class="mat"><img src="/bhide.svg" alt="A drawn portrait of T. A. Bhide: side-parted hair going grey at the temples, round spectacles, one eyebrow raised, a moustache" width="240" height="240"></div>
+    <figcaption>Drawn for The House of 1400. The editor declined to sit for a photograph.</figcaption></figure>
+  <div class="ed-title">
+    <div class="kick">Profile · The Editor</div>
+    <h1>${esc(name)}</h1>
+    <p class="deck">${esc(CFG.paper.editor.full_name)} edits an afternoon paper with a circulation of one. He is strict about rules and quick to correct the reader, and very proud of his education. He is also, as he would be the first to point out, fictional.</p>
+    <div class="ed-by">By the staff of The House of 1400 · Filed at 14:00 IST</div>
+  </div>
+</header>
+<dl class="ed-stats">
+  <div><dt>Circulation</dt><dd>1</dd></div>
+  <div><dt>Deadline</dt><dd>14:00</dd></div>
+  <div><dt>Words he will not print</dt><dd>15</dd></div>
+  <div><dt>Em dashes printed</dt><dd>0</dd></div>
+</dl>
+<div class="ed-body">
+  <section class="ed-story">
+    <h2>Who he is</h2>
+    <p class="drop">Bhide is an editor of the old school, the kind that ran city desks when a paper had to be right before it could be first. He believes a newspaper is a set of rules kept every day, and that the reader should never have to wonder whether the paper checked. He reads everything twice. He has opinions about commas.</p>
+    <blockquote class="ed-pull">“A paper has to be right before it can be first.”</blockquote>
+    <p>His name is a small tribute to a famous society secretary of Indian television, a man who also believed that rules exist to be read aloud. The resemblance ends at the moustache, which the editor denies having.</p>
+    <p>He edits for one reader, who works a shift from 17:00 to 02:00 and reads on his phone. So the paper arrives in the afternoon, it is finished in five minutes if you only skim, and it never pads a page to look busy.</p>
+  </section>
+  <aside class="ed-quirks">
+    <h2>Things he has opinions about</h2>
+    <dl>${quirks.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+  </aside>
+</div>
+<section class="ed-day">
+  <h2>A day at the desk</h2>
+  <ol>${day.map(([t, d]) => `<li><time>${t}</time><p>${esc(d)}</p></li>`).join("")}</ol>
+</section>
+<section class="ed-proof">
+  <h2>The red pencil</h2>
+  <p class="ed-lede">Every sentence in the paper has been past this pencil. A few from the spike.</p>
+  <div class="proofs">${proofs.map(x => `<div class="proof"><p class="typed">${x.typed}</p><p class="margin">${esc(x.note)}</p></div>`).join("")}</div>
+</section>
+<section class="ed-rulesec">
+  <h2>The house rules</h2>
+  <ol class="ed-rules">${rules.map(([t, d]) => `<li><b>${esc(t)}</b><span>${esc(d)}</span></li>`).join("")}</ol>
+</section>
+${memo ? `<section><h2>In his own words</h2>${memo}</section>` : ""}
 <section class="ed-honest"><h2>A note on the byline</h2>
-<p>T. A. Bhide is a character. Each afternoon the paper is researched and written by an AI model working to a written rulebook, and a validator in code checks the edition (sources, times, duplicates, banned words) before it is published. The rules are real, and so are the sources. Only the editor is invented, and his portrait is a drawing.</p></section>
+<p>T. A. Bhide is a character. Each afternoon the paper is researched and written by an AI model working to a written rulebook, and a checker in code reads the edition (sources, times, duplicates, banned words) before it is published. The rules are real, and so are the sources. Only the editor is invented, and his portrait is a drawing.</p></section>
 <p class="ed-back"><a class="backlink" href="/">Back to today's paper</a> · <a class="backlink" href="/archive">The Archive</a></p>
 </article>`;
 }
