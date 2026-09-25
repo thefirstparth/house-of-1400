@@ -22,7 +22,7 @@ Half static, half live, like the Daily Prophet: the news is written once a day a
 **Poster run** (16:00 IST, `docs/RUNBOOK.md` → Posters): only writes `public/posters/latest/`.
 
 **Daily run** (a scheduled edition run, following `docs/RUNBOOK.md`):
-- Only write `content/editions/YYYY-MM-DD.json`, `content/latest.json`, `content/archive.json` and `ledger/story-ledger.json`.
+- Only write `content/editions/YYYY-MM-DD.json`, `content/latest.json`, `content/archive.json`, `ledger/story-ledger.json` and `ledger/betting-carry.json`.
 - Never touch code, styles, config or docs during a daily run.
 - If validation fails, do not publish a broken edition. Retry per the runbook. Yesterday's paper staying up is the very last resort.
 

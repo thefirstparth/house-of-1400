@@ -2,7 +2,7 @@
  * The House of 1400 → Google Drive poster sync.
  *
  * Runs in Parth's own Google account (script.google.com), so no keys or passwords leave Google.
- * Every hour it reads https://house-of-1400.vercel.app/posters/latest/manifest.json and, when a new
+ * Every hour it reads https://house14.vercel.app/posters/latest/manifest.json and, when a new
  * edition's posters appear, saves them into a dated folder inside "The House of 1400 · Posters".
  *
  * One-time setup:
@@ -11,7 +11,7 @@
  *   3. Choose the function "install" in the toolbar and press Run. Approve the permission prompt
  *      (Drive, and connecting to an external service). It runs once now and then every hour.
  */
-const SITE = "https://house-of-1400.vercel.app";
+const SITE = "https://house14.vercel.app";
 const PARENT_FOLDER_ID = "1kb0FGbr46iRzbXWVLneNKwfK9Zh9FGIm"; // "The House of 1400 · Posters" in My Drive
 
 function syncPosters() {

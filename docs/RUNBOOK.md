@@ -18,7 +18,7 @@ Prompt for each scheduled task:
 The live scheduled runs use a slightly longer version of this prompt that also attaches and clones the repo (see docs/STATUS.md).
 
 ## Commands (run from the repo root)
-A daily run only needs to reach GitHub and our Vercel domain. It never calls the third-party data APIs directly: the live snapshot and the live test both go through our own `/api/live/*` (`SITE_URL` defaults to https://house-of-1400.vercel.app).
+A daily run only needs to reach GitHub and our Vercel domain. It never calls the third-party data APIs directly: the live snapshot and the live test both go through our own `/api/live/*` (`SITE_URL` defaults to https://house14.vercel.app).
 - `npm ci` once per session.
 - `npm test` checks every live source through `<SITE_URL>/api/live/*` (shape, freshness, ranges). Failures go in the snapshot, not the paper.
 - `node scripts/snapshot.mjs content/editions/YYYY-MM-DD.json` fetches every `<SITE_URL>/api/live/<key>` and writes the `snapshot` block. When a key fails it keeps the last-known-good value with its own time.
@@ -37,7 +37,7 @@ If `RUN_KEY` is missing or `/api/live` answers 401, record that, skip the snapsh
 6. **Select and rank** with the Parth test, the must-know floor, the money test, the day profile, votes and the ledger ("what changed?").
 7. **Write** every section to the schema: short version, long version where useful, why it matters, sources. Editor's note only on big days. House Note always.
 8. **Validate in code** (`npm run validate`): JSON schema; every substantive story has a source URL; NEXT/LAST consistent everywhere and no earlier confirmed fixture exists; no duplicate thread across sections (including trends and betting), with refill; banned-pattern scan (em dash, banned words, process phrases); no empty strings or placeholders; every market mover answered (`checks.movers`); the money sweep recorded (`checks.money_sweep`); still-trending markets kept (`ledger/betting-carry.json`). Fix and re-validate. Never publish a failing edition.
-9. **Publish:** write `content/editions/YYYY-MM-DD.json`, copy to `content/latest.json`, update `content/archive.json` and `ledger/story-ledger.json`. One commit, message `Edition YYYY-MM-DD`, push to `main`.
+9. **Publish:** write `content/editions/YYYY-MM-DD.json`, copy to `content/latest.json`, update `content/archive.json` and `ledger/story-ledger.json`, and include `ledger/betting-carry.json`. One commit, message `Edition YYYY-MM-DD`, push to `main`.
 10. **Verify:** poll `/api/health` until it reports today's date (up to 10 minutes).
 11. **Notify:** only after step 10 passes, call `/api/notify` with `RUN_KEY`. The function sends Telegram: lead headline plus the link. Skip if Telegram is not configured.
 
