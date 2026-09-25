@@ -9,7 +9,9 @@ export async function GET(request) {
   let out;
   try { out = await fn(url.searchParams); }
   catch (e) { out = { ok: false, value: null, source: null, as_of: null, stale: false, error: String(e?.message || e) }; }
-  const [s, swr] = CACHE[key] || [300, 900];
+  let [s, swr] = CACHE[key] || [300, 900];
+  // No index trading anywhere: the market feed changes slowly (the rupee, oil, Bitcoin), so hold it for 30 minutes.
+  if (key === "markets" && out.ok && !(out.value?.indices || []).some(i => i.live)) [s, swr] = [1800, 3600];
   const personal = url.searchParams.has("lat");
   return Response.json(out, {
     headers: { "cache-control": out.ok && !personal ? `public, s-maxage=${s}, stale-while-revalidate=${swr}` : "no-store" },

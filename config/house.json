@@ -215,15 +215,18 @@
     "indices": [
       {
         "name": "Sensex",
-        "yahoo": "^BSESN"
+        "yahoo": "^BSESN",
+        "exchange": "India"
       },
       {
         "name": "Nifty 50",
-        "yahoo": "^NSEI"
+        "yahoo": "^NSEI",
+        "exchange": "India"
       },
       {
         "name": "Nasdaq-100",
-        "yahoo": "^NDX"
+        "yahoo": "^NDX",
+        "exchange": "US"
       }
     ],
     "top_two": [
@@ -277,6 +280,32 @@
       "industry_min_stocks": 4,
       "sessions": 2,
       "rule": "Every flagged move is a question the daily run must answer: find why it moved. If the cause is a rule, a regulator, a policy, a result or a deal that matters beyond one ticker, it is a Ledger story (Front Page when it hits a household name or everyone's money). Record the answer in checks.movers."
+    },
+    "hours": {
+      "India": {
+        "tz": "Asia/Kolkata",
+        "open": "09:15",
+        "close": "15:30",
+        "days": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "US": {
+        "tz": "America/New_York",
+        "open": "09:30",
+        "close": "16:00",
+        "days": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
     }
   },
   "weather": {

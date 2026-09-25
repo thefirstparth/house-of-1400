@@ -123,7 +123,8 @@ td.r .thumbs.sm{display:flex;justify-content:flex-end;margin-top:8px}
 .mstate{margin-left:8px;font:700 10px var(--sans);letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:999px;vertical-align:1px}
 .mstate.open{color:var(--good);background:color-mix(in srgb,var(--good) 14%,transparent)}
 .mstate.closed{color:var(--muted);background:var(--surface2)}
-.mc{font:600 11px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.mc{font:600 11px var(--sans);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.mc.open{color:var(--good)}
 .dash .mk .idx3 small.mc{display:block;font-size:10px}
 .tools .th[aria-pressed="true"]{color:var(--paper);background:var(--acc)}
 

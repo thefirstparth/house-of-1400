@@ -73,8 +73,12 @@ async function live(key, qs = "") {
 // Every key in parallel; each block repaints as soon as its own data lands (one repaint per frame).
 let paintQueued = false;
 const paintSoon = () => { if (paintQueued) return; paintQueued = true; requestAnimationFrame(() => { paintQueued = false; paintLive(); }); };
+let marketsAt = 0;
 async function refreshLive() {
-  const jobs = LIVE_KEYS.map(k => live(k).then(paintSoon));
+  // While every exchange is shut, market data (indices, plus the rupee, oil and Bitcoin in the same feed) refreshes
+  // every 30 minutes instead of every 5.
+  const quiet = CFG && LIVE.markets && !LIVE.markets.stale && allShut() && Date.now() - marketsAt < 30 * 60 * 1000;
+  const jobs = LIVE_KEYS.filter(k => !(k === "markets" && quiet)).map(k => live(k).then(v => { if (k === "markets") marketsAt = Date.now(); paintSoon(); return v; }));
   if (ROUTE.kind !== "edition") {
     const ids = (E.betting || []).map(b => b.id).filter(Boolean).join(",");
     jobs.push(live("betting", ids ? `?ids=${encodeURIComponent(ids)}` : "").then(paintSoon));
@@ -244,7 +248,7 @@ const LIVEBLOCKS = {
   railIndex(name) {
     const q = LIVE.markets?.value?.indices?.find(i => i.name === name); if (!q) return "";
     const col = q.change_pct < 0 ? "var(--bad)" : "var(--good)", s = q.spark?.slice(-22) || [];
-    return `<a class="w" href="#ledger"><div class="row"><b>${esc(name)}</b><span class="${dir(q.change_pct)} tnum" style="font:700 13px var(--sans)">${pct(q.change_pct)}</span></div><span class="big tnum">${inr(Math.round(q.price))}</span>${q.live ? "" : `<div class="mc">Market closed</div>`}${spark(s, col, { w: 200, h: 32, mini: true })}${staleNote("markets")}</a>`;
+    return `<a class="w" href="#ledger"><div class="row"><b>${esc(name)}</b><span class="${dir(q.change_pct)} tnum" style="font:700 13px var(--sans)">${pct(q.change_pct)}</span></div><span class="big tnum">${inr(Math.round(q.price))}</span><div class="mc ${q.live ? "open" : ""}">${esc(hoursLine(q))}</div>${spark(s, col, { w: 200, h: 32, mini: true })}${staleNote("markets")}</a>`;
   },
 };
 
@@ -342,8 +346,41 @@ function assetNote(name, q) {
   return [D.notes?.[name], q?.note || range].filter(Boolean).map(x => x.replace(/\.$/, "")).join(". ") + ".";
 }
 
-// Market open or closed, from the exchange's own trading hours (Yahoo's currentTradingPeriod).
-const mstate = q => `<span class="mstate ${q.live ? "open" : "closed"}">${q.live ? "Live" : "Market closed"}</span>`;
+// Trading hours come from config (markets.hours), converted to IST; whether it actually traded today comes from the
+// data itself (Yahoo's trading period), which is how a holiday shows up.
+function tzParts(tz, d = new Date()) {
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", weekday: "short" }).formatToParts(d).map(x => [x.type, x.value]));
+  return { y: +p.year, mo: +p.month, d: +p.day, hm: `${p.hour}:${p.minute}`, wd: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(p.weekday) };
+}
+// The instant at which it is `hm` on the calendar day y-mo-d in time zone tz.
+function tzInstant(tz, y, mo, d, hm) {
+  const guess = Date.UTC(y, mo - 1, d, +hm.slice(0, 2), +hm.slice(3));
+  const p = tzParts(tz, new Date(guess)), seen = Date.UTC(p.y, p.mo - 1, p.d, +p.hm.slice(0, 2), +p.hm.slice(3));
+  return new Date(guess - (seen - guess));
+}
+function session(exchange) {
+  const H = CFG.markets.hours?.[exchange]; if (!H) return null;
+  const now = new Date(), t = tzParts(H.tz, now);
+  const openNow = H.days.includes(t.wd) && t.hm >= H.open && t.hm < H.close;
+  const closeAt = tzInstant(H.tz, t.y, t.mo, t.d, H.close);
+  let next = null;
+  for (let i = 0; i < 8 && !next; i++) {
+    const day = tzParts(H.tz, new Date(now.getTime() + i * 864e5));
+    const at = tzInstant(H.tz, day.y, day.mo, day.d, H.open);
+    if (H.days.includes(day.wd) && at > now) next = at;
+  }
+  return { openNow, closeAt, next };
+}
+const istWhen = d => (istDate(d) === istDate() ? istTime(d.toISOString()) : istDate(d) === istDate(new Date(Date.now() + 864e5)) ? `tomorrow ${istTime(d.toISOString())}` : `${fmt(d.toISOString(), { weekday: "short" })} ${istTime(d.toISOString())}`);
+function hoursLine(q) {
+  const s = session(CFG.markets.indices.find(i => i.name === q.name)?.exchange);
+  if (!s) return q.live ? "Live" : "Market closed";
+  if (q.live) return `Live · till ${istTime(s.closeAt.toISOString())}`;
+  if (s.openNow) return "Closed today";
+  return `Closed · opens ${istWhen(s.next)}`;
+}
+const allShut = () => Object.keys(CFG.markets.hours || {}).every(ex => !session(ex)?.openNow);
+const mstate = q => `<span class="mstate ${q.live ? "open" : "closed"}">${esc(hoursLine(q))}</span>`;
 
 // Gold's context from IBJA's own history: the month's move, then where today sits in the period's range.
 function goldNote(G) {
@@ -854,7 +891,7 @@ function dashHTML() {
       const lvl = c.yahoo === "INR=X" ? "₹" + q.price.toFixed(2) : c.yahoo === "BZ=F" ? "$" + usd(q.price, 2) : "$" + usd(q.price);
       return `<div><span>${esc(c.name)}</span><b>${lvl}</b> <small class="${dir(q.change_pct)}">${pct(q.change_pct)}</small></div>`;
     }).join("");
-    mk = `<div class="idx3">${M.indices.map(q => `<div><span>${esc(q.name)}</span><span class="big">${inr(Math.round(q.price))}</span><b class="${dir(q.change_pct)}"><i>${pts(q)} </i>${pct(q.change_pct)}</b>${q.live ? "" : `<small class="mc">Closed</small>`}${spark(q.spark?.slice(-22), q.change_pct < 0 ? "var(--bad)" : "var(--good)", { w: 200, h: 28, mini: true })}</div>`).join("")}</div><div class="cross">${cross}</div>`;
+    mk = `<div class="idx3">${M.indices.map(q => `<div><span>${esc(q.name)}</span><span class="big">${inr(Math.round(q.price))}</span><b class="${dir(q.change_pct)}"><i>${pts(q)} </i>${pct(q.change_pct)}</b><small class="mc">${esc(hoursLine(q))}</small>${spark(q.spark?.slice(-22), q.change_pct < 0 ? "var(--bad)" : "var(--good)", { w: 200, h: 28, mini: true })}</div>`).join("")}</div><div class="cross">${cross}</div>`;
   }
 
   const sport = [];
