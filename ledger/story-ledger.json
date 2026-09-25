@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_updated": "2026-09-25T00:46:06.118Z",
+  "last_updated": "2026-09-25T01:27:07.929Z",
   "last_edition": "2026-09-25",
   "threads": [
     {
@@ -349,6 +349,101 @@
         "down": 0
       },
       "section": "namma"
+    },
+    {
+      "thread_id": "presidents-cup-2026",
+      "title": "USA lead the Internationals 3–2 after the opening four-balls at Medinah",
+      "entities": [],
+      "facts": {
+        "score": "USA 3-2"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "asian-games-kabaddi",
+      "title": "Both Indian kabaddi teams into the semi-finals",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "wnba-playoffs-2026",
+      "title": "Lynx take the No. 1 seed and meet the Liberty from Sunday",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "germany-klopp-era",
+      "title": "Gakpo's stoppage-time volley denies Klopp a win in his first game as Germany coach",
+      "entities": [],
+      "facts": {
+        "score": "1-1",
+        "date": "2026-09-24"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "nations-league-md1",
+      "title": "Portugal, Norway and Austria win as the Nations League starts",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "tottenham-de-zerbi",
+      "title": "Tottenham are bottom after five games",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
     }
   ]
 }

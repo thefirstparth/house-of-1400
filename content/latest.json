@@ -417,6 +417,66 @@
             "hockey_men": "beat South Korea 8-2",
             "rowing": "bronze men's double sculls"
           }
+        },
+        {
+          "id": "presidents-cup-day-one",
+          "thread_id": "presidents-cup-2026",
+          "section": "sidelines",
+          "kicker": "Golf · Presidents Cup",
+          "headline": "USA lead the Internationals 3–2 after the opening four-balls at Medinah",
+          "byline": "CBS SPORTS · GOLF DIGEST · 24 SEP",
+          "short": "Justin Thomas and 21-year-old rookie Jackson Koivun beat Corey Conners and Nico Echavarria 4&3. World No. 1 Scottie Scheffler and Sam Burns won 1 up against Min Woo Lee and Sungjae Im. The first team to 15.5 points wins; 30 matches are played over four days.",
+          "why": {
+            "text": "The home side has now won the opening session in eight of the nine Presidents Cups played in the US.",
+            "personal": false
+          },
+          "sources": [
+            {
+              "label": "CBS Sports",
+              "url": "https://www.cbssports.com/golf/news/presidents-cup-2026-standings-scores-live-updates-results-scoreboard-day-1/live/"
+            },
+            {
+              "label": "Golf Digest",
+              "url": "https://www.golfdigest.com/story/presidents-cup-2026-thursday-takeaways"
+            }
+          ],
+          "facts": {
+            "score": "USA 3-2"
+          }
+        }
+      ],
+      "briefs": [
+        {
+          "id": "kabaddi-semis",
+          "thread_id": "asian-games-kabaddi",
+          "section": "sidelines",
+          "kicker": "Asian Games · Kabaddi",
+          "headline": "Both Indian kabaddi teams into the semi-finals",
+          "text": "The men beat Chinese Taipei 37–21 to top Group A. The women beat Japan 50–25 and are assured of a medal. Semi-finals are today and both finals are on Saturday.",
+          "sources": [
+            {
+              "label": "Olympics.com",
+              "url": "https://www.olympics.com/en/news/asian-games-2026-kabaddi-men-india-vs-chinese-taipei-group-a-match-report"
+            }
+          ]
+        },
+        {
+          "id": "wnba-playoffs-set",
+          "thread_id": "wnba-playoffs-2026",
+          "section": "sidelines",
+          "kicker": "WNBA",
+          "headline": "Lynx take the No. 1 seed and meet the Liberty from Sunday",
+          "text": "Minnesota clinched first place despite a 96–77 loss to Indiana. Their first-round opponent is New York, a rematch of the 2024 Finals. The playoffs start on 27 September.",
+          "sources": [
+            {
+              "label": "The Guardian",
+              "url": "https://www.theguardian.com/sport/2026/sep/23/lynx-clinch-wnba-no-1-seed-despite-embarrassing-loss-to-fever-and-olivia-miles-injury"
+            },
+            {
+              "label": "Pioneer Press",
+              "url": "https://www.twincities.com/2026/09/23/lynx-to-face-liberty-in-round-1-of-playoffs/"
+            }
+          ]
         }
       ]
     },
@@ -579,7 +639,16 @@
             "effective": "2026-10-01"
           }
         }
-      ]
+      ],
+      "data": {
+        "notes": {
+          "Sensex": "Reliance and financial stocks did most of the damage as oil and global bond yields rose.",
+          "Nasdaq-100": "Flat on Thursday while the US 10-year yield held above 5.1%, its highest since 2007.",
+          "Brent crude": "Settled at $106.60 on Thursday, up 3.4%; talk of a phased Hormuz reopening trimmed the day's high.",
+          "USD/INR": "The rupee's record low, just under 97, was set in May.",
+          "S&P 500": "Flat as Treasury yields climbed."
+        }
+      }
     },
     "namma": {
       "stories": [
@@ -631,6 +700,67 @@
           }
         }
       ]
+    },
+    "pitch": {
+      "stories": [
+        {
+          "id": "klopp-germany-debut",
+          "thread_id": "germany-klopp-era",
+          "section": "pitch",
+          "kicker": "Nations League",
+          "headline": "Gakpo's stoppage-time volley denies Klopp a win in his first game as Germany coach",
+          "byline": "SKY SPORTS · ESPN · 24 SEP, AMSTERDAM",
+          "short": "Netherlands 1, Germany 1. Felix Nmecha put Germany ahead in Amsterdam while Brian Brobbey was down injured, and Virgil van Dijk had a header ruled out by VAR. Cody Gakpo equalised with a volley in stoppage time. Jürgen Klopp took the Germany job in July after their last-32 exit from the World Cup against Paraguay.",
+          "why": {
+            "text": "Germany under Klopp and a new Nations League cycle are the main football stories until club games resume on 10 October.",
+            "personal": false
+          },
+          "sources": [
+            {
+              "label": "Sky Sports",
+              "url": "https://www.skysports.com/football/news/13591589/netherlands-x-x-germany-report"
+            },
+            {
+              "label": "ESPN",
+              "url": "https://www.espn.com/soccer/report/_/gameId/401861041"
+            }
+          ],
+          "facts": {
+            "score": "1-1",
+            "date": "2026-09-24"
+          }
+        }
+      ],
+      "briefs": [
+        {
+          "id": "nations-league-night-one",
+          "thread_id": "nations-league-md1",
+          "section": "pitch",
+          "kicker": "Nations League",
+          "headline": "Portugal, Norway and Austria win as the Nations League starts",
+          "text": "Holders Portugal beat Wales 1–0. Norway won 3–2 against Denmark and Austria beat Israel 3–1. Matchday two runs from 27 to 29 September.",
+          "sources": [
+            {
+              "label": "UEFA",
+              "url": "https://www.uefa.com/uefanationsleague/news/02a2-1fea18abbcbc-456e846509e7-1000--2026-27-uefa-nations-league-all-the-league-phase-fixtures/"
+            }
+          ]
+        },
+        {
+          "id": "spurs-bottom",
+          "thread_id": "tottenham-de-zerbi",
+          "section": "pitch",
+          "kicker": "Premier League",
+          "headline": "Tottenham are bottom after five games",
+          "text": "Two points and two goals so far under Roberto De Zerbi, after a 3–2 loss to Aston Villa. The three-week international break gives the club time to act if it wants to.",
+          "sources": [
+            {
+              "label": "Sports Mole",
+              "url": "https://www.sportsmole.co.uk/football/coventry-city/feature/2026-27-premier-league-sack-race-who-could-be-the-first-manager-to-lose-his-job_605374.html"
+            }
+          ]
+        }
+      ]
     }
   },
   "chronology": {
@@ -662,7 +792,7 @@
       "minutes": 60,
       "label": "F1 · Baku · Practice 3",
       "entity": "f1",
-      "where": null,
+      "where": "FanCode",
       "source": "Formula 1, Sky Sports"
     },
     {
@@ -670,7 +800,7 @@
       "minutes": 60,
       "label": "F1 · Baku · Qualifying",
       "entity": "f1",
-      "where": null,
+      "where": "FanCode",
       "source": "Formula 1, Sky Sports"
     },
     {
@@ -694,7 +824,7 @@
       "minutes": 120,
       "label": "F1 · Azerbaijan Grand Prix",
       "entity": "f1",
-      "where": null,
+      "where": "FanCode",
       "source": "Formula 1, Sky Sports, Crash.net"
     },
     {
@@ -773,8 +903,30 @@
       "where": "Theatres",
       "release": "Out today",
       "verdict": "good",
-      "reason": "Critics strongly positive, around 90% on Rotten Tomatoes; some find the man-and-dog survival story sentimental. Brad Pitt, directed by David Ayer.",
+      "reason": "Brad Pitt survives the Alaskan wild with his combat dog. Critics strongly positive, around 90% on Rotten Tomatoes; some find it sentimental.",
+      "if_you_liked": "The Grey",
       "url": "https://www.rottentomatoes.com/m/heart_of_the_beast"
+    },
+    {
+      "title": "A Different World",
+      "type": "Series · 10 episodes",
+      "language": "English",
+      "where": "Netflix",
+      "release": "Out now",
+      "verdict": "good",
+      "reason": "Sequel to the 1987 college sitcom. Warm reviews from The Hollywood Reporter, Variety and TheWrap; several say the second half drags.",
+      "url": "https://www.hollywoodreporter.com/tv/tv-reviews/a-different-world-review-netflix-1236708857/"
+    },
+    {
+      "title": "Brothers",
+      "type": "Series · weekly",
+      "language": "English",
+      "where": "Apple TV",
+      "release": "Out now",
+      "verdict": "call",
+      "reason": "McConaughey and Harrelson play possible half-brothers. Split reviews: 53% on Rotten Tomatoes, 51 on Metacritic; the leads carry thin writing.",
+      "if_you_liked": "True Detective season 1, for the pairing only",
+      "url": "https://www.metacritic.com/tv/brothers-2026/"
     },
     {
       "title": "Shaque: Trust No One",
@@ -793,7 +945,7 @@
       "where": "Theatres",
       "release": "Out today",
       "verdict": "early",
-      "reason": "Folklore fantasy with Sidharth Malhotra and Tamannaah Bhatia. Early reviews like the folklore and the leads.",
+      "reason": "Folklore fantasy with Sidharth Malhotra and Tamannaah Bhatia.",
       "url": "https://www.rottentomatoes.com/m/the_vvaan_force_of_the_forrest"
     },
     {
@@ -805,16 +957,6 @@
       "verdict": "early",
       "reason": "Adaptation of Ali Hazelwood's romance novel.",
       "url": "https://www.india.com/photos/entertainment/ott-releases-this-week-september-21-to-september-27-2026-the-love-hypothesis-hunkkaar-the-roar-shaque-new-movies-and-web-series-to-stream-on-jiohotstar-prime-video-more-497661/"
-    },
-    {
-      "title": "Bakaiti · Season 2",
-      "type": "Series",
-      "language": "Hindi",
-      "where": "ZEE5",
-      "release": "Out today",
-      "verdict": "early",
-      "reason": "Family comedy returns for a second season.",
-      "url": "https://sundayguardianlive.com/entertainment-news/friday-ott-releases-september-25-2026-new-movies-and-shows-arriving-on-netflix-zee5-and-more-this-weekend-290986/"
     }
   ],
   "desk": [
@@ -879,11 +1021,11 @@
           {
             "name": "Bengaluru",
             "current": {
-              "temp": 20.9,
-              "feels": 22.2,
+              "temp": 21,
+              "feels": 22.4,
               "code": 3,
               "humidity": 89,
-              "time": "2026-09-25T06:15"
+              "time": "2026-09-25T06:45"
             },
             "daily": [
               {
@@ -942,16 +1084,234 @@
                 "rain_prob": 85,
                 "rain_mm": 0
               }
+            ],
+            "hourly": [
+              {
+                "time": "2026-09-25T06:00",
+                "temp": 20.9,
+                "rain_prob": 6,
+                "code": 3
+              },
+              {
+                "time": "2026-09-25T07:00",
+                "temp": 21.5,
+                "rain_prob": 5,
+                "code": 3
+              },
+              {
+                "time": "2026-09-25T08:00",
+                "temp": 23.3,
+                "rain_prob": 8,
+                "code": 51
+              },
+              {
+                "time": "2026-09-25T09:00",
+                "temp": 24.4,
+                "rain_prob": 16,
+                "code": 51
+              },
+              {
+                "time": "2026-09-25T10:00",
+                "temp": 25.4,
+                "rain_prob": 29,
+                "code": 51
+              },
+              {
+                "time": "2026-09-25T11:00",
+                "temp": 27,
+                "rain_prob": 43,
+                "code": 51
+              },
+              {
+                "time": "2026-09-25T12:00",
+                "temp": 26.1,
+                "rain_prob": 62,
+                "code": 53
+              },
+              {
+                "time": "2026-09-25T13:00",
+                "temp": 27,
+                "rain_prob": 83,
+                "code": 55
+              },
+              {
+                "time": "2026-09-25T14:00",
+                "temp": 25.5,
+                "rain_prob": 98,
+                "code": 53
+              },
+              {
+                "time": "2026-09-25T15:00",
+                "temp": 26.2,
+                "rain_prob": 100,
+                "code": 51
+              },
+              {
+                "time": "2026-09-25T16:00",
+                "temp": 22.7,
+                "rain_prob": 100,
+                "code": 55
+              },
+              {
+                "time": "2026-09-25T17:00",
+                "temp": 22,
+                "rain_prob": 98,
+                "code": 53
+              },
+              {
+                "time": "2026-09-25T18:00",
+                "temp": 22,
+                "rain_prob": 87,
+                "code": 51
+              },
+              {
+                "time": "2026-09-25T19:00",
+                "temp": 22.2,
+                "rain_prob": 70,
+                "code": 3
+              },
+              {
+                "time": "2026-09-25T20:00",
+                "temp": 22.1,
+                "rain_prob": 53,
+                "code": 3
+              },
+              {
+                "time": "2026-09-25T21:00",
+                "temp": 21.6,
+                "rain_prob": 34,
+                "code": 1
+              },
+              {
+                "time": "2026-09-25T22:00",
+                "temp": 20.9,
+                "rain_prob": 14,
+                "code": 2
+              },
+              {
+                "time": "2026-09-25T23:00",
+                "temp": 20.5,
+                "rain_prob": 0,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T00:00",
+                "temp": 20.2,
+                "rain_prob": 0,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T01:00",
+                "temp": 20,
+                "rain_prob": 0,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T02:00",
+                "temp": 20,
+                "rain_prob": 0,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T03:00",
+                "temp": 20.2,
+                "rain_prob": 0,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T04:00",
+                "temp": 20,
+                "rain_prob": 0,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T05:00",
+                "temp": 19.9,
+                "rain_prob": 0,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T06:00",
+                "temp": 19.9,
+                "rain_prob": 0,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T07:00",
+                "temp": 20.7,
+                "rain_prob": 0,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T08:00",
+                "temp": 22.4,
+                "rain_prob": 0,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T09:00",
+                "temp": 24.2,
+                "rain_prob": 1,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T10:00",
+                "temp": 25.9,
+                "rain_prob": 2,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T11:00",
+                "temp": 27.3,
+                "rain_prob": 4,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T12:00",
+                "temp": 28,
+                "rain_prob": 6,
+                "code": 51
+              },
+              {
+                "time": "2026-09-26T13:00",
+                "temp": 29.2,
+                "rain_prob": 9,
+                "code": 2
+              },
+              {
+                "time": "2026-09-26T14:00",
+                "temp": 29.5,
+                "rain_prob": 12,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T15:00",
+                "temp": 29.4,
+                "rain_prob": 17,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T16:00",
+                "temp": 28.9,
+                "rain_prob": 22,
+                "code": 3
+              },
+              {
+                "time": "2026-09-26T17:00",
+                "temp": 28,
+                "rain_prob": 24,
+                "code": 1
+              }
             ]
           },
           {
             "name": "Ranchi",
             "current": {
-              "temp": 21.5,
+              "temp": 21.6,
               "feels": 22.2,
               "code": 55,
-              "humidity": 100,
-              "time": "2026-09-25T06:15"
+              "humidity": 99,
+              "time": "2026-09-25T06:45"
             },
             "daily": [
               {
@@ -1016,11 +1376,11 @@
           {
             "name": "Prayagraj",
             "current": {
-              "temp": 24.3,
-              "feels": 27.1,
+              "temp": 24.4,
+              "feels": 27.2,
               "code": 53,
               "humidity": 95,
-              "time": "2026-09-25T06:15"
+              "time": "2026-09-25T06:45"
             },
             "daily": [
               {
@@ -1084,8 +1444,217 @@
           }
         ]
       },
-      "as_of": "2026-09-25T00:45:17.824Z",
+      "as_of": "2026-09-25T01:26:56.492Z",
       "source": "Open-Meteo"
+    },
+    "crypto": {
+      "value": {
+        "symbol": "BTC-USD",
+        "price": 84550,
+        "prev": 84383.0078125,
+        "change_pct": 0.1978978846914992,
+        "session_date": "2026-09-25",
+        "market_time": "2026-09-25T01:27:02.000Z",
+        "currency": "USD",
+        "live": true,
+        "instrument": "CRYPTOCURRENCY",
+        "note": null,
+        "lo3m": 58558.859375,
+        "hi3m": 86602.9140625,
+        "spark_from": "2026-06-25",
+        "spark_to": "2026-09-25",
+        "source": "Yahoo Finance"
+      },
+      "as_of": "2026-09-25T01:27:06.179Z",
+      "source": "Yahoo Finance"
+    },
+    "laliga_table": {
+      "value": {
+        "rows": [
+          {
+            "rank": 1,
+            "team": "Barcelona",
+            "short": "Barcelona",
+            "id": "83",
+            "played": 7,
+            "points": 21,
+            "gd": 24
+          },
+          {
+            "rank": 2,
+            "team": "Atlético Madrid",
+            "short": "Atlético",
+            "id": "1068",
+            "played": 7,
+            "points": 16,
+            "gd": 9
+          },
+          {
+            "rank": 3,
+            "team": "Real Betis",
+            "short": "Betis",
+            "id": "244",
+            "played": 7,
+            "points": 16,
+            "gd": 2
+          },
+          {
+            "rank": 4,
+            "team": "Real Madrid",
+            "short": "Real Madrid",
+            "id": "86",
+            "played": 7,
+            "points": 15,
+            "gd": 10
+          },
+          {
+            "rank": 5,
+            "team": "Sevilla",
+            "short": "Sevilla",
+            "id": "243",
+            "played": 7,
+            "points": 13,
+            "gd": 1
+          },
+          {
+            "rank": 6,
+            "team": "Alavés",
+            "short": "Alavés",
+            "id": "96",
+            "played": 7,
+            "points": 11,
+            "gd": 5
+          },
+          {
+            "rank": 7,
+            "team": "Deportivo",
+            "short": "Deportivo",
+            "id": "90",
+            "played": 7,
+            "points": 10,
+            "gd": 2
+          },
+          {
+            "rank": 8,
+            "team": "Real Sociedad",
+            "short": "Real Sociedad",
+            "id": "89",
+            "played": 7,
+            "points": 10,
+            "gd": -4
+          },
+          {
+            "rank": 9,
+            "team": "Villarreal",
+            "short": "Villarreal",
+            "id": "102",
+            "played": 7,
+            "points": 8,
+            "gd": 1
+          },
+          {
+            "rank": 10,
+            "team": "Athletic Club",
+            "short": "Athletic",
+            "id": "93",
+            "played": 6,
+            "points": 8,
+            "gd": 1
+          },
+          {
+            "rank": 11,
+            "team": "Getafe",
+            "short": "Getafe",
+            "id": "2922",
+            "played": 7,
+            "points": 8,
+            "gd": -3
+          },
+          {
+            "rank": 12,
+            "team": "Rayo Vallecano",
+            "short": "Rayo",
+            "id": "101",
+            "played": 7,
+            "points": 8,
+            "gd": -5
+          },
+          {
+            "rank": 13,
+            "team": "Osasuna",
+            "short": "Osasuna",
+            "id": "97",
+            "played": 7,
+            "points": 8,
+            "gd": -7
+          },
+          {
+            "rank": 14,
+            "team": "Celta Vigo",
+            "short": "Celta Vigo",
+            "id": "85",
+            "played": 7,
+            "points": 7,
+            "gd": 2
+          },
+          {
+            "rank": 15,
+            "team": "Espanyol",
+            "short": "Espanyol",
+            "id": "88",
+            "played": 7,
+            "points": 7,
+            "gd": 0
+          },
+          {
+            "rank": 16,
+            "team": "Racing Santander",
+            "short": "Racing",
+            "id": "87",
+            "played": 7,
+            "points": 7,
+            "gd": -10
+          },
+          {
+            "rank": 17,
+            "team": "Levante",
+            "short": "Levante",
+            "id": "1538",
+            "played": 6,
+            "points": 5,
+            "gd": -4
+          },
+          {
+            "rank": 18,
+            "team": "Elche",
+            "short": "Elche",
+            "id": "3751",
+            "played": 7,
+            "points": 5,
+            "gd": -6
+          },
+          {
+            "rank": 19,
+            "team": "Valencia",
+            "short": "Valencia",
+            "id": "94",
+            "played": 7,
+            "points": 4,
+            "gd": -9
+          },
+          {
+            "rank": 20,
+            "team": "Málaga",
+            "short": "Málaga",
+            "id": "99",
+            "played": 7,
+            "points": 3,
+            "gd": -9
+          }
+        ]
+      },
+      "as_of": "2026-09-25T01:27:06.224Z",
+      "source": "ESPN"
     },
     "f1_last": {
       "value": {
@@ -1237,38 +1806,434 @@
           }
         ]
       },
-      "as_of": "2026-09-25T00:45:18.282Z",
+      "as_of": "2026-09-25T01:27:06.234Z",
       "source": "Jolpica"
     },
-    "nba": {
+    "markets": {
       "value": {
-        "team": "Golden State Warriors",
-        "in_season": false,
-        "next": [
+        "indices": [
           {
-            "date": "2026-10-04T23:00Z",
-            "opponent": "LA Clippers",
-            "home": false,
-            "completed": false,
-            "preseason": true,
-            "score": null,
-            "winner": null
+            "name": "Sensex",
+            "symbol": "^BSESN",
+            "price": 73580.54,
+            "prev": 74828.25,
+            "change_pct": -1.667431752045526,
+            "session_date": "2026-09-24",
+            "market_time": "2026-09-24T10:02:34.000Z",
+            "currency": "INR",
+            "live": false,
+            "instrument": "INDEX",
+            "note": "Lowest close in 3 months",
+            "lo3m": 73580.54,
+            "hi3m": 78954.7578125,
+            "spark": [
+              76991.22,
+              77100.47,
+              76728.37,
+              76478.67,
+              76922.64,
+              77502.12,
+              77763.91,
+              78285.07,
+              78180.72,
+              76503.6,
+              76741.82,
+              77569.39,
+              77616.4,
+              77054.94,
+              77185.43,
+              77186.87,
+              78151.45,
+              77708.52,
+              77470.11,
+              76755.05,
+              76391.39,
+              76059.77,
+              76835.78,
+              76765.92,
+              77654.6,
+              77928.15,
+              78094.64,
+              78639.03,
+              78428.95,
+              78581,
+              78954.76,
+              78499.17,
+              78542.44,
+              78154.25,
+              77966.35,
+              78079.96,
+              78009.25,
+              77728.16,
+              77235.46,
+              76909.68,
+              77537.72,
+              77540.83,
+              77369.11,
+              77656.09,
+              77472.94,
+              76933.59,
+              77264.51,
+              76957.27,
+              76944.28,
+              76570.35,
+              76152.86,
+              76515.43,
+              76132.81,
+              75577.58,
+              74764.23,
+              74902.59,
+              74781.76,
+              74003.82,
+              74336.45,
+              74314.59,
+              74294.96,
+              74858.99,
+              74828.25,
+              73580.54
+            ],
+            "spark_from": "2026-06-24",
+            "spark_to": "2026-09-24"
           },
           {
-            "date": "2026-10-07T02:00Z",
-            "opponent": "Los Angeles Lakers",
-            "home": true,
-            "completed": false,
-            "preseason": true,
-            "score": null,
-            "winner": null
+            "name": "Nifty 50",
+            "symbol": "^NSEI",
+            "price": 23063.1,
+            "prev": 23446.80078125,
+            "change_pct": -1.6364739259303995,
+            "session_date": "2026-09-24",
+            "market_time": "2026-09-24T10:01:13.000Z",
+            "currency": "INR",
+            "live": false,
+            "instrument": "INDEX",
+            "note": "Lowest close in 3 months",
+            "lo3m": 23063.1,
+            "hi3m": 24774.30078125,
+            "spark": [
+              24021.65,
+              24056,
+              23946.25,
+              23865.75,
+              24005.85,
+              24175.7,
+              24270.85,
+              24430.35,
+              24398.7,
+              23882.05,
+              23962.8,
+              24206.9,
+              24211,
+              24052.05,
+              24078.5,
+              24072.75,
+              24334.3,
+              24238.5,
+              24187.7,
+              23996.25,
+              23869.6,
+              23767.45,
+              23995.95,
+              23985.35,
+              24250.2,
+              24317.15,
+              24383.6,
+              24774.3,
+              24614.9,
+              24624.65,
+              24636,
+              24570.65,
+              24583.8,
+              24471.7,
+              24435.95,
+              24395.85,
+              24366,
+              24287.65,
+              24154.9,
+              24078.3,
+              24231.85,
+              24252,
+              24219.05,
+              24334.55,
+              24207.75,
+              24090.85,
+              24175.65,
+              24080.4,
+              24055.8,
+              23914.45,
+              23873.45,
+              23897.7,
+              23779.15,
+              23635.1,
+              23431.5,
+              23477.8,
+              23398.1,
+              23118.6,
+              23217.6,
+              23270.6,
+              23346.4,
+              23414.3,
+              23446.8,
+              23063.1
+            ],
+            "spark_from": "2026-06-24",
+            "spark_to": "2026-09-24"
+          },
+          {
+            "name": "Nasdaq-100",
+            "symbol": "^NDX",
+            "price": 30478.855,
+            "prev": 30470.2890625,
+            "change_pct": 0.028112426115910152,
+            "session_date": "2026-09-24",
+            "market_time": "2026-09-24T21:15:59.000Z",
+            "currency": "USD",
+            "live": false,
+            "instrument": "INDEX",
+            "note": "Within 1% of its 3-month high",
+            "lo3m": 27192.310546875,
+            "hi3m": 30482.349609375,
+            "spark": [
+              29440.32,
+              29118.24,
+              29774.75,
+              30276.35,
+              29809.13,
+              29329.21,
+              29697.87,
+              29173.02,
+              29252.56,
+              29727.1,
+              29825.11,
+              29264.1,
+              29586.29,
+              29502.6,
+              29025.77,
+              28592.66,
+              28604.23,
+              29155.18,
+              28998.1,
+              28454.81,
+              28128.34,
+              28039.21,
+              27763.13,
+              27192.31,
+              28106.35,
+              28274.2,
+              28776.8,
+              29733.16,
+              29487.79,
+              29373.33,
+              29722.3,
+              29621.8,
+              29525.48,
+              29742.6,
+              30084.5,
+              30046.14,
+              29995.38,
+              29490.96,
+              29426.02,
+              29213.16,
+              29308.86,
+              29023.18,
+              29209.23,
+              29224.52,
+              29641.56,
+              29433.43,
+              29456.97,
+              29077.22,
+              29143.33,
+              29482.32,
+              29544.15,
+              29507.7,
+              29421.55,
+              29103.51,
+              29368.44,
+              29127.16,
+              28937.84,
+              28945.06,
+              29446.98,
+              29644.17,
+              30482.35,
+              30470.29,
+              30478.86
+            ],
+            "spark_from": "2026-06-25",
+            "spark_to": "2026-09-24"
           }
         ],
-        "last": null,
-        "west": null
+        "cross": [
+          {
+            "name": "Bank Nifty",
+            "symbol": "^NSEBANK",
+            "price": 55438.5,
+            "change_pct": -1.9636075470634582,
+            "session_date": "2026-09-24",
+            "note": "Lowest close in 3 months",
+            "lo3m": 55438.5,
+            "hi3m": 58521.3984375,
+            "source": "Yahoo Finance"
+          },
+          {
+            "name": "USD/INR",
+            "symbol": "INR=X",
+            "price": 95.945,
+            "change_pct": 0.21286205400895664,
+            "session_date": "2026-09-25",
+            "note": null,
+            "lo3m": 93.54609680175781,
+            "hi3m": 96.87689971923828,
+            "source": "Yahoo Finance"
+          },
+          {
+            "name": "Brent crude",
+            "symbol": "BZ=F",
+            "price": 105.79,
+            "change_pct": -0.7598499061913584,
+            "session_date": "2026-09-24",
+            "note": null,
+            "lo3m": 71.56999969482422,
+            "hi3m": 108.75,
+            "source": "Yahoo Finance"
+          },
+          {
+            "name": "Bitcoin",
+            "symbol": "BTC-USD",
+            "price": 84550,
+            "change_pct": 0.1978978846914992,
+            "session_date": "2026-09-25",
+            "note": null,
+            "lo3m": 58558.859375,
+            "hi3m": 86602.9140625,
+            "source": "Yahoo Finance"
+          },
+          {
+            "name": "S&P 500",
+            "symbol": "^GSPC",
+            "price": 7704.13,
+            "change_pct": -0.02465322882490481,
+            "session_date": "2026-09-24",
+            "note": null,
+            "lo3m": 7316.14990234375,
+            "hi3m": 7798.990234375,
+            "source": "Yahoo Finance"
+          }
+        ]
       },
-      "as_of": "2026-09-25T00:45:18.917Z",
+      "as_of": "2026-09-25T01:27:06.529Z",
+      "source": "Yahoo Finance"
+    },
+    "tennis": {
+      "value": {
+        "events": [
+          {
+            "name": "Chengdu Open",
+            "start": "2026-09-22T04:00Z",
+            "end": "2026-09-30T03:59Z",
+            "venue": "Chengdu, China PR",
+            "major": false
+          },
+          {
+            "name": "AITO Hangzhou Open",
+            "start": "2026-09-22T04:00Z",
+            "end": "2026-09-30T03:59Z",
+            "venue": "Hangzhou, China PR",
+            "major": false
+          }
+        ]
+      },
+      "as_of": "2026-09-25T01:27:06.617Z",
       "source": "ESPN"
+    },
+    "f1_next": {
+      "value": {
+        "race": {
+          "season": "2026",
+          "round": 15,
+          "name": "Azerbaijan Grand Prix",
+          "circuit": "Baku City Circuit",
+          "locality": "Baku",
+          "country": "Azerbaijan",
+          "flag": "🇦🇿",
+          "sessions": [
+            {
+              "name": "Practice 1",
+              "start": "2026-09-24T08:30:00Z",
+              "minutes": 60,
+              "time_confirmed": true
+            },
+            {
+              "name": "Practice 2",
+              "start": "2026-09-24T12:00:00Z",
+              "minutes": 60,
+              "time_confirmed": true
+            },
+            {
+              "name": "Practice 3",
+              "start": "2026-09-25T08:30:00Z",
+              "minutes": 60,
+              "time_confirmed": true
+            },
+            {
+              "name": "Qualifying",
+              "start": "2026-09-25T12:00:00Z",
+              "minutes": 60,
+              "time_confirmed": true
+            },
+            {
+              "name": "Race",
+              "start": "2026-09-26T11:00:00Z",
+              "minutes": 120,
+              "time_confirmed": true
+            }
+          ]
+        },
+        "upcoming": [
+          {
+            "round": 16,
+            "name": "Bahrain Grand Prix in Malaysia",
+            "country": "Malaysia",
+            "flag": "🇲🇾",
+            "date": "2026-10-04T07:00:00Z"
+          },
+          {
+            "round": 17,
+            "name": "Singapore Grand Prix",
+            "country": "Singapore",
+            "flag": "🇸🇬",
+            "date": "2026-10-11T12:00:00Z"
+          },
+          {
+            "round": 18,
+            "name": "United States Grand Prix",
+            "country": "USA",
+            "flag": "🇺🇸",
+            "date": "2026-10-25T20:00:00Z"
+          }
+        ]
+      },
+      "as_of": "2026-09-25T01:27:06.657Z",
+      "source": "Jolpica"
+    },
+    "fx": {
+      "value": {
+        "symbol": "INR=X",
+        "price": 95.945,
+        "prev": 95.74120330810547,
+        "change_pct": 0.21286205400895664,
+        "session_date": "2026-09-25",
+        "market_time": "2026-09-25T01:12:03.000Z",
+        "currency": "INR",
+        "live": true,
+        "instrument": "CURRENCY",
+        "note": null,
+        "lo3m": 93.54609680175781,
+        "hi3m": 96.87689971923828,
+        "spark_from": "2026-06-25",
+        "spark_to": "2026-09-25",
+        "source": "Yahoo Finance"
+      },
+      "as_of": "2026-09-25T01:27:06.669Z",
+      "source": "Yahoo Finance"
     },
     "f1_standings": {
       "value": {
@@ -1517,196 +2482,929 @@
           }
         ]
       },
-      "as_of": "2026-09-25T00:45:18.183Z",
+      "as_of": "2026-09-25T01:27:06.471Z",
       "source": "Jolpica"
     },
-    "laliga_table": {
+    "nba": {
       "value": {
-        "rows": [
+        "team": "Golden State Warriors",
+        "in_season": false,
+        "next": [
           {
-            "rank": 1,
-            "team": "Barcelona",
-            "short": "Barcelona",
-            "id": "83",
-            "played": 7,
-            "points": 21,
-            "gd": 24
+            "date": "2026-10-04T23:00Z",
+            "opponent": "LA Clippers",
+            "home": false,
+            "completed": false,
+            "preseason": true,
+            "score": null,
+            "winner": null
           },
           {
-            "rank": 2,
-            "team": "Atlético Madrid",
-            "short": "Atlético",
-            "id": "1068",
-            "played": 7,
-            "points": 16,
-            "gd": 9
-          },
-          {
-            "rank": 3,
-            "team": "Real Betis",
-            "short": "Betis",
-            "id": "244",
-            "played": 7,
-            "points": 16,
-            "gd": 2
-          },
-          {
-            "rank": 4,
-            "team": "Real Madrid",
-            "short": "Real Madrid",
-            "id": "86",
-            "played": 7,
-            "points": 15,
-            "gd": 10
-          },
-          {
-            "rank": 5,
-            "team": "Sevilla",
-            "short": "Sevilla",
-            "id": "243",
-            "played": 7,
-            "points": 13,
-            "gd": 1
-          },
-          {
-            "rank": 6,
-            "team": "Alavés",
-            "short": "Alavés",
-            "id": "96",
-            "played": 7,
-            "points": 11,
-            "gd": 5
-          },
-          {
-            "rank": 7,
-            "team": "Deportivo",
-            "short": "Deportivo",
-            "id": "90",
-            "played": 7,
-            "points": 10,
-            "gd": 2
-          },
-          {
-            "rank": 8,
-            "team": "Real Sociedad",
-            "short": "Real Sociedad",
-            "id": "89",
-            "played": 7,
-            "points": 10,
-            "gd": -4
-          },
-          {
-            "rank": 9,
-            "team": "Villarreal",
-            "short": "Villarreal",
-            "id": "102",
-            "played": 7,
-            "points": 8,
-            "gd": 1
-          },
-          {
-            "rank": 10,
-            "team": "Athletic Club",
-            "short": "Athletic",
-            "id": "93",
-            "played": 6,
-            "points": 8,
-            "gd": 1
-          },
-          {
-            "rank": 11,
-            "team": "Getafe",
-            "short": "Getafe",
-            "id": "2922",
-            "played": 7,
-            "points": 8,
-            "gd": -3
-          },
-          {
-            "rank": 12,
-            "team": "Rayo Vallecano",
-            "short": "Rayo",
-            "id": "101",
-            "played": 7,
-            "points": 8,
-            "gd": -5
-          },
-          {
-            "rank": 13,
-            "team": "Osasuna",
-            "short": "Osasuna",
-            "id": "97",
-            "played": 7,
-            "points": 8,
-            "gd": -7
-          },
-          {
-            "rank": 14,
-            "team": "Celta Vigo",
-            "short": "Celta Vigo",
-            "id": "85",
-            "played": 7,
-            "points": 7,
-            "gd": 2
-          },
-          {
-            "rank": 15,
-            "team": "Espanyol",
-            "short": "Espanyol",
-            "id": "88",
-            "played": 7,
-            "points": 7,
-            "gd": 0
-          },
-          {
-            "rank": 16,
-            "team": "Racing Santander",
-            "short": "Racing",
-            "id": "87",
-            "played": 7,
-            "points": 7,
-            "gd": -10
-          },
-          {
-            "rank": 17,
-            "team": "Levante",
-            "short": "Levante",
-            "id": "1538",
-            "played": 6,
-            "points": 5,
-            "gd": -4
-          },
-          {
-            "rank": 18,
-            "team": "Elche",
-            "short": "Elche",
-            "id": "3751",
-            "played": 7,
-            "points": 5,
-            "gd": -6
-          },
-          {
-            "rank": 19,
-            "team": "Valencia",
-            "short": "Valencia",
-            "id": "94",
-            "played": 7,
-            "points": 4,
-            "gd": -9
-          },
-          {
-            "rank": 20,
-            "team": "Málaga",
-            "short": "Málaga",
-            "id": "99",
-            "played": 7,
-            "points": 3,
-            "gd": -9
+            "date": "2026-10-07T02:00Z",
+            "opponent": "Los Angeles Lakers",
+            "home": true,
+            "completed": false,
+            "preseason": true,
+            "score": null,
+            "winner": null
           }
-        ]
+        ],
+        "last": null,
+        "west": null
       },
-      "as_of": "2026-09-25T00:45:10.951Z",
+      "as_of": "2026-09-25T01:27:06.736Z",
       "source": "ESPN"
+    },
+    "trends": {
+      "value": {
+        "geos": {
+          "IN": [
+            {
+              "term": "today's weather",
+              "traffic": "200+",
+              "published": "Thu, 24 Sep 2026 18:10:00 -0700",
+              "news": [
+                {
+                  "title": "Good morning, Niagara-on-the-Lake! Here's today's weather!",
+                  "url": "https://www.notllocal.com/good-morning/good-morning-niagara-on-the-lake-heres-todays-weather-12808273",
+                  "source": "Niagara-on-the-Lake Local"
+                },
+                {
+                  "title": "Good morning, Thorold! Here's today's weather!",
+                  "url": "https://www.thoroldtoday.ca/good-morning/good-morning-thorold-heres-todays-weather-12802615",
+                  "source": "ThoroldToday.ca"
+                },
+                {
+                  "title": "Good morning, Niagara-on-the-Lake! Here's today's weather!",
+                  "url": "https://www.notllocal.com/good-morning/good-morning-niagara-on-the-lake-heres-todays-weather-12780008",
+                  "source": "Niagara-on-the-Lake Local"
+                }
+              ]
+            },
+            {
+              "term": "today weather report",
+              "traffic": "200+",
+              "published": "Thu, 24 Sep 2026 18:10:00 -0700",
+              "news": [
+                {
+                  "title": "Newcastle weather report: Sunny intervals with comfortable temperatures today, September 24, 2026",
+                  "url": "https://timesofindia.indiatimes.com/weather/uk/newcastle-weather-report-sunny-intervals-with-comfortable-temperatures-today-september-24-2026/articleshow/134452217.cms",
+                  "source": "The Times of India"
+                },
+                {
+                  "title": "Newcastle weather today: Overcast skies, 19°C high, and damp conditions expected",
+                  "url": "https://timesofindia.indiatimes.com/world/uk/newcastle-weather-today-overcast-skies-19c-high-and-damp-conditions-expected/articleshow/134402960.cms",
+                  "source": "The Times of India"
+                },
+                {
+                  "title": "Newcastle weather forecast: Sunny start to weekend with mild temperatures",
+                  "url": "https://timesofindia.indiatimes.com/world/uk/newcastle-weather-forecast-sunny-start-to-weekend-with-mild-temperatures/articleshow/134368802.cms",
+                  "source": "The Times of India"
+                }
+              ]
+            },
+            {
+              "term": "anant chaturdashi",
+              "traffic": "200+",
+              "published": "Thu, 24 Sep 2026 18:00:00 -0700",
+              "news": [
+                {
+                  "title": "Ganesh Visarjan 2026: बप्पा की विदाई आज, जानें गणपति विसर्जन का शुभ मुहूर्त और पूजा विधि",
+                  "url": "https://www.aajtak.in/religion/news/story/ganesh-visarjan-2026-today-shubh-muhurat-anant-chaturdashi-puja-vidhi-tvisz-dskc-2652219-2026-09-25",
+                  "source": "AajTak"
+                },
+                {
+                  "title": "अनन्त चतुर्दशी का दिन अंत नहीं होने वाले सृष्टिकर्ता के भक्ति का दिन है",
+                  "url": "https://www.bhaskar.com/local/bihar/motihari/news/anant-chaturdashi-is-a-day-of-devotion-to-the-never-ending-creator-dbp-139138485.html",
+                  "source": "Dainik Bhaskar"
+                },
+                {
+                  "title": "अनंत चतुर्दशी: 14 गांठों वाले डोरे में छिपा है 14 लोकों का रहस्य, धन और संतान प्राप्ति के लिए ऐसे करें पूजा",
+                  "url": "https://www.jagran.com/bihar/supaul-anant-chaturdashi-2026-lord-vishnu-worship-and-sacred-thread-ritual-40383968.html",
+                  "source": "Jagran"
+                }
+              ]
+            },
+            {
+              "term": "weather report",
+              "traffic": "200+",
+              "published": "Thu, 24 Sep 2026 17:40:00 -0700",
+              "news": [
+                {
+                  "title": "Phone weather forecast often wrong? Here’s why",
+                  "url": "https://thehill.com/policy/technology/6109227-phone-weather-forecast-often-wrong-heres-why/",
+                  "source": "The Hill"
+                },
+                {
+                  "title": "Collector reviews flood situation, directs officials to step up relief measures",
+                  "url": "https://www.thehindu.com/news/national/andhra-pradesh/collector-reviews-flood-situation-directs-officials-to-step-up-relief-measures/article71504348.ece",
+                  "source": "The Hindu"
+                },
+                {
+                  "title": "Daily weather tracker: Extreme rain in east, intense heat in west as deep depression moves inland",
+                  "url": "https://www.downtoearth.org.in/climate-change/daily-weather-tracker-extreme-rain-in-east-intense-heat-in-west-as-deep-depression-moves-inland",
+                  "source": "Down To Earth"
+                }
+              ]
+            },
+            {
+              "term": "haiti vs trinidad and tobago",
+              "traffic": "200+",
+              "published": "Thu, 24 Sep 2026 17:30:00 -0700",
+              "news": [
+                {
+                  "title": "Haiti vs Trinidad and Tobago LIVE Streaming info — When, where to watch HAI v TRI in CONCACAF Nations League?",
+                  "url": "https://sportstar.thehindu.com/football/haiti-vs-trinidad-tobago-live-streaming-info-when-where-to-watch-hai-v-tri-kick-off-time-venue/article71505981.ece",
+                  "source": "Sportstar"
+                },
+                {
+                  "title": "BACK TO FOOTBALL",
+                  "url": "https://trinidadexpress.com/sports/local/back-to-football/article_3c82f3e5-9b65-44ed-bf57-ad0def11ca19.html",
+                  "source": "Trinidad Express Newspapers"
+                },
+                {
+                  "title": "King: Levi’s leadership will be extremely important; T&T announce 25-man squad for Nations League",
+                  "url": "https://wired868.com/2026/09/15/king-levis-leadership-will-be-extremely-important-tt-announce-25-man-squad-for-nations-league/",
+                  "source": "Wired868"
+                }
+              ]
+            },
+            {
+              "term": "बहू",
+              "traffic": "200+",
+              "published": "Thu, 24 Sep 2026 17:30:00 -0700",
+              "news": [
+                {
+                  "title": "'पिता की हत्या का मलाल नहीं, दुख चाकू से गोदकर मारने का है', विनीत मिनोचा केस में बेटे सुब्रत के कुबूलनामे का Video",
+                  "url": "https://www.aajtak.in/uttar-pradesh/story/kanpur-businessman-vineet-manocha-murder-case-son-subrat-confession-ntc-rlch-rpti-2652119-2026-09-24",
+                  "source": "AajTak"
+                },
+                {
+                  "title": "विनीत मिनोचा हत्याकांड में बहू बेगुनाह, बेटा ही निकला हत्यारा, हुए कई चौंकाने वाले खुलासे",
+                  "url": "https://www.indiatv.in/uttar-pradesh/vineet-minocha-murder-case-the-daughter-in-law-innocent-the-son-is-killer-2026-09-24-1245128",
+                  "source": "India TV Hindi"
+                },
+                {
+                  "title": "कानपुर की कल की 10 बड़ी खबरें, VIDEO में: दवा कारोबारी की हत्या बेटे ने कराई, पत्नी को फंसाया; मेयर के बेटे ...",
+                  "url": "https://www.bhaskar.com/g/local/uttar-pradesh/kanpur/news/kanpur-top-10-news-update-yesterday-24-september-2026-vineet-minocha-murder-case-mayor-son-statement-video-139134060.html",
+                  "source": "Dainik Bhaskar"
+                }
+              ]
+            },
+            {
+              "term": "आज का मौसम",
+              "traffic": "200000+",
+              "published": "Thu, 24 Sep 2026 17:20:00 -0700",
+              "news": [
+                {
+                  "title": "तट से टकराया 'चक्रवात अर्नब', यूपी-दिल्ली समेत 16 राज्यों में भारी बारिश; गिर सकते हैं ओले",
+                  "url": "https://www.livehindustan.com/weather/cyclone-arnab-update-heavy-rain-alert-in-up-bihar-punjab-bhari-barish-201790292421741.html",
+                  "source": "Hindustan"
+                },
+                {
+                  "title": "समंदर से जमीन तक आफत! ओडिशा में डीप डिप्रेशन का असर, पुरी बना रेड जोन, भारी बारिश का अलर्ट",
+                  "url": "https://www.aajtak.in/science/story/odisha-weather-deep-depression-heavy-rain-puri-red-zone-alert-rptc-2651848-2026-09-24",
+                  "source": "AajTak"
+                },
+                {
+                  "title": "ओडिशा तट से टकराएगा चक्रवात: 5,000 लोगों को सुरक्षित जगह भेजा गया; 7 जिलों में स्कूल बंद; आंध्र प्रदेश और ब...",
+                  "url": "https://www.bhaskar.com/national/news/odisha-andhra-pradesh-cyclone-arnab-alert-heavy-rain-schools-closed-139127372.html",
+                  "source": "Dainik Bhaskar"
+                }
+              ]
+            },
+            {
+              "term": "weather today",
+              "traffic": "10000+",
+              "published": "Thu, 24 Sep 2026 17:20:00 -0700",
+              "news": [
+                {
+                  "title": "Red warning alert issued for 4 Odisha districs as disaster response forces in place for deep depression",
+                  "url": "https://www.thehindu.com/news/national/odisha/red-warning-alert-issued-for-4-odisha-districs-as-disaster-response-forces-in-place-for-deep-depression/article71500624.ece",
+                  "source": "The Hindu"
+                },
+                {
+                  "title": "Deep depression crosses coast, heavy rain shuts schools in Odisha, Andhra Pradesh districts",
+                  "url": "https://www.telegraphindia.com/india/deep-depression-crosses-coast-heavy-rain-shuts-schools-in-odisha-andhra-pradesh-districts/cid/2181478",
+                  "source": "Telegraph India"
+                },
+                {
+                  "title": "Bay Of Bengal Depression To Bring Heavy Rain To Bengal, Odisha And Other States",
+                  "url": "https://www.ndtv.com/india-news/weather-tomorrow-telangana-may-see-extremely-heavy-rain-orange-alert-in-jharkhand-12092206",
+                  "source": "NDTV"
+                }
+              ]
+            },
+            {
+              "term": "flash flood risk",
+              "traffic": "500000+",
+              "published": "Thu, 24 Sep 2026 17:10:00 -0700",
+              "news": [
+                {
+                  "title": "Collector reviews flood situation, directs officials to step up relief measures",
+                  "url": "https://www.thehindu.com/news/national/andhra-pradesh/collector-reviews-flood-situation-directs-officials-to-step-up-relief-measures/article71504348.ece",
+                  "source": "The Hindu"
+                },
+                {
+                  "title": "Daily weather tracker: Extreme rain in east, intense heat in west as deep depression moves inland",
+                  "url": "https://www.downtoearth.org.in/climate-change/daily-weather-tracker-extreme-rain-in-east-intense-heat-in-west-as-deep-depression-moves-inland",
+                  "source": "Down To Earth"
+                },
+                {
+                  "title": "Andhra Pradesh Schools Closed in Six Districts Today Amid Heavy Rain, Deep Depression",
+                  "url": "https://www.telegraphindia.com/edugraph/news/cyclone-in-andhra-pradesh-today-ap-schools-closed-in-six-districts-today-amid-heavy-rain/cid/2181309",
+                  "source": "Telegraph India"
+                }
+              ]
+            },
+            {
+              "term": "weather lucknow",
+              "traffic": "200+",
+              "published": "Thu, 24 Sep 2026 17:10:00 -0700",
+              "news": [
+                {
+                  "title": "यूपी में 3 दिन तक होगी भारी बारिश, CM योगी ने अधिकारियों को दिए सख्त निर्देश, लोगों से भी की खास अपील",
+                  "url": "https://www.indiatv.in/uttar-pradesh/heavy-rain-in-uttar-pradesh-next-three-days-cm-yogi-issues-strict-officials-special-appeal-to-public-2026-09-24-1245183",
+                  "source": "India TV Hindi"
+                },
+                {
+                  "title": "यूपी में मानसून की री-एंट्री: 25 से 27 सितंबर तक इन जिलों में भारी बारिश का ऑरेंज-येलो अलर्ट, 60 KM/h की रफ्तार से चलेंगी हवाएं",
+                  "url": "https://www.aajtak.in/uttar-pradesh/story/imd-issues-heavy-rain-and-thunderstorm-alert-across-uttar-pradesh-from-september-24-to-27-weather-update-lclam-dskc-2651187-2026-09-23",
+                  "source": "AajTak"
+                },
+                {
+                  "title": "गोंडा में बारिश के चलते आज स्कूल बंद: तेज बारिश के चलते 1 से 8 तक छुट्टी, शिक्षकों को स्कूल जाना होगा",
+                  "url": "https://www.bhaskar.com/local/uttar-pradesh/gonda/news/gonda-school-holiday-heavy-rain-alert-district-administration-139129555.html",
+                  "source": "Dainik Bhaskar"
+                }
+              ]
+            }
+          ],
+          "US": [
+            {
+              "term": "nick folk",
+              "traffic": "5000+",
+              "published": "Thu, 24 Sep 2026 18:10:00 -0700",
+              "news": [
+                {
+                  "title": "Nick Folk Age: Long NFL Career Leads to Falcons’ Kicker Job",
+                  "url": "https://heavy.com/sports/nfl/atlanta-falcons/nick-folk-age-nfl-career-falcons-kicker/",
+                  "source": "Heavy.com"
+                },
+                {
+                  "title": "Falcons Kicker Nick Folk Gets Vote of Confidence Amid Early Season Misses",
+                  "url": "https://www.si.com/nfl/falcons/onsi/falcons-kicker-nick-folk-gets-vote-of-confidence-amid-early-season-misses",
+                  "source": "Sports Illustrated"
+                },
+                {
+                  "title": "Fromal’s Kicking Notebook: Assessing Nick Folk panic and NFL Week 1 standouts",
+                  "url": "https://fansided.com/nfl/fromal-s-kicking-notebook-nick-folk-panic-and-nfl-week-1-standouts",
+                  "source": "FanSided"
+                }
+              ]
+            },
+            {
+              "term": "ruby rose",
+              "traffic": "500+",
+              "published": "Thu, 24 Sep 2026 18:10:00 -0700",
+              "news": [
+                {
+                  "title": "Ruby Rose Reveals She Broke ‘All’ of Her Ribs After ‘Special Forces: World’s Toughest Test’ Season 5",
+                  "url": "https://www.usmagazine.com/entertainment/news/ruby-rose-broke-all-of-her-ribs-after-special-forces/",
+                  "source": "Us Weekly"
+                },
+                {
+                  "title": "‘Special Forces’: What Happened to Ruby Rose? ‘Batwoman’ Injury & More",
+                  "url": "https://www.imdb.com/news/ni66031317/?ref_=nwc_art_perm",
+                  "source": "IMDb"
+                },
+                {
+                  "title": "All About Ruby Rose’s Injury & Past Health Issues",
+                  "url": "https://currently.att.yahoo.com/att/ruby-rose-injury-past-health-180047623.html",
+                  "source": "Currently.com"
+                }
+              ]
+            },
+            {
+              "term": "aces vs mercury",
+              "traffic": "500+",
+              "published": "Thu, 24 Sep 2026 18:10:00 -0700",
+              "news": [
+                {
+                  "title": "How to live stream Aces vs Mercury: WNBA, TV channel",
+                  "url": "https://sports.yahoo.com/articles/live-stream-aces-vs-mercury-005000124.html",
+                  "source": "Yahoo Sports"
+                },
+                {
+                  "title": "Las Vegas Aces vs Phoenix Mercury Prediction, Picks & Odds | 24 Sep 2026",
+                  "url": "https://www.sportsgambler.com/betting-tips/basketball/las-vegas-aces-vs-phoenix-mercury-prediction-odds-2026-09-24/",
+                  "source": "Sportsgambler"
+                },
+                {
+                  "title": "Tempo vs Sun Prediction, Picks, Prop Bets For September 24, 2026 - WNBA",
+                  "url": "https://www.covers.com/sport/basketball/wnba/matchup/374168/picks",
+                  "source": "Covers.com"
+                }
+              ]
+            },
+            {
+              "term": "valkyries vs sparks",
+              "traffic": "500+",
+              "published": "Thu, 24 Sep 2026 18:10:00 -0700",
+              "news": [
+                {
+                  "title": "Golden State Valkyries hope to lock up No. 2 seed vs. Los Angeles Sparks. Here's how to watch.",
+                  "url": "https://www.cbsnews.com/sanfrancisco/news/golden-state-valkyries-los-angeles-sparks-sept-24-2026/",
+                  "source": "CBS News"
+                },
+                {
+                  "title": "How to watch Valkyries vs. Sparks: TV channel and streaming options for September 24",
+                  "url": "https://www.nytimes.com/athletic/7626848/2026/09/24/how-to-watch-valkyries-vs-sparks-tv-channel-and-streaming-options-for-september-24/",
+                  "source": "The New York Times"
+                },
+                {
+                  "title": "Valkyries vs Sparks Prediction & Odds Tonight: WNBA Picks",
+                  "url": "https://www.covers.com/wnba/valkyries-vs-sparks-prediction-picks-thursday-sept-24-2026",
+                  "source": "Covers.com"
+                }
+              ]
+            },
+            {
+              "term": "desean jackson",
+              "traffic": "2000+",
+              "published": "Thu, 24 Sep 2026 18:00:00 -0700",
+              "news": [
+                {
+                  "title": "Eagles fans can watch DeSean Jackson’s football journey unfold, thanks to 35 years of footage: ‘A greater purpose’",
+                  "url": "https://www.inquirer.com/eagles/desean-jackson-documentary-prime-video-eagles-chip-kelly-20260924.html",
+                  "source": "Inquirer.com"
+                },
+                {
+                  "title": "Delaware State head coach DeSean Jackson joins 'GMFB' breaking down his new documentary",
+                  "url": "https://www.nfl.com/videos/desean-jackson-joins-gmfb-breaking-down-his-new-documentary",
+                  "source": "NFL.com"
+                },
+                {
+                  "title": "Jackson on his NFL career, coaching DSU",
+                  "url": "https://sports.yahoo.com/videos/jackson-nfl-career-coaching-dsu-170946710.html",
+                  "source": "Yahoo Sports"
+                }
+              ]
+            },
+            {
+              "term": "george santos",
+              "traffic": "2000+",
+              "published": "Thu, 24 Sep 2026 18:00:00 -0700",
+              "news": [
+                {
+                  "title": "Disgraced MAGA Star Humiliated in Reality Show Debut",
+                  "url": "https://www.thedailybeast.com/obsessed/disgraced-maga-star-george-santos-humiliated-in-reality-show-debut/",
+                  "source": "The Daily Beast"
+                },
+                {
+                  "title": "George Santos says he was 'overcharged' for fraud on 'Special Forces' | Exclusive",
+                  "url": "https://www.usatoday.com/story/entertainment/tv-streaming/2026/09/24/george-santos-special-forces-season-5-premiere-lies-fraud/91904832007/",
+                  "source": "USA Today"
+                },
+                {
+                  "title": "George Santos just cannot pull himself out of the water in must-see Special Forces sneak peek",
+                  "url": "https://ew.com/oliver-hudson-rescues-george-santos-special-forces-12134595",
+                  "source": "Entertainment Weekly"
+                }
+              ]
+            },
+            {
+              "term": "skyy moore",
+              "traffic": "500+",
+              "published": "Thu, 24 Sep 2026 18:00:00 -0700",
+              "news": [
+                {
+                  "title": "Roster Moves: Chicago Bears announce roster moves",
+                  "url": "https://www.chicagobears.com/news/roster-moves-chicago-bears-announce-roster-moves",
+                  "source": "Chicago Bears"
+                },
+                {
+                  "title": "Bills quarterback Josh Allen named AFC Offensive Player of the Week",
+                  "url": "https://buffalonews.com/sports/professional/nfl/bills/article_8cb13518-2c52-494c-aa2a-5c476d702aa0.html",
+                  "source": "Buffalo News"
+                },
+                {
+                  "title": "Highlights: Watch the best moments from the Raiders' 26-14 win over the Chargers",
+                  "url": "https://www.raiders.com/news/highlights-watch-the-best-moments-from-the-raiders-26-14-win-over-the-chargers",
+                  "source": "Raiders.com"
+                }
+              ]
+            },
+            {
+              "term": "brian robinson",
+              "traffic": "500+",
+              "published": "Thu, 24 Sep 2026 18:00:00 -0700",
+              "news": [
+                {
+                  "title": "The Falcons Running Back Gives The Team 1 Reason To Believe",
+                  "url": "https://lastwordonsports.com/nfl/2026/09/24/falcons-running-back-believe/",
+                  "source": "Last Word On Sports"
+                },
+                {
+                  "title": "Brian Robinson Week 3 Outlook for Fantasy Football (2026)",
+                  "url": "https://www.rotoballer.com/player-news/brian-robinson-hanging-around-low-end-flex-territory-in-week-3/1948938",
+                  "source": "RotoBaller"
+                },
+                {
+                  "title": "Brian Robinson Jr. (ankle) good to go for Thursday",
+                  "url": "https://www.fantasypros.com/nfl/news/610056/brian-robinson-jr-ankle-good-to-go-thursday.php",
+                  "source": "FantasyPros"
+                }
+              ]
+            },
+            {
+              "term": "clima para amanhã",
+              "traffic": "500+",
+              "published": "Thu, 24 Sep 2026 18:00:00 -0700",
+              "news": [
+                {
+                  "title": "DF tem previsão de chuva fraca para esta quinta-feira (24/9), diz Inmet",
+                  "url": "https://www.correiobraziliense.com.br/cidades-df/2026/09/7507370-df-tem-previsao-de-chuva-fraca-para-esta-quinta-feira-24-9-diz-inmet.html",
+                  "source": "Correio Braziliense"
+                },
+                {
+                  "title": "Clima para amanhã em Brasília: umidade baixa pela manhã e possibilidade de chuva rápida à tarde",
+                  "url": "https://www.portaldoholanda.com.br/brasilia/clima-para-amanha-em-brasilia-umidade-baixa-pela-manha-e-possibilidade-de-chuva-rapida-a-tarde",
+                  "source": "Portal do Holanda"
+                },
+                {
+                  "title": "Previsão do tempo no Entorno do Distrito Federal para sexta-feira (25)",
+                  "url": "https://opopular.com.br/clima/previs-o-do-tempo-no-entorno-do-distrito-federal-para-sexta-feira-25-1.3460157",
+                  "source": "O Popular"
+                }
+              ]
+            },
+            {
+              "term": "astros vs athletics",
+              "traffic": "10000+",
+              "published": "Thu, 24 Sep 2026 17:50:00 -0700",
+              "news": [
+                {
+                  "title": "Everything on the line as Astros wrap up regular season vs. A's",
+                  "url": "https://www.mlb.com/news/astros-playoff-hopes-come-down-to-final-series-vs-athletics",
+                  "source": "MLB.com"
+                },
+                {
+                  "title": "How to watch Astros vs. Athletics: TV channel and streaming options for September 24",
+                  "url": "https://www.nytimes.com/athletic/7626762/2026/09/24/astros-vs-athletics-stream-how-to-watch-sept-24/",
+                  "source": "The New York Times"
+                },
+                {
+                  "title": "Astros vs Athletics Prediction, Pick, MLB Odds for Thursday, September 24",
+                  "url": "https://sports.yahoo.com/articles/astros-vs-athletics-prediction-pick-162702919.html",
+                  "source": "Yahoo Sports"
+                }
+              ]
+            }
+          ],
+          "GB": [
+            {
+              "term": "bijan robinson",
+              "traffic": "100+",
+              "published": "Thu, 24 Sep 2026 18:00:00 -0700",
+              "news": [
+                {
+                  "title": "Packers and Falcons tied at 7 after first quarter",
+                  "url": "https://www.packers.com/news/in-game-updates-week-3-falcons-2026",
+                  "source": "Green Bay Packers – packers.com"
+                },
+                {
+                  "title": "Christian Watson scores his fourth TD of the season, giving Green Bay a 7-0 lead",
+                  "url": "https://www.nbcsports.com/nfl/profootballtalk/rumor-mill/news/christian-watson-scores-his-fourth-td-of-the-season-giving-green-bay-a-7-0-lead",
+                  "source": "NBC Sports"
+                },
+                {
+                  "title": "Bijan Robinson breaks off electrifying 55-yard run on Packers",
+                  "url": "https://thefalconswire.usatoday.com/story/sports/nfl/falcons/2026/09/24/star-running-back-comes-through-just-when-falcons-need-it-most/91929606007/",
+                  "source": "Falcons Wire"
+                }
+              ]
+            },
+            {
+              "term": "green bay packers",
+              "traffic": "100+",
+              "published": "Thu, 24 Sep 2026 17:30:00 -0700",
+              "news": [
+                {
+                  "title": "Falcons to start QB Michael Penix on Thursday vs. Packers",
+                  "url": "https://www.espn.co.uk/nfl/story/_/id/50000410/falcons-start-qb-michael-penix-thursday-vs-packers",
+                  "source": "ESPN"
+                },
+                {
+                  "title": "Michael Penix Jr. named starting QB for Thursday Night Football vs. Packers",
+                  "url": "https://www.atlantafalcons.com/news/michael-penix-jr-starting-qb-thursday-night-football-vs-packers",
+                  "source": "Atlanta Falcons"
+                },
+                {
+                  "title": "NFL Week 3: five big questions, from Penix's return to the Rio showdown",
+                  "url": "https://www.dazn.com/en-US/news/american-football/nfl-week-3-five-questions-penix-ravens-cowboys-rio/y7ii1tirl8yh1m1lxr4gqhxa4",
+                  "source": "DAZN"
+                }
+              ]
+            },
+            {
+              "term": "packers vs falcons",
+              "traffic": "500+",
+              "published": "Thu, 24 Sep 2026 17:10:00 -0700",
+              "news": [
+                {
+                  "title": "Falcons vs. Packers: Three must-know storylines for Thursday's Week 3 prime-time game",
+                  "url": "https://www.nfl.com/news/falcons-vs-packers-three-must-know-storylines-for-thursday-s-week-3-prime-time-game",
+                  "source": "NFL.com"
+                },
+                {
+                  "title": "NFL Expert Picks: Who will win in Week 3, Falcons or Packers?",
+                  "url": "https://www.atlantafalcons.com/news/nfl-expert-picks-week-3-falcons-packers",
+                  "source": "Atlanta Falcons"
+                },
+                {
+                  "title": "Atlanta Falcons vs Green Bay Packers predictions, odds and a 10-1 Bet Builder tip",
+                  "url": "https://www.racingpost.com/sport/nfl-tips/atlanta-falcons-vs-green-bay-packers-betting-tips-bet-builder-predictions-afuP36W5t8ty/",
+                  "source": "Racing Post"
+                }
+              ]
+            },
+            {
+              "term": "lynx vs fever",
+              "traffic": "200+",
+              "published": "Thu, 24 Sep 2026 17:10:00 -0700",
+              "news": [
+                {
+                  "title": "Lynx clinch WNBA No 1 seed despite ‘embarrassing’ loss to Fever and Olivia Miles injury",
+                  "url": "https://www.theguardian.com/sport/2026/sep/23/lynx-clinch-wnba-no-1-seed-despite-embarrassing-loss-to-fever-and-olivia-miles-injury",
+                  "source": "The Guardian"
+                },
+                {
+                  "title": "Caitlin Clark, Sophie Cunningham's Final Box Score Stats, Highlights as Fever Beat Lynx",
+                  "url": "https://bleacherreport.com/articles/25502127-caitlin-clark-sophie-cunninghams-final-box-score-stats-highlights-fever-beat-lynx",
+                  "source": "Bleacher Report"
+                },
+                {
+                  "title": "WNBA Analyst Speaks Out on Playoffs Seeding \"Conspiracy\" Theory Following Indiana Fever's Win Over Minnesota Lynx",
+                  "url": "https://www.aol.com/articles/wnba-analyst-speaks-playoffs-seeding-174015000.html",
+                  "source": "AOL.com"
+                }
+              ]
+            },
+            {
+              "term": "danny thomas",
+              "traffic": "500+",
+              "published": "Thu, 24 Sep 2026 16:20:00 -0700",
+              "news": [
+                {
+                  "title": "In 1956, One Actress’ Departure Led to the First TV Character Death. There Wouldn’t Be Another On-Screen Death for 15 Years",
+                  "url": "https://ca.news.yahoo.com/1956-one-actress-departure-led-215900092.html",
+                  "source": "Yahoo News Canada"
+                },
+                {
+                  "title": "Reform UK beset by internal row over response to Dover and Portsmouth protests",
+                  "url": "https://www.theguardian.com/politics/2026/sep/11/reform-uk-beset-by-internal-row-over-response-to-dover-and-portsmouth-protests",
+                  "source": "The Guardian"
+                },
+                {
+                  "title": "Britain: Reform In Crisis, But Far Right Threat Grows",
+                  "url": "https://internationalsocialist.net/2026/09/britain-reform-in-crisis-but-far-right-threat-grows/",
+                  "source": "International Socialist Alternative"
+                }
+              ]
+            },
+            {
+              "term": "the last of us",
+              "traffic": "200+",
+              "published": "Thu, 24 Sep 2026 16:10:00 -0700",
+              "news": [
+                {
+                  "title": "The PC version of The Last of Us Part II has received a record-breaking 33% discount on Steam.",
+                  "url": "https://en.gamegpu.com/news/igry/pk-versiya-igry-odni-iz-nas-chast-ii-obnovlennaya-versiya-poluchila-rekordnuyu-skidku-33-v-steam",
+                  "source": "GameGPU"
+                },
+                {
+                  "title": "The Last of Us Part II PC Version Gets Record 33% Discount on Steam",
+                  "url": "https://suaragarut.id/en/last-of-us-pc-discount",
+                  "source": "SuaraGarut.ID"
+                },
+                {
+                  "title": "The Last Of Us Season 3 Confirmed To Have No Naughty Dog Involvement – But More Games Are Likely",
+                  "url": "https://www.imdb.com/news/ni66025499/?ref_=nmnw_art_perm",
+                  "source": "IMDb"
+                }
+              ]
+            },
+            {
+              "term": "aykroyd",
+              "traffic": "2000+",
+              "published": "Thu, 24 Sep 2026 16:00:00 -0700",
+              "news": [
+                {
+                  "title": "Dan Aykroyd reflects on Nothing But Trouble: “I’m Proud of the Picture”",
+                  "url": "https://www.imdb.com/news/ni66029641/?ref_=ttnw_art_perm",
+                  "source": "IMDb"
+                },
+                {
+                  "title": "Dan Aykroyd reflects on Nothing But Trouble: “I’m Proud of the Picture”",
+                  "url": "https://www.joblo.com/dan-aykroyd-nothing-but-trouble/",
+                  "source": "JoBlo"
+                }
+              ]
+            },
+            {
+              "term": "xiaomi 18 pro max",
+              "traffic": "500+",
+              "published": "Thu, 24 Sep 2026 15:50:00 -0700",
+              "news": [
+                {
+                  "title": "Xiaomi 18 Pro and 18 Pro Max arrive with latest Snapdragon chips, privacy displays and more useful rear screens - GSMArena.com news",
+                  "url": "https://www.gsmarena.com/xiaomi_18_pro_and_18_pro_max_arrive_with_latest_snapdragon_chips_privacy_displays_and_more_useful_re-news-74733.php",
+                  "source": "GSMArena.com"
+                },
+                {
+                  "title": "Xiaomi’s Gorgeous New 18 Series Phones With Triple Leica Cameras Will Go Global",
+                  "url": "https://petapixel.com/2026/09/23/xiaomis-gorgeous-new-18-series-phones-with-triple-leica-cameras-will-go-global/",
+                  "source": "PetaPixel"
+                },
+                {
+                  "title": "Xiaomi 18 Pro Max vs iPhone 18 Pro Max: iOS or Android?",
+                  "url": "https://www.trustedreviews.com/versus/xiaomi-18-pro-max-vs-iphone-18-pro-max",
+                  "source": "Trusted Reviews"
+                }
+              ]
+            },
+            {
+              "term": "forza treasure hunt",
+              "traffic": "200+",
+              "published": "Thu, 24 Sep 2026 15:30:00 -0700",
+              "news": [
+                {
+                  "title": "How to complete the Series 5 Week 3 ‘Shimanoyama Region’ Treasure Hunt in Forza Horizon 6",
+                  "url": "https://traxion.gg/how-to-complete-the-series-5-week-3-shimanoyama-region-treasure-hunt-in-forza-horizon-6/",
+                  "source": "Traxion.GG"
+                },
+                {
+                  "title": "Where to find Arashiyama Bamboo Forest in Forza Horizon 6",
+                  "url": "https://www.polygon.com/forza-horizon-6-fh6-arashiyama-bamboo-forest-location-where-to-find/",
+                  "source": "Polygon.com"
+                },
+                {
+                  "title": "#BambooPerfect weekly Photo Challenge in Winter Series 5 Festival playlist. Where is bamboo forest in Forza Horizon 6",
+                  "url": "https://escorenews.com/en/article/81485-bambooperfect-weekly-photo-challenge-in-winter-series-5-festival-playlist-where-is-bamboo-forest-in-forza-horizon-6",
+                  "source": "escorenews.com"
+                }
+              ]
+            },
+            {
+              "term": "the witcher 3 wild hunt remastered",
+              "traffic": "1000+",
+              "published": "Thu, 24 Sep 2026 15:00:00 -0700",
+              "news": [
+                {
+                  "title": "The Witcher 3 Is on Sale for Half Price Ahead of Next Week’s Free Remaster Upgrade",
+                  "url": "https://www.ign.com/articles/the-witcher-3-is-on-sale-ahead-of-next-weeks-free-remaster-upgrade",
+                  "source": "IGN"
+                },
+                {
+                  "title": "CDPR wants to make The Witcher 3 Remastered feel like any other game released today: 'It's so easy to get used to these new improvements that it's hard to go back'",
+                  "url": "https://www.pcgamer.com/games/the-witcher/cdpr-wants-to-make-the-witcher-3-remastered-feel-like-any-other-game-released-today-its-so-easy-to-get-used-to-these-new-improvements-that-its-hard-to-go-back/",
+                  "source": "PC Gamer"
+                },
+                {
+                  "title": "The Witcher 3 Remastered criticized for the Igni fire and the lack of reflections on the water",
+                  "url": "https://en.gamegpu.com/news/igry/the-witcher-3-remastered-raskritikovali-za-ogon-igni-i-otsutstvie-otrazhenij-na-vode",
+                  "source": "GameGPU"
+                }
+              ]
+            }
+          ],
+          "ES": [
+            {
+              "term": "atlético nacional - millonarios",
+              "traffic": "500+",
+              "published": "Thu, 24 Sep 2026 17:00:00 -0700",
+              "news": [
+                {
+                  "title": "Nacional - Millonarios en vivo online: Liga BetPlay, en directo",
+                  "url": "https://colombia.as.com/futbol/nacional-millonarios-en-vivo-online-liga-betplay-en-directo-f202609-d/",
+                  "source": "AS Colombia"
+                },
+                {
+                  "title": "Con novedades: Los convocados de Atlético Nacional para el clásico vs. Millonarios ¿Estará James?",
+                  "url": "https://espndeportes.espn.com/futbol/colombia/nota/_/id/17295071/los-convocados-de-atletico-nacional-clasico-vs-millonarios",
+                  "source": "ESPN Deportes"
+                },
+                {
+                  "title": "Alberto Gamero vuelve al Atanasio con una estadística que sorprende",
+                  "url": "https://www.futbolred.com/futbol-colombiano/liga-betplay/alberto-gamero-y-su-impresionante-estadistica-en-el-atanasio-contra-atletico-nacional-273167",
+                  "source": "Futbolred"
+                }
+              ]
+            },
+            {
+              "term": "accidente",
+              "traffic": "5000+",
+              "published": "Thu, 24 Sep 2026 16:50:00 -0700",
+              "news": [
+                {
+                  "title": "Dos muertos en un accidente en la A-67 al volcar un camión en el límite entre Aguilar de Campoo y Cantabria",
+                  "url": "https://www.eldiariomontanes.es/cantabria/dos-muertos-accidente-a67-volcar-camion-limite-20260924203614-nt.html",
+                  "source": "El Diario Montañés"
+                },
+                {
+                  "title": "Fallece un operario de una grúa tras ser alcanzado por un camión que volcó en la A-67 en Aguilar",
+                  "url": "https://www.abc.es/espana/castilla-leon/fallece-operario-grua-tras-alcanzado-camion-volco-20260924194350-nt.html",
+                  "source": "ABC"
+                },
+                {
+                  "title": "Mueren un operario de grúa y el conductor de un camión que volcó en la A-67, en Aguilar",
+                  "url": "https://www.lavanguardia.com/local/castilla-leon/20260924/11643213/mueren-operario-grua-conductor-camion-volco-67-aguilar.html",
+                  "source": "La Vanguardia"
+                }
+              ]
+            },
+            {
+              "term": "cabrera d'anoia",
+              "traffic": "2000+",
+              "published": "Thu, 24 Sep 2026 16:10:00 -0700",
+              "news": [
+                {
+                  "title": "El muerto de Cabrera d’Anoia con el que convivió dos años su familia era un médico especializado en homeopatía",
+                  "url": "https://elpais.com/espana/catalunya/2026-09-24/el-muerto-de-cabrera-danoia-con-el-que-convivio-dos-anos-su-familia-era-un-medico-especializado-en-homeopatia.html",
+                  "source": "EL PAÍS"
+                },
+                {
+                  "title": "Una madre y su hija, que no salían de casa en el municipio barcelonés de Cabrera d'Anoia desde la pandemia, conviven durante años con un cadáver",
+                  "url": "https://www.lavozdegalicia.es/noticia/espana/2026/09/24/madre-hija-conviven-durante-anos-casa-cadaver-hombre/00031790238609372938267.htm",
+                  "source": "La Voz de Galicia"
+                },
+                {
+                  "title": "Hallan en Barcelona el cadáver de un anciano con el que convivían dos familiares",
+                  "url": "https://www.elcorreo.com/sociedad/hallan-barcelona-cadaver-anciano-convivian-familiares-20260924200730-ntrc.html",
+                  "source": "El Correo"
+                }
+              ]
+            },
+            {
+              "term": "sindicato de inquilinos e inquilinas",
+              "traffic": "5000+",
+              "published": "Thu, 24 Sep 2026 16:00:00 -0700",
+              "news": [
+                {
+                  "title": "El decreto de vivienda planteará “cambios estructurales” más allá de limitar los desahucios",
+                  "url": "https://elpais.com/economia/vivienda/2026-09-24/el-decreto-de-vivienda-planteara-cambios-estructurales-mas-alla-de-limitar-los-desahucios.html",
+                  "source": "EL PAÍS"
+                },
+                {
+                  "title": "María Jesús Montero muestra su confianza en Zapatero y cree que hay \"altos funcionarios\" actuando contra el Gobierno",
+                  "url": "https://cadenaser.com/audio/1790286745_296_cut/",
+                  "source": "Cadena SER"
+                },
+                {
+                  "title": "El dramático desalojo de la anciana Maricarmen a los 87 años que expone la gravedad de la crisis de vivienda en España",
+                  "url": "https://www.bbc.com/mundo/articles/cw5y4znkpl4lo",
+                  "source": "BBC"
+                }
+              ]
+            },
+            {
+              "term": "yola berrocal",
+              "traffic": "500+",
+              "published": "Thu, 24 Sep 2026 16:00:00 -0700",
+              "news": [
+                {
+                  "title": "Supervivientes All Stars 2026: expulsión, nominados y última hora del reality show de Telecinco, hoy en directo",
+                  "url": "https://www.elconfidencial.com/television/programas-tv/2026-09-24/supervivientes-2026-expulsion-nominados-directo_4430012/",
+                  "source": "El Confidencial"
+                },
+                {
+                  "title": "Isa Pantoja reacciona a la decisión de su marido, Asraf Beno, en 'Supervivientes All Stars': \"Yo tenía mis dudas\"",
+                  "url": "https://www.telecinco.es/television/20260923/supervivientes-all-stars-isa-pantoja-reacciona-decision-asraf-beno_18_020243078.html",
+                  "source": "Telecinco"
+                },
+                {
+                  "title": "Satisfacción entre los concursantes al conocer al segundo expulsado de 'Supervivientes All Stars 3': \"Siento mis formas desbocadas\"",
+                  "url": "https://www.lecturas.com/television/satisfaccion-entre-concursantes-conocer-segundo-expulsado-supervivientes-all-stars_198959",
+                  "source": "Lecturas"
+                }
+              ]
+            },
+            {
+              "term": "renfe",
+              "traffic": "1000+",
+              "published": "Thu, 24 Sep 2026 15:50:00 -0700",
+              "news": [
+                {
+                  "title": "Renfe prepara una autopista ferroviaria para llevar las mercancías de Almería a Europa",
+                  "url": "https://www.diariodealmeria.es/almeria/renfe-autopista-ferroviaria-almeria-europa_0_2008056711.html",
+                  "source": "Diario de Almería"
+                },
+                {
+                  "title": "Renfe quiere fichar a las berenjenas y los pimientos almerienses",
+                  "url": "https://www.lavozdealmeria.com/economia/657919/renfe-quiere-fichar-almeria.html",
+                  "source": "La Voz de Almería"
+                },
+                {
+                  "title": "Renfe trabaja en crear una autopista ferroviaria desde Almería",
+                  "url": "https://www.ideal.es/almeria/almeria/renfe-trabaja-crear-autopista-ferroviaria-almeria-20260924125050-nt.html",
+                  "source": "Ideal"
+                }
+              ]
+            },
+            {
+              "term": "corinna schumacher",
+              "traffic": "200+",
+              "published": "Thu, 24 Sep 2026 15:40:00 -0700",
+              "news": [
+                {
+                  "title": "„Wenn ich unseren Song höre, weine ich“",
+                  "url": "https://www.bild.de/sport/mehr-sport/corinna-ueber-beziehung-zu-schumi-meine-mutter-war-dagegen-6ab3da62e5b1ca08382bc3b2",
+                  "source": "BILD"
+                },
+                {
+                  "title": "«Meine Mutter war gegen die Beziehung mit Michael»",
+                  "url": "https://www.blick.ch/sport/formel1/corinna-enthuellt-in-neuer-schumacher-doku-meine-mutter-war-gegen-die-beziehung-mit-michael-id22276082.html",
+                  "source": "Blick"
+                },
+                {
+                  "title": "Corinna Schumacher spricht über ihre Liebe zu Michael",
+                  "url": "https://web.de/magazine/unterhaltung/videos/stars/corinna-schumacher-spricht-liebe-michael-42761084",
+                  "source": "WEB.DE"
+                }
+              ]
+            },
+            {
+              "term": "transfretana",
+              "traffic": "200+",
+              "published": "Thu, 24 Sep 2026 15:20:00 -0700",
+              "news": [
+                {
+                  "title": "El IEC presenta hoy el nuevo número de Transfretana centrado en la realidad de Ceuta y Melilla",
+                  "url": "https://www.elpueblodeceuta.es/sec/sociedad/iec-presenta-hoy-nuevo-numero_1_1190475.html",
+                  "source": "El Pueblo de Ceuta"
+                },
+                {
+                  "title": "El IEC presenta el nuevo número de la revista Transfretana",
+                  "url": "https://www.laverdaddeceuta.com/cultura/noticias/cultura/ocio-cultura/el-iec-presenta-el-nuevo-numero-de-la-revista-transfretana",
+                  "source": "La Verdad de Ceuta"
+                },
+                {
+                  "title": "El IEC presenta la revista Transfretana nº11 sobre Ceuta y Melilla",
+                  "url": "https://elfarodeceuta.es/iec-presenta-revista-transfretana-ceuta-melilla/amp/",
+                  "source": "El Faro de Ceuta"
+                }
+              ]
+            },
+            {
+              "term": "cubarsi",
+              "traffic": "500+",
+              "published": "Thu, 24 Sep 2026 14:50:00 -0700",
+              "news": [
+                {
+                  "title": "Cubarsí: \"Quizá nos falta algún central\"",
+                  "url": "https://www.sport.es/es/noticias/barca/cubarsi-falta-central-134645200",
+                  "source": "SPORT"
+                },
+                {
+                  "title": "Pau Cubarsí, sobre Barcelona: “Preferiría que mis hijos se criasen en un pueblo antes que en la ciudad”",
+                  "url": "https://www.elnacional.cat/es/estilo-vida/pau-cubarsi-sobre-barcelona-preferiria-mis-hijos-se-criasen-en-pueblo-antes-en-ciudad_1700062_102.html",
+                  "source": "El Nacional.cat"
+                },
+                {
+                  "title": "El pueblo de Girona con 185 habitantes donde nació Pau Cubarsí: no tiene escuela ni campo de fútbol",
+                  "url": "https://www.noticiasdelvino.com/escapadas/2026/09/24/el-pueblo-de-girona-con-185-habitantes-donde-nacio-pau-cubarsi-no-tiene-escuela-ni-campo-de-futbol-69160/",
+                  "source": "Noticias del Vino"
+                }
+              ]
+            },
+            {
+              "term": "nuria roca",
+              "traffic": "500+",
+              "published": "Thu, 24 Sep 2026 14:40:00 -0700",
+              "news": [
+                {
+                  "title": "Nuria Roca pone nombre al famoso por el que dejaría a Juan del Val y 'El hormiguero' propone una solución: \"Es una fantasía\"",
+                  "url": "https://www.elconfidencial.com/television/programas-tv/2026-09-25/el-hormiguero-nuria-roca-dejar-juan-del-val-fantasia_4431175/",
+                  "source": "El Confidencial"
+                },
+                {
+                  "title": "El nuevo look de Nuria Roca es ideal para darle la bienvenida al otoño: de Zara y Mango, pantalones infalibles y un color clave",
+                  "url": "https://www.vanitatis.elconfidencial.com/estilo/moda/2026-09-23/zara-mango-nuria-roca-nuevo-look-jersey-blanco_4429566/",
+                  "source": "Vanitatis"
+                },
+                {
+                  "title": "Nuria Roca estrena el otoño con el look comodín que podemos copiar con prendas de nueva colección",
+                  "url": "https://www.larazon.es/tendencias-futuro/moda/nuria-roca-estrena-otono-look-comodin-podemos-copiar-prendas-nueva-coleccion_202609236ab3cf53f4115f10bf49d7d6.html",
+                  "source": "La Razón"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "as_of": "2026-09-25T01:27:06.780Z",
+      "source": "Google Trends"
     },
     "football": {
       "value": {
@@ -1829,51 +3527,22 @@
           "L"
         ]
       },
-      "as_of": "2026-09-25T00:45:18.550Z",
+      "as_of": "2026-09-25T01:27:06.835Z",
       "source": "ESPN"
-    },
-    "fx": {
-      "value": {
-        "symbol": "INR=X",
-        "price": 95.945,
-        "prev": 95.6897964477539,
-        "change_pct": 0.26669881400095424,
-        "session_date": "2026-09-24",
-        "market_time": "2026-09-24T22:27:18.000Z",
-        "currency": "INR",
-        "live": false,
-        "instrument": "CURRENCY",
-        "spark_from": "2026-09-21",
-        "spark_to": "2026-09-24",
-        "source": "Yahoo Finance"
-      },
-      "as_of": "2026-09-25T00:45:19.693Z",
-      "source": "Yahoo Finance"
-    },
-    "gold_in": {
-      "value": {
-        "per_gram_24k": 15079,
-        "per_gram_22k": 13812,
-        "per_10g_24k": 150790,
-        "per_10g_22k": 138120,
-        "rate_date": "24/09/2026"
-      },
-      "as_of": "2026-09-25T00:45:21.017Z",
-      "source": "IBJA"
     },
     "betting": {
       "value": {
         "markets": [
           {
-            "id": "brazil-presidential-election",
+            "id": "pm:brazil-presidential-election",
             "title": "Brazil Presidential Election",
             "category": "Politics",
-            "volume24h": 645168,
+            "volume24h": 643830,
             "end": "2026-10-04T23:59:00Z",
             "outcomes": [
               {
                 "name": "Flávio Bolsonaro",
-                "prob": 56
+                "prob": 55.6
               },
               {
                 "name": "Luiz Inácio Lula da Silva",
@@ -1888,10 +3557,10 @@
             "url": "https://polymarket.com/event/brazil-presidential-election"
           },
           {
-            "id": "us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
+            "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
             "title": "US announces end of Iranian blockade by...?",
             "category": "Iran",
-            "volume24h": 462740,
+            "volume24h": 463605,
             "end": "2027-01-01T04:59:00Z",
             "outcomes": [
               {
@@ -1911,10 +3580,10 @@
             "url": "https://polymarket.com/event/us-announces-end-of-iranian-blockade-byptptpt-20260713152715080"
           },
           {
-            "id": "uefa-champions-league-2027-champion-20260701202025549",
+            "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
             "title": "UEFA Champions League: 2027 Champion",
             "category": "UCL",
-            "volume24h": 456890,
+            "volume24h": 454366,
             "end": "2027-06-20T03:59:00Z",
             "outcomes": [
               {
@@ -1934,15 +3603,15 @@
             "url": "https://polymarket.com/event/uefa-champions-league-2027-champion-20260701202025549"
           },
           {
-            "id": "us-iran-ceasefire-continues-throughptptpt",
+            "id": "pm:us-iran-ceasefire-continues-throughptptpt",
             "title": "US-Iran ceasefire continues through...?",
             "category": "Iran",
-            "volume24h": 372180,
+            "volume24h": 372477,
             "end": "2026-10-31T23:59:00Z",
             "outcomes": [
               {
                 "name": "Through September 25",
-                "prob": 98.2
+                "prob": 98.3
               },
               {
                 "name": "Through September 30",
@@ -1957,10 +3626,10 @@
             "url": "https://polymarket.com/event/us-iran-ceasefire-continues-throughptptpt"
           },
           {
-            "id": "next-french-presidential-election",
+            "id": "pm:next-french-presidential-election",
             "title": "Next French Presidential Election",
             "category": "French Election",
-            "volume24h": 243329,
+            "volume24h": 243814,
             "end": "2027-04-18T23:59:00Z",
             "outcomes": [
               {
@@ -1980,25 +3649,25 @@
             "url": "https://polymarket.com/event/next-french-presidential-election"
           },
           {
-            "id": "strait-of-hormuz-traffic-returns-to-normal-by-december-31",
+            "id": "pm:strait-of-hormuz-traffic-returns-to-normal-by-december-31",
             "title": "Strait of Hormuz traffic returns to normal by December 31?",
             "category": "Politics",
-            "volume24h": 206358,
+            "volume24h": 197735,
             "end": "2027-01-01T04:59:00Z",
             "outcomes": [
               {
                 "name": "Yes",
-                "prob": 21.5
+                "prob": 22.5
               }
             ],
             "source": "Polymarket",
             "url": "https://polymarket.com/event/strait-of-hormuz-traffic-returns-to-normal-by-december-31"
           },
           {
-            "id": "ballon-dor-winner-2026",
+            "id": "pm:ballon-dor-winner-2026",
             "title": "Ballon d'Or Winner 2026",
             "category": "Soccer",
-            "volume24h": 175364,
+            "volume24h": 173624,
             "end": "2027-01-01T04:59:00Z",
             "outcomes": [
               {
@@ -2018,7 +3687,7 @@
             "url": "https://polymarket.com/event/ballon-dor-winner-2026"
           },
           {
-            "id": "will-the-us-invade-iran-before-2027",
+            "id": "pm:will-the-us-invade-iran-before-2027",
             "title": "Will the U.S. invade Iran before 2027?",
             "category": "Military Strikes",
             "volume24h": 173174,
@@ -2033,15 +3702,15 @@
             "url": "https://polymarket.com/event/will-the-us-invade-iran-before-2027"
           },
           {
-            "id": "israel-x-iran-ceasefire-continues-throughptptpt-20260716224448963",
+            "id": "pm:israel-x-iran-ceasefire-continues-throughptptpt-20260716224448963",
             "title": "Israel x Iran ceasefire continues through...?",
             "category": "Iran",
-            "volume24h": 149643,
+            "volume24h": 149051,
             "end": "2026-12-31T20:29:00Z",
             "outcomes": [
               {
                 "name": "Through September 30",
-                "prob": 96.1
+                "prob": 95.9
               },
               {
                 "name": "Through October 31",
@@ -2056,10 +3725,10 @@
             "url": "https://polymarket.com/event/israel-x-iran-ceasefire-continues-throughptptpt-20260716224448963"
           },
           {
-            "id": "will-china-invade-taiwan-before-2027",
+            "id": "pm:will-china-invade-taiwan-before-2027",
             "title": "Will China invade Taiwan by end of 2026?",
             "category": "Politics",
-            "volume24h": 132722,
+            "volume24h": 133201,
             "end": "2027-01-01T04:59:00Z",
             "outcomes": [
               {
@@ -2071,33 +3740,10 @@
             "url": "https://polymarket.com/event/will-china-invade-taiwan-before-2027"
           },
           {
-            "id": "brazil-presidential-election-first-round-2nd-place",
-            "title": "Brazil Presidential Election First Round: 2nd Place",
-            "category": "Brazil",
-            "volume24h": 120802,
-            "end": "2026-10-05T03:59:00Z",
-            "outcomes": [
-              {
-                "name": "Flávio Bolsonaro",
-                "prob": 76
-              },
-              {
-                "name": "Luiz Inácio Lula da Silva",
-                "prob": 24.4
-              },
-              {
-                "name": "Renan Santos",
-                "prob": 0.3
-              }
-            ],
-            "source": "Polymarket",
-            "url": "https://polymarket.com/event/brazil-presidential-election-first-round-2nd-place"
-          },
-          {
-            "id": "unl-tur-fra-2026-09-25",
+            "id": "pm:unl-tur-fra-2026-09-25",
             "title": "Türkiye vs. France",
             "category": "Sports",
-            "volume24h": 117175,
+            "volume24h": 124199,
             "end": "2026-09-25T18:45:00Z",
             "outcomes": [
               {
@@ -2117,10 +3763,56 @@
             "url": "https://polymarket.com/event/unl-tur-fra-2026-09-25"
           },
           {
-            "id": "putin-out-before-2027",
+            "id": "pm:brazil-presidential-election-first-round-2nd-place",
+            "title": "Brazil Presidential Election First Round: 2nd Place",
+            "category": "Brazil",
+            "volume24h": 122867,
+            "end": "2026-10-05T03:59:00Z",
+            "outcomes": [
+              {
+                "name": "Flávio Bolsonaro",
+                "prob": 75.5
+              },
+              {
+                "name": "Luiz Inácio Lula da Silva",
+                "prob": 24.5
+              },
+              {
+                "name": "Renan Santos",
+                "prob": 0.3
+              }
+            ],
+            "source": "Polymarket",
+            "url": "https://polymarket.com/event/brazil-presidential-election-first-round-2nd-place"
+          },
+          {
+            "id": "pm:conl-dom-nca-2026-09-24",
+            "title": "Dominican Republic vs. Nicaragua",
+            "category": "Sports",
+            "volume24h": 117797,
+            "end": "2026-09-25T00:00:00Z",
+            "outcomes": [
+              {
+                "name": "Dominican Republic",
+                "prob": 85.4
+              },
+              {
+                "name": "Draw (Dominican Republic vs. Nicaragua)",
+                "prob": 11.9
+              },
+              {
+                "name": "Nicaragua",
+                "prob": 2.1
+              }
+            ],
+            "source": "Polymarket",
+            "url": "https://polymarket.com/event/conl-dom-nca-2026-09-24"
+          },
+          {
+            "id": "pm:putin-out-before-2027",
             "title": "Putin out as President of Russia by...?",
             "category": "putin",
-            "volume24h": 116244,
+            "volume24h": 116117,
             "end": "2027-07-01T03:59:00Z",
             "outcomes": [
               {
@@ -2140,10 +3832,33 @@
             "url": "https://polymarket.com/event/putin-out-before-2027"
           },
           {
-            "id": "bab-el-mandeb-strait-effectively-closed-by",
+            "id": "pm:nobel-peace-prize-winner-2026-139",
+            "title": "Nobel Peace Prize Winner 2026",
+            "category": "Awards",
+            "volume24h": 96250,
+            "end": "2027-04-01T03:59:00Z",
+            "outcomes": [
+              {
+                "name": "Sudan's Emergency Response Rooms",
+                "prob": 13.2
+              },
+              {
+                "name": "Yulia Navalnaya",
+                "prob": 6.5
+              },
+              {
+                "name": "Save the Children",
+                "prob": 5.8
+              }
+            ],
+            "source": "Polymarket",
+            "url": "https://polymarket.com/event/nobel-peace-prize-winner-2026-139"
+          },
+          {
+            "id": "pm:bab-el-mandeb-strait-effectively-closed-by",
             "title": "Bab el-Mandeb Strait effectively closed by...?",
             "category": "Politics",
-            "volume24h": 106016,
+            "volume24h": 91825,
             "end": "2027-01-01T04:59:00Z",
             "outcomes": [
               {
@@ -2156,45 +3871,45 @@
               },
               {
                 "name": "By December 31",
-                "prob": 19
+                "prob": 19.5
               }
             ],
             "source": "Polymarket",
             "url": "https://polymarket.com/event/bab-el-mandeb-strait-effectively-closed-by"
           },
           {
-            "id": "where-will-trump-and-putin-meet-next-678",
+            "id": "pm:where-will-trump-and-putin-meet-next-678",
             "title": "Where will Trump and Putin meet next in 2026?",
             "category": "Politics",
-            "volume24h": 89854,
+            "volume24h": 89545,
             "end": "2027-01-01T04:59:00Z",
             "outcomes": [
               {
                 "name": "China",
-                "prob": 59.5
+                "prob": 62
               },
               {
                 "name": "No meeting by December 31",
-                "prob": 30
+                "prob": 30.5
               },
               {
                 "name": "United States",
-                "prob": 5.2
+                "prob": 5.4
               }
             ],
             "source": "Polymarket",
             "url": "https://polymarket.com/event/where-will-trump-and-putin-meet-next-678"
           },
           {
-            "id": "saudi-oil-pipeline-east-west-restarts-byptptpt",
+            "id": "pm:saudi-oil-pipeline-east-west-restarts-byptptpt",
             "title": "Saudi Oil Pipeline (East-West) restarts by...?",
             "category": "Oil",
-            "volume24h": 87228,
+            "volume24h": 86090,
             "end": "2026-11-01T03:59:00Z",
             "outcomes": [
               {
                 "name": "By September 30",
-                "prob": 35.5
+                "prob": 36
               },
               {
                 "name": "By October 15",
@@ -2209,38 +3924,15 @@
             "url": "https://polymarket.com/event/saudi-oil-pipeline-east-west-restarts-byptptpt"
           },
           {
-            "id": "nobel-peace-prize-winner-2026-139",
-            "title": "Nobel Peace Prize Winner 2026",
-            "category": "Awards",
-            "volume24h": 84819,
-            "end": "2027-04-01T03:59:00Z",
-            "outcomes": [
-              {
-                "name": "Sudan's Emergency Response Rooms",
-                "prob": 13.2
-              },
-              {
-                "name": "Yulia Navalnaya",
-                "prob": 6.5
-              },
-              {
-                "name": "Save the Children",
-                "prob": 6
-              }
-            ],
-            "source": "Polymarket",
-            "url": "https://polymarket.com/event/nobel-peace-prize-winner-2026-139"
-          },
-          {
-            "id": "who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
+            "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
             "title": "Prime Minister of Israel after the next election?",
             "category": "Main Election",
-            "volume24h": 82523,
+            "volume24h": 82599,
             "end": "2026-10-27T23:59:00Z",
             "outcomes": [
               {
                 "name": "Gadi Eizenkot",
-                "prob": 52.8
+                "prob": 52.9
               },
               {
                 "name": "Benjamin Netanyahu",
@@ -2255,53 +3947,7 @@
             "url": "https://polymarket.com/event/who-will-be-the-next-prime-minister-of-israel-after-the-next-election"
           },
           {
-            "id": "conl-dom-nca-2026-09-24",
-            "title": "Dominican Republic vs. Nicaragua",
-            "category": "Sports",
-            "volume24h": 80537,
-            "end": "2026-09-25T00:00:00Z",
-            "outcomes": [
-              {
-                "name": "Dominican Republic",
-                "prob": 89.4
-              },
-              {
-                "name": "Draw (Dominican Republic vs. Nicaragua)",
-                "prob": 10.7
-              },
-              {
-                "name": "Nicaragua",
-                "prob": 3.1
-              }
-            ],
-            "source": "Polymarket",
-            "url": "https://polymarket.com/event/conl-dom-nca-2026-09-24"
-          },
-          {
-            "id": "gtm-mun-suc-2026-09-24-more-markets",
-            "title": "CSD Municipal vs. CSD Suchitepéquez - More Markets",
-            "category": "Sports",
-            "volume24h": 79183,
-            "end": "2026-09-25T02:00:00Z",
-            "outcomes": [
-              {
-                "name": "O/U 0.5",
-                "prob": 95.8
-              },
-              {
-                "name": "CSD Municipal O/U 0.5",
-                "prob": 92
-              },
-              {
-                "name": "2nd Half O/U 0.5",
-                "prob": 85
-              }
-            ],
-            "source": "Polymarket",
-            "url": "https://polymarket.com/event/gtm-mun-suc-2026-09-24-more-markets"
-          },
-          {
-            "id": "laliga-2027-champion-20260701200737375",
+            "id": "pm:laliga-2027-champion-20260701200737375",
             "title": "LALIGA: 2027 Champion",
             "category": "Soccer",
             "volume24h": 78902,
@@ -2324,7 +3970,7 @@
             "url": "https://polymarket.com/event/laliga-2027-champion-20260701200737375"
           },
           {
-            "id": "russia-x-ukraine-peace-talks-byptptpt-20260609012540716",
+            "id": "pm:russia-x-ukraine-peace-talks-byptptpt-20260609012540716",
             "title": "Russia x Ukraine peace talks by...?",
             "category": "putin",
             "volume24h": 75108,
@@ -2347,7 +3993,7 @@
             "url": "https://polymarket.com/event/russia-x-ukraine-peace-talks-byptptpt-20260609012540716"
           },
           {
-            "id": "f1-azerbaijan-grand-prix-winner-2026-09-26",
+            "id": "pm:f1-azerbaijan-grand-prix-winner-2026-09-26",
             "title": "Azerbaijan Grand Prix: Driver Winner",
             "category": "Formula 1",
             "volume24h": 72914,
@@ -2370,10 +4016,10 @@
             "url": "https://polymarket.com/event/f1-azerbaijan-grand-prix-winner-2026-09-26"
           },
           {
-            "id": "which-company-has-the-best-ai-model-end-of-september-20260717143435868",
+            "id": "pm:which-company-has-the-best-ai-model-end-of-september-20260717143435868",
             "title": "Which company has the best AI model end of September?",
             "category": "AI",
-            "volume24h": 72134,
+            "volume24h": 72138,
             "end": "2026-09-30T16:00:00Z",
             "outcomes": [
               {
@@ -2393,7 +4039,7 @@
             "url": "https://polymarket.com/event/which-company-has-the-best-ai-model-end-of-september-20260717143435868"
           },
           {
-            "id": "bank-of-england-decision-in-november-20260730150602252",
+            "id": "pm:bank-of-england-decision-in-november-20260730150602252",
             "title": "Bank of England decision in November?",
             "category": "BOE",
             "volume24h": 70097,
@@ -2409,1301 +4055,341 @@
               },
               {
                 "name": "50+ bps increase",
-                "prob": 3.8
+                "prob": 4
               }
             ],
             "source": "Polymarket",
             "url": "https://polymarket.com/event/bank-of-england-decision-in-november-20260730150602252"
+          },
+          {
+            "id": "pm:russia-elections-united-russia-wins-every-region",
+            "title": "Russia Elections: United Russia Wins Every Region?",
+            "category": "Russia",
+            "volume24h": 65424,
+            "end": "2026-09-21T03:59:00Z",
+            "outcomes": [
+              {
+                "name": "Yes",
+                "prob": 98
+              }
+            ],
+            "source": "Polymarket",
+            "url": "https://polymarket.com/event/russia-elections-united-russia-wins-every-region"
           }
         ]
       },
-      "as_of": "2026-09-25T00:45:22.670Z",
+      "as_of": "2026-09-25T01:27:07.497Z",
       "source": "Polymarket"
     },
-    "crypto": {
+    "gold_in": {
       "value": {
-        "symbol": "BTC-USD",
-        "price": 84589.17,
-        "prev": 84383.0078125,
-        "change_pct": 0.24431718285995796,
-        "session_date": "2026-09-25",
-        "market_time": "2026-09-25T00:45:16.000Z",
-        "currency": "USD",
-        "live": true,
-        "instrument": "CRYPTOCURRENCY",
-        "spark_from": "2026-09-21",
-        "spark_to": "2026-09-25",
-        "source": "Yahoo Finance"
+        "per_gram_24k": 15079,
+        "per_gram_22k": 13812,
+        "per_10g_24k": 150790,
+        "per_10g_22k": 138120,
+        "rate_date": "24/09/2026"
       },
-      "as_of": "2026-09-25T00:45:22.760Z",
-      "source": "Yahoo Finance"
-    },
-    "markets": {
-      "value": {
-        "indices": [
-          {
-            "name": "Sensex",
-            "symbol": "^BSESN",
-            "price": 73580.54,
-            "prev": 74828.25,
-            "change_pct": -1.667431752045526,
-            "session_date": "2026-09-24",
-            "market_time": "2026-09-24T10:02:34.000Z",
-            "currency": "INR",
-            "live": false,
-            "instrument": "INDEX",
-            "spark": [
-              76991.22,
-              77100.47,
-              76728.37,
-              76478.67,
-              76922.64,
-              77502.12,
-              77763.91,
-              78285.07,
-              78180.72,
-              76503.6,
-              76741.82,
-              77569.39,
-              77616.4,
-              77054.94,
-              77185.43,
-              77186.87,
-              78151.45,
-              77708.52,
-              77470.11,
-              76755.05,
-              76391.39,
-              76059.77,
-              76835.78,
-              76765.92,
-              77654.6,
-              77928.15,
-              78094.64,
-              78639.03,
-              78428.95,
-              78581,
-              78954.76,
-              78499.17,
-              78542.44,
-              78154.25,
-              77966.35,
-              78079.96,
-              78009.25,
-              77728.16,
-              77235.46,
-              76909.68,
-              77537.72,
-              77540.83,
-              77369.11,
-              77656.09,
-              77472.94,
-              76933.59,
-              77264.51,
-              76957.27,
-              76944.28,
-              76570.35,
-              76152.86,
-              76515.43,
-              76132.81,
-              75577.58,
-              74764.23,
-              74902.59,
-              74781.76,
-              74003.82,
-              74336.45,
-              74314.59,
-              74294.96,
-              74858.99,
-              74828.25,
-              73580.54
-            ],
-            "spark_from": "2026-06-24",
-            "spark_to": "2026-09-24"
-          },
-          {
-            "name": "Nifty 50",
-            "symbol": "^NSEI",
-            "price": 23063.1,
-            "prev": 23446.80078125,
-            "change_pct": -1.6364739259303995,
-            "session_date": "2026-09-24",
-            "market_time": "2026-09-24T10:01:13.000Z",
-            "currency": "INR",
-            "live": false,
-            "instrument": "INDEX",
-            "spark": [
-              24021.65,
-              24056,
-              23946.25,
-              23865.75,
-              24005.85,
-              24175.7,
-              24270.85,
-              24430.35,
-              24398.7,
-              23882.05,
-              23962.8,
-              24206.9,
-              24211,
-              24052.05,
-              24078.5,
-              24072.75,
-              24334.3,
-              24238.5,
-              24187.7,
-              23996.25,
-              23869.6,
-              23767.45,
-              23995.95,
-              23985.35,
-              24250.2,
-              24317.15,
-              24383.6,
-              24774.3,
-              24614.9,
-              24624.65,
-              24636,
-              24570.65,
-              24583.8,
-              24471.7,
-              24435.95,
-              24395.85,
-              24366,
-              24287.65,
-              24154.9,
-              24078.3,
-              24231.85,
-              24252,
-              24219.05,
-              24334.55,
-              24207.75,
-              24090.85,
-              24175.65,
-              24080.4,
-              24055.8,
-              23914.45,
-              23873.45,
-              23897.7,
-              23779.15,
-              23635.1,
-              23431.5,
-              23477.8,
-              23398.1,
-              23118.6,
-              23217.6,
-              23270.6,
-              23346.4,
-              23414.3,
-              23446.8,
-              23063.1
-            ],
-            "spark_from": "2026-06-24",
-            "spark_to": "2026-09-24"
-          },
-          {
-            "name": "Nasdaq-100",
-            "symbol": "^NDX",
-            "price": 30478.855,
-            "prev": 30470.2890625,
-            "change_pct": 0.028112426115910152,
-            "session_date": "2026-09-24",
-            "market_time": "2026-09-24T21:15:59.000Z",
-            "currency": "USD",
-            "live": false,
-            "instrument": "INDEX",
-            "spark": [
-              29440.32,
-              29118.24,
-              29774.75,
-              30276.35,
-              29809.13,
-              29329.21,
-              29697.87,
-              29173.02,
-              29252.56,
-              29727.1,
-              29825.11,
-              29264.1,
-              29586.29,
-              29502.6,
-              29025.77,
-              28592.66,
-              28604.23,
-              29155.18,
-              28998.1,
-              28454.81,
-              28128.34,
-              28039.21,
-              27763.13,
-              27192.31,
-              28106.35,
-              28274.2,
-              28776.8,
-              29733.16,
-              29487.79,
-              29373.33,
-              29722.3,
-              29621.8,
-              29525.48,
-              29742.6,
-              30084.5,
-              30046.14,
-              29995.38,
-              29490.96,
-              29426.02,
-              29213.16,
-              29308.86,
-              29023.18,
-              29209.23,
-              29224.52,
-              29641.56,
-              29433.43,
-              29456.97,
-              29077.22,
-              29143.33,
-              29482.32,
-              29544.15,
-              29507.7,
-              29421.55,
-              29103.51,
-              29368.44,
-              29127.16,
-              28937.84,
-              28945.06,
-              29446.98,
-              29644.17,
-              30482.35,
-              30470.29,
-              30478.86
-            ],
-            "spark_from": "2026-06-25",
-            "spark_to": "2026-09-24"
-          }
-        ],
-        "cross": [
-          {
-            "name": "Bank Nifty",
-            "symbol": "^NSEBANK",
-            "price": 55438.5,
-            "change_pct": -1.9636075470634582,
-            "session_date": "2026-09-24",
-            "source": "Yahoo Finance"
-          },
-          {
-            "name": "USD/INR",
-            "symbol": "INR=X",
-            "price": 95.945,
-            "change_pct": 0.26669881400095424,
-            "session_date": "2026-09-24",
-            "source": "Yahoo Finance"
-          },
-          {
-            "name": "Brent crude",
-            "symbol": "BZ=F",
-            "price": 105.92,
-            "change_pct": -0.6378986866791675,
-            "session_date": "2026-09-24",
-            "source": "Yahoo Finance"
-          },
-          {
-            "name": "Bitcoin",
-            "symbol": "BTC-USD",
-            "price": 84589.17,
-            "change_pct": 0.24431718285995796,
-            "session_date": "2026-09-25",
-            "source": "Yahoo Finance"
-          },
-          {
-            "name": "S&P 500",
-            "symbol": "^GSPC",
-            "price": 7704.13,
-            "change_pct": -0.02465322882490481,
-            "session_date": "2026-09-24",
-            "source": "Yahoo Finance"
-          }
-        ]
-      },
-      "as_of": "2026-09-25T00:45:19.555Z",
-      "source": "Yahoo Finance"
-    },
-    "f1_next": {
-      "value": {
-        "race": {
-          "season": "2026",
-          "round": 15,
-          "name": "Azerbaijan Grand Prix",
-          "circuit": "Baku City Circuit",
-          "locality": "Baku",
-          "country": "Azerbaijan",
-          "flag": "🇦🇿",
-          "sessions": [
-            {
-              "name": "Practice 1",
-              "start": "2026-09-24T08:30:00Z",
-              "minutes": 60,
-              "time_confirmed": true
-            },
-            {
-              "name": "Practice 2",
-              "start": "2026-09-24T12:00:00Z",
-              "minutes": 60,
-              "time_confirmed": true
-            },
-            {
-              "name": "Practice 3",
-              "start": "2026-09-25T08:30:00Z",
-              "minutes": 60,
-              "time_confirmed": true
-            },
-            {
-              "name": "Qualifying",
-              "start": "2026-09-25T12:00:00Z",
-              "minutes": 60,
-              "time_confirmed": true
-            },
-            {
-              "name": "Race",
-              "start": "2026-09-26T11:00:00Z",
-              "minutes": 120,
-              "time_confirmed": true
-            }
-          ]
-        },
-        "upcoming": [
-          {
-            "round": 16,
-            "name": "Bahrain Grand Prix in Malaysia",
-            "country": "Malaysia",
-            "flag": "🇲🇾",
-            "date": "2026-10-04T07:00:00Z"
-          },
-          {
-            "round": 17,
-            "name": "Singapore Grand Prix",
-            "country": "Singapore",
-            "flag": "🇸🇬",
-            "date": "2026-10-11T12:00:00Z"
-          },
-          {
-            "round": 18,
-            "name": "United States Grand Prix",
-            "country": "USA",
-            "flag": "🇺🇸",
-            "date": "2026-10-25T20:00:00Z"
-          }
-        ]
-      },
-      "as_of": "2026-09-25T00:45:18.031Z",
-      "source": "Jolpica"
-    },
-    "tennis": {
-      "value": {
-        "events": [
-          {
-            "name": "Chengdu Open",
-            "start": "2026-09-22T04:00Z",
-            "end": "2026-09-30T03:59Z",
-            "venue": "Chengdu, China PR",
-            "major": false
-          },
-          {
-            "name": "AITO Hangzhou Open",
-            "start": "2026-09-22T04:00Z",
-            "end": "2026-09-30T03:59Z",
-            "venue": "Hangzhou, China PR",
-            "major": false
-          }
-        ]
-      },
-      "as_of": "2026-09-25T00:45:19.129Z",
-      "source": "ESPN"
-    },
-    "trends": {
-      "value": {
-        "geos": {
-          "IN": [
-            {
-              "term": "haiti vs trinidad and tobago",
-              "traffic": "200+",
-              "published": "Thu, 24 Sep 2026 17:30:00 -0700",
-              "news": [
-                {
-                  "title": "Haiti vs Trinidad and Tobago LIVE Streaming info — When, where to watch HAI v TRI in CONCACAF Nations League?",
-                  "url": "https://sportstar.thehindu.com/football/haiti-vs-trinidad-tobago-live-streaming-info-when-where-to-watch-hai-v-tri-kick-off-time-venue/article71505981.ece",
-                  "source": "Sportstar"
-                },
-                {
-                  "title": "BACK TO FOOTBALL",
-                  "url": "https://trinidadexpress.com/sports/local/back-to-football/article_3c82f3e5-9b65-44ed-bf57-ad0def11ca19.html",
-                  "source": "Trinidad Express Newspapers"
-                },
-                {
-                  "title": "How to watch Haiti vs Trinidad and Tobago: Live stream CONCACAF Nations League, TV channel",
-                  "url": "https://sports.yahoo.com/articles/watch-haiti-vs-trinidad-tobago-232000730.html",
-                  "source": "Yahoo Sports"
-                }
-              ]
-            },
-            {
-              "term": "बहू",
-              "traffic": "100+",
-              "published": "Thu, 24 Sep 2026 17:30:00 -0700",
-              "news": [
-                {
-                  "title": "'पिता की हत्या का मलाल नहीं, दुख चाकू से गोदकर मारने का है', विनीत मिनोचा केस में बेटे सुब्रत के कुबूलनामे का Video",
-                  "url": "https://www.aajtak.in/uttar-pradesh/story/kanpur-businessman-vineet-manocha-murder-case-son-subrat-confession-ntc-rlch-rpti-2652119-2026-09-24",
-                  "source": "AajTak"
-                },
-                {
-                  "title": "विनीत मिनोचा हत्याकांड में बहू बेगुनाह, बेटा ही निकला हत्यारा, हुए कई चौंकाने वाले खुलासे",
-                  "url": "https://www.indiatv.in/uttar-pradesh/vineet-minocha-murder-case-the-daughter-in-law-innocent-the-son-is-killer-2026-09-24-1245128",
-                  "source": "India TV Hindi"
-                },
-                {
-                  "title": "कानपुर की कल की 10 बड़ी खबरें, VIDEO में: दवा कारोबारी की हत्या बेटे ने कराई, पत्नी को फंसाया; मेयर के बेटे ...",
-                  "url": "https://www.bhaskar.com/local/uttar-pradesh/kanpur/news/kanpur-top-10-news-update-yesterday-24-september-2026-vineet-minocha-murder-case-mayor-son-statement-video-139134060.html",
-                  "source": "Dainik Bhaskar"
-                }
-              ]
-            },
-            {
-              "term": "आज का मौसम",
-              "traffic": "200000+",
-              "published": "Thu, 24 Sep 2026 17:20:00 -0700",
-              "news": [
-                {
-                  "title": "तट से टकराया 'चक्रवात अर्नब', यूपी-दिल्ली समेत 16 राज्यों में भारी बारिश; गिर सकते हैं ओले, Weather Hindi News",
-                  "url": "https://www.livehindustan.com/weather/cyclone-arnab-update-heavy-rain-alert-in-up-bihar-punjab-bhari-barish-201790292421741.html",
-                  "source": "Hindustan"
-                },
-                {
-                  "title": "चक्रवात अर्नब से ओडिशा-आंध्र प्रदेश में भारी बारिश, पुल डूबे: ओडिशा में मछुआरों की 10 नावें डूबीं, 5 हजार ल...",
-                  "url": "https://www.bhaskar.com/g/national/news/odisha-andhra-pradesh-cyclone-arnab-alert-heavy-rain-schools-closed-139127372.html",
-                  "source": "Dainik Bhaskar"
-                },
-                {
-                  "title": "समंदर से जमीन तक आफत! ओडिशा में डीप डिप्रेशन का असर, पुरी बना रेड जोन, भारी बारिश का अलर्ट",
-                  "url": "https://www.aajtak.in/science/story/odisha-weather-deep-depression-heavy-rain-puri-red-zone-alert-rptc-2651848-2026-09-24",
-                  "source": "AajTak"
-                }
-              ]
-            },
-            {
-              "term": "weather today",
-              "traffic": "5000+",
-              "published": "Thu, 24 Sep 2026 17:20:00 -0700",
-              "news": [
-                {
-                  "title": "Red warning alert issued for 4 Odisha districs as disaster response forces in place for deep depression",
-                  "url": "https://www.thehindu.com/news/national/odisha/red-warning-alert-issued-for-4-odisha-districs-as-disaster-response-forces-in-place-for-deep-depression/article71500624.ece",
-                  "source": "The Hindu"
-                },
-                {
-                  "title": "Deep depression crosses coast, heavy rain shuts schools in Odisha, Andhra Pradesh districts",
-                  "url": "https://www.telegraphindia.com/india/deep-depression-crosses-coast-heavy-rain-shuts-schools-in-odisha-andhra-pradesh-districts/cid/2181478",
-                  "source": "Telegraph India"
-                },
-                {
-                  "title": "Bay Of Bengal Depression To Bring Heavy Rain To Bengal, Odisha And Other States",
-                  "url": "https://www.ndtv.com/india-news/weather-tomorrow-telangana-may-see-extremely-heavy-rain-orange-alert-in-jharkhand-12092206",
-                  "source": "NDTV"
-                }
-              ]
-            },
-            {
-              "term": "weather lucknow",
-              "traffic": "100+",
-              "published": "Thu, 24 Sep 2026 17:10:00 -0700",
-              "news": [
-                {
-                  "title": "यूपी में 3 दिन तक होगी भारी बारिश, CM योगी ने अधिकारियों को दिए सख्त निर्देश, लोगों से भी की खास अपील",
-                  "url": "https://www.indiatv.in/uttar-pradesh/heavy-rain-in-uttar-pradesh-next-three-days-cm-yogi-issues-strict-officials-special-appeal-to-public-2026-09-24-1245183",
-                  "source": "India TV Hindi"
-                },
-                {
-                  "title": "यूपी में मानसून की री-एंट्री: 25 से 27 सितंबर तक इन जिलों में भारी बारिश का ऑरेंज-येलो अलर्ट, 60 KM/h की रफ्तार से चलेंगी हवाएं",
-                  "url": "https://www.aajtak.in/uttar-pradesh/story/imd-issues-heavy-rain-and-thunderstorm-alert-across-uttar-pradesh-from-september-24-to-27-weather-update-lclam-dskc-2651187-2026-09-23",
-                  "source": "AajTak"
-                },
-                {
-                  "title": "गोंडा में बारिश के चलते आज स्कूल बंद: तेज बारिश के चलते 1 से 8 तक छुट्टी, शिक्षकों को स्कूल जाना होगा",
-                  "url": "https://www.bhaskar.com/local/uttar-pradesh/gonda/news/gonda-school-holiday-heavy-rain-alert-district-administration-139129555.html",
-                  "source": "Dainik Bhaskar"
-                }
-              ]
-            },
-            {
-              "term": "తెలంగాణ",
-              "traffic": "200+",
-              "published": "Thu, 24 Sep 2026 17:00:00 -0700",
-              "news": [
-                {
-                  "title": "Telangana News: 22ఏ నుంచి విముక్తి",
-                  "url": "https://www.eenadu.net/telugu-news/telangana/22-a-lands-registration-allowed/1899/126173215",
-                  "source": "Eenadu"
-                },
-                {
-                  "title": "Telangana: 22ఏ భూములపై తెలంగాణ ప్రభుత్వం కీలక నిర్ణయం.. భారీ ఊర‌ట",
-                  "url": "https://telugu.asianetnews.com/gallery/telangana/telangana-22a-lands-government-gives-big-relief-on-property-registrations-oqikqmw",
-                  "source": "Asianet News Telugu"
-                },
-                {
-                  "title": "22-ఏ సమస్యలపై ఉపశమనం.. అనుమతులున్న ఆస్తుల రిజిస్ట్రేషన్‌కు మార్గం సుగమం",
-                  "url": "https://www.hindustantimes.com/telugu/telangana/registration-of-22a-lands-in-telangana-261790263036530.html",
-                  "source": "Hindustan Times"
-                }
-              ]
-            },
-            {
-              "term": "hong kong vs oman",
-              "traffic": "2000+",
-              "published": "Thu, 24 Sep 2026 16:40:00 -0700",
-              "news": [
-                {
-                  "title": "Hong Kong, China vs Oman Live Cricket Score:: Match 3 Full Scorecard & Commentary",
-                  "url": "https://www.firstpost.com/firstcricket/cricket-live-score/hong-kong--china-vs-oman-t20-live-cricket-score-full/15773/274298.html",
-                  "source": "Firstpost"
-                },
-                {
-                  "title": "HKC vs OMN Today’s Match Prediction & Cricket Betting Tips: Asian Games 2026, Match 3, September 24",
-                  "url": "https://www.indiafantasy.com/cricket-betting/tips/hkc-vs-omn-september-25/",
-                  "source": "India Fantasy"
-                },
-                {
-                  "title": "Hong Kong vs Oman Live Streaming: When And Where To Watch HK vs OMA At Asian Games 2026",
-                  "url": "https://www.ndtvprofit.com/sports/hong-kong-vs-oman-live-streaming-when-and-where-to-watch-hk-vs-oma-asian-games-2026-match-online-12091237",
-                  "source": "NDTV Profit"
-                }
-              ]
-            },
-            {
-              "term": "ప్రపంచ రికార్డు",
-              "traffic": "200+",
-              "published": "Thu, 24 Sep 2026 16:40:00 -0700",
-              "news": [
-                {
-                  "title": "WI vs ZIM: వెస్టిండీస్‌ కెప్టెన్‌ ప్రపంచ రికార్డు",
-                  "url": "https://www.sakshi.com/telugu-news/sports/hayley-matthews-creates-world-record-odi-match-vs-zimbabwe-2911734",
-                  "source": "Sakshi"
-                },
-                {
-                  "title": "IND vs JPN: భయపెట్టిన జపాన్‌",
-                  "url": "https://www.eenadu.net/telugu-news/sports/india-survive-japan-scare-in-thrilling-sano-contest/0499/126171691",
-                  "source": "Eenadu"
-                },
-                {
-                  "title": "టీమిండియాతో ఓడినా గర్వంగా ఉంది.. ప్రపంచ అత్యుత్తమ జట్టుకు చెమటలు పట్టించాం: జపాన్ కెప్టెన్",
-                  "url": "https://www.ap7am.com/tn/880955/kendel-kadowaki-fleming-proud-despite-loss-to-team-india-as-japan-pushes-world-best-team-to-the-limit",
-                  "source": "AP7AM"
-                }
-              ]
-            },
-            {
-              "term": "மதுமிதா",
-              "traffic": "200+",
-              "published": "Thu, 24 Sep 2026 16:40:00 -0700",
-              "news": [
-                {
-                  "title": "புதிய பயணம்... மாலை 5 மணிக்கு முக்கிய அறிவிப்பு! நடிகை மதுமிதா விடியோ பதிவு!",
-                  "url": "https://www.dinamani.com/cinema/cinema-news/2026/Sep/24/ethirneechal-ayyanar-thunai-serial-actress-madhumitha-instagram-video-goes-viral",
-                  "source": "DinaMani"
-                },
-                {
-                  "title": "காதலனை அறிமுகம் செய்த அய்யனார் துணை நடிகை மதுமிதா!",
-                  "url": "https://www.dinamani.com/cinema/cinema-news/2026/Sep/24/ethirneechal-ayyanar-thunai-serial-actress-madhumitha-introduce-her-lover-with-insta-fans",
-                  "source": "DinaMani"
-                }
-              ]
-            },
-            {
-              "term": "हेली मैथ्यूज",
-              "traffic": "200+",
-              "published": "Thu, 24 Sep 2026 16:40:00 -0700",
-              "news": [
-                {
-                  "title": "वेस्टइंडीज विमेंस ने जिम्बाब्वे को 99 रन से हराया: मैथ्यूज ने 182 रन बनाए; मुपाचिक्वा की फिफ्टी के बावजूद ज...",
-                  "url": "https://www.bhaskar.com/sports/cricket/news/west-indies-zimbabwe-womens-odi-harare-hayley-matthews-win-139136607.html",
-                  "source": "Dainik Bhaskar"
-                },
-                {
-                  "title": "वेस्टइंडीज के खिलाफ ODI और T20I सीरीज के लिए जिम्बाब्वे की टीम का ऐलान, जोसेफिन संभालेंगी कमान",
-                  "url": "https://www.indiatv.in/sports/cricket/zimbabwe-cricket-unveiled-a-16-player-squad-for-the-upcoming-home-three-odis-and-as-many-t20is-against-west-indies-2026-09-23-1244976",
-                  "source": "India TV Hindi"
-                },
-                {
-                  "title": "हेली मैथ्यूज ने 182 रनों की आतिशी पारी खेल रचा इतिहास, बन गया महारिकॉर्ड",
-                  "url": "https://www.abplive.com/sports/cricket/hayley-matthews-182-runs-innings-most-odi-runs-for-west-indies-in-womens-cricket-record-wi-vs-zim-3193257",
-                  "source": "ABP News"
-                }
-              ]
-            }
-          ],
-          "US": [
-            {
-              "term": "american hostage",
-              "traffic": "500+",
-              "published": "Thu, 24 Sep 2026 17:30:00 -0700",
-              "news": [
-                {
-                  "title": "What to stream this week: Jon Hamm’s timely crime thriller, plus five more picks",
-                  "url": "https://www.smh.com.au/culture/tv-and-radio/american-hostage-review-jon-hamm-thriller-real-crime-20260917-p60y6p.html",
-                  "source": "SMH.com.au"
-                },
-                {
-                  "title": "‘American Hostage’ Review: Jon Hamm Plays Radio Host to a Kidnapping",
-                  "url": "https://www.wsj.com/arts-culture/television/american-hostage-review-jon-hamm-plays-radio-host-to-a-kidnapping-193c91e1",
-                  "source": "WSJ"
-                },
-                {
-                  "title": "'American Hostage' recreates a thrilling 70s crime that pulled attention from the Oscars",
-                  "url": "https://thenationaldesk.com/news/entertainment/american-hostage-recreates-a-thrilling-70s-crime-that-pulled-attention-from-the-oscars",
-                  "source": "The National Desk"
-                }
-              ]
-            },
-            {
-              "term": "kirk herbstreit",
-              "traffic": "500+",
-              "published": "Thu, 24 Sep 2026 17:30:00 -0700",
-              "news": [
-                {
-                  "title": "FILM ROOM: Michael Hawkins making big-time throws down the field against Virginia",
-                  "url": "https://247sports.com/college/west-virginia/longformarticle/film-room-michael-hawkins-making-big-time-throws-down-the-field-against-virginia-290256451/",
-                  "source": "247Sports"
-                },
-                {
-                  "title": "Kirk Herbstreit Keeps WVU's College GameDay Dream Alive as Pat McAfee Eyes Morgantown",
-                  "url": "https://heavy.com/sports/college-football/west-virginia-mountaineers/kirk-herbstreit-wvu-college-gameday-morgantown/",
-                  "source": "Heavy.com"
-                },
-                {
-                  "title": "West Virginia QB Hawkins earns Earl Campbell Tyler Rose Award national honor",
-                  "url": "https://www.cbs19.tv/video/news/local/hawkins-earl-campbell-tyler-rose/501-d9a11dd0-a7b7-46ac-b218-7dfb91d98021",
-                  "source": "cbs19.tv"
-                }
-              ]
-            },
-            {
-              "term": "phillies",
-              "traffic": "10000+",
-              "published": "Thu, 24 Sep 2026 17:20:00 -0700",
-              "news": [
-                {
-                  "title": "Luis Arraez exits game in the 6th due to injury",
-                  "url": "https://www.mlb.com/video/aaron-ashby-in-play-no-out-to-luis-arraez",
-                  "source": "MLB.com"
-                },
-                {
-                  "title": "Phillies' Luis Arraez Removed With Apparent Injury",
-                  "url": "https://www.mlbtraderumors.com/2026/09/phillies-luis-arraez-removed-with-ankle-injury.html",
-                  "source": "MLB Trade Rumors"
-                },
-                {
-                  "title": "Phillies' Luis Arraez: Suffers sprained ankle",
-                  "url": "https://www.cbssports.com/fantasy/baseball/news/phillies-luis-arraez-suffers-sprained-ankle/",
-                  "source": "CBS Sports"
-                }
-              ]
-            },
-            {
-              "term": "micah parsons",
-              "traffic": "2000+",
-              "published": "Thu, 24 Sep 2026 17:20:00 -0700",
-              "news": [
-                {
-                  "title": "Packers make decision impacting Micah Parsons' injury return date",
-                  "url": "https://sports.yahoo.com/articles/packers-decision-impacting-micah-parsons-215539313.html",
-                  "source": "Yahoo Sports"
-                },
-                {
-                  "title": "No, Pack, no: Missing Micah Parsons, Green Bay ties grim NFL record -- and may currently be NFC's worst team",
-                  "url": "https://www.cbssports.com/nfl/news/packers-without-micah-parsons-worst-team-in-nfc/",
-                  "source": "CBS Sports"
-                },
-                {
-                  "title": "Absence of Micah Parsons is perfect excuse for blockbuster Packers deal",
-                  "url": "https://dairylandexpress.com/absence-of-micah-parsons-is-perfect-excuse-for-blockbuster-packers-deal-01m2nnxmjetc",
-                  "source": "Dairyland Express"
-                }
-              ]
-            },
-            {
-              "term": "green bay",
-              "traffic": "1000+",
-              "published": "Thu, 24 Sep 2026 17:20:00 -0700",
-              "news": [
-                {
-                  "title": "Vikings 39-22 Packers (Sep 13, 2026) Final Score",
-                  "url": "https://www.espn.com/nfl/game/_/gameId/401872927/packers-vikings",
-                  "source": "ESPN"
-                },
-                {
-                  "title": "Broncos 20-13 Jaguars (Sep 20, 2026) Final Score",
-                  "url": "https://www.espn.com/nfl/game/_/gameId/401872940/jaguars-broncos",
-                  "source": "ESPN"
-                },
-                {
-                  "title": "Eagles 24-22 Commanders (Sep 13, 2026) Final Score",
-                  "url": "https://www.espn.com/nfl/game/_/gameId/401872929/commanders-eagles",
-                  "source": "ESPN"
-                }
-              ]
-            },
-            {
-              "term": "tua tagovailoa",
-              "traffic": "1000+",
-              "published": "Thu, 24 Sep 2026 17:20:00 -0700",
-              "news": [
-                {
-                  "title": "'Ugh,' a lefty QB: How the Falcons are defying NFL history",
-                  "url": "https://www.espn.com/nfl/story/_/id/50013349/nfl-falcons-michael-penix-jr-tua-tagovailoa-left-handed-qbs-steve-young",
-                  "source": "ESPN"
-                },
-                {
-                  "title": "How Many Lefty QBs in NFL History? Falcons Have 2 of Rare Left-Handed Passers",
-                  "url": "https://sports.yahoo.com/articles/many-lefty-qbs-nfl-history-202021821.html",
-                  "source": "Yahoo Sports"
-                },
-                {
-                  "title": "What Happened to Tua Tagovailoa? Latest on Falcons QB’s Injury For Week 3 TNF vs. Packers",
-                  "url": "https://sports.yahoo.com/articles/happened-tua-tagovailoa-latest-falcons-232557510.html",
-                  "source": "Yahoo Sports"
-                }
-              ]
-            },
-            {
-              "term": "brewers score",
-              "traffic": "5000+",
-              "published": "Thu, 24 Sep 2026 17:20:00 -0700",
-              "news": [
-                {
-                  "title": "MLB 2026 playoff intel: Bold predictions, dangerous teams, more",
-                  "url": "https://www.espn.com/mlb/story/_/id/50013110/mlb-playoffs-2026-insiders-postseason-predictions-dodgers-yankees-red-sox-brewers",
-                  "source": "ESPN"
-                },
-                {
-                  "title": "MLB playoffs 2026 tracker: Standings, schedule, clinch scenarios, tiebreakers, playoff bracket and more",
-                  "url": "https://sports.yahoo.com/mlb/article/mlb-playoffs-2026-tracker-standings-schedule-clinch-scenarios-tiebreakers-playoff-bracket-and-more-130331560.html",
-                  "source": "Yahoo Sports"
-                },
-                {
-                  "title": "MLB playoff tiebreakers explained: The scenarios that could decide the postseason",
-                  "url": "https://www.nytimes.com/athletic/6409721/2026/09/24/mlb-tiebreakers-postseason-final-weekend/",
-                  "source": "The New York Times"
-                }
-              ]
-            },
-            {
-              "term": "dale caldwell",
-              "traffic": "500+",
-              "published": "Thu, 24 Sep 2026 17:20:00 -0700",
-              "news": [
-                {
-                  "title": "Dale Caldwell, New Jersey’s Lt. Governor, Violated Workplace Policies, Report Finds",
-                  "url": "https://www.nytimes.com/2026/09/24/nyregion/dale-caldwell-ethics-report-new-jersey-mikie-sherrill.html",
-                  "source": "The New York Times"
-                },
-                {
-                  "title": "Mikie Sherrill demands NJ lieutenant governor resign after report found improper behavior with women",
-                  "url": "https://www.politico.com/news/2026/09/24/mikie-sherrill-demands-nj-lieutenant-governor-resign-after-report-found-improper-behavior-with-women-01092915",
-                  "source": "Politico"
-                },
-                {
-                  "title": "Governor Sherrill Releases Report on Investigation into Lieutenant Governor Caldwell, Calls for Resignation",
-                  "url": "https://www.insidernj.com/governor-sherrill-releases-report-on-investigation-into-lieutenant-governor-caldwell-calls-for-resignation/",
-                  "source": "Insider NJ"
-                }
-              ]
-            },
-            {
-              "term": "lambeau field",
-              "traffic": "500+",
-              "published": "Thu, 24 Sep 2026 17:20:00 -0700",
-              "news": [
-                {
-                  "title": "ESPN’s Kirk Herbstreit brings golden retriever Peter for a Lambeau sniff-and-leap",
-                  "url": "https://fox11online.com/news/local/espns-kirk-herbstreit-brings-golden-retriever-peter-for-a-lambeau-field-sniff-and-leap-green-bay-titletown-atlanta-falcons-petey-vince-lombardi-landscapers",
-                  "source": "WLUK"
-                },
-                {
-                  "title": "Who is singing the national anthems at the Falcons vs Packers game?",
-                  "url": "https://en.as.com/nfl/who-is-singing-the-national-anthems-at-the-falcons-vs-packers-game-f202609-n/",
-                  "source": "Diario AS"
-                },
-                {
-                  "title": "Falcons vs Packers: Who is singing national anthem at Lambeau Field? Know about Mariachi Monumental de Mexico | Hindustan Times",
-                  "url": "https://www.hindustantimes.com/sports/us-sports/falcons-vs-packers-who-is-singing-national-anthem-at-lambeau-field-know-about-mariachi-monumental-de-mexico-101790290534431.html",
-                  "source": "Hindustan Times"
-                }
-              ]
-            },
-            {
-              "term": "green bay packers",
-              "traffic": "20000+",
-              "published": "Thu, 24 Sep 2026 17:10:00 -0700",
-              "news": [
-                {
-                  "title": "DT Javon Hargrave active vs. Atlanta | Packers-Falcons inactives",
-                  "url": "https://www.packers.com/news/packers-falcons-week-3-inactives-sept-24-2026",
-                  "source": "Green Bay Packers – packers.com"
-                },
-                {
-                  "title": "NFL Week 3 injury report: Packers offensive line in trouble; Michael Penix Jr. set to take over Falcons QB job",
-                  "url": "https://www.cbssports.com/nfl/news/nfl-week-3-injury-report-packers-offensive-line/",
-                  "source": "CBS Sports"
-                },
-                {
-                  "title": "Thursday Night Football: Falcons CB Billy Bowman will make his 2026 debut",
-                  "url": "https://www.nbcsports.com/nfl/profootballtalk/rumor-mill/news/thursday-night-football-falcons-cb-billy-bowman-will-make-his-2026-debut",
-                  "source": "NBC Sports"
-                }
-              ]
-            }
-          ],
-          "GB": [
-            {
-              "term": "packers vs falcons",
-              "traffic": "200+",
-              "published": "Thu, 24 Sep 2026 17:10:00 -0700",
-              "news": [
-                {
-                  "title": "Falcons vs. Packers: Three must-know storylines for Thursday's Week 3 prime-time game",
-                  "url": "https://www.nfl.com/news/falcons-vs-packers-three-must-know-storylines-for-thursday-s-week-3-prime-time-game",
-                  "source": "NFL.com"
-                },
-                {
-                  "title": "NFL Expert Picks: Who will win in Week 3, Falcons or Packers?",
-                  "url": "https://www.atlantafalcons.com/news/nfl-expert-picks-week-3-falcons-packers",
-                  "source": "Atlanta Falcons"
-                },
-                {
-                  "title": "Previewing Packers vs. Falcons: Atlanta seeks first win of season as Michael Penix Jr. returns on 'TNF'",
-                  "url": "https://www.cbssports.com/nfl/news/packers-falcons-preview-prediction-odds-how-to-watch/",
-                  "source": "CBS Sports"
-                }
-              ]
-            },
-            {
-              "term": "lynx vs fever",
-              "traffic": "200+",
-              "published": "Thu, 24 Sep 2026 17:10:00 -0700",
-              "news": [
-                {
-                  "title": "Lynx clinch WNBA No 1 seed despite ‘embarrassing’ loss to Fever and Olivia Miles injury",
-                  "url": "https://www.theguardian.com/sport/2026/sep/23/lynx-clinch-wnba-no-1-seed-despite-embarrassing-loss-to-fever-and-olivia-miles-injury",
-                  "source": "The Guardian"
-                },
-                {
-                  "title": "Caitlin Clark, Sophie Cunningham's Final Box Score Stats, Highlights as Fever Beat Lynx",
-                  "url": "https://bleacherreport.com/articles/25502127-caitlin-clark-sophie-cunninghams-final-box-score-stats-highlights-fever-beat-lynx",
-                  "source": "Bleacher Report"
-                },
-                {
-                  "title": "Where to watch Indiana Fever vs Minnesota Lynx? TV channel and schedule for Caitlin Clark’s last regular season game",
-                  "url": "https://www.marca.com/en/basketball/wnba/indiana-fever/2026/09/24/where-to-watch-indiana-fever-vs-minnesota-lynx-tv-channel-and-schedule-for-caitlin-clark-s-last-regular-season-game.html",
-                  "source": "MARCA"
-                }
-              ]
-            },
-            {
-              "term": "danny thomas",
-              "traffic": "500+",
-              "published": "Thu, 24 Sep 2026 16:20:00 -0700",
-              "news": [
-                {
-                  "title": "In 1956, One Actress’ Departure Led to the First TV Character Death. There Wouldn’t Be Another On-Screen Death for 15 Years",
-                  "url": "https://ca.news.yahoo.com/1956-one-actress-departure-led-215900092.html",
-                  "source": "Yahoo News Canada"
-                },
-                {
-                  "title": "Reform UK beset by internal row over response to Dover and Portsmouth protests",
-                  "url": "https://www.theguardian.com/politics/2026/sep/11/reform-uk-beset-by-internal-row-over-response-to-dover-and-portsmouth-protests",
-                  "source": "The Guardian"
-                },
-                {
-                  "title": "Britain: Reform In Crisis, But Far Right Threat Grows",
-                  "url": "https://internationalsocialist.net/2026/09/britain-reform-in-crisis-but-far-right-threat-grows/",
-                  "source": "International Socialist Alternative"
-                }
-              ]
-            },
-            {
-              "term": "the last of us",
-              "traffic": "200+",
-              "published": "Thu, 24 Sep 2026 16:10:00 -0700",
-              "news": [
-                {
-                  "title": "The PC version of The Last of Us Part II has received a record-breaking 33% discount on Steam.",
-                  "url": "https://en.gamegpu.com/news/igry/pk-versiya-igry-odni-iz-nas-chast-ii-obnovlennaya-versiya-poluchila-rekordnuyu-skidku-33-v-steam",
-                  "source": "GameGPU"
-                },
-                {
-                  "title": "The Last of Us Part II PC Version Gets Record 33% Discount on Steam",
-                  "url": "https://suaragarut.id/en/last-of-us-pc-discount",
-                  "source": "SuaraGarut.ID"
-                },
-                {
-                  "title": "The Last Of Us Season 3 Confirmed To Have No Naughty Dog Involvement – But More Games Are Likely",
-                  "url": "https://www.imdb.com/news/ni66025499/?ref_=nmnw_art_perm",
-                  "source": "IMDb"
-                }
-              ]
-            },
-            {
-              "term": "aykroyd",
-              "traffic": "1000+",
-              "published": "Thu, 24 Sep 2026 16:00:00 -0700",
-              "news": [
-                {
-                  "title": "Dan Aykroyd reflects on Nothing But Trouble: “I’m Proud of the Picture”",
-                  "url": "https://www.imdb.com/news/ni66029641/?ref_=ttnw_art_perm",
-                  "source": "IMDb"
-                },
-                {
-                  "title": "Dan Aykroyd reflects on Nothing But Trouble: “I’m Proud of the Picture”",
-                  "url": "https://www.joblo.com/dan-aykroyd-nothing-but-trouble/",
-                  "source": "JoBlo"
-                }
-              ]
-            },
-            {
-              "term": "xiaomi 18 pro max",
-              "traffic": "500+",
-              "published": "Thu, 24 Sep 2026 15:50:00 -0700",
-              "news": [
-                {
-                  "title": "Xiaomi 18 Pro and 18 Pro Max arrive with latest Snapdragon chips, privacy displays and more useful rear screens - GSMArena.com news",
-                  "url": "https://www.gsmarena.com/xiaomi_18_pro_and_18_pro_max_arrive_with_latest_snapdragon_chips_privacy_displays_and_more_useful_re-news-74733.php",
-                  "source": "GSMArena.com"
-                },
-                {
-                  "title": "Xiaomi’s Gorgeous New 18 Series Phones With Triple Leica Cameras Will Go Global",
-                  "url": "https://petapixel.com/2026/09/23/xiaomis-gorgeous-new-18-series-phones-with-triple-leica-cameras-will-go-global/",
-                  "source": "PetaPixel"
-                },
-                {
-                  "title": "Xiaomi 18 Pro has a Privacy Display that does more than Galaxy S26 Ultra, launches this week [Video]",
-                  "url": "https://9to5google.com/2026/09/21/xiaomi-18-pro-has-a-privacy-display-that-does-more-than-galaxy-s26-ultra-launches-this-week-video/",
-                  "source": "9to5Google"
-                }
-              ]
-            },
-            {
-              "term": "forza treasure hunt",
-              "traffic": "200+",
-              "published": "Thu, 24 Sep 2026 15:30:00 -0700",
-              "news": [
-                {
-                  "title": "How to complete the Series 5 Week 3 ‘Shimanoyama Region’ Treasure Hunt in Forza Horizon 6",
-                  "url": "https://traxion.gg/how-to-complete-the-series-5-week-3-shimanoyama-region-treasure-hunt-in-forza-horizon-6/",
-                  "source": "Traxion.GG"
-                },
-                {
-                  "title": "Where to find Arashiyama Bamboo Forest in Forza Horizon 6",
-                  "url": "https://www.polygon.com/forza-horizon-6-fh6-arashiyama-bamboo-forest-location-where-to-find/",
-                  "source": "Polygon.com"
-                },
-                {
-                  "title": "#BambooPerfect weekly Photo Challenge in Winter Series 5 Festival playlist. Where is bamboo forest in Forza Horizon 6",
-                  "url": "https://escorenews.com/en/article/81485-bambooperfect-weekly-photo-challenge-in-winter-series-5-festival-playlist-where-is-bamboo-forest-in-forza-horizon-6",
-                  "source": "escorenews.com"
-                }
-              ]
-            },
-            {
-              "term": "the witcher 3 wild hunt remastered",
-              "traffic": "1000+",
-              "published": "Thu, 24 Sep 2026 15:00:00 -0700",
-              "news": [
-                {
-                  "title": "The Witcher 3 Is on Sale for Half Price Ahead of Next Week’s Free Remaster Upgrade",
-                  "url": "https://www.ign.com/articles/the-witcher-3-is-on-sale-ahead-of-next-weeks-free-remaster-upgrade",
-                  "source": "IGN"
-                },
-                {
-                  "title": "CDPR wants to make The Witcher 3 Remastered feel like any other game released today: 'It's so easy to get used to these new improvements that it's hard to go back'",
-                  "url": "https://www.pcgamer.com/games/the-witcher/cdpr-wants-to-make-the-witcher-3-remastered-feel-like-any-other-game-released-today-its-so-easy-to-get-used-to-these-new-improvements-that-its-hard-to-go-back/",
-                  "source": "PC Gamer"
-                },
-                {
-                  "title": "The Witcher 3 Remastered criticized for the Igni fire and the lack of reflections on the water",
-                  "url": "https://en.gamegpu.com/news/igry/the-witcher-3-remastered-raskritikovali-za-ogon-igni-i-otsutstvie-otrazhenij-na-vode",
-                  "source": "GameGPU"
-                }
-              ]
-            },
-            {
-              "term": "sayed abu farhi",
-              "traffic": "1000+",
-              "published": "Thu, 24 Sep 2026 15:00:00 -0700",
-              "news": [
-                {
-                  "title": "Israel's Sayed Abu Farhi sent off for appearing to mimic gun in goal celebration",
-                  "url": "https://www.bbc.co.uk/sport/football/live/cmwyzv05vrjdt",
-                  "source": "BBC"
-                },
-                {
-                  "title": "Israel’s Saied Abu Farchi sent off for gun gesture celebration in defeat by Austria",
-                  "url": "https://www.theguardian.com/football/2026/sep/24/israel-saied-abu-farchi-sent-off-gun-gesture-celebration-austria-nations-league",
-                  "source": "The Guardian"
-                },
-                {
-                  "title": "Israeli player sent off for ‘gun celebration’",
-                  "url": "https://www.telegraph.co.uk/football/2026/09/24/israeli-player-sent-off-for-gun-celebration/",
-                  "source": "The Telegraph"
-                }
-              ]
-            },
-            {
-              "term": "susan sarandon",
-              "traffic": "2000+",
-              "published": "Thu, 24 Sep 2026 14:40:00 -0700",
-              "news": [
-                {
-                  "title": "Netanyahu defends Israeli military action as delegates walk out before UN speech",
-                  "url": "https://www.bbc.co.uk/news/articles/c3y0z7kxlegdo",
-                  "source": "BBC"
-                },
-                {
-                  "title": "Mamdani hits back at Netanyahu ‘anti-Semitic mayor’ attack",
-                  "url": "https://www.telegraph.co.uk/us/news/2026/09/25/mamdani-netanyahu-un-new-york-antisemitic-mayor-attack/",
-                  "source": "The Telegraph"
-                },
-                {
-                  "title": "Netanyahu calls Israel’s war in Gaza ‘opposite of genocide’ in UN speech",
-                  "url": "https://www.theguardian.com/us-news/2026/sep/24/netanyahu-un-speech-mahmoud-abbas",
-                  "source": "The Guardian"
-                }
-              ]
-            }
-          ],
-          "ES": [
-            {
-              "term": "atlético nacional - millonarios",
-              "traffic": "500+",
-              "published": "Thu, 24 Sep 2026 17:00:00 -0700",
-              "news": [
-                {
-                  "title": "Nacional - Millonarios en vivo online: Liga BetPlay, en directo",
-                  "url": "https://colombia.as.com/futbol/nacional-millonarios-en-vivo-online-liga-betplay-en-directo-f202609-d/",
-                  "source": "AS Colombia"
-                },
-                {
-                  "title": "Con novedades: Los convocados de Atlético Nacional para el clásico vs. Millonarios ¿Estará James?",
-                  "url": "https://espndeportes.espn.com/futbol/colombia/nota/_/id/17295071/los-convocados-de-atletico-nacional-clasico-vs-millonarios",
-                  "source": "ESPN Deportes"
-                },
-                {
-                  "title": "El desafío de Nacional: tumbar el invicto de Gamero en el Atanasio y vencer a Millonarios | El Colombiano",
-                  "url": "https://www.elcolombiano.com/deportes/futbol/atletico-nacional-millonarios-invicto-gamero-no-pierde-atanasio-HI41491644",
-                  "source": "El Colombiano"
-                }
-              ]
-            },
-            {
-              "term": "cabrera d'anoia",
-              "traffic": "2000+",
-              "published": "Thu, 24 Sep 2026 16:10:00 -0700",
-              "news": [
-                {
-                  "title": "El muerto de Cabrera d’Anoia con el que convivió dos años su familia era un médico especializado en homeopatía",
-                  "url": "https://elpais.com/espana/catalunya/2026-09-24/el-muerto-de-cabrera-danoia-con-el-que-convivio-dos-anos-su-familia-era-un-medico-especializado-en-homeopatia.html",
-                  "source": "EL PAÍS"
-                },
-                {
-                  "title": "Una madre y su hija, que no salían de casa en el municipio barcelonés de Cabrera d'Anoia desde la pandemia, conviven durante años con un cadáver",
-                  "url": "https://www.lavozdegalicia.es/noticia/espana/2026/09/24/madre-hija-conviven-durante-anos-casa-cadaver-hombre/00031790238609372938267.htm",
-                  "source": "La Voz de Galicia"
-                },
-                {
-                  "title": "Hallan en Barcelona el cadáver de un anciano con el que convivían dos familiares",
-                  "url": "https://www.elcorreo.com/sociedad/hallan-barcelona-cadaver-anciano-convivian-familiares-20260924200730-ntrc.html",
-                  "source": "El Correo"
-                }
-              ]
-            },
-            {
-              "term": "sindicato de inquilinos e inquilinas",
-              "traffic": "500+",
-              "published": "Thu, 24 Sep 2026 16:00:00 -0700",
-              "news": [
-                {
-                  "title": "Los propietarios del piso de Maricarmen denunciaron en enero al Sindicato de Inquilinas por coacción",
-                  "url": "https://efe.com/espana/2026-09-24/sindicato-inquilinas-querella-urbagestion/",
-                  "source": "EFE - Agencia de noticias"
-                },
-                {
-                  "title": "Urbagestión pide 10.000 euros al Sindicato de Inquilinas por llamarle “fondo buitre” por el caso de Maricarmen",
-                  "url": "https://elpais.com/espana/madrid/2026-09-24/urbagestion-pide-10000-euros-al-sindicato-de-inquilinas-por-llamarle-fondo-buitre-por-el-caso-de-maricarmen.html",
-                  "source": "EL PAÍS"
-                },
-                {
-                  "title": "Urbagestión pide al Sindicato de Inquilinas 10.000 euros por llamarle \"fondo buitre\" ante el desahucio de Maricarmen",
-                  "url": "https://www.eldiario.es/economia/urbagestion-pide-sindicato-inquilinas-10-000-euros-llamarle-fondo-buitre-desahucio-maricarmen_1_13536284.html",
-                  "source": "elDiario.es"
-                }
-              ]
-            },
-            {
-              "term": "yola berrocal",
-              "traffic": "500+",
-              "published": "Thu, 24 Sep 2026 16:00:00 -0700",
-              "news": [
-                {
-                  "title": "Estos son los nominados de 'Supervivientes All Stars 3' de la gala de anoche en Telecinco",
-                  "url": "https://www.elconfidencial.com/television/programas-tv/2026-09-25/supervivientes-all-stars-nominados-gala-anoche_4431177/",
-                  "source": "El Confidencial"
-                },
-                {
-                  "title": "Isa Pantoja reacciona a la decisión de su marido, Asraf Beno, en 'Supervivientes All Stars': \"Yo tenía mis dudas\"",
-                  "url": "https://www.telecinco.es/television/20260923/supervivientes-all-stars-isa-pantoja-reacciona-decision-asraf-beno_18_020243078.html",
-                  "source": "Telecinco"
-                },
-                {
-                  "title": "Satisfacción entre los concursantes al conocer al segundo expulsado de 'Supervivientes All Stars 3': \"Siento mis formas desbocadas\"",
-                  "url": "https://www.lecturas.com/television/satisfaccion-entre-concursantes-conocer-segundo-expulsado-supervivientes-all-stars_198959",
-                  "source": "Lecturas"
-                }
-              ]
-            },
-            {
-              "term": "renfe",
-              "traffic": "1000+",
-              "published": "Thu, 24 Sep 2026 15:50:00 -0700",
-              "news": [
-                {
-                  "title": "Renfe prepara una autopista ferroviaria para llevar las mercancías de Almería a Europa",
-                  "url": "https://www.diariodealmeria.es/almeria/renfe-autopista-ferroviaria-almeria-europa_0_2008056711.html",
-                  "source": "Diario de Almería"
-                },
-                {
-                  "title": "Renfe quiere fichar a las berenjenas y los pimientos almerienses",
-                  "url": "https://www.lavozdealmeria.com/economia/657919/renfe-quiere-fichar-almeria.html",
-                  "source": "La Voz de Almería"
-                },
-                {
-                  "title": "Renfe trabaja en crear una autopista ferroviaria desde Almería",
-                  "url": "https://www.ideal.es/almeria/almeria/renfe-trabaja-crear-autopista-ferroviaria-almeria-20260924125050-nt.html",
-                  "source": "Ideal"
-                }
-              ]
-            },
-            {
-              "term": "corinna schumacher",
-              "traffic": "200+",
-              "published": "Thu, 24 Sep 2026 15:40:00 -0700",
-              "news": [
-                {
-                  "title": "„Wenn ich unseren Song höre, weine ich“",
-                  "url": "https://www.bild.de/sport/mehr-sport/corinna-ueber-beziehung-zu-schumi-meine-mutter-war-dagegen-6ab3da62e5b1ca08382bc3b2",
-                  "source": "BILD"
-                },
-                {
-                  "title": "«Meine Mutter war gegen die Beziehung mit Michael»",
-                  "url": "https://www.blick.ch/sport/formel1/corinna-enthuellt-in-neuer-schumacher-doku-meine-mutter-war-gegen-die-beziehung-mit-michael-id22276082.html",
-                  "source": "Blick"
-                },
-                {
-                  "title": "Corinna Schumacher spricht über ihre Liebe zu Michael",
-                  "url": "https://web.de/magazine/unterhaltung/videos/stars/corinna-schumacher-spricht-liebe-michael-42761084",
-                  "source": "WEB.DE"
-                }
-              ]
-            },
-            {
-              "term": "transfretana",
-              "traffic": "200+",
-              "published": "Thu, 24 Sep 2026 15:20:00 -0700",
-              "news": [
-                {
-                  "title": "El IEC presenta hoy el nuevo número de Transfretana centrado en la realidad de Ceuta y Melilla",
-                  "url": "https://www.elpueblodeceuta.es/sec/sociedad/iec-presenta-hoy-nuevo-numero_1_1190475.html",
-                  "source": "El Pueblo de Ceuta"
-                },
-                {
-                  "title": "El IEC presenta el nuevo número de la revista Transfretana",
-                  "url": "https://www.laverdaddeceuta.com/cultura/noticias/cultura/ocio-cultura/el-iec-presenta-el-nuevo-numero-de-la-revista-transfretana",
-                  "source": "La Verdad de Ceuta"
-                },
-                {
-                  "title": "El IEC presenta la revista Transfretana nº11 sobre Ceuta y Melilla",
-                  "url": "https://elfarodeceuta.es/iec-presenta-revista-transfretana-ceuta-melilla/amp/",
-                  "source": "El Faro de Ceuta"
-                }
-              ]
-            },
-            {
-              "term": "cubarsi",
-              "traffic": "500+",
-              "published": "Thu, 24 Sep 2026 14:50:00 -0700",
-              "news": [
-                {
-                  "title": "Cubarsí: \"Quizá nos falta algún central\"",
-                  "url": "https://www.sport.es/es/noticias/barca/cubarsi-falta-central-134645200",
-                  "source": "SPORT"
-                },
-                {
-                  "title": "Pau Cubarsí, sobre Barcelona: “Preferiría que mis hijos se criasen en un pueblo antes que en la ciudad”",
-                  "url": "https://www.elnacional.cat/es/estilo-vida/pau-cubarsi-sobre-barcelona-preferiria-mis-hijos-se-criasen-en-pueblo-antes-en-ciudad_1700062_102.html",
-                  "source": "El Nacional.cat"
-                },
-                {
-                  "title": "El pueblo de Girona con 185 habitantes donde nació Pau Cubarsí: no tiene escuela ni campo de fútbol",
-                  "url": "https://www.noticiasdelvino.com/escapadas/2026/09/24/el-pueblo-de-girona-con-185-habitantes-donde-nacio-pau-cubarsi-no-tiene-escuela-ni-campo-de-futbol-69160/",
-                  "source": "Noticias del Vino"
-                }
-              ]
-            },
-            {
-              "term": "nuria roca",
-              "traffic": "500+",
-              "published": "Thu, 24 Sep 2026 14:40:00 -0700",
-              "news": [
-                {
-                  "title": "Nuria Roca pone nombre al famoso por el que dejaría a Juan del Val y 'El hormiguero' propone una solución: \"Es una fantasía\"",
-                  "url": "https://www.elconfidencial.com/television/programas-tv/2026-09-25/el-hormiguero-nuria-roca-dejar-juan-del-val-fantasia_4431175/",
-                  "source": "El Confidencial"
-                },
-                {
-                  "title": "Nuria Roca, sobre la crianza de sus hijos: «Están muy bien educados; ellos saben que nos critican, pero no hay que preocuparse por nada»",
-                  "url": "https://theobjective.com/gente/2026-09-24/nuria-roca-crianza-hijos-educados-critican-preocuparse-nada/",
-                  "source": "The Objective"
-                },
-                {
-                  "title": "Juan del Val desvela el plan que hace Nuria Roca con su hijo mayor y al que es incapaz de sumarse: \"Me da mucho miedo\"",
-                  "url": "https://www.hola.com/actualidad/20260924925341/juan-val-desvela-plan-nuria-roca-hijo-incapaz-sumarsemucho-miedo/",
-                  "source": "HOLA"
-                }
-              ]
-            },
-            {
-              "term": "ivana icardi",
-              "traffic": "500+",
-              "published": "Thu, 24 Sep 2026 14:20:00 -0700",
-              "news": [
-                {
-                  "title": "Ivana estalla tras haber sido criticada por su comentario a Omar: \"Me sentí muy impotente\"",
-                  "url": "https://www.diezminutos.es/teleprograma/programas-tv/a73875662/ivana-icardi-estalla-omar-sanchez-supervivientesall-stars-me-senti-muy-impotente/",
-                  "source": "Diez Minutos"
-                },
-                {
-                  "title": "Guerra abierta entre Ivana Icardi y Omar Sánchez en 'Supervivientes' al atacarle con la paternidad: “Lo que tú hubieras querido y no te salió”",
-                  "url": "https://www.lavanguardia.com/television/20260923/11642062/guerra-abierta-ivana-icardi-omar-sanchez-supervivientes-atacarle-paternidad-hubieras-querido-te-salio.html",
-                  "source": "La Vanguardia"
-                },
-                {
-                  "title": "Omar Sánchez zanja su relación con Anabel Pantoja en 'Supervivientes All Stars': \"No quiero que se me repita siempre lo mismo\"",
-                  "url": "https://www.elperiodico.com/cuore/entretenimiento/2026/09/23/omar-sanchez-zanja-relacion-anabel-134575589",
-                  "source": "El Periódico"
-                }
-              ]
-            }
-          ]
-        }
-      },
-      "as_of": "2026-09-25T00:45:21.631Z",
-      "source": "Google Trends"
+      "as_of": "2026-09-25T01:27:07.778Z",
+      "source": "IBJA"
     }
-  }
+  },
+  "trends": {
+    "as_of": "Fri 25 Sep, morning",
+    "india": [
+      {
+        "term": "Anant Chaturdashi",
+        "traffic": "200+",
+        "what": "Ganesh Visarjan is today, the last day of Ganeshotsav; immersion processions run through the evening.",
+        "url": "https://www.aajtak.in/religion/news/story/ganesh-visarjan-2026-today-shubh-muhurat-anant-chaturdashi-puja-vidhi-tvisz-dskc-2652219-2026-09-25",
+        "thread_id": "trend-anant-chaturdashi"
+      },
+      {
+        "term": "Weather today",
+        "traffic": "10K+",
+        "what": "A deep depression crossed the Odisha coast; four districts are on red alert with disaster teams in place.",
+        "url": "https://www.thehindu.com/news/national/odisha/red-warning-alert-issued-for-4-odisha-districs-as-disaster-response-forces-in-place-for-deep-depression/article71500624.ece",
+        "thread_id": "trend-odisha-depression"
+      },
+      {
+        "term": "Weather Lucknow",
+        "traffic": "200+",
+        "what": "Uttar Pradesh expects three days of heavy rain from today; the chief minister has put officials on alert.",
+        "url": "https://www.indiatv.in/uttar-pradesh/heavy-rain-in-uttar-pradesh-next-three-days-cm-yogi-issues-strict-officials-special-appeal-to-public-2026-09-24-1245183",
+        "thread_id": "trend-up-rain"
+      },
+      {
+        "term": "Hong Kong vs Oman",
+        "traffic": "5K+",
+        "what": "An Asian Games men's cricket group match in Japan; Indian interest is mostly about where to stream it.",
+        "url": "https://www.ndtvprofit.com/sports/hong-kong-vs-oman-live-streaming-when-and-where-to-watch-hk-vs-oma-asian-games-2026-match-online-12091237",
+        "thread_id": "trend-hk-oman"
+      },
+      {
+        "term": "Haiti vs Trinidad and Tobago",
+        "traffic": "200+",
+        "what": "A CONCACAF Nations League match; searches spiked on streaming details.",
+        "url": "https://sportstar.thehindu.com/football/haiti-vs-trinidad-tobago-live-streaming-info-when-where-to-watch-hai-v-tri-kick-off-time-venue/article71505981.ece",
+        "thread_id": "trend-haiti-tt"
+      }
+    ],
+    "world": [
+      {
+        "term": "Sayed Abu Farhi",
+        "traffic": "2K+",
+        "what": "Israel's forward was sent off for a gun-gesture goal celebration in a 3–1 Nations League defeat by Austria.",
+        "url": "https://www.bbc.co.uk/sport/football/live/cmwyzv05vrjdt",
+        "thread_id": "trend-abu-farhi"
+      },
+      {
+        "term": "Xiaomi 18 Pro Max",
+        "traffic": "500+",
+        "what": "Xiaomi launched the 18 Pro and 18 Pro Max with new Snapdragon chips, privacy displays and bigger rear screens.",
+        "url": "https://www.gsmarena.com/xiaomi_18_pro_and_18_pro_max_arrive_with_latest_snapdragon_chips_privacy_displays_and_more_useful_re-news-74733.php",
+        "thread_id": "trend-xiaomi-18"
+      },
+      {
+        "term": "The Witcher 3 Remastered",
+        "traffic": "1K+",
+        "what": "The free remaster upgrade arrives next week; the original is half price until then.",
+        "url": "https://www.ign.com/articles/the-witcher-3-is-on-sale-ahead-of-next-weeks-free-remaster-upgrade",
+        "thread_id": "trend-witcher-3"
+      },
+      {
+        "term": "Corinna Schumacher",
+        "traffic": "200+",
+        "what": "Michael Schumacher's wife talks about their early relationship in a new documentary.",
+        "url": "https://www.blick.ch/sport/formel1/corinna-enthuellt-in-neuer-schumacher-doku-meine-mutter-war-gegen-die-beziehung-mit-michael-id22276082.html",
+        "thread_id": "trend-corinna"
+      },
+      {
+        "term": "Sindicato de Inquilinos",
+        "traffic": "5K+",
+        "what": "A Madrid eviction case has pushed Spain's government toward an anti-eviction decree; Junts wants tax cuts in return.",
+        "url": "https://www.lavanguardia.com/politica/20260925/11642978/junts-pide-rebajas-fiscales-aprobar-decreto-antidesahucios-caso-maricarmen.html",
+        "thread_id": "trend-spain-evictions"
+      }
+    ]
+  },
+  "betting": [
+    {
+      "id": "pm:f1-azerbaijan-grand-prix-winner-2026-09-26",
+      "thread_id": "bet-f1-azerbaijan-grand-prix-winner-2026-09-",
+      "title": "Azerbaijan Grand Prix: Driver Winner",
+      "category": "F1",
+      "outcomes": [
+        {
+          "name": "Kimi Antonelli",
+          "prob": 41
+        },
+        {
+          "name": "George Russell",
+          "prob": 19.5
+        },
+        {
+          "name": "Lando Norris",
+          "prob": 14
+        }
+      ],
+      "source": "Polymarket",
+      "url": "https://polymarket.com/event/f1-azerbaijan-grand-prix-winner-2026-09-26"
+    },
+    {
+      "id": "pm:laliga-2027-champion-20260701200737375",
+      "thread_id": "bet-laliga-2027-champion-20260701200737375",
+      "title": "LALIGA: 2027 Champion",
+      "category": "Football",
+      "outcomes": [
+        {
+          "name": "Barcelona",
+          "prob": 78.5
+        },
+        {
+          "name": "Real Madrid",
+          "prob": 17.5
+        },
+        {
+          "name": "Atlético Madrid",
+          "prob": 2.1
+        }
+      ],
+      "source": "Polymarket",
+      "url": "https://polymarket.com/event/laliga-2027-champion-20260701200737375"
+    },
+    {
+      "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
+      "thread_id": "bet-uefa-champions-league-2027-champion-2026",
+      "title": "UEFA Champions League: 2027 Champion",
+      "category": "Football",
+      "outcomes": [
+        {
+          "name": "Barcelona",
+          "prob": 22.5
+        },
+        {
+          "name": "Bayern Munich",
+          "prob": 14.5
+        },
+        {
+          "name": "Paris Saint-Germain",
+          "prob": 13.5
+        }
+      ],
+      "source": "Polymarket",
+      "url": "https://polymarket.com/event/uefa-champions-league-2027-champion-20260701202025549"
+    },
+    {
+      "id": "pm:ballon-dor-winner-2026",
+      "thread_id": "bet-ballon-dor-winner-2026",
+      "title": "Ballon d'Or Winner 2026",
+      "category": "Football",
+      "outcomes": [
+        {
+          "name": "Harry Kane",
+          "prob": 57.9
+        },
+        {
+          "name": "Lamine Yamal",
+          "prob": 22.2
+        },
+        {
+          "name": "Kylian Mbappé",
+          "prob": 8.5
+        }
+      ],
+      "source": "Polymarket",
+      "url": "https://polymarket.com/event/ballon-dor-winner-2026"
+    },
+    {
+      "id": "ks:KXLLM1-26DEC31",
+      "thread_id": "bet-kxllm1-26dec31",
+      "title": "Best AI at the end of 2026?",
+      "category": "AI",
+      "outcomes": [
+        {
+          "name": "Claude",
+          "prob": 71.5
+        },
+        {
+          "name": "ChatGPT",
+          "prob": 12.4
+        },
+        {
+          "name": "Gemini",
+          "prob": 8.7
+        }
+      ],
+      "source": "Kalshi",
+      "url": "https://kalshi.com/markets/kxllm1"
+    },
+    {
+      "id": "ks:KXTESTMATCH-26SEP220000AUS-AINA",
+      "thread_id": "bet-kxtestmatch-26sep220000aus-aina",
+      "title": "India A vs Australia A (four-day match)",
+      "category": "Cricket",
+      "outcomes": [
+        {
+          "name": "India A",
+          "prob": 92
+        },
+        {
+          "name": "Australia A",
+          "prob": 7
+        },
+        {
+          "name": "Draw",
+          "prob": 4
+        }
+      ],
+      "source": "Kalshi",
+      "url": "https://kalshi.com/markets/kxtestmatch"
+    },
+    {
+      "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
+      "thread_id": "bet-us-announces-end-of-iranian-blockade-byp",
+      "title": "US announces end of Iranian blockade by...?",
+      "category": "Iran war",
+      "outcomes": [
+        {
+          "name": "By September 30",
+          "prob": 8.5
+        },
+        {
+          "name": "By October 15",
+          "prob": 18.5
+        },
+        {
+          "name": "By October 31",
+          "prob": 30.5
+        }
+      ],
+      "source": "Polymarket",
+      "url": "https://polymarket.com/event/us-announces-end-of-iranian-blockade-byptptpt-20260713152715080"
+    },
+    {
+      "id": "pm:us-iran-ceasefire-continues-throughptptpt",
+      "thread_id": "bet-us-iran-ceasefire-continues-throughptptp",
+      "title": "US-Iran ceasefire continues through...?",
+      "category": "Iran war",
+      "outcomes": [
+        {
+          "name": "Through September 25",
+          "prob": 98.3
+        },
+        {
+          "name": "Through September 30",
+          "prob": 85.5
+        },
+        {
+          "name": "Through October 31",
+          "prob": 56.5
+        }
+      ],
+      "source": "Polymarket",
+      "url": "https://polymarket.com/event/us-iran-ceasefire-continues-throughptptpt"
+    },
+    {
+      "id": "pm:russia-x-ukraine-peace-talks-byptptpt-20260609012540716",
+      "thread_id": "bet-russia-x-ukraine-peace-talks-byptptpt-20",
+      "title": "Russia x Ukraine peace talks by...?",
+      "category": "Ukraine war",
+      "outcomes": [
+        {
+          "name": "By September 30",
+          "prob": 5.5
+        },
+        {
+          "name": "By October 15",
+          "prob": 26.5
+        },
+        {
+          "name": "By October 31",
+          "prob": 41
+        }
+      ],
+      "source": "Polymarket",
+      "url": "https://polymarket.com/event/russia-x-ukraine-peace-talks-byptptpt-20260609012540716"
+    },
+    {
+      "id": "pm:brazil-presidential-election",
+      "thread_id": "bet-brazil-presidential-election",
+      "title": "Brazil Presidential Election",
+      "category": "World politics",
+      "outcomes": [
+        {
+          "name": "Flávio Bolsonaro",
+          "prob": 55.6
+        },
+        {
+          "name": "Luiz Inácio Lula da Silva",
+          "prob": 43.5
+        },
+        {
+          "name": "Renan Santos",
+          "prob": 0.5
+        }
+      ],
+      "source": "Polymarket",
+      "url": "https://polymarket.com/event/brazil-presidential-election"
+    }
+  ]
 }
