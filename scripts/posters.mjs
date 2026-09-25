@@ -42,7 +42,7 @@ if (existsSync(CA)) {
 
 // 3. Capture.
 const VIEWS = [
-  ["today", "Today, one screen"], ["edition", "The edition, framed"], ["mast", "Masthead"], ["night", "Masthead, night"], ["clock", "Clock and live strip"],
+  ["today", "Today, one screen"], ["edition", "The edition, framed"], ["clock", "Clock and live strip"],
 ];
 const DEVICES = [
   ["desktop", { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 }],
