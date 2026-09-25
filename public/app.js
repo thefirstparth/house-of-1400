@@ -167,15 +167,13 @@ const sourcesLine = srcs => (srcs?.length ? `<div class="src">${srcs.map(s => `<
 const newFor = x => (x.new_for_you ? `<span class="newfor">New for you</span>` : "");
 
 const THUMB = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v11H3V10z"/><path d="M7 10l4.2-7.2a2 2 0 0 1 3.7 1.3L14 9h5.6a2 2 0 0 1 2 2.4l-1.6 8A2 2 0 0 1 18 21H7"/></svg>`;
-// Thumbs on every story, brief and Screen & Stage title: they tune future editions (EDITORIAL.md, Votes).
-function thumbs(rawId, cls = "thumbs") {
-  const cur = (store.get("h1400-votes") || {})[rawId], id = esc(rawId);
-  return `<span class="${cls}" role="group" aria-label="Tune future editions"><button class="th" data-th="up" data-story="${id}" aria-pressed="${cur === "up"}" title="More like this" aria-label="More like this">${THUMB}</button><button class="th" data-th="down" data-story="${id}" aria-pressed="${cur === "down"}" title="Less like this" aria-label="Less like this"><span style="display:block;transform:rotate(180deg)">${THUMB}</span></button></span>`;
-}
+// Feedback is a letter to the editor, in words (EDITORIAL.md, Letters). Every story and brief has a way to write one.
+const PEN = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>`;
+const noteBtn = (id, cls = "note") => `<button class="${cls}" data-note="${esc(id)}" title="Write to the editor about this">${PEN}<span>Write to the editor</span></button>`;
 function tools(st, withMore) {
   const link = st.sources?.[0]?.url;
   const id = esc(st.id);
-  return `<div class="tools">${withMore ? `<button class="rm" data-more="${id}" aria-expanded="false">Full story</button>` : ""}${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">Source ↗</a>` : ""}<button data-clip="${id}" title="Share this story as an image">Share</button>${thumbs(st.id)}</div>`;
+  return `<div class="tools">${withMore ? `<button class="rm" data-more="${id}" aria-expanded="false">Full story</button>` : ""}${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">Source ↗</a>` : ""}<button data-clip="${id}" title="Share this story as an image">Share</button>${noteBtn(st.id)}</div>`;
 }
 
 const why = w => (w?.text ? `<div class="why"><b>${w.personal ? "Why it matters for you" : "Why it matters"}</b>${esc(w.text)}</div>` : "");
@@ -200,7 +198,7 @@ ${why(st.why)}</div>${tools(st, more)}</article>`;
 }
 
 function briefHTML(b, cls = "item") {
-  return `<div class="${cls}" id="s-${esc(b.id)}" style="--acc:${accent(b.section)}" data-thread="${esc(b.thread_id)}">${b.kicker ? `<div class="${cls === "brief" ? "kick" : "tag"}">${esc(b.kicker)}${newFor(b)}</div>` : newFor(b)}<h4>${esc(b.headline)}</h4>${esc(b.text)}<div class="btools">${sourcesLine(b.sources)}${thumbs(b.id, "thumbs sm")}</div></div>`;
+  return `<div class="${cls}" id="s-${esc(b.id)}" style="--acc:${accent(b.section)}" data-thread="${esc(b.thread_id)}">${b.kicker ? `<div class="${cls === "brief" ? "kick" : "tag"}">${esc(b.kicker)}${newFor(b)}</div>` : newFor(b)}<h4>${esc(b.headline)}</h4>${esc(b.text)}<div class="btools">${sourcesLine(b.sources)}${noteBtn(b.id, "note sm")}</div></div>`;
 }
 
 function secWrap(id, body, sub) {
@@ -540,7 +538,7 @@ const screenId = s => "scr-" + String(s.title).toLowerCase().replace(/[^a-z0-9]+
 function screenBlock() {
   const all = E.screen || [];
   const now = all.filter(s => !s.coming_soon), soon = all.filter(s => s.coming_soon);
-  const table = list => `<div class="tbl"><table><thead><tr><th>Title</th><th>Where</th><th>When</th><th class="r">Verdict</th></tr></thead><tbody>${list.map(s => `<tr><td><b>${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener" style="color:inherit">${esc(s.title)}</a>` : esc(s.title)}</b><br><small>${esc(s.type)} · ${esc(s.language)}</small><br><small>${esc(s.reason)}${s.if_you_liked ? ` If you liked ${esc(s.if_you_liked)}.` : ""}</small></td><td>${esc(s.where)}</td><td>${esc(s.release)}</td><td class="r"><span class="verdict ${VERDICT[s.verdict][0]}">${VERDICT[s.verdict][1]}</span>${thumbs(screenId(s), "thumbs sm")}</td></tr>`).join("")}</tbody></table></div>`;
+  const table = list => `<div class="tbl"><table><thead><tr><th>Title</th><th>Where</th><th>When</th><th class="r">Verdict</th></tr></thead><tbody>${list.map(s => `<tr><td><b>${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener" style="color:inherit">${esc(s.title)}</a>` : esc(s.title)}</b><br><small>${esc(s.type)} · ${esc(s.language)}</small><br><small>${esc(s.reason)}${s.if_you_liked ? ` If you liked ${esc(s.if_you_liked)}.` : ""}</small></td><td>${esc(s.where)}</td><td>${esc(s.release)}</td><td class="r"><span class="verdict ${VERDICT[s.verdict][0]}">${VERDICT[s.verdict][1]}</span></td></tr>`).join("")}</tbody></table></div>`;
   let h = "";
   if (now.length) h += table(now);
   if (now.length) h += `<div class="legend">${Object.entries(VERDICT).map(([k, [c, l]]) => `<div><span class="verdict ${c}">${l}</span>${{ must: "Critics and audiences both strongly positive", good: "Clearly positive, a few reservations", call: "Split reviews, or good but niche", skip: "Clearly negative on both", early: "Fewer than three reputable reviews so far" }[k]}</div>`).join("")}</div>`;
@@ -643,6 +641,7 @@ function render() {
   h += secWrap("betting", `<div data-live="betting">${bettingBlock()}</div>`, `What the world is betting on · ${markets}`);
   h += secWrap("bye", byeBlock(), "Watch and do");
   h += deskBlock();
+  h += secWrap("letters", lettersBlock(), E.letters?.length ? "The editor replies" : "Your notes to the paper");
   if (E.editor_note) h += `<div class="editor">${esc(E.editor_note)}<span><a href="/editor"><img src="/bhide.svg" alt="" width="28" height="28">${esc(CFG.paper.editor.signature)}</a></span></div>`;
   h += `<div class="house" id="house"><b>${esc(sec("house").name)}</b><p>${esc(E.house_note)}</p></div>`;
   h += `<div class="foot">${esc(`THE HOUSE OF 1400 · ${longDate(E.date).toUpperCase()} · NO. ${n} · EDITED BY ${CFG.paper.editor.signature.replace(", Editor", "").toUpperCase()}`)}<br><a href="/editor">About the editor</a> · <a href="/archive">The Archive</a></div>`;
@@ -670,7 +669,8 @@ function balanceFront() {
   const lead = document.querySelector(".front .lead"), side = document.querySelector(".front .side");
   if (!lead || !side) return;
   lead.querySelectorAll(".story.moved").forEach(el => side.appendChild(el));
-  if (innerWidth <= 980) return;
+  // Up to 980px the front is one column; from 1500px it is three (lead, seconds, briefs), which need no balancing.
+  if (innerWidth <= 980 || innerWidth >= 1500) return;
   for (let i = 0; i < 3; i++) {
     const last = side.querySelector(".story:last-of-type");
     if (!last || side.querySelectorAll(".story").length < 2) break;
@@ -742,6 +742,35 @@ function toggleMore(id) {
   return true;
 }
 
+// ------------------------------------------------------------------ letters to the editor
+function openLetter(id = "") {
+  const st = id ? findStory(id) : null;
+  const about = st ? `<div class="lt-about">About: <b>${esc(st.headline || st.title || "")}</b></div>` : "";
+  $("#modal").innerHTML = `<div class="card letter"><div class="lt-head">A letter to the editor</div>${about}
+<textarea id="ltText" maxlength="1500" rows="6" placeholder="${st ? "More of this, less of that, a correction, a question…" : "What should the paper do more of, less of, or differently?"}"></textarea>
+<p class="lt-note">He reads every letter before the next edition and notes what he did about it. The site has no password, so anyone with its link could read letters too.</p>
+<div class="row2"><button class="pri" id="sendLetter" data-id="${esc(id)}">Send</button><button data-close="1">Cancel</button></div></div>`;
+  $("#modal").hidden = false;
+  setTimeout(() => $("#ltText")?.focus(), 30);
+}
+async function sendLetter() {
+  const text = $("#ltText").value.trim(), id = $("#sendLetter").dataset.id || "";
+  if (text.length < 3) { toast("Write a line or two first."); return; }
+  const st = id ? findStory(id) : null;
+  $("#sendLetter").disabled = true;
+  try {
+    const r = await fetch("/api/letter", { method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ text, date: E.date, story_id: id || null, headline: st?.headline || null, section: st?.section || null }) });
+    if (!r.ok) throw new Error(r.status);
+    $("#modal").hidden = true; toast("Sent. The editor will read it before the next edition.");
+  } catch { $("#sendLetter").disabled = false; toast("Could not send. Try again in a minute."); }
+}
+function lettersBlock() {
+  const L = E.letters || [];
+  const replies = L.map(l => `<div class="lt-item"><blockquote>${esc(l.quote)}</blockquote><p>${esc(l.reply)}</p><span class="lt-sig">${esc(CFG.paper.editor.signature)}</span></div>`).join("");
+  return `${replies ? `<div class="lt-list">${replies}</div>` : ""}<button class="lt-write" data-note="">${PEN}<span>Write to the editor</span></button>`;
+}
+
 async function vote(id, dirn) {
   const st = findStory(id); if (!st) return;
   const v = store.get("h1400-votes") || {};
@@ -775,7 +804,7 @@ async function clip(id) {
   const body = st.short || st.text;
   // measure first
   c.width = W; c.height = 10;
-  x.font = "400 64px 'Libre Caslon Display', Georgia, serif"; const hl = wrap(x, st.headline, W - 2 * P);
+  x.font = "400 64px 'Playfair Display', Georgia, serif"; const hl = wrap(x, st.headline, W - 2 * P);
   x.font = "400 34px 'Source Serif 4', Georgia, serif"; const bl = wrap(x, body, W - 2 * P);
   const H = P + 40 + 40 + hl.length * 72 + 28 + bl.length * 52 + 60 + 40;
   c.height = H;
@@ -788,7 +817,7 @@ async function clip(id) {
   y += 40; x.fillStyle = col("--rule"); x.fillRect(P, y, W - 2 * P, 2); y += 30;
   x.fillStyle = col(sec(st.section).accent) || col("--ink"); x.font = "700 22px 'Instrument Sans', Arial, sans-serif";
   x.fillText((st.kicker || sec(st.section).name).toUpperCase(), P, y); y += 44;
-  x.fillStyle = col("--ink"); x.font = "400 64px 'Libre Caslon Display', Georgia, serif";
+  x.fillStyle = col("--ink"); x.font = "400 64px 'Playfair Display', Georgia, serif";
   for (const l of hl) { x.fillText(l, P, y); y += 72; }
   y += 16; x.font = "400 34px 'Source Serif 4', Georgia, serif";
   for (const l of bl) { x.fillText(l, P, y); y += 52; }
@@ -817,7 +846,8 @@ document.addEventListener("click", e => {
   if (t.dataset.go) { const el = document.getElementById("s-" + t.dataset.go) || document.getElementById(t.dataset.go); el && el.scrollIntoView({ behavior: "smooth", block: "start" }); $("#glance").hidden = true; $("#glanceBtn").textContent = "At a Glance"; return; }
   if (t.dataset.more) { toggleMore(t.dataset.more); return; }
   if (t.dataset.head) { if (!toggleMore(t.dataset.head)) toast("Short story. The full text is already shown."); return; }
-  if (t.dataset.th) { vote(t.dataset.story, t.dataset.th); return; }
+  if (t.dataset.note !== undefined) { openLetter(t.dataset.note); return; }
+  if (t.id === "sendLetter") { sendLetter(); return; }
   if (t.dataset.clip) { clip(t.dataset.clip); return; }
   if (t.dataset.close) { $("#modal").hidden = true; return; }
   if (t.id === "locBtn") { myLocation(true); return; }

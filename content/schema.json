@@ -55,7 +55,8 @@
         "bye",
         "desk",
         "house",
-        "week"
+        "week",
+        "letters"
       ]
     },
     "source": {
@@ -874,6 +875,25 @@
             "type": "string",
             "format": "uri"
           }
+        },
+        "letters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "action"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "action": {
+                "type": "string"
+              }
+            }
+          }
         }
       }
     },
@@ -911,6 +931,30 @@
           },
           "url": {
             "$ref": "#/definitions/url"
+          }
+        }
+      }
+    },
+    "letters": {
+      "type": "array",
+      "$comment": "Printed replies to letters to the editor (optional; on days he has something to say).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "letter_id",
+          "quote",
+          "reply"
+        ],
+        "properties": {
+          "letter_id": {
+            "type": "string"
+          },
+          "quote": {
+            "$ref": "#/definitions/text"
+          },
+          "reply": {
+            "$ref": "#/definitions/text"
           }
         }
       }

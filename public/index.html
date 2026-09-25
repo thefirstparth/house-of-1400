@@ -17,7 +17,7 @@ var P=window.PRE0={cfg:g("/config/house.json")};if(p==="/"||p==="/today"||p.inde
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Fonts load without blocking the first paint; the blackletter face is cut down to the three letters of "The". -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..600&family=Instrument+Sans:wght@400..700&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..800;1,8..60,300..700&family=Instrument+Sans:wght@400..700&display=swap" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&text=The&display=swap" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="/styles.css">
 <script>try{var t=localStorage.getItem("h1400-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
@@ -40,7 +40,7 @@ var P=window.PRE0={cfg:g("/config/house.json")};if(p==="/"||p==="/today"||p.inde
 </div>
 <button class="glancebtn" id="glanceBtn" aria-expanded="false" aria-controls="glance" hidden>At a Glance</button>
 <div class="glance" id="glance" hidden></div>
-<div class="dock"><button id="posterBtn" aria-haspopup="true" aria-expanded="false">Poster</button><button id="themeBtn">Night</button></div>
+<div class="dock"><button data-note="" title="Write to the editor">Letter</button><button id="posterBtn" aria-haspopup="true" aria-expanded="false">Poster</button><button id="themeBtn">Night</button></div>
 <div class="pmenu" id="pmenu" hidden><button data-poster="today">Today, one screen</button><button data-poster="edition">The edition, framed</button><button data-poster="mast">Masthead</button><button data-poster="night">Masthead, night</button><button data-poster="clock">Clock and live strip</button></div>
 <div class="poster" id="poster" hidden></div>
 <div class="toast" id="toast" role="status" hidden></div>

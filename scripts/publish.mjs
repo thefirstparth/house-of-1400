@@ -1,6 +1,6 @@
 // Publish a validated edition: copy to latest.json, update archive.json and the story ledger.
 // Usage: node scripts/publish.mjs content/editions/YYYY-MM-DD.json
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { allItems, validateEdition } from "./validate.mjs";
 
 const file = process.argv[2];
@@ -37,4 +37,12 @@ ledger.threads = [...byId.values()].filter(t => t.status === "active" && t.last_
 ledger.last_updated = new Date().toISOString();
 ledger.last_edition = E.date;
 writeFileSync("ledger/story-ledger.json", JSON.stringify(ledger, null, 2) + "\n");
+
+// Letters answered in this edition are not shown to tomorrow's run again.
+const answered = (E.checks?.letters || []).map(l => l.id).filter(Boolean);
+if (answered.length) {
+  const h = existsSync("ledger/letters-handled.json") ? JSON.parse(readFileSync("ledger/letters-handled.json", "utf8")) : { ids: [] };
+  h.ids = [...new Set([...(h.ids || []), ...answered])].slice(-2000);
+  writeFileSync("ledger/letters-handled.json", JSON.stringify(h, null, 2) + "\n");
+}
 console.log(`Published ${E.date} (No. ${E.edition_no}). ${ledger.threads.length} threads in the ledger.`);

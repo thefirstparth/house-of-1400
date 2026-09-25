@@ -138,6 +138,12 @@
       "accent": "--ink"
     },
     {
+      "id": "letters",
+      "name": "Letters to the Editor",
+      "short": "Letters",
+      "accent": "--ink"
+    },
+    {
       "id": "house",
       "name": "House Note",
       "short": "House Note",

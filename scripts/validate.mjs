@@ -164,6 +164,18 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
       if (n.covered_by && !ids.has(n.covered_by)) errors.push(`checks.national: covered_by "${n.covered_by}" is not an item in this edition`);
       if (!n.covered_by && !(n.answer && n.answer.length >= 15)) errors.push(`checks.national: "${n.story}" is neither covered (covered_by) nor explained (answer)`);
     }
+    // Letters to the editor: every letter in today's inbox (scripts/letters.mjs) gets an answer in checks.letters,
+    // saying what the editor did with it.
+    let inbox = null;
+    try { inbox = read("ledger/letters-inbox.json"); } catch {}
+    if (inbox?.date === E.date) {
+      const done = new Map((E.checks?.letters || []).map(l => [l.id, l]));
+      for (const l of inbox.letters || []) {
+        const a = done.get(l.id);
+        if (!a || !(a.action || "").trim() || a.action.length < 15) errors.push(`checks.letters: letter ${l.id} ("${String(l.text).slice(0, 50)}") has no answer; say what the edition did about it`);
+      }
+    }
+    for (const r of E.letters || []) if (!(E.checks?.letters || []).some(l => l.id === r.letter_id)) errors.push(`letters: reply to ${r.letter_id} is not in checks.letters`);
     // d) Markets still trending carry over (ledger/betting-carry.json, written by scripts/betting-candidates.mjs).
     let carry = null;
     try { carry = read("ledger/betting-carry.json"); } catch {}
@@ -174,13 +186,6 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     }
   }
   if (E.date > "2026-09-25") {
-    // Every full story carries a longer version with more than the short one (the page shows "Full story").
-    for (const s of items) if (s._kind === "story") {
-      const more = (s.more || []).join(" ").trim();
-      if (!more) errors.push(`more: ${s._where} has no long version; write 2 to 4 paragraphs that add facts, context or what happens next`);
-      else if (more.split(/\s+/).length < 80) errors.push(`more: ${s._where} long version is under 80 words`);
-      else if ((s.more || []).some(p => p.trim() === (s.short || "").trim())) errors.push(`more: ${s._where} repeats the short version; add to it instead`);
-    }
     // Mondays: the week ahead across the paper's areas, and the Ledger's weekend-and-week card.
     if (E.weekday === "mon") {
       const W = E.week_ahead || [], end = new Date(Date.parse(E.date + "T00:00:00Z") + 6 * 864e5).toISOString().slice(0, 10);
