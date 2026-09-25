@@ -11,7 +11,7 @@ All endpoints below were tested on 25 Sep 2026 unless marked otherwise.
 | f1_next | Jolpica `api.jolpi.ca/ergast/f1/current/next.json` | OpenF1 `api.openf1.org/v1/sessions?year=&country_name=` | 1 h | Both agreed on every Baku session time |
 | f1_standings | Jolpica `current/driverStandings.json`, `constructorStandings.json` | ESPN racing | 1 h | |
 | f1_last | Jolpica `current/last/results.json` | | 1 h | |
-| football | ESPN `site.api.espn.com/apis/site/v2/sports/soccer/all/teams/{id}/schedule?fixture=true` and without `fixture` for results | TheSportsDB free key `3` | 30 min | Matched LaLiga.com and realmadrid.com exactly. Team IDs in config |
+| football | ESPN `site.api.espn.com/apis/site/v2/sports/soccer/all/teams/{id}/schedule?fixture=true` and without `fixture` for results | none (snapshot) | 30 min | Matched LaLiga.com and realmadrid.com exactly. Team IDs in config. TheSportsDB free key dropped 25 Sep: stale and incomplete |
 | laliga_table | ESPN `apis/v2/sports/soccer/esp.1/standings` | | 1 h | |
 | nba | ESPN `basketball/nba/teams/{abbr}/schedule` | | 1 h | Only in season |
 | tennis | ESPN `tennis/atp/scoreboard` (tournament level) | | 1 h | No player-level next match. Player NEXT comes from the daily run |
