@@ -1,7 +1,7 @@
 # RUNBOOK: the daily edition
 
 ## Schedule
-Four scheduled runs a day, 29 minutes apart, from 14:00 IST. Each one first checks whether today's edition is already live and exits at once if it is, so only one does the work.
+Four scheduled runs a day, 29 minutes apart, from 14:00 IST. Each one first checks whether today's edition is already live and exits at once if it is, so only one does the work. All runs (including the 16:00 poster run) use Sonnet (`claude-sonnet-5`), set on each routine. The server may start a run a few minutes after its slot; the information cut stays 14:00 IST whatever the start time.
 
 | Run | IST | UTC cron |
 |---|---|---|
