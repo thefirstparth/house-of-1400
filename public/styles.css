@@ -169,6 +169,10 @@ table.kv th{text-transform:none;letter-spacing:0;font:600 15px var(--sans);color
 .panel .nm{font:700 11.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .panel .lvl{font:600 36px/1.1 var(--serif);font-variant-numeric:tabular-nums;letter-spacing:-.015em;margin-top:2px}
 .panel .chg{font:700 14px var(--sans)}
+.panel .chg .pc{font-weight:600}
+.panel .chg .when{font-weight:500;color:var(--muted)}
+td.r small{display:block;font:600 11.5px var(--sans);opacity:.85;margin-top:1px}
+.dash .mk .idx3 b i{font-style:normal}
 .panel .pnote{font:600 12.5px var(--sans);background:var(--paper);display:inline-block;padding:3px 9px;border-radius:999px;margin-top:8px}
 .panels{gap:14px}
 .up{color:var(--good)}.dn{color:var(--bad)}
@@ -455,6 +459,7 @@ details.desk summary{font:700 12px var(--sans);letter-spacing:.14em;text-transfo
  .dash .mk .idx3 span{font-size:9.5px}
  .dash .mk .idx3 span.big{font-size:18px}
  .dash .mk .idx3 b{font-size:11.5px}
+ .dash .mk .idx3 b i{display:none}
  .dash .mk .spark{display:none}
  .dash .mk .cross{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px;padding-top:5px}
  .dash .mk .cross div span{font-size:10px}

@@ -327,7 +327,35 @@
       "celebrity"
     ],
     "override": "include an excluded market only if it clearly affects Parth",
-    "show": 10
+    "show": 10,
+    "standing": [
+      {
+        "name": "Best AI model",
+        "search": "best AI model end of",
+        "title": "^Which company has the best AI model end of [A-Z][a-z]+\\??$"
+      },
+      {
+        "name": "Ballon d'Or",
+        "search": "Ballon d'Or Winner",
+        "title": "^Ballon d'Or Winner \\d{4}$"
+      },
+      {
+        "name": "La Liga champion",
+        "search": "LALIGA Champion",
+        "title": "^LALIGA: \\d{4} Champion$"
+      },
+      {
+        "name": "Champions League winner",
+        "search": "UEFA Champions League Champion",
+        "title": "^UEFA Champions League: \\d{4} Champion$"
+      },
+      {
+        "name": "F1 drivers' champion",
+        "search": "F1 Drivers' Champion",
+        "title": "^F1 Drivers' Champion$"
+      }
+    ],
+    "standing_rule": "Standing markets print every day while they are open, in addition to the day's picks and within the 10. They are exempt from any cross-day freshness judgement. Each resolves to the open Polymarket event whose title matches, choosing the one that ends soonest but not within 24 hours (so 'end of September' hands over to 'end of October'). Skip one only when it is closed, settled at 99%, or not found, and say so in coverage_waivers.standing."
   },
   "day_profiles": {
     "mon": {

@@ -699,6 +699,10 @@
           },
           "volume24h": {
             "type": "number"
+          },
+          "standing": {
+            "type": "string",
+            "$comment": "Name of the config betting.standing entry this market fills (printed every day while open)."
           }
         }
       }

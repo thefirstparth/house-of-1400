@@ -4172,30 +4172,55 @@
   },
   "betting": [
     {
-      "id": "pm:f1-azerbaijan-grand-prix-winner-2026-09-26",
-      "thread_id": "bet-f1-azerbaijan-grand-prix-winner-2026-09-",
-      "title": "Azerbaijan Grand Prix: Driver Winner",
-      "category": "F1",
+      "id": "pm:which-company-has-the-best-ai-model-end-of-october",
+      "thread_id": "bet-which-company-has-the-best-ai-model-end-of-october",
+      "standing": "Best AI model",
+      "title": "Which company has the best AI model end of October?",
+      "category": "AI",
       "outcomes": [
         {
-          "name": "Kimi Antonelli",
-          "prob": 41
+          "name": "Anthropic",
+          "prob": 88.5
         },
         {
-          "name": "George Russell",
-          "prob": 19.5
+          "name": "Google",
+          "prob": 7.7
         },
         {
-          "name": "Lando Norris",
-          "prob": 14
+          "name": "OpenAI",
+          "prob": 2.8
         }
       ],
       "source": "Polymarket",
-      "url": "https://polymarket.com/event/f1-azerbaijan-grand-prix-winner-2026-09-26"
+      "url": "https://polymarket.com/event/which-company-has-the-best-ai-model-end-of-october"
+    },
+    {
+      "id": "pm:ballon-dor-winner-2026",
+      "thread_id": "bet-ballon-dor-winner-2026",
+      "standing": "Ballon d'Or",
+      "title": "Ballon d'Or Winner 2026",
+      "category": "Football",
+      "outcomes": [
+        {
+          "name": "Harry Kane",
+          "prob": 57.9
+        },
+        {
+          "name": "Lamine Yamal",
+          "prob": 22.1
+        },
+        {
+          "name": "Kylian Mbappé",
+          "prob": 8.4
+        }
+      ],
+      "source": "Polymarket",
+      "url": "https://polymarket.com/event/ballon-dor-winner-2026"
     },
     {
       "id": "pm:laliga-2027-champion-20260701200737375",
       "thread_id": "bet-laliga-2027-champion-20260701200737375",
+      "standing": "La Liga champion",
       "title": "LALIGA: 2027 Champion",
       "category": "Football",
       "outcomes": [
@@ -4218,6 +4243,7 @@
     {
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
       "thread_id": "bet-uefa-champions-league-2027-champion-2026",
+      "standing": "Champions League winner",
       "title": "UEFA Champions League: 2027 Champion",
       "category": "Football",
       "outcomes": [
@@ -4238,70 +4264,49 @@
       "url": "https://polymarket.com/event/uefa-champions-league-2027-champion-20260701202025549"
     },
     {
-      "id": "pm:ballon-dor-winner-2026",
-      "thread_id": "bet-ballon-dor-winner-2026",
-      "title": "Ballon d'Or Winner 2026",
-      "category": "Football",
+      "id": "pm:2026-f1-drivers-champion",
+      "thread_id": "bet-2026-f1-drivers-champion",
+      "standing": "F1 drivers' champion",
+      "title": "F1 Drivers' Champion",
+      "category": "F1",
       "outcomes": [
         {
-          "name": "Harry Kane",
-          "prob": 57.9
+          "name": "Kimi Antonelli",
+          "prob": 93.5
         },
         {
-          "name": "Lamine Yamal",
-          "prob": 22.2
+          "name": "Lando Norris",
+          "prob": 2.9
         },
         {
-          "name": "Kylian Mbappé",
-          "prob": 8.5
+          "name": "George Russell",
+          "prob": 2.9
         }
       ],
       "source": "Polymarket",
-      "url": "https://polymarket.com/event/ballon-dor-winner-2026"
+      "url": "https://polymarket.com/event/2026-f1-drivers-champion"
     },
     {
-      "id": "ks:KXLLM1-26DEC31",
-      "thread_id": "bet-kxllm1-26dec31",
-      "title": "Best AI at the end of 2026?",
-      "category": "AI",
+      "id": "pm:f1-azerbaijan-grand-prix-winner-2026-09-26",
+      "thread_id": "bet-f1-azerbaijan-grand-prix-winner-2026-09-",
+      "title": "Azerbaijan Grand Prix: Driver Winner",
+      "category": "F1",
       "outcomes": [
         {
-          "name": "Claude",
-          "prob": 71.5
+          "name": "Kimi Antonelli",
+          "prob": 41
         },
         {
-          "name": "ChatGPT",
-          "prob": 12.4
+          "name": "George Russell",
+          "prob": 19.5
         },
         {
-          "name": "Gemini",
-          "prob": 8.7
+          "name": "Lando Norris",
+          "prob": 14
         }
       ],
-      "source": "Kalshi",
-      "url": "https://kalshi.com/markets/kxllm1"
-    },
-    {
-      "id": "ks:KXTESTMATCH-26SEP220000AUS-AINA",
-      "thread_id": "bet-kxtestmatch-26sep220000aus-aina",
-      "title": "India A vs Australia A (four-day match)",
-      "category": "Cricket",
-      "outcomes": [
-        {
-          "name": "India A",
-          "prob": 92
-        },
-        {
-          "name": "Australia A",
-          "prob": 7
-        },
-        {
-          "name": "Draw",
-          "prob": 4
-        }
-      ],
-      "source": "Kalshi",
-      "url": "https://kalshi.com/markets/kxtestmatch"
+      "source": "Polymarket",
+      "url": "https://polymarket.com/event/f1-azerbaijan-grand-prix-winner-2026-09-26"
     },
     {
       "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",

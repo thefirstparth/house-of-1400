@@ -138,6 +138,12 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   ];
   for (const [key, met, msg] of need) if (!met && !E.coverage_waivers?.[key]) errors.push(`coverage: ${msg}, or explain in coverage_waivers.${key}`);
   if ((E.betting?.length || 0) > 10) errors.push("coverage: The Betting Window shows at most 10 markets");
+  // Standing markets (config betting.standing) print every day while open; a missing one needs coverage_waivers.standing.
+  if (E.date > "2026-09-25") {
+    const have = new Set((E.betting || []).map(b => b.standing).filter(Boolean));
+    const miss = (read("config/house.json").betting?.standing || []).map(s => s.name).filter(n => !have.has(n));
+    if (miss.length && !E.coverage_waivers?.standing) errors.push(`coverage: standing markets missing from The Betting Window (${miss.join(", ")}); add them with "standing", or explain in coverage_waivers.standing`);
+  }
   // Polymarket only from 26 Sep 2026 (Kalshi retired; the page no longer refreshes "ks:" ids).
   if (E.date > "2026-09-25") (E.betting || []).forEach((b, i) => { if (!/^pm:/.test(b.id || "")) errors.push(`betting[${i}]: Polymarket only, id must start with "pm:"`); });
 

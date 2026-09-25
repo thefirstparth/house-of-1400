@@ -12,6 +12,13 @@ const inr = (n, d = 0) => Number(n).toLocaleString("en-IN", { minimumFractionDig
 const usd = (n, d = 0) => Number(n).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
 const pct = n => (n == null || !isFinite(n) ? "" : Math.abs(n) < 0.005 ? "0.00%" : `${n < 0 ? "−" : "+"}${Math.abs(n).toFixed(2)}%`);
 const dir = n => (n == null ? "" : n < 0 ? "dn" : "up");
+// The move in the instrument's own units, from the previous close (or backed out of the percentage when a source gives only that).
+function pts(q, unit = "", d = 2) {
+  if (q?.price == null || q.change_pct == null || !isFinite(q.change_pct)) return "";
+  const prev = q.prev ?? q.price / (1 + q.change_pct / 100), a = q.price - prev;
+  if (Math.abs(a) < 0.5 * 10 ** -d) return `${unit}0`;
+  return `${a < 0 ? "−" : "+"}${unit}${Math.abs(a).toLocaleString("en-IN", { minimumFractionDigits: d, maximumFractionDigits: d })}`;
+}
 const fmt = (iso, o, tz = TZ) => new Date(iso).toLocaleString("en-GB", { timeZone: tz, hour12: false, ...o }).replace(/\bSept\b/g, "Sep");
 const istFull = iso => fmt(iso, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).replace(",", "");
 const istTime = iso => fmt(iso, { hour: "2-digit", minute: "2-digit" });
@@ -348,18 +355,19 @@ function ledgerBlock() {
       const col = q.change_pct < 0 ? "var(--bad)" : "var(--good)";
       const when = q.live ? "today, live" : `on ${sparkLabel(q.session_date)}`;
       const driver = D.notes?.[q.name];
-      return `<div class="panel"><div class="nm">${esc(q.name)}</div><div class="lvl tnum">${inr(Math.round(q.price))}</div><div class="chg ${dir(q.change_pct)} tnum">${pct(q.change_pct)} ${esc(when)}</div>${q.note ? `<div class="pnote">${esc(q.note)}</div>` : ""}${spark(q.spark, col, { from: sparkLabel(q.spark_from), to: sparkLabel(q.spark_to) })}${driver ? `<p class="note">${esc(driver)}</p>` : ""}${D.dma?.[q.name] ? `<p class="note">${esc(D.dma[q.name])}</p>` : ""}</div>`;
+      return `<div class="panel"><div class="nm">${esc(q.name)}</div><div class="lvl tnum">${inr(Math.round(q.price))}</div><div class="chg ${dir(q.change_pct)} tnum">${pts(q)} <span class="pc">(${pct(q.change_pct)})</span> <span class="when">${esc(when)}</span></div>${q.note ? `<div class="pnote">${esc(q.note)}</div>` : ""}${spark(q.spark, col, { from: sparkLabel(q.spark_from), to: sparkLabel(q.spark_to) })}${driver ? `<p class="note">${esc(driver)}</p>` : ""}${D.dma?.[q.name] ? `<p class="note">${esc(D.dma[q.name])}</p>` : ""}</div>`;
     }).join("")}</div>`;
   }
   const rows = [];
   for (const c of CFG.markets.cross) {
     if (c.source === "ibja") {
-      if (G) rows.push(`<tr><td><b>Gold 24K</b><br><small>IBJA, per 10g</small></td><td class="r tnum">₹${inr(G.per_10g_24k)}</td><td class="r tnum ${dir(G.change_pct)}">${pct(G.change_pct)}</td><td class="sub">${esc([D.notes?.[c.name]?.replace(/\.$/, ""), goldNote(G), `22K ₹${inr(G.per_10g_22k)}`].filter(Boolean).join(". "))}.</td></tr>`);
+      if (G) rows.push(`<tr><td><b>Gold 24K</b><br><small>IBJA, per 10g</small></td><td class="r tnum">₹${inr(G.per_10g_24k)}</td><td class="r tnum ${dir(G.change_pct)}">${pct(G.change_pct)}<small>${pts({ price: G.per_10g_24k, prev: G.prev_10g, change_pct: G.change_pct }, "₹", 0)}</small></td><td class="sub">${esc([D.notes?.[c.name]?.replace(/\.$/, ""), goldNote(G), `22K ₹${inr(G.per_10g_22k)}`].filter(Boolean).join(". "))}.</td></tr>`);
       continue;
     }
     const q = M?.cross?.find(x => x.symbol === c.yahoo); if (!q) continue;
     const lvl = c.yahoo === "INR=X" ? "₹" + q.price.toFixed(2) : c.yahoo === "BZ=F" ? "$" + usd(q.price, 2) : c.yahoo === "BTC-USD" ? "$" + usd(q.price) : inr(Math.round(q.price));
-    rows.push(`<tr><td><b>${esc(c.name)}</b></td><td class="r tnum">${lvl}</td><td class="r tnum ${dir(q.change_pct)}">${pct(q.change_pct)}</td><td class="sub">${esc(assetNote(c.name, q))}</td></tr>`);
+    const unit = c.yahoo === "INR=X" ? "₹" : /^(BZ=F|BTC-USD)$/.test(c.yahoo) ? "$" : "", d = c.yahoo === "BTC-USD" ? 0 : 2;
+    rows.push(`<tr><td><b>${esc(c.name)}</b></td><td class="r tnum">${lvl}</td><td class="r tnum ${dir(q.change_pct)}">${pct(q.change_pct)}<small>${pts(q, unit, d)}</small></td><td class="sub">${esc(assetNote(c.name, q))}</td></tr>`);
   }
   if (rows.length) h += `<div class="tbl cross"><table><thead><tr><th>Asset</th><th class="r">Level</th><th class="r">Change</th><th>Note</th></tr></thead><tbody>${rows.join("")}</tbody></table>${staleNote("markets")}</div>`;
   if (h && prof.markets === "light_unless_important" && !(E.sections?.ledger?.stories?.length)) {
@@ -517,7 +525,7 @@ function bettingBlock() {
   const cards = list.map(b => {
     const L = !LIVE.betting?.stale && liveM.find(m => m.id === idOf(b));
     const outs = (L?.outcomes?.length ? L.outcomes : b.outcomes).slice(0, 3);
-    return `<li><div class="meta">${esc(b.category || "World")}<span> · ${esc(b.source || "Polymarket")}</span></div><a class="title" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title.replace(/\.\.\.\?$/, "…?"))}</a>${b.note ? `<small>${esc(b.note)}</small>` : ""}<ul>${outs.map((o, i) => `<li class="${i === 0 ? "fav" : ""}"><span>${esc(outcomeLabel(o.name))}</span><b class="tnum">${Math.round(o.prob)}%</b><i><em style="width:${Math.max(0, Math.min(100, o.prob))}%"></em></i></li>`).join("")}</ul></li>`;
+    return `<li><div class="meta">${esc(b.category || "World")}<span> · ${b.standing ? "Every day" : esc(b.source || "Polymarket")}</span></div><a class="title" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title.replace(/\.\.\.\?$/, "…?"))}</a>${b.note ? `<small>${esc(b.note)}</small>` : ""}<ul>${outs.map((o, i) => `<li class="${i === 0 ? "fav" : ""}"><span>${esc(outcomeLabel(o.name))}</span><b class="tnum">${Math.round(o.prob)}%</b><i><em style="width:${Math.max(0, Math.min(100, o.prob))}%"></em></i></li>`).join("")}</ul></li>`;
   }).join("");
   return `<ol class="markets">${cards}</ol><p class="asof" style="margin-top:10px">${LIVE.betting && !LIVE.betting.stale ? "Live prices" : `Prices ${agoIST(LIVE.betting?.as_of) || "at press time"}`}. A price is what traders pay for a yes, not a forecast.</p>`;
 }
@@ -816,7 +824,7 @@ function dashHTML() {
       const lvl = c.yahoo === "INR=X" ? "₹" + q.price.toFixed(2) : c.yahoo === "BZ=F" ? "$" + usd(q.price, 2) : "$" + usd(q.price);
       return `<div><span>${esc(c.name)}</span><b>${lvl}</b> <small class="${dir(q.change_pct)}">${pct(q.change_pct)}</small></div>`;
     }).join("");
-    mk = `<div class="idx3">${M.indices.map(q => `<div><span>${esc(q.name)}</span><span class="big">${inr(Math.round(q.price))}</span><b class="${dir(q.change_pct)}">${pct(q.change_pct)}</b>${spark(q.spark?.slice(-22), q.change_pct < 0 ? "var(--bad)" : "var(--good)", { w: 200, h: 28, mini: true })}</div>`).join("")}</div><div class="cross">${cross}</div>`;
+    mk = `<div class="idx3">${M.indices.map(q => `<div><span>${esc(q.name)}</span><span class="big">${inr(Math.round(q.price))}</span><b class="${dir(q.change_pct)}"><i>${pts(q)} </i>${pct(q.change_pct)}</b>${spark(q.spark?.slice(-22), q.change_pct < 0 ? "var(--bad)" : "var(--good)", { w: 200, h: 28, mini: true })}</div>`).join("")}</div><div class="cross">${cross}</div>`;
   }
 
   const sport = [];
