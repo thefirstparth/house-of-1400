@@ -806,9 +806,14 @@ function render() {
 
   // Read time
   const all = [E.front.lead, ...E.front.seconds, ...E.front.briefs, ...Object.values(E.sections || {}).flatMap(s => [...(s.stories || []), ...(s.briefs || [])])];
-  const skim = all.reduce((a, s) => a + words(s.headline) + words(s.short || s.text), 0);
-  const full = skim + all.reduce((a, s) => a + words((s.more || []).join(" ")) + words(s.why?.text), 0);
-  $("#readtime").textContent = `Skim: ${Math.max(1, Math.round(skim / 200))} min · Everything: ${Math.max(2, Math.round(full / 200))} min`;
+  // Headlines: the day in a minute, every headline and deck, read at a skimming pace (300 words a minute).
+  // Everything: every word on the page at an average reading pace (238 a minute), plus about 20 seconds for each
+  // table or chart (the Ledger, fixtures, weather, the slips).
+  const heads = (E.glance || []).reduce((a, g) => a + words(g.line), 0) + all.reduce((a, s) => a + words(s.headline) + words(s.deck), 0);
+  const text = all.reduce((a, s) => a + words(s.headline) + words(s.deck) + words(s.short || s.text) + words((s.more || []).join(" ")) + words(s.why?.text), 0)
+    + words(JSON.stringify([(E.screen || []).map(x => `${x.title} ${x.reason}`), E.trends?.india?.map(t => `${t.term} ${t.what}`), E.trends?.world?.map(t => `${t.term} ${t.what}`), (E.betting || []).map(b => b.title), E.before_you_go, E.editor_note, E.house_note, E.tennis, Object.values(E.sections || {}).map(x => x.data)]).replace(/[{}\[\]",:]/g, " "));
+  const modules = $$("#main [data-live]").length;
+  $("#readtime").textContent = `Headlines: ${Math.max(1, Math.round(heads / 300))} min · Everything: ${Math.max(2, Math.round(text / 238 + modules / 3))} min`;
 
   paintLive();
 }
