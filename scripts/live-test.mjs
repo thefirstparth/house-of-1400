@@ -1,6 +1,9 @@
 // Hit every live source and assert shape, freshness and sane ranges. Exit 1 on failure.
 // Default: through our deployed /api/live/* with RUN_KEY. --local: run the getters here against the third-party APIs.
+import { ensureProxy } from "./proxy.mjs";
 import { remoteLive, SITE_URL, useRemote } from "./remote.mjs";
+
+ensureProxy();
 
 const REMOTE = useRemote(process.argv.slice(2));
 const { LIVE, CACHE } = await import("../lib/live.js");

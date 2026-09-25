@@ -24,7 +24,7 @@ A daily run only needs to reach GitHub and our Vercel domain. It never calls the
 - `node scripts/snapshot.mjs content/editions/YYYY-MM-DD.json` fetches every `<SITE_URL>/api/live/<key>` and writes the `snapshot` block. When a key fails it keeps the last-known-good value with its own time.
 - `npm run validate -- content/editions/YYYY-MM-DD.json` runs every check in step 8.
 - `npm run publish-edition -- content/editions/YYYY-MM-DD.json` validates again, then writes `content/latest.json`, `content/archive.json` and `ledger/story-ledger.json`. It refuses to publish a failing edition.
-- Build sessions only: `npm run test:local` and `node scripts/snapshot.mjs --local` call the third-party APIs from this machine; `node --test tests/*.test.mjs` runs the offline tests. In Claude Code cloud sessions Node needs `NODE_USE_ENV_PROXY=1 HTTP_PROXY=$HTTPS_PROXY` to use the egress proxy.
+- Build sessions only: `npm run test:local` and `node scripts/snapshot.mjs --local` call the third-party APIs from this machine; `node --test tests/*.test.mjs` runs the offline tests. In Claude Code cloud sessions the scripts relaunch themselves with `NODE_USE_ENV_PROXY=1` so Node uses the egress proxy; for ad hoc `node -e` calls set `NODE_USE_ENV_PROXY=1 HTTP_PROXY=$HTTPS_PROXY` yourself.
 
 If `RUN_KEY` is missing or `/api/live` answers 401, record that, skip the snapshot (the page still fetches live data itself) and carry on with the edition.
 

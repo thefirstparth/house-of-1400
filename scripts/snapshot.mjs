@@ -3,7 +3,10 @@
 // --local: run the getters in this process against the third-party APIs (build sessions).
 // Usage: node scripts/snapshot.mjs [--local] [content/editions/YYYY-MM-DD.json]   (without a file, prints JSON)
 import { readFileSync, writeFileSync } from "node:fs";
+import { ensureProxy } from "./proxy.mjs";
 import { remoteLive, SITE_URL, useRemote } from "./remote.mjs";
+
+ensureProxy();
 
 const REMOTE = useRemote(process.argv.slice(2));
 
