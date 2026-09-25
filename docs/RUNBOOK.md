@@ -48,4 +48,10 @@ If `RUN_KEY` is missing or `/api/live` answers 401, record that, skip the snapsh
 - If all four runs fail, the site keeps yesterday's edition and shows a small "Today's paper is late" line automatically after 16:30 IST. This is the last resort.
 
 ## Your Desk
-Only if Gmail and Google Calendar tools are available in the run. If they are not, omit the section. Never write personal data anywhere except the edition JSON in this private repo. Since 25 Sep the site is public and the build strips Your Desk, so it is not shown on the site.
+Only if Gmail and Google Calendar tools are available in the run. If they are not, omit the section. Never write personal data anywhere except the edition JSON in this private repo. The site has no password (Parth keeps the link private), so keep Your Desk to what he needs: no message bodies, no email addresses, no codes or account details.
+
+## Posters (16:00 IST, separate routine)
+After the edition is live, a routine at 16:00 IST captures every poster view for Google Drive.
+1. `node scripts/posters.mjs` (waits up to 60 minutes for `/api/health` to report today, then screenshots the five poster views, desktop and phone, into `public/posters/latest/` with `manifest.json`). If today's edition never goes live, it exits without capturing; stop there.
+2. Commit only `public/posters/latest/`, message `Posters YYYY-MM-DD`, push to main.
+3. The Google Apps Script in `docs/drive-sync.gs`, running in Parth's Google account, copies the new set into Drive within the hour: "The House of 1400 · Posters" / YYYY-MM-DD.

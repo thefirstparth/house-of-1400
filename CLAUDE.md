@@ -19,6 +19,8 @@ Half static, half live, like the Daily Prophet: the news is written once a day a
 - Keep the design faithful to `design/reference.html`.
 - Log any decision that changes behaviour in `docs/DECISIONS.md`.
 
+**Poster run** (16:00 IST, `docs/RUNBOOK.md` → Posters): only writes `public/posters/latest/`.
+
 **Daily run** (a scheduled edition run, following `docs/RUNBOOK.md`):
 - Only write `content/editions/YYYY-MM-DD.json`, `content/latest.json`, `content/archive.json` and `ledger/story-ledger.json`.
 - Never touch code, styles, config or docs during a daily run.
@@ -30,7 +32,7 @@ Half static, half live, like the Daily Prophet: the news is written once a day a
 - No em-dashes anywhere in the paper's copy. No AI-writing tells (see EDITORIAL.md).
 - No filler about absence. If a section has nothing worth printing, leave it out or leave the space empty. Never write sentences like "nothing cleared the bar today".
 - Workflow and research process never appear in the paper.
-- The site is public (no password, Parth's call on 25 Sep). Your Desk may be written into the edition JSON in this private repo, but the build strips it and the site never shows it. Never put Gmail or Calendar content anywhere else. The repo must stay private.
+- The site has no password (Parth's call on 25 Sep) and is `noindex`; Parth keeps the link to himself. Your Desk is shown (folded) at his explicit request. Put Gmail and Calendar content only in the edition JSON in this private repo, never anywhere else, and keep it to what Your Desk needs. The repo must stay private.
 - Secrets live in Vercel env vars or the Claude Code environment. Never in the repo.
 
 ## Priority for the first build (get to a live paper by 14:00 IST)

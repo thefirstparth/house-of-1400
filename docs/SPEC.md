@@ -3,7 +3,7 @@
 ## Stack
 - Plain static site (HTML, CSS, vanilla JS modules) in `public/`, plus Vercel serverless functions in `api/`. No framework unless a real need appears.
 - Vercel Hobby plan. Deploys on every push to `main`.
-- No password (removed 25 Sep at Parth's request). The site is public but `noindex`. Your Desk is stripped at build time and never served.
+- No password (removed 25 Sep at Parth's request). The site is `noindex` and the link stays private with Parth. Your Desk is shown, folded, at his request.
 - `/api/health` returns just `{"edition": "YYYY-MM-DD"}` so scheduled runs can verify a deploy. `/api/notify` and `/api/votes` require the `RUN_KEY` header.
 
 ## Pages
