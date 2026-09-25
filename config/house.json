@@ -220,10 +220,22 @@
   "markets": {
     "indices": [
       {
+        "name": "Sensex",
+        "yahoo": "^BSESN",
+        "exchange": "India",
+        "published": "in;SEN"
+      },
+      {
         "name": "Nifty 50",
         "yahoo": "^NSEI",
         "exchange": "India",
         "published": "in;NSX"
+      },
+      {
+        "name": "Nifty Bank",
+        "yahoo": "^NSEBANK",
+        "exchange": "India",
+        "published": "in;nbx"
       },
       {
         "name": "Nifty IT",
@@ -232,21 +244,10 @@
         "published": "in;cnit"
       },
       {
-        "name": "Sensex",
-        "yahoo": "^BSESN",
-        "exchange": "India",
-        "published": "in;SEN"
-      },
-      {
         "name": "S&P 500",
         "yahoo": "^GSPC",
         "exchange": "US",
         "published": "us;SPX"
-      },
-      {
-        "name": "Dow Jones",
-        "yahoo": "^DJI",
-        "exchange": "US"
       },
       {
         "name": "Nasdaq-100",
@@ -260,20 +261,15 @@
     ],
     "cross": [
       {
-        "name": "Bank Nifty",
-        "yahoo": "^NSEBANK",
-        "published": "in;nbx"
+        "name": "Brent crude",
+        "yahoo": "BZ=F"
       },
       {
         "name": "USD/INR",
         "yahoo": "INR=X"
       },
       {
-        "name": "Brent crude",
-        "yahoo": "BZ=F"
-      },
-      {
-        "name": "Gold (India, IBJA)",
+        "name": "Gold 24K",
         "source": "ibja"
       },
       {
@@ -349,7 +345,7 @@
       },
       "method": "Score 0 to 100 from four readings, each scaled 0 to 1: where the index sits in its 3-month range (30%), its 7-day move (25%, ±4% is the full scale), today's move (15%, ±1.5%), and the volatility index inverted within its own 3-month range (30%; calm is high). Below 25 Fearful, 25 to 44 Cautious, 45 to 55 Neutral, 56 to 74 Confident, 75 and above Exuberant."
     },
-    "returns_note": "7D and 1M are Moneycontrol's published figures where it publishes them (its Indian figures agree with NSE's own). Where no reliable source publishes them (Dow Jones and Nasdaq-100 today), they are worked out from official daily closes and marked as calculated."
+    "returns_note": "7D and 1M are Moneycontrol's published figures where it publishes them (its Indian figures agree with NSE's own). Where no reliable source publishes them (Nasdaq-100, Brent, the rupee, gold and Bitcoin today), they are worked out from official daily closes and marked as calculated."
   },
   "weather": {
     "always": [

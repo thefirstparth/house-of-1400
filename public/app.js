@@ -29,6 +29,45 @@ const shortDate = ymd => new Date(ymd + "T12:00:00Z").toLocaleDateString("en-GB"
 const agoIST = iso => (iso ? `as of ${istFull(iso)} IST` : "");
 const sec = id => CFG.sections.find(s => s.id === id) || { id, name: id, short: id, accent: "--ink" };
 const accent = id => `var(${sec(id).accent})`;
+// Colour families: each section's accent in the config belongs to one family (news, money, sport, Madrid, tech,
+// city, culture), which gives it a strong colour and a soft container colour.
+const FAMS = { "--acc-wd": "news", "--acc-mk": "money", "--acc-sp": "sport", "--acc-f1": "sport", "--acc-rm": "madrid", "--acc-tc": "tech", "--acc-wx": "city", "--acc-ct": "city", "--acc-en": "culture" };
+const famOfColor = c => FAMS[c] || "news";
+const fam = id => famOfColor(sec(id).accent);
+// Section marks: a small drawn symbol in a seal, like the price stamps on old mastheads. Each family has its own
+// seal outline (the number of scallops), so the shape also tells you the kind of section.
+const SEAL = { news: [12, .07], money: [8, .085], sport: [10, .075], madrid: [6, .1], tech: [4, .11], city: [7, .09], culture: [9, .08] };
+const sealPath = f => {
+  const [n, a] = SEAL[f] || SEAL.news, pts = [];
+  for (let i = 0; i < 120; i++) { const t = i / 120 * Math.PI * 2, r = 11.2 * (1 + a * Math.cos(n * t)) / (1 + a); pts.push(`${(12 + r * Math.sin(t)).toFixed(2)},${(12 - r * Math.cos(t)).toFixed(2)}`); }
+  return "M" + pts.join("L") + "Z";
+};
+const GLYPH = {
+  front: '<rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9.5 10h5M9.5 12.2h5M9.5 14.4h3"/>',
+  week: '<rect x="6.5" y="7.5" width="11" height="10" rx="1.6"/><path d="M6.5 10.8h11M9.5 6v3M14.5 6v3M9 13.5h6M9 15.5h3"/>',
+  fixtures: '<rect x="6.5" y="7.5" width="11" height="10" rx="1.6"/><path d="M6.5 10.8h11M9.5 6v3M14.5 6v3"/><rect class="fill" x="9" y="12.6" width="2.3" height="2.3" rx=".4"/>',
+  madrid: '<path d="M7 15.5l-.8-6.3 3.3 2.6L12 7.5l2.5 4.3 3.3-2.6-.8 6.3z"/><path d="M7.4 17.3h9.2"/>',
+  pitch: '<circle cx="12" cy="12" r="5.4"/><path d="M12 9.6l2.1 1.5-.8 2.5h-2.6l-.8-2.5z"/><path d="M12 6.6v3M14.1 11.1l2.8-1M13.3 13.6l1.7 2.4M10.7 13.6L9 16M9.9 11.1l-2.8-1"/>',
+  paddock: '<path d="M8 18V6.5"/><path d="M8 7h8.5v6H8"/><rect class="fill" x="8" y="7" width="2.8" height="3"/><rect class="fill" x="13.7" y="7" width="2.8" height="3"/><rect class="fill" x="10.8" y="10" width="2.9" height="3"/>',
+  crease: '<path d="M9 17.5v-9M12 17.5v-9M15 17.5v-9M8.5 8.2h7"/><circle class="fill" cx="17.4" cy="15.8" r="1.5"/>',
+  deuce: '<circle cx="12" cy="12" r="5.4"/><path d="M7.4 9.3c2.6 1 2.6 4.4 0 5.4M16.6 9.3c-2.6 1-2.6 4.4 0 5.4"/>',
+  sidelines: '<circle cx="12" cy="13.8" r="3.6"/><path d="M9.6 6.5l2.4 3.8 2.4-3.8"/><circle class="fill" cx="12" cy="13.8" r="1.3"/>',
+  tables: '<path d="M6.5 8h11M6.5 11.3h11M6.5 14.6h11M6.5 17.9h11M9.5 8v9.9"/>',
+  dateline: '<circle cx="12" cy="12" r="5.2"/><ellipse cx="12" cy="12" rx="2.2" ry="5.2"/><path d="M6.8 12h10.4"/>',
+  workshop: '<rect x="8.3" y="8.3" width="7.4" height="7.4" rx="1.4"/><path d="M10.5 6v2.3M13.5 6v2.3M10.5 15.7V18M13.5 15.7V18M6 10.5h2.3M6 13.5h2.3M15.7 10.5H18M15.7 13.5H18"/>',
+  pipeline: '<path d="M6.5 8h11l-4 4.6v4.4l-3 1.5v-5.9z"/>',
+  ledger: '<path d="M8.5 7.5v9M12 6v12M15.5 8.5v7"/><rect class="fill" x="7.4" y="10" width="2.2" height="4" rx=".5"/><rect class="fill" x="10.9" y="8.5" width="2.2" height="5.5" rx=".5"/><rect class="fill" x="14.4" y="10.5" width="2.2" height="3" rx=".5"/>',
+  sky: '<circle cx="10" cy="9.8" r="2.6"/><path d="M10 5.6v.9M5.8 9.8h.9M7 6.8l.6.6M13 6.8l-.6.6"/><path d="M9.5 17.4h6.3a2.4 2.4 0 0 0 .2-4.8 3.2 3.2 0 0 0-6 .8 2 2 0 0 0-.5 4z"/>',
+  namma: '<path d="M8 17.5h8M8.8 17.5v-4.3M11 17.5v-4.3M13 17.5v-4.3M15.2 17.5v-4.3M7.8 13.2h8.4M9 13.2a3 3 0 0 1 6 0M12 8.4V6.6"/>',
+  screen: '<path d="M6.5 8.5h11v2.2a1.4 1.4 0 0 0 0 2.6v2.2h-11v-2.2a1.4 1.4 0 0 0 0-2.6z"/><path d="M13.8 8.8v1M13.8 11.5v1M13.8 14.2v1"/>',
+  talk: '<path d="M7 8.5h10a1.2 1.2 0 0 1 1.2 1.2v5a1.2 1.2 0 0 1-1.2 1.2h-5.5L8.5 18v-2.1H7a1.2 1.2 0 0 1-1.2-1.2v-5A1.2 1.2 0 0 1 7 8.5z"/>',
+  betting: '<circle cx="9" cy="9" r="1.6"/><circle cx="15" cy="15" r="1.6"/><path d="M16 8L8 16"/>',
+  bye: '<path d="M9 6.8h6v10.6l-3-2.3-3 2.3z"/>',
+  desk: '<path d="M6.5 10h11M8 10v7.5M16 10v7.5M9 7.5h6"/>',
+  letters: '<rect x="6.5" y="8" width="11" height="8.5" rx="1.4"/><path d="M6.8 8.6l5.2 4 5.2-4"/>',
+  house: '<path d="M6.8 11.5L12 7l5.2 4.5M8.3 10.5v6.8h7.4v-6.8"/>',
+};
+const seal = (id, size = 44) => { const f = fam(id); return `<svg class="seal" data-fam="${f}" width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path class="shape" d="${sealPath(f)}"/><g class="glyph">${GLYPH[id] || GLYPH.front}</g></svg>`; };
 const words = s => (String(s || "").match(/\S+/g) || []).length;
 const store = {
   get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
@@ -167,13 +206,13 @@ const sourcesLine = srcs => (srcs?.length ? `<div class="src">${srcs.map(s => `<
 const newFor = x => (x.new_for_you ? `<span class="newfor">New for you</span>` : "");
 
 const THUMB = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v11H3V10z"/><path d="M7 10l4.2-7.2a2 2 0 0 1 3.7 1.3L14 9h5.6a2 2 0 0 1 2 2.4l-1.6 8A2 2 0 0 1 18 21H7"/></svg>`;
-// Feedback is a letter to the editor, in words (EDITORIAL.md, Letters). Every story and brief has a way to write one.
+// Feedback is a letter to the editor, in words (EDITORIAL.md, Letters): one floating button for the whole paper,
+// which knows the story you are reading.
 const PEN = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>`;
-const noteBtn = (id, cls = "note") => `<button class="${cls}" data-note="${esc(id)}" title="Write to the editor about this">${PEN}<span>Write to the editor</span></button>`;
 function tools(st, withMore) {
   const link = st.sources?.[0]?.url;
   const id = esc(st.id);
-  return `<div class="tools">${withMore ? `<button class="rm" data-more="${id}" aria-expanded="false">Full story</button>` : ""}${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">Source ↗</a>` : ""}<button data-clip="${id}" title="Share this story as an image">Share</button>${noteBtn(st.id)}</div>`;
+  return `<div class="tools">${withMore ? `<button class="rm" data-more="${id}" aria-expanded="false">Full story</button>` : ""}${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">Source ↗</a>` : ""}<button data-clip="${id}" title="Share this story as an image">Share</button></div>`;
 }
 
 const why = w => (w?.text ? `<div class="why"><b>${w.personal ? "Why it matters for you" : "Why it matters"}</b>${esc(w.text)}</div>` : "");
@@ -188,7 +227,7 @@ function byline(st) {
 function storyHTML(st, { lead = false, kickerPrefix = "" } = {}) {
   const more = st.more?.length;
   const H = lead ? "h2" : "h3";
-  return `<article class="${lead ? "lead-story" : "story"}" id="s-${esc(st.id)}" style="--acc:${accent(st.section)}" data-thread="${esc(st.thread_id)}" data-section="${esc(st.section)}">
+  return `<article class="${lead ? "lead-story" : "story"}" id="s-${esc(st.id)}" style="--acc:${accent(st.section)}" data-fam="${fam(st.section)}" data-title="${esc(st.headline)}" data-thread="${esc(st.thread_id)}" data-section="${esc(st.section)}">
 <div class="kick">${esc(kickerPrefix + st.kicker)}${newFor(st)}</div><${H}><button data-head="${esc(st.id)}">${esc(st.headline)}</button></${H}>
 ${st.deck ? `<p class="deck">${esc(st.deck)}</p>` : ""}${byline(st)}
 <div class="body"><p class="${lead ? "first" : ""}">${esc(st.short)}</p>
@@ -198,14 +237,14 @@ ${why(st.why)}</div>${tools(st, more)}</article>`;
 }
 
 function briefHTML(b, cls = "item") {
-  return `<div class="${cls}" id="s-${esc(b.id)}" style="--acc:${accent(b.section)}" data-thread="${esc(b.thread_id)}">${b.kicker ? `<div class="${cls === "brief" ? "kick" : "tag"}">${esc(b.kicker)}${newFor(b)}</div>` : newFor(b)}<h4>${esc(b.headline)}</h4>${esc(b.text)}<div class="btools">${sourcesLine(b.sources)}${noteBtn(b.id, "note sm")}</div></div>`;
+  return `<div class="${cls}" id="s-${esc(b.id)}" style="--acc:${accent(b.section)}" data-fam="${fam(b.section)}" data-title="${esc(b.headline)}" data-thread="${esc(b.thread_id)}">${b.kicker ? `<div class="${cls === "brief" ? "kick" : "tag"}">${esc(b.kicker)}${newFor(b)}</div>` : newFor(b)}<h4>${esc(b.headline)}</h4>${esc(b.text)}${sourcesLine(b.sources)}</div>`;
 }
 
 function secWrap(id, body, sub) {
   if (!body || !body.trim()) return "";
   const s = sec(id);
   const subline = sub ?? E.sections?.[id]?.sub ?? "";
-  return `<section class="sec" id="${id}" style="--acc:${accent(id)}"><div class="sechead"><h2>${esc(s.name)}</h2><span>${esc(subline)}</span></div>${body}</section>`;
+  return `<section class="sec" id="${id}" data-fam="${fam(id)}" style="--acc:${accent(id)}"><div class="sechead">${seal(id, 54)}<div><h2>${esc(s.name)}</h2><span>${esc(subline)}</span></div></div>${body}</section>`;
 }
 
 function storiesBlock(id, { beside = false } = {}) {
@@ -227,35 +266,43 @@ function split(data, id) {
 }
 
 // ------------------------------------------------------------------ live blocks
-const LIVEBLOCKS = {
-  railWeather() {
-    const w = LIVE.weather?.value?.cities?.[0]; if (!w) return "";
-    const d = w.daily[0], hr = Number(fmt(new Date().toISOString(), { hour: "2-digit" }));
-    return `<a class="w" href="#sky"><b>${esc(w.name)}</b><div class="row"><span class="big tnum">${Math.round(w.current.temp)}°</span>${wxIcon(w.current.code, isNight(hr))}</div><span class="sub">${esc(wx(w.current.code)[1])} · ${Math.round(d.max)}° / ${Math.round(d.min)}°${d.rain_prob != null ? ` · ${d.rain_prob}% rain` : ""}</span>${staleNote("weather")}</a>`;
-  },
-  nextUp() {
-    return `<div class="w"><b><span class="live"><i></i>Next up</span></b><span class="big tnum" data-cd="sess">--</span><div class="sub" data-cd="sessname"></div></div>`;
-  },
-  // Race countdown only in race week.
-  railF1() {
-    const r = LIVE.f1_next?.value?.race; if (!r) return "";
-    const race = r.sessions.at(-1);
-    if (!race.time_confirmed || Date.parse(race.start) - Date.now() > 7 * 864e5) return "";
-    return `<a class="w" href="#paddock"><b>F1 · ${esc(r.locality || r.country)} · lights out</b><span class="big tnum" data-until="${race.start}" data-min="${race.minutes}" data-done="Race done">--</span><div class="sub">${esc(istFull(race.start))} IST</div></a>`;
-  },
-  railIndex(name) {
-    const q = LIVE.markets?.value?.indices?.find(i => i.name === name); if (!q) return "";
-    const col = q.change_pct < 0 ? "var(--bad)" : "var(--good)", s = q.spark?.slice(-22) || [];
-    return `<a class="w" href="#ledger"><div class="row"><b>${esc(name)}</b><span class="${dir(q.change_pct)} tnum" style="font:700 13px var(--sans)">${pct(q.change_pct)}</span></div><span class="big tnum">${inr(Math.round(q.price))}</span><div class="mc ${q.live ? "open" : ""}">${esc(hoursLine(q))}</div>${spark(s, col, { w: 200, h: 32, mini: true })}${staleNote("markets")}</a>`;
-  },
-};
-
+// Teaser boxes above the nameplate: the next thing to watch, the markets, and whatever else is close. All from data.
 function railHTML() {
-  const prof = CFG.day_profiles[E.weekday] || {};
-  const markets = CFG.markets.top_two.map(n => LIVEBLOCKS.railIndex(n)).join("");
-  const sport = LIVEBLOCKS.nextUp() + LIVEBLOCKS.railF1();
-  return LIVEBLOCKS.railWeather() + (prof.live_first === "fixtures" ? sport + markets : markets + sport);
+  const box = (id, big, small) => `<a class="sky-box" href="#${id}" data-fam="${fam(id)}">${seal(id, 42)}<div><b>${big}</b><span>${small}</span></div></a>`;
+  const out = [];
+  const nx = events().find(e => e.end > Date.now());
+  if (nx) out.push(box("fixtures", `Next up · <span data-cd="sess">--</span>`, `<span data-cd="sessname"></span>`));
+  const M = LIVE.markets?.value, ix = M?.indices?.[0];
+  if (ix) {
+    const moods = Object.keys(CFG.markets.mood || {}).map(k => M.mood?.[k]).filter(Boolean);
+    out.push(box("ledger", `${esc(ix.name)} ${inr(Math.round(ix.price))} <em class="${dir(ix.change_pct)}" style="font-style:normal">${pct(ix.change_pct)}</em>`, moods.length ? moods.map(m => `${esc(m.region)} ${esc((m.word || moodWord(m.score)).toLowerCase())} ${m.score}`).join(" · ") : esc(hoursLine(ix))));
+  }
+  const r = LIVE.f1_next?.value?.race, race = r?.sessions?.at(-1);
+  if (race?.time_confirmed && Date.parse(race.start) - Date.now() < 7 * 864e5 && Date.parse(race.start) + race.minutes * 6e4 > Date.now() && Math.abs((nx?.start || 0) - Date.parse(race.start)) > 5 * 6e4)
+    out.push(box("paddock", `Lights out · <span data-until="${race.start}" data-min="${race.minutes}" data-done="Race done">--</span>`, `${esc(r.name)} · ${esc(istFull(race.start))} IST`));
+  const ind = E.chronology?.india_cricket?.next;
+  if (ind && Date.parse(ind.when_utc) > Date.now() && Date.parse(ind.when_utc) - Date.now() < 10 * 864e5)
+    out.push(box("crease", `India v ${esc(ind.label)}`, `${esc(ind.detail ? ind.detail.split(" · ")[0] + " · " : "")}${esc(ind.time_tbc ? istDay(ind.when_utc) + ", time TBC" : istFull(ind.when_utc) + " IST")}`));
+  const mn = LIVE.football?.value?.next?.[0];
+  if (mn && Date.parse(mn.date) - Date.now() < 7 * 864e5) out.push(box("madrid", `Madrid ${mn.home ? "v" : "at"} ${esc(mn.opponent)}`, `${esc(mn.competition || "")} · ${mn.time_confirmed ? esc(istFull(mn.date)) + " IST" : esc(istDay(mn.date))}`));
+  return out.slice(0, 4).join("");
 }
+// The ears: Bengaluru's weather on the left of the nameplate, the first index of each market on the right.
+function earsHTML() {
+  const w = LIVE.weather?.value?.cities?.[0], M = LIVE.markets?.value;
+  let L = "", R = "";
+  if (w) {
+    const d = w.daily[0], hr = Number(fmt(new Date().toISOString(), { hour: "2-digit" }));
+    L = `<a class="ear" href="#sky"><small>${esc(w.name)}</small><b>${Math.round(w.current.temp)}° ${wxIcon(w.current.code, isNight(hr))}</b>${esc(wx(w.current.code)[1])} · ${Math.round(d.max)}° / ${Math.round(d.min)}°${d.rain_prob != null ? ` · ${d.rain_prob}% rain` : ""}</a>`;
+  }
+  if (M?.indices?.length) {
+    const firsts = [...new Set(CFG.markets.indices.map(i => i.exchange))].map(ex => M.indices.find(q => CFG.markets.indices.find(i => i.name === q.name)?.exchange === ex)).filter(Boolean);
+    const [a, ...rest] = firsts;
+    R = `<a class="ear r" href="#ledger"><small>${esc(a.name)} · ${a.live ? "live" : "at close"}</small><b>${inr(a.price, 0)}</b><span class="${dir(a.change_pct)}">${pts(a, "", 0)} · ${pct(a.change_pct)}</span>${rest.map(q => `<br>${esc(q.name)} <span class="${dir(q.change_pct)}">${pct(q.change_pct)}</span>`).join("")}</a>`;
+  }
+  return [L, R];
+}
+const marketDots = () => Object.keys(CFG.markets.hours || {}).map(ex => { const o = session(ex)?.openNow; return `<span><i class="${o ? "on" : ""}"></i>${esc(ex)} ${o ? "open" : "closed"}</span>`; }).join("");
 function madridBlock() {
   const F = LIVE.football?.value, T = LIVE.laliga_table?.value;
   let table = "";
@@ -404,43 +451,63 @@ function mondayLedger(D) {
   return `<div class="monday"><div class="mhead">The weekend and the week</div><p class="mood">${esc(m.mood)}</p><div class="mcols">${list("Since Friday's close", m.weekend)}${list("This week", m.watch)}</div></div>`;
 }
 
-// The index board: level, 1D, 7D, 1M and a 30-day line for each index, India first, then the US.
+// The Ledger's board, one table in the config's order: India's indices, the US indices, then oil, the rupee, gold
+// and Bitcoin. Each row: level (and the day's move in points), 1D, 7D, 1M and a 30-day line.
 // 7D and 1M are the publisher's own figures (Moneycontrol) where published; otherwise worked out from daily
 // closes and marked with a dagger. Hover shows the comparison date and where the figure came from.
 const retCell = (q, v, from, extra = "") => {
-  const src = q.returns_source ? (q.returns_calc ? "Calculated from daily closes (no publisher prints this)" : q.returns_source) : "";
+  const src = q.returns_calc ? "Worked out from daily closes (no source we can reach publishes this)" : q.returns_source || "";
   const t = [from ? `vs ${sparkLabel(from)}` : "", src].filter(Boolean).join(" · ");
   return `<td class="r tnum ${extra} ${dir(v)}"${t ? ` title="${esc(t)}"` : ""}>${pct(v) || "–"}${v != null && q.returns_calc ? `<sup class="calc">†</sup>` : ""}</td>`;
 };
-const calcFoot = list => list.some(q => q.returns_calc) ? `<p class="asof">7D and 1M from Moneycontrol's published figures. † Not published by any source we can reach, so worked out from official daily closes.</p>` : `<p class="asof">7D and 1M from Moneycontrol's published figures.</p>`;
-function indexBoard(M, D) {
-  const REG = { India: "India", US: "United States" };
-  const ex = n => CFG.markets.indices.find(i => i.name === n)?.exchange;
-  const groups = [...new Set(CFG.markets.indices.map(i => i.exchange))];
-  const cell = (v, from) => `<td class="r tnum ${dir(v)}"${from ? ` title="vs close of ${esc(sparkLabel(from))}"` : ""}>${pct(v) || "–"}</td>`;
-  const rows = groups.map(g => {
-    const list = M.indices.filter(q => ex(q.name) === g);
-    if (!list.length) return "";
-    return `<tr class="grp"><th colspan="6">${esc(REG[g] || g)}</th></tr>` + list.map(q => {
-      const col = (q.chg_1m ?? q.change_pct) < 0 ? "var(--bad)" : "var(--good)";
-      const note = D.notes?.[q.name] || q.note || "";
-      return `<tr><td class="ix"><b>${esc(q.name)}</b><span class="st ${q.live ? "open" : ""}">${esc(hoursLine(q))}</span>${note ? `<small>${esc(note)}</small>` : ""}</td>
-<td class="r tnum lv">${inr(q.price, 2)}<small class="${dir(q.change_pct)}">${pts(q)}</small></td>${cell(q.change_pct)}${retCell(q, q.chg_7d, q.from_7d)}${retCell(q, q.chg_1m, q.from_1m)}<td class="sp">${q.spark30?.length > 2 ? spark(q.spark30, col, { w: 150, h: 36, mini: true }) : ""}</td></tr>`;
-    }).join("");
+const REGION = { India: "India", US: "United States" };
+function boardRows(M, G, D) {
+  const row = (name, lvl, q, note, sp) => {
+    const col = (q.chg_1m ?? q.change_pct) < 0 ? "var(--bad)" : "var(--good)";
+    return `<tr><td class="ix"><b>${esc(name)}</b>${note ? `<small>${esc(note)}</small>` : ""}</td><td class="r tnum lv">${lvl}<small class="${dir(q.change_pct)}">${q.pts || ""}</small></td><td class="r tnum ${dir(q.change_pct)}">${pct(q.change_pct) || "–"}</td>${retCell(q, q.chg_7d, q.from_7d)}${retCell(q, q.chg_1m, q.from_1m)}<td class="sp">${sp?.length > 2 ? spark(sp, col, { w: 140, h: 34, mini: true }) : ""}</td></tr>`;
+  };
+  const grp = (label, state = "") => `<tr class="grp"><th colspan="6">${esc(label)}${state}</th></tr>`;
+  let h = "";
+  for (const ex of [...new Set(CFG.markets.indices.map(i => i.exchange))]) {
+    const list = CFG.markets.indices.filter(i => i.exchange === ex).map(i => M?.indices?.find(q => q.name === i.name)).filter(Boolean);
+    if (!list.length) continue;
+    h += grp(REGION[ex] || ex, mstate(list[0]));
+    h += list.map(q => row(q.name, inr(q.price, 2), { ...q, pts: pts(q) }, D.notes?.[q.name] || q.note || "", q.spark30 || q.spark?.slice(-22))).join("");
+  }
+  const cross = CFG.markets.cross.map(c => {
+    if (c.source === "ibja") {
+      if (!G) return "";
+      const q = { price: G.per_10g_24k, prev: G.prev_10g, change_pct: G.change_pct, chg_7d: G.change_7d_pct ?? null, from_7d: G.week_from, chg_1m: G.change_1m_pct ?? null, from_1m: G.month_from, returns_calc: true };
+      q.pts = pts(q, "₹", 0);
+      const note = [D.notes?.[c.name]?.replace(/\.$/, ""), `IBJA, per 10 g; 22K ₹${inr(G.per_10g_22k)}`, goldNote(G)].filter(Boolean).join(". ");
+      return row(c.name, `₹${inr(G.per_10g_24k)}`, q, note, G.spark?.slice(-22));
+    }
+    const q = M?.cross?.find(x => x.symbol === c.yahoo); if (!q) return "";
+    const lvl = c.yahoo === "INR=X" ? "₹" + q.price.toFixed(2) : c.yahoo === "BZ=F" ? "$" + usd(q.price, 2) : c.yahoo === "BTC-USD" ? "$" + usd(q.price) : inr(q.price, 2);
+    const unit = c.yahoo === "INR=X" ? "₹" : /^(BZ=F|BTC-USD)$/.test(c.yahoo) ? "$" : "", d = c.yahoo === "BTC-USD" ? 0 : 2;
+    return row(c.name, lvl, { ...q, pts: pts(q, unit, d) }, assetNote(c.name, q).replace(/\.$/, ""), q.spark30);
   }).join("");
-  const moods = Object.keys(CFG.markets.mood || {}).map(k => M.mood?.[k]).filter(Boolean);
-  return `<div class="board-wrap"><div class="tbl board"><table><thead><tr><th>Index</th><th class="r">Level</th><th class="r">1D</th><th class="r">7D</th><th class="r">1M</th><th class="r">30 days</th></tr></thead><tbody>${rows}</tbody></table>${calcFoot(M.indices)}</div>${moods.length ? `<div class="moods">${moods.map(moodCard).join("")}<details class="mhow"><summary>How the mood is worked out</summary><p>${esc(CFG.markets.mood?.method || "")}</p></details></div>` : ""}</div>`;
+  if (cross) h += grp(CFG.markets.cross_label || "Oil, rupee, gold and Bitcoin") + cross;
+  return h;
+}
+function indexBoard(M, G, D) {
+  const rows = boardRows(M, G, D);
+  if (!rows) return "";
+  const anyCalc = [...(M?.indices || []), ...(M?.cross || [])].some(q => q.returns_calc) || !!G;
+  const moods = Object.keys(CFG.markets.mood || {}).map(k => M?.mood?.[k]).filter(Boolean);
+  return `<div class="board-wrap"><div class="board" data-fam="money"><div class="tbl"><table><thead><tr><th>Market</th><th class="r">Level</th><th class="r">1D</th><th class="r">7D</th><th class="r">1M</th><th class="r">30 days</th></tr></thead><tbody>${rows}</tbody></table></div>
+<p class="foot2">Levels from Yahoo Finance, gold from IBJA. 7D and 1M as Moneycontrol publishes them${anyCalc ? "; † where no source we can reach publishes the figure, it is worked out from official daily closes" : ""}. Hover a figure for its date.</p>${staleNote("markets")}</div>
+${moods.length ? `<div class="moods">${moods.map(moodCard).join("")}<details class="mhow"><summary>How the mood is worked out</summary><p>${esc(CFG.markets.mood?.method || "")}</p></details></div>` : ""}</div>`;
 }
 function moodCard(m) {
-  const a = Math.PI * (1 - m.score / 100), cx = 100, cy = 96, r = 78;
-  const nx = cx + (r - 12) * Math.cos(a), ny = cy - (r - 12) * Math.sin(a);
-  const arc = (from, to, c) => { const p = t => [cx + r * Math.cos(Math.PI * (1 - t)), cy - r * Math.sin(Math.PI * (1 - t))]; const [x1, y1] = p(from), [x2, y2] = p(to); return `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${c}" stroke-width="12" fill="none" stroke-linecap="butt"/>`; };
+  const cx = 100, cy = 96, r = 78;
+  const arc = (from, to, c) => { const p = t => [cx + r * Math.cos(Math.PI * (1 - t)), cy - r * Math.sin(Math.PI * (1 - t))]; const [x1, y1] = p(from), [x2, y2] = p(to); return `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${c}" stroke-width="14" fill="none"/>`; };
   const where = m.range_pos == null ? "" : m.range_pos <= 15 ? "near its 3-month low" : m.range_pos >= 85 ? "near its 3-month high" : `${m.range_pos}% of the way up its 3-month range`;
   const calm = m.vix_pos == null ? "" : m.vix_pos <= 30 ? "calm for the quarter" : m.vix_pos >= 70 ? "jumpy for the quarter" : "middling for the quarter";
-  return `<div class="mood"><div class="mh"><span>${esc(m.region || "")} mood</span><span class="tnum">${m.score}/100</span></div>
-<svg viewBox="0 0 200 108" role="img" aria-label="${esc(m.region || "")} market mood ${m.score} out of 100">${arc(0, .25, "var(--bad)")}${arc(.25, .45, "color-mix(in srgb,var(--bad) 45%,var(--surface2))")}${arc(.45, .55, "var(--surface2)")}${arc(.55, .75, "color-mix(in srgb,var(--good) 45%,var(--surface2))")}${arc(.75, 1, "var(--good)")}
-<line x1="${cx}" y1="${cy}" x2="${nx.toFixed(1)}" y2="${ny.toFixed(1)}" stroke="var(--ink)" stroke-width="3.5" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="6" fill="var(--ink)"/></svg>
-<div class="mword">${esc(m.word || moodWord(m.score))}</div>
+  const word = m.word || moodWord(m.score), tone = m.score < 45 ? "var(--bad)" : m.score > 55 ? "var(--good)" : "var(--muted)";
+  return `<div class="mood"><div class="mh"><span>${esc(m.region || "")} · ${esc(m.index || "")}</span><b class="tnum">${m.score}</b></div><div class="mword" style="color:${tone}">${esc(word)}</div>
+<svg viewBox="0 0 200 110" role="img" aria-label="${esc(m.region || "")} market mood ${m.score} out of 100, ${esc(word)}">${arc(0.004, .246, "var(--bad)")}${arc(.254, .446, "color-mix(in srgb,var(--bad) 50%,var(--surface2))")}${arc(.454, .546, "var(--surface2)")}${arc(.554, .746, "color-mix(in srgb,var(--good) 50%,var(--surface2))")}${arc(.754, .996, "var(--good)")}
+<g class="needle" style="--a:${(-90 + 180 * m.score / 100).toFixed(1)}deg"><line x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy - r + 14}" stroke="var(--ink)" stroke-width="3.5" stroke-linecap="round"/></g><circle cx="${cx}" cy="${cy}" r="6" fill="var(--ink)"/></svg>
 <ul><li>${esc(m.index)} ${where}</li><li>7 days ${pct(m.chg_7d)} · today ${pct(m.change_pct)}</li>${m.vix != null ? `<li>${esc(m.vix_name)} ${m.vix} · ${calm}</li>` : ""}</ul></div>`;
 }
 const moodWord = s => (s < 25 ? "Fearful" : s < 45 ? "Cautious" : s <= 55 ? "Neutral" : s < 75 ? "Confident" : "Exuberant");
@@ -448,20 +515,7 @@ const moodWord = s => (s < 25 ? "Fearful" : s < 45 ? "Cautious" : s <= 55 ? "Neu
 function ledgerBlock() {
   const M = LIVE.markets?.value, G = LIVE.gold_in?.value, D = E.sections?.ledger?.data || {};
   const prof = CFG.day_profiles[E.weekday] || {};
-  let h = mondayLedger(D);
-  if (M?.indices?.length) h += indexBoard(M, D);
-  const rows = [];
-  for (const c of CFG.markets.cross) {
-    if (c.source === "ibja") {
-      if (G) rows.push(`<tr><td><b>Gold 24K</b><br><small>IBJA, per 10g</small></td><td class="r tnum">₹${inr(G.per_10g_24k)}</td><td class="r tnum ${dir(G.change_pct)}">${pct(G.change_pct)}<small>${pts({ price: G.per_10g_24k, prev: G.prev_10g, change_pct: G.change_pct }, "₹", 0)}</small></td><td class="r tnum hide-s">–</td><td class="r tnum hide-s ${dir(G.change_1m_pct)}"${G.month_from ? ` title="vs ${esc(sparkLabel(G.month_from))}"` : ""}>${pct(G.change_1m_pct) || "–"}</td><td class="sub">${esc([D.notes?.[c.name]?.replace(/\.$/, ""), goldNote(G), `22K ₹${inr(G.per_10g_22k)}`].filter(Boolean).join(". "))}.</td></tr>`);
-      continue;
-    }
-    const q = M?.cross?.find(x => x.symbol === c.yahoo); if (!q) continue;
-    const lvl = c.yahoo === "INR=X" ? "₹" + q.price.toFixed(2) : c.yahoo === "BZ=F" ? "$" + usd(q.price, 2) : c.yahoo === "BTC-USD" ? "$" + usd(q.price) : inr(Math.round(q.price));
-    const unit = c.yahoo === "INR=X" ? "₹" : /^(BZ=F|BTC-USD)$/.test(c.yahoo) ? "$" : "", d = c.yahoo === "BTC-USD" ? 0 : 2;
-    rows.push(`<tr><td><b>${esc(c.name)}</b></td><td class="r tnum">${lvl}</td><td class="r tnum ${dir(q.change_pct)}">${pct(q.change_pct)}<small>${pts(q, unit, d)}</small></td>${retCell(q, q.chg_7d, q.from_7d, "hide-s")}${retCell(q, q.chg_1m, q.from_1m, "hide-s")}<td class="sub">${esc(assetNote(c.name, q))}</td></tr>`);
-  }
-  if (rows.length) h += `<div class="tbl cross"><table><thead><tr><th>Asset</th><th class="r">Level</th><th class="r">1D</th><th class="r hide-s">7D</th><th class="r hide-s">1M</th><th>Note</th></tr></thead><tbody>${rows.join("")}</tbody></table>${M?.cross?.some(q => q.returns_calc) ? `<p class="asof">† Worked out from daily closes: no source we can reach publishes these.</p>` : ""}${staleNote("markets")}</div>`;
+  let h = mondayLedger(D) + indexBoard(M, G, D);
   if (h && prof.markets === "light_unless_important" && !(E.sections?.ledger?.stories?.length)) {
     h = `<details><summary class="asof" style="cursor:pointer;padding:6px 0">Weekend: markets folded. Tap to open.</summary>${h}</details>`;
   }
@@ -635,13 +689,16 @@ function deskBlock() {
 }
 
 // ------------------------------------------------------------------ page
-// Lead on the left with the briefs under it, second stories on the right: both columns end near the same line.
+// Three columns on a wide screen (the lead with two stories under it; the other stories and the briefs; the day in
+// a minute and the editor's note), two on a laptop, one on a phone with the day in a minute straight after the lead.
+const editorNote = () => (E.editor_note ? `<div class="editor"><span class="eh">From the editor</span>${esc(E.editor_note)}<div class="sig"><img src="/bhide.svg" alt="" width="34" height="34"><a href="/editor">${esc(CFG.paper.editor.signature)}</a></div></div>` : "");
 function frontHTML() {
-  const F = E.front;
-  return `<div class="front" id="front" style="scroll-margin-top:48px">
-<div class="lead">${storyHTML({ ...F.lead, kicker: `Front Page · ${F.lead.kicker}` }, { lead: true })}
-${F.briefs.length ? `<div class="briefs">${F.briefs.map(b => briefHTML(b, "brief")).join("")}</div>` : ""}</div>
-<div class="side">${F.seconds.map(s => storyHTML(s)).join("")}</div></div>`;
+  const F = E.front, [s1, s2, ...rest] = F.seconds;
+  const minute = E.glance?.length ? `<div class="minute"><h3>The day in a minute</h3><div class="gd">${esc(longDate(E.date))}</div><ol>${E.glance.map(g => `<li data-fam="${famOfColor(g.color)}"><span>${esc(g.section)}</span><button data-go="${esc(g.target)}">${esc(g.line)}</button></li>`).join("")}</ol></div>` : "";
+  return `<div class="front" id="front" style="scroll-margin-top:60px">
+<div class="col fa">${storyHTML({ ...F.lead, kicker: `Front Page · ${F.lead.kicker}` }, { lead: true })}${s1 ? `<div class="pair">${[s1, s2].filter(Boolean).map(x => storyHTML(x)).join("")}</div>` : ""}</div>
+<div class="col fb">${rest.map(x => storyHTML(x)).join("")}${F.briefs.length ? `<div class="briefs">${F.briefs.map(b => briefHTML(b, "brief")).join("")}</div>` : ""}</div>
+<div class="col fc">${minute}${editorNote()}</div></div>`;
 }
 
 function render() {
@@ -650,7 +707,7 @@ function render() {
   $("#run-date").textContent = longDate(E.date);
   $("#run-vol").textContent = `Vol. ${roman(Number(E.date.slice(0, 4)) - 2025)} · No. ${n} · ${CFG.paper.home_city}`;
   $("#run-cut").textContent = `Information cut ${E.cut_ist} IST`;
-  $("#motto").innerHTML = `${esc(CFG.paper.motto)} · Edited by <a href="/editor">${esc(CFG.paper.editor.signature.replace(", Editor", ""))}</a>`;
+  $("#motto").innerHTML = `${esc(CFG.paper.motto)} · <img src="/bhide.svg" alt="" width="26" height="26"> Edited by <a href="/editor">${esc(CFG.paper.editor.signature.replace(", Editor", ""))}</a>`;
   $("#profile").textContent = E.profile_line;
 
   let h = frontHTML();
@@ -676,12 +733,10 @@ function render() {
   h += secWrap("bye", byeBlock(), "Watch and do");
   h += deskBlock();
   h += secWrap("letters", lettersBlock(), E.letters?.length ? "The editor replies" : "Your notes to the paper");
-  if (E.editor_note) h += `<div class="editor">${esc(E.editor_note)}<span><a href="/editor"><img src="/bhide.svg" alt="" width="28" height="28">${esc(CFG.paper.editor.signature)}</a></span></div>`;
   h += `<div class="house" id="house"><b>${esc(sec("house").name)}</b><p>${esc(E.house_note)}</p></div>`;
   h += `<div class="foot">${esc(`THE HOUSE OF 1400 · ${longDate(E.date).toUpperCase()} · NO. ${n} · EDITED BY ${CFG.paper.editor.signature.replace(", Editor", "").toUpperCase()}`)}<br><a href="/editor">About the editor</a> · <a href="/archive">The Archive</a></div>`;
   $("#main").innerHTML = h;
-  requestAnimationFrame(balanceFront);
-  document.fonts?.ready.then(balanceFront);
+  watchReading();
 
 
   // Read time
@@ -698,24 +753,10 @@ function render() {
   paintLive();
 }
 
-// On a wide screen, move trailing second stories under the lead while that evens the two columns.
-function balanceFront() {
-  const lead = document.querySelector(".front .lead"), side = document.querySelector(".front .side");
-  if (!lead || !side) return;
-  lead.querySelectorAll(".story.moved").forEach(el => side.appendChild(el));
-  // Up to 980px the front is one column; from 1500px it is three (lead, seconds, briefs), which need no balancing.
-  if (innerWidth <= 980 || innerWidth >= 1500) return;
-  for (let i = 0; i < 3; i++) {
-    const last = side.querySelector(".story:last-of-type");
-    if (!last || side.querySelectorAll(".story").length < 2) break;
-    const gap = side.offsetHeight - lead.offsetHeight, h = last.offsetHeight;
-    if (gap <= h * 0.6) break;
-    last.classList.add("moved"); lead.appendChild(last);
-  }
-}
-
 function paintLive() {
-  $("#rail").innerHTML = railHTML();
+  const rail = railHTML(); if ($("#rail").dataset.html !== rail) { $("#rail").innerHTML = rail; $("#rail").dataset.html = rail; }
+  const [eL, eR] = earsHTML(); $("#earL").innerHTML = eL; $("#earR").innerHTML = eR;
+  $("#mkts").innerHTML = marketDots();
   const map = { talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
   for (const [k, fn] of Object.entries(map)) {
     const el = document.querySelector(`[data-live="${k}"]`);
@@ -734,7 +775,7 @@ function paintLive() {
   if (race && ph) ph.textContent = `${race.flag} Round ${race.round ?? ""} · ${race.name}${race.locality ? " · " + race.locality : ""}`;
   if (changed || !$("#idx a")) {
     const present = CFG.sections.filter(x => { const el = document.getElementById(x.id); return el && !el.hidden; });
-    $("#idx div").innerHTML = present.map(x => `<a href="#${x.id}" style="--c:var(${x.accent})"><i></i>${esc(x.short)}</a>`).join("");
+    $("#idx div").innerHTML = present.map(x => `<a href="#${x.id}" data-fam="${fam(x.id)}">${seal(x.id, 22)}${esc(x.short)}</a>`).join("");
     observeIndex(present);
   }
   if (!$("#poster").hidden && (POSTER === "today" || POSTER === "edition")) paintPoster();
@@ -779,14 +820,39 @@ function toggleMore(id) {
 // ------------------------------------------------------------------ letters to the editor
 function openLetter(id = "") {
   const st = id ? findStory(id) : null;
-  const about = st ? `<div class="lt-about">About: <b>${esc(st.headline || st.title || "")}</b></div>` : "";
+  const about = st ? `<div class="lt-about" data-fam="${fam(st.section)}"><span>About: <b>${esc(st.headline || st.title || "")}</b></span><button id="ltClear" title="Write about the whole paper instead" aria-label="Write about the whole paper instead">×</button></div>` : "";
   $("#modal").innerHTML = `<div class="card letter"><div class="lt-head">A letter to the editor</div>${about}
 <textarea id="ltText" maxlength="1500" rows="6" placeholder="${st ? "More of this, less of that, a correction, a question…" : "What should the paper do more of, less of, or differently?"}"></textarea>
-<p class="lt-note">He reads every letter before the next edition and notes what he did about it. The site has no password, so anyone with its link could read letters too.</p>
+<p class="lt-note">Bhide reads every letter before the next edition and notes what he did about it. The site has no password, so anyone with its link could read letters too.</p>
 <div class="row2"><button class="pri" id="sendLetter" data-id="${esc(id)}">Send</button><button data-close="1">Cancel</button></div></div>`;
   $("#modal").hidden = false;
   setTimeout(() => $("#ltText")?.focus(), 30);
 }
+// Which story is the reader on? The letter button says so, and a letter written now is about that story.
+let READ_IO;
+function watchReading() {
+  const fab = $("#fab"); if (!fab) return;
+  fab.hidden = false;
+  const seen = new Map();
+  const set = el => {
+    const id = el ? el.id.replace(/^s-/, "") : "";
+    fab.dataset.note = id; fab.dataset.fam = el?.dataset.fam || "";
+    $("#fabAbout").textContent = el ? `About: ${el.dataset.title}` : "About the whole paper";
+  };
+  try {
+    READ_IO?.disconnect();
+    READ_IO = new IntersectionObserver(es => {
+      es.forEach(e => seen.set(e.target, e.isIntersecting ? e.intersectionRatio : 0));
+      let best = null, top = 0.3;
+      seen.forEach((v, el) => { if (v > top) { top = v; best = el; } });
+      set(best);
+    }, { threshold: [0, .3, .6, .9], rootMargin: "-12% 0px -30% 0px" });
+    $$("#main [data-title]").forEach(el => READ_IO.observe(el));
+  } catch {}
+  set(null);
+}
+let lastY = 0;
+addEventListener("scroll", () => { const f = $("#fab"); if (f) f.classList.toggle("tight", innerWidth < 720 && scrollY > lastY && scrollY > 500); lastY = scrollY; }, { passive: true });
 async function sendLetter() {
   const text = $("#ltText").value.trim(), id = $("#sendLetter").dataset.id || "";
   if (text.length < 3) { toast("Write a line or two first."); return; }
@@ -838,24 +904,24 @@ async function clip(id) {
   const body = st.short || st.text;
   // measure first
   c.width = W; c.height = 10;
-  x.font = "400 64px 'Playfair Display', Georgia, serif"; const hl = wrap(x, st.headline, W - 2 * P);
+  x.font = "700 60px 'Roboto Serif', Georgia, serif"; const hl = wrap(x, st.headline, W - 2 * P);
   x.font = "400 34px 'Source Serif 4', Georgia, serif"; const bl = wrap(x, body, W - 2 * P);
   const H = P + 40 + 40 + hl.length * 72 + 28 + bl.length * 52 + 60 + 40;
   c.height = H;
   x.fillStyle = col("--paper") || "#ebe6da"; x.fillRect(0, 0, W, H);
   x.fillStyle = col("--ink") || "#191816";
   let y = P;
-  x.font = "700 22px 'Instrument Sans', Arial, sans-serif"; x.textBaseline = "top";
+  x.font = "700 22px 'Roboto Flex', Arial, sans-serif"; x.textBaseline = "top";
   x.fillText("THE HOUSE OF 1400", P, y);
   const dt = longDate(E.date).toUpperCase(); x.fillStyle = col("--muted"); x.fillText(dt, W - P - x.measureText(dt).width, y);
   y += 40; x.fillStyle = col("--rule"); x.fillRect(P, y, W - 2 * P, 2); y += 30;
-  x.fillStyle = col(sec(st.section).accent) || col("--ink"); x.font = "700 22px 'Instrument Sans', Arial, sans-serif";
+  x.fillStyle = col(sec(st.section).accent) || col("--ink"); x.font = "700 22px 'Roboto Flex', Arial, sans-serif";
   x.fillText((st.kicker || sec(st.section).name).toUpperCase(), P, y); y += 44;
-  x.fillStyle = col("--ink"); x.font = "400 64px 'Playfair Display', Georgia, serif";
+  x.fillStyle = col("--ink"); x.font = "700 60px 'Roboto Serif', Georgia, serif";
   for (const l of hl) { x.fillText(l, P, y); y += 72; }
   y += 16; x.font = "400 34px 'Source Serif 4', Georgia, serif";
   for (const l of bl) { x.fillText(l, P, y); y += 52; }
-  y += 24; x.fillStyle = col("--muted"); x.font = "500 20px 'Instrument Sans', Arial, sans-serif";
+  y += 24; x.fillStyle = col("--muted"); x.font = "500 20px 'Roboto Flex', Arial, sans-serif";
   x.fillText(`Edited by ${CFG.paper.editor.signature.replace(", Editor", "")}`, P, y);
   const blob = await new Promise(r => c.toBlob(r, "image/png"));
   const file = new File([blob], `house-of-1400-${E.date}-${id}.png`, { type: "image/png" });
@@ -882,6 +948,7 @@ document.addEventListener("click", e => {
   if (t.dataset.head) { if (!toggleMore(t.dataset.head)) toast("Short story. The full text is already shown."); return; }
   if (t.dataset.note !== undefined) { openLetter(t.dataset.note); return; }
   if (t.id === "sendLetter") { sendLetter(); return; }
+  if (t.id === "ltClear") { t.parentElement.remove(); $("#sendLetter").dataset.id = ""; return; }
   if (t.dataset.clip) { clip(t.dataset.clip); return; }
   if (t.dataset.close) { $("#modal").hidden = true; return; }
   if (t.id === "locBtn") { myLocation(true); return; }
@@ -894,7 +961,7 @@ document.addEventListener("click", e => {
   if (t.dataset.poster) { $("#pmenu").hidden = true; openPoster(t.dataset.poster); return; }
 });
 let resizeT;
-addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(() => { balanceFront(); fitPoster(); }, 150); });
+addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(fitPoster, 150); });
 $("#modal").addEventListener("click", e => { if (e.target.id === "modal") $("#modal").hidden = true; });
 $("#poster").addEventListener("click", closePoster);
 document.addEventListener("keydown", e => { if (e.key === "Escape") { $("#modal").hidden = true; closePoster(); } });
