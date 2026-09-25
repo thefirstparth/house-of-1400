@@ -11,7 +11,7 @@ console.log(REMOTE ? `Testing ${SITE_URL}/api/live/*` : "Testing local getters")
 
 const H = 36e5;
 const checks = {
-  weather: v => { const c = v.cities[0]; return c.name === "Bengaluru" && c.current.temp >= 5 && c.current.temp <= 45 && c.daily.length >= 7; },
+  weather: v => { const c = v.cities[0]; return c.name === "Bengaluru" && c.current.temp >= 5 && c.current.temp <= 45 && c.daily.length >= 7 && v.cities.filter(x => x.family).length >= 2; },
   f1_next: v => v.season_over || (v.race && v.race.sessions.length >= 3),
   f1_standings: v => v.drivers.length >= 18 && v.drivers[0].points > 0,
   f1_last: v => v.results.length >= 10,

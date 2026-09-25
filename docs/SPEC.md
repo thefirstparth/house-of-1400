@@ -42,7 +42,7 @@ IDs are stable. Names come from `config/house.json`.
 12. The Workshop: tech, AI, wearables, phones. Try / Wait / Ignore when supported.
 13. The Pipeline: SDR, outbound, GTM, SaaS. Only when useful.
 14. The Ledger: Sensex, Nifty 50, Nasdaq-100 panels with sparklines; cross-asset table; Cards & Points (India credit cards, top secondary beat)
-15. Sky & Streets: Bengaluru 7-day weather, reader's location if allowed, other cities only when notable
+15. Sky & Streets: Bengaluru 7-day weather with humidity and air quality and what changed since last week; Ranchi and Prayagraj every day (config `weather.family`); reader's location if allowed
 16. Namma Beat: Bengaluru city (stand-up shows, food, metro, roads, airport). Weekdays only when important; fuller Fri to Sun.
 17. Screen & Stage: new releases this week (English and Hindi, theatre and OTT, no regional) with verdicts; coming soon
 18. Talk of the Day: Google Trends India and world, each with a one-line "what happened", deduplicated against the whole paper

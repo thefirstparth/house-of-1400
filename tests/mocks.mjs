@@ -13,7 +13,8 @@ const race = (off, round, name, country) => ({ season: "2026", round: String(rou
   date: d(now + off), time: "11:00:00Z", Qualifying: { date: d(now + off - day), time: "12:00:00Z" }, FirstPractice: { date: d(now + off - 2 * day), time: "08:30:00Z" } });
 
 const ROUTES = [
-  [/open-meteo/, () => ({ current: { temperature_2m: 22.4, apparent_temperature: 23, weather_code: 63, relative_humidity_2m: 80, time: "now" },
+  [/air-quality-api/, () => [0, 1, 2].map(() => ({ current: { time: "2026-09-26T03:00", us_aqi: 40, pm2_5: 5 }, hourly: { time: Array.from({ length: 48 }, (_, i) => `2026-09-${String(25 + Math.floor(i / 24)).padStart(2, "0")}T${String(i % 24).padStart(2, "0")}:00`), us_aqi: Array.from({ length: 48 }, (_, i) => 30 + i) } }))],
+  [/open-meteo/, () => ({ current: { temperature_2m: 22.4, apparent_temperature: 23, weather_code: 63, relative_humidity_2m: 80, time: `${d(now)}T12:00` },
     daily: { time: [...Array(7)].map((_, i) => d(now + i * day)), weather_code: Array(7).fill(3), temperature_2m_max: Array(7).fill(28), temperature_2m_min: Array(7).fill(20), precipitation_probability_max: Array(7).fill(40), precipitation_sum: Array(7).fill(1) } })],
   [/jolpi.*current\.json/, () => ({ MRData: { RaceTable: { Races: [race(-10 * day, 14, "Spanish Grand Prix", "Spain"), race(2 * day, 15, "Azerbaijan Grand Prix", "Azerbaijan"), race(20 * day, 16, "Singapore Grand Prix", "Singapore"), race(30 * day, 17, "United States Grand Prix", "USA")] } } })],
   [/driverStandings/, () => ({ MRData: { StandingsTable: { StandingsLists: [{ round: "14", DriverStandings: [

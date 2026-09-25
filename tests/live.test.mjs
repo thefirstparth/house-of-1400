@@ -10,7 +10,9 @@ const L = await import("../lib/live.js");
 test("weather: Bengaluru with 7 days", async () => {
   const r = await L.weather(new URLSearchParams());
   assert.equal(r.ok, true); assert.equal(r.value.cities[0].name, "Bengaluru"); assert.equal(r.value.cities[0].daily.length, 7);
-  assert.equal(r.value.cities.length, 1, "Ranchi and Prayagraj only when notable");
+  assert.deepEqual(r.value.cities.map(c => c.name), ["Bengaluru", "Ranchi", "Prayagraj"], "the family cities every day");
+  assert.equal(r.value.cities[1].family, true);
+  assert.equal(r.value.cities[0].air.now, 40); assert.equal(r.value.cities[0].air.scale, "US AQI");
 });
 test("weather: rejects bad coordinates", async () => {
   assert.equal((await L.weather(new URLSearchParams("lat=999&lon=1"))).ok, false);

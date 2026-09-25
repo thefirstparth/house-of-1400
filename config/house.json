@@ -355,18 +355,6 @@
         "lon": 77.59
       }
     ],
-    "when_notable": [
-      {
-        "name": "Ranchi",
-        "lat": 23.34,
-        "lon": 85.31
-      },
-      {
-        "name": "Prayagraj",
-        "lat": 25.44,
-        "lon": 81.85
-      }
-    ],
     "use_reader_location": true,
     "key_times": [
       {
@@ -381,7 +369,20 @@
         "label": "Heading home",
         "hour": 2
       }
-    ]
+    ],
+    "family": [
+      {
+        "name": "Ranchi",
+        "lat": 23.34,
+        "lon": 85.31
+      },
+      {
+        "name": "Prayagraj",
+        "lat": 25.44,
+        "lon": 81.85
+      }
+    ],
+    "family_note": "Shown every day: where the reader's parents live. Temperature, humidity, air and the week ahead."
   },
   "trends": {
     "india_geo": "IN",
