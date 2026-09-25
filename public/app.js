@@ -415,8 +415,12 @@ function liveTrends() {
     if (seen.has(k) || (k.length >= 5 && heads.some(h => h.includes(k))) || !t.news?.[0]?.title) return false;
     seen.add(k); return true;
   }).slice(0, CFG.trends.target_each || 6).map(t => ({ term: t.term, what: t.news[0].title.slice(0, CFG.trends.max_what_chars || 140), url: t.news[0].url }));
-  const world = CFG.trends.world_geos.find(g => G[g]?.length);
-  return { india: pick(G[CFG.trends.india_geo]), world: pick(G[world]), world_label: world ? `World · ${world} feed` : "World", live: true };
+  // One feed per country reads like that country's sports page, so mix the world feeds in turn.
+  const geos = CFG.trends.world_geos.filter(g => G[g]?.length);
+  const mixed = [];
+  for (let i = 0; i < 20; i++) for (const g of geos) if (G[g][i]) mixed.push(G[g][i]);
+  const india = pick(G[CFG.trends.india_geo]);
+  return { india, world: pick(mixed), world_label: geos.length ? `World · ${geos.join(", ")}` : "World", live: true };
 }
 
 function talkBlock() {
