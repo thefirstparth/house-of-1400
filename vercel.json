@@ -28,7 +28,11 @@
     },
     {
       "source": "/pulse",
-      "destination": "/markets"
+      "destination": "/consensus"
+    },
+    {
+      "source": "/markets",
+      "destination": "/consensus"
     }
   ],
   "functions": {
@@ -42,8 +46,8 @@
       "includeFiles": "config/{house.json,nifty500.csv}",
       "maxDuration": 20
     },
-    "api/pulse.js": {
-      "includeFiles": "config/pulse.json",
+    "api/consensus.js": {
+      "includeFiles": "config/consensus.json",
       "maxDuration": 45
     }
   },

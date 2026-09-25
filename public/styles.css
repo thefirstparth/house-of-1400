@@ -852,3 +852,12 @@ table.wk tr:last-child td,table.wk tr:last-child th{border-bottom:0}
 @media (max-width:720px){.signal{grid-template-columns:1fr;gap:6px}.signal .sg-src{grid-column:auto;grid-row:auto}}
 .sechead{flex-wrap:nowrap}.sechead>div{min-width:0}
 .run-r a.pl{border:1.5px solid var(--rule);border-radius:999px;padding:6px 13px;font:700 12.5px/1 var(--sans);color:var(--ink);text-decoration:none}.run-r a.pl:hover{border-color:var(--ink)}
+
+/* ---------- the masthead's colour bar (a press colour-control strip between registration marks) ---------- */
+.colourbar{display:flex;align-items:center;justify-content:center;gap:10px;margin:10px auto 2px;width:min(100%,440px)}
+.colourbar span{flex:1;display:flex;gap:2px;height:7px}
+.colourbar b{flex:1;border-radius:1px}
+.colourbar .rm{width:14px;height:14px;flex:none;border:1.3px solid var(--ink);border-radius:50%;background:linear-gradient(var(--ink),var(--ink)) center/1.3px 100% no-repeat,linear-gradient(var(--ink),var(--ink)) center/100% 1.3px no-repeat;opacity:.75}
+.poster .pm .colourbar{width:min(80vw,620px);margin-top:14px}
+.poster .pm .colourbar span{height:10px}
+@media (max-width:720px){.colourbar{width:min(100%,300px);gap:8px}.colourbar span{height:6px}}

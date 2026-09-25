@@ -764,7 +764,11 @@ function frontHTML() {
 <div class="col fc">${minute}${editorNote()}</div></div>`;
 }
 
+// The masthead's colour bar, Bhide's idea: the strip a press prints at the edge of the sheet to check its inks, here
+// one patch for each section's colour in the order of the paper, between two registration marks.
+const colourBar = () => `<i class="rm"></i><span>${[...new Set(CFG.sections.map(x => x.palette).filter(p => p && !["ink", "slate"].includes(p)))].map(p => `<b style="background:var(--${p})"></b>`).join("")}</span><i class="rm"></i>`;
 function render() {
+  const cb = $("#colourbar"); if (cb) cb.innerHTML = colourBar();
   const n = E.edition_no;
   document.title = `The House of 1400 · ${longDate(E.date)}`;
   $("#run-date").textContent = longDate(E.date);
@@ -984,7 +988,7 @@ async function myLocation(ask) {
 function heads(n = 5) {
   return [E.front.lead, ...E.front.seconds, ...E.front.briefs].slice(0, n).map(s => [s.kicker?.replace(/^Front Page · /, "") || sec(s.section).short, s.headline]);
 }
-const mastHTML = () => `<div class="pm"><span class="the">The</span><span class="hof">House of</span><span class="yr">1400</span><span class="sub">${esc(longDate(E.date))} · Edited by ${esc(CFG.paper.editor.signature.replace(", Editor", ""))}</span></div>`;
+const mastHTML = () => `<div class="pm"><span class="the">The</span><span class="hof">House of</span><span class="yr">1400</span><div class="colourbar">${colourBar()}</div><span class="sub">${esc(longDate(E.date))} · Edited by ${esc(CFG.paper.editor.signature.replace(", Editor", ""))}</span></div>`;
 function stripBits() {
   const w = LIVE.weather?.value?.cities?.[0], M = LIVE.markets?.value?.indices || [];
   const bits = [];
