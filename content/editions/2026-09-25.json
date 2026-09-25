@@ -20,6 +20,12 @@
       "color": "--acc-mk"
     },
     {
+      "section": "Money",
+      "line": "IRDAI plans insurance commission caps; PB Fintech −33%",
+      "target": "irdai-commission-caps",
+      "color": "--acc-mk"
+    },
+    {
       "section": "AI",
       "line": "Altman and Amodei ask the UN for AI rules; US says no",
       "target": "un-ai-rules",
@@ -612,6 +618,37 @@
     "ledger": {
       "stories": [
         {
+          "id": "irdai-commission-caps",
+          "thread_id": "irdai-distribution-reform-2026",
+          "section": "ledger",
+          "kicker": "Money · Insurance",
+          "headline": "IRDAI proposes to bring back caps on insurance commissions; PB Fintech falls 33%",
+          "byline": "ECONOMIC TIMES · 24 SEP",
+          "short": "The insurance regulator has proposed product-level limits on the commissions insurers pay banks, brokers and agents, plus curbs on digital nudges to buy. It dropped such caps in 2023. Shares of PB Fintech, which runs Policybazaar, fell 33.3% on Thursday; Max Financial lost 9.7% and HDFC Life 5%. These are proposals: comments close on 25 October.",
+          "more": [
+            "The Insurance Regulatory and Development Authority of India published the plan as a consultation paper on distribution reform. Commission limits would depend on the insurance segment, the product, the sales channel and how much work the sale and servicing take, so distributors would earn less on simpler products.",
+            "The regulator's case is cost. Life insurers paid ₹60,800 crore in commissions in FY25, up 18%, while premiums grew 6.73%, according to IRDAI data. India is among the ten largest insurance markets but coverage remains below the global average.",
+            "On Thursday PB Fintech closed at ₹1,258.80, Turtlemint fell 20% to ₹109.10, Max Financial Services ended at ₹1,411.20, HDFC Life at ₹533.65 and ICICI Prudential Life 3.4% lower at ₹467.85. SBI Life, which sells mostly through its parent bank, barely moved.",
+            "Whether buyers see lower premiums depends on how insurers respond, and the framework can change after feedback from insurers and distributors."
+          ],
+          "why": {
+            "text": "If the caps go through, the cost of selling a policy falls, which is the part of every premium that pays the seller; anyone buying term, health or life cover in the next year should watch what the final rules say.",
+            "personal": false
+          },
+          "sources": [
+            {
+              "label": "The Economic Times",
+              "url": "https://economictimes.indiatimes.com/industry/banking/finance/insure/irdai-proposals-on-insurance-commission-leads-to-bloodbath-for-insurer-stocks-pb-fintech-max-life-sbi-life-what-happens-to-your-money/articleshow/134457957.cms"
+            }
+          ],
+          "facts": {
+            "status": "consultation paper",
+            "comments_until": "2026-10-25",
+            "pb_fintech_24sep": "-33.27%",
+            "commission_caps": "proposed return (removed 2023)"
+          }
+        },
+        {
           "id": "lounge-rules-oct",
           "thread_id": "cards-lounge-oct-2026",
           "section": "ledger",
@@ -648,7 +685,34 @@
           "USD/INR": "The rupee's record low, just under 97, was set in May.",
           "S&P 500": "Flat as Treasury yields climbed."
         }
-      }
+      },
+      "briefs": [
+        {
+          "id": "upi-mdr-oct15",
+          "thread_id": "upi-mdr-2026",
+          "section": "ledger",
+          "kicker": "Money · Payments",
+          "headline": "UPI payments to businesses above ₹2,000 carry a 0.4% fee from 15 October",
+          "text": "NPCI's merchant discount rate applies to UPI payments above ₹2,000 made to businesses, capped at ₹300 a transaction; payments between people stay free and the merchant pays the fee. The finance ministry has ruled out a rollback and denied opposition claims of US pressure.",
+          "sources": [
+            {
+              "label": "Al Jazeera",
+              "url": "https://www.aljazeera.com/features/2026/9/17/india-to-impose-controversial-fee-for-upi-instant-payments-who-benefits"
+            },
+            {
+              "label": "The Pioneer",
+              "url": "https://dailypioneer.com/news/slug-lite/government-digs-in-on-mdr-for-upi?year=2026"
+            }
+          ],
+          "facts": {
+            "mdr": "0.4%",
+            "threshold": "above 2000",
+            "cap": "300",
+            "effective": "2026-10-15",
+            "rollback": "ruled out"
+          }
+        }
+      ]
     },
     "namma": {
       "stories": [
@@ -4174,7 +4238,6 @@
     {
       "id": "pm:which-company-has-the-best-ai-model-end-of-october",
       "thread_id": "bet-which-company-has-the-best-ai-model-end-of-october",
-      "standing": "Best AI model",
       "title": "Which company has the best AI model end of October?",
       "category": "AI",
       "outcomes": [
@@ -4197,7 +4260,6 @@
     {
       "id": "pm:ballon-dor-winner-2026",
       "thread_id": "bet-ballon-dor-winner-2026",
-      "standing": "Ballon d'Or",
       "title": "Ballon d'Or Winner 2026",
       "category": "Football",
       "outcomes": [
@@ -4220,7 +4282,6 @@
     {
       "id": "pm:laliga-2027-champion-20260701200737375",
       "thread_id": "bet-laliga-2027-champion-20260701200737375",
-      "standing": "La Liga champion",
       "title": "LALIGA: 2027 Champion",
       "category": "Football",
       "outcomes": [
@@ -4243,7 +4304,6 @@
     {
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
       "thread_id": "bet-uefa-champions-league-2027-champion-2026",
-      "standing": "Champions League winner",
       "title": "UEFA Champions League: 2027 Champion",
       "category": "Football",
       "outcomes": [
@@ -4266,7 +4326,6 @@
     {
       "id": "pm:2026-f1-drivers-champion",
       "thread_id": "bet-2026-f1-drivers-champion",
-      "standing": "F1 drivers' champion",
       "title": "F1 Drivers' Champion",
       "category": "F1",
       "outcomes": [

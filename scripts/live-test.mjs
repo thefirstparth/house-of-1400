@@ -25,6 +25,7 @@ const checks = {
   gold_in: v => v.per_10g_24k > 50000 && v.per_10g_24k < 400000,
   trends: v => (v.geos.IN || []).length >= 3,
   betting: v => v.markets.length >= 3,
+  movers: v => v.universe >= 300 && v.days.length >= 1,
 };
 
 let failed = 0;

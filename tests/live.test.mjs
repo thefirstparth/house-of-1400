@@ -84,3 +84,21 @@ test("betting: Polymarket ids only", async () => {
   assert.ok(seen.every(u => u.includes("polymarket.com")), seen.join(" "));
   assert.ok(!seen.some(u => u.includes("kalshi")));
 });
+
+test("movers: sessions aligned by date, stocks, clusters", () => {
+  const cfg = { stock_pct: 8, industry_pct: 2.5, industry_min_stocks: 4, sessions: 2 };
+  const list = ["A", "B", "C", "D", "E"].map(s => ({ name: s + " Ltd.", industry: s === "E" ? "Other" : "Fin", symbol: s }));
+  const days = ["2026-09-22", "2026-09-23", "2026-09-24"];
+  const px = { A: [100, 100, 60], B: [100, 100, 95], C: [100, 100, 95.5], D: [100, 100, 100], E: [100, 100, 101] };
+  const closes = Object.fromEntries(Object.entries(px).map(([s, a]) => [`${s}.NS`, a.map((c, i) => ({ d: days[i], c }))]));
+  closes["B.NS"] = [{ d: days[0], c: 100 }, { d: days[2], c: 95 }]; // B is missing a day
+  const r = L.moverStats(list, closes, cfg);
+  assert.deepEqual(r.days, ["2026-09-24", "2026-09-23"]);
+  assert.deepEqual(r.stocks.map(x => x.symbol), ["A"]);
+  assert.equal(r.stocks[0].sessions[0], -40);
+  const b = r.stocks.concat([]).length; assert.equal(b, 1);
+  assert.equal(r.clusters.length, 1);
+  assert.equal(r.clusters[0].industry, "Fin");
+  assert.equal(r.clusters[0].direction, "down");
+  assert.deepEqual(r.clusters[0].stocks.map(x => x.symbol), ["A", "B", "C"]);
+});

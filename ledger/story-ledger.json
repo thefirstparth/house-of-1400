@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_updated": "2026-09-25T01:30:23.452Z",
+  "last_updated": "2026-09-25T08:27:18.891Z",
   "last_edition": "2026-09-25",
   "threads": [
     {
@@ -444,6 +444,47 @@
         "down": 0
       },
       "section": "pitch"
+    },
+    {
+      "thread_id": "irdai-distribution-reform-2026",
+      "title": "IRDAI proposes to bring back caps on insurance commissions; PB Fintech falls 33%",
+      "entities": [],
+      "facts": {
+        "status": "consultation paper",
+        "comments_until": "2026-10-25",
+        "pb_fintech_24sep": "-33.27%",
+        "commission_caps": "proposed return (removed 2023)"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "upi-mdr-2026",
+      "title": "UPI payments to businesses above ₹2,000 carry a 0.4% fee from 15 October",
+      "entities": [],
+      "facts": {
+        "mdr": "0.4%",
+        "threshold": "above 2000",
+        "cap": "300",
+        "effective": "2026-10-15",
+        "rollback": "ruled out"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
     }
   ]
 }

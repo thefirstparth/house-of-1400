@@ -31,7 +31,7 @@
       "includeFiles": "content/latest.json"
     },
     "api/live/[key].js": {
-      "includeFiles": "config/house.json",
+      "includeFiles": "config/{house.json,nifty500.csv}",
       "maxDuration": 20
     }
   },

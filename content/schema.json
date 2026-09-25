@@ -700,9 +700,10 @@
           "volume24h": {
             "type": "number"
           },
-          "standing": {
+          "since": {
             "type": "string",
-            "$comment": "Name of the config betting.standing entry this market fills (printed every day while open)."
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "$comment": "First edition that printed this market (or its predecessor in the same line); set when it carries over."
           }
         }
       }
@@ -808,6 +809,43 @@
         "minLength": 10
       },
       "$comment": "Not printed. A reason a coverage minimum is not met today (validate.mjs)."
+    },
+    "checks": {
+      "type": "object",
+      "$comment": "Not printed. Evidence the daily run did its sweeps (validate.mjs).",
+      "additionalProperties": false,
+      "properties": {
+        "movers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "about",
+              "answer"
+            ],
+            "properties": {
+              "about": {
+                "type": "string"
+              },
+              "answer": {
+                "type": "string",
+                "minLength": 15
+              },
+              "covered_by": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "money_sweep": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
     }
   }
 }

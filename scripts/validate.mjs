@@ -138,11 +138,31 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   ];
   for (const [key, met, msg] of need) if (!met && !E.coverage_waivers?.[key]) errors.push(`coverage: ${msg}, or explain in coverage_waivers.${key}`);
   if ((E.betting?.length || 0) > 10) errors.push("coverage: The Betting Window shows at most 10 markets");
-  // Standing markets (config betting.standing) print every day while open; a missing one needs coverage_waivers.standing.
+  // From 26 Sep 2026 the daily run must show its sweeps (checks) and keep what is still trending in The Betting Window.
   if (E.date > "2026-09-25") {
-    const have = new Set((E.betting || []).map(b => b.standing).filter(Boolean));
-    const miss = (read("config/house.json").betting?.standing || []).map(s => s.name).filter(n => !have.has(n));
-    if (miss.length && !E.coverage_waivers?.standing) errors.push(`coverage: standing markets missing from The Betting Window (${miss.join(", ")}); add them with "standing", or explain in coverage_waivers.standing`);
+    const ids = new Set(items.map(s => s.id));
+    // a) Every stock, industry and cluster flagged by /api/live/movers (in the snapshot) gets an answer: why it moved,
+    //    and the story that covers it, or why it is not news.
+    const MV = E.snapshot?.movers?.value;
+    if (!MV) errors.push("checks: snapshot.movers is missing; run the snapshot so the market movers can be checked");
+    else {
+      const answers = E.checks?.movers || [];
+      const answered = key => answers.some(a => a.about.toLowerCase().includes(key.toLowerCase()));
+      for (const s of MV.stocks || []) if (!answered(s.symbol) && !answered(s.name)) errors.push(`checks.movers: ${s.name} (${s.symbol}) moved ${s.sessions.filter(v => v != null).map(v => v + "%").join(", ")}; say why in checks.movers`);
+      for (const c of [...(MV.clusters || []), ...(MV.industries || [])]) if (!answered(c.industry)) errors.push(`checks.movers: ${c.industry} moved together${c.session ? " on " + c.session : ""}; say why in checks.movers`);
+      for (const a of answers) if (a.covered_by && !ids.has(a.covered_by)) errors.push(`checks.movers: covered_by "${a.covered_by}" is not an item in this edition`);
+    }
+    // b) The India money sweep: at least three sources from three different sites, read for this edition.
+    const hosts = new Set((E.checks?.money_sweep || []).map(u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return null; } }).filter(Boolean));
+    if (hosts.size < 3) errors.push("checks.money_sweep: list the regulator and personal-finance pages read for the India money sweep (at least 3 sites)");
+    // c) Markets still trending carry over (ledger/betting-carry.json, written by scripts/betting-candidates.mjs).
+    let carry = null;
+    try { carry = read("ledger/betting-carry.json"); } catch {}
+    if (carry?.date === E.date) {
+      const have = new Set((E.betting || []).map(b => b.id));
+      const miss = carry.carry.filter(c => !have.has(c.id));
+      if (miss.length && !E.coverage_waivers?.betting_carry) errors.push(`coverage: still-trending markets missing from The Betting Window (${miss.map(m => m.title).join("; ")}); keep them with "since", or explain in coverage_waivers.betting_carry`);
+    }
   }
   // Polymarket only from 26 Sep 2026 (Kalshi retired; the page no longer refreshes "ks:" ids).
   if (E.date > "2026-09-25") (E.betting || []).forEach((b, i) => { if (!/^pm:/.test(b.id || "")) errors.push(`betting[${i}]: Polymarket only, id must start with "pm:"`); });

@@ -525,7 +525,7 @@ function bettingBlock() {
   const cards = list.map(b => {
     const L = !LIVE.betting?.stale && liveM.find(m => m.id === idOf(b));
     const outs = (L?.outcomes?.length ? L.outcomes : b.outcomes).slice(0, 3);
-    return `<li><div class="meta">${esc(b.category || "World")}<span> · ${b.standing ? "Every day" : esc(b.source || "Polymarket")}</span></div><a class="title" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title.replace(/\.\.\.\?$/, "…?"))}</a>${b.note ? `<small>${esc(b.note)}</small>` : ""}<ul>${outs.map((o, i) => `<li class="${i === 0 ? "fav" : ""}"><span>${esc(outcomeLabel(o.name))}</span><b class="tnum">${Math.round(o.prob)}%</b><i><em style="width:${Math.max(0, Math.min(100, o.prob))}%"></em></i></li>`).join("")}</ul></li>`;
+    return `<li><div class="meta">${esc(b.category || "World")}<span> · ${b.since && b.since < E.date ? `Trending since ${esc(sparkLabel(b.since))}` : esc(b.source || "Polymarket")}</span></div><a class="title" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title.replace(/\.\.\.\?$/, "…?"))}</a>${b.note ? `<small>${esc(b.note)}</small>` : ""}<ul>${outs.map((o, i) => `<li class="${i === 0 ? "fav" : ""}"><span>${esc(outcomeLabel(o.name))}</span><b class="tnum">${Math.round(o.prob)}%</b><i><em style="width:${Math.max(0, Math.min(100, o.prob))}%"></em></i></li>`).join("")}</ul></li>`;
   }).join("");
   return `<ol class="markets">${cards}</ol><p class="asof" style="margin-top:10px">${LIVE.betting && !LIVE.betting.stale ? "Live prices" : `Prices ${agoIST(LIVE.betting?.as_of) || "at press time"}`}. A price is what traders pay for a yes, not a forecast.</p>`;
 }
