@@ -1,7 +1,7 @@
 # RUNBOOK: the daily edition
 
 ## Schedule
-Four scheduled runs a day, 29 minutes apart, from 14:00 IST. Each one first checks whether today's edition is already live and exits at once if it is, so only one does the work. The 14:00 main run uses Opus (`claude-opus-5-5`) for the editorial work; the three retries and the 16:00 poster run use Sonnet (`claude-sonnet-5`), so a failed main run is redone on the cheaper model. Set on each routine. The server may start a run a few minutes after its slot; the information cut stays 14:00 IST whatever the start time.
+Four scheduled runs a day, 29 minutes apart, from 14:00 IST. Each one first checks whether today's edition is already live and exits at once if it is, so only one does the work. The 14:00 main run uses Opus (`claude-opus-5-5`) for the editorial work; the three retries and the 16:00 poster run use Sonnet (`claude-sonnet-5`), so a failed main run is redone on the cheaper model. Set on each routine. The server may start a run a few minutes after its slot; the information cut stays 14:00 IST whatever the start time. Scheduled runs fire into two standing Claude Code sessions that were created with this repository attached (routines that start a fresh session get no repository and cannot clone it): "House of 1400 · scheduled desk (Opus: 14:00 edition)" receives the 14:00 run, and "House of 1400 · scheduled desk (Sonnet: retries and posters)" receives the 14:29, 14:58 and 15:27 retries and the 16:00 poster run. Each run starts by resetting its checkout to origin/main and ignores earlier days' messages. Do not archive these two sessions; if one is lost, create a new session with this repository as its source and the right model, and point the routines at it.
 
 | Run | IST | UTC cron |
 |---|---|---|
