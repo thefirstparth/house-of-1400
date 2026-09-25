@@ -844,6 +844,35 @@
             "type": "string",
             "format": "uri"
           }
+        },
+        "national": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "story"
+            ],
+            "properties": {
+              "story": {
+                "type": "string"
+              },
+              "covered_by": {
+                "type": "string"
+              },
+              "answer": {
+                "type": "string",
+                "minLength": 15
+              }
+            }
+          }
+        },
+        "national_sweep": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
         }
       }
     }

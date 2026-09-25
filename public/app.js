@@ -581,7 +581,7 @@ function render() {
   h += secWrap("betting", `<div data-live="betting">${bettingBlock()}</div>`, `What the world is betting on · ${markets}`);
   h += secWrap("bye", byeBlock(), "Watch and do");
   h += deskBlock();
-  if (E.editor_note) h += `<div class="editor">${esc(E.editor_note)}<span><a href="/editor">${esc(CFG.paper.editor.signature)}</a></span></div>`;
+  if (E.editor_note) h += `<div class="editor">${esc(E.editor_note)}<span><a href="/editor"><img src="/bhide.svg" alt="" width="28" height="28">${esc(CFG.paper.editor.signature)}</a></span></div>`;
   h += `<div class="house" id="house"><b>${esc(sec("house").name)}</b><p>${esc(E.house_note)}</p></div>`;
   h += `<div class="foot">${esc(`THE HOUSE OF 1400 · ${longDate(E.date).toUpperCase()} · NO. ${n} · EDITED BY ${CFG.paper.editor.signature.replace(", Editor", "").toUpperCase()}`)}<br><a href="/editor">About the editor</a> · <a href="/archive">The Archive</a></div>`;
   $("#main").innerHTML = h;
@@ -947,7 +947,7 @@ async function renderEditor() {
   let note = "";
   try { const L = await getJSON("/content/latest.json"); if (L.editor_note) note = `<figure class="ed-quote"><blockquote>${esc(L.editor_note)}</blockquote><figcaption>${esc(CFG.paper.editor.signature)} · ${esc(longDate(L.date))}</figcaption></figure>`; } catch {}
   $("#main").innerHTML = `<article class="about">
-<div class="ed-head"><div class="ed-mono" aria-hidden="true">TAB</div><div><div class="kick">About the editor</div><h1>${esc(name)}</h1><p class="deck">${esc(CFG.paper.editor.full_name)} edits The House of 1400, an afternoon paper with a circulation of one. He is strict about rules and quick to correct the reader, and very proud of his education. He is also, as he would be the first to point out, fictional.</p></div></div>
+<div class="ed-head"><img class="ed-portrait" src="/bhide.svg" alt="A drawn portrait of T. A. Bhide: side-parted hair, round spectacles, one raised eyebrow, a red pencil behind his ear" width="128" height="128"><div><div class="kick">About the editor</div><h1>${esc(name)}</h1><p class="deck">${esc(CFG.paper.editor.full_name)} edits The House of 1400, an afternoon paper with a circulation of one. He is strict about rules and quick to correct the reader, and very proud of his education. He is also, as he would be the first to point out, fictional.</p></div></div>
 <section><h2>Who he is</h2>
 <p>Bhide is an editor of the old school, the kind that ran city desks when a paper had to be right before it could be first. He believes a newspaper is a set of rules kept every day, and that the reader should never have to wonder whether the paper checked. He reads everything twice. He has opinions about commas.</p>
 <p>His name is a small tribute to a famous society secretary of Indian television, a man who also believed that rules exist to be read aloud. The resemblance ends at the moustache, which the editor denies having.</p></section>
@@ -958,7 +958,7 @@ async function renderEditor() {
 <ol class="ed-rules">${rules.map(([t, d]) => `<li><b>${esc(t)}</b><span>${esc(d)}</span></li>`).join("")}</ol></section>
 ${note ? `<section><h2>In his own words</h2>${note}</section>` : ""}
 <section class="ed-honest"><h2>A note on the byline</h2>
-<p>T. A. Bhide is a character. Each afternoon the paper is researched and written by an AI model working to a written rulebook, and a validator in code checks the edition (sources, times, duplicates, banned words) before it is published. The rules are real, and so are the sources. Only the editor is invented.</p></section>
+<p>T. A. Bhide is a character. Each afternoon the paper is researched and written by an AI model working to a written rulebook, and a validator in code checks the edition (sources, times, duplicates, banned words) before it is published. The rules are real, and so are the sources. Only the editor is invented, and his portrait is a drawing.</p></section>
 <p class="ed-back"><a class="backlink" href="/">Back to today's paper</a> · <a class="backlink" href="/archive">The Archive</a></p>
 </article>`;
 }

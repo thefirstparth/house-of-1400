@@ -262,7 +262,9 @@ details.desk summary{font:700 12px var(--sans);letter-spacing:.14em;text-transfo
 /* About the editor */
 .about{max-width:720px;margin:8px auto 120px;font:19px/1.6 var(--serif)}
 .about .ed-head{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start;border-bottom:3px double var(--ink);padding-bottom:22px;margin-bottom:8px}
-.about .ed-mono{width:88px;height:88px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font:600 24px/1 var(--serif);letter-spacing:.06em;font-variation-settings:"opsz" 72}
+.about .ed-portrait{width:128px;height:128px;border-radius:50%;display:block;box-shadow:0 0 0 1px var(--rule)}
+.editor span a{display:inline-flex;align-items:center;gap:10px}
+.editor span a img{width:28px;height:28px;border-radius:50%}
 .about .kick{font:700 12px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .about h1{font:700 clamp(40px,6vw,60px)/1.02 var(--serif);font-variation-settings:"opsz" 72;letter-spacing:-.02em;margin:4px 0 10px}
 .about .deck{font:italic 21px/1.45 var(--serif);color:var(--muted);margin:0}
@@ -406,7 +408,7 @@ details.desk summary{font:700 12px var(--sans);letter-spacing:.14em;text-transfo
  .archive-list li{grid-template-columns:1fr;gap:2px}
  .about{font-size:17.5px}
  .about .ed-head{grid-template-columns:1fr;gap:14px}
- .about .ed-mono{width:64px;height:64px;font-size:18px}
+ .about .ed-portrait{width:96px;height:96px}
  .about .deck{font-size:18.5px}
  .ed-rules{grid-template-columns:1fr}
  .dock button{padding:8px 11px}

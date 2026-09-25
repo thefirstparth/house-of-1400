@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Drawn portrait of T. A. Bhide">
+  <defs><clipPath id="c"><circle cx="100" cy="100" r="100"/></clipPath></defs>
+  <g clip-path="url(#c)">
+    <rect width="200" height="200" fill="#e6dfd0"/>
+    <g stroke="#d9d0bd" stroke-width="1.1"><path d="M0 14h200M0 24h200M0 34h200M0 44h200M0 54h200M0 64h200M0 74h200M0 84h200M0 94h200M0 104h200M0 114h200M0 124h200M0 134h200"/></g>
+    <g transform="translate(100 104) scale(1.18) translate(-100 -96)">
+      <!-- shirt, tie, vest -->
+      <path d="M14 214 C18 174 48 158 78 152 L122 152 C152 158 182 174 186 214 Z" fill="#f7f3ea"/>
+      <path d="M96 158 L104 158 L108 168 L103 210 L97 210 L92 168 Z" fill="#7a1f1a"/>
+      <path d="M96 158 L104 158 L102 164 L98 164 Z" fill="#5c1713"/>
+      <path d="M14 214 C18 176 44 162 70 155 L90 214 Z" fill="#23201b"/>
+      <path d="M186 214 C182 176 156 162 130 155 L110 214 Z" fill="#23201b"/>
+      <path d="M84 146 L99 159 L90 172 L78 154 Z" fill="#fbf8f1" stroke="#cfc6b4" stroke-width="1.2" stroke-linejoin="round"/>
+      <path d="M116 146 L101 159 L110 172 L122 154 Z" fill="#fbf8f1" stroke="#cfc6b4" stroke-width="1.2" stroke-linejoin="round"/>
+      <!-- neck -->
+      <path d="M87 126 L87 148 Q100 158 113 148 L113 126 Z" fill="#b98a63"/>
+      <path d="M87 136 Q100 147 113 136 L113 130 Q100 141 87 130 Z" fill="#a67a55"/>
+      <!-- ears -->
+      <ellipse cx="63" cy="96" rx="7" ry="11" fill="#c9976d"/>
+      <ellipse cx="137" cy="96" rx="7" ry="11" fill="#c9976d"/>
+      <path d="M135 90 Q140 96 135 102" stroke="#a9794f" stroke-width="1.6" fill="none"/>
+      <!-- red editor's pencil, resting on the right ear -->
+      <g transform="rotate(-12 140 84)">
+        <rect x="118" y="81" width="42" height="6.5" rx="1" fill="#b3261e"/>
+        <rect x="118" y="81" width="42" height="2" fill="#cf3b31"/>
+        <path d="M160 81 L169 84.25 L160 87.5 Z" fill="#e8c9a0"/><path d="M166 83.2 L169 84.25 L166 85.3 Z" fill="#23201b"/>
+      </g>
+      <!-- head -->
+      <path d="M65 86 C65 57 80 44 100 44 C120 44 135 57 135 86 C135 114 121 132 100 134 C79 132 65 114 65 86 Z" fill="#cf9e73"/>
+      <path d="M121 58 C131 70 135 88 131 106 C127 122 116 132 100 134 C113 126 123 110 123 90 C123 76 121 66 121 58 Z" fill="#bb8a60" opacity=".65"/>
+      <!-- oiled hair with a sharp parting, grey at the temples -->
+      <path d="M63 90 C59 58 75 37 100 36 C127 35 141 55 137 88 C134 74 131 63 123 57 C111 51 95 53 83 51 C77 57 69 67 66 90 Z" fill="#1d1a16"/>
+      <path d="M83 51 C91 43 107 39 123 45" stroke="#3a352e" stroke-width="1.4" fill="none"/>
+      <path d="M92 47 C101 42 112 41 121 45 M96 50 C105 46 114 46 122 49" stroke="#3a352e" stroke-width="1" fill="none"/>
+      <path d="M64 88 C63 80 64 74 67 70 L68 88 Z" fill="#8d877c"/>
+      <path d="M136 86 C137 78 136 72 133 68 L132 86 Z" fill="#8d877c"/>
+      <!-- eyebrows: the left one raised, the correcting look -->
+      <path d="M73 72 Q83 65 93 71" stroke="#1d1a16" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <path d="M107 73 Q117 70 127 74" stroke="#1d1a16" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <!-- eyes -->
+      <ellipse cx="84" cy="86" rx="3" ry="3.4" fill="#1d1a16"/>
+      <ellipse cx="116" cy="86" rx="3" ry="3.1" fill="#1d1a16"/>
+      <!-- round spectacles -->
+      <g stroke="#1d1a16" stroke-width="2.6" fill="#ffffff" fill-opacity=".16"><circle cx="84" cy="86" r="12.5"/><circle cx="116" cy="86" r="12.5"/></g>
+      <path d="M79 80 L83 78" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".7"/><path d="M111 80 L115 78" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".7"/>
+      <path d="M96.5 84 Q100 81 103.5 84" stroke="#1d1a16" stroke-width="2.4" fill="none"/>
+      <path d="M71.5 84 L64 82 M128.5 84 L136 82" stroke="#1d1a16" stroke-width="2.2"/>
+      <!-- nose -->
+      <path d="M101 96 Q99 103 96 106 Q100 108.5 104 106.5" stroke="#9a6d4b" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <!-- the moustache he denies having -->
+      <path d="M83 114 C89 108.5 96 109 100 112 C104 109 111 108.5 117 114 C111 116.5 105 115.5 100 115.5 C95 115.5 89 116.5 83 114 Z" fill="#1d1a16"/>
+      <!-- mouth: unimpressed -->
+      <path d="M92 122 Q100 120.5 108 122" stroke="#6e4630" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    </g>
+  </g>
+</svg>

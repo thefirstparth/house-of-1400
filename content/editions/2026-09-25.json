@@ -14,6 +14,12 @@
       "color": "--acc-wd"
     },
     {
+      "section": "India",
+      "line": "Two election commissioners objected 14 times to voter-roll moves, report says",
+      "target": "eci-commissioners-objections",
+      "color": "--acc-wd"
+    },
+    {
       "section": "Markets",
       "line": "Sensex −1.67% to 73,581 on oil and yields",
       "target": "sensex-falls-oil",
@@ -513,6 +519,44 @@
           "facts": {
             "us10y": "5.11",
             "date": "2026-09-23"
+          }
+        },
+        {
+          "id": "eci-commissioners-objections",
+          "thread_id": "eci-sir-dissent-2026",
+          "section": "dateline",
+          "kicker": "India · Institutions",
+          "headline": "Two of three election commissioners objected 14 times to voter-roll decisions, report says; EC says decisions were unanimous",
+          "byline": "BUSINESS STANDARD · THEPRINT · THE TRIBUNE · 23 SEP",
+          "short": "Election Commissioners Sukhbir Singh Sandhu and Vivek Joshi recorded objections at least 14 times between November 2025 and August 2026 over the Special Intensive Revision of voter rolls, a newspaper investigation reported. Their notes covered changes to Form 6, the voter registration form, voter-data access and appeals over deletions. The Commission says differing views are normal and its final decisions were unanimous.",
+          "more": [
+            "The revision began in Bihar in June 2025 and has since touched more than 13 crore names in draft rolls across 30 states and union territories.",
+            "According to the report, Sandhu recorded on 13 August that a change to Form 6 was “unauthorised and illegal” and should be removed. The Commission's press note on Wednesday did not deny the notes; it called them part of standard administrative practice.",
+            "Opposition parties have demanded the removal of Chief Election Commissioner Gyanesh Kumar, and the Left has asked for the revision to be halted."
+          ],
+          "why": {
+            "text": "The Election Commission decides who is on the voter roll; a recorded split inside it over how names were added and removed is a question about the next elections, not about any one party.",
+            "personal": false
+          },
+          "sources": [
+            {
+              "label": "Business Standard",
+              "url": "https://www.business-standard.com/amp/india-news/eci-says-decisions-unanimous-after-report-flags-commissioners-objections-126092300658_1.html"
+            },
+            {
+              "label": "ThePrint",
+              "url": "https://theprint.in/india/sir-row-oppn-demands-cecs-removal-on-gyaneshgate-ec-defends-differing-views/3051102/"
+            },
+            {
+              "label": "The Tribune",
+              "url": "https://www.tribuneindia.com/news/india/sir-decisions-unanimous-say-election-commission-officials-amid-discord-reports/"
+            }
+          ],
+          "facts": {
+            "objections": "14",
+            "period": "Nov 2025 to Aug 2026",
+            "ec_response": "decisions unanimous",
+            "status": "opposition seeks CEC removal"
           }
         },
         {

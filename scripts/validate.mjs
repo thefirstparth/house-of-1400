@@ -155,7 +155,16 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     // b) The India money sweep: at least three sources from three different sites, read for this edition.
     const hosts = new Set((E.checks?.money_sweep || []).map(u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return null; } }).filter(Boolean));
     if (hosts.size < 3) errors.push("checks.money_sweep: list the regulator and personal-finance pages read for the India money sweep (at least 3 sites)");
-    // c) Markets still trending carry over (ledger/betting-carry.json, written by scripts/betting-candidates.mjs).
+    // c) The national front-page sweep: the India stories leading the national press are in the paper or explained.
+    const nat = E.checks?.national || [];
+    const natHosts = new Set((E.checks?.national_sweep || []).map(u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return null; } }).filter(Boolean));
+    if (natHosts.size < 3) errors.push("checks.national_sweep: list the national front pages read (at least 3 sites)");
+    if (nat.length < 5) errors.push("checks.national: record the top India stories from the national front pages (at least 5), each covered or explained");
+    for (const n of nat) {
+      if (n.covered_by && !ids.has(n.covered_by)) errors.push(`checks.national: covered_by "${n.covered_by}" is not an item in this edition`);
+      if (!n.covered_by && !(n.answer && n.answer.length >= 15)) errors.push(`checks.national: "${n.story}" is neither covered (covered_by) nor explained (answer)`);
+    }
+    // d) Markets still trending carry over (ledger/betting-carry.json, written by scripts/betting-candidates.mjs).
     let carry = null;
     try { carry = read("ledger/betting-carry.json"); } catch {}
     if (carry?.date === E.date) {

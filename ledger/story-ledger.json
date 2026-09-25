@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_updated": "2026-09-25T08:27:18.891Z",
+  "last_updated": "2026-09-25T08:36:47.709Z",
   "last_edition": "2026-09-25",
   "threads": [
     {
@@ -485,6 +485,26 @@
         "down": 0
       },
       "section": "ledger"
+    },
+    {
+      "thread_id": "eci-sir-dissent-2026",
+      "title": "Two of three election commissioners objected 14 times to voter-roll decisions, report says; EC says decisions were unanimous",
+      "entities": [],
+      "facts": {
+        "objections": "14",
+        "period": "Nov 2025 to Aug 2026",
+        "ec_response": "decisions unanimous",
+        "status": "opposition seeks CEC removal"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
     }
   ]
 }
