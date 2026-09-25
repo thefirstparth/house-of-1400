@@ -429,11 +429,6 @@ body{font-variant-numeric:oldstyle-nums proportional-nums;background-image:url("
 }
 
 /* ---------- The Crease: India's matches ---------- */
-.cr-last{font:17px/1.5 var(--serif);margin:0 0 10px}
-.cr-last span{color:var(--muted)}
-.tbl.cr{margin-bottom:22px}
-.tbl.cr td{vertical-align:top}
-.tbl.cr small{color:var(--muted)}
 
 /* ---------- letters to the editor ---------- */
 .tools .note{margin-left:auto}
@@ -664,15 +659,4 @@ body{font-variant-numeric:oldstyle-nums proportional-nums;background-image:url("
 
 /* Headline figures stay lining (a drooping 4 in 1400 is hard to read); set last so the font shorthands above cannot reset it. */
 .mast .yr,.poster .pm .yr,.framed .fm .yr,.framed .headline,.dash .hd .name b,.dash .heads li{font-variant-numeric:lining-nums}
-@media (max-width:640px){
-  .tbl.cr thead{display:none}
-  .tbl.cr table,.tbl.cr tbody,.tbl.cr tr{display:block;width:100%}
-  .tbl.cr tr{display:grid;grid-template-columns:92px 1fr;column-gap:12px;padding:10px 0;border-bottom:1px solid var(--rule)}
-  .tbl.cr td{display:block;border:0;padding:0}
-  .tbl.cr td:first-child{grid-row:1/span 3}
-  .tbl.cr td:nth-child(3),.tbl.cr td:nth-child(4){margin-top:6px}
-  .tbl.cr td:nth-child(3) br,.tbl.cr td:nth-child(4) br{display:none}
-  .tbl.cr td:nth-child(3) small::before{content:" · "}
-  .tbl.cr td:nth-child(4) small{display:block}
-}
 sup.calc{font-size:.7em;color:var(--muted);margin-left:1px}

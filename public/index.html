@@ -11,7 +11,7 @@
 // Start the data requests now, in parallel with the fonts, styles and app.js. app.js picks them up (window.PRE0).
 (function(){var p=location.pathname.replace(/\/+$/,"")||"/";function g(u,c){var q=fetch(u,{credentials:"same-origin",cache:c||"default"}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()});q.catch(function(){});return q}
 var P=window.PRE0={cfg:g("/config/house.json")};if(p==="/"||p==="/today"||p.indexOf("/poster/")===0){P.latest=g("/content/latest.json");P.live={};
-["weather","f1_next","f1_standings","f1_last","football","laliga_table","markets","gold_in","nba","cricket"].forEach(function(k){P.live[k]=g("/api/live/"+k,"no-cache")})}})();
+["weather","f1_next","f1_standings","f1_last","football","laliga_table","markets","gold_in","nba"].forEach(function(k){P.live[k]=g("/api/live/"+k,"no-cache")})}})();
 </script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">

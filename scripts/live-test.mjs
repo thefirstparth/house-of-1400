@@ -25,7 +25,6 @@ const checks = {
   gold_in: v => v.per_10g_24k > 50000 && v.per_10g_24k < 400000,
   trends: v => (v.geos.IN || []).length >= 3,
   betting: v => v.markets.length >= 3,
-  cricket: v => (v.next.length || v.last) && v.next.every(m => !Number.isNaN(Date.parse(m.start))),
   movers: v => v.universe >= 300 && v.days.length >= 1,
 };
 

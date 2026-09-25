@@ -54,7 +54,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "cricket"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -103,12 +103,6 @@ function events() {
     const start = Date.parse(f.when_utc);
     const end = f.until_utc ? Date.parse(f.until_utc) : start + (f.minutes || 120) * 6e4;
     out.push({ label: f.label, start, end, entity: f.entity || "" });
-  }
-  // India's matches in the next week, from the live cricket feed, unless the edition already lists them.
-  for (const m of LIVE.cricket?.value?.next || []) {
-    const start = Date.parse(m.start);
-    if (!m.time_announced || start > Date.now() + 7 * 864e5 || out.some(o => Math.abs(o.start - start) < 30 * 6e4)) continue;
-    out.push({ label: `India v ${/^[A-Z]\d$/.test(m.opponent || "") ? "TBD" : m.opponent} · ${m.desc}`, start, end: m.end ? Date.parse(m.end) : start + 8 * 36e5, entity: "india_cricket" });
   }
   const race = LIVE.f1_next?.value?.race;
   if (race) for (const s of race.sessions) {
@@ -559,25 +553,10 @@ function fixturesBlock() {
   }).join("")}</ul></div>`).join("")}</div>`;
 }
 
-// India's matches from the live Cricbuzz feed; where to watch from the edition's verified broadcast list, by series.
-const seriesKey = s => String(s || "").toLowerCase().replace(/\b(19|20)\d\d\b|[^a-z ]/g, " ").replace(/\s+/g, " ").trim();
-const watchFor = series => (E.broadcast || []).find(b => seriesKey(b.series) === seriesKey(series) || seriesKey(series).includes(seriesKey(b.series)));
-function cricketTable() {
-  const C = LIVE.cricket?.value; if (!C) return "";
-  let h = "";
-  if (C.last) h += `<p class="cr-last"><b>Last:</b> ${esc(C.last.result)} <span>(${esc(C.last.desc)} v ${esc(C.last.opponent)}, ${esc(istDay(C.last.start))})</span></p>`;
-  const list = (C.next || []).slice(0, 6);
-  if (list.length) h += `<div class="tbl cr"><table><thead><tr><th>When (IST)</th><th>Match</th><th>Where</th><th>Watch in India</th></tr></thead><tbody>${list.map(m => {
-    const w = watchFor(m.series);
-    const opp = /^[A-Z]\d$/.test(m.opponent || "") ? `TBD (${m.opponent})` : m.opponent;
-    return `<tr><td class="tnum"><b>${esc(istDay(m.start))}</b><br>${m.time_announced ? esc(istTime(m.start)) : "time TBC"}</td><td><b>v ${esc(opp)}</b> · ${esc(m.desc)}<br><small>${esc(m.series)} · ${esc(m.format)}</small></td><td>${esc(m.ground || "")}${m.city ? `<br><small>${esc(m.city)}</small>` : ""}</td><td>${w ? `${esc([...(w.tv || [])].join(", "))}${w.ott?.length ? `<br><small>${esc(w.ott.join(", "))}${w.note ? " · " + esc(w.note) : ""}</small>` : ""}` : `<small>To be confirmed</small>`}</td></tr>`;
-  }).join("")}</tbody></table>${staleNote("cricket")}<p class="asof">Fixtures from Cricbuzz. Broadcasters checked by the editor per series.</p></div>`;
-  return h;
-}
 function creaseBlock() {
   const rows = E.sections?.crease?.data?.rows || [];
   const t = rows.length ? `<table class="kv"><tbody>${rows.map(r => `<tr class="${r.on ? "on" : ""}"><th scope="row">${esc(r.label)}</th><td>${esc(r.text)}</td></tr>`).join("")}</tbody></table>` : "";
-  return cricketTable() + split(t, "crease");
+  return split(t, "crease");
 }
 
 function deuceBlock() {
@@ -681,7 +660,7 @@ function render() {
   h += secWrap("pitch", storiesBlock("pitch"), "Football beyond Madrid");
   const race = LIVE.f1_next?.value?.race;
   h += secWrap("paddock", `<div data-live="paddock">${paddockBlock()}</div>` + storiesBlock("paddock"), race ? `${race.flag} Round ${race.round ?? ""} · ${race.name}${race.locality ? " · " + race.locality : ""}` : undefined);
-  h += secWrap("crease", `<div data-live="crease">${creaseBlock()}</div>`, "India men · senior team");
+  h += secWrap("crease", creaseBlock(), "India men · senior team");
   h += secWrap("deuce", deuceBlock(), "Tennis · big events first, then Alcaraz and Djokovic");
   h += secWrap("sidelines", `<div data-live="warriors">${warriorsBlock()}</div>` + storiesBlock("sidelines"), "Every other sport, when it matters");
   h += secWrap("dateline", storiesBlock("dateline"), "World & India");
@@ -737,7 +716,7 @@ function balanceFront() {
 
 function paintLive() {
   $("#rail").innerHTML = railHTML();
-  const map = { crease: creaseBlock, talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
+  const map = { talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
   for (const [k, fn] of Object.entries(map)) {
     const el = document.querySelector(`[data-live="${k}"]`);
     if (!el) continue;

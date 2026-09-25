@@ -958,47 +958,6 @@
           }
         }
       }
-    },
-    "broadcast": {
-      "type": "array",
-      "$comment": "Where to watch India's cricket, per series (EDITORIAL.md, The Crease). Carried forward and re-checked by the daily run.",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "series",
-          "tv",
-          "source",
-          "checked"
-        ],
-        "properties": {
-          "series": {
-            "type": "string"
-          },
-          "tv": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "ott": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "note": {
-            "type": "string"
-          },
-          "source": {
-            "$ref": "#/definitions/url"
-          },
-          "checked": {
-            "type": "string",
-            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
-          }
-        }
-      }
     }
   }
 }

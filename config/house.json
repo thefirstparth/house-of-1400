@@ -488,11 +488,5 @@
   },
   "site": {
     "telegram_ping": "lead headline + link, only after the edition is verified live"
-  },
-  "cricket": {
-    "cricbuzz_team_id": 2,
-    "cricbuzz_slug": "india",
-    "team": "India",
-    "note": "India men. Fixtures and results from Cricbuzz's team pages (times, venues, whether the time is officially announced). Where to watch is per series in each edition's broadcast list, verified by the daily run."
   }
 }
