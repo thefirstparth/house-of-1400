@@ -106,7 +106,7 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   for (const f of E.fixtures || []) if (Number.isNaN(Date.parse(f.when_utc))) errors.push(`fixtures: bad time ${f.when_utc}`);
 
   // Glance targets must exist
-  const targets = new Set([...items.map(s => s.id), ...Object.keys(E.sections || {}), "front", "fixtures", "madrid", "paddock", "tables", "ledger", "sky", "screen", "talk", "betting", "house", "deuce", "crease"]);
+  const targets = new Set([...items.map(s => s.id), ...Object.keys(E.sections || {}), "front", "week", "fixtures", "madrid", "paddock", "tables", "ledger", "sky", "screen", "talk", "betting", "house", "deuce", "crease"]);
   for (const g of E.glance || []) if (!targets.has(g.target)) errors.push(`glance: target ${g.target} does not exist`);
 
   // Tennis: NEXT EVENT when no match is confirmed
@@ -171,6 +171,25 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
       const have = new Set((E.betting || []).map(b => b.id));
       const miss = carry.carry.filter(c => !have.has(c.id));
       if (miss.length && !E.coverage_waivers?.betting_carry) errors.push(`coverage: still-trending markets missing from The Betting Window (${miss.map(m => m.title).join("; ")}); keep them with "since", or explain in coverage_waivers.betting_carry`);
+    }
+  }
+  if (E.date > "2026-09-25") {
+    // Every full story carries a longer version with more than the short one (the page shows "Full story").
+    for (const s of items) if (s._kind === "story") {
+      const more = (s.more || []).join(" ").trim();
+      if (!more) errors.push(`more: ${s._where} has no long version; write 2 to 4 paragraphs that add facts, context or what happens next`);
+      else if (more.split(/\s+/).length < 80) errors.push(`more: ${s._where} long version is under 80 words`);
+      else if ((s.more || []).some(p => p.trim() === (s.short || "").trim())) errors.push(`more: ${s._where} repeats the short version; add to it instead`);
+    }
+    // Mondays: the week ahead across the paper's areas, and the Ledger's weekend-and-week card.
+    if (E.weekday === "mon") {
+      const W = E.week_ahead || [], end = new Date(Date.parse(E.date + "T00:00:00Z") + 6 * 864e5).toISOString().slice(0, 10);
+      const areas = new Set(W.map(w => w.area));
+      if ((W.length < 6 || areas.size < 3) && !E.coverage_waivers?.week_ahead) errors.push(`coverage: Monday needs The Week Ahead with at least 6 dated items across at least 3 areas (has ${W.length} across ${areas.size}), or explain in coverage_waivers.week_ahead`);
+      W.forEach((w, i) => { if (w.date < E.date || w.date > end) errors.push(`week_ahead[${i}]: ${w.date} is outside ${E.date} to ${end}`); });
+      const m = E.sections?.ledger?.data?.monday;
+      if ((!m?.mood || m.mood.length < 60 || (m.weekend || []).length < 2 || (m.watch || []).length < 2) && !E.coverage_waivers?.monday_ledger)
+        errors.push("coverage: Monday needs sections.ledger.data.monday with mood (the market so far today and global cues), weekend (at least 2 things that changed since Friday's close) and watch (at least 2 market dates this week), or explain in coverage_waivers.monday_ledger");
     }
   }
   // Polymarket only from 26 Sep 2026 (Kalshi retired; the page no longer refreshes "ks:" ids).

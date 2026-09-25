@@ -16,6 +16,9 @@ Surface things he may like even if never listed. Mark those `new_for_you: true`.
 ## Day profiles
 From `config/house.json` → `day_profiles`. Summary:
 - Mon to Thu: markets and money full; entertainment compact; Namma Beat only if important.
+- **Monday is the week-ahead and markets edition** (both checked by the validator):
+  - **The Week Ahead** (`week_ahead`, shown right after the Front Page): 6 to 12 dated items for Monday to Sunday, across at least three areas, each `{date, time_ist?, what, why?, area, target?, url?}`. Choose from everything the paper covers and the week's big stories: the one or two matches or sessions that matter most (Fixtures already lists every game, so do not copy it), central bank and government dates, data releases, big earnings and IPOs, court hearings and parliament, elections abroad, launches and product events, film and series releases, Bengaluru events and civic dates, and anything from the money calendar. `what` is the event in a line; `why` says what to watch for, in one line, only when it adds something. Point `target` at a story in this edition when there is one.
+  - **The Ledger opens with "The weekend and the week"** (`sections.ledger.data.monday`): `mood`, two or three sentences on how Indian markets have traded Monday up to the 14:00 cut and the global cues behind it (Asian markets, US futures, oil, the rupee, foreign flows when reported); `weekend`, 2 to 5 things that changed between Friday's close and Monday's open and why each matters for markets (policy, geopolitics, oil, results, regulation, deals); `watch`, 2 to 6 market dates this week as `{date, what}` (data releases, central bank meetings, results, expiry, IPOs). Facts only, sourced in the research; no forecasts.
 - Fri: entertainment and Namma Beat fuller; weekend preview.
 - Sat, Sun: markets and money news light unless important; entertainment and Namma Beat fullest; sport weekend focus.
 Print the day's `profile_line` in the folio.
@@ -55,10 +58,10 @@ Ledger thread:
 ```
 
 ## Votes
-Read yesterday's and recent votes from `/api/votes` if available. More-like-this on a thread or section nudges similar stories up; Less nudges them down. Votes also adjust Screen & Stage verdict thresholds for Parth's taste over time. Never let votes remove the must-know floor.
+Read recent vote totals with `node scripts/votes.mjs` (per thread and per section; stories, briefs and Screen & Stage titles can all be voted on). More-like-this on a thread or section nudges similar stories up; Less nudges them down. Votes also adjust Screen & Stage verdict thresholds for Parth's taste over time. Never let votes remove the must-know floor.
 
 ## Voice
-- Inshorts-style economy: fact first, about 60 words for the short version, neutral and unbiased. The long version ("more") goes up to about 250 words.
+- Inshorts-style economy: fact first, about 60 words for the short version, neutral and unbiased. **Every full story also has a long version** (`more`, shown behind "Full story"): 2 to 4 paragraphs, 80 to 250 words, that add what the short version had no room for (the numbers, the background, who said what on the record, what happens next and when). It never repeats the short version. Briefs stay brief. The validator checks this.
 - The editor, T. A. Bhide, is a fictional golden-era editor. The paper's copy is plain reporting. His personality appears only in the signed editor's note on big days: strict about rules, proud of being well educated, quick to correct the reader, dry. Never sentimental.
 - "Why it matters for you" only when personal relevance is real. Otherwise "Why it matters". One sentence. Never invent personal relevance.
 - Headlines are factual, specific and short.

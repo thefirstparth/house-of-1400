@@ -35,9 +35,11 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
 };
 
+// Countdowns to the minute: seconds made the page look busy.
 function cd(ms) {
-  const d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4), s = Math.floor(ms % 6e4 / 1e3);
-  return (d ? d + "d " : "") + (d || h ? h + "h " : "") + m + "m " + String(s).padStart(2, "0") + "s";
+  if (ms < 6e4) return "under a minute";
+  const d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4);
+  return d ? `${d}d ${h}h` + (d < 2 ? ` ${m}m` : "") : h ? `${h}h ${m}m` : `${m}m`;
 }
 
 let tt;
@@ -161,12 +163,15 @@ const sourcesLine = srcs => (srcs?.length ? `<div class="src">${srcs.map(s => `<
 const newFor = x => (x.new_for_you ? `<span class="newfor">New for you</span>` : "");
 
 const THUMB = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v11H3V10z"/><path d="M7 10l4.2-7.2a2 2 0 0 1 3.7 1.3L14 9h5.6a2 2 0 0 1 2 2.4l-1.6 8A2 2 0 0 1 18 21H7"/></svg>`;
+// Thumbs on every story, brief and Screen & Stage title: they tune future editions (EDITORIAL.md, Votes).
+function thumbs(rawId, cls = "thumbs") {
+  const cur = (store.get("h1400-votes") || {})[rawId], id = esc(rawId);
+  return `<span class="${cls}" role="group" aria-label="Tune future editions"><button class="th" data-th="up" data-story="${id}" aria-pressed="${cur === "up"}" title="More like this" aria-label="More like this">${THUMB}</button><button class="th" data-th="down" data-story="${id}" aria-pressed="${cur === "down"}" title="Less like this" aria-label="Less like this"><span style="display:block;transform:rotate(180deg)">${THUMB}</span></button></span>`;
+}
 function tools(st, withMore) {
-  const v = store.get("h1400-votes") || {};
-  const cur = v[st.id];
   const link = st.sources?.[0]?.url;
   const id = esc(st.id);
-  return `<div class="tools">${withMore ? `<button class="rm" data-more="${id}" aria-expanded="false">Full story</button>` : ""}${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">Source ↗</a>` : ""}<button data-clip="${id}" title="Share this story as an image">Share</button><span class="thumbs" role="group" aria-label="Tune future editions"><button class="th" data-th="up" data-story="${id}" aria-pressed="${cur === "up"}" title="More stories like this" aria-label="More stories like this">${THUMB}</button><button class="th" data-th="down" data-story="${id}" aria-pressed="${cur === "down"}" title="Fewer stories like this" aria-label="Fewer stories like this"><span style="display:block;transform:rotate(180deg)">${THUMB}</span></button></span></div>`;
+  return `<div class="tools">${withMore ? `<button class="rm" data-more="${id}" aria-expanded="false">Full story</button>` : ""}${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">Source ↗</a>` : ""}<button data-clip="${id}" title="Share this story as an image">Share</button>${thumbs(st.id)}</div>`;
 }
 
 const why = w => (w?.text ? `<div class="why"><b>${w.personal ? "Why it matters for you" : "Why it matters"}</b>${esc(w.text)}</div>` : "");
@@ -191,7 +196,7 @@ ${why(st.why)}</div>${tools(st, more)}</article>`;
 }
 
 function briefHTML(b, cls = "item") {
-  return `<div class="${cls}" id="s-${esc(b.id)}" style="--acc:${accent(b.section)}" data-thread="${esc(b.thread_id)}">${b.kicker ? `<div class="${cls === "brief" ? "kick" : "tag"}">${esc(b.kicker)}${newFor(b)}</div>` : newFor(b)}<h4>${esc(b.headline)}</h4>${esc(b.text)}${sourcesLine(b.sources)}</div>`;
+  return `<div class="${cls}" id="s-${esc(b.id)}" style="--acc:${accent(b.section)}" data-thread="${esc(b.thread_id)}">${b.kicker ? `<div class="${cls === "brief" ? "kick" : "tag"}">${esc(b.kicker)}${newFor(b)}</div>` : newFor(b)}<h4>${esc(b.headline)}</h4>${esc(b.text)}<div class="btools">${sourcesLine(b.sources)}${thumbs(b.id, "thumbs sm")}</div></div>`;
 }
 
 function secWrap(id, body, sub) {
@@ -239,7 +244,7 @@ const LIVEBLOCKS = {
   railIndex(name) {
     const q = LIVE.markets?.value?.indices?.find(i => i.name === name); if (!q) return "";
     const col = q.change_pct < 0 ? "var(--bad)" : "var(--good)", s = q.spark?.slice(-22) || [];
-    return `<a class="w" href="#ledger"><div class="row"><b>${esc(name)}</b><span class="${dir(q.change_pct)} tnum" style="font:700 13px var(--sans)">${pct(q.change_pct)}</span></div><span class="big tnum">${inr(Math.round(q.price))}</span>${spark(s, col, { w: 200, h: 32, mini: true })}${staleNote("markets")}</a>`;
+    return `<a class="w" href="#ledger"><div class="row"><b>${esc(name)}</b><span class="${dir(q.change_pct)} tnum" style="font:700 13px var(--sans)">${pct(q.change_pct)}</span></div><span class="big tnum">${inr(Math.round(q.price))}</span>${q.live ? "" : `<div class="mc">Market closed</div>`}${spark(s, col, { w: 200, h: 32, mini: true })}${staleNote("markets")}</a>`;
   },
 };
 
@@ -337,6 +342,9 @@ function assetNote(name, q) {
   return [D.notes?.[name], q?.note || range].filter(Boolean).map(x => x.replace(/\.$/, "")).join(". ") + ".";
 }
 
+// Market open or closed, from the exchange's own trading hours (Yahoo's currentTradingPeriod).
+const mstate = q => `<span class="mstate ${q.live ? "open" : "closed"}">${q.live ? "Live" : "Market closed"}</span>`;
+
 // Gold's context from IBJA's own history: the month's move, then where today sits in the period's range.
 function goldNote(G) {
   if (G?.change_1m_pct == null) return "";
@@ -346,16 +354,31 @@ function goldNote(G) {
   return `${m < 0 ? "Down" : "Up"} ${Math.abs(m).toFixed(1)}% in a month, ${where}`;
 }
 
+// Mondays: the week ahead, grouped by day. Every area of the paper can put a date in it.
+function weekBlock() {
+  const W = (E.week_ahead || []).slice().sort((a, b) => (a.date + (a.time_ist || "99")).localeCompare(b.date + (b.time_ist || "99")));
+  if (!W.length) return "";
+  const days = [...new Set(W.map(w => w.date))];
+  return `<div class="week">${days.map(d => `<div class="wday"><h4>${esc(istDay(d + "T12:00:00+05:30"))}</h4><ul>${W.filter(w => w.date === d).map(w => `<li style="--acc:${accent(w.area)}"><span class="wtag">${esc(sec(w.area).short)}${w.time_ist ? ` · ${esc(w.time_ist)}` : ""}</span><div>${w.target ? `<a href="#s-${esc(w.target)}">${esc(w.what)}</a>` : w.url ? `<a href="${esc(w.url)}" target="_blank" rel="noopener">${esc(w.what)}</a>` : esc(w.what)}${w.why ? `<small>${esc(w.why)}</small>` : ""}</div></li>`).join("")}</ul></div>`).join("")}</div>`;
+}
+
+// Mondays: what the weekend changed for markets, the mood so far today, and the week's market dates.
+function mondayLedger(D) {
+  const m = D.monday; if (!m?.mood) return "";
+  const list = (t, a) => (a?.length ? `<div><h5>${t}</h5><ul>${a.map(x => `<li>${typeof x === "string" ? esc(x) : `${x.date ? `<b>${esc(istDay(x.date + "T12:00:00+05:30"))}</b> ` : ""}${esc(x.what || "")}`}</li>`).join("")}</ul></div>` : "");
+  return `<div class="monday"><div class="mhead">The weekend and the week</div><p class="mood">${esc(m.mood)}</p><div class="mcols">${list("Since Friday's close", m.weekend)}${list("This week", m.watch)}</div></div>`;
+}
+
 function ledgerBlock() {
   const M = LIVE.markets?.value, G = LIVE.gold_in?.value, D = E.sections?.ledger?.data || {};
   const prof = CFG.day_profiles[E.weekday] || {};
-  let h = "";
+  let h = mondayLedger(D);
   if (M?.indices?.length) {
     h += `<div class="cols3 panels">${M.indices.map(q => {
       const col = q.change_pct < 0 ? "var(--bad)" : "var(--good)";
-      const when = q.live ? "today, live" : `on ${sparkLabel(q.session_date)}`;
+      const when = q.live ? "today" : `at close, ${sparkLabel(q.session_date)}`;
       const driver = D.notes?.[q.name];
-      return `<div class="panel"><div class="nm">${esc(q.name)}</div><div class="lvl tnum">${inr(Math.round(q.price))}</div><div class="chg ${dir(q.change_pct)} tnum">${pts(q)} <span class="pc">(${pct(q.change_pct)})</span> <span class="when">${esc(when)}</span></div>${q.note ? `<div class="pnote">${esc(q.note)}</div>` : ""}${spark(q.spark, col, { from: sparkLabel(q.spark_from), to: sparkLabel(q.spark_to) })}${driver ? `<p class="note">${esc(driver)}</p>` : ""}${D.dma?.[q.name] ? `<p class="note">${esc(D.dma[q.name])}</p>` : ""}</div>`;
+      return `<div class="panel"><div class="nm">${esc(q.name)}${mstate(q)}</div><div class="lvl tnum">${inr(Math.round(q.price))}</div><div class="chg ${dir(q.change_pct)} tnum">${pts(q)} <span class="pc">(${pct(q.change_pct)})</span> <span class="when">${esc(when)}</span></div>${q.note ? `<div class="pnote">${esc(q.note)}</div>` : ""}${spark(q.spark, col, { from: sparkLabel(q.spark_from), to: sparkLabel(q.spark_to) })}${driver ? `<p class="note">${esc(driver)}</p>` : ""}${D.dma?.[q.name] ? `<p class="note">${esc(D.dma[q.name])}</p>` : ""}</div>`;
     }).join("")}</div>`;
   }
   const rows = [];
@@ -476,10 +499,11 @@ function deuceBlock() {
 }
 
 const VERDICT = { must: ["v-must", "Must watch"], good: ["v-good", "Good watch"], call: ["v-call", "Your call"], skip: ["v-skip", "Skip"], early: ["v-early", "Too early"] };
+const screenId = s => "scr-" + String(s.title).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
 function screenBlock() {
   const all = E.screen || [];
   const now = all.filter(s => !s.coming_soon), soon = all.filter(s => s.coming_soon);
-  const table = list => `<div class="tbl"><table><thead><tr><th>Title</th><th>Where</th><th>When</th><th class="r">Verdict</th></tr></thead><tbody>${list.map(s => `<tr><td><b>${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener" style="color:inherit">${esc(s.title)}</a>` : esc(s.title)}</b><br><small>${esc(s.type)} · ${esc(s.language)}</small><br><small>${esc(s.reason)}${s.if_you_liked ? ` If you liked ${esc(s.if_you_liked)}.` : ""}</small></td><td>${esc(s.where)}</td><td>${esc(s.release)}</td><td class="r"><span class="verdict ${VERDICT[s.verdict][0]}">${VERDICT[s.verdict][1]}</span></td></tr>`).join("")}</tbody></table></div>`;
+  const table = list => `<div class="tbl"><table><thead><tr><th>Title</th><th>Where</th><th>When</th><th class="r">Verdict</th></tr></thead><tbody>${list.map(s => `<tr><td><b>${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener" style="color:inherit">${esc(s.title)}</a>` : esc(s.title)}</b><br><small>${esc(s.type)} · ${esc(s.language)}</small><br><small>${esc(s.reason)}${s.if_you_liked ? ` If you liked ${esc(s.if_you_liked)}.` : ""}</small></td><td>${esc(s.where)}</td><td>${esc(s.release)}</td><td class="r"><span class="verdict ${VERDICT[s.verdict][0]}">${VERDICT[s.verdict][1]}</span>${thumbs(screenId(s), "thumbs sm")}</td></tr>`).join("")}</tbody></table></div>`;
   let h = "";
   if (now.length) h += table(now);
   if (now.length) h += `<div class="legend">${Object.entries(VERDICT).map(([k, [c, l]]) => `<div><span class="verdict ${c}">${l}</span>${{ must: "Critics and audiences both strongly positive", good: "Clearly positive, a few reservations", call: "Split reviews, or good but niche", skip: "Clearly negative on both", early: "Fewer than three reputable reviews so far" }[k]}</div>`).join("")}</div>`;
@@ -561,6 +585,7 @@ function render() {
   $("#profile").textContent = E.profile_line;
 
   let h = frontHTML();
+  if (E.week_ahead?.length) h += secWrap("week", weekBlock(), "Monday to Sunday · what to watch");
   h += secWrap("fixtures", `<div data-live="fixtures">${fixturesBlock()}</div>`, "Next 7 days · IST");
   h += secWrap("madrid", `<div data-live="madrid">${madridBlock()}</div>` + storiesBlock("madrid"));
   h += secWrap("pitch", storiesBlock("pitch"), "Football beyond Madrid");
@@ -665,7 +690,12 @@ const roman = n => { let r = "", v = Math.max(1, n); for (const [k, s] of [[10, 
 function allStories() {
   return [E.front.lead, ...E.front.seconds, ...E.front.briefs, ...Object.values(E.sections || {}).flatMap(s => [...(s.stories || []), ...(s.briefs || [])])];
 }
-function findStory(id) { return allStories().find(s => s.id === id); }
+function findStory(id) {
+  const s = allStories().find(x => x.id === id);
+  if (s) return s;
+  const t = (E.screen || []).find(x => screenId(x) === id);
+  return t && { id, thread_id: id, section: "screen" };
+}
 
 function toggleMore(id) {
   const m = document.getElementById("more-" + id), b = document.querySelector(`[data-more="${CSS.escape(id)}"]`);
@@ -824,7 +854,7 @@ function dashHTML() {
       const lvl = c.yahoo === "INR=X" ? "₹" + q.price.toFixed(2) : c.yahoo === "BZ=F" ? "$" + usd(q.price, 2) : "$" + usd(q.price);
       return `<div><span>${esc(c.name)}</span><b>${lvl}</b> <small class="${dir(q.change_pct)}">${pct(q.change_pct)}</small></div>`;
     }).join("");
-    mk = `<div class="idx3">${M.indices.map(q => `<div><span>${esc(q.name)}</span><span class="big">${inr(Math.round(q.price))}</span><b class="${dir(q.change_pct)}"><i>${pts(q)} </i>${pct(q.change_pct)}</b>${spark(q.spark?.slice(-22), q.change_pct < 0 ? "var(--bad)" : "var(--good)", { w: 200, h: 28, mini: true })}</div>`).join("")}</div><div class="cross">${cross}</div>`;
+    mk = `<div class="idx3">${M.indices.map(q => `<div><span>${esc(q.name)}</span><span class="big">${inr(Math.round(q.price))}</span><b class="${dir(q.change_pct)}"><i>${pts(q)} </i>${pct(q.change_pct)}</b>${q.live ? "" : `<small class="mc">Closed</small>`}${spark(q.spark?.slice(-22), q.change_pct < 0 ? "var(--bad)" : "var(--good)", { w: 200, h: 28, mini: true })}</div>`).join("")}</div><div class="cross">${cross}</div>`;
   }
 
   const sport = [];
@@ -845,7 +875,7 @@ function dashHTML() {
 ${card("heads", "The front page", headsBody)}
 ${card("sky", esc(w?.name || "Weather"), sky)}
 ${card("next", "Next up", next)}
-${card("mk", "Markets", mk, esc(M?.indices?.[0]?.live ? "Live" : ""))}
+${card("mk", "Markets", mk, esc(M?.indices?.some(q => q.live) ? "Live" : "Markets closed"))}
 ${card("sport", "Your sport", sport.join(""))}
 ${card("bets", "The Betting Window", bets)}</div>`;
 }

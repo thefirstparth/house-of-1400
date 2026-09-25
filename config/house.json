@@ -18,6 +18,12 @@
       "accent": "--ink"
     },
     {
+      "id": "week",
+      "name": "The Week Ahead",
+      "short": "Week Ahead",
+      "accent": "--ink"
+    },
+    {
       "id": "fixtures",
       "name": "The Fixture List",
       "short": "Fixture List",
@@ -349,7 +355,10 @@
       "markets": "full",
       "entertainment": "compact",
       "namma": "only_if_important",
-      "live_first": "markets"
+      "live_first": "markets",
+      "line": "Monday edition · the week ahead, and what the weekend did to markets",
+      "week_ahead": true,
+      "ledger": "monday_outlook"
     },
     "tue": {
       "markets": "full",

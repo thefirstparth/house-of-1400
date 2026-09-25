@@ -112,6 +112,19 @@ a.w:hover{background:var(--surface2)}
 .tools .th{width:34px;justify-content:center;background:var(--surface);border-radius:50%;color:var(--muted);transition:background .2s,color .2s}
 .tools .th svg{width:17px;height:17px;display:block}
 .tools .th:hover{color:var(--ink);background:var(--surface2)}
+.thumbs.sm{display:inline-flex;gap:4px}
+.thumbs.sm .th{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:0;padding:0;background:var(--surface);border-radius:50%;color:var(--muted);cursor:pointer}
+.thumbs.sm .th svg{width:14px;height:14px;display:block}
+.thumbs.sm .th:hover{color:var(--ink);background:var(--surface2)}
+.thumbs .th[aria-pressed="true"]{color:var(--paper);background:var(--ink)}
+.btools{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:6px}
+.btools .src{margin:0}
+td.r .thumbs.sm{display:flex;justify-content:flex-end;margin-top:8px}
+.mstate{margin-left:8px;font:700 10px var(--sans);letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:999px;vertical-align:1px}
+.mstate.open{color:var(--good);background:color-mix(in srgb,var(--good) 14%,transparent)}
+.mstate.closed{color:var(--muted);background:var(--surface2)}
+.mc{font:600 11px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.dash .mk .idx3 small.mc{display:block;font-size:10px}
 .tools .th[aria-pressed="true"]{color:var(--paper);background:var(--acc)}
 
 /* ---------- sections ---------- */
@@ -351,6 +364,24 @@ details.desk summary{font:700 12px var(--sans);letter-spacing:.14em;text-transfo
 .modal .row2{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .modal .row2 button{border:0;background:var(--surface);border-radius:999px;padding:10px 16px;font:600 13px var(--sans)}
 .modal .row2 button.pri{background:var(--ink);color:var(--paper)}
+
+/* ---------- Mondays: the week ahead, and the Ledger's weekend card ---------- */
+.week{columns:2;column-gap:40px}
+.wday{break-inside:avoid;margin:0 0 18px}
+.wday h4{margin:0 0 6px;font:700 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--rule);padding-bottom:6px}
+.wday ul{list-style:none;margin:0;padding:0}
+.wday li{display:grid;grid-template-columns:112px 1fr;gap:10px;padding:7px 0;font:16.5px/1.4 var(--serif)}
+.wday .wtag{font:700 10.5px/1.9 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.wday a{color:inherit;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px}
+.wday small{display:block;font:14px/1.4 var(--sans);color:var(--muted);margin-top:2px}
+.monday{background:var(--surface);border-radius:var(--radius);padding:18px 22px;margin-bottom:22px}
+.monday .mhead{font:700 11.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--acc)}
+.monday .mood{font:19px/1.5 var(--serif);margin:6px 0 10px}
+.monday .mcols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.monday h5{margin:0 0 4px;font:700 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.monday ul{margin:0;padding-left:18px;font:15.5px/1.45 var(--sans)}
+.monday li{margin:3px 0}
+@media (max-width:720px){.week{columns:1}.wday li{grid-template-columns:92px 1fr}.monday .mcols{grid-template-columns:1fr}}
 
 /* ---------- poster modes ---------- */
 .poster{position:fixed;inset:0;z-index:60;background:var(--paper);color:var(--ink);display:grid;place-items:center;padding:clamp(16px,3vw,40px);cursor:pointer;overflow:auto}
