@@ -1,9 +1,8 @@
 // Local stand-in for Vercel: middleware, /api functions, rewrites and dist/ static files.
-// Usage: SITE_PASSWORD=x RUN_KEY=y node scripts/dev.mjs [port]
+// Usage: RUN_KEY=y node scripts/dev.mjs [port]
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
-import middleware from "../middleware.js";
 
 if (process.env.DEV_MOCK) (await import("../tests/mocks.mjs")).installMocks();
 
@@ -23,8 +22,6 @@ async function send(res, r) {
 createServer(async (req, res) => {
   try {
     const request = await toRequest(req);
-    const mw = await middleware(request);
-    if (mw && !mw.headers.get("x-middleware-next")) return send(res, mw);
     let path = new URL(request.url).pathname;
     if (path.startsWith("/api/")) {
       const live = path.match(/^\/api\/live\/([^/]+)$/);

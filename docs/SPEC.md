@@ -3,9 +3,8 @@
 ## Stack
 - Plain static site (HTML, CSS, vanilla JS modules) in `public/`, plus Vercel serverless functions in `api/`. No framework unless a real need appears.
 - Vercel Hobby plan. Deploys on every push to `main`.
-- Password gate: root `middleware.js` (Vercel Routing Middleware) checks a cookie; if missing, serves a small login page that posts the password to `/api/login`, which sets an HttpOnly cookie (30 days). Password is the `SITE_PASSWORD` env var. Vercel's own password protection is a paid feature, so do it in middleware.
-- `content/` is served to the page only through the gate.
-- Only two routes skip the gate: `/api/login`, and `/api/health`, which returns just `{"edition": "YYYY-MM-DD"}` so scheduled runs can verify a deploy. `/api/notify` and `/api/votes` require the `RUN_KEY` header instead of the cookie.
+- No password (removed 25 Sep at Parth's request). The site is public but `noindex`. Your Desk is stripped at build time and never served.
+- `/api/health` returns just `{"edition": "YYYY-MM-DD"}` so scheduled runs can verify a deploy. `/api/notify` and `/api/votes` require the `RUN_KEY` header.
 
 ## Pages
 - `/` today's paper (renders `content/latest.json`)

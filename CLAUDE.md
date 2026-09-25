@@ -30,12 +30,12 @@ Half static, half live, like the Daily Prophet: the news is written once a day a
 - No em-dashes anywhere in the paper's copy. No AI-writing tells (see EDITORIAL.md).
 - No filler about absence. If a section has nothing worth printing, leave it out or leave the space empty. Never write sentences like "nothing cleared the bar today".
 - Workflow and research process never appear in the paper.
-- Personal data (Your Desk) exists only behind the password. Never commit Gmail or Calendar content to a public place. The repo must be private.
+- The site is public (no password, Parth's call on 25 Sep). Your Desk may be written into the edition JSON in this private repo, but the build strips it and the site never shows it. Never put Gmail or Calendar content anywhere else. The repo must stay private.
 - Secrets live in Vercel env vars or the Claude Code environment. Never in the repo.
 
 ## Priority for the first build (get to a live paper by 14:00 IST)
 1. Static site from the reference design, reading `content/latest.json`
-2. Password gate (middleware)
+2. (Password gate: removed 25 Sep at Parth's request)
 3. Live functions for weather, F1, football, markets, gold, FX, crypto, trends, Polymarket
 4. Archive page
 5. Publish today's first edition by running the RUNBOOK once at the end of the build session

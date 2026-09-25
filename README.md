@@ -9,7 +9,6 @@ Start with `CLAUDE.md`.
 1. **GitHub.** Create a new **private** repo called `house-of-1400`. Leave it empty (no README). On the empty repo page, click "uploading an existing file", drag in everything from this folder (the files and the `config`, `content`, `design`, `docs`, `ledger` folders), and commit.
 2. **Vercel.** Add New → Project → import `house-of-1400` → Deploy with the defaults. It will show a near-empty page for now. Copy the production URL.
 3. **Vercel env vars.** Project → Settings → Environment Variables:
-   - `SITE_PASSWORD`: the password you'll type to open the paper
    - `RUN_KEY`: any long random string (used by the daily runs)
 4. **Claude Code.** Open claude.ai/code, start a session on `house-of-1400`, and add `RUN_KEY` (same value) to the session's environment variables if the settings allow it. Paste the build prompt below, with your Vercel URL filled in.
 
@@ -26,7 +25,7 @@ I'm asleep until the afternoon. Don't wait for me: make reasonable calls, log th
 ## Day to day
 - Paper: your Vercel URL. Archive at `/archive`, a one-screen phone view at `/today`.
 - Poster mode: the Poster button, or `/?poster=today|mast|night|heads|clock`.
-- Mac screensaver: install [WebViewScreenSaver](https://github.com/liquidx/webviewscreensaver) and point it at `<URL>/?poster=mast` (or `?poster=clock`). Log in once in Safari first so the cookie exists.
+- Mac screensaver: install [WebViewScreenSaver](https://github.com/liquidx/webviewscreensaver) and point it at `<URL>/?poster=mast` (or `?poster=clock`). 
 - Build status and what is pending: `docs/STATUS.md`.
 
 ## For developers
@@ -34,7 +33,7 @@ I'm asleep until the afternoon. Don't wait for me: make reasonable calls, log th
 npm ci
 node --test tests/*.test.mjs        # offline tests with recorded API payloads
 npm test                            # hits every live source for real
-npm run build && SITE_PASSWORD=x RUN_KEY=y DEV_MOCK=1 node scripts/dev.mjs 3000
+npm run build && RUN_KEY=y DEV_MOCK=1 node scripts/dev.mjs 3000
 ```
 
 ## Later (optional)

@@ -18,7 +18,7 @@ Prompt for each scheduled task:
 The live scheduled runs use a slightly longer version of this prompt that also attaches and clones the repo (see docs/STATUS.md).
 
 ## Commands (run from the repo root)
-A daily run only needs to reach GitHub and our Vercel domain. It never calls the third-party data APIs directly: the live snapshot and the live test both go through our own `/api/live/*`, authorised with the `RUN_KEY` header (the environment variable `RUN_KEY` must match the one in Vercel; `SITE_URL` defaults to https://house-of-1400.vercel.app).
+A daily run only needs to reach GitHub and our Vercel domain. It never calls the third-party data APIs directly: the live snapshot and the live test both go through our own `/api/live/*` (`SITE_URL` defaults to https://house-of-1400.vercel.app).
 - `npm ci` once per session.
 - `npm test` checks every live source through `<SITE_URL>/api/live/*` (shape, freshness, ranges). Failures go in the snapshot, not the paper.
 - `node scripts/snapshot.mjs content/editions/YYYY-MM-DD.json` fetches every `<SITE_URL>/api/live/<key>` and writes the `snapshot` block. When a key fails it keeps the last-known-good value with its own time.
@@ -48,4 +48,4 @@ If `RUN_KEY` is missing or `/api/live` answers 401, record that, skip the snapsh
 - If all four runs fail, the site keeps yesterday's edition and shows a small "Today's paper is late" line automatically after 16:30 IST. This is the last resort.
 
 ## Your Desk
-Only if Gmail and Google Calendar tools are available in the run. If they are not, omit the section. Never write personal data anywhere except the edition JSON in this private repo.
+Only if Gmail and Google Calendar tools are available in the run. If they are not, omit the section. Never write personal data anywhere except the edition JSON in this private repo. Since 25 Sep the site is public and the build strips Your Desk, so it is not shown on the site.

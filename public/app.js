@@ -38,7 +38,6 @@ function toast(m) { const t = $("#toast"); t.textContent = m; t.hidden = false; 
 
 async function getJSON(url) {
   const r = await fetch(url, { credentials: "same-origin", cache: "no-cache" });
-  if (r.status === 401) { location.reload(); throw new Error("locked"); }
   if (!r.ok) throw new Error(r.status);
   return r.json();
 }
