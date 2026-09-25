@@ -60,7 +60,7 @@ for (const [dev, opts] of DEVICES) {
     await page.goto(`${SITE_URL}/?poster=${key}`, { waitUntil: "networkidle", timeout: 60000 });
     await page.evaluate(() => document.fonts?.ready);
     await sleep(6000); // live blocks fill in
-    // Tall posters (the dashboard, the framed edition) are captured whole, not cut at one screen.
+    // Today and The edition fit one screen by design; anything taller is still captured whole.
     const full = await page.evaluate(() => document.getElementById("poster")?.scrollHeight || 0);
     const vp = opts.viewport;
     if (full > vp.height + 4) { await page.setViewportSize({ width: vp.width, height: full }); await sleep(800); }

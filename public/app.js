@@ -4,13 +4,13 @@ const $$ = s => [...document.querySelectorAll(s)];
 const TZ = "Asia/Kolkata";
 const LIVE_EVERY = 5 * 60 * 1000;
 
-let CFG, E, ROUTE, LIVE = {}, pTimer, liveTimer, liveTried = false;
+let CFG, E, ROUTE, LIVE = {}, pTimer, liveTimer, liveTried = false, POSTER = null;
 
 // ------------------------------------------------------------------ helpers
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const inr = (n, d = 0) => Number(n).toLocaleString("en-IN", { minimumFractionDigits: d, maximumFractionDigits: d });
 const usd = (n, d = 0) => Number(n).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
-const pct = n => (n == null || !isFinite(n) ? "" : `${n < 0 ? "−" : "+"}${Math.abs(n).toFixed(2)}%`);
+const pct = n => (n == null || !isFinite(n) ? "" : Math.abs(n) < 0.005 ? "0.00%" : `${n < 0 ? "−" : "+"}${Math.abs(n).toFixed(2)}%`);
 const dir = n => (n == null ? "" : n < 0 ? "dn" : "up");
 const fmt = (iso, o, tz = TZ) => new Date(iso).toLocaleString("en-GB", { timeZone: tz, hour12: false, ...o }).replace(/\bSept\b/g, "Sep");
 const istFull = iso => fmt(iso, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).replace(",", "");
@@ -37,19 +37,23 @@ let tt;
 function toast(m) { const t = $("#toast"); t.textContent = m; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => (t.hidden = true), 2600); }
 
 async function getJSON(url) {
-  const r = await fetch(url, { credentials: "same-origin", cache: "no-cache" });
+  const r = await fetch(url, { credentials: "same-origin", cache: url.startsWith("/api/") ? "no-cache" : "default" });
   if (!r.ok) throw new Error(r.status);
   return r.json();
 }
 
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
+// Keep in step with the list in index.html's <head>.
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba"];
+const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
   if (!past) {
     try {
-      const j = await getJSON(`/api/live/${key}${qs}`);
-      if (j.ok && j.value) return (LIVE[key] = { value: j.value, as_of: j.as_of, source: j.source, stale: false });
+      const pre = !qs && PRE[key]; delete PRE[key];
+      const j = await (pre || getJSON(`/api/live/${key}${qs}`));
+      if (j?.ok && j.value) return (LIVE[key] = { value: j.value, as_of: j.as_of, source: j.source, stale: false });
     } catch {}
   }
   const s = E?.snapshot?.[key];
@@ -57,13 +61,17 @@ async function live(key, qs = "") {
   return (LIVE[key] = null);
 }
 
+// Every key in parallel; each block repaints as soon as its own data lands (one repaint per frame).
+let paintQueued = false;
+const paintSoon = () => { if (paintQueued) return; paintQueued = true; requestAnimationFrame(() => { paintQueued = false; paintLive(); }); };
 async function refreshLive() {
-  const keys = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba"];
-  await Promise.all(keys.map(k => live(k)));
+  const jobs = LIVE_KEYS.map(k => live(k).then(paintSoon));
   if (ROUTE.kind !== "edition") {
     const ids = (E.betting || []).map(b => b.id).filter(Boolean).join(",");
-    await Promise.all([live("betting", ids ? `?ids=${encodeURIComponent(ids)}` : ""), E.trends?.india?.length ? null : live("trends")]);
+    jobs.push(live("betting", ids ? `?ids=${encodeURIComponent(ids)}` : "").then(paintSoon));
+    if (!E.trends?.india?.length) jobs.push(live("trends").then(paintSoon));
   }
+  await Promise.all(jobs);
   liveTried = true;
   paintLive();
 }
@@ -322,6 +330,15 @@ function assetNote(name, q) {
   return [D.notes?.[name], q?.note || range].filter(Boolean).map(x => x.replace(/\.$/, "")).join(". ") + ".";
 }
 
+// Gold's context from IBJA's own history: the month's move, then where today sits in the period's range.
+function goldNote(G) {
+  if (G?.change_1m_pct == null) return "";
+  const m = G.change_1m_pct, span = `${Math.max(1, Math.round((Date.now() - Date.parse(G.range_from)) / 2.63e9))}-month`;
+  const where = G.per_10g_24k >= G.hi ? `at a ${span} high` : G.per_10g_24k <= G.lo ? `at a ${span} low`
+    : `${Math.abs((G.per_10g_24k / G.hi - 1) * 100).toFixed(1)}% below the ${span} high of ₹${inr(G.hi)} on ${sparkLabel(G.hi_date)}`;
+  return `${m < 0 ? "Down" : "Up"} ${Math.abs(m).toFixed(1)}% in a month, ${where}`;
+}
+
 function ledgerBlock() {
   const M = LIVE.markets?.value, G = LIVE.gold_in?.value, D = E.sections?.ledger?.data || {};
   const prof = CFG.day_profiles[E.weekday] || {};
@@ -337,7 +354,7 @@ function ledgerBlock() {
   const rows = [];
   for (const c of CFG.markets.cross) {
     if (c.source === "ibja") {
-      if (G) rows.push(`<tr><td><b>Gold 24K</b><br><small>IBJA, per 10g</small></td><td class="r tnum">₹${inr(G.per_10g_24k)}</td><td class="r tnum"></td><td class="sub">22K ₹${inr(G.per_10g_22k)}${D.notes?.[c.name] ? ". " + esc(D.notes[c.name]) : ""}</td></tr>`);
+      if (G) rows.push(`<tr><td><b>Gold 24K</b><br><small>IBJA, per 10g</small></td><td class="r tnum">₹${inr(G.per_10g_24k)}</td><td class="r tnum ${dir(G.change_pct)}">${pct(G.change_pct)}</td><td class="sub">${esc([D.notes?.[c.name]?.replace(/\.$/, ""), goldNote(G), `22K ₹${inr(G.per_10g_22k)}`].filter(Boolean).join(". "))}.</td></tr>`);
       continue;
     }
     const q = M?.cross?.find(x => x.symbol === c.yahoo); if (!q) continue;
@@ -532,7 +549,7 @@ function render() {
   $("#run-date").textContent = longDate(E.date);
   $("#run-vol").textContent = `Vol. ${roman(Number(E.date.slice(0, 4)) - 2025)} · No. ${n} · ${CFG.paper.home_city}`;
   $("#run-cut").textContent = `Information cut ${E.cut_ist} IST`;
-  $("#motto").textContent = `${CFG.paper.motto} · Edited by ${CFG.paper.editor.signature.replace(", Editor", "")}`;
+  $("#motto").innerHTML = `${esc(CFG.paper.motto)} · Edited by <a href="/editor">${esc(CFG.paper.editor.signature.replace(", Editor", ""))}</a>`;
   $("#profile").textContent = E.profile_line;
 
   let h = frontHTML();
@@ -556,9 +573,9 @@ function render() {
   h += secWrap("betting", `<div data-live="betting">${bettingBlock()}</div>`, `What the world is betting on · ${markets}`);
   h += secWrap("bye", byeBlock(), "Watch and do");
   h += deskBlock();
-  if (E.editor_note) h += `<div class="editor">${esc(E.editor_note)}<span>${esc(CFG.paper.editor.signature)}</span></div>`;
+  if (E.editor_note) h += `<div class="editor">${esc(E.editor_note)}<span><a href="/editor">${esc(CFG.paper.editor.signature)}</a></span></div>`;
   h += `<div class="house" id="house"><b>${esc(sec("house").name)}</b><p>${esc(E.house_note)}</p></div>`;
-  h += `<div class="foot">${esc(`THE HOUSE OF 1400 · ${longDate(E.date).toUpperCase()} · NO. ${n} · EDITED BY ${CFG.paper.editor.signature.replace(", Editor", "").toUpperCase()}`)}</div>`;
+  h += `<div class="foot">${esc(`THE HOUSE OF 1400 · ${longDate(E.date).toUpperCase()} · NO. ${n} · EDITED BY ${CFG.paper.editor.signature.replace(", Editor", "").toUpperCase()}`)}<br><a href="/editor">About the editor</a> · <a href="/archive">The Archive</a></div>`;
   $("#main").innerHTML = h;
   requestAnimationFrame(balanceFront);
   document.fonts?.ready.then(balanceFront);
@@ -616,6 +633,7 @@ function paintLive() {
     $("#idx div").innerHTML = present.map(x => `<a href="#${x.id}" style="--c:var(${x.accent})"><i></i>${esc(x.short)}</a>`).join("");
     observeIndex(present);
   }
+  if (!$("#poster").hidden && (POSTER === "today" || POSTER === "edition")) paintPoster();
   tick();
 }
 
@@ -737,7 +755,7 @@ document.addEventListener("click", e => {
   if (t.dataset.poster) { $("#pmenu").hidden = true; openPoster(t.dataset.poster); return; }
 });
 let resizeT;
-addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(balanceFront, 200); });
+addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(() => { balanceFront(); fitPoster(); }, 150); });
 $("#modal").addEventListener("click", e => { if (e.target.id === "modal") $("#modal").hidden = true; });
 $("#poster").addEventListener("click", closePoster);
 document.addEventListener("keydown", e => { if (e.key === "Escape") { $("#modal").hidden = true; closePoster(); } });
@@ -778,7 +796,7 @@ function dashHTML() {
   const card = (cls, title, body, right = "") => (body ? `<section class="c ${cls}"><h5><span>${title}</span><span>${right}</span></h5>${body}</section>` : "");
   const line = (k, v) => `<div class="line"><span>${k}</span><b>${v}</b></div>`;
 
-  const headsBody = `<ol>${heads(6).map(h => `<li><div><small>${esc(h[0])}</small>${esc(h[1])}</div></li>`).join("")}</ol>`;
+  const headsBody = `<ol>${heads(5).map(h => `<li><div><small>${esc(h[0])}</small>${esc(h[1])}</div></li>`).join("")}</ol>`;
 
   let sky = "";
   if (w) {
@@ -793,12 +811,12 @@ function dashHTML() {
   let mk = "";
   if (M?.indices?.length) {
     const cross = CFG.markets.cross.map(c => {
-      if (c.source === "ibja") { const G = LIVE.gold_in?.value; return G ? `<div><span>Gold 24K /10g</span><b>₹${inr(G.per_10g_24k)}</b></div>` : ""; }
+      if (c.source === "ibja") { const G = LIVE.gold_in?.value; return G ? `<div><span>Gold 24K /10g</span><b>₹${inr(G.per_10g_24k)}</b> <small class="${dir(G.change_pct)}">${pct(G.change_pct)}</small>${G.change_1m_pct != null ? `<em class="${dir(G.change_1m_pct)}">${pct(G.change_1m_pct).replace(/0$/, "")} in a month</em>` : ""}</div>` : ""; }
       const q = M.cross?.find(x => x.symbol === c.yahoo); if (!q || c.yahoo === "^GSPC" || c.yahoo === "^NSEBANK") return "";
       const lvl = c.yahoo === "INR=X" ? "₹" + q.price.toFixed(2) : c.yahoo === "BZ=F" ? "$" + usd(q.price, 2) : "$" + usd(q.price);
       return `<div><span>${esc(c.name)}</span><b>${lvl}</b> <small class="${dir(q.change_pct)}">${pct(q.change_pct)}</small></div>`;
     }).join("");
-    mk = `<div class="idx3">${M.indices.map(q => `<div><span>${esc(q.name)}</span><span class="big" style="font-size:24px;display:block">${inr(Math.round(q.price))}</span><b class="${dir(q.change_pct)}" style="font:700 13px var(--sans)">${pct(q.change_pct)}</b>${spark(q.spark?.slice(-22), q.change_pct < 0 ? "var(--bad)" : "var(--good)", { w: 200, h: 28, mini: true })}</div>`).join("")}</div><div class="cross">${cross}</div>`;
+    mk = `<div class="idx3">${M.indices.map(q => `<div><span>${esc(q.name)}</span><span class="big">${inr(Math.round(q.price))}</span><b class="${dir(q.change_pct)}">${pct(q.change_pct)}</b>${spark(q.spark?.slice(-22), q.change_pct < 0 ? "var(--bad)" : "var(--good)", { w: 200, h: 28, mini: true })}</div>`).join("")}</div><div class="cross">${cross}</div>`;
   }
 
   const sport = [];
@@ -821,8 +839,7 @@ ${card("sky", esc(w?.name || "Weather"), sky)}
 ${card("next", "Next up", next)}
 ${card("mk", "Markets", mk, esc(M?.indices?.[0]?.live ? "Live" : ""))}
 ${card("sport", "Your sport", sport.join(""))}
-${card("bets", "The Betting Window", bets)}
-<div class="ft">Press Esc or tap the margin to open the paper</div></div>`;
+${card("bets", "The Betting Window", bets)}</div>`;
 }
 
 // ---- "The edition, framed": the day's paper composed as a single poster
@@ -836,26 +853,47 @@ function framedHTML() {
 <div class="fm"><span class="the">The</span><span class="hof">House of</span><span class="yr">1400</span><span class="dt">${esc(longDate(E.date))} · No. ${E.edition_no} · Edited by ${esc(CFG.paper.editor.signature.replace(", Editor", ""))}</span></div>
 <div class="headline"><small>${esc(L.kicker)}</small>${esc(L.headline)}</div>
 <div class="cols"><div class="gl"><h5>At a Glance</h5><ul>${(E.glance || []).map(g => `<li style="--c:${g.color ? `var(${esc(g.color)})` : "var(--ink)"}"><span>${esc(g.section)}</span>${esc(g.line)}</li>`).join("")}</ul></div><div class="notes">${notes}</div></div>
-<div class="ft" style="text-align:center;font:500 12.5px var(--sans);color:var(--muted)">Press Esc or tap the margin to open the paper</div></div>`;
+</div>`;
+}
+const CLOSE = `<button class="pclose" aria-label="Back to the paper" title="Back to the paper (Esc)">×</button>`;
+function paintPoster() {
+  const P = $("#poster"), html = (POSTER === "today" ? dashHTML() : framedHTML()) + CLOSE;
+  if (P.dataset.html === html) return;
+  P.innerHTML = html; P.dataset.html = html; tick(); fitPoster();
+}
+// Today and The edition fit one screen: shrink the whole sheet (CSS zoom) until it does, never scroll.
+function fitPoster() {
+  const P = $("#poster"), c = P.firstElementChild;
+  if (P.hidden || !c?.matches(".dash,.framed")) return;
+  c.style.zoom = "";
+  const cs = getComputedStyle(P);
+  const room = P.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+  let z = 1;
+  for (let i = 0; i < 4; i++) {
+    const h = c.getBoundingClientRect().height;
+    if (h <= room + 1) break;
+    z = Math.max(0.5, z * room / h); c.style.zoom = z.toFixed(3);
+  }
 }
 function openPoster(k) {
   const P = $("#poster"); clearInterval(pTimer);
   if (k === "heads") k = "edition";
-  P.className = "poster" + (k === "night" || k === "clock" ? " dark" : "");
+  POSTER = k; delete P.dataset.html;
+  P.className = "poster" + (k === "night" || k === "clock" ? " dark" : "") + (k === "today" || k === "edition" ? " fit" : "");
+  P.hidden = false;
   if (k === "mast" || k === "night") P.innerHTML = mastHTML();
-  if (k === "edition") P.innerHTML = framedHTML();
-  if (k === "today") P.innerHTML = dashHTML();
+  if (k === "today" || k === "edition") { paintPoster(); document.fonts?.ready.then(fitPoster); }
   if (k === "clock") {
     P.innerHTML = `<div class="pm"><span class="hof">The House of 1400</span><div class="clock" data-clock></div><div class="strip">${stripBits().map(b => `<span>${b}</span>`).join("")}<span>Next: <b data-cd="sessname"></b> <b data-cd="sess"></b></span></div></div>`;
   }
   pTimer = setInterval(tick, 1000);
-  P.hidden = false; tick();
+  tick();
   if (k !== "today" && k !== "edition") { try { document.documentElement.requestFullscreen?.().catch(() => {}); } catch {} }
   try { navigator.wakeLock?.request("screen").catch(() => {}); } catch {}
 }
 function closePoster() {
   const P = $("#poster"); if (P.hidden) return;
-  P.hidden = true; clearInterval(pTimer);
+  P.hidden = true; clearInterval(pTimer); POSTER = null;
   try { document.fullscreenElement && document.exitFullscreen(); } catch {}
   if (location.pathname === "/today" || new URLSearchParams(location.search).has("poster")) history.replaceState(null, "", "/");
 }
@@ -878,12 +916,52 @@ async function renderArchive() {
     : `<p class="notice">The archive starts with the first edition.</p>`;
 }
 
+// ------------------------------------------------------------------ about the editor
+// A page of its own, linked from the byline, the editor's note and the foot of the paper. Never on the front page.
+async function renderEditor() {
+  const name = CFG.paper.editor.signature.replace(", Editor", "");
+  document.title = `${name} · The House of 1400`;
+  $("#run-date").textContent = "About the editor";
+  $("#run-vol").textContent = CFG.paper.home_city;
+  $("#run-cut").innerHTML = `<a class="backlink" href="/">Today's paper</a>`;
+  $("#motto").textContent = CFG.paper.motto;
+  $("#profile").textContent = "The person on the byline";
+  $("#layout").style.display = "block";
+  $("#rail").hidden = true; $("#idx").hidden = true;
+  const rules = [
+    ["The two tests", "Would Parth be annoyed tomorrow if this were missing? Would a well-informed person in India be caught out not knowing it? A story that passes either one prints."],
+    ["Next means next", "Every club, player and race gets one timeline, sorted. The next match is the earliest confirmed one, whatever the headlines say about a bigger game later."],
+    ["Times to the minute", "Venue time, then UTC, then IST. Two sources that disagree by half an hour send him to a third. If the third does not settle it, the paper prints \u201ctime TBC\u201d and moves on."],
+    ["Once is enough", "A story reprints only when a fact has changed. He keeps a ledger of every thread the paper has run and checks it before anything goes in."],
+    ["No filler", "A section with nothing worth printing is removed. The paper never tells you what it could not find."],
+    ["Plain words", "He has a list of words he will not print, from pivotal to landscape, and he enforces it. No em dashes. No tidy moral at the end of a story."],
+  ];
+  let note = "";
+  try { const L = await getJSON("/content/latest.json"); if (L.editor_note) note = `<figure class="ed-quote"><blockquote>${esc(L.editor_note)}</blockquote><figcaption>${esc(CFG.paper.editor.signature)} · ${esc(longDate(L.date))}</figcaption></figure>`; } catch {}
+  $("#main").innerHTML = `<article class="about">
+<div class="ed-head"><div class="ed-mono" aria-hidden="true">TAB</div><div><div class="kick">About the editor</div><h1>${esc(name)}</h1><p class="deck">${esc(CFG.paper.editor.full_name)} edits The House of 1400, an afternoon paper with a circulation of one. He is strict about rules and quick to correct the reader, and very proud of his education. He is also, as he would be the first to point out, fictional.</p></div></div>
+<section><h2>Who he is</h2>
+<p>Bhide is an editor of the old school, the kind that ran city desks when a paper had to be right before it could be first. He believes a newspaper is a set of rules kept every day, and that the reader should never have to wonder whether the paper checked. He reads everything twice. He has opinions about commas.</p>
+<p>His name is a small tribute to a famous society secretary of Indian television, a man who also believed that rules exist to be read aloud. The resemblance ends at the moustache, which the editor denies having.</p></section>
+<section><h2>What he does each day</h2>
+<p>At 14:00 IST he closes the information cut. Anything that happened after that waits for tomorrow. He reads the day across football, Formula 1, cricket, tennis, markets, technology, Bengaluru and the world, then decides what one reader needs before a shift that runs from 17:00 to 02:00.</p>
+<p>He picks the lead. He writes the At a Glance lines. He fixes every time in IST. He chooses the ten prediction markets worth a look and the handful of searches worth explaining. On a big day he signs a short note at the end of the paper. On an ordinary day he says nothing, which he considers a courtesy.</p></section>
+<section><h2>What sets him apart</h2>
+<ol class="ed-rules">${rules.map(([t, d]) => `<li><b>${esc(t)}</b><span>${esc(d)}</span></li>`).join("")}</ol></section>
+${note ? `<section><h2>In his own words</h2>${note}</section>` : ""}
+<section class="ed-honest"><h2>A note on the byline</h2>
+<p>T. A. Bhide is a character. Each afternoon the paper is researched and written by an AI model working to a written rulebook, and a validator in code checks the edition (sources, times, duplicates, banned words) before it is published. The rules are real, and so are the sources. Only the editor is invented.</p></section>
+<p class="ed-back"><a class="backlink" href="/">Back to today's paper</a> · <a class="backlink" href="/archive">The Archive</a></p>
+</article>`;
+}
+
 // ------------------------------------------------------------------ boot
 function route() {
   const p = location.pathname.replace(/\/+$/, "") || "/";
   const m = p.match(/^\/e\/(\d{4}-\d{2}-\d{2})$/);
   if (m) return { kind: "edition", date: m[1] };
   if (p === "/archive") return { kind: "archive" };
+  if (p === "/editor") return { kind: "editor" };
   if (p === "/today") return { kind: "today" };
   return { kind: "home" };
 }
@@ -894,10 +972,17 @@ async function boot() {
     const r = document.documentElement, dk = r.getAttribute("data-theme") === "dark" || (!r.hasAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
     $("#themeBtn").textContent = dk ? "Day" : "Night";
   }
-  try { CFG = await getJSON("/config/house.json"); }
+  // Config, edition and live data are requested together, not one after another.
+  // index.html starts these in <head>, before this script has even downloaded.
+  const P0 = window.PRE0 || {};
+  const ed = ROUTE.kind === "archive" || ROUTE.kind === "editor" ? null : (ROUTE.kind !== "edition" && P0.latest) || getJSON(ROUTE.kind === "edition" ? `/content/editions/${ROUTE.date}.json` : "/content/latest.json");
+  ed?.catch(() => {});
+  if (ROUTE.kind === "home" || ROUTE.kind === "today") for (const k of LIVE_KEYS) PRE[k] = (P0.live?.[k] || getJSON(`/api/live/${k}`)).catch(() => null);
+  try { CFG = await (P0.cfg || getJSON("/config/house.json")); }
   catch { $("#main").innerHTML = `<p class="notice">The paper could not be loaded. Try again in a minute.</p>`; return; }
   if (ROUTE.kind === "archive") return renderArchive();
-  try { E = await getJSON(ROUTE.kind === "edition" ? `/content/editions/${ROUTE.date}.json` : "/content/latest.json"); }
+  if (ROUTE.kind === "editor") return renderEditor();
+  try { E = await ed; }
   catch {
     $("#main").innerHTML = ROUTE.kind === "edition" ? `<p class="notice">No edition for that date. <a class="backlink" href="/archive">See the archive</a>.</p>` : `<p class="notice">The first edition is on its way.</p>`;
     return;

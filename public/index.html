@@ -7,10 +7,18 @@
 <meta name="theme-color" content="#f5f2eb" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#141311" media="(prefers-color-scheme: dark)">
 <title>The House of 1400</title>
+<script>
+// Start the data requests now, in parallel with the fonts, styles and app.js. app.js picks them up (window.PRE0).
+(function(){var p=location.pathname.replace(/\/+$/,"")||"/";function g(u,c){var q=fetch(u,{credentials:"same-origin",cache:c||"default"}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()});q.catch(function(){});return q}
+var P=window.PRE0={cfg:g("/config/house.json")};if(p==="/"||p==="/today"){P.latest=g("/content/latest.json");P.live={};
+["weather","f1_next","f1_standings","f1_last","football","laliga_table","markets","gold_in","nba"].forEach(function(k){P.live[k]=g("/api/live/"+k,"no-cache")})}})();
+</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..600&family=Instrument+Sans:wght@400..700&family=UnifrakturMaguntia&display=swap">
+<!-- Fonts load without blocking the first paint; the blackletter face is cut down to the three letters of "The". -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..600&family=Instrument+Sans:wght@400..700&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&text=The&display=swap" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="/styles.css">
 <script>try{var t=localStorage.getItem("h1400-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 </head>
@@ -23,7 +31,7 @@
   <h1 aria-label="The House of 1400"><span class="the">The</span><span class="hof">House of</span><span class="yr">1400</span></h1>
   <div class="motto" id="motto"></div>
  </div>
- <div class="folio"><span class="day" id="profile"></span><span class="nav-top"><span id="readtime"></span><a href="/archive">Archive</a></span></div>
+ <div class="folio"><span class="day" id="profile"></span><span class="nav-top"><span id="readtime"></span><a href="/editor">The editor</a><a href="/archive">Archive</a></span></div>
 </header>
 <nav class="idx" aria-label="Sections" id="idx"><div></div></nav>
 <div class="sheet layout" id="layout">

@@ -22,7 +22,6 @@
 5. **Optional:** set `SITE_URL` in Vercel to the production URL so the Telegram link is exact.
 
 ## Pending / next
-- Kalshi backup for The Betting Window.
 - Sensex DMA sources (config says to skip until two exist).
 - Screen & Stage verdict thresholds from votes (needs Blob first).
 - NBA West table appears automatically once the regular season starts.

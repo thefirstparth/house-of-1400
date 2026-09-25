@@ -1,37 +1,17 @@
 // Daily run helper for The Betting Window. Pulls Polymarket's busiest events, applies config exclusions,
 // merges near-duplicates and ranks by 24-hour volume. Prints candidates as JSON; the editor picks 8 to 10.
-// --kalshi also crawls every open Kalshi event (no volume sort in its API, about 3 minutes). Off by default.
-// Usage: node scripts/betting-candidates.mjs [--top 30] [--kalshi [--kalshi-pages 80]]
+// Polymarket only (Kalshi was retired on 25 Sep 2026: it needed a slow, rate-limited crawl for little extra).
+// Usage: node scripts/betting-candidates.mjs [--top 30]
 import { ensureProxy } from "./proxy.mjs";
 ensureProxy();
-const { filterBetting, filterKalshi, getJSON, shapePolymarket } = await import("../lib/live.js");
+const { filterBetting, getJSON, shapePolymarket } = await import("../lib/live.js");
 
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > -1 ? Number(process.argv[i + 1]) : d; };
-const TOP = arg("--top", 30), MAX_PAGES = arg("--kalshi-pages", 80);
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-async function polite(url) {
-  for (let i = 0; i < 5; i++) {
-    try { return await getJSON(url, { timeout: 30000 }); }
-    catch (e) { if (!/429/.test(e.message)) throw e; await sleep(3000 * (i + 1)); }
-  }
-  throw new Error(`429 persisted ${url}`);
-}
+const TOP = arg("--top", 30);
 
 const pm = filterBetting(await getJSON("https://gamma-api.polymarket.com/events?active=true&closed=false&order=volume24hr&ascending=false&limit=500", { timeout: 30000 }))
   .map(shapePolymarket).filter(m => m.outcomes.length);
 console.error(`polymarket: ${pm.length} after exclusions`);
-
-let ks = [], cursor = "", pages = 0;
-if (process.argv.includes("--kalshi")) try {
-  do {
-    const j = await polite(`https://api.elections.kalshi.com/trade-api/v2/events?with_nested_markets=true&status=open&limit=200${cursor ? `&cursor=${cursor}` : ""}`);
-    ks.push(...filterKalshi(j.events || []));
-    cursor = j.cursor; pages++;
-    if (cursor) await sleep(1300);
-  } while (cursor && pages < MAX_PAGES);
-  console.error(`kalshi: ${pages} pages${cursor ? " (stopped early)" : ""}, ${ks.length} after exclusions`);
-} catch (e) { console.error(`kalshi failed: ${e.message}`); }
 
 const STOP = new Set("the a an of in on by to will be who what which is 2026 2027 winner election".split(" "));
 const toks = t => new Set(t.toLowerCase().replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter(w => w && !STOP.has(w)));
@@ -39,11 +19,11 @@ const similar = (a, b) => { const A = toks(a), B = toks(b); const i = [...A].fil
 
 // Drop markets that are already settled in all but name (a 99% favourite) and prop-bet lines.
 const live = m => !(m.outcomes[0].prob >= 99 || (m.outcomes.length === 1 && m.outcomes[0].prob <= 1)) && !m.outcomes.some(o => /\bO\/U\b/.test(o.name));
-const all = [...pm, ...ks].filter(live).sort((a, b) => b.volume24h - a.volume24h);
+const all = pm.filter(live).sort((a, b) => b.volume24h - a.volume24h);
 const out = [];
 for (const m of all) {
   const twin = out.find(o => similar(o.title, m.title));
-  if (twin) { (twin.also ||= []).push({ id: m.id, source: m.source, outcomes: m.outcomes, url: m.url }); continue; }
+  if (twin) { (twin.also ||= []).push({ id: m.id, outcomes: m.outcomes, url: m.url }); continue; }
   out.push(m);
   if (out.length >= TOP) break;
 }

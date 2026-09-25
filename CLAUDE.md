@@ -42,4 +42,4 @@ Half static, half live, like the Daily Prophet: the news is written once a day a
 4. Archive page
 5. Publish today's first edition by running the RUNBOOK once at the end of the build session
 6. Set up the scheduled daily runs (see RUNBOOK)
-7. Nice-to-haves: poster mode, clip-as-image, thumbs storage, Telegram ping, Kalshi, OMDb/TMDB
+7. Nice-to-haves: poster mode, clip-as-image, thumbs storage, Telegram ping, OMDb/TMDB

@@ -6,22 +6,79 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/archive", "destination": "/" },
-    { "source": "/today", "destination": "/" },
-    { "source": "/e/:date", "destination": "/" }
+    {
+      "source": "/archive",
+      "destination": "/"
+    },
+    {
+      "source": "/today",
+      "destination": "/"
+    },
+    {
+      "source": "/e/:date",
+      "destination": "/"
+    },
+    {
+      "source": "/editor",
+      "destination": "/"
+    }
   ],
   "functions": {
-    "api/health.js": { "includeFiles": "content/latest.json" },
-    "api/notify.js": { "includeFiles": "content/latest.json" },
-    "api/live/[key].js": { "includeFiles": "config/house.json", "maxDuration": 20 }
+    "api/health.js": {
+      "includeFiles": "content/latest.json"
+    },
+    "api/notify.js": {
+      "includeFiles": "content/latest.json"
+    },
+    "api/live/[key].js": {
+      "includeFiles": "config/house.json",
+      "maxDuration": 20
+    }
   },
   "headers": [
-    { "source": "/posters/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/content/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/(.*)", "headers": [
-      { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
-      { "key": "Referrer-Policy", "value": "no-referrer" },
-      { "key": "X-Content-Type-Options", "value": "nosniff" }
-    ] }
+    {
+      "source": "/(app.js|styles.css)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/posters/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/content/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    }
   ]
 }

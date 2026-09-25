@@ -138,6 +138,8 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   ];
   for (const [key, met, msg] of need) if (!met && !E.coverage_waivers?.[key]) errors.push(`coverage: ${msg}, or explain in coverage_waivers.${key}`);
   if ((E.betting?.length || 0) > 10) errors.push("coverage: The Betting Window shows at most 10 markets");
+  // Polymarket only from 26 Sep 2026 (Kalshi retired; the page no longer refreshes "ks:" ids).
+  if (E.date > "2026-09-25") (E.betting || []).forEach((b, i) => { if (!/^pm:/.test(b.id || "")) errors.push(`betting[${i}]: Polymarket only, id must start with "pm:"`); });
 
   // Talk of the Day is written in English, with search volume.
   const latin = t => /^[\x20-\x7E\u00C0-\u024F\u2018-\u201D\u2013\u2026₹]+$/.test(t || "");

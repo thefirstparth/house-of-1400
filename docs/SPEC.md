@@ -9,6 +9,7 @@
 ## Pages
 - `/` today's paper (renders `content/latest.json`)
 - `/archive` list of past editions by date; `/e/YYYY-MM-DD` renders that edition
+- `/editor` About the editor: who T. A. Bhide is, what he does, the rules; linked from the byline, folio, editor's note and foot, never on the front page
 - `/today` one-screen view for the phone (see Poster mode)
 - Every page responsive: phone first (70% of reading is on a Nothing Phone 3 in Chrome), laptop properly designed (MacBook), not a stretched phone.
 

@@ -8,7 +8,7 @@ if (process.env.DEV_MOCK) (await import("../tests/mocks.mjs")).installMocks();
 
 const port = Number(process.argv[2] || 3000);
 const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml", ".txt": "text/plain" };
-const REWRITES = [[/^\/archive$/, "/"], [/^\/today$/, "/"], [/^\/e\/[^/]+$/, "/"]];
+const REWRITES = [[/^\/archive$/, "/"], [/^\/editor$/, "/"], [/^\/today$/, "/"], [/^\/e\/[^/]+$/, "/"]];
 
 async function toRequest(req) {
   const chunks = []; for await (const c of req) chunks.push(c);

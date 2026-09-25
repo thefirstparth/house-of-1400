@@ -75,15 +75,12 @@ test("range notes: lows, highs, rupee wording, quiet ranges", () => {
   assert.equal(L.rangeNote(mk([100, 104, 96, 103, 97, 102, 98, 101, 99, 100, 104, 96, 103, 97, 102, 98, 101, 99, 100, 100.5]), "^NSEI"), null);
 });
 
-test("kalshi: shaping and exclusions", () => {
-  const ev = (t, cat, ser, mk) => ({ title: t, category: cat, series_ticker: ser, event_ticker: ser + "-1", markets: mk });
-  const m = (name, p, v = 10) => ({ yes_sub_title: name, last_price_dollars: String(p), volume_24h_fp: String(v), status: "active" });
-  const out = L.filterKalshi([
-    ev("Best AI at the end of 2026?", "Science and Technology", "KXLLM1", [m("Claude", 0.72), m("ChatGPT", 0.12)]),
-    ev("Which party will win the U.S. Senate?", "Elections", "CONTROLS", [m("Democrats", 0.6)]),
-    ev("US gas prices this week", "Economics", "KXAAAGASW", [m("Above 4.30", 0.99), m("Above 4.32", 0.99)]),
-    ev("Brent this week", "Financials", "KXBRENT", [m("Above 100", 0.9), m("Above 105", 0.5)]),
-  ]);
-  assert.deepEqual(out.map(x => x.id), ["ks:KXLLM1-1"]);
-  assert.deepEqual(out[0].outcomes[0], { name: "Claude", prob: 72 });
+test("betting: Polymarket ids only", async () => {
+  const seen = [];
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async url => { seen.push(String(url)); return new Response("[]", { status: 200, headers: { "content-type": "application/json" } }); };
+  try { await L.betting(new URLSearchParams("ids=pm:some-market,ks:KXLLM1-26DEC31")); }
+  finally { globalThis.fetch = realFetch; }
+  assert.ok(seen.every(u => u.includes("polymarket.com")), seen.join(" "));
+  assert.ok(!seen.some(u => u.includes("kalshi")));
 });

@@ -17,11 +17,11 @@ All endpoints below were tested on 25 Sep 2026 unless marked otherwise.
 | tennis | ESPN `tennis/atp/scoreboard` (tournament level) | | 1 h | No player-level next match. Player NEXT comes from the daily run |
 | markets | Yahoo `query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=3mo&interval=1d` and `v7/finance/spark?symbols=` | Twelve Data or Alpha Vantage free key (optional) | 5 min in market hours | Unofficial. Server-side only (CORS). **Daily bars can be null** (seen 22 and 24 Sep): take the day's close from `meta.regularMarketPrice` after close, never chart or average a null. Symbols in config |
 | dma | Published figures only (see config `markets.dma_sources`) | | daily | Never computed. Print only if 2 sources agree within 0.25%. Else skip the line |
-| gold_in | IBJA `ibjarates.com` (HTML) | none | 1 h | 24K 999 and 22K 916 per gram, print per 10g. Scraper must validate range; on failure use snapshot |
+| gold_in | IBJA `ibjarates.com` (HTML) | none | 1 h | 24K 999 and 22K 916 per gram, print per 10g. Scraper must validate range; on failure use snapshot. The page's hidden `HdnGold` input holds about 4 months of daily 999 rates per 10g: the change on the previous rate, the change over about a month and the period high and low come from it |
 | fx | Yahoo `INR=X` | `open.er-api.com/v6/latest/USD` | 15 min | |
 | crypto | Yahoo `BTC-USD` | CoinGecko simple price | 5 min | Agreed within $10 |
 | trends | Google Trends RSS `trends.google.com/trending/rss?geo=IN` (and world geos in config) | | 30 min | Items include linked news articles. Server-side only |
-| betting | Polymarket Gamma `gamma-api.polymarket.com/events?active=true&closed=false&order=volume24hr&ascending=false` | Kalshi `api.elections.kalshi.com/trade-api/v2/events?with_nested_markets=true` (fields end in `_fp`) | 30 min | Apply config exclusions. India volume is tiny; world only |
+| betting | Polymarket Gamma `gamma-api.polymarket.com/events?active=true&closed=false&order=volume24hr&ascending=false` | none (Kalshi retired 25 Sep 2026) | 30 min | Apply config exclusions. India volume is tiny; world only |
 
 ## Not live (daily run researches these)
 - India men's cricket: ESPNcricinfo API refused access. Next match and series come from research, two reliable sources, chronology checked. Optional later: CricketData.org free key.
