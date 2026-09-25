@@ -79,7 +79,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -675,30 +675,66 @@ function talkBlock() {
 const MONTHS = { january: "Jan", february: "Feb", march: "Mar", april: "Apr", may: "May", june: "Jun", july: "Jul", august: "Aug", september: "Sep", october: "Oct", november: "Nov", december: "Dec" };
 const outcomeLabel = n => String(n).replace(/^(By|Through) (January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2})(, \d{4})?$/i, (_, w, m, d, y) => `${w} ${d} ${MONTHS[m.toLowerCase()]}${y || ""}`);
 
-// Each market as a betting slip: the favourite's price large on a tinted stub, how the money splits in one bar, the
-// rest as a legend. A market carried over from an earlier day carries the house stamp; a price that has moved since
-// press time says by how much.
+// The market's view, one line in a section: what Polymarket traders make of the next race or match. Kept small and
+// set apart, so the section stays a newspaper.
+function signalHTML(g) {
+  if (!g?.outcomes?.length) return "";
+  const o = g.outcomes.slice(0, 3), vol = g.volume >= 1e6 ? `$${(g.volume / 1e6).toFixed(1)}m` : g.volume >= 1e3 ? `$${Math.round(g.volume / 1e3)}k` : `$${g.volume}`;
+  return `<div class="signal" data-fam="odds"><div class="sg-h"><span class="sg-k">${icon("s:betting")}The market's view</span><span class="sg-t">${esc(g.label || g.title)}</span></div>
+<div class="sg-o">${o.map((x, i) => `<span class="${i === 0 ? "fav" : ""}"><b class="tnum">${Math.round(x.prob)}%</b> ${esc(outcomeLabel(x.name))}</span>`).join("")}</div>
+<div class="sg-bar">${o.map((x, i) => `<i class="s${i}" style="width:${Math.max(0, Math.min(100, x.prob)).toFixed(1)}%"></i>`).join("")}</div>
+<a class="sg-src" href="${esc(g.url)}" target="_blank" rel="noopener">Polymarket · ${vol} traded ↗</a></div>`;
+}
+function paintSignals() {
+  const G = LIVE.signals?.value || {};
+  for (const id of ["paddock", "madrid", "crease", "deuce"]) {
+    const secEl = document.getElementById(id); if (!secEl) continue;
+    let el = secEl.querySelector(":scope > .signal-slot");
+    if (!el) { el = document.createElement("div"); el.className = "signal-slot"; secEl.querySelector(".sechead")?.after(el); }
+    const html = signalHTML(G[id]);
+    if (el.dataset.html !== html) { el.innerHTML = html; el.dataset.html = html; }
+  }
+}
+
+// Each market as a betting slip in the colour of its subject (config betting.category_palettes): the favourite's
+// price large on a solid stub over a wavy progress line, how the money splits in one bar, the rest as a legend. The
+// first market leads, full width. A market carried from an earlier day wears the house stamp; when a price has moved
+// since press time the slip names who moved and from what to what.
+const betPalette = cat => { const c = String(cat || "").toLowerCase(); const hit = Object.entries(CFG.betting.category_palettes || {}).find(([k]) => new RegExp(`(^|[^a-z])${k}([^a-z]|$)`).test(c)); return hit ? hit[1] : "odds"; };
+let waveN = 0;
+function wave(p) {
+  const id = `wv${++waveN}`, W = 100, pts = [];
+  for (let x = 0; x <= W; x += 1) pts.push(`${x},${(5 + 2.2 * Math.sin(x / 100 * Math.PI * 2 * 7)).toFixed(2)}`);
+  const d = "M" + pts.join("L");
+  return `<svg class="wave" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><defs><clipPath id="${id}"><rect x="0" y="0" width="${Math.max(0, Math.min(100, p)).toFixed(1)}" height="10"/></clipPath></defs><path d="${d}" class="wt"/><path d="${d}" class="wf" clip-path="url(#${id})"/></svg>`;
+}
 function bettingBlock() {
   const liveM = LIVE.betting?.value?.markets || [];
   const list = (E.betting?.length ? E.betting : liveM).slice(0, CFG.betting.show || 10);
   if (!list.length) return "";
+  waveN = 0;
   const idOf = b => (b.id?.includes(":") ? b.id : b.id ? `pm:${b.id}` : null);
-  const slips = list.map(b => {
+  const slips = list.map((b, n) => {
     const L = !LIVE.betting?.stale && liveM.find(m => m.id === idOf(b));
     const all = (L?.outcomes?.length ? L.outcomes : b.outcomes) || [];
     if (!all.length) return "";
     const yesNo = all.length === 1;
     const outs = yesNo ? [{ name: all[0].name, prob: all[0].prob }, { name: "No", prob: Math.max(0, 100 - all[0].prob) }] : all.slice(0, 3);
     const fav = outs[0], rest = Math.max(0, 100 - outs.reduce((a, o) => a + o.prob, 0));
-    const was = b.outcomes?.find(o => o.name === fav.name)?.prob, move = L && was != null ? fav.prob - was : 0;
-    const moved = Math.abs(move) >= 3 ? `<span class="mv ${move > 0 ? "up" : "dn"}">${move > 0 ? "▲" : "▼"} ${Math.abs(move).toFixed(0)} pts since press</span>` : "";
+    // The biggest move since press, by name, in percentages on both sides.
+    let mv = "";
+    if (L) {
+      const moves = all.map(o => ({ o, was: b.outcomes?.find(p => p.name === o.name)?.prob })).filter(x => x.was != null).map(x => ({ ...x, d: x.o.prob - x.was }));
+      const top = moves.sort((x, y) => Math.abs(y.d) - Math.abs(x.d))[0];
+      if (top && Math.abs(top.d) >= (CFG.betting.carry?.min_move_pts || 5)) mv = `<span class="mv ${top.d > 0 ? "up" : "dn"}">${top.d > 0 ? "▲" : "▼"} ${esc(outcomeLabel(top.o.name))}: ${Math.round(top.was)}% at press, ${Math.round(top.o.prob)}% now</span>`;
+    }
     const since = b.since && b.since < E.date ? `<span class="stamp">Since ${esc(sparkLabel(b.since))}</span>` : "";
     const segs = [...outs.map((o, i) => `<i class="s${i}" style="width:${Math.max(0, Math.min(100, o.prob)).toFixed(1)}%" title="${esc(outcomeLabel(o.name))} ${o.prob.toFixed(1)}%"></i>`), yesNo ? "" : `<i class="s9" style="width:${rest.toFixed(1)}%"></i>`].join("");
-    return `<li class="slip"><div class="stub"><b class="tnum">${Math.round(fav.prob)}<small>%</small></b><span>${esc(outcomeLabel(fav.name))}</span></div>
+    return `<li class="slip${n === 0 ? " lead" : ""}" data-fam="${betPalette(b.category)}"><div class="stub"><b class="tnum">${Math.round(fav.prob)}<small>%</small></b>${wave(fav.prob)}<span>${esc(outcomeLabel(fav.name))}</span></div>
 <div class="sb"><div class="meta">${esc(b.category || "World")}${since}</div><a class="title" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title.replace(/\.\.\.\?$/, "…?"))}</a>${b.note ? `<small class="nt">${esc(b.note)}</small>` : ""}
-<div class="bar">${segs}</div><ul>${outs.slice(yesNo ? 0 : 1).map((o, i) => `<li><i class="s${yesNo ? i : i + 1}"></i>${esc(outcomeLabel(o.name))} <b class="tnum">${Math.round(o.prob)}%</b></li>`).join("")}${!yesNo && rest >= 1 ? `<li><i class="s9"></i>Others <b class="tnum">${Math.round(rest)}%</b></li>` : ""}</ul>${moved}</div></li>`;
+<div class="bar">${segs}</div><ul>${outs.slice(yesNo ? 0 : 1).map((o, i) => `<li><i class="s${yesNo ? i : i + 1}"></i>${esc(outcomeLabel(o.name))} <b class="tnum">${Math.round(o.prob)}%</b></li>`).join("")}${!yesNo && rest >= 1 ? `<li><i class="s9"></i>Others <b class="tnum">${Math.round(rest)}%</b></li>` : ""}</ul>${mv}</div></li>`;
   }).join("");
-  return `<ol class="slips">${slips}</ol><p class="asof" style="margin-top:12px">${LIVE.betting && !LIVE.betting.stale ? "Live prices" : `Prices ${agoIST(LIVE.betting?.as_of) || "at press time"}`} from Polymarket. A price is what traders pay for a yes, not a forecast.</p>`;
+  return `<ol class="slips">${slips}</ol><p class="asof" style="margin-top:12px">${LIVE.betting && !LIVE.betting.stale ? "Live prices" : `Prices ${agoIST(LIVE.betting?.as_of) || "at press time"}`} from Polymarket. A price is what traders pay for a yes, read as the chance they give it.</p>`;
 }
 
 function byeBlock() {
@@ -798,6 +834,7 @@ function paintLive() {
     $("#idx div").innerHTML = present.map(x => `<a href="#${x.id}" data-fam="${fam(x.id)}">${seal(x.id, 22)}${esc(x.short)}</a>`).join("");
     observeIndex(present);
   }
+  paintSignals();
   if (!$("#poster").hidden && (POSTER === "today" || POSTER === "edition")) paintPoster();
   tick();
 }

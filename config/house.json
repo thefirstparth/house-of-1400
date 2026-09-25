@@ -440,6 +440,46 @@
       "max_rank": 20,
       "min_move_pts": 5,
       "rule": "A market printed in the previous edition carries over while it is open, undecided (favourite under 99%), and still trending: inside the top max_rank markets by 24-hour volume after the exclusions, or its favourite moved min_move_pts points or more since it was printed. A market that ends or is decided hands over to the next market in the same line (next month's edition of the same question). At most max carries, busiest first, so new markets always have room. Nothing is carried because it is named anywhere."
+    },
+    "signals": {
+      "min_volume": 1000,
+      "tags": {
+        "f1": [
+          "f1"
+        ],
+        "football": [
+          "la-liga",
+          "ucl",
+          "champions-league",
+          "soccer"
+        ],
+        "cricket": [
+          "cricket"
+        ],
+        "tennis": [
+          "tennis"
+        ]
+      },
+      "rule": "One line in Paddock Notes, Madridismo, The Crease and Deuce with what Polymarket says about the next race or match the paper follows. Found from the live fixtures, never named in code. Markets under min_volume dollars traded are left out."
+    },
+    "category_palettes": {
+      "f1": "f1",
+      "formula": "f1",
+      "football": "pitch",
+      "soccer": "pitch",
+      "laliga": "madrid",
+      "champions league": "pitch",
+      "cricket": "india",
+      "tennis": "tennis",
+      "ai": "tech",
+      "tech": "tech",
+      "crypto": "money",
+      "markets": "money",
+      "economy": "money",
+      "war": "dispatch",
+      "politics": "dispatch",
+      "geopolitics": "dispatch",
+      "world": "dispatch"
     }
   },
   "day_profiles": {
