@@ -1079,18 +1079,23 @@ function paintPoster() {
   if (P.dataset.html === html) return;
   P.innerHTML = html; P.dataset.html = html; tick(); fitPoster();
 }
-// Today and The edition fit one screen: shrink the whole sheet (CSS zoom) until it does, never scroll.
+// Today and The edition fit one screen: the whole sheet is zoomed (CSS zoom) until it does, never scrolled. On a
+// big monitor (from 2,100px, like fitMonitor) it is also zoomed up, to fill the screen instead of floating in the
+// middle of it; the clock is scaled up the same way.
 function fitPoster() {
   const P = $("#poster"), c = P.firstElementChild;
-  if (P.hidden || !c?.matches(".dash,.framed")) return;
+  if (P.hidden || !c) return;
   c.style.zoom = "";
+  const big = innerWidth >= 2100;
+  if (c.matches(".clk")) { if (big) c.style.zoom = Math.min(1.6, innerWidth / 1920).toFixed(3); return; }
+  if (!c.matches(".dash,.framed")) return;
   const cs = getComputedStyle(P);
-  const room = P.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+  const room = P.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom), roomW = P.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
   let z = 1;
-  for (let i = 0; i < 4; i++) {
-    const h = c.getBoundingClientRect().height;
-    if (h <= room + 1) break;
-    z = Math.max(0.5, z * room / h); c.style.zoom = z.toFixed(3);
+  for (let i = 0; i < 5; i++) {
+    const r = c.getBoundingClientRect(), f = Math.min(room / r.height, big ? roomW / r.width : 1);
+    if (Math.abs(f - 1) < 0.01 || (!big && f >= 1)) break;
+    z = Math.max(0.5, Math.min(big ? 1.6 : 1, z * f)); c.style.zoom = z.toFixed(3);
   }
 }
 function openPoster(k) {
@@ -1102,7 +1107,7 @@ function openPoster(k) {
   P.className = "poster" + (k === "clock" ? " dark" : " fit");
   P.hidden = false;
   if (k === "today" || k === "edition") { paintPoster(); document.fonts?.ready.then(fitPoster); }
-  if (k === "clock") P.innerHTML = clockHTML() + CLOSE;
+  if (k === "clock") { P.innerHTML = clockHTML() + CLOSE; fitPoster(); }
   pTimer = setInterval(tick, 1000);
   tick();
   if (k !== "today" && k !== "edition") { try { document.documentElement.requestFullscreen?.().catch(() => {}); } catch {} }
