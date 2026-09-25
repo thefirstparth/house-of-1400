@@ -1,0 +1,25 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/archive", "destination": "/index.html" },
+    { "source": "/today", "destination": "/index.html" },
+    { "source": "/e/:date", "destination": "/index.html" }
+  ],
+  "functions": {
+    "api/health.js": { "includeFiles": "content/latest.json" },
+    "api/notify.js": { "includeFiles": "content/latest.json" },
+    "api/live/[key].js": { "includeFiles": "config/house.json", "maxDuration": 20 }
+  },
+  "headers": [
+    { "source": "/content/(.*)", "headers": [{ "key": "Cache-Control", "value": "private, no-cache" }] },
+    { "source": "/(.*)", "headers": [
+      { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+      { "key": "Referrer-Policy", "value": "no-referrer" },
+      { "key": "X-Content-Type-Options", "value": "nosniff" }
+    ] }
+  ]
+}

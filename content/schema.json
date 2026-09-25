@@ -1,0 +1,792 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://house-of-1400/content/schema.json",
+  "title": "House of 1400 edition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "date",
+    "edition_no",
+    "weekday",
+    "cut_ist",
+    "profile_line",
+    "house_note",
+    "glance",
+    "front",
+    "sections",
+    "fixtures",
+    "before_you_go",
+    "snapshot"
+  ],
+  "definitions": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "url": {
+      "type": "string",
+      "pattern": "^https?://[^\\s]+$"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,79}$"
+    },
+    "section": {
+      "type": "string",
+      "enum": [
+        "front",
+        "fixtures",
+        "madrid",
+        "pitch",
+        "paddock",
+        "crease",
+        "deuce",
+        "sidelines",
+        "tables",
+        "dateline",
+        "workshop",
+        "pipeline",
+        "ledger",
+        "sky",
+        "namma",
+        "screen",
+        "talk",
+        "betting",
+        "bye",
+        "desk",
+        "house"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label",
+        "url"
+      ],
+      "properties": {
+        "label": {
+          "$ref": "#/definitions/text"
+        },
+        "url": {
+          "$ref": "#/definitions/url"
+        }
+      }
+    },
+    "story": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "thread_id",
+        "section",
+        "kicker",
+        "headline",
+        "short",
+        "why",
+        "sources"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/id"
+        },
+        "thread_id": {
+          "$ref": "#/definitions/id"
+        },
+        "section": {
+          "$ref": "#/definitions/section"
+        },
+        "kicker": {
+          "$ref": "#/definitions/text"
+        },
+        "headline": {
+          "$ref": "#/definitions/text"
+        },
+        "deck": {
+          "$ref": "#/definitions/text"
+        },
+        "byline": {
+          "$ref": "#/definitions/text"
+        },
+        "short": {
+          "$ref": "#/definitions/text"
+        },
+        "more": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/text"
+          }
+        },
+        "why": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "text",
+            "personal"
+          ],
+          "properties": {
+            "text": {
+              "$ref": "#/definitions/text"
+            },
+            "personal": {
+              "type": "boolean"
+            }
+          }
+        },
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "try",
+            "wait",
+            "ignore"
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/source"
+          }
+        },
+        "new_for_you": {
+          "type": "boolean"
+        },
+        "facts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number",
+              "boolean"
+            ]
+          }
+        }
+      }
+    },
+    "brief": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "thread_id",
+        "section",
+        "headline",
+        "text"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/id"
+        },
+        "thread_id": {
+          "$ref": "#/definitions/id"
+        },
+        "section": {
+          "$ref": "#/definitions/section"
+        },
+        "kicker": {
+          "$ref": "#/definitions/text"
+        },
+        "headline": {
+          "$ref": "#/definitions/text"
+        },
+        "text": {
+          "$ref": "#/definitions/text"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/source"
+          }
+        },
+        "new_for_you": {
+          "type": "boolean"
+        },
+        "facts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number",
+              "boolean"
+            ]
+          }
+        }
+      }
+    },
+    "fixtureRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "when_utc",
+        "label"
+      ],
+      "properties": {
+        "when_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "label": {
+          "$ref": "#/definitions/text"
+        },
+        "detail": {
+          "$ref": "#/definitions/text"
+        },
+        "time_tbc": {
+          "type": "boolean"
+        }
+      }
+    },
+    "trend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "term",
+        "what"
+      ],
+      "properties": {
+        "term": {
+          "$ref": "#/definitions/text"
+        },
+        "what": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 140
+        },
+        "url": {
+          "$ref": "#/definitions/url"
+        },
+        "thread_id": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "properties": {
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "edition_no": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "weekday": {
+      "type": "string",
+      "enum": [
+        "mon",
+        "tue",
+        "wed",
+        "thu",
+        "fri",
+        "sat",
+        "sun"
+      ]
+    },
+    "cut_ist": {
+      "type": "string",
+      "pattern": "^\\d{2}:\\d{2}$"
+    },
+    "profile_line": {
+      "$ref": "#/definitions/text"
+    },
+    "editor_note": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/definitions/text"
+        }
+      ]
+    },
+    "house_note": {
+      "$ref": "#/definitions/text"
+    },
+    "glance": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "section",
+          "line",
+          "target"
+        ],
+        "properties": {
+          "section": {
+            "$ref": "#/definitions/text"
+          },
+          "line": {
+            "$ref": "#/definitions/text"
+          },
+          "target": {
+            "$ref": "#/definitions/text"
+          },
+          "color": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "front": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lead",
+        "seconds",
+        "briefs"
+      ],
+      "properties": {
+        "lead": {
+          "$ref": "#/definitions/story"
+        },
+        "seconds": {
+          "type": "array",
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/definitions/story"
+          }
+        },
+        "briefs": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "$ref": "#/definitions/brief"
+          }
+        }
+      }
+    },
+    "sections": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/definitions/section"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "sub": {
+            "$ref": "#/definitions/text"
+          },
+          "stories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/story"
+            }
+          },
+          "briefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/brief"
+            }
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "chronology": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "next": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/definitions/fixtureRef"
+              }
+            ]
+          },
+          "last": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/definitions/fixtureRef"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "fixtures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "when_utc",
+          "label",
+          "source"
+        ],
+        "properties": {
+          "when_utc": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "until_utc": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "minutes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "time_tbc": {
+            "type": "boolean"
+          },
+          "label": {
+            "$ref": "#/definitions/text"
+          },
+          "entity": {
+            "type": "string"
+          },
+          "where": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/definitions/text"
+              }
+            ]
+          },
+          "source": {
+            "$ref": "#/definitions/text"
+          }
+        }
+      }
+    },
+    "tennis": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "dates"
+            ],
+            "properties": {
+              "name": {
+                "$ref": "#/definitions/text"
+              },
+              "place": {
+                "$ref": "#/definitions/text"
+              },
+              "dates": {
+                "$ref": "#/definitions/text"
+              },
+              "note": {
+                "$ref": "#/definitions/text"
+              },
+              "level": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "players": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "$ref": "#/definitions/text"
+              },
+              "next_match": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "text"
+                    ],
+                    "properties": {
+                      "text": {
+                        "$ref": "#/definitions/text"
+                      },
+                      "when_utc": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                ]
+              },
+              "next_event": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "text"
+                    ],
+                    "properties": {
+                      "text": {
+                        "$ref": "#/definitions/text"
+                      }
+                    }
+                  }
+                ]
+              },
+              "note": {
+                "$ref": "#/definitions/text"
+              }
+            }
+          }
+        }
+      }
+    },
+    "screen": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "type",
+          "language",
+          "where",
+          "release",
+          "verdict",
+          "reason"
+        ],
+        "properties": {
+          "title": {
+            "$ref": "#/definitions/text"
+          },
+          "type": {
+            "$ref": "#/definitions/text"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "English",
+              "Hindi"
+            ]
+          },
+          "where": {
+            "$ref": "#/definitions/text"
+          },
+          "release": {
+            "$ref": "#/definitions/text"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "must",
+              "good",
+              "call",
+              "skip",
+              "early"
+            ]
+          },
+          "reason": {
+            "$ref": "#/definitions/text"
+          },
+          "if_you_liked": {
+            "$ref": "#/definitions/text"
+          },
+          "coming_soon": {
+            "type": "boolean"
+          },
+          "url": {
+            "$ref": "#/definitions/url"
+          }
+        }
+      }
+    },
+    "trends": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "as_of": {
+          "type": "string"
+        },
+        "world_label": {
+          "type": "string"
+        },
+        "india": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/trend"
+          }
+        },
+        "world": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/trend"
+          }
+        }
+      }
+    },
+    "betting": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "category",
+          "outcomes",
+          "source",
+          "url"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "thread_id": {
+            "type": "string"
+          },
+          "title": {
+            "$ref": "#/definitions/text"
+          },
+          "category": {
+            "$ref": "#/definitions/text"
+          },
+          "outcomes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "prob"
+              ],
+              "properties": {
+                "name": {
+                  "$ref": "#/definitions/text"
+                },
+                "prob": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              }
+            }
+          },
+          "source": {
+            "$ref": "#/definitions/text"
+          },
+          "url": {
+            "$ref": "#/definitions/url"
+          }
+        }
+      }
+    },
+    "desk": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "when",
+              "kind",
+              "text"
+            ],
+            "properties": {
+              "when": {
+                "$ref": "#/definitions/text"
+              },
+              "group": {
+                "type": "string",
+                "enum": [
+                  "72h",
+                  "4-7",
+                  "week2"
+                ]
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "action",
+                  "watch",
+                  "fyi"
+                ]
+              },
+              "text": {
+                "$ref": "#/definitions/text"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "before_you_go": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "watch",
+        "do"
+      ],
+      "properties": {
+        "watch": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/text"
+          }
+        },
+        "do": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/text"
+          }
+        }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "value",
+          "as_of",
+          "source"
+        ],
+        "properties": {
+          "value": {},
+          "as_of": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

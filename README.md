@@ -23,6 +23,20 @@ Work in the priority order in CLAUDE.md and push to main as you go so Vercel dep
 I'm asleep until the afternoon. Don't wait for me: make reasonable calls, log them in docs/DECISIONS.md, and leave a short summary of what's done, what's pending and anything I need to do in docs/STATUS.md.
 ```
 
+## Day to day
+- Paper: your Vercel URL. Archive at `/archive`, a one-screen phone view at `/today`.
+- Poster mode: the Poster button, or `/?poster=today|mast|night|heads|clock`.
+- Mac screensaver: install [WebViewScreenSaver](https://github.com/liquidx/webviewscreensaver) and point it at `<URL>/?poster=mast` (or `?poster=clock`). Log in once in Safari first so the cookie exists.
+- Build status and what is pending: `docs/STATUS.md`.
+
+## For developers
+```
+npm ci
+node --test tests/*.test.mjs        # offline tests with recorded API payloads
+npm test                            # hits every live source for real
+npm run build && SITE_PASSWORD=x RUN_KEY=y DEV_MOCK=1 node scripts/dev.mjs 3000
+```
+
 ## Later (optional)
 - Telegram ping: create a bot with @BotFather, then add `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` in Vercel.
 - Better data: `OMDB_KEY`, `TMDB_KEY` (Screen & Stage), `CRICKETDATA_KEY`, `TWELVEDATA_KEY`.

@@ -60,3 +60,20 @@ Settled with Parth between 24 and 25 Sep 2026. Change only with his say-so, and 
 - Yahoo daily bars can be null (22 and 24 Sep 2026) while the quote is right. Never chart or average nulls.
 - Polymarket and Kalshi raw volume is dominated by US sports, esports, weather and crypto ladders. India-specific volume is tiny.
 - ESPNcricinfo's API blocks access. Stooq returned empty.
+
+## Build decisions (25 Sep 2026, first build session)
+Made without Parth, per the build prompt. Change any of them freely.
+- **One live function.** Every `/api/live/<key>` goes through `api/live/[key].js`. Vercel Hobby allows 12 functions per deployment; this keeps the total at 6.
+- **Static output.** `npm run build` copies `public/`, `content/` and `config/house.json` into `dist/`. The middleware gates all of it, including `content/` and `config/`.
+- **Cookie.** The session cookie is an HMAC of `SITE_PASSWORD`, valid 30 days. Changing the password logs every device out, which is also how to revoke access.
+- **Chronology in the schema.** Editions carry a `chronology` object (`next` and `last` per followed entity). The validator checks it against `fixtures` in code. Fixtures carry `entity`, optional `minutes`, `until_utc` and `time_tbc`.
+- **Paddock local times** print only when the edition sets `sections.paddock.data.local_tz` (an IANA zone). Jolpica gives UTC only.
+- **Talk of the Day and The Betting Window** print the edition's curated lists when present. If an edition carries none, the page shows the live feeds instead: Google Trends with the top linked headline as the "what happened" line, deduplicated against the paper's headlines, and Polymarket by 24-hour volume after the config exclusions. Past editions never show live feeds.
+- **Kalshi backup not built in v1.** Polymarket only; the section hides if it fails.
+- **DMA lines** print only when the edition supplies them in `sections.ledger.data.dma`. Nothing is computed.
+- **Weekends fold markets.** On Saturday and Sunday the Ledger's live panels sit inside a tap-to-open fold unless the edition has a Ledger story.
+- **Clip** draws the card on a canvas (no library): Share sheet on the phone, download on the laptop.
+- **Votes** go to Vercel Blob when `BLOB_READ_WRITE_TOKEN` is set, otherwise they stay in the browser only.
+- **Config additions.** Each section has `short` (index label) and `accent` (colour token). `follows.football_club.sportsdb_id` added for the backup source.
+- **No absence copy.** The reference proof's "50/200 DMA: skipped today" and "Filtered out: ..." lines are not printed; both break the no-filler rule.
+- **Edition No. 1** was published at 06:40 IST on 25 Sep, not 14:00, because the build finished early. Its research used web search only (this environment blocked direct fetches), and it printed "Information cut 06:40 IST" honestly. From 26 Sep the scheduled runs produce the 14:00 paper.

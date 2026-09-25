@@ -15,8 +15,20 @@ The main run starts at 13:15 so the paper is live by about 14:00. The printed "I
 Prompt for each scheduled task:
 > Open the house-of-1400 repo. Follow docs/RUNBOOK.md exactly as a daily run. Obey the daily-run rules in CLAUDE.md.
 
+The live scheduled runs use a slightly longer version of this prompt that also attaches and clones the repo (see docs/STATUS.md).
+
+## Commands (run from the repo root)
+- `npm ci` once per session.
+- `npm test` checks every live source (shape, freshness, ranges). Failures go in the snapshot, not the paper.
+- `node scripts/snapshot.mjs content/editions/YYYY-MM-DD.json` runs every live getter locally and writes the `snapshot` block (keeps last-known-good values with their own time when a source fails).
+- `npm run validate -- content/editions/YYYY-MM-DD.json` runs every check in step 8.
+- `npm run publish-edition -- content/editions/YYYY-MM-DD.json` validates again, then writes `content/latest.json`, `content/archive.json` and `ledger/story-ledger.json`. It refuses to publish a failing edition.
+- `node --test tests/*.test.mjs` for the offline tests (build sessions only).
+
+If this environment cannot reach `*.vercel.app`, check the deploy with the Vercel connector instead: `list_deployments` for project `house-of-1400`, and confirm the newest production deployment for the edition commit is `READY`. Git `main` plus a READY deployment is equivalent to `/api/health` reporting today's date.
+
 ## Steps
-1. **Already done?** Fetch `https://<site>/api/health`. If `edition` equals today's IST date, stop.
+1. **Already done?** Fetch `https://<site>/api/health` (or read `content/latest.json` on `main`). If `edition` equals today's IST date, stop.
 2. **Load context:** `config/house.json`, `ledger/story-ledger.json`, the last 3 editions, recent votes from `/api/votes` (with `RUN_KEY`, skip if unavailable). Work out the weekday profile.
 3. **Live snapshot:** call every `/api/live/*` function and store the results under `snapshot` (fallback values with `as_of`).
 4. **Chronology:** build the ordered fixture timelines (EDITORIAL.md, Sports chronology). Save them in memory for every section.

@@ -1,0 +1,24 @@
+{
+  "name": "house-of-1400",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "validate": "node scripts/validate.mjs",
+    "publish-edition": "node scripts/publish.mjs",
+    "snapshot": "node scripts/snapshot.mjs",
+    "test": "node scripts/live-test.mjs",
+    "test:unit": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.8.0",
+    "@vercel/functions": "^2.0.0"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  }
+}
