@@ -29,7 +29,7 @@ All endpoints below were tested on 25 Sep 2026 unless marked otherwise.
 - Screen & Stage verdicts. Optional keys later: OMDb (IMDb, Rotten Tomatoes, Metacritic in one call) and TMDB (India watch providers, upcoming releases). Without keys, research reviews on the web.
 
 ## Optional env vars
-`TWELVEDATA_KEY`, `OMDB_KEY`, `TMDB_KEY`, `CRICKETDATA_KEY`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `RUN_KEY`, `BLOB_READ_WRITE_TOKEN`. Everything must work without them.
+`TWELVEDATA_KEY`, `OMDB_KEY`, `TMDB_KEY`, `CRICKETDATA_KEY`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `RUN_KEY`, and a connected Vercel Blob store (`BLOB_STORE_ID` with OIDC, or the older `BLOB_READ_WRITE_TOKEN`). Everything must work without them.
 
 ## Tests
 `npm test` hits every live function and asserts shape, freshness and sane ranges (for example Sensex between 40,000 and 150,000; Bengaluru temperature between 5 and 45). The daily run executes it before publishing and records failures in the edition snapshot, not in the paper.

@@ -1,4 +1,6 @@
-// Cookie-gated by middleware. Stores one vote per request in Vercel Blob when configured.
+import { blobConfigured, putJSON } from "../lib/blob.js";
+
+// Public (the site has no password). Stores one vote per story per day in Vercel Blob when a store is connected.
 const SECTIONS = /^[a-z]{2,20}$/;
 const ID = /^[A-Za-z0-9._:-]{1,80}$/;
 
@@ -10,11 +12,9 @@ export async function POST(request) {
       !SECTIONS.test(section || "") || !["up", "down", "none"].includes(vote)) {
     return Response.json({ ok: false, error: "invalid vote" }, { status: 400 });
   }
-  if (!process.env.BLOB_READ_WRITE_TOKEN) return Response.json({ ok: true, stored: false });
-  const { put } = await import("@vercel/blob");
+  if (!blobConfigured()) return Response.json({ ok: true, stored: false });
   const rec = { date, story_id, thread_id: thread_id || null, section, vote, at: new Date().toISOString() };
-  await put(`votes/${date}/${story_id}.json`, JSON.stringify(rec), {
-    access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json",
-  });
+  try { await putJSON(`votes/${date}/${story_id}.json`, rec); }
+  catch (e) { return Response.json({ ok: false, stored: false, error: "store unavailable" }, { status: 502 }); }
   return Response.json({ ok: true, stored: true });
 }
