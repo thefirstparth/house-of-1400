@@ -77,3 +77,10 @@ Made without Parth, per the build prompt. Change any of them freely.
 - **Config additions.** Each section has `short` (index label) and `accent` (colour token). `follows.football_club.sportsdb_id` added for the backup source.
 - **No absence copy.** The reference proof's "50/200 DMA: skipped today" and "Filtered out: ..." lines are not printed; both break the no-filler rule.
 - **Edition No. 1** was published at 06:40 IST on 25 Sep, not 14:00, because the build finished early. Its research used web search only (this environment blocked direct fetches), and it printed "Information cut 06:40 IST" honestly. From 26 Sep the scheduled runs produce the 14:00 paper.
+
+## 25 Sep 2026, after network access opened
+- **Daily runs read the live layer through our site** (Parth's call). `/api/live/*` accepts the `RUN_KEY` header in place of the cookie, and `scripts/snapshot.mjs` and `npm test` use it by default. `--local` keeps the direct path for build sessions.
+- **Yahoo user-agent.** Yahoo answers 429 to a full browser user-agent without cookies, so Yahoo calls send a plain `Mozilla/5.0`.
+- **Futures previous close.** Brent's daily bars lag a day because futures roll at 18:00 New York time, so for futures the change is measured against the 1-day chart's `previousClose` (the last settlement). For indices that field is wrong (it gave 74,529 for the Sensex against a true 74,828), so indices keep the bar method.
+- **Market "live" label** comes from Yahoo's current trading period, because the chart API does not send `marketState`.
+- **Betting exclusions use Polymarket's real tag slugs** (`us-presidential-election`, `midterms`, `hit-price`, `crypto`, `tweets-markets`, the US leagues, and more). `trump` alone is not excluded, because Iran and ceasefire markets carry it. Markets from the same series ("... by Sep 30", "... by Dec 31") collapse to one, and date ladders show the nearest deadlines in date order.

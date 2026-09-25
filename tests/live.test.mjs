@@ -27,7 +27,7 @@ test("f1 standings and last race", async () => {
 });
 test("football: next and last from ESPN", async () => {
   const r = await L.football();
-  assert.equal(r.source, "ESPN"); assert.equal(r.value.next[0].opponent, "Villarreal"); assert.equal(r.value.next[0].home, true);
+  assert.equal(r.source, "ESPN"); assert.equal(r.value.next[0].opponent, "Villarreal"); assert.equal(r.value.next[0].competition, "La Liga"); assert.equal(r.value.next[0].home, true);
   assert.equal(r.value.last.opponent, "Atlético Madrid"); assert.deepEqual(r.value.last.score, { us: "1", them: "1" }); assert.deepEqual(r.value.form, ["D"]);
 });
 test("la liga table sorted", async () => {

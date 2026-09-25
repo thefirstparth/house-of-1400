@@ -40,7 +40,7 @@ const ROUTES = [
     { slug: "brazil-presidential-election", title: "Brazil presidential election", volume24hr: 900000, tags: [{ slug: "world", label: "World" }], markets: [
       { groupItemTitle: "Flávio Bolsonaro", outcomePrices: '["0.563","0.437"]', active: true }, { groupItemTitle: "Lula da Silva", outcomePrices: '["0.435","0.565"]', active: true }] },
     { slug: "fed-decision-october", title: "Fed decision in October?", volume24hr: 5e6, tags: [{ slug: "fed", label: "Fed" }], markets: [] },
-    { slug: "trump-x", title: "Will Trump say X?", volume24hr: 5e6, tags: [{ slug: "politics", label: "Politics" }], markets: [{ outcomes: '["Yes","No"]', outcomePrices: '["0.5","0.5"]' }] },
+    { slug: "midterms-x", title: "Balance of Power: 2026 Midterms", volume24hr: 5e6, tags: [{ slug: "politics", label: "Politics" }, { slug: "united-states" }, { slug: "midterms" }], markets: [{ outcomes: '["Yes","No"]', outcomePrices: '["0.5","0.5"]' }] },
     { slug: "iran-blockade", title: "US announces end of Iran blockade by 31 Dec", volume24hr: 400000, tags: [{ slug: "geopolitics", label: "Geopolitics" }], markets: [{ outcomes: '["Yes","No"]', outcomePrices: '["0.618","0.382"]' }] }]],
   [/tennis\/atp\/scoreboard/, () => ({ events: [{ name: "Laver Cup", date: iso(now), endDate: iso(now + 2 * day) }] })],
   [/basketball\/nba\/teams\/gs\/schedule/, () => ({ events: [{ id: "n1", date: iso(now + 10 * day), seasonType: { type: 1 }, competitions: [{ status: { type: { completed: false } }, competitors: [{ homeAway: "away", team: { abbreviation: "GS", displayName: "Golden State Warriors" } }, { homeAway: "home", team: { abbreviation: "LAC", displayName: "LA Clippers" } }] }] }] })],

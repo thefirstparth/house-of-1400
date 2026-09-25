@@ -326,7 +326,7 @@ function ledgerBlock() {
     h += `<div class="cols3">${M.indices.map(q => {
       const col = q.change_pct < 0 ? "var(--bad)" : "var(--good)";
       const dma = D.dma?.[q.name];
-      const when = q.state === "REGULAR" ? "today, live" : `on ${new Date(q.session_date + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }).replace(/\bSept\b/, "Sep")}`;
+      const when = q.live ? "today, live" : `on ${new Date(q.session_date + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }).replace(/\bSept\b/, "Sep")}`;
       return `<div class="panel"><div class="nm">${esc(q.name)}</div><div class="lvl tnum">${inr(Math.round(q.price))}</div><div class="${dir(q.change_pct)} tnum" style="font:700 13px var(--utilf)">${pct(q.change_pct)} ${esc(when)}</div>${spark(q.spark, col, 300, 64, sparkLabel(q.spark_from), sparkLabel(q.spark_to))}${dma ? `<p class="note">${esc(dma)}</p>` : ""}</div>`;
     }).join("")}</div>`;
   }

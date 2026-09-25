@@ -1,7 +1,11 @@
-// Run every live getter locally and store results as the edition snapshot (fallback values with as_of).
-// Usage: node scripts/snapshot.mjs [content/editions/YYYY-MM-DD.json]   (without a file, prints JSON)
+// Store the live layer as the edition snapshot (fallback values with as_of).
+// Default: call our own deployed /api/live/* with RUN_KEY (daily runs only need our Vercel domain and GitHub).
+// --local: run the getters in this process against the third-party APIs (build sessions).
+// Usage: node scripts/snapshot.mjs [--local] [content/editions/YYYY-MM-DD.json]   (without a file, prints JSON)
 import { readFileSync, writeFileSync } from "node:fs";
-import { LIVE } from "../lib/live.js";
+import { remoteLive, SITE_URL, useRemote } from "./remote.mjs";
+
+const REMOTE = useRemote(process.argv.slice(2));
 
 const KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "nba", "tennis", "markets", "fx", "crypto", "gold_in", "trends", "betting"];
 
@@ -9,14 +13,15 @@ export async function snapshot() {
   const out = {};
   await Promise.all(KEYS.map(async k => {
     try {
-      const r = await LIVE[k](new URLSearchParams());
+      const r = REMOTE ? await remoteLive(k) : await (await import("../lib/live.js")).LIVE[k](new URLSearchParams());
       out[k] = r.ok ? { value: r.value, as_of: r.as_of, source: r.source } : { value: null, as_of: null, source: null, error: r.error || "failed" };
     } catch (e) { out[k] = { value: null, as_of: null, source: null, error: String(e?.message || e) }; }
   }));
   return out;
 }
 
-const file = process.argv[2];
+const file = process.argv.slice(2).find(a => !a.startsWith("--"));
+console.error(`snapshot: ${REMOTE ? `remote, ${SITE_URL}` : "local getters"}`);
 const snap = await snapshot();
 const okKeys = Object.entries(snap).filter(([, v]) => v.value).map(([k]) => k);
 const bad = Object.entries(snap).filter(([, v]) => !v.value).map(([k, v]) => `${k}: ${v.error}`);

@@ -1,5 +1,5 @@
 import { next } from "@vercel/functions";
-import { COOKIE, readCookie, safeEqual, sessionToken } from "./lib/auth.js";
+import { COOKIE, hasRunKey, readCookie, safeEqual, sessionToken } from "./lib/auth.js";
 import { loginPage } from "./lib/login-page.js";
 
 // Routes that skip the cookie gate. /api/notify and /api/votes check RUN_KEY themselves.
@@ -10,6 +10,8 @@ export const config = { matcher: "/((?!_vercel).*)" };
 export default async function middleware(request) {
   const url = new URL(request.url);
   if (OPEN.has(url.pathname)) return next();
+  // Daily runs read the live layer with the RUN_KEY header instead of the cookie.
+  if (url.pathname.startsWith("/api/live/") && hasRunKey(request)) return next();
   const password = process.env.SITE_PASSWORD;
   if (password) {
     const got = readCookie(request.headers.get("cookie"), COOKIE);

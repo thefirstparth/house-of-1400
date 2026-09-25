@@ -1,5 +1,10 @@
-// Hit every live getter and assert shape, freshness and sane ranges. Exit 1 on failure.
-import { LIVE } from "../lib/live.js";
+// Hit every live source and assert shape, freshness and sane ranges. Exit 1 on failure.
+// Default: through our deployed /api/live/* with RUN_KEY. --local: run the getters here against the third-party APIs.
+import { remoteLive, SITE_URL, useRemote } from "./remote.mjs";
+
+const REMOTE = useRemote(process.argv.slice(2));
+const { LIVE, CACHE } = await import("../lib/live.js");
+console.log(REMOTE ? `Testing ${SITE_URL}/api/live/*` : "Testing local getters");
 
 const H = 36e5;
 const checks = {
@@ -23,11 +28,13 @@ let failed = 0;
 for (const [k, fn] of Object.entries(LIVE)) {
   const t0 = Date.now();
   let r;
-  try { r = await fn(new URLSearchParams()); } catch (e) { r = { ok: false, error: e.message }; }
+  try { r = REMOTE ? await remoteLive(k) : await fn(new URLSearchParams()); } catch (e) { r = { ok: false, error: e.message }; }
   let pass = false, why = r.error || "";
   if (r.ok) {
     try { pass = !!checks[k]?.(r.value); if (!pass) why = "range or shape check failed"; } catch (e) { why = e.message; }
-    if (pass && Date.now() - Date.parse(r.as_of) > 6 * H) { pass = false; why = "stale"; }
+    // Allow for CDN caching: s-maxage plus stale-while-revalidate, then an hour of slack.
+    const maxAge = ((CACHE[k]?.[0] || 300) + (CACHE[k]?.[1] || 900)) * 1000 + H;
+    if (pass && Date.now() - Date.parse(r.as_of) > maxAge) { pass = false; why = `stale (${r.as_of})`; }
   }
   if (!pass) failed++;
   console.log(`${pass ? "ok  " : "FAIL"} ${k.padEnd(13)} ${String(Date.now() - t0).padStart(5)}ms ${r.source || ""} ${pass ? "" : why}`);

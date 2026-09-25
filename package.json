@@ -11,7 +11,8 @@
     "publish-edition": "node scripts/publish.mjs",
     "snapshot": "node scripts/snapshot.mjs",
     "test": "node scripts/live-test.mjs",
-    "test:unit": "node --test tests/*.test.mjs"
+    "test:unit": "node --test tests/*.test.mjs",
+    "test:local": "node scripts/live-test.mjs --local"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.0",

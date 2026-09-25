@@ -18,19 +18,20 @@ Prompt for each scheduled task:
 The live scheduled runs use a slightly longer version of this prompt that also attaches and clones the repo (see docs/STATUS.md).
 
 ## Commands (run from the repo root)
+A daily run only needs to reach GitHub and our Vercel domain. It never calls the third-party data APIs directly: the live snapshot and the live test both go through our own `/api/live/*`, authorised with the `RUN_KEY` header (the environment variable `RUN_KEY` must match the one in Vercel; `SITE_URL` defaults to https://house-of-1400.vercel.app).
 - `npm ci` once per session.
-- `npm test` checks every live source (shape, freshness, ranges). Failures go in the snapshot, not the paper.
-- `node scripts/snapshot.mjs content/editions/YYYY-MM-DD.json` runs every live getter locally and writes the `snapshot` block (keeps last-known-good values with their own time when a source fails).
+- `npm test` checks every live source through `<SITE_URL>/api/live/*` (shape, freshness, ranges). Failures go in the snapshot, not the paper.
+- `node scripts/snapshot.mjs content/editions/YYYY-MM-DD.json` fetches every `<SITE_URL>/api/live/<key>` and writes the `snapshot` block. When a key fails it keeps the last-known-good value with its own time.
 - `npm run validate -- content/editions/YYYY-MM-DD.json` runs every check in step 8.
 - `npm run publish-edition -- content/editions/YYYY-MM-DD.json` validates again, then writes `content/latest.json`, `content/archive.json` and `ledger/story-ledger.json`. It refuses to publish a failing edition.
-- `node --test tests/*.test.mjs` for the offline tests (build sessions only).
+- Build sessions only: `npm run test:local` and `node scripts/snapshot.mjs --local` call the third-party APIs from this machine; `node --test tests/*.test.mjs` runs the offline tests. In Claude Code cloud sessions Node needs `NODE_USE_ENV_PROXY=1 HTTP_PROXY=$HTTPS_PROXY` to use the egress proxy.
 
-If this environment cannot reach `*.vercel.app`, check the deploy with the Vercel connector instead: `list_deployments` for project `house-of-1400`, and confirm the newest production deployment for the edition commit is `READY`. Git `main` plus a READY deployment is equivalent to `/api/health` reporting today's date.
+If `RUN_KEY` is missing or `/api/live` answers 401, record that, skip the snapshot (the page still fetches live data itself) and carry on with the edition.
 
 ## Steps
 1. **Already done?** Fetch `https://<site>/api/health` (or read `content/latest.json` on `main`). If `edition` equals today's IST date, stop.
 2. **Load context:** `config/house.json`, `ledger/story-ledger.json`, the last 3 editions, recent votes from `/api/votes` (with `RUN_KEY`, skip if unavailable). Work out the weekday profile.
-3. **Live snapshot:** call every `/api/live/*` function and store the results under `snapshot` (fallback values with `as_of`).
+3. **Live snapshot:** `node scripts/snapshot.mjs content/editions/YYYY-MM-DD.json` calls every `/api/live/*` function on our Vercel site (with `RUN_KEY`) and stores the results under `snapshot` (fallback values with `as_of`). Never call the third-party APIs directly in a daily run.
 4. **Chronology:** build the ordered fixture timelines (EDITORIAL.md, Sports chronology). Save them in memory for every section.
 5. **Research:** broad discovery across every beat and the must-know floor, then verify likely items. Google Trends and Polymarket candidates come from the live functions; research what actually happened for each trend.
 6. **Select and rank** with the Parth test, the must-know floor, the day profile, votes and the ledger ("what changed?").

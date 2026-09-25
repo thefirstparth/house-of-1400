@@ -9,12 +9,12 @@
 - Four scheduled daily runs created (13:15, 13:44, 14:13, 14:42 IST) as claude.ai routines. Each starts a fresh cloud session in this environment, attaches the repo, and exits at once if today's edition is already on `main`. Today's runs will exit, because Edition No. 1 is already out.
 - Production URL: https://house-of-1400.vercel.app
 
-## Not verified yet (needs a fix from you, below)
-- The live functions were tested only against recorded API shapes, not the real APIs. This build environment's network policy blocked every data host (Open-Meteo, Jolpica, ESPN, Yahoo, Google Trends, Polymarket, IBJA) and `*.vercel.app`. Open the site once and check each live block. Anything that fails simply hides.
-- IBJA's page layout is a guess (the parser looks for 999 and 916 rates and checks the ratio). If gold never appears, the parser needs one look at the real HTML.
+## Verified against the real APIs (25 Sep, 06:30 IST)
+- All 14 live sources pass `npm run test:local` on their primary source, and the values were checked by hand: Sensex 73,580.54 (−1.67%), Nifty 23,063.10, Nasdaq-100 30,479, Brent 105.92 against a 106.60 settle, USD/INR 95.95, IBJA 24K ₹1,50,790 / 22K ₹1,38,120, F1 standings and Baku session times, Madrid fixtures and the 1–2 at Atlético, the La Liga table.
+- Fixed on the way: Yahoo throttling (429), Brent's daily change, the market "live" label, betting exclusions, competition names, and the 🇲🇾 flag for the relocated Bahrain GP.
 
 ## What you need to do
-1. **Network access for the daily runs.** In claude.ai/code, open this environment's settings (cloud environment menu → Edit → Network access) and choose Full, or add these hosts: `api.open-meteo.com`, `api.jolpi.ca`, `api.openf1.org`, `site.api.espn.com`, `query1.finance.yahoo.com`, `query2.finance.yahoo.com`, `open.er-api.com`, `api.coingecko.com`, `ibjarates.com`, `trends.google.com`, `gamma-api.polymarket.com`, `www.thesportsdb.com`, and your `*.vercel.app` URL. Without this, runs can still research with web search and publish, but the snapshot and `npm test` fail and web fetches of sources are blocked.
+1. **Network access:** done. Daily runs now need only GitHub and `house-of-1400.vercel.app` (plus whatever news sites research reaches).
 2. **RUN_KEY in the Claude environment.** Add `RUN_KEY` (same value as in Vercel) to the environment's variables so runs can read votes and send the Telegram ping.
 3. **Optional:** create a Vercel Blob store (Storage → Blob, connect to the project) so thumbs are stored and learned from. Telegram: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`. Better data later: `OMDB_KEY`, `TMDB_KEY`, `CRICKETDATA_KEY`, `TWELVEDATA_KEY`.
 4. **Your Desk in the daily runs.** Routines created from a session cannot carry connectors in this org, so the scheduled runs have no Gmail, Calendar or Vercel tools and will leave Your Desk out. To get it back, open each "House of 1400 · daily edition" routine at claude.ai (Routines) and add the Gmail and Google Calendar connectors, or recreate them from the routines UI.
