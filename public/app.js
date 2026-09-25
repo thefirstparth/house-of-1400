@@ -121,8 +121,26 @@ const sparkLabel = ymd => (ymd ? new Date(ymd + "T12:00:00Z").toLocaleDateString
 
 const WMO = { 0: ["☀️", "Clear"], 1: ["🌤️", "Mostly clear"], 2: ["⛅", "Partly cloudy"], 3: ["☁️", "Overcast"], 45: ["🌫️", "Fog"], 48: ["🌫️", "Fog"], 51: ["🌦️", "Light drizzle"], 53: ["🌦️", "Drizzle"], 55: ["🌧️", "Heavy drizzle"], 61: ["🌦️", "Light rain"], 63: ["🌧️", "Rain"], 65: ["🌧️", "Heavy rain"], 80: ["🌦️", "Showers"], 81: ["🌧️", "Heavy showers"], 82: ["⛈️", "Violent showers"], 95: ["⛈️", "Thunderstorm"], 96: ["⛈️", "Thunderstorm, hail"], 99: ["⛈️", "Thunderstorm, hail"] };
 const wx = c => WMO[c] || ["🌡️", ""];
-const NIGHT = { 0: "🌙", 1: "🌙", 2: "☁️" };
-const wxAt = (c, hour) => ((hour >= 19 || hour < 6) && NIGHT[c] ? NIGHT[c] : wx(c)[0]);
+const P = {
+  sun: '<circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/>',
+  moon: '<path d="M19.5 14.8A8 8 0 0 1 9.2 4.5a8 8 0 1 0 10.3 10.3z"/>',
+  cloud: '<path d="M7 18.5h10.2a4.3 4.3 0 0 0 .5-8.6A6 6 0 0 0 6.2 11a3.8 3.8 0 0 0 .8 7.5z"/>',
+  sunCloud: '<circle cx="8" cy="8" r="3"/><path d="M8 2v1.3M2 8h1.3M3.8 3.8l.9.9M12.2 3.8l-.9.9"/><path d="M9 19h9a3.8 3.8 0 0 0 .4-7.6 5.2 5.2 0 0 0-9.8 1.6A3 3 0 0 0 9 19z"/>',
+  moonCloud: '<path d="M11 6.5A4 4 0 0 1 6.5 3a4.2 4.2 0 1 0 4.5 3.5z"/><path d="M9 19h9a3.8 3.8 0 0 0 .4-7.6 5.2 5.2 0 0 0-9.8 1.6A3 3 0 0 0 9 19z"/>',
+  fog: '<path d="M4 9h16M3 13h18M5 17h14"/>',
+  drizzle: '<path d="M7 15h10.2a4.3 4.3 0 0 0 .5-8.6A6 6 0 0 0 6.2 7.5 3.8 3.8 0 0 0 7 15z"/><path d="M9 18.5v1M13 18.5v1M17 18.5v1"/>',
+  rain: '<path d="M7 14h10.2a4.3 4.3 0 0 0 .5-8.6A6 6 0 0 0 6.2 6.5 3.8 3.8 0 0 0 7 14z"/><path d="M8.5 17l-1 3M12.5 17l-1 3M16.5 17l-1 3"/>',
+  storm: '<path d="M7 13.5h10.2a4.3 4.3 0 0 0 .5-8.6A6 6 0 0 0 6.2 6 3.8 3.8 0 0 0 7 13.5z"/><path d="M12.5 15l-2.5 4h3l-2 3.5"/>',
+  snow: '<path d="M7 14h10.2a4.3 4.3 0 0 0 .5-8.6A6 6 0 0 0 6.2 6.5 3.8 3.8 0 0 0 7 14z"/><path d="M9 18h.01M12 20h.01M15 18h.01"/>',
+};
+const ICON_OF = c => (c === 0 || c === 1 ? "sun" : c === 2 ? "sunCloud" : c === 3 ? "cloud" : c === 45 || c === 48 ? "fog" : c >= 51 && c <= 57 ? "drizzle" : (c >= 61 && c <= 67) || (c >= 80 && c <= 82) ? "rain" : (c >= 71 && c <= 77) || c === 85 || c === 86 ? "snow" : c >= 95 ? "storm" : "cloud");
+function wxIcon(code, night = false, label = "") {
+  let k = ICON_OF(code);
+  if (night) k = k === "sun" ? "moon" : k === "sunCloud" ? "moonCloud" : k;
+  return `<span class="wxi" role="img" aria-label="${esc(label || wx(code)[1])}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${P[k]}</svg></span>`;
+}
+const isNight = hour => hour >= 19 || hour < 6;
+const wxAt = (c, hour) => wxIcon(c, isNight(hour));
 
 const sourcesLine = srcs => (srcs?.length ? `<div class="src">${srcs.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`).join(" · ")}</div>` : "");
 const newFor = x => (x.new_for_you ? `<span class="newfor">New for you</span>` : "");
@@ -188,46 +206,34 @@ function split(data, id) {
 
 // ------------------------------------------------------------------ live blocks
 const LIVEBLOCKS = {
-  earL() {
-    const w = LIVE.weather?.value?.cities?.[0]; if (!w) return "";
-    const [e, t] = wx(w.current.code), d = w.daily[0];
-    return `<b>Sky Report</b><span class="big tnum">${Math.round(w.current.temp)}°</span> ${e} ${esc(t)}<br>High ${Math.round(d.max)}° · Low ${Math.round(d.min)}°`;
-  },
-  earR() {
-    return `<b><span class="live"><i></i>Next up</span></b><span class="big tnum" data-cd="sess">--</span><br><span data-cd="sessname"></span>`;
-  },
   railWeather() {
     const w = LIVE.weather?.value?.cities?.[0]; if (!w) return "";
-    const [e] = wx(w.current.code), d = w.daily[0];
-    return `<a class="w" href="#sky"><b>${esc(w.name)} now</b><div class="row"><span class="big tnum">${Math.round(w.current.temp)}°</span><span>${e}${d.rain_prob != null ? ` ${d.rain_prob}% rain` : ""}</span></div>Today ${Math.round(d.max)}° / ${Math.round(d.min)}°${staleNote("weather")}</a>`;
+    const d = w.daily[0], hr = Number(fmt(new Date().toISOString(), { hour: "2-digit" }));
+    return `<a class="w" href="#sky"><b>${esc(w.name)}</b><div class="row"><span class="big tnum">${Math.round(w.current.temp)}°</span>${wxIcon(w.current.code, isNight(hr))}</div><span class="sub">${esc(wx(w.current.code)[1])} · ${Math.round(d.max)}° / ${Math.round(d.min)}°${d.rain_prob != null ? ` · ${d.rain_prob}% rain` : ""}</span>${staleNote("weather")}</a>`;
   },
-  // Race countdown only in race week; the masthead's "Next up" covers everything else.
+  nextUp() {
+    return `<div class="w"><b><span class="live"><i></i>Next up</span></b><span class="big tnum" data-cd="sess">--</span><div class="sub" data-cd="sessname"></div></div>`;
+  },
+  // Race countdown only in race week.
   railF1() {
     const r = LIVE.f1_next?.value?.race; if (!r) return "";
     const race = r.sessions.at(-1);
     if (!race.time_confirmed || Date.parse(race.start) - Date.now() > 7 * 864e5) return "";
-    return `<a class="w" href="#paddock"><b><span class="live"><i></i>F1 · ${esc(r.locality || r.country)}</span></b><span class="big tnum" data-until="${race.start}" data-min="${race.minutes}" data-done="Race done">--</span><br>to lights out, ${esc(istFull(race.start))} IST</a>`;
+    return `<a class="w" href="#paddock"><b>F1 · ${esc(r.locality || r.country)} · lights out</b><span class="big tnum" data-until="${race.start}" data-min="${race.minutes}" data-done="Race done">--</span><div class="sub">${esc(istFull(race.start))} IST</div></a>`;
   },
   railIndex(name) {
     const q = LIVE.markets?.value?.indices?.find(i => i.name === name); if (!q) return "";
     const col = q.change_pct < 0 ? "var(--bad)" : "var(--good)", s = q.spark?.slice(-22) || [];
-    return `<a class="w" href="#ledger"><div class="row"><b>${esc(name)}</b><span class="${dir(q.change_pct)} tnum">${pct(q.change_pct)}</span></div><span class="big tnum">${inr(Math.round(q.price))}</span>${spark(s, col, { w: 200, h: 34, mini: true })}${staleNote("markets")}</a>`;
+    return `<a class="w" href="#ledger"><div class="row"><b>${esc(name)}</b><span class="${dir(q.change_pct)} tnum" style="font:700 13px var(--sans)">${pct(q.change_pct)}</span></div><span class="big tnum">${inr(Math.round(q.price))}</span>${spark(s, col, { w: 200, h: 32, mini: true })}${staleNote("markets")}</a>`;
   },
 };
-
-
-
-
-
 
 function railHTML() {
   const prof = CFG.day_profiles[E.weekday] || {};
   const markets = CFG.markets.top_two.map(n => LIVEBLOCKS.railIndex(n)).join("");
-  const sport = LIVEBLOCKS.railF1();
+  const sport = LIVEBLOCKS.nextUp() + LIVEBLOCKS.railF1();
   return LIVEBLOCKS.railWeather() + (prof.live_first === "fixtures" ? sport + markets : markets + sport);
 }
-
-// Madridismo owns Madrid's fixtures: the next four, the last result, form and table.
 function madridBlock() {
   const F = LIVE.football?.value, T = LIVE.laliga_table?.value;
   let table = "";
@@ -395,12 +401,12 @@ function notableLine(c) {
 function skyBlock() {
   const W = LIVE.weather?.value; if (!W?.cities?.length) return "";
   const c = W.cities[0];
-  const strip = `<div class="strip7">${c.daily.map(d => `<div class="${wetness(d.rain_prob)}"><b>${dayShort(d.date)}</b><span class="e" aria-hidden="true">${wx(d.code)[0]}</span><span class="tnum">${Math.round(d.max)}°</span>${(d.rain_prob ?? 0) >= 40 ? `<small>${d.rain_prob}%</small>` : "<small>&nbsp;</small>"}</div>`).join("")}</div>`;
+  const strip = `<div class="strip7">${c.daily.map(d => `<div class="${wetness(d.rain_prob)}"><b>${dayShort(d.date)}</b>${wxIcon(d.code)}<span class="tnum">${Math.round(d.max)}°</span>${(d.rain_prob ?? 0) >= 40 ? `<small>${d.rain_prob}%</small>` : "<small>&nbsp;</small>"}</div>`).join("")}</div>`;
   let h = `<p class="sky-lede">${esc(weekSentence(c.daily))}</p>${keyHours(c)}${strip}`;
   const others = W.cities.slice(1).map(notableLine).join("");
   if (others) h += `<div class="cities">${others}</div>`;
   h += `<div id="myloc"></div>`;
-  if (ROUTE.kind !== "edition" && navigator.geolocation && !store.get("h1400-loc")) h += `<p class="note"><button class="linkish" id="locBtn">📍 Add the weather where you are</button></p>`;
+  if (ROUTE.kind !== "edition" && navigator.geolocation && !store.get("h1400-loc")) h += `<p class="note"><button class="linkish" id="locBtn">Add the weather where you are</button></p>`;
   const note = E.sections?.sky?.data?.note;
   if (note) h += `<p class="note">${esc(note)}</p>`;
   return h + staleNote("weather");
@@ -588,9 +594,6 @@ function balanceFront() {
 }
 
 function paintLive() {
-  const L = LIVEBLOCKS.earL();
-  $("#ear-l").innerHTML = L; $("#ear-l").hidden = !L;
-  $("#ear-r").innerHTML = LIVEBLOCKS.earR(); $("#ear-r").hidden = false;
   $("#rail").innerHTML = railHTML();
   const map = { talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
   for (const [k, fn] of Object.entries(map)) {
@@ -717,8 +720,8 @@ document.addEventListener("click", e => {
     try { localStorage.setItem("h1400-theme", dk ? "light" : "dark"); } catch {}
     t.textContent = dk ? "Night" : "Day"; return;
   }
-  if (t.id === "glanceBtn") { const g = $("#glance"); g.hidden = !g.hidden; t.setAttribute("aria-expanded", !g.hidden); t.textContent = g.hidden ? "✦ At a Glance" : "✕ Close"; return; }
-  if (t.dataset.go) { const el = document.getElementById("s-" + t.dataset.go) || document.getElementById(t.dataset.go); el && el.scrollIntoView({ behavior: "smooth", block: "start" }); $("#glance").hidden = true; $("#glanceBtn").textContent = "✦ At a Glance"; return; }
+  if (t.id === "glanceBtn") { const g = $("#glance"); g.hidden = !g.hidden; t.setAttribute("aria-expanded", !g.hidden); t.textContent = g.hidden ? "At a Glance" : "Close"; return; }
+  if (t.dataset.go) { const el = document.getElementById("s-" + t.dataset.go) || document.getElementById(t.dataset.go); el && el.scrollIntoView({ behavior: "smooth", block: "start" }); $("#glance").hidden = true; $("#glanceBtn").textContent = "At a Glance"; return; }
   if (t.dataset.more) { toggleMore(t.dataset.more); return; }
   if (t.dataset.head) { if (!toggleMore(t.dataset.head)) toast("Short story. The full text is already shown."); return; }
   if (t.dataset.th) { vote(t.dataset.story, t.dataset.th); return; }
@@ -746,8 +749,8 @@ async function myLocation(ask) {
     try {
       const j = await getJSON(`/api/live/weather${q}`);
       const c = j.ok && j.value?.cities?.[0]; if (!c) return;
-      const d = c.daily[0], [em, tx] = wx(c.current.code);
-      const el = $("#myloc"); if (el) el.innerHTML = `<p class="note" style="font-size:15px">📍 Where you are: <b>${Math.round(c.current.temp)}°</b> ${em} ${esc(tx)} · today ${Math.round(d.max)}° / ${Math.round(d.min)}°, ${d.rain_prob ?? "–"}% rain</p>`;
+      const d = c.daily[0], [, tx] = wx(c.current.code);
+      const el = $("#myloc"); if (el) el.innerHTML = `<p class="note" style="font-size:15px">Where you are: <b>${Math.round(c.current.temp)}°</b> ${wxIcon(c.current.code)} ${esc(tx)} · today ${Math.round(d.max)}° / ${Math.round(d.min)}°, ${d.rain_prob ?? "–"}% rain</p>`;
       const b = $("#locBtn"); if (b) b.parentElement.remove();
       store.set("h1400-loc", true);
     } catch {}
@@ -755,38 +758,99 @@ async function myLocation(ask) {
 }
 
 // ------------------------------------------------------------------ poster mode
-function heads() {
-  return [E.front.lead, ...E.front.seconds, ...E.front.briefs].slice(0, 5).map(s => [s.kicker || sec(s.section).short, s.headline]);
+function heads(n = 5) {
+  return [E.front.lead, ...E.front.seconds, ...E.front.briefs].slice(0, n).map(s => [s.kicker?.replace(/^Front Page · /, "") || sec(s.section).short, s.headline]);
 }
 const mastHTML = () => `<div class="pm"><span class="the">The</span><span class="hof">House of</span><span class="yr">1400</span><span class="sub">${esc(longDate(E.date))} · Edited by ${esc(CFG.paper.editor.signature.replace(", Editor", ""))}</span></div>`;
 function stripBits() {
   const w = LIVE.weather?.value?.cities?.[0], M = LIVE.markets?.value?.indices || [];
   const bits = [];
-  if (w) bits.push(`${esc(w.name)} ${Math.round(w.current.temp)}° ${wx(w.current.code)[0]}`);
+  if (w) bits.push(`${esc(w.name)} ${Math.round(w.current.temp)}° ${wxIcon(w.current.code)}`);
   for (const nm of CFG.markets.top_two) { const q = M.find(i => i.name === nm); if (q) bits.push(`${esc(nm)} ${inr(Math.round(q.price))} <span class="${dir(q.change_pct)}">${pct(q.change_pct)}</span>`); }
   return bits;
 }
+
+// ---- "Today, one screen": everything worth a glance, arranged like a front page on a dashboard grid
+function dashHTML() {
+  const w = LIVE.weather?.value?.cities?.[0], M = LIVE.markets?.value, N = LIVE.f1_next?.value, S = LIVE.f1_standings?.value;
+  const F = LIVE.football?.value, T = LIVE.laliga_table?.value, B = LIVE.betting?.value?.markets || [];
+  const hr = Number(fmt(new Date().toISOString(), { hour: "2-digit" }));
+  const card = (cls, title, body, right = "") => (body ? `<section class="c ${cls}"><h5><span>${title}</span><span>${right}</span></h5>${body}</section>` : "");
+  const line = (k, v) => `<div class="line"><span>${k}</span><b>${v}</b></div>`;
+
+  const headsBody = `<ol>${heads(6).map(h => `<li><div><small>${esc(h[0])}</small>${esc(h[1])}</div></li>`).join("")}</ol>`;
+
+  let sky = "";
+  if (w) {
+    const d = w.daily[0];
+    sky = `<div class="row" style="display:flex;align-items:center;gap:10px"><span class="big">${Math.round(w.current.temp)}°</span>${wxIcon(w.current.code, isNight(hr))}</div><div style="color:var(--muted);margin-bottom:6px">${esc(wx(w.current.code)[1])} · ${Math.round(d.max)}° / ${Math.round(d.min)}° · ${d.rain_prob ?? "–"}% rain</div>` +
+      (CFG.weather.key_times || []).map(k => { const h = w.hourly?.find(x => Number(x.time.slice(11, 13)) === k.hour && Date.parse(x.time + ":00+05:30") >= Date.now() - 18e5); return h ? line(esc(k.label), `${Math.round(h.temp)}° · ${h.rain_prob ?? "–"}%`) : ""; }).join("");
+  }
+
+  const upcoming = events().filter(e => e.end > Date.now()).slice(1, 4);
+  const next = `<span class="big" data-cd="sess">--</span><div data-cd="sessname" style="color:var(--muted);margin:2px 0 6px"></div>${upcoming.map(e => line(esc(e.label), esc(istFull(new Date(e.start).toISOString())))).join("")}`;
+
+  let mk = "";
+  if (M?.indices?.length) {
+    const cross = CFG.markets.cross.map(c => {
+      if (c.source === "ibja") { const G = LIVE.gold_in?.value; return G ? `<div><span>Gold 24K /10g</span><b>₹${inr(G.per_10g_24k)}</b></div>` : ""; }
+      const q = M.cross?.find(x => x.symbol === c.yahoo); if (!q || c.yahoo === "^GSPC" || c.yahoo === "^NSEBANK") return "";
+      const lvl = c.yahoo === "INR=X" ? "₹" + q.price.toFixed(2) : c.yahoo === "BZ=F" ? "$" + usd(q.price, 2) : "$" + usd(q.price);
+      return `<div><span>${esc(c.name)}</span><b>${lvl}</b> <small class="${dir(q.change_pct)}">${pct(q.change_pct)}</small></div>`;
+    }).join("");
+    mk = `<div class="idx3">${M.indices.map(q => `<div><span>${esc(q.name)}</span><span class="big" style="font-size:24px;display:block">${inr(Math.round(q.price))}</span><b class="${dir(q.change_pct)}" style="font:700 13px var(--sans)">${pct(q.change_pct)}</b>${spark(q.spark?.slice(-22), q.change_pct < 0 ? "var(--bad)" : "var(--good)", { w: 200, h: 28, mini: true })}</div>`).join("")}</div><div class="cross">${cross}</div>`;
+  }
+
+  const sport = [];
+  if (N?.race) { const race = N.race.sessions.at(-1); sport.push(line(`${esc(N.race.flag)} ${esc(N.race.name.replace(" Grand Prix", " GP"))}`, `<span data-until="${race.start}" data-min="${race.minutes}" data-done="Race done"></span>`)); }
+  const max = S?.drivers?.find(d => /Verstappen/.test(d.name)); if (max) sport.push(line("Max Verstappen", `${ordinal(max.pos)} · ${max.points} pts`));
+  const mn = F?.next?.[0]; if (mn) sport.push(line(`Madrid ${mn.home ? "v" : "at"} ${esc(mn.opponent)}`, esc(istFull(mn.date))));
+  const rm = T?.rows?.find(r => String(r.id) === String(CFG.follows.football_club.espn_id)); if (rm) sport.push(line("La Liga", `${ordinal(rm.rank)} · ${rm.points} pts`));
+  const ind = E.chronology?.india_cricket?.next; if (ind) sport.push(line(`India v ${esc(ind.label)}`, ind.time_tbc ? esc(istDay(ind.when_utc)) : esc(istFull(ind.when_utc))));
+  const alc = E.tennis?.players?.find(p => /Alcaraz/.test(p.name)); if (alc?.next_event) sport.push(line("Alcaraz", esc(alc.next_event.text.split(",")[0])));
+
+  const bets = (E.betting?.length ? E.betting : B).slice(0, 5).map(b => {
+    const L = B.find(m => m.id === b.id); const o = (L?.outcomes?.length ? L.outcomes : b.outcomes)[0];
+    return o ? line(esc(b.title.replace(/\.\.\.\?$/, "…?").slice(0, 46)), `${esc(outcomeLabel(o.name))} ${Math.round(o.prob)}%`) : "";
+  }).join("");
+
+  return `<div class="dash" onclick="event.stopPropagation()">
+<header class="hd"><div class="name"><span class="the">The</span><span class="hofs">House of</span><b>1400</b></div><div class="when"><b data-clock></b>${esc(longDate(E.date))} · No. ${E.edition_no}</div></header>
+${card("heads", "The front page", headsBody)}
+${card("sky", esc(w?.name || "Weather"), sky)}
+${card("next", "Next up", next)}
+${card("mk", "Markets", mk, esc(M?.indices?.[0]?.live ? "Live" : ""))}
+${card("sport", "Your sport", sport.join(""))}
+${card("bets", "The Betting Window", bets)}
+<div class="ft">Press Esc or tap the margin to open the paper</div></div>`;
+}
+
+// ---- "The edition, framed": the day's paper composed as a single poster
+function framedHTML() {
+  const L = E.front.lead;
+  const notes = [
+    E.editor_note ? `<div class="note-card"><b>From the editor</b>${esc(E.editor_note)}<i>${esc(CFG.paper.editor.signature)}</i></div>` : "",
+    `<div class="note-card"><b>${esc(sec("house").name)}</b>${esc(E.house_note)}</div>`,
+  ].join("");
+  return `<div class="framed" onclick="event.stopPropagation()">
+<div class="fm"><span class="the">The</span><span class="hof">House of</span><span class="yr">1400</span><span class="dt">${esc(longDate(E.date))} · No. ${E.edition_no} · Edited by ${esc(CFG.paper.editor.signature.replace(", Editor", ""))}</span></div>
+<div class="headline"><small>${esc(L.kicker)}</small>${esc(L.headline)}</div>
+<div class="cols"><div class="gl"><h5>At a Glance</h5><ul>${(E.glance || []).map(g => `<li style="--c:${g.color ? `var(${esc(g.color)})` : "var(--ink)"}"><span>${esc(g.section)}</span>${esc(g.line)}</li>`).join("")}</ul></div><div class="notes">${notes}</div></div>
+<div class="ft" style="text-align:center;font:500 12.5px var(--sans);color:var(--muted)">Press Esc or tap the margin to open the paper</div></div>`;
+}
 function openPoster(k) {
   const P = $("#poster"); clearInterval(pTimer);
+  if (k === "heads") k = "edition";
   P.className = "poster" + (k === "night" || k === "clock" ? " dark" : "");
   if (k === "mast" || k === "night") P.innerHTML = mastHTML();
-  if (k === "heads") {
-    const H = heads(); let i = 0;
-    P.innerHTML = `<div class="pm"><span class="hof" style="margin-bottom:24px">The House of 1400</span><div class="ph" id="ph">${esc(H[0][1])}</div></div>`;
-    pTimer = setInterval(() => { const h = $("#ph"); if (!h) return; h.style.opacity = 0; setTimeout(() => { i = (i + 1) % H.length; h.textContent = H[i][1]; h.style.opacity = 1; }, 800); }, 9000);
-  }
+  if (k === "edition") P.innerHTML = framedHTML();
+  if (k === "today") P.innerHTML = dashHTML();
   if (k === "clock") {
     P.innerHTML = `<div class="pm"><span class="hof">The House of 1400</span><div class="clock" data-clock></div><div class="strip">${stripBits().map(b => `<span>${b}</span>`).join("")}<span>Next: <b data-cd="sessname"></b> <b data-cd="sess"></b></span></div></div>`;
-    pTimer = setInterval(tick, 1000);
   }
-  if (k === "today") {
-    const w = LIVE.weather?.value?.cities?.[0], M = LIVE.markets?.value?.indices || [];
-    const q = nm => M.find(i => i.name === nm);
-    const cell = nm => { const x = q(nm); return x ? `<div><small>${esc(nm)}</small><b class="tnum">${inr(Math.round(x.price))}</b><span class="${dir(x.change_pct)}">${pct(x.change_pct)}</span></div>` : ""; };
-    P.innerHTML = `<div class="today"><div class="t-m"><span>The House of</span><b>1400</b><span>${esc(longDate(E.date))}</span></div><div class="t-g">${w ? `<div><small>${esc(w.name)}</small><b>${Math.round(w.current.temp)}° ${wx(w.current.code)[0]}</b>${Math.round(w.daily[0].max)}° / ${Math.round(w.daily[0].min)}°</div>` : ""}<div><small>Next up</small><b data-cd="sess"></b><span data-cd="sessname"></span></div>${CFG.markets.top_two.map(cell).join("")}</div><ol>${heads().map(h => `<li><small>${esc(h[0])}</small>${esc(h[1])}</li>`).join("")}</ol><div class="t-f">Tap anywhere to open the paper</div></div>`;
-  }
+  pTimer = setInterval(tick, 1000);
   P.hidden = false; tick();
-  if (k !== "today") { try { document.documentElement.requestFullscreen?.().catch(() => {}); } catch {} }
+  if (k !== "today" && k !== "edition") { try { document.documentElement.requestFullscreen?.().catch(() => {}); } catch {} }
   try { navigator.wakeLock?.request("screen").catch(() => {}); } catch {}
 }
 function closePoster() {

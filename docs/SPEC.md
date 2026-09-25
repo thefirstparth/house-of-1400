@@ -17,8 +17,8 @@ Match `design/reference.html` (approved: "Design A with C").
 - Paper: warm newsprint `#ebe6da`, ink `#191816`, muted `#4f4a41`, rules `#b3aa98`. One light accent colour per section (see reference tokens).
 - Type: masthead mixes blackletter "The" (UnifrakturMaguntia), tracked sans "HOUSE OF" (Instrument Sans), big Bodoni Moda "1400". Headlines Libre Caslon Display. Body Source Serif 4 at 18px / 1.62. Labels, tables and data in Instrument Sans with tabular numbers. No monospace text.
 - Legibility beats antique feel. Minimum 14px for any label, 16px for table text, generous row padding, solid hairline rules, not dotted.
-- Laptop: sticky section index across the top, sticky live rail on the left (weather, next session countdown, Sensex, Nasdaq-100, Madrid next, India next), 12-column front page.
-- Phone: masthead, live widgets as a 2-column grid, sticky rounded section chips, single column.
+- Laptop: sticky glass section bar across the top, a live strip of tonal cards under the masthead (weather, next up, race-week countdown, the two indices), 12-column front page. (Design system v4, 25 Sep; see DECISIONS.)
+- Phone: masthead, the live strip as a swipeable row, sticky section chips, single column.
 - Night edition toggle. Dark palette still feels like paper.
 - Charts: sparklines for indices (last ~3 months), bars for standings. Only where a chart beats a number.
 - Flags as emoji for F1 races and countries. Weather emoji from weather codes.
@@ -73,7 +73,7 @@ Button in the dock with 5 options, all rendered client-side from today's JSON (n
 1. Today, one screen: fits a phone screen without scrolling: masthead, weather, next up, Sensex, Nasdaq-100, top 5 headlines. Also served at `/today`.
 2. Masthead, ink: full-screen typographic masthead on paper
 3. Masthead, night: same on near-black
-4. Headlines, rotating: one headline at a time, fades every 9 s
+4. The edition, framed: masthead, lead headline, At a Glance, editor's note and House Note on one page
 5. Clock and live strip: IST clock plus weather, Sensex, Nasdaq-100, next countdown
 Full screen via the Fullscreen API and a screen wake lock where allowed. For a real macOS screensaver, document WebViewScreenSaver (open source) pointed at `/?poster=mast` in the README. Support `?poster=<id>` URLs.
 
