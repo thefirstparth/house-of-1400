@@ -1,0 +1,352 @@
+<title>House of 1400 Proofs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Libre+Caslon+Display&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Instrument+Sans:wght@400;500;600;700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500&display=swap">
+<style>
+:root{--paper:#ebe6da;--card:#f2eee5;--ink:#191816;--muted:#4f4a41;--rule:#b3aa98;--tint:#dfd8c8;--good:#2f6b3f;--bad:#9b2a22;--warn:#8a5a00;
+--acc-f1:#a4271f;--acc-rm:#4a3585;--acc-mk:#1f5c47;--acc-wx:#2b5b88;--acc-wd:#7a5a1e;--acc-tc:#1e6470;--acc-sp:#3d6b1f;--acc-en:#8d2f5c;--acc-ct:#9a4a12;
+--dispf:"Libre Caslon Display",Georgia,serif;--bodyf:"Source Serif 4",Georgia,serif;--utilf:"Instrument Sans","Helvetica Neue",Arial,sans-serif;--numf:"Bodoni Moda",Didot,Georgia,serif;--mastf:"UnifrakturMaguntia","Old English Text MT",serif;--sansf:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
+--page:#ddd7c9;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#1c1a17;--card:#23201c;--ink:#ece6d8;--muted:#a79f8f;--rule:#4a453c;--tint:#2a2621;--good:#86c796;--bad:#e8867c;--warn:#e0b25a;--acc-f1:#e0776c;--acc-rm:#ad9bea;--acc-mk:#7cc5a8;--acc-wx:#93bbe6;--acc-wd:#d8b56c;--acc-tc:#7fc9d3;--acc-sp:#a6cf7d;--acc-en:#e39abd;--acc-ct:#e7a06b;--page:#121110;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#1c1a17;--card:#23201c;--ink:#ece6d8;--muted:#a79f8f;--rule:#4a453c;--tint:#2a2621;--good:#86c796;--bad:#e8867c;--warn:#e0b25a;--acc-f1:#e0776c;--acc-rm:#ad9bea;--acc-mk:#7cc5a8;--acc-wx:#93bbe6;--acc-wd:#d8b56c;--acc-tc:#7fc9d3;--acc-sp:#a6cf7d;--acc-en:#e39abd;--acc-ct:#e7a06b;--page:#121110;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--page);margin:0;color:var(--ink)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+.tnum{font-variant-numeric:tabular-nums}
+.proof{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:10px;font:12.5px/1.45 var(--sansf);color:var(--muted)}
+.proof b{letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.sample{display:inline-block;font:700 9.5px/1 var(--utilf);letter-spacing:.12em;text-transform:uppercase;padding:3px 5px;border:1px dashed var(--muted);color:var(--muted);vertical-align:middle;margin-left:6px}
+.sheet{max-width:1240px;margin:0 auto;background:var(--paper);font:18px/1.62 var(--bodyf);padding-inline:16px;padding-block:0 110px}
+.run{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--ink);padding-block:8px;font:500 13px var(--utilf);color:var(--muted)}
+.mast{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding-block:18px 12px;border-bottom:5px double var(--ink)}
+.mast h1{margin:0;text-align:center;display:grid;justify-items:center;gap:2px;line-height:1}
+.mast h1 .the{font:400 clamp(22px,3vw,34px)/1 var(--mastf)}
+.mast h1 .hof{font:600 clamp(11px,1.3vw,14px)/1 var(--utilf);letter-spacing:.62em;text-transform:uppercase;margin-right:-.62em}
+.mast h1 .yr{font:500 clamp(64px,10vw,124px)/.9 var(--numf);letter-spacing:.02em;display:flex;align-items:center;gap:.18em}
+.mast h1 .yr i{font-style:normal;width:.34em;height:1px;background:var(--ink);display:inline-block;opacity:.7}
+.motto{text-align:center;font:italic 14px var(--bodyf);color:var(--muted);margin-top:8px}
+.ear{border:1px solid var(--ink);padding:10px 12px;font:14px/1.4 var(--utilf);max-width:220px}
+.ear b{display:block;font:700 11px var(--utilf);letter-spacing:.1em;text-transform:uppercase}
+.ear .big{font:500 28px/1.1 var(--numf)}
+.ear.r{justify-self:end;text-align:right}
+.folio{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 14px;border-bottom:1px solid var(--ink);padding-block:7px;font:500 13.5px var(--utilf)}
+.folio .day{color:var(--acc-en)}
+nav.idx{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);border-bottom:1px solid var(--ink);overflow-x:auto;scrollbar-width:none}
+nav.idx div{display:flex;min-width:max-content}
+nav.idx a{display:flex;align-items:center;gap:7px;padding:10px 13px;font:600 13.5px var(--utilf);letter-spacing:.01em;color:var(--ink);text-decoration:none;border-right:1px solid var(--rule)}
+nav.idx a i{width:8px;height:8px;border-radius:2px;background:var(--c)}
+nav.idx a.cur{background:var(--ink);color:var(--paper)}
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:26px;padding-top:18px}
+aside.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 50px);align-self:start;display:grid;gap:10px}
+.w{background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:11px 13px;font:14.5px/1.4 var(--sansf)}
+.w b{display:block;font:700 11px var(--utilf);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.w .big{font:500 27px/1.15 var(--numf);color:var(--ink)}
+.w svg{width:100%;height:auto;display:block;margin-top:4px}
+.w .row{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.live{display:inline-flex;align-items:center;gap:6px}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--good);display:inline-block;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.3}}
+.kick{font:700 12px var(--utilf);letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+.by{font:500 13px var(--utilf);color:var(--muted);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding-block:4px;margin-bottom:10px}
+p{margin:0 0 12px;max-width:64ch}
+.front{display:grid;grid-template-columns:repeat(12,1fr);gap:0 24px}
+.lead{grid-column:span 7;border-right:1px solid var(--rule);padding-right:24px}
+.side{grid-column:span 5}
+.lead h2{font:400 clamp(30px,4vw,50px)/1.03 var(--dispf);margin:6px 0 10px;text-wrap:balance}
+.lead h2 button,.story h3 button{all:unset;cursor:pointer}
+.lead h2 button:hover,.story h3 button:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.lead h2 button:focus-visible,.story h3 button:focus-visible{outline:2px solid var(--ink)}
+.deck{font:italic 19px/1.35 var(--bodyf);color:var(--muted);margin:0 0 12px;text-wrap:balance}
+.lead p.first::first-letter{float:left;font:400 62px/.8 var(--dispf);padding:6px 8px 0 0}
+.story{padding-block:13px;border-bottom:1px solid var(--rule)}
+.side .story:first-child{padding-top:0}
+.story h3{font:400 27px/1.12 var(--dispf);margin:5px 0 8px;text-wrap:balance}
+.briefs{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);border-top:3px solid var(--ink);margin-top:16px}
+.brief{padding:14px 18px 14px 0;border-right:1px solid var(--rule);margin-right:18px;font-size:16.5px}
+.brief:last-child{border-right:0;margin-right:0}
+.brief h4{font:600 19px/1.25 var(--bodyf);margin:5px 0 6px}
+.why{margin-top:8px;padding-top:7px;border-top:1px dotted var(--rule);font-size:.96em}
+.why b{font:700 11.5px var(--utilf);letter-spacing:.08em;text-transform:uppercase;color:var(--acc);display:block;margin-bottom:2px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.tools button,.tools a{border:1px solid var(--rule);background:transparent;border-radius:999px;padding:7px 12px;font:600 13px/1 var(--utilf);letter-spacing:.01em;color:var(--ink);text-decoration:none}
+.tools a{color:var(--acc)}
+.tools .rm{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tools .th[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--paper)}
+.newfor{display:inline-block;font:700 9.5px/1 var(--utilf);letter-spacing:.12em;text-transform:uppercase;padding:3px 5px;border:1px solid var(--acc);color:var(--acc);margin-left:6px;vertical-align:middle}
+section.sec{border-top:3px solid var(--ink);margin-top:34px;padding-top:4px;scroll-margin-top:48px}
+.sechead{display:flex;justify-content:space-between;align-items:baseline;gap:4px 12px;border-bottom:1px solid var(--ink);padding-bottom:6px;margin-bottom:14px;flex-wrap:wrap}
+.sechead h2{font:400 clamp(28px,3.6vw,42px)/1 var(--dispf);margin:0;color:var(--acc)}
+.sechead span{font:500 14px var(--utilf);color:var(--muted)}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font:16px/1.4 var(--utilf)}
+th{text-align:left;font:700 11.5px var(--utilf);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1.5px solid var(--ink);padding:8px 10px 8px 0}
+td{border-bottom:1px solid var(--rule);padding:11px 10px 11px 0;vertical-align:top}
+td.sub{color:var(--muted);font-size:14.5px}
+td.r,th.r{text-align:right}
+tr.on td{background:var(--tint);font-weight:700}
+.bar{height:9px;display:block;background:var(--acc)}
+.panel{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:12px}
+.panel .nm{font:700 12px var(--utilf);letter-spacing:.08em;text-transform:uppercase}
+.panel .lvl{font:500 36px/1.05 var(--numf)}
+.up{color:var(--good)}.dn{color:var(--bad)}
+.panel svg{width:100%;height:auto;display:block;margin-top:6px}
+.note{font:14px/1.5 var(--utilf);color:var(--muted);margin-top:10px}
+.wx{display:grid;grid-template-columns:repeat(7,1fr);border:1px solid var(--ink)}
+.wx div{padding:10px 4px;text-align:center;border-right:1px solid var(--rule);font:14px/1.45 var(--utilf)}
+.wx div:last-child{border-right:0}
+.wx .e{font-size:22px;display:block;margin:2px 0}
+.item{padding-block:12px;border-bottom:1px solid var(--rule);font-size:16.5px}
+.item h4{font:600 19px/1.3 var(--bodyf);margin:0 0 4px}
+.item .tag{font:700 11.5px var(--utilf);letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+.verdict{display:inline-block;font:700 11.5px/1 var(--utilf);letter-spacing:.04em;text-transform:uppercase;padding:5px 7px;border-radius:999px;white-space:nowrap}
+.v-must{background:var(--good);color:var(--paper)}
+.v-good{border:1.5px solid var(--good);color:var(--good)}
+.v-call{border:1.5px solid var(--warn);color:var(--warn)}
+.v-skip{background:var(--bad);color:var(--paper)}
+.v-early{border:1.5px dashed var(--muted);color:var(--muted)}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 18px;margin-top:14px;font:15px/1.45 var(--sansf)}
+.legend div{display:flex;gap:8px;align-items:flex-start}
+.odds{display:grid;grid-template-columns:minmax(0,1fr) 60px;gap:6px 10px;align-items:center;font:15.5px var(--sansf);margin-top:8px}
+.odds .b{height:7px;background:var(--rule);grid-column:1/-1;margin-top:-2px}
+.odds .b span{display:block;height:100%;background:var(--acc)}
+.trend{display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px;padding-block:9px;border-bottom:1px solid var(--rule);font-size:16.5px}
+.trend b{font:700 13px var(--utilf);color:var(--muted)}
+.editor{margin-top:28px;border-left:3px solid var(--acc-f1);padding:4px 0 4px 14px;font:italic 17px/1.5 var(--bodyf)}
+.editor span{display:block;font:700 11px var(--utilf);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.house{margin-top:26px;border-top:5px double var(--ink);border-bottom:1px solid var(--ink);padding-block:16px;text-align:center;scroll-margin-top:48px}
+.house b{font:700 11px var(--utilf);letter-spacing:.2em;text-transform:uppercase}
+.house p{font:italic 20px/1.4 var(--bodyf);max-width:42ch;margin:8px auto 0;text-wrap:balance}
+details.desk{margin-top:18px;border:1px solid var(--ink);padding:10px 12px}
+details.desk summary{font:700 12px var(--utilf);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.foot{font:500 12.5px var(--utilf);color:var(--muted);text-align:center;margin-top:18px}
+.gone{font:14px/1.5 var(--utilf);color:var(--muted);padding-top:8px}
+/* controls */
+.dock{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;gap:4px;background:var(--ink);color:var(--paper);border-radius:999px;padding:5px;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+.dock button{border:0;background:transparent;border-radius:999px;padding:8px 13px;font:700 11px var(--utilf);letter-spacing:.12em;text-transform:uppercase;color:var(--paper)}
+.glancebtn{position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:40;border:0;border-radius:999px;padding:12px 16px;background:var(--ink);color:var(--paper);font:700 11px/1 var(--utilf);letter-spacing:.14em;text-transform:uppercase;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+.glance{position:fixed;left:12px;bottom:calc(62px + env(safe-area-inset-bottom,0px));z-index:41;width:min(370px,calc(100vw - 24px));max-height:70vh;overflow:auto;background:var(--paper);border:1px solid var(--rule);box-shadow:0 12px 40px rgba(0,0,0,.25);padding:14px 16px}
+.glance h4{margin:0;font:700 12px var(--utilf);letter-spacing:.14em;text-transform:uppercase;color:var(--acc-f1)}
+.glance .gd{font:12px var(--utilf);color:var(--muted);margin-bottom:8px}
+.glance button{display:grid;grid-template-columns:80px 1fr;gap:8px;text-align:left;border:0;border-top:1px solid var(--rule);background:transparent;padding:9px 0;width:100%;font:15px/1.3 var(--bodyf)}
+.glance button span{font:700 10px/1.6 var(--utilf);letter-spacing:.1em;text-transform:uppercase;color:var(--c)}
+.pmenu{position:fixed;right:12px;bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:42;background:var(--paper);border:1px solid var(--rule);box-shadow:0 12px 40px rgba(0,0,0,.25);display:grid;min-width:220px}
+.pmenu button{border:0;border-bottom:1px solid var(--rule);background:transparent;padding:12px 14px;text-align:left;font:600 14.5px var(--utilf)}
+.poster{position:fixed;inset:0;z-index:60;background:var(--paper);color:var(--ink);display:grid;place-items:center;padding:24px;cursor:pointer;overflow:hidden}
+.poster.dark{background:#0f0e0c;color:#efe7d6}
+.poster .pm{display:grid;justify-items:center;gap:6px;text-align:center}
+.poster .pm .the{font:400 clamp(30px,5vw,64px)/1 var(--mastf)}
+.poster .pm .hof{font:600 clamp(12px,1.6vw,20px)/1 var(--utilf);letter-spacing:.7em;text-transform:uppercase;margin-right:-.7em}
+.poster .pm .yr{font:500 clamp(110px,22vw,300px)/.85 var(--numf)}
+.poster .pm .sub{font:italic clamp(14px,1.6vw,20px) var(--bodyf);opacity:.75;margin-top:10px}
+.poster .ph{font:400 clamp(30px,5vw,70px)/1.08 var(--dispf);max-width:18ch;text-align:center;text-wrap:balance;transition:opacity .8s}
+.poster .clock{font:500 clamp(90px,18vw,240px)/1 var(--numf);font-variant-numeric:tabular-nums}
+.poster .strip{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px;font:500 clamp(14px,1.6vw,20px) var(--utilf);margin-top:18px}
+.today{width:min(100%,560px);height:100%;display:grid;grid-template-rows:auto auto 1fr auto;gap:10px}
+.today .t-m{text-align:center;border-bottom:3px double var(--ink);padding-bottom:6px}
+.today .t-m b{font:500 34px/1 var(--numf)}.today .t-m span{display:block;font:500 12px var(--utilf);color:var(--muted)}
+.today .t-g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.today .t-g div{border:1px solid var(--rule);border-radius:6px;padding:8px 10px;font:14px/1.3 var(--utilf)}
+.today .t-g b{display:block;font:500 22px/1.1 var(--numf)}
+.today ol{margin:0;padding:0;list-style:none;display:grid;gap:8px;align-content:start;overflow:hidden}
+.today li{border-bottom:1px solid var(--rule);padding-bottom:8px;font:400 19px/1.25 var(--dispf)}
+.today li small{display:block;font:700 11px var(--utilf);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.today .t-f{font:500 12px var(--utilf);color:var(--muted);text-align:center}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:45;background:var(--ink);color:var(--paper);padding:10px 14px;font:13px var(--sansf);border-radius:4px;box-shadow:0 6px 24px rgba(0,0,0,.25);max-width:calc(100vw - 32px)}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(10,10,10,.55);display:grid;place-items:center;padding:16px}
+.modal .card{background:var(--paper);max-width:420px;width:100%;padding:18px;border:1px solid var(--rule)}
+.modal .cap{font:12px var(--sansf);color:#eee;text-align:center;margin-top:10px;max-width:420px}
+.modal .close{margin-top:12px;border:1px solid var(--rule);background:transparent;padding:8px 12px;font:700 11px var(--utilf);letter-spacing:.12em;text-transform:uppercase}
+@media (max-width:980px){
+ .layout{grid-template-columns:1fr;gap:14px}
+ aside.rail{position:static;grid-template-columns:repeat(3,minmax(0,1fr))}
+ .lead,.side{grid-column:1/-1;border-right:0;padding-right:0}
+ .side{border-top:3px solid var(--ink);margin-top:14px;padding-top:12px}
+}
+@media (max-width:720px){
+ .mast{grid-template-columns:1fr 1fr}.mast .mid{grid-column:1/-1;order:-1}.ear{max-width:none}
+ aside.rail{grid-template-columns:1fr 1fr}
+ nav.idx a{border:1px solid var(--rule);border-radius:999px;margin:6px 0 6px 6px;padding:6px 10px}
+ nav.idx a.cur{border-color:var(--ink)}
+ .briefs,.cols2,.cols3{grid-template-columns:1fr}.brief{border-right:0;margin-right:0;border-bottom:1px solid var(--rule)}
+ .wx{grid-template-columns:repeat(4,1fr)}.wx div:nth-child(4){border-right:0}.wx div:nth-child(n+5){border-top:1px solid var(--rule)}
+}
+</style>
+
+<div class="proof"><b>Proofs v3 · Design A with C.</b> Every number, fixture, table, trend and betting price is real data pulled on 25 Sep. Stories on real events are shortened. Anything marked <span class="sample">Sample</span> is placeholder writing to show the layout. v3: bigger, plainer type; new masthead; Poster button at bottom right for the Mac screensaver and the one-screen phone view.</div>
+<div class="sheet" id="top">
+<div class="run"><span>Friday, 25 September 2026</span><span>Vol. I · No. 1 · Bengaluru</span><span>Information cut 14:00 IST</span></div>
+<header class="mast">
+ <div class="ear"><b>Sky Report</b><span class="big tnum">21°</span> 🌧️ Rain all day<br>High 26° · Low 21°</div>
+ <div class="mid"><h1 aria-label="The House of 1400"><span class="the">The</span><span class="hof">House of</span><span class="yr"><i></i>1400<i></i></span></h1><div class="motto">An afternoon newspaper for one reader · Edited by T. A. Bhide</div></div>
+ <div class="ear r"><b><span class="live"><i></i>Next up</span></b><span class="big tnum" data-cd="sess">--</span><br><span data-cd="sessname">--</span></div>
+</header>
+<div class="folio"><span class="day">Friday edition · Screen & Stage and Namma Beat run longer today</span><span>Skim: 6 min · Everything: 24 min</span></div>
+<nav class="idx" aria-label="Sections" id="idx"><div></div></nav>
+<div class="layout">
+<aside class="rail" aria-label="Live">
+ <div class="w"><b>Bengaluru now</b><div class="row"><span class="big tnum">21°</span><span>🌧️ 100% rain</span></div>Today 26° / 21°</div>
+ <div class="w"><b><span class="live"><i></i>F1 · Baku</span></b><span class="big tnum" data-cd="race">--</span><br>to lights out, Sat 16:30 IST</div>
+ <div class="w"><div class="row"><b>Sensex</b><span class="dn tnum">−1.67%</span></div><span class="big tnum">73,581</span><div id="spk-sx"></div></div>
+ <div class="w"><div class="row"><b>Nasdaq-100</b><span class="up tnum">+0.03%</span></div><span class="big tnum">30,479</span><div id="spk-nd"></div></div>
+ <div class="w"><b>Madrid next</b><span class="big">Villarreal</span><br>Sun 11 Oct · 00:30 IST · Home</div>
+ <div class="w"><b>India next</b><span class="big">West Indies</span><br>1st ODI · Sun 27 Sep · 13:30 IST</div>
+</aside>
+<main id="main"></main>
+</div>
+</div>
+<button class="glancebtn" id="glanceBtn" aria-expanded="false" aria-controls="glance">✦ At a Glance</button>
+<div class="glance" id="glance" hidden></div>
+<div class="dock"><button id="posterBtn" aria-haspopup="true">Poster</button><button id="themeBtn">Night</button></div>
+<div class="pmenu" id="pmenu" hidden><button data-poster="today">Today, one screen</button><button data-poster="mast">Masthead · ink</button><button data-poster="night">Masthead · night</button><button data-poster="heads">Headlines, rotating</button><button data-poster="clock">Clock and live strip</button></div>
+<div class="poster" id="poster" hidden></div>
+<div class="toast" id="toast" hidden></div>
+<div class="modal" id="modal" hidden></div>
+
+<script>
+const SENSEX="76991,77100,76728,76479,76923,77502,77764,78285,78181,76504,76742,77569,77616,77055,77185,77187,78151,77709,77470,76755,76391,76060,76836,76766,77655,77928,78095,78639,78429,78581,78955,78499,78542,78154,77966,78080,78009,77728,77235,76910,77538,77541,77369,77656,77473,76934,77265,76957,76944,76570,76153,76515,76133,75578,74764,74903,74782,74004,74336,74315,74295,74859,74828,73581".split(",").map(Number);
+const NIFTY=[24022,24056,23946,23866,24006,24176,24271,24430,24399,23882,23963,24207,24211,24052,24079,24073,24334,24239,24188,23996,23870,23767,23996,23985,24250,24317,24384,24774,24615,24625,24636,24571,24584,24472,24436,24396,24366,24288,24155,24078,24232,24252,24219,24335,24208,24091,24176,24080,24056,23914,23873,23898,23779,23635,23432,23478,23398,23119,23218,23271,23346,23414,23447,23063];
+const NDX=[29440,29118,29775,30276,29809,29329,29698,29173,29253,29727,29825,29264,29586,29503,29026,28593,28604,29155,28998,28455,28128,28039,27763,27192,28106,28274,28777,29733,29488,29373,29722,29622,29525,29743,30085,30046,29995,29491,29426,29213,29309,29023,29209,29225,29642,29433,29457,29077,29143,29482,29544,29508,29422,29104,29368,29127,28938,28945,29447,29644,30482,30470,30479];
+const SESS=[["F1 · Practice 1","2026-09-24T08:30:00Z",60],["F1 · Practice 2","2026-09-24T12:00:00Z",60],["F1 · Practice 3","2026-09-25T08:30:00Z",60],["F1 · Qualifying","2026-09-25T12:00:00Z",60],["F1 · Race","2026-09-26T11:00:00Z",120],["India v WI · 1st ODI","2026-09-27T08:00:00Z",480]];
+const DRIVERS=[["Kimi Antonelli","Mercedes",292],["George Russell","Mercedes",211],["Lewis Hamilton","Ferrari",191],["Lando Norris","McLaren",186],["Charles Leclerc","Ferrari",167],["Max Verstappen","Red Bull",145]];
+const LIGA=[["Barcelona",7,21,"+24"],["Atlético",7,16,"+9"],["Betis",7,16,"+2"],["Real Madrid",7,15,"+10"],["Sevilla",7,13,"+1"],["Alavés",7,11,"+5"]];
+const WX=[["Today",26,21,100],["Sat",30,19,39],["Sun",30,19,29],["Mon",31,21,82],["Tue",27,20,90],["Wed",28,19,81],["Thu",27,19,78]];
+const SECS=[["Front Page","front","--ink"],["Fixture List","fixtures","--acc-f1"],["Madridismo","madrid","--acc-rm"],["Wider Pitch","pitch","--acc-sp"],["Paddock Notes","paddock","--acc-f1"],["The Crease","crease","--acc-sp"],["Deuce","deuce","--acc-sp"],["Sidelines","sidelines","--acc-sp"],["The Tables","tables","--acc-rm"],["Dateline","dateline","--acc-wd"],["Workshop","workshop","--acc-tc"],["Pipeline","pipeline","--acc-tc"],["The Ledger","ledger","--acc-mk"],["Sky & Streets","sky","--acc-wx"],["Namma Beat","namma","--acc-ct"],["Screen & Stage","screen","--acc-en"],["Talk of the Day","talk","--acc-wd"],["Betting Window","betting","--acc-wd"],["Before You Go","bye","--ink"],["House Note","house","--acc-f1"]];
+
+const $=s=>document.querySelector(s);
+const inr=n=>n.toLocaleString("en-IN");
+const emo=r=>r>=85?"🌧️":r>=60?"🌦️":r>=35?"⛅":"☀️";
+const ist=iso=>new Date(iso).toLocaleString("en-IN",{timeZone:"Asia/Kolkata",weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit",hour12:false});
+const baku=iso=>new Date(iso).toLocaleString("en-GB",{timeZone:"Asia/Baku",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false});
+const st=(s,n)=>{const t=+new Date(s[1]),e=t+s[2]*6e4;return n>=e?"done":n>=t?"on":"next"};
+function cd(ms){const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4),s=Math.floor(ms%6e4/1e3);return (d?d+"d ":"")+(d||h?h+"h ":"")+m+"m "+String(s).padStart(2,"0")+"s"}
+function spark(a,col,w=300,h=64,l1="24 JUN",l2="24 SEP"){const mini=w<250;const mn=Math.min(...a),mx=Math.max(...a),x=i=>4+i*(w-8)/(a.length-1),y=v=>h-6-(v-mn)/(mx-mn)*(h-14),L=a.length-1,d=a.map((v,i)=>(i?"L":"M")+x(i).toFixed(1)+" "+y(v).toFixed(1)).join(" ");
+ return `<svg viewBox="0 0 ${w} ${h+14}" role="img" aria-label="Daily closes, ${l1} to ${l2}"><line x1="4" x2="${w-4}" y1="${y(mx)}" y2="${y(mx)}" stroke="var(--rule)" stroke-width="1"/><line x1="4" x2="${w-4}" y1="${y(mn)}" y2="${y(mn)}" stroke="var(--rule)" stroke-width="1"/><path d="${d} L${x(L)} ${h} L4 ${h} Z" fill="${col}" opacity=".1"/><path d="${d}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linejoin="round"/><circle cx="${x(L)}" cy="${y(a[L])}" r="3.2" fill="${col}"/><text x="4" y="${h+12}" font-size="10" fill="var(--muted)" style="font-family:var(--utilf)">${l1}</text><text x="${w-4}" y="${h+12}" text-anchor="end" font-size="10" fill="var(--muted)" style="font-family:var(--utilf)">${l2}</text>${mini?"":`<text x="${w-4}" y="${y(mx)-3}" text-anchor="end" font-size="9.5" fill="var(--muted)" style="font-family:var(--utilf)">${inr(mx)}</text><text x="${w-4}" y="${y(mn)+11}" text-anchor="end" font-size="9.5" fill="var(--muted)" style="font-family:var(--utilf)">${inr(mn)}</text>`}</svg>`}
+const tools=(id,more,link)=>`<div class="tools">${more?`<button class="rm" data-more="${id}" aria-expanded="false">Read more</button>`:""}${link?`<a href="${link}" target="_blank" rel="noopener">Original ↗</a>`:""}<button data-clip="${id}">Clip</button><button class="th" data-th="up" aria-pressed="false">▲ More like this</button><button class="th" data-th="dn" aria-pressed="false">▼ Less</button></div>`;
+const why=(t,you=true)=>`<div class="why"><b>${you?"Why it matters for you":"Why it matters"}</b>${t}</div>`;
+const H=(id,t,tag="h3")=>`<${tag}><button data-head="${id}">${t}</button></${tag}>`;
+const sec=(id,title,sub,body,acc)=>`<section class="sec" id="${id}" style="--acc:var(${acc})"><div class="sechead"><h2>${title}</h2><span>${sub}</span></div>${body}</section>`;
+const S=()=>`<span class="sample">Sample</span>`;
+
+function build(){const n=Date.now();
+$("#idx div").innerHTML=SECS.map(s=>`<a href="#${s[1]}" style="--c:var(${s[2]})"><i></i>${s[0]}</a>`).join("");
+$("#spk-sx").innerHTML=spark(SENSEX.slice(-22),"var(--bad)",200,40,"26 AUG","24 SEP");
+$("#spk-nd").innerHTML=spark(NDX.slice(-22),"var(--good)",200,40,"26 AUG","24 SEP");
+let h="";
+/* FRONT */
+h+=`<div class="front" id="front" style="scroll-margin-top:48px">
+<article class="lead" id="s-ai" style="--acc:var(--acc-wd)"><div class="kick">Front Page · World · AI</div>${H("ai","Altman and Amodei ask the UN for global AI rules. Washington says no","h2")}
+<p class="deck">France convened the Security Council session. The US rejected any international control of the technology.</p><div class="by">AL JAZEERA · UN SECURITY COUNCIL · 23 SEP, NEW YORK</div>
+<p class="first">The heads of OpenAI and Anthropic told the UN Security Council on Wednesday that governments need international frameworks and democratic oversight for AI. “The most important decisions cannot be made by labs in San Francisco alone,” Sam Altman said. The US representative said Washington rejects all efforts by international bodies to assert centralised control over AI.</p>
+<div class="more" id="more-ai" hidden><p>Altman also warned that humanity could lose control of the future of AI. Dario Amodei of Anthropic and Clement Delangue of Hugging Face spoke at the same session, held during the UN General Assembly week in New York.</p><p>The US and China, the two countries where most frontier models are built, have both resisted binding international limits while they compete with each other on the technology.</p></div>
+${why("The companies asking for rules and the government refusing them are both American, so nothing binding is likely soon. The tools your team uses will keep changing on the labs' timetable, not a regulator's.")}${tools("ai",true,"https://www.aljazeera.com/news/2026/9/24/ai-corporate-leaders-tell-un-the-industry-needs-global-regulation")}</article>
+<div class="side">
+<article class="story" id="s-mk" style="--acc:var(--acc-mk)"><div class="kick">The Ledger · Markets</div>${H("mk","Sensex falls 1.7% and Nifty 1.6% as Brent stays above $100")}<div class="by">MARKET DATA · CLOSE 24 SEP</div>
+<p>The Sensex closed at 73,581 on Thursday, down 1.7%, and the Nifty 50 fell 1.6% to 23,063. Both are at their lowest close in three months. The Nasdaq-100 finished flat at 30,479, close to its three-month high. Brent is at $106 and the rupee is near 96 to the dollar.</p>${why("Indian stocks and the rupee are both being pulled down by oil, while US tech is not. That gap has widened all month.",false)}${tools("mk")}</article>
+<article class="story" id="s-lc" style="--acc:var(--acc-sp)"><div class="kick">Deuce · Laver Cup</div>${H("lc","Alcaraz plays for Europe at the O2 from today")}<div class="by">SKY SPORTS · LAVER CUP · 25 SEP</div>
+<p>The Laver Cup runs from Friday to Sunday at the O2 in London. Team Europe has Carlos Alcaraz, Zverev, Ruud, Cobolli, Mensik and Jodar. Team World, the defending champions, bring Fritz, de Minaur, Bublik, Cerúndolo, Nakashima and Tien.</p>
+<div class="more" id="more-lc" hidden><p>Friday wins are worth one point, Saturday wins two and Sunday wins three. The first team to 13 wins. Every match is best of three sets, with a match tiebreak in place of a third set. Novak Djokovic is not playing.</p></div>
+${why("This is Alcaraz's next event. The order of play was not out by press time, so no match time is printed.")}${tools("lc",true,"https://www.skysports.com/tennis/news/13588657/laver-cup-2026-schedule-dates-format-players-and-how-to-watch-or-stream-team-europe-vs-team-world-at-londons-o2-on-sky-sports")}</article>
+<article class="story" id="s-wi" style="--acc:var(--acc-sp)"><div class="kick">The Crease</div>${H("wi","India start eight matches against West Indies on Sunday")}<div class="by">WION · 25 SEP</div>
+<p>India play West Indies in three ODIs and five T20Is between 27 September and 17 October. The first ODI is in Thiruvananthapuram on Sunday at 13:30 IST. Shubman Gill captains the ODI side and Shreyas Iyer the T20I side.</p>${why("Bengaluru and Ranchi are both among the eight venues.")}${tools("wi")}</article>
+</div>
+<div class="briefs" id="s-briefs">
+<div class="brief" style="--acc:var(--acc-f1)"><div class="kick">🇦🇿 Paddock Notes</div><h4>Baku races on Saturday, not Sunday</h4>The race moves a day early so it does not fall on Azerbaijan's Remembrance Day. Lights out 16:30 IST. Qualifying is today at 17:30.</div>
+<div class="brief" style="--acc:var(--acc-sp)"><div class="kick">Sidelines<span class="newfor">New for you</span></div><h4>India's athletes begin at the Asian Games</h4>The athletics programme opened on Thursday in Aichi-Nagoya. Squash player Anahat Singh also started her event.</div>
+<div class="brief" style="--acc:var(--acc-rm)"><div class="kick">Madridismo</div><h4>Break until 11 October</h4>Villarreal at the Bernabéu is next, at 00:30 IST on Sunday 11 October. Madrid are fourth, six points behind Barcelona.</div>
+</div></div>`;
+/* FIXTURES */
+const rows=SESS.slice(2).map(s=>{const t=st(s,n);return `<tr class="${t==="on"?"on":""}"><td class="tnum">${ist(s[1])}</td><td>${s[0]}${t==="on"?` <span class="live"><i></i>On now, go watch</span>`:t==="done"?" · done":""}</td><td>${s[0].startsWith("India")?"JioHotstar":""}</td></tr>`}).join("")+
+`<tr><td class="tnum">Fri–Sun</td><td>Laver Cup · Alcaraz for Team Europe</td><td></td></tr><tr><td class="tnum">Mon 5 Oct, 04:30</td><td>Warriors at Clippers · preseason</td><td></td></tr><tr><td class="tnum">Sun 11 Oct, 00:30</td><td>Real Madrid v Villarreal</td><td></td></tr>`;
+h+=sec("fixtures","The Fixture List","All times IST · streaming shown only when confirmed",`<div class="tbl"><table><thead><tr><th>When</th><th>What</th><th>Where</th></tr></thead><tbody>${rows}</tbody></table></div>`,"--acc-f1");
+/* MADRID */
+h+=sec("madrid","Madridismo","International break",`<div class="cols2"><div><table><thead><tr><th>Next</th><th>Competition</th><th class="r">IST</th></tr></thead><tbody><tr class="on"><td>Villarreal (H)</td><td>La Liga</td><td class="r tnum">Sun 11 Oct 00:30</td></tr><tr><td>Roma (A)</td><td>Champions League</td><td class="r tnum">Thu 15 Oct 00:30</td></tr><tr><td>Sevilla (H)</td><td>La Liga</td><td class="r tnum">Mon 19 Oct 00:30</td></tr><tr><td>Barcelona (A)</td><td>La Liga</td><td class="r tnum">Mon 26 Oct 01:30</td></tr></tbody></table><p class="note">Fixtures from ESPN, matched against LaLiga.com and realmadrid.com.</p></div>
+<div><p><b>Last:</b> away at Atlético, 20 September.</p><p><b>Table:</b> 4th on 15 points, six behind Barcelona.</p></div></div>`,"--acc-rm");
+/* WIDER PITCH */
+h+=sec("pitch","The Wider Pitch","Football beyond Madrid",`<div class="cols3">${["International break: Netherlands v Germany tops India's searches","A major transfer or manager change would sit here","A big result elsewhere in Europe, one line"].map(t=>`<div class="item" style="--acc:var(--acc-sp)"><h4>${t}${S()}</h4>Two or three lines of fact, then one line on why it matters.</div>`).join("")}</div>`,"--acc-sp");
+/* PADDOCK */
+const srow=D=>SESS.slice(0,5).map(s=>{const t=st(s,n);return `<tr class="${t==="on"?"on":""}"><td>${s[0].replace("F1 · ","")}${t==="on"?` <span class="live"><i></i>On now</span>`:t==="done"?" ✓":""}</td><td class="r tnum">${baku(s[1])}</td><td class="r tnum">${ist(s[1]).replace(/\d+ \w+,?/,"").trim()}</td></tr>`}).join("");
+const top=DRIVERS[0][2];
+h+=sec("paddock","Paddock Notes","🇦🇿 Round 15 · Azerbaijan Grand Prix · Baku",`<div class="cols2"><div class="tbl"><table><thead><tr><th>Session</th><th class="r">Baku</th><th class="r">IST</th></tr></thead><tbody>${srow()}</tbody></table><p class="note">Times from Jolpica and OpenF1.</p></div>
+<div><p><b>Max Watch.</b> Sixth on 145 points, 147 behind Antonelli. Second in Spain last time out.</p><p><b>Why Saturday.</b> Organisers asked Formula 1 to move the race so it does not fall on Remembrance Day, 27 September, which honours about 2,900 soldiers lost in the 44-Day War.</p><p><b>Next three.</b> Baku, then the rounds after it, from the official calendar.${S()}</p></div></div>`,"--acc-f1");
+/* CREASE */
+h+=sec("crease","The Crease","India men · senior team",`<div class="cols2"><div><table><tbody><tr class="on"><td>Next</td><td>1st ODI v West Indies · Thiruvananthapuram · Sun 27 Sep, 13:30 IST · JioHotstar</td></tr><tr><td>Series</td><td>3 ODIs, 5 T20Is · 27 Sep to 17 Oct · 8 venues incl. Bengaluru, Ranchi</td></tr><tr><td>Captains</td><td>Shubman Gill (ODI) · Shreyas Iyer (T20I)</td></tr><tr><td>After</td><td>All-format tour of New Zealand</td></tr></tbody></table></div><div><div class="item" style="--acc:var(--acc-sp)"><h4>Squad or injury news would sit here${S()}</h4>Team news first, then Kohli, then everyone else.</div></div></div>`,"--acc-sp");
+/* DEUCE */
+h+=sec("deuce","Deuce","Tennis · big events first, then Alcaraz and Djokovic",`<div class="tbl" style="margin-bottom:16px"><table><thead><tr><th>Tournament</th><th>Dates</th><th>Note</th></tr></thead><tbody><tr><td><b style="font-weight:600">Laver Cup</b> · London</td><td>25–27 Sep</td><td class="sub">Alcaraz for Team Europe</td></tr><tr><td><b style="font-weight:600">Chengdu Open</b></td><td>This week</td><td class="sub">ATP 250</td></tr><tr><td><b style="font-weight:600">Hangzhou Open</b></td><td>This week</td><td class="sub">ATP 250</td></tr><tr><td><b style="font-weight:600">Next big one</b></td><td>October</td><td class="sub">Asian swing Masters, dates from the ATP calendar <span class="sample">Sample</span></td></tr></tbody></table></div><div class="cols2"><div class="panel"><div class="nm">Alcaraz</div><p style="margin:6px 0 4px"><b>Next event:</b> Laver Cup, O2 London, 25–27 Sep, Team Europe.</p><p class="note">Next match: TBD. Order of play not published at press time.</p></div><div class="panel"><div class="nm">Djokovic</div><p style="margin:6px 0 4px"><b>Next event:</b> none confirmed.</p><p class="note">Not in either Laver Cup squad.</p></div></div>`,"--acc-sp");
+/* SIDELINES */
+h+=sec("sidelines","The Sidelines","Every other sport, when it matters",`<div class="cols3"><div class="item" style="--acc:var(--acc-sp)"><div class="tag">Asian Games</div><h4>India's athletics campaign opens in Aichi-Nagoya</h4>Anahat Singh also began in squash.</div><div class="item" style="--acc:var(--acc-sp)"><div class="tag">NBA</div><h4>Warriors preseason starts 5 October</h4>At the Clippers, 04:30 IST, then the Lakers at home.</div><div class="item" style="--acc:var(--acc-sp)"><div class="tag">Anything else</div><h4>A big moment in another sport${S()}</h4>Only when it clears the bar.</div></div>`,"--acc-sp");
+/* TABLES */
+h+=sec("tables","The Tables","Standings, refreshed live",`<div class="cols2"><div class="tbl"><table><thead><tr><th>#</th><th>F1 drivers</th><th style="width:38%"></th><th class="r">Pts</th></tr></thead><tbody>${DRIVERS.map((d,i)=>`<tr class="${i===5?"on":""}"><td>${i+1}</td><td>${d[0]}<br><small style="color:var(--muted)">${d[1]}</small></td><td><span class="bar" style="width:${(d[2]/top*100).toFixed(1)}%;background:var(--acc-f1)"></span></td><td class="r tnum">${d[2]}</td></tr>`).join("")}</tbody></table></div>
+<div class="tbl"><table><thead><tr><th>#</th><th>La Liga</th><th class="r">P</th><th class="r">GD</th><th class="r">Pts</th></tr></thead><tbody>${LIGA.map((t,i)=>`<tr class="${t[0]==="Real Madrid"?"on":""}"><td>${i+1}</td><td>${t[0]}</td><td class="r tnum">${t[1]}</td><td class="r tnum">${t[3]}</td><td class="r tnum">${t[2]}</td></tr>`).join("")}</tbody></table><p class="note">NBA West returns when the season starts.</p></div></div>`,"--acc-rm");
+/* DATELINE */
+h+=sec("dateline","Dateline","World & India",`<div class="cols2">${["The biggest India story of the day","A world story everyone will be talking about"].map(t=>`<div class="item" style="--acc:var(--acc-wd)"><h4>${t}${S()}</h4>Inshorts-length, about 60 words, fact first. Read more opens the longer version.</div>`).join("")}</div><p class="note">Must-know rule: major national and world news always makes the paper, even outside your interests.</p>`,"--acc-wd");
+/* WORKSHOP */
+h+=sec("workshop","The Workshop","Tech · AI · wearables",`<div class="cols2"><div class="item" style="--acc:var(--acc-tc)"><div class="tag">Wearables</div><h4>A launch with India price and date${S()}</h4>Ends with a verdict when there is one: Try, Wait or Ignore.</div><div class="item" style="--acc:var(--acc-tc)"><div class="tag">AI tools</div><h4>A new model or tool worth trying at work${S()}</h4>One line on what it replaces.</div></div>`,"--acc-tc");
+/* PIPELINE */
+h+=sec("pipeline","The Pipeline","SDR · outbound · GTM · only when useful",`<div class="item" style="--acc:var(--acc-tc)"><h4>A change in outbound tooling, deliverability or GTM practice${S()}</h4>This section skips the day when nothing useful happened.</div>`,"--acc-tc");
+/* LEDGER */
+const mk=(nm,v,p,a,col)=>{const ch=(v-p)/p*100;return `<div class="panel"><div class="nm">${nm}</div><div class="lvl tnum">${inr(v)}</div><div class="${ch<0?"dn":"up"} tnum" style="font:700 13px var(--utilf)">${ch<0?"−":"+"}${Math.abs(ch).toFixed(2)}% on 24 Sep</div>${spark(a,col)}<p class="note">50 / 200 DMA: skipped today. Two published sources did not both report it.</p></div>`};
+h+=sec("ledger","The Ledger","Markets · money · cards",`<div class="cols3">${mk("Sensex",73581,74828,SENSEX,"var(--bad)")}${mk("Nifty 50",23063,23447,NIFTY,"var(--bad)")}${mk("Nasdaq-100",30479,30470,NDX,"var(--good)")}</div>
+<div class="tbl" style="margin-top:18px;max-width:760px"><table><thead><tr><th>Asset</th><th class="r" style="padding-right:24px">Level</th><th>Note</th></tr></thead><tbody><tr><td><b style="font-weight:600">Bank Nifty</b></td><td class="r tnum" style="padding-right:24px;white-space:nowrap">55,439</td><td class="sub">Close, 24 Sep</td></tr><tr><td><b style="font-weight:600">USD/INR</b></td><td class="r tnum" style="padding-right:24px;white-space:nowrap">95.95</td><td class="sub">Rupee near its weakest</td></tr><tr><td><b style="font-weight:600">Brent crude</b></td><td class="r tnum" style="padding-right:24px;white-space:nowrap">$106.45</td><td class="sub">Above $100</td></tr><tr><td><b style="font-weight:600">Gold 24K</b></td><td class="r tnum" style="padding-right:24px;white-space:nowrap">₹1,50,790 / 10g</td><td class="sub">IBJA · 22K ₹1,38,120</td></tr><tr><td><b style="font-weight:600">Bitcoin</b></td><td class="r tnum" style="padding-right:24px;white-space:nowrap">$84,221</td><td class="sub">Two sources agree</td></tr><tr><td><b style="font-weight:600">S&amp;P 500</b></td><td class="r tnum" style="padding-right:24px;white-space:nowrap">7,704</td><td class="sub">Close, 24 Sep</td></tr></tbody></table></div>
+<div class="item" style="--acc:var(--acc-mk);margin-top:10px"><div class="tag">Cards & Points</div><h4>An India credit card change: fees, lounge access, reward rates${S()}</h4>Top of the secondary beats, as asked.</div>`,"--acc-mk");
+/* SKY */
+h+=sec("sky","Sky & Streets","Bengaluru · 7 days",`<div class="wx">${WX.map(d=>`<div><b>${d[0]}</b><span class="e" aria-hidden="true">${emo(d[3])}</span>${d[1]}° / ${d[2]}°<br><span style="color:var(--muted)">${d[3]}% rain</span></div>`).join("")}</div><p class="note">📍 Your current location shows here once you allow it in your browser. Ranchi and Prayagraj appear only when something notable is forecast.</p>`,"--acc-wx");
+/* NAMMA */
+h+=sec("namma","Namma Beat","Bengaluru · fuller on Fri, Sat, Sun",`<div class="cols3">${[["Stand-up","A popular comic announces a Bengaluru date, with venue and booking status"],["Food","A new place getting real attention, not a paid listing"],["Metro & roads","A line opening, a closure, a diversion that changes your route"]].map(t=>`<div class="item" style="--acc:var(--acc-ct)"><div class="tag">${t[0]}</div><h4>${t[1]}${S()}</h4></div>`).join("")}</div>`,"--acc-ct");
+/* SCREEN */
+const shows=[["Don't Be Shy","Film","Prime Video","Out today"],["Bakaiti · Season 2","Series · Hindi","ZEE5","Out today"],["Unabomber","Series","Netflix","Out today"],["The Final Problem","Series","Netflix","Out today"]];
+h+=sec("screen","Screen & Stage","New this week · English and Hindi",`<div class="tbl"><table><thead><tr><th>Title</th><th>Where</th><th>When</th><th class="r">Verdict</th></tr></thead><tbody>${shows.map(s=>`<tr><td><b>${s[0]}</b><br><small style="color:var(--muted)">${s[1]}</small></td><td>${s[2]}</td><td>${s[3]}</td><td class="r"><span class="verdict v-early">Too early</span></td></tr>`).join("")}</tbody></table></div>
+<p class="note">Released today. Verdicts once three reputable reviews are in.</p>
+<div class="legend"><div><span class="verdict v-must">Must watch</span>Critics and audiences both strongly positive</div><div><span class="verdict v-good">Good watch</span>Clearly positive, a few reservations</div><div><span class="verdict v-call">Your call</span>Split reviews, or good but niche</div><div><span class="verdict v-skip">Skip</span>Clearly negative on both</div></div>
+<div class="item" style="--acc:var(--acc-en);margin-top:12px"><div class="tag">Coming soon</div><h4>Popular theatre and OTT releases for the next two weeks${S()}</h4>With an "If you liked..." line where it helps.</div>`,"--acc-en");
+/* TALK */
+const tin=["Netherlands v Germany","Ruben van Bommel","Rasmus Højlund","João Palhinha","Portugal match","SonyLIV"],tw=["Sky v Mystics","Liberty v Coastal Carolina","Spider-Verse","DeVonta Smith","Travel warning","Mark Carney"];
+h+=sec("talk","Talk of the Day","Google Trends · 24 Sep afternoon",`<div class="cols2"><div><div class="nm" style="font:700 11px var(--utilf);letter-spacing:.12em">INDIA</div>${tin.map((t,i)=>`<div class="trend"><b>${i+1}</b><span><b style="color:var(--ink);font:700 15px var(--bodyf)">${t}</b> · what happened, in one line${i?"":S()}</span></div>`).join("")}</div><div><div class="nm" style="font:700 11px var(--utilf);letter-spacing:.12em">WORLD · US FEED SHOWN</div>${tw.map((t,i)=>`<div class="trend"><b>${i+1}</b><span><b style="color:var(--ink);font:700 15px var(--bodyf)">${t}</b> · what happened, in one line</span></div>`).join("")}</div></div>`,"--acc-wd");
+/* BETTING */
+const bets=[["Brazil presidential election","World",[["Flávio Bolsonaro",56.3],["Lula da Silva",43.5]]],["US announces end of Iran blockade by 31 Dec","Geopolitics",[["Yes",61.8]]],["Next French presidential election","World",[["Marine Le Pen",38.4],["Édouard Philippe",23.5]]]];
+h+=sec("betting","The Betting Window","What the world is betting on · Polymarket",`<div class="cols2">${bets.map(b=>`<div class="item" style="--acc:var(--acc-wd)"><div class="tag">${b[1]}</div><h4>${b[0]}</h4><div class="odds">${b[2].map(o=>`<span>${o[0]}</span><span class="r tnum" style="text-align:right">${o[1]}%</span><div class="b"><span style="width:${o[1]}%"></span></div>`).join("")}</div></div>`).join("")}</div><p class="gone">Filtered out: US politics and US economic policy, US sports, esports, crypto price ladders, weather bets, tweet counts.</p>`,"--acc-wd");
+/* BYE */
+h+=sec("bye","Before You Go","Watch and do",`<p><b>Watch:</b> Baku qualifying today 17:30 IST. Race Saturday 16:30. India v West Indies, Sunday 13:30.</p><p><b>Do:</b> anything from Your Desk that needs action.${S()}</p>`,"--ink");
+h+=`<details class="desk"><summary>Your Desk · tap to open</summary><table style="margin-top:8px"><tbody><tr><td>Next 72h</td><td>Birthday reminder${S()}</td></tr><tr><td>Days 4–7</td><td>Booking, with the confirmation email's own time${S()}</td></tr><tr><td>Alert</td><td>New-device sign-in${S()}</td></tr></tbody></table></details>`;
+h+=`<div class="editor">Readers are reminded that the Azerbaijan Grand Prix is on Saturday. The editor will not be taking complaints from anyone who turns up on Sunday.<span>T. A. Bhide, Editor</span></div>`;
+h+=`<div class="house" id="house"><b>House Note</b><p>At the Laver Cup a Sunday win is worth three Friday wins. Few employers see it that way.</p></div>`;
+h+=`<div class="foot">THE HOUSE OF 1400 · FRIDAY 25 SEPTEMBER 2026 · VOL. I · NO. 1 · EDITED BY T. A. BHIDE</div>`;
+$("#main").innerHTML=h;
+$("#glance").innerHTML=`<h4>At a Glance</h4><div class="gd">Friday, 25 September 2026</div>`+[["World","AI chiefs ask UN for rules; US refuses","ai","--acc-wd"],["Markets","Sensex −1.7% to 73,581","mk","--acc-mk"],["Tennis","Alcaraz at the Laver Cup from today","lc","--acc-sp"],["Cricket","India v WI, 1st ODI Sun 13:30","wi","--acc-sp"],["F1","Baku race Saturday 16:30","paddock","--acc-f1"],["Madrid","Break. Villarreal on 11 Oct","madrid","--acc-rm"],["Screen","4 new releases, too early to call","screen","--acc-en"]].map(g=>`<button data-go="${g[2]}" style="--c:var(${g[3]})"><span>${g[0]}</span>${g[1]}</button>`).join("");
+}
+function tick(){const n=Date.now(),race=+new Date(SESS[4][1]);document.querySelectorAll('[data-cd="race"]').forEach(e=>e.textContent=race>n?cd(race-n):"Race done");
+ const nx=SESS.find(s=>st(s,n)!=="done");document.querySelectorAll('[data-cd="sess"]').forEach(e=>e.textContent=!nx?"All done":st(nx,n)==="on"?"On now":cd(+new Date(nx[1])-n));
+ document.querySelectorAll('[data-cd="sessname"]').forEach(e=>e.textContent=!nx?"":st(nx,n)==="on"?nx[0]+" · go watch":nx[0]+" · "+ist(nx[1]))}
+let tt;function toast(m){const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2600)}
+function toggleMore(id){const m=document.getElementById("more-"+id),b=document.querySelector(`[data-more="${id}"]`);if(!m)return false;m.hidden=!m.hidden;if(b){b.textContent=m.hidden?"Read more":"Read less";b.setAttribute("aria-expanded",!m.hidden)}return true}
+document.addEventListener("click",e=>{const t=e.target.closest("button,a");if(!t)return;
+ if(t.id==="themeBtn"){const r=document.documentElement,dk=r.getAttribute("data-theme")==="dark"||(!r.hasAttribute("data-theme")&&matchMedia("(prefers-color-scheme: dark)").matches);r.setAttribute("data-theme",dk?"light":"dark");t.textContent=dk?"Night":"Day";return}
+ if(t.id==="glanceBtn"){const g=$("#glance");g.hidden=!g.hidden;t.setAttribute("aria-expanded",!g.hidden);t.textContent=g.hidden?"✦ At a Glance":"✕ Close";return}
+ if(t.dataset.go){const el=document.getElementById("s-"+t.dataset.go)||document.getElementById(t.dataset.go);el&&el.scrollIntoView({behavior:"smooth",block:"start"});$("#glance").hidden=true;$("#glanceBtn").textContent="✦ At a Glance";return}
+ if(t.dataset.more){toggleMore(t.dataset.more);return}
+ if(t.dataset.head){if(!toggleMore(t.dataset.head))toast("Short story. The full text is already shown.");return}
+ if(t.dataset.th){const on=t.getAttribute("aria-pressed")!=="true";t.parentElement.querySelectorAll(".th").forEach(b=>b.setAttribute("aria-pressed","false"));t.setAttribute("aria-pressed",on);
+  toast(!on?"Removed.":t.dataset.th==="up"?"Noted. More stories like this in future editions.":"Noted. Fewer stories like this in future editions.");return}
+ if(t.dataset.clip){const a=document.getElementById("s-"+t.dataset.clip),hd=a.querySelector("h2,h3").textContent,p=a.querySelector("p:not(.deck)").textContent,k=a.querySelector(".kick").textContent;
+  $("#modal").innerHTML=`<div><div class="card"><div style="font:700 10px var(--utilf);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:6px;display:flex;justify-content:space-between;gap:8px"><span>The House of 1400</span><span>25 Sep 2026</span></div><div style="font:700 10px var(--utilf);letter-spacing:.14em;text-transform:uppercase;margin-top:10px;color:var(--acc-f1)">${k}</div><div style="font:400 26px/1.1 var(--dispf);margin:6px 0 8px">${hd}</div><div style="font:15px/1.5 var(--bodyf)">${p}</div><button class="close" data-close="1">Close</button></div><div class="cap">In the real paper, Clip saves this card as an image you can send on WhatsApp.</div></div>`;$("#modal").hidden=false;return}
+ if(t.dataset.close){$("#modal").hidden=true}});
+$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")$("#modal").hidden=true});
+build();tick();setInterval(tick,1000);
+let pTimer;const HEADS=[["World","Altman and Amodei ask the UN for global AI rules. Washington says no"],["Markets","Sensex falls 1.7% and Nifty 1.6% as Brent stays above $100"],["Tennis","Alcaraz plays for Europe at the O2 from today"],["Cricket","India start eight matches against West Indies on Sunday"],["F1","Baku races on Saturday, not Sunday"]];
+const mastHTML=()=>`<div class="pm"><span class="the">The</span><span class="hof">House of</span><span class="yr">1400</span><span class="sub">Friday, 25 September 2026 · Edited by T. A. Bhide</span></div>`;
+function openPoster(k){const P=$("#poster");clearInterval(pTimer);P.className="poster"+(k==="night"||k==="clock"?" dark":"");
+ if(k==="mast"||k==="night")P.innerHTML=mastHTML();
+ if(k==="heads"){let i=0;P.innerHTML=`<div class="pm"><span class="hof" style="margin-bottom:24px">The House of 1400</span><div class="ph" id="ph">${HEADS[0][1]}</div></div>`;pTimer=setInterval(()=>{const h=$("#ph");h.style.opacity=0;setTimeout(()=>{i=(i+1)%HEADS.length;h.textContent=HEADS[i][1];h.style.opacity=1},800)},9000)}
+ if(k==="clock"){P.innerHTML=`<div class="pm"><span class="hof">The House of 1400</span><div class="clock" id="pclock"></div><div class="strip"><span>Bengaluru 21° 🌧️</span><span>Sensex 73,581 −1.67%</span><span>Nasdaq-100 30,479</span><span>Baku race in <b data-cd="race"></b></span></div></div>`;const f=()=>{const c=$("#pclock");if(c)c.textContent=new Date().toLocaleTimeString("en-GB",{timeZone:"Asia/Kolkata",hour:"2-digit",minute:"2-digit"})};f();pTimer=setInterval(f,1000)}
+ if(k==="today")P.innerHTML=`<div class="today"><div class="t-m"><span>The House of</span><b>1400</b><span>Friday, 25 September 2026</span></div><div class="t-g"><div><small>Bengaluru</small><b>21° 🌧️</b>26° / 21°</div><div><small>Next up</small><b data-cd="sess"></b><span data-cd="sessname"></span></div><div><small>Sensex</small><b>73,581</b><span class="dn">−1.67%</span></div><div><small>Nasdaq-100</small><b>30,479</b><span class="up">+0.03%</span></div></div><ol>${HEADS.map(h=>`<li><small>${h[0]}</small>${h[1]}</li>`).join("")}</ol><div class="t-f">Tap anywhere to go back to the paper</div></div>`;
+ P.hidden=false;tick();if(k!=="today"){try{document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}}try{navigator.wakeLock.request("screen").catch(()=>{})}catch(e){}}
+document.addEventListener("click",e=>{const t=e.target.closest("button");if(t&&t.id==="posterBtn"){$("#pmenu").hidden=!$("#pmenu").hidden;return}if(t&&t.dataset.poster){$("#pmenu").hidden=true;openPoster(t.dataset.poster);return}if(e.target.closest("#poster")){$("#poster").hidden=true;clearInterval(pTimer);try{document.fullscreenElement&&document.exitFullscreen()}catch(x){}}});
+{const r=document.documentElement,dk=r.getAttribute("data-theme")==="dark"||(!r.hasAttribute("data-theme")&&matchMedia("(prefers-color-scheme: dark)").matches);$("#themeBtn").textContent=dk?"Day":"Night"}
+/* highlight current section in the index */
+try{const links=[...document.querySelectorAll("#idx a")];const io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){links.forEach(l=>l.classList.toggle("cur",l.getAttribute("href")==="#"+en.target.id));const c=links.find(l=>l.classList.contains("cur"));c&&c.scrollIntoView({block:"nearest",inline:"center"})}})},{rootMargin:"-45% 0px -50% 0px"});SECS.forEach(s=>{const el=document.getElementById(s[1]);el&&io.observe(el)})}catch(e){}
+</script>

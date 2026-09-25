@@ -1,0 +1,76 @@
+{
+  "paper": {
+    "name": "The House of 1400",
+    "motto": "An afternoon newspaper for one reader",
+    "editor": {"full_name": "Tukaram Atmaram Bhide", "signature": "T. A. Bhide, Editor"},
+    "timezone": "Asia/Kolkata",
+    "home_city": "Bengaluru",
+    "reader": "Parth. SDR manager at a B2B SaaS company selling to US wholesale and retail. Works 17:00 to 02:00 IST on weekdays. Reads mostly on a Nothing Phone 3 in Chrome, sometimes on a MacBook."
+  },
+  "sections": [
+    {"id": "front", "name": "Front Page"},
+    {"id": "fixtures", "name": "The Fixture List"},
+    {"id": "madrid", "name": "Madridismo"},
+    {"id": "pitch", "name": "The Wider Pitch"},
+    {"id": "paddock", "name": "Paddock Notes"},
+    {"id": "crease", "name": "The Crease"},
+    {"id": "deuce", "name": "Deuce"},
+    {"id": "sidelines", "name": "The Sidelines"},
+    {"id": "tables", "name": "The Tables"},
+    {"id": "dateline", "name": "Dateline"},
+    {"id": "workshop", "name": "The Workshop"},
+    {"id": "pipeline", "name": "The Pipeline"},
+    {"id": "ledger", "name": "The Ledger"},
+    {"id": "sky", "name": "Sky & Streets"},
+    {"id": "namma", "name": "Namma Beat"},
+    {"id": "screen", "name": "Screen & Stage"},
+    {"id": "talk", "name": "Talk of the Day"},
+    {"id": "betting", "name": "The Betting Window"},
+    {"id": "bye", "name": "Before You Go"},
+    {"id": "desk", "name": "Your Desk"},
+    {"id": "house", "name": "House Note"}
+  ],
+  "follows": {
+    "football_club": {"name": "Real Madrid", "espn_id": 86, "league": "esp.1", "analysis_sources": ["Managing Madrid"]},
+    "f1_driver": {"name": "Max Verstappen", "label": "Max Watch"},
+    "tennis_players": ["Carlos Alcaraz", "Novak Djokovic"],
+    "cricket_team": {"name": "India men (senior)", "priority": ["team", "Virat Kohli", "others"]},
+    "nba_team": {"name": "Golden State Warriors", "espn_abbr": "gs", "in_season_only": true},
+    "rival_club_line": {"name": "Barcelona", "rule": "one dry line only for a real loss, knockout, setback or funny incident"}
+  },
+  "beats": {
+    "primary": ["Real Madrid", "F1 and Max", "Tennis: big tournaments, Alcaraz, Djokovic", "India men's cricket", "Football worldwide: big developments", "India and world news (must-know floor)", "AI, software, platforms", "Consumer tech and wearables (weighted up)", "Markets: Sensex, Nifty 50, Nasdaq-100", "Bengaluru weather and city", "Entertainment: English and Hindi films and series, theatre and OTT", "Your Desk from Calendar and Gmail"],
+    "secondary": ["India credit cards: any change, not only points", "Car launches", "Travel", "Startups, SaaS, GTM", "AI tools and automation for work", "Gaming", "Pickleball"],
+    "rules": ["No player-milestone chasing (e.g. career goal counts)", "No Curry-specific coverage beyond major news", "No gossip, weak rumours or routine previews", "No regional-language entertainment"]
+  },
+  "markets": {
+    "indices": [{"name": "Sensex", "yahoo": "^BSESN"}, {"name": "Nifty 50", "yahoo": "^NSEI"}, {"name": "Nasdaq-100", "yahoo": "^NDX"}],
+    "top_two": ["Sensex", "Nasdaq-100"],
+    "cross": [{"name": "Bank Nifty", "yahoo": "^NSEBANK"}, {"name": "USD/INR", "yahoo": "INR=X"}, {"name": "Brent crude", "yahoo": "BZ=F"}, {"name": "Gold (India, IBJA)", "source": "ibja"}, {"name": "Bitcoin", "yahoo": "BTC-USD"}, {"name": "S&P 500", "yahoo": "^GSPC"}],
+    "dma_sources": {"Nifty 50": ["Dhan", "EquityPandit"], "Nasdaq-100": ["EODData INDEX/NDY", "WallStreetNumbers NDX"], "Sensex": ["to be found; skip until two sources exist"]},
+    "dma_tolerance_pct": 0.25
+  },
+  "weather": {
+    "always": [{"name": "Bengaluru", "lat": 12.97, "lon": 77.59}],
+    "when_notable": [{"name": "Ranchi", "lat": 23.34, "lon": 85.31}, {"name": "Prayagraj", "lat": 25.44, "lon": 81.85}],
+    "use_reader_location": true
+  },
+  "trends": {"india_geo": "IN", "world_geos": ["US", "GB", "ES"], "extra_geos_rule": "add the F1 host, Madrid opponent, India cricket opponent, ATP host country when relevant", "target_each": 6, "max_what_chars": 140},
+  "betting": {
+    "sources": ["polymarket", "kalshi"],
+    "target": 5,
+    "exclude": ["US domestic politics and elections", "US economic policy including the Fed", "US sports games", "esports", "crypto price ladders and daily up/down", "weather bets", "tweet or post counts", "celebrity"],
+    "override": "include an excluded market only if it clearly affects Parth"
+  },
+  "day_profiles": {
+    "mon": {"markets": "full", "entertainment": "compact", "namma": "only_if_important", "live_first": "markets"},
+    "tue": {"markets": "full", "entertainment": "compact", "namma": "only_if_important", "live_first": "markets"},
+    "wed": {"markets": "full", "entertainment": "compact", "namma": "only_if_important", "live_first": "markets"},
+    "thu": {"markets": "full", "entertainment": "weekend_preview", "namma": "only_if_important", "live_first": "markets"},
+    "fri": {"markets": "normal", "entertainment": "fuller", "namma": "fuller", "live_first": "fixtures", "line": "Friday edition · Screen & Stage and Namma Beat run longer today"},
+    "sat": {"markets": "light_unless_important", "entertainment": "fullest", "namma": "fullest", "live_first": "fixtures", "line": "Saturday edition · more screen, more city, lighter on money"},
+    "sun": {"markets": "light_unless_important", "entertainment": "fullest", "namma": "fullest", "live_first": "fixtures", "line": "Sunday edition · the week's releases get their verdicts"}
+  },
+  "screen": {"languages": ["English", "Hindi"], "min_reviews_for_verdict": 3, "verdicts": ["must", "good", "call", "skip", "early"]},
+  "site": {"telegram_ping": "lead headline + link, only after the edition is verified live"}
+}
