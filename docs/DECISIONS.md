@@ -224,3 +224,10 @@ Made without Parth, per the build prompt. Change any of them freely.
 - **Consensus poster** at `/consensus/poster` (or its Poster button): the whole page on one screen, zoomed to fit: moving today, one or two markets from each area, the world's busiest and "trending anyway", with a clock. It redraws every minute and takes new data every five.
 - **Consensus uses Iconify** the same way the paper does: 24 Material Symbols (areas, subsections, buttons) written into the page by `scripts/icons.mjs`, about 3 KB compressed, no calls at run time.
 - **Big monitors.** From 2,100px wide (Parth's BenQ GW2790Q is 27 inches at 2560x1440) both pages are laid out at 1,920px and scaled up as a whole, about 1.33x on that screen, so they run nearly edge to edge with larger type instead of a narrow column. Nothing changes below 2,100px: the MacBook and the phone see exactly what they saw.
+
+## 26 Sep 2026: Consensus finds by subject, shows matches, and draws tickets
+- Polymarket is read by subject tag (config topics[].pm_tags) as well as the busiest 400, so a race or a model ranking that is big for its subject turns up. Race markets typed as winners are kept; pole, podium and fastest lap go.
+- Duplicates: two-word titles only match exactly, and same-looking questions must end within ten days of each other. A settled recurring question hands its place to the next round (September's best AI model at 99% gives way to October's).
+- Matches never take a card. Each sport has Coming up: the next week's matches with someone followed or a name on the topic's notable list, found live.
+- Cards are tickets in each subject's own colour: a gauge filled to the favourite's chance (the favourite is named once, there), then the split bar and the others.
+- Posters grow to fill a big monitor (from 2,100px) the way the pages do; laptops and phones are unchanged.
