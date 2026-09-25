@@ -1,6 +1,354 @@
 {
   "version": 1,
-  "last_updated": null,
-  "last_edition": null,
-  "threads": []
+  "last_updated": "2026-09-25T00:36:02.741Z",
+  "last_edition": "2026-09-25",
+  "threads": [
+    {
+      "thread_id": "iran-hormuz-talks",
+      "title": "US and Iran discuss a phased deal to reopen Hormuz and lift the blockade",
+      "entities": [],
+      "facts": {
+        "status": "talks on phased reopening",
+        "brent_close": "106.60",
+        "ceasefire_proposal_days": 60
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "india-markets-daily",
+      "title": "Sensex falls 1,248 points to a three-month low as oil and bond yields climb",
+      "entities": [],
+      "facts": {
+        "sensex_close": "73580.54",
+        "nifty_close": "23063.10",
+        "date": "2026-09-24"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "un-ai-governance",
+      "title": "Altman and Amodei ask the UN Security Council for shared AI rules. The US says no",
+      "entities": [],
+      "facts": {
+        "event": "UNSC session",
+        "us_position": "rejects global governance"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "workshop"
+    },
+    {
+      "thread_id": "laver-cup-2026",
+      "title": "Alcaraz opens his Laver Cup in doubles tonight at the O2",
+      "entities": [],
+      "facts": {
+        "alcaraz_friday": "doubles with Mensik v Fritz/Bublik",
+        "score": "0-0"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "deuce"
+    },
+    {
+      "thread_id": "f1-baku-2026",
+      "title": "Baku races on Saturday, not Sunday",
+      "entities": [],
+      "facts": {
+        "race_utc": "2026-09-26T11:00:00Z",
+        "quali_utc": "2026-09-25T12:00:00Z"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "india-v-wi-2026",
+      "title": "India start eight matches against West Indies on Sunday",
+      "entities": [],
+      "facts": {
+        "first_odi": "2026-09-27",
+        "venue": "Thiruvananthapuram"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "madrid-next-villarreal",
+      "title": "Break until Villarreal on 11 October",
+      "entities": [],
+      "facts": {
+        "next": "Villarreal (H) 2026-10-10T19:00:00Z",
+        "position": 4,
+        "points": 15
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "bellingham-contract",
+      "title": "Madrid move to extend Bellingham's contract to 2031",
+      "entities": [],
+      "facts": {
+        "status": "talks",
+        "until": 2031,
+        "current_expiry": 2029
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "f1-baku-practice",
+      "title": "Russell tops both Baku practices, Verstappen second and third",
+      "entities": [],
+      "facts": {
+        "fp1": "Russell P1, Verstappen P2",
+        "fp2": "Russell P1, Antonelli P2, Verstappen P3"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "india-odi-squad-wi",
+      "title": "Kohli and Rohit in the ODI squad as West Indies land in Thiruvananthapuram",
+      "entities": [],
+      "facts": {
+        "captain": "Shubman Gill",
+        "kohli": "in squad",
+        "rohit": "in squad"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "asian-games-2026-india",
+      "title": "India's hockey men beat South Korea 8–2 as the athletics programme opens",
+      "entities": [],
+      "facts": {
+        "hockey_men": "beat South Korea 8-2",
+        "rowing": "bronze men's double sculls"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "us-10y-yield",
+      "title": "US 10-year yield hits 5.11%, its highest since 2007",
+      "entities": [],
+      "facts": {
+        "us10y": "5.11",
+        "date": "2026-09-23"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "ukraine-war-unga",
+      "title": "Zelenskyy tells the UN that Russia's war could spread to Moldova, Poland and the Baltics",
+      "entities": [],
+      "facts": {
+        "speech": "UNGA 2026-09-23"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "oecd-india-forecast",
+      "title": "OECD raises India's growth forecast to 7.1%",
+      "entities": [],
+      "facts": {
+        "fy27": "7.1",
+        "previous": "6.3"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "frontier-ai-standards-agency",
+      "title": "OpenAI, Google and Anthropic plan their own AI safety standards body",
+      "entities": [],
+      "facts": {
+        "name": "Frontier AI Standards Agency",
+        "launch": "late 2026 or 2027"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "workshop"
+    },
+    {
+      "thread_id": "fitbit-air-india",
+      "title": "Fitbit Air listed at ₹13,999 ahead of its October India launch",
+      "entities": [],
+      "facts": {
+        "price_inr": 13999,
+        "launch": "October"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "workshop"
+    },
+    {
+      "thread_id": "cards-lounge-oct-2026",
+      "title": "Amex Platinum Travel and Bank of Baroda premium cards tighten lounge access from 1 October",
+      "entities": [],
+      "facts": {
+        "amex_ptc_lounge_spend": "1 lakh per quarter",
+        "bob_lounge_spend": "75000 per quarter",
+        "effective": "2026-10-01"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "hebbal-tunnel",
+      "title": "Hebbal tunnel plan would fell 1,128 trees; petition passes 20,000 signatures",
+      "entities": [],
+      "facts": {
+        "trees": 1128,
+        "petition": "20000+"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "metro-pink-line",
+      "title": "Pink Line's first stretch likely to slip to mid-October",
+      "entities": [],
+      "facts": {
+        "expected": "mid-October",
+        "stretch": "Kalena Agrahara to Tavarekere"
+      },
+      "first_printed": "2026-09-25",
+      "last_printed": "2026-09-25",
+      "last_change": "2026-09-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    }
+  ]
 }

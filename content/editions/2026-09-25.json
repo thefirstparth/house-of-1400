@@ -1,0 +1,876 @@
+{
+  "date": "2026-09-25",
+  "edition_no": 1,
+  "weekday": "fri",
+  "cut_ist": "06:40",
+  "profile_line": "Friday edition · Screen & Stage and Namma Beat run longer today",
+  "editor_note": "Readers are reminded that the Azerbaijan Grand Prix is on Saturday this year. The editor will not be taking complaints from anyone who switches on at 16:30 on Sunday.",
+  "house_note": "At the Laver Cup a Sunday win is worth three Friday wins. Few employers see it that way.",
+  "glance": [
+    {
+      "section": "World",
+      "line": "US and Iran discuss a phased Hormuz reopening",
+      "target": "hormuz-phased-deal",
+      "color": "--acc-wd"
+    },
+    {
+      "section": "Markets",
+      "line": "Sensex −1.67% to 73,581 on oil and yields",
+      "target": "sensex-falls-oil",
+      "color": "--acc-mk"
+    },
+    {
+      "section": "AI",
+      "line": "Altman and Amodei ask the UN for AI rules; US says no",
+      "target": "un-ai-rules",
+      "color": "--acc-tc"
+    },
+    {
+      "section": "Tennis",
+      "line": "Alcaraz plays Laver Cup doubles tonight",
+      "target": "laver-cup-day-one",
+      "color": "--acc-sp"
+    },
+    {
+      "section": "F1",
+      "line": "Qualifying 17:30 IST today, race Saturday 16:30",
+      "target": "baku-saturday",
+      "color": "--acc-f1"
+    },
+    {
+      "section": "Cricket",
+      "line": "India v West Indies, 1st ODI on Sunday",
+      "target": "crease",
+      "color": "--acc-sp"
+    },
+    {
+      "section": "Madrid",
+      "line": "Break until Villarreal on 11 October",
+      "target": "madrid",
+      "color": "--acc-rm"
+    },
+    {
+      "section": "Cards",
+      "line": "Two cards tighten lounge access from 1 October",
+      "target": "lounge-rules-oct",
+      "color": "--acc-mk"
+    }
+  ],
+  "front": {
+    "lead": {
+      "id": "hormuz-phased-deal",
+      "thread_id": "iran-hormuz-talks",
+      "section": "dateline",
+      "kicker": "World · Iran war",
+      "headline": "US and Iran discuss a phased deal to reopen Hormuz and lift the blockade",
+      "deck": "Iran's foreign minister met Witkoff and Kushner for about three hours in New York. Neither side wants to give up its leverage first.",
+      "byline": "REUTERS VIA US NEWS · CNBC · 24 SEP, NEW YORK",
+      "short": "US and Iranian negotiators are exploring a staged exit from the war in which Iran would reopen the Strait of Hormuz and Washington would lift its blockade, according to sources close to the talks. Abbas Araghchi met Steve Witkoff and Jared Kushner in Qatar-mediated talks at the UN General Assembly. Brent still closed 3.4% higher at $106.60.",
+      "more": [
+        "Tehran has put forward a roadmap with a region-wide ceasefire of up to 60 days, a phased reopening of the strait and a timetable for wider negotiations, The National reported. It reportedly includes a halt to attacks on Arab neighbours.",
+        "A June 17 memorandum along similar lines collapsed into renewed fighting. The war is in its 209th day. The International Energy Agency has called the closure of Hormuz the largest supply disruption in the history of the oil market.",
+        "Oil pulled back from its session highs after the report, but not far enough to undo the day's gains. US crude settled at $94.61."
+      ],
+      "why": {
+        "text": "Oil is what has been pushing the rupee toward 96 and the Sensex to a three-month low, so any real opening in Hormuz is the fastest route to relief for both.",
+        "personal": false
+      },
+      "sources": [
+        {
+          "label": "US News (Reuters)",
+          "url": "https://www.usnews.com/news/world/articles/2026-09-24/us-and-iran-discuss-phased-deal-to-reopen-hormuz-and-end-us-blockade-sources-say"
+        },
+        {
+          "label": "CNBC",
+          "url": "https://www.cnbc.com/2026/09/24/oil-iran-crude-kepler-trump-us-un-.html"
+        },
+        {
+          "label": "The National",
+          "url": "https://www.thenationalnews.com/news/mena/2026/09/23/iran-us-meeting-new-york/"
+        }
+      ],
+      "facts": {
+        "status": "talks on phased reopening",
+        "brent_close": "106.60",
+        "ceasefire_proposal_days": 60
+      }
+    },
+    "seconds": [
+      {
+        "id": "sensex-falls-oil",
+        "thread_id": "india-markets-daily",
+        "section": "ledger",
+        "kicker": "The Ledger · Markets",
+        "headline": "Sensex falls 1,248 points to a three-month low as oil and bond yields climb",
+        "byline": "BUSINESS STANDARD · CLOSE 24 SEP",
+        "short": "The Sensex closed at 73,580.54 on Thursday, down 1,247.71 points or 1.67%. The Nifty 50 fell 1.64% to 23,063.10. Reliance and financial stocks did most of the damage as Brent rose and global bond yields hit multi-year highs. Both indices are at their lowest close in three months.",
+        "why": {
+          "text": "Oil and US yields are now moving Indian stocks more than company news, so the Hormuz talks matter more to the Sensex this week than any earnings.",
+          "personal": false
+        },
+        "sources": [
+          {
+            "label": "Business Standard",
+            "url": "https://www.business-standard.com/amp/markets/news/stock-market-live-september-24-sensex-today-nifty-gift-nifty-nse-share-price-brent-crude-oil-price-126092400122_1.html"
+          },
+          {
+            "label": "India TV",
+            "url": "https://www.indiatvnews.com/business/markets/24-september-2026-stock-market-updates-sensex-tumbles-555-points-nifty-near-23-200-as-crude-prices-jump-nse-bse-in-red-2026-09-24-1055120"
+          }
+        ],
+        "facts": {
+          "sensex_close": "73580.54",
+          "nifty_close": "23063.10",
+          "date": "2026-09-24"
+        }
+      },
+      {
+        "id": "un-ai-rules",
+        "thread_id": "un-ai-governance",
+        "section": "workshop",
+        "kicker": "The Workshop · AI",
+        "headline": "Altman and Amodei ask the UN Security Council for shared AI rules. The US says no",
+        "byline": "CNN · CNBC · 23 SEP, NEW YORK",
+        "short": "OpenAI's Sam Altman and Anthropic's Dario Amodei urged the Security Council on Wednesday to adopt common AI safety standards. Altman asked countries to align how they measure capabilities and report failures. Amodei proposed narrow deals such as a ban on AI-built biological weapons. White House adviser Michael Kratsios said the US rejects global AI governance.",
+        "more": [
+          "Amodei set out three ideas: narrow global agreements, systems that let countries verify each other's commitments, and common testing standards with a way to report AI security incidents.",
+          "A day earlier, President Trump told the General Assembly that international oversight of AI was a \"globalist scheme\" to control the technology."
+        ],
+        "why": {
+          "text": "The labs asking for rules and the government refusing them are both American, so nothing binding is likely soon and the AI tools your team uses will keep changing on the labs' timetable.",
+          "personal": true
+        },
+        "sources": [
+          {
+            "label": "CNN",
+            "url": "https://www.cnn.com/2026/09/23/tech/altman-amodei-ai-safety-un-security-council"
+          },
+          {
+            "label": "CNBC",
+            "url": "https://www.cnbc.com/2026/09/23/altman-amodei-un-ai-safety.html"
+          },
+          {
+            "label": "The Next Web",
+            "url": "https://thenextweb.com/news/us-rejects-global-ai-governance"
+          }
+        ],
+        "facts": {
+          "event": "UNSC session",
+          "us_position": "rejects global governance"
+        }
+      },
+      {
+        "id": "laver-cup-day-one",
+        "thread_id": "laver-cup-2026",
+        "section": "deuce",
+        "kicker": "Deuce · Laver Cup",
+        "headline": "Alcaraz opens his Laver Cup in doubles tonight at the O2",
+        "byline": "LAVER CUP · PUNTO DE BREAK · 24 SEP",
+        "short": "Carlos Alcaraz plays Friday's night-session doubles with Jakub Mensik against Taylor Fritz and Alexander Bublik in London. The night session starts at 23:30 IST with a singles match first. Casper Ruud and Francisco Cerúndolo open the event in the day session at 17:30 IST.",
+        "more": [
+          "Friday wins are worth one point, Saturday wins two and Sunday wins three, and the first team to 13 takes the cup. Team Europe has Zverev, Alcaraz, Cobolli, Jódar, Mensik and Ruud. Team World, the holders, have de Minaur, Fritz, Tien, Nakashima, Bublik and Cerúndolo.",
+          "Novak Djokovic is not in London. He plays the China Open in Beijing from 30 September."
+        ],
+        "why": {
+          "text": "Doubles tonight means Alcaraz's singles matches are likely on Saturday and Sunday, when wins count double and triple.",
+          "personal": true
+        },
+        "sources": [
+          {
+            "label": "Laver Cup",
+            "url": "https://lavercup.com/news/2026/09/24/laver-cup-2026-day-1-lineups-ruud-and-cerundolo-open-at-the-o2"
+          },
+          {
+            "label": "Punto de Break",
+            "url": "https://www.puntodebreak.com/en/2026/09/24/alcaraz-and-jodar-will-debut-on-friday-at-the-2026-laver-cup"
+          },
+          {
+            "label": "Yahoo Sports",
+            "url": "https://sports.yahoo.com/articles/laver-cup-2026-format-points-181931284.html"
+          }
+        ],
+        "facts": {
+          "alcaraz_friday": "doubles with Mensik v Fritz/Bublik",
+          "score": "0-0"
+        }
+      }
+    ],
+    "briefs": [
+      {
+        "id": "baku-saturday",
+        "thread_id": "f1-baku-2026",
+        "section": "paddock",
+        "kicker": "🇦🇿 Paddock Notes",
+        "headline": "Baku races on Saturday, not Sunday",
+        "text": "The race moves a day early so it does not fall on Azerbaijan's Remembrance Day on 27 September. Qualifying is today at 17:30 IST and lights out is Saturday at 16:30 IST.",
+        "sources": [
+          {
+            "label": "Sky Sports",
+            "url": "https://www.skysports.com/f1/news/13588823/azerbaijan-gp-2026-saturday-race-dates-schedule-baku-weather-uk-start-time-and-how-to-watch-or-stream-f1-live-on-sky-sports"
+          },
+          {
+            "label": "Crash.net",
+            "url": "https://www.crash.net/f1/news/1105046/1/f1-2026-azerbaijan-grand-prix-start-time-and-schedule"
+          }
+        ],
+        "facts": {
+          "race_utc": "2026-09-26T11:00:00Z",
+          "quali_utc": "2026-09-25T12:00:00Z"
+        }
+      },
+      {
+        "id": "wi-odi-sunday",
+        "thread_id": "india-v-wi-2026",
+        "section": "crease",
+        "kicker": "The Crease",
+        "headline": "India start eight matches against West Indies on Sunday",
+        "text": "Three ODIs and five T20Is run from 27 September to 17 October. The first ODI is at the Greenfield Stadium in Thiruvananthapuram. Kohli and Rohit are in Shubman Gill's ODI squad.",
+        "sources": [
+          {
+            "label": "WION",
+            "url": "https://www.wionews.com/sports/ind-vs-wi-2026-series-schedule-dates-venues-live-streaming-and-all-you-need-to-know-1790244772328"
+          },
+          {
+            "label": "The Tribune",
+            "url": "https://www.tribuneindia.com/news/sports/west-indies-team-arrive-in-thiruvananthapuram-for-first-odi-against-india-on-september-27"
+          }
+        ],
+        "facts": {
+          "first_odi": "2026-09-27",
+          "venue": "Thiruvananthapuram"
+        }
+      },
+      {
+        "id": "madrid-break",
+        "thread_id": "madrid-next-villarreal",
+        "section": "madrid",
+        "kicker": "Madridismo",
+        "headline": "Break until Villarreal on 11 October",
+        "text": "Villarreal at the Bernabéu is next, at 00:30 IST on Sunday 11 October. Madrid are fourth on 15 points, six behind Barcelona.",
+        "sources": [
+          {
+            "label": "realmadrid.com",
+            "url": "https://www.realmadrid.com/en-US/news/football/first-team/latest-news/el-real-madrid-villarreal-se-jugara-sabado-10-de-octubre-a-las-21-00-h-10-09-2026"
+          }
+        ],
+        "facts": {
+          "next": "Villarreal (H) 2026-10-10T19:00:00Z",
+          "position": 4,
+          "points": 15
+        }
+      }
+    ]
+  },
+  "sections": {
+    "madrid": {
+      "sub": "International break",
+      "stories": [
+        {
+          "id": "bellingham-extension",
+          "thread_id": "bellingham-contract",
+          "section": "madrid",
+          "kicker": "Contracts",
+          "headline": "Madrid move to extend Bellingham's contract to 2031",
+          "byline": "MANAGING MADRID · GOAL · 24 SEP",
+          "short": "Real Madrid and Jude Bellingham are working on an extension that would run to 2031, two years beyond his current deal. Reports say the club wants to put him on the same salary tier as Vinícius Júnior and Kylian Mbappé. Journalist Matteo Moretto expects an agreement within two weeks.",
+          "why": {
+            "text": "It would lock the spine of the squad around Bellingham, Vinícius and Mbappé through the end of the decade.",
+            "personal": true
+          },
+          "sources": [
+            {
+              "label": "Managing Madrid",
+              "url": "https://www.managingmadrid.com/113379/bellingham-real-madrid-contract-extension-news-rumors-2026"
+            },
+            {
+              "label": "Goal",
+              "url": "https://www.goal.com/en-za/news/real-madrid-to-renew-their-star-s-contract-within-two-weeks/blt34f2d600c95aec71"
+            }
+          ],
+          "facts": {
+            "status": "talks",
+            "until": 2031,
+            "current_expiry": 2029
+          }
+        }
+      ]
+    },
+    "paddock": {
+      "data": {
+        "local_tz": "Asia/Baku",
+        "max_note": "Second in first practice and third in second practice in Baku.",
+        "notes": [
+          {
+            "label": "Why Saturday",
+            "text": "Organisers moved the race so it does not fall on Remembrance Day, 27 September, which honours soldiers killed in the 2020 war with Armenia. The whole weekend runs a day early."
+          }
+        ]
+      },
+      "stories": [
+        {
+          "id": "baku-practice-russell",
+          "thread_id": "f1-baku-practice",
+          "section": "paddock",
+          "kicker": "Practice",
+          "headline": "Russell tops both Baku practices, Verstappen second and third",
+          "byline": "FORMULA1.COM · 24 SEP, BAKU",
+          "short": "George Russell was fastest in both Thursday sessions for Mercedes. His 1m 43.347s in second practice was half a second clear of Kimi Antonelli, with Max Verstappen a further three tenths back. Verstappen was second in first practice, four tenths off Russell. Antonelli lost time in the first session with a hydraulic problem.",
+          "why": {
+            "text": "Mercedes look strongest again, so a Verstappen podium on Saturday would be a good result rather than a given.",
+            "personal": true
+          },
+          "sources": [
+            {
+              "label": "Formula 1 (FP2)",
+              "url": "https://www.formula1.com/en/latest/article/fp2-russell-leads-antonelli-and-verstappen-in-second-azerbaijan-gp-practice.37CqNf2uaAyxvDPmvbt3Iw"
+            },
+            {
+              "label": "Formula 1 (FP1)",
+              "url": "https://www.formula1.com/en/latest/article/fp1-russell-leads-opening-azerbaijan-gp-practice-from-verstappen-as-antonelli-suffers-hydraulic-issue.1vpwyIqrue0aq0qtifIKCC"
+            }
+          ],
+          "facts": {
+            "fp1": "Russell P1, Verstappen P2",
+            "fp2": "Russell P1, Antonelli P2, Verstappen P3"
+          }
+        }
+      ]
+    },
+    "crease": {
+      "data": {
+        "rows": [
+          {
+            "label": "Next",
+            "text": "1st ODI v West Indies · Greenfield Stadium, Thiruvananthapuram · Sun 27 Sep, time TBC (13:30 or 14:00 IST, sources differ)",
+            "on": true
+          },
+          {
+            "label": "ODIs",
+            "text": "Thiruvananthapuram 27 Sep · Guwahati 30 Sep · New Chandigarh 3 Oct"
+          },
+          {
+            "label": "T20Is",
+            "text": "Lucknow 6 Oct · Ranchi 9 Oct · Indore 11 Oct · Hyderabad 14 Oct · Bengaluru 17 Oct"
+          },
+          {
+            "label": "Captains",
+            "text": "Shubman Gill (ODI, KL Rahul vice-captain) · Shreyas Iyer (T20I)"
+          }
+        ]
+      },
+      "stories": [
+        {
+          "id": "odi-squad-kohli-rohit",
+          "thread_id": "india-odi-squad-wi",
+          "section": "crease",
+          "kicker": "Team news",
+          "headline": "Kohli and Rohit in the ODI squad as West Indies land in Thiruvananthapuram",
+          "byline": "THE TRIBUNE · WISDEN · 23 SEP",
+          "short": "Shai Hope's West Indies arrived in Kerala on Wednesday for Sunday's first ODI. India's 15 under Shubman Gill include Rohit Sharma and Virat Kohli, with KL Rahul and Dhruv Jurel as the wicketkeepers. Kuldeep Yadav, Ravindra Jadeja, Mohammed Siraj and Prasidh Krishna lead the attack.",
+          "why": {
+            "text": "Two ODIs in Guwahati and New Chandigarh follow within a week, so this series is the next real look at Kohli and Rohit in India colours.",
+            "personal": true
+          },
+          "sources": [
+            {
+              "label": "The Tribune",
+              "url": "https://www.tribuneindia.com/news/sports/west-indies-team-arrive-in-thiruvananthapuram-for-first-odi-against-india-on-september-27"
+            },
+            {
+              "label": "Wisden",
+              "url": "https://www.wisden.com/series/india-vs-west-indies-m-2026/cricket-news/india-vs-west-indies-odis-full-squads-team-news-schedule-and-all-you-need-to-know-for-west-indies-tour-of-india"
+            }
+          ],
+          "facts": {
+            "captain": "Shubman Gill",
+            "kohli": "in squad",
+            "rohit": "in squad"
+          }
+        }
+      ]
+    },
+    "sidelines": {
+      "stories": [
+        {
+          "id": "asian-games-day-five",
+          "thread_id": "asian-games-2026-india",
+          "section": "sidelines",
+          "kicker": "Asian Games · Aichi-Nagoya",
+          "headline": "India's hockey men beat South Korea 8–2 as the athletics programme opens",
+          "byline": "OLYMPICS.COM · ESPN · 24 SEP",
+          "short": "India's men beat South Korea 8–2 in Pool A on Thursday. Anahat Singh reached the squash quarter-finals with a 3–0 win and Tanvi Khanna also went through. Satnam Singh and Salman Khan won bronze in the men's double sculls. Friday has seven Indian medal events across shooting, canoe sprint, weightlifting and athletics.",
+          "why": {
+            "text": "The Games run into early October and India's medal events land mostly in the IST morning, before this paper goes out.",
+            "personal": false
+          },
+          "sources": [
+            {
+              "label": "Olympics.com",
+              "url": "https://www.olympics.com/en/news/asian-games-2026-india-schedule-today-september-24-thursday"
+            },
+            {
+              "label": "ESPN",
+              "url": "https://www.espn.com/espn/story/_/id/50018765/india-asian-games-2026-aichi-nagoya-full-schedule-medal-events-fixtures-september-25-friday"
+            }
+          ],
+          "facts": {
+            "hockey_men": "beat South Korea 8-2",
+            "rowing": "bronze men's double sculls"
+          }
+        }
+      ]
+    },
+    "dateline": {
+      "stories": [
+        {
+          "id": "us-yields-2007-high",
+          "thread_id": "us-10y-yield",
+          "section": "dateline",
+          "kicker": "Economy · United States",
+          "headline": "US 10-year yield hits 5.11%, its highest since 2007",
+          "byline": "CNN · SEEKING ALPHA · 23 SEP",
+          "short": "The yield on the 10-year US Treasury jumped about 15 basis points to 5.11% on Wednesday, a 19-year high. Strong September business activity data raised bets on another Federal Reserve rate rise in October, with futures pricing the odds at 66%. The 30-year yield also reached its highest level since 2004.",
+          "why": {
+            "text": "Higher US yields pull money out of India and push up borrowing costs everywhere, which is the second force behind this week's Sensex fall.",
+            "personal": false
+          },
+          "sources": [
+            {
+              "label": "CNN",
+              "url": "https://www.cnn.com/2026/09/23/investing/us-bond-market-fed"
+            },
+            {
+              "label": "Seeking Alpha",
+              "url": "https://seekingalpha.com/news/4646208-us10y-tops-5_1-percent-marking-its-highest-level-since-2007"
+            }
+          ],
+          "facts": {
+            "us10y": "5.11",
+            "date": "2026-09-23"
+          }
+        },
+        {
+          "id": "zelenskyy-un-warning",
+          "thread_id": "ukraine-war-unga",
+          "section": "dateline",
+          "kicker": "World · UN General Assembly",
+          "headline": "Zelenskyy tells the UN that Russia's war could spread to Moldova, Poland and the Baltics",
+          "byline": "UPI · PBS · 23 SEP, NEW YORK",
+          "short": "Volodymyr Zelenskyy told the General Assembly that Russia's war could reach other parts of Europe and named Moldova, Poland and the Baltic states. He called Vladimir Putin \"Patient Zero\" and asked for more economic pressure to force a peace deal before another winter. US Secretary of State Marco Rubio gave a similar warning, citing drone incursions and sabotage.",
+          "why": {
+            "text": "A wider war in Europe would add to the energy shock already coming from the Gulf.",
+            "personal": false
+          },
+          "sources": [
+            {
+              "label": "UPI",
+              "url": "https://www.upi.com/Top_News/World-News/2026/09/23/zelensky-tells-un-general-assembly-war-could-spread/2021790196620"
+            },
+            {
+              "label": "PBS",
+              "url": "https://www.pbs.org/newshour/show/news-wrap-zelenskyy-warns-un-that-russias-war-could-spread"
+            }
+          ],
+          "facts": {
+            "speech": "UNGA 2026-09-23"
+          }
+        }
+      ],
+      "briefs": [
+        {
+          "id": "oecd-india-7-1",
+          "thread_id": "oecd-india-forecast",
+          "section": "dateline",
+          "kicker": "India · Economy",
+          "headline": "OECD raises India's growth forecast to 7.1%",
+          "text": "The OECD now expects 7.1% growth in 2026-27, up from 6.3% in June, citing resilient demand and government support against high energy prices. It is the highest forecast among the major agencies.",
+          "sources": [
+            {
+              "label": "Business Standard",
+              "url": "https://www.business-standard.com/amp/economy/news/oecd-raises-india-s-gdp-growth-forecast-to-7-1-citing-resilient-demand-126092300674_1.html"
+            }
+          ],
+          "facts": {
+            "fy27": "7.1",
+            "previous": "6.3"
+          }
+        }
+      ]
+    },
+    "workshop": {
+      "stories": [
+        {
+          "id": "frontier-ai-standards",
+          "thread_id": "frontier-ai-standards-agency",
+          "section": "workshop",
+          "kicker": "AI",
+          "headline": "OpenAI, Google and Anthropic plan their own AI safety standards body",
+          "byline": "PYMNTS · 24 SEP",
+          "short": "The three labs are setting up a voluntary industry body, tentatively called the Frontier AI Standards Agency, to launch in late 2026 or 2027 without government oversight. It would back outside testers who check models before release, set rules for reporting safety incidents and define qualifications for independent auditors. They have approached Sriram Krishnan to run it.",
+          "why": {
+            "text": "With Washington refusing international rules, this is the likeliest source of any common safety standard for the tools you use at work.",
+            "personal": true
+          },
+          "sources": [
+            {
+              "label": "PYMNTS",
+              "url": "https://www.pymnts.com/news/artificial-intelligence/2026/openai-google-and-anthropic-join-forces-to-set-ai-safety-standards/"
+            }
+          ],
+          "facts": {
+            "name": "Frontier AI Standards Agency",
+            "launch": "late 2026 or 2027"
+          }
+        },
+        {
+          "id": "fitbit-air-india",
+          "thread_id": "fitbit-air-india",
+          "section": "workshop",
+          "kicker": "Wearables",
+          "headline": "Fitbit Air listed at ₹13,999 ahead of its October India launch",
+          "byline": "BUSINESS TODAY · 24 SEP",
+          "short": "Google's Fitbit Air has appeared on Flipkart at ₹13,999 before its confirmed October launch in India. It is a 12-gram screenless band for continuous health, fitness and recovery tracking, aimed at the same buyers as Whoop, and it works with both Android and iPhone.",
+          "verdict": "wait",
+          "why": {
+            "text": "Wait for the first reviews on sleep and recovery accuracy and for the subscription terms before buying.",
+            "personal": true
+          },
+          "sources": [
+            {
+              "label": "Business Today",
+              "url": "https://www.businesstoday.in/technology/news/story/google-fitbit-air-listed-at-rs13999-on-flipkart-ahead-of-october-india-launch-features-to-know-557605-2026-09-24"
+            }
+          ],
+          "new_for_you": false,
+          "facts": {
+            "price_inr": 13999,
+            "launch": "October"
+          }
+        }
+      ]
+    },
+    "ledger": {
+      "stories": [
+        {
+          "id": "lounge-rules-oct",
+          "thread_id": "cards-lounge-oct-2026",
+          "section": "ledger",
+          "kicker": "Cards & Points",
+          "headline": "Amex Platinum Travel and Bank of Baroda premium cards tighten lounge access from 1 October",
+          "byline": "LIVE FROM A LOUNGE · SAVESAGE",
+          "short": "From 1 October, Amex Platinum Travel cardholders need ₹1 lakh of eligible spend in the previous calendar quarter to unlock the card's eight domestic lounge visits. Its ₹7 lakh milestone has already lost 22,500 Membership Rewards points. Bank of Baroda's Eterna, Tiara and Varunah Premium cards raise the quarterly lounge threshold from ₹40,000 to ₹75,000.",
+          "why": {
+            "text": "Spend in July to September decides lounge access in October to December on both cards, so the quarter that counts ends next week.",
+            "personal": false
+          },
+          "sources": [
+            {
+              "label": "Live From A Lounge",
+              "url": "https://livefromalounge.com/american-express-platinum-travel-card-gets-another-devaluation-inr-1-9-lakh-milestone-removed-inr-7-lakh-milestone-rewards-cut-lounge-access-gets-a-spend-condition/"
+            },
+            {
+              "label": "SaveSage",
+              "url": "https://savesage.club/blogs/bobcard-devaluation-july-2026"
+            }
+          ],
+          "facts": {
+            "amex_ptc_lounge_spend": "1 lakh per quarter",
+            "bob_lounge_spend": "75000 per quarter",
+            "effective": "2026-10-01"
+          }
+        }
+      ]
+    },
+    "namma": {
+      "stories": [
+        {
+          "id": "hebbal-tunnel-trees",
+          "thread_id": "hebbal-tunnel",
+          "section": "namma",
+          "kicker": "Roads",
+          "headline": "Hebbal tunnel plan would fell 1,128 trees; petition passes 20,000 signatures",
+          "byline": "DECCAN HERALD · ONEINDIA",
+          "short": "The BDA's short tunnel from Hebbal junction to the UAS staff quarters would remove more than 1,100 trees across over 70 species on a 2.3 km stretch. The Greater Bengaluru Authority has invited public objections. A petition asking the state to pause the project and commission independent studies has crossed 20,000 signatures.",
+          "why": {
+            "text": "Hebbal is the airport road bottleneck, so whatever is decided here changes the drive to Kempegowda Airport for years.",
+            "personal": false
+          },
+          "sources": [
+            {
+              "label": "Deccan Herald",
+              "url": "https://www.deccanherald.com/india/karnataka/bengaluru/over-1100-trees-face-the-axe-for-bengalurus-hebbal-tunnels-23-km-long-stretch-4153242"
+            },
+            {
+              "label": "Oneindia",
+              "url": "https://www.oneindia.com/bengaluru/20-000-signatures-against-hebbal-tunnel-project-citizens-seek-independent-studies-8214787.html"
+            }
+          ],
+          "facts": {
+            "trees": 1128,
+            "petition": "20000+"
+          }
+        }
+      ],
+      "briefs": [
+        {
+          "id": "pink-line-october",
+          "thread_id": "metro-pink-line",
+          "section": "namma",
+          "kicker": "Metro",
+          "headline": "Pink Line's first stretch likely to slip to mid-October",
+          "text": "The 7.5 km elevated section from Kalena Agrahara to Tavarekere, with an interchange at Jayadeva, still needs its final signalling safety certificate and railway clearances.",
+          "sources": [
+            {
+              "label": "Nativeplanet",
+              "url": "https://www.nativeplanet.com/news/bengaluru-metro-pink-line-opening-2026-mid-october-launch-details-011-24533.html"
+            }
+          ],
+          "facts": {
+            "expected": "mid-October",
+            "stretch": "Kalena Agrahara to Tavarekere"
+          }
+        }
+      ]
+    }
+  },
+  "chronology": {
+    "madrid": {
+      "next": {
+        "when_utc": "2026-10-10T19:00:00Z",
+        "label": "Villarreal",
+        "detail": "Home · La Liga"
+      }
+    },
+    "india_cricket": {
+      "next": {
+        "when_utc": "2026-09-27T08:00:00Z",
+        "label": "West Indies",
+        "detail": "1st ODI · Thiruvananthapuram · time TBC",
+        "time_tbc": true
+      }
+    },
+    "f1": {
+      "next": {
+        "when_utc": "2026-09-25T08:30:00Z",
+        "label": "Azerbaijan GP · Practice 3"
+      }
+    }
+  },
+  "fixtures": [
+    {
+      "when_utc": "2026-09-25T08:30:00Z",
+      "minutes": 60,
+      "label": "F1 · Baku · Practice 3",
+      "entity": "f1",
+      "where": null,
+      "source": "Formula 1, Sky Sports"
+    },
+    {
+      "when_utc": "2026-09-25T12:00:00Z",
+      "minutes": 60,
+      "label": "F1 · Baku · Qualifying",
+      "entity": "f1",
+      "where": null,
+      "source": "Formula 1, Sky Sports"
+    },
+    {
+      "when_utc": "2026-09-25T12:00:00Z",
+      "minutes": 300,
+      "label": "Laver Cup · Day 1 day session · Ruud v Cerúndolo first",
+      "entity": "tennis",
+      "where": null,
+      "source": "Laver Cup"
+    },
+    {
+      "when_utc": "2026-09-25T18:00:00Z",
+      "minutes": 240,
+      "label": "Laver Cup · Day 1 night session · Alcaraz and Mensik in the doubles",
+      "entity": "tennis",
+      "where": null,
+      "source": "Laver Cup, Punto de Break"
+    },
+    {
+      "when_utc": "2026-09-26T11:00:00Z",
+      "minutes": 120,
+      "label": "F1 · Azerbaijan Grand Prix",
+      "entity": "f1",
+      "where": null,
+      "source": "Formula 1, Sky Sports, Crash.net"
+    },
+    {
+      "when_utc": "2026-09-27T08:00:00Z",
+      "time_tbc": true,
+      "label": "India v West Indies · 1st ODI · Thiruvananthapuram",
+      "entity": "india_cricket",
+      "where": null,
+      "source": "WION, The Tribune"
+    },
+    {
+      "when_utc": "2026-09-30T00:00:00Z",
+      "until_utc": "2026-10-06T16:00:00Z",
+      "label": "China Open, Beijing · Djokovic entered",
+      "entity": "tennis",
+      "where": null,
+      "source": "Sky Sports"
+    },
+    {
+      "when_utc": "2026-10-10T19:00:00Z",
+      "minutes": 120,
+      "label": "Real Madrid v Villarreal · La Liga",
+      "entity": "madrid",
+      "where": null,
+      "source": "realmadrid.com"
+    }
+  ],
+  "tennis": {
+    "events": [
+      {
+        "name": "Laver Cup",
+        "place": "The O2, London",
+        "dates": "25–27 Sep",
+        "note": "Alcaraz for Team Europe"
+      },
+      {
+        "name": "China Open",
+        "place": "Beijing",
+        "dates": "30 Sep–6 Oct",
+        "level": "ATP 500",
+        "note": "Djokovic entered"
+      },
+      {
+        "name": "Shanghai Masters",
+        "place": "Shanghai",
+        "dates": "7–18 Oct",
+        "level": "Masters 1000",
+        "note": "Djokovic set to play"
+      }
+    ],
+    "players": [
+      {
+        "name": "Carlos Alcaraz",
+        "next_match": {
+          "text": "Laver Cup doubles with Mensik v Fritz and Bublik, Friday night session from 23:30 IST, single match first."
+        },
+        "next_event": {
+          "text": "Laver Cup, The O2, London, 25–27 Sep, Team Europe."
+        }
+      },
+      {
+        "name": "Novak Djokovic",
+        "next_match": null,
+        "next_event": {
+          "text": "China Open, Beijing, 30 Sep to 6 Oct, then Shanghai from 7 Oct."
+        },
+        "note": "Not in either Laver Cup team."
+      }
+    ]
+  },
+  "screen": [
+    {
+      "title": "Heart of the Beast",
+      "type": "Film",
+      "language": "English",
+      "where": "Theatres",
+      "release": "Out today",
+      "verdict": "good",
+      "reason": "Critics strongly positive, around 90% on Rotten Tomatoes; some find the man-and-dog survival story sentimental. Brad Pitt, directed by David Ayer.",
+      "url": "https://www.rottentomatoes.com/m/heart_of_the_beast"
+    },
+    {
+      "title": "Shaque: Trust No One",
+      "type": "Series · 7 episodes",
+      "language": "Hindi",
+      "where": "Netflix",
+      "release": "Out now",
+      "verdict": "call",
+      "reason": "Reviews cluster around 3 out of 5: Jennifer Winget is praised, the mystery gets lost in too many twists.",
+      "url": "https://www.freepressjournal.in/entertainment/shaque-trust-no-one-review-jennifer-winget-steals-the-show-in-this-solid-mystery"
+    },
+    {
+      "title": "The Vvaan: Force of the Forrest",
+      "type": "Film",
+      "language": "Hindi",
+      "where": "Theatres",
+      "release": "Out today",
+      "verdict": "early",
+      "reason": "Folklore fantasy with Sidharth Malhotra and Tamannaah Bhatia. Early reviews like the folklore and the leads.",
+      "url": "https://www.rottentomatoes.com/m/the_vvaan_force_of_the_forrest"
+    },
+    {
+      "title": "The Love Hypothesis",
+      "type": "Film",
+      "language": "English",
+      "where": "Prime Video",
+      "release": "Out now",
+      "verdict": "early",
+      "reason": "Adaptation of Ali Hazelwood's romance novel.",
+      "url": "https://www.india.com/photos/entertainment/ott-releases-this-week-september-21-to-september-27-2026-the-love-hypothesis-hunkkaar-the-roar-shaque-new-movies-and-web-series-to-stream-on-jiohotstar-prime-video-more-497661/"
+    },
+    {
+      "title": "Bakaiti · Season 2",
+      "type": "Series",
+      "language": "Hindi",
+      "where": "ZEE5",
+      "release": "Out today",
+      "verdict": "early",
+      "reason": "Family comedy returns for a second season.",
+      "url": "https://sundayguardianlive.com/entertainment-news/friday-ott-releases-september-25-2026-new-movies-and-shows-arriving-on-netflix-zee5-and-more-this-weekend-290986/"
+    }
+  ],
+  "desk": [
+    {
+      "when": "Fri 25 Sep, 15:45",
+      "group": "72h",
+      "kind": "fyi",
+      "text": "Hanuman Ansh (Hindi) at PVR Vinayak, Prayagraj, booked on your PVR INOX account."
+    },
+    {
+      "when": "Sat 26 Sep, 16:30",
+      "group": "72h",
+      "kind": "watch",
+      "text": "F1 plan with Srishti and co-workers, lights out in Baku at the same time."
+    },
+    {
+      "when": "Sat 26 Sep, 19:30",
+      "group": "72h",
+      "kind": "action",
+      "text": "Srishti's \"Clubbing?!\" invite at Sarjapur Social still needs your RSVP. Table booked there for 20:30 via EazyDiner, booking 19916801."
+    },
+    {
+      "when": "Sun 27 Sep, 12:00",
+      "group": "72h",
+      "kind": "watch",
+      "text": "Brunch Ka Scene at Jollygunj, Whitefield. District tickets, carry photo ID."
+    },
+    {
+      "when": "Sun 27 Sep, 19:00",
+      "group": "72h",
+      "kind": "watch",
+      "text": "Sufi Qawwali Mehfil at Jayamahal Palace Hotel, two Gold tickets."
+    },
+    {
+      "when": "Thu 8 Oct",
+      "group": "week2",
+      "kind": "action",
+      "text": "Nitya's birthday."
+    },
+    {
+      "when": "Fri 9 Oct",
+      "group": "week2",
+      "kind": "action",
+      "text": "Ava's birthday (HighRadius)."
+    }
+  ],
+  "before_you_go": {
+    "watch": [
+      "Baku qualifying today at 17:30 IST; the race is Saturday at 16:30.",
+      "Alcaraz in Laver Cup doubles tonight; the night session starts at 23:30 IST.",
+      "India v West Indies, 1st ODI, Sunday afternoon."
+    ],
+    "do": [
+      "RSVP to Saturday's Sarjapur Social plan.",
+      "Amex Platinum Travel or Bank of Baroda premium cardholders: check this quarter's spend before 30 September."
+    ]
+  },
+  "snapshot": {}
+}
