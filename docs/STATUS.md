@@ -4,9 +4,9 @@
 - Site on Vercel (project `house-of-1400`), password gate, Edition No. 1 (25 Sep) published.
 - Every page from SPEC: `/`, `/archive`, `/e/YYYY-MM-DD`, `/today`, `?poster=<id>`.
 - Live layer: weather, F1 (next, standings, last), Madrid fixtures and results, La Liga table, NBA/Warriors, ATP events, markets with sparklines, FX, Bitcoin, IBJA gold, Google Trends, Polymarket. Each returns `{ok, value, source, as_of, stale}` with primary, backup, edition snapshot, then hide.
-- Features: Read more in place, Original ↗, Clip as image, thumbs with toast, New for you label, At a Glance, sticky index and chips, night edition, poster mode (5 variants plus Wake Lock and full screen), "Today's paper is late" line after 15:15 IST, Your Desk folded.
+- Features: Full story in place, Source ↗, Share as image, 👍/👎 with toast, New for you label, At a Glance, sticky index and chips, night edition, poster mode (5 variants plus Wake Lock and full screen), "Today's paper is late" line after 16:30 IST, Your Desk folded.
 - Tooling: `npm test` (live checks), offline tests, `validate`, `snapshot`, `publish-edition`, local `scripts/dev.mjs`.
-- Four scheduled daily runs created (13:15, 13:44, 14:13, 14:42 IST) as claude.ai routines. Each starts a fresh cloud session in this environment, attaches the repo, and exits at once if today's edition is already on `main`. Today's runs will exit, because Edition No. 1 is already out.
+- Four scheduled daily runs (14:00, 14:29, 14:58, 15:27 IST; information cut 14:00) as claude.ai routines. Each starts a fresh cloud session in this environment, attaches the repo, and exits at once if today's edition is already on `main`. Today's runs will exit, because Edition No. 1 is already out; 26 Sep is the first scheduled edition.
 - Production URL: https://house-of-1400.vercel.app
 
 ## Verified against the real APIs (25 Sep, 06:30 IST)

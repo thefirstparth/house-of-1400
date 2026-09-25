@@ -81,7 +81,7 @@ Full screen via the Fullscreen API and a screen wake lock where allowed. For a r
 ## Content schema (`content/editions/YYYY-MM-DD.json`)
 ```
 {
-  "date": "YYYY-MM-DD", "edition_no": 1, "weekday": "fri", "cut_ist": "13:55",
+  "date": "YYYY-MM-DD", "edition_no": 1, "weekday": "fri", "cut_ist": "14:00",
   "profile_line": "Friday edition · Screen & Stage and Namma Beat run longer today",
   "editor_note": null | "text",
   "house_note": "text",
