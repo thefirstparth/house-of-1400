@@ -4,7 +4,7 @@ const $$ = s => [...document.querySelectorAll(s)];
 const TZ = "Asia/Kolkata";
 const LIVE_EVERY = 5 * 60 * 1000;
 
-let CFG, E, ROUTE, LIVE = {}, pTimer, liveTimer;
+let CFG, E, ROUTE, LIVE = {}, pTimer, liveTimer, liveTried = false;
 
 // ------------------------------------------------------------------ helpers
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -65,12 +65,14 @@ async function refreshLive() {
     const slugs = (E.betting || []).map(b => b.id).filter(Boolean).join(",");
     await Promise.all([live("betting", slugs ? `?slugs=${encodeURIComponent(slugs)}` : ""), E.trends?.india?.length ? null : live("trends")]);
   }
+  liveTried = true;
   paintLive();
 }
 
 function staleNote(k) {
   const L = LIVE[k];
-  return L?.stale ? `<div class="asof stale">From the ${esc(L.source || "edition")} snapshot, ${agoIST(L.as_of)}</div>` : "";
+  // Say "from the snapshot" only once a live fetch has failed, or on a past edition.
+  return L?.stale && (liveTried || ROUTE.kind === "edition") ? `<div class="asof stale">From the ${esc(L.source || "edition")} snapshot, ${agoIST(L.as_of)}</div>` : "";
 }
 
 // ------------------------------------------------------------------ events (countdowns, on now)
@@ -418,21 +420,21 @@ function liveTrends() {
 }
 
 function talkBlock() {
-  const T = E.trends?.india?.length || E.trends?.world?.length ? E.trends : ROUTE.kind !== "edition" ? liveTrends() : null;
+  const T = E.trends?.india?.length || E.trends?.world?.length ? E.trends : liveTrends();
   if (!T || (!T.india?.length && !T.world?.length)) return "";
   const col = (label, list) => (list?.length ? `<div><div class="nm" style="font:700 11px var(--utilf);letter-spacing:.12em;margin-bottom:4px">${esc(label)}</div>${list.map((t, i) => `<div class="trend"><b>${i + 1}</b><span><b style="color:var(--ink);font:700 15px var(--bodyf)">${esc(t.term)}</b> · ${t.url ? `<a href="${esc(t.url)}" target="_blank" rel="noopener" style="color:inherit">${esc(t.what)}</a>` : esc(t.what)}</span></div>`).join("")}</div>` : "");
-  return `<div class="cols2">${col("India", T.india)}${col(T.world_label || "World", T.world)}</div>${T.live ? `<p class="asof" style="margin-top:8px">Live from Google Trends, with the top linked headline for each.</p>` : ""}`;
+  return `<div class="cols2">${col("India", T.india)}${col(T.world_label || "World", T.world)}</div>${T.live ? `<p class="asof" style="margin-top:8px">${LIVE.trends?.stale ? `Google Trends ${agoIST(LIVE.trends.as_of)}` : "Live from Google Trends"}, with the top linked headline for each.</p>` : ""}`;
 }
 
 function bettingBlock() {
   const liveM = LIVE.betting?.value?.markets || [];
-  const list = E.betting?.length ? E.betting : ROUTE.kind !== "edition" && !LIVE.betting?.stale ? liveM.slice(0, CFG.betting.target || 5) : [];
+  const list = E.betting?.length ? E.betting : liveM.slice(0, CFG.betting.target || 5);
   if (!list.length) return "";
   return `<div class="cols2">${list.map(b => {
     const L = !LIVE.betting?.stale && liveM.find(m => m.id === b.id);
     const outs = (L?.outcomes?.length ? L.outcomes : b.outcomes).slice(0, 3);
     return `<div class="item" style="--acc:var(--acc-wd)"><div class="tag">${esc(b.category || "World")}</div><h4><a href="${esc(b.url)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">${esc(b.title)}</a></h4><div class="odds">${outs.map(o => `<span>${esc(o.name)}</span><span class="r tnum" style="text-align:right">${Number(o.prob).toFixed(1)}%</span><div class="b"><span style="width:${Math.max(0, Math.min(100, o.prob))}%"></span></div>`).join("")}</div></div>`;
-  }).join("")}</div><p class="asof" style="margin-top:8px">${LIVE.betting && !LIVE.betting.stale ? "Live prices from Polymarket, by 24-hour volume, after the paper's exclusions" : "Prices at press time, Polymarket"}.</p>`;
+  }).join("")}</div><p class="asof" style="margin-top:8px">${LIVE.betting && !LIVE.betting.stale ? "Live prices from Polymarket, by 24-hour volume, after the paper's exclusions" : `Polymarket prices ${agoIST(LIVE.betting?.as_of) || "at press time"}`}.</p>`;
 }
 
 function byeBlock() {
