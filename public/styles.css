@@ -675,3 +675,4 @@ body{font-variant-numeric:oldstyle-nums proportional-nums;background-image:url("
   .tbl.cr td:nth-child(3) small::before{content:" · "}
   .tbl.cr td:nth-child(4) small{display:block}
 }
+sup.calc{font-size:.7em;color:var(--muted);margin-left:1px}

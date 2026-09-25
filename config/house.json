@@ -222,22 +222,26 @@
       {
         "name": "Nifty 50",
         "yahoo": "^NSEI",
-        "exchange": "India"
+        "exchange": "India",
+        "published": "in;NSX"
       },
       {
         "name": "Nifty IT",
         "yahoo": "^CNXIT",
-        "exchange": "India"
+        "exchange": "India",
+        "published": "in;cnit"
       },
       {
         "name": "Sensex",
         "yahoo": "^BSESN",
-        "exchange": "India"
+        "exchange": "India",
+        "published": "in;SEN"
       },
       {
         "name": "S&P 500",
         "yahoo": "^GSPC",
-        "exchange": "US"
+        "exchange": "US",
+        "published": "us;SPX"
       },
       {
         "name": "Dow Jones",
@@ -257,7 +261,8 @@
     "cross": [
       {
         "name": "Bank Nifty",
-        "yahoo": "^NSEBANK"
+        "yahoo": "^NSEBANK",
+        "published": "in;nbx"
       },
       {
         "name": "USD/INR",
@@ -343,7 +348,8 @@
         "vix_name": "VIX"
       },
       "method": "Score 0 to 100 from four readings, each scaled 0 to 1: where the index sits in its 3-month range (30%), its 7-day move (25%, ±4% is the full scale), today's move (15%, ±1.5%), and the volatility index inverted within its own 3-month range (30%; calm is high). Below 25 Fearful, 25 to 44 Cautious, 45 to 55 Neutral, 56 to 74 Confident, 75 and above Exuberant."
-    }
+    },
+    "returns_note": "7D and 1M are Moneycontrol's published figures where it publishes them (its Indian figures agree with NSE's own). Where no reliable source publishes them (Dow Jones and Nasdaq-100 today), they are worked out from official daily closes and marked as calculated."
   },
   "weather": {
     "always": [

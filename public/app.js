@@ -411,7 +411,14 @@ function mondayLedger(D) {
 }
 
 // The index board: level, 1D, 7D, 1M and a 30-day line for each index, India first, then the US.
-// 7D and 1M compare today's price with the last close on or before the same date 7 and 30 days back (hover shows it).
+// 7D and 1M are the publisher's own figures (Moneycontrol) where published; otherwise worked out from daily
+// closes and marked with a dagger. Hover shows the comparison date and where the figure came from.
+const retCell = (q, v, from, extra = "") => {
+  const src = q.returns_source ? (q.returns_calc ? "Calculated from daily closes (no publisher prints this)" : q.returns_source) : "";
+  const t = [from ? `vs ${sparkLabel(from)}` : "", src].filter(Boolean).join(" · ");
+  return `<td class="r tnum ${extra} ${dir(v)}"${t ? ` title="${esc(t)}"` : ""}>${pct(v) || "–"}${v != null && q.returns_calc ? `<sup class="calc">†</sup>` : ""}</td>`;
+};
+const calcFoot = list => list.some(q => q.returns_calc) ? `<p class="asof">7D and 1M from Moneycontrol's published figures. † Not published by any source we can reach, so worked out from official daily closes.</p>` : `<p class="asof">7D and 1M from Moneycontrol's published figures.</p>`;
 function indexBoard(M, D) {
   const REG = { India: "India", US: "United States" };
   const ex = n => CFG.markets.indices.find(i => i.name === n)?.exchange;
@@ -424,11 +431,11 @@ function indexBoard(M, D) {
       const col = (q.chg_1m ?? q.change_pct) < 0 ? "var(--bad)" : "var(--good)";
       const note = D.notes?.[q.name] || q.note || "";
       return `<tr><td class="ix"><b>${esc(q.name)}</b><span class="st ${q.live ? "open" : ""}">${esc(hoursLine(q))}</span>${note ? `<small>${esc(note)}</small>` : ""}</td>
-<td class="r tnum lv">${inr(q.price, 2)}<small class="${dir(q.change_pct)}">${pts(q)}</small></td>${cell(q.change_pct)}${cell(q.chg_7d, q.from_7d)}${cell(q.chg_1m, q.from_1m)}<td class="sp">${q.spark30?.length > 2 ? spark(q.spark30, col, { w: 150, h: 36, mini: true }) : ""}</td></tr>`;
+<td class="r tnum lv">${inr(q.price, 2)}<small class="${dir(q.change_pct)}">${pts(q)}</small></td>${cell(q.change_pct)}${retCell(q, q.chg_7d, q.from_7d)}${retCell(q, q.chg_1m, q.from_1m)}<td class="sp">${q.spark30?.length > 2 ? spark(q.spark30, col, { w: 150, h: 36, mini: true }) : ""}</td></tr>`;
     }).join("");
   }).join("");
   const moods = Object.keys(CFG.markets.mood || {}).map(k => M.mood?.[k]).filter(Boolean);
-  return `<div class="board-wrap"><div class="tbl board"><table><thead><tr><th>Index</th><th class="r">Level</th><th class="r">1D</th><th class="r">7D</th><th class="r">1M</th><th class="r">30 days</th></tr></thead><tbody>${rows}</tbody></table></div>${moods.length ? `<div class="moods">${moods.map(moodCard).join("")}<details class="mhow"><summary>How the mood is worked out</summary><p>${esc(CFG.markets.mood?.method || "")}</p></details></div>` : ""}</div>`;
+  return `<div class="board-wrap"><div class="tbl board"><table><thead><tr><th>Index</th><th class="r">Level</th><th class="r">1D</th><th class="r">7D</th><th class="r">1M</th><th class="r">30 days</th></tr></thead><tbody>${rows}</tbody></table>${calcFoot(M.indices)}</div>${moods.length ? `<div class="moods">${moods.map(moodCard).join("")}<details class="mhow"><summary>How the mood is worked out</summary><p>${esc(CFG.markets.mood?.method || "")}</p></details></div>` : ""}</div>`;
 }
 function moodCard(m) {
   const a = Math.PI * (1 - m.score / 100), cx = 100, cy = 96, r = 78;
@@ -458,9 +465,9 @@ function ledgerBlock() {
     const q = M?.cross?.find(x => x.symbol === c.yahoo); if (!q) continue;
     const lvl = c.yahoo === "INR=X" ? "₹" + q.price.toFixed(2) : c.yahoo === "BZ=F" ? "$" + usd(q.price, 2) : c.yahoo === "BTC-USD" ? "$" + usd(q.price) : inr(Math.round(q.price));
     const unit = c.yahoo === "INR=X" ? "₹" : /^(BZ=F|BTC-USD)$/.test(c.yahoo) ? "$" : "", d = c.yahoo === "BTC-USD" ? 0 : 2;
-    rows.push(`<tr><td><b>${esc(c.name)}</b></td><td class="r tnum">${lvl}</td><td class="r tnum ${dir(q.change_pct)}">${pct(q.change_pct)}<small>${pts(q, unit, d)}</small></td><td class="r tnum hide-s ${dir(q.chg_7d)}">${pct(q.chg_7d) || "–"}</td><td class="r tnum hide-s ${dir(q.chg_1m)}">${pct(q.chg_1m) || "–"}</td><td class="sub">${esc(assetNote(c.name, q))}</td></tr>`);
+    rows.push(`<tr><td><b>${esc(c.name)}</b></td><td class="r tnum">${lvl}</td><td class="r tnum ${dir(q.change_pct)}">${pct(q.change_pct)}<small>${pts(q, unit, d)}</small></td>${retCell(q, q.chg_7d, q.from_7d, "hide-s")}${retCell(q, q.chg_1m, q.from_1m, "hide-s")}<td class="sub">${esc(assetNote(c.name, q))}</td></tr>`);
   }
-  if (rows.length) h += `<div class="tbl cross"><table><thead><tr><th>Asset</th><th class="r">Level</th><th class="r">1D</th><th class="r hide-s">7D</th><th class="r hide-s">1M</th><th>Note</th></tr></thead><tbody>${rows.join("")}</tbody></table>${staleNote("markets")}</div>`;
+  if (rows.length) h += `<div class="tbl cross"><table><thead><tr><th>Asset</th><th class="r">Level</th><th class="r">1D</th><th class="r hide-s">7D</th><th class="r hide-s">1M</th><th>Note</th></tr></thead><tbody>${rows.join("")}</tbody></table>${M?.cross?.some(q => q.returns_calc) ? `<p class="asof">† Worked out from daily closes: no source we can reach publishes these.</p>` : ""}${staleNote("markets")}</div>`;
   if (h && prof.markets === "light_unless_important" && !(E.sections?.ledger?.stories?.length)) {
     h = `<details><summary class="asof" style="cursor:pointer;padding:6px 0">Weekend: markets folded. Tap to open.</summary>${h}</details>`;
   }

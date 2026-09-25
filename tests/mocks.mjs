@@ -30,6 +30,8 @@ const ROUTES = [
     { team: { id: "83", displayName: "Barcelona" }, stats: [{ name: "rank", value: 1 }, { name: "gamesPlayed", value: 7 }, { name: "points", value: 21 }, { name: "pointDifferential", value: 24 }] },
     { team: { id: "86", displayName: "Real Madrid" }, stats: [{ name: "rank", value: 4 }, { name: "gamesPlayed", value: 7 }, { name: "points", value: 15 }, { name: "pointDifferential", value: 10 }] }] } }] })],
   [/BSESN/, () => yahoo(73581, [74000, null, 74828])],
+  [/moneycontrol.*NSX/, () => ({ code: "200", data: { pricecurrent: "23063.00", cl1wPerChange: "-0.8800", cl1wDt: "2026-09-18", cl1mPerChange: "-4.9100", cl1mDt: "2026-08-25" } })],
+  [/moneycontrol.*SEN/, () => ({ code: "200", data: { pricecurrent: "70000", cl1wPerChange: "1", cl1mPerChange: "2" } })],
   [/NSEI/, () => yahoo(23063, [23400, 23447])],
   [/CNXIT/, () => yahoo(35210, [35000, 35100])],
   [/DJI/, () => yahoo(45800, [45900, 46000])],
