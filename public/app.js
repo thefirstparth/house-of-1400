@@ -62,8 +62,8 @@ async function refreshLive() {
   const keys = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba"];
   await Promise.all(keys.map(k => live(k)));
   if (ROUTE.kind !== "edition") {
-    const slugs = (E.betting || []).map(b => b.id).filter(Boolean).join(",");
-    await Promise.all([live("betting", slugs ? `?slugs=${encodeURIComponent(slugs)}` : ""), E.trends?.india?.length ? null : live("trends")]);
+    const ids = (E.betting || []).map(b => b.id).filter(Boolean).join(",");
+    await Promise.all([live("betting", ids ? `?ids=${encodeURIComponent(ids)}` : ""), E.trends?.india?.length ? null : live("trends")]);
   }
   liveTried = true;
   paintLive();
@@ -107,18 +107,23 @@ function tick() {
 }
 
 // ------------------------------------------------------------------ small renderers
-function spark(a, col, w = 300, h = 64, l1 = "", l2 = "") {
+// Sparkline. Labels sit outside the plot so nothing overlaps: dates below, 3-month high and low as text.
+function spark(a, col, { w = 320, h = 72, from = "", to = "", mini = false } = {}) {
   if (!a || a.length < 2) return "";
-  const mini = w < 250, mn = Math.min(...a), mx = Math.max(...a), span = mx - mn || 1;
-  const x = i => 4 + i * (w - 8) / (a.length - 1), y = v => h - 6 - (v - mn) / span * (h - 14), L = a.length - 1;
+  const mn = Math.min(...a), mx = Math.max(...a), span = mx - mn || 1;
+  const x = i => 2 + i * (w - 4) / (a.length - 1), y = v => 4 + (1 - (v - mn) / span) * (h - 8), L = a.length - 1;
   const d = a.map((v, i) => (i ? "L" : "M") + x(i).toFixed(1) + " " + y(v).toFixed(1)).join(" ");
-  const t = (xx, yy, s, anchor = "start", size = 10) => `<text x="${xx}" y="${yy}" text-anchor="${anchor}" font-size="${size}" fill="var(--muted)" style="font-family:var(--utilf)">${s}</text>`;
-  return `<svg viewBox="0 0 ${w} ${h + 14}" role="img" aria-label="Daily closes, ${l1} to ${l2}"><line x1="4" x2="${w - 4}" y1="${y(mx)}" y2="${y(mx)}" stroke="var(--rule)"/><line x1="4" x2="${w - 4}" y1="${y(mn)}" y2="${y(mn)}" stroke="var(--rule)"/><path d="${d} L${x(L)} ${h} L4 ${h} Z" fill="${col}" opacity=".1"/><path d="${d}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linejoin="round"/><circle cx="${x(L)}" cy="${y(a[L])}" r="3.2" fill="${col}"/>${t(4, h + 12, l1)}${t(w - 4, h + 12, l2, "end")}${mini ? "" : t(w - 4, y(mx) - 3, inr(Math.round(mx)), "end", 9.5) + t(w - 4, y(mn) + 11, inr(Math.round(mn)), "end", 9.5)}</svg>`;
+  const svg = `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="Daily closes${from ? `, ${from} to ${to}` : ""}"><path d="${d} L${x(L)} ${h} L2 ${h} Z" fill="${col}" opacity=".09"/><path d="${d}" fill="none" stroke="${col}" stroke-width="${mini ? 1.6 : 2}" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
+  if (mini) return `<div class="spark mini">${svg}</div>`;
+  const fmtN = v => (v >= 1000 ? inr(Math.round(v)) : v.toFixed(2));
+  return `<div class="spark">${svg}<div class="spark-axis"><span>${esc(from)}</span><span>${esc(to)}</span></div><div class="spark-range">3-month high <b class="tnum">${fmtN(mx)}</b> · low <b class="tnum">${fmtN(mn)}</b></div></div>`;
 }
-const sparkLabel = ymd => (ymd ? shortDate(ymd) : "");
+const sparkLabel = ymd => (ymd ? new Date(ymd + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }).replace("Sept", "Sep") : "");
 
 const WMO = { 0: ["☀️", "Clear"], 1: ["🌤️", "Mostly clear"], 2: ["⛅", "Partly cloudy"], 3: ["☁️", "Overcast"], 45: ["🌫️", "Fog"], 48: ["🌫️", "Fog"], 51: ["🌦️", "Light drizzle"], 53: ["🌦️", "Drizzle"], 55: ["🌧️", "Heavy drizzle"], 61: ["🌦️", "Light rain"], 63: ["🌧️", "Rain"], 65: ["🌧️", "Heavy rain"], 80: ["🌦️", "Showers"], 81: ["🌧️", "Heavy showers"], 82: ["⛈️", "Violent showers"], 95: ["⛈️", "Thunderstorm"], 96: ["⛈️", "Thunderstorm, hail"], 99: ["⛈️", "Thunderstorm, hail"] };
 const wx = c => WMO[c] || ["🌡️", ""];
+const NIGHT = { 0: "🌙", 1: "🌙", 2: "☁️" };
+const wxAt = (c, hour) => ((hour >= 19 || hour < 6) && NIGHT[c] ? NIGHT[c] : wx(c)[0]);
 
 const sourcesLine = srcs => (srcs?.length ? `<div class="src">${srcs.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`).join(" · ")}</div>` : "");
 const newFor = x => (x.new_for_you ? `<span class="newfor">New for you</span>` : "");
@@ -127,7 +132,8 @@ function tools(st, withMore) {
   const v = store.get("h1400-votes") || {};
   const cur = v[st.id];
   const link = st.sources?.[0]?.url;
-  return `<div class="tools">${withMore ? `<button class="rm" data-more="${esc(st.id)}" aria-expanded="false">Read more</button>` : ""}${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">Original ↗</a>` : ""}<button data-clip="${esc(st.id)}">Clip</button><button class="th" data-th="up" data-story="${esc(st.id)}" aria-pressed="${cur === "up"}">▲ More like this</button><button class="th" data-th="down" data-story="${esc(st.id)}" aria-pressed="${cur === "down"}">▼ Less</button></div>`;
+  const id = esc(st.id);
+  return `<div class="tools">${withMore ? `<button class="rm" data-more="${id}" aria-expanded="false">Full story</button>` : ""}${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">Source ↗</a>` : ""}<button data-clip="${id}" title="Share this story as an image">Share</button><span class="thumbs" role="group" aria-label="Tune future editions"><button class="th" data-th="up" data-story="${id}" aria-pressed="${cur === "up"}" title="More stories like this" aria-label="More stories like this">👍</button><button class="th" data-th="down" data-story="${id}" aria-pressed="${cur === "down"}" title="Fewer stories like this" aria-label="Fewer stories like this">👎</button></span></div>`;
 }
 
 const why = w => (w?.text ? `<div class="why"><b>${w.personal ? "Why it matters for you" : "Why it matters"}</b>${esc(w.text)}</div>` : "");
@@ -142,13 +148,13 @@ function byline(st) {
 function storyHTML(st, { lead = false, kickerPrefix = "" } = {}) {
   const more = st.more?.length;
   const H = lead ? "h2" : "h3";
-  return `<article class="${lead ? "lead" : "story"}" id="s-${esc(st.id)}" style="--acc:${accent(st.section)}" data-thread="${esc(st.thread_id)}" data-section="${esc(st.section)}">
+  return `<article class="${lead ? "lead-story" : "story"}" id="s-${esc(st.id)}" style="--acc:${accent(st.section)}" data-thread="${esc(st.thread_id)}" data-section="${esc(st.section)}">
 <div class="kick">${esc(kickerPrefix + st.kicker)}${newFor(st)}</div><${H}><button data-head="${esc(st.id)}">${esc(st.headline)}</button></${H}>
 ${st.deck ? `<p class="deck">${esc(st.deck)}</p>` : ""}${byline(st)}
-<p class="${lead ? "first" : ""}">${esc(st.short)}</p>
+<div class="body"><p class="${lead ? "first" : ""}">${esc(st.short)}</p>
 ${more ? `<div class="more" id="more-${esc(st.id)}" hidden>${st.more.map(p => `<p>${esc(p)}</p>`).join("")}</div>` : ""}
 ${st.verdict ? `<div class="verdictline" style="color:var(--acc)">${VERDICT_TWI[st.verdict]}</div>` : ""}
-${why(st.why)}${tools(st, more)}</article>`;
+${why(st.why)}</div>${tools(st, more)}</article>`;
 }
 
 function briefHTML(b, cls = "item") {
@@ -162,13 +168,22 @@ function secWrap(id, body, sub) {
   return `<section class="sec" id="${id}" style="--acc:${accent(id)}"><div class="sechead"><h2>${esc(s.name)}</h2><span>${esc(subline)}</span></div>${body}</section>`;
 }
 
-function storiesBlock(id) {
+function storiesBlock(id, { beside = false } = {}) {
   const S = E.sections?.[id] || {};
   const st = S.stories || [], br = S.briefs || [];
   let h = "";
-  if (st.length) h += `<div class="${st.length > 1 ? "cols2" : ""}">${st.map(x => storyHTML(x)).join("")}</div>`;
-  if (br.length) h += `<div class="${br.length > 2 ? "cols3" : br.length === 2 ? "cols2" : ""}">${br.map(b => briefHTML(b)).join("")}</div>`;
+  // A lone story on a wide page reads in two columns; beside data it stays one.
+  if (st.length) h += `<div class="${beside ? "stack" : st.length > 1 ? "cols2" : "solo"}">${st.map(x => storyHTML(x)).join("")}</div>`;
+  if (br.length) h += `<div class="${beside ? "stack" : br.length > 2 ? "cols3" : br.length === 2 ? "cols2" : ""}">${br.map(b => briefHTML(b)).join("")}</div>`;
   return h;
+}
+
+// Data (tables, live figures) on the left, the section's stories on the right. Either may be empty.
+function split(data, id) {
+  const stories = storiesBlock(id, { beside: !!data });
+  if (!data) return stories;
+  if (!stories) return data;
+  return `<div class="split"><div class="split-data">${data}</div><div class="split-stories">${stories}</div></div>`;
 }
 
 // ------------------------------------------------------------------ live blocks
@@ -184,59 +199,40 @@ const LIVEBLOCKS = {
   railWeather() {
     const w = LIVE.weather?.value?.cities?.[0]; if (!w) return "";
     const [e] = wx(w.current.code), d = w.daily[0];
-    return `<div class="w"><b>${esc(w.name)} now</b><div class="row"><span class="big tnum">${Math.round(w.current.temp)}°</span><span>${e}${d.rain_prob != null ? ` ${d.rain_prob}% rain` : ""}</span></div>Today ${Math.round(d.max)}° / ${Math.round(d.min)}°${staleNote("weather")}</div>`;
+    return `<a class="w" href="#sky"><b>${esc(w.name)} now</b><div class="row"><span class="big tnum">${Math.round(w.current.temp)}°</span><span>${e}${d.rain_prob != null ? ` ${d.rain_prob}% rain` : ""}</span></div>Today ${Math.round(d.max)}° / ${Math.round(d.min)}°${staleNote("weather")}</a>`;
   },
+  // Race countdown only in race week; the masthead's "Next up" covers everything else.
   railF1() {
     const r = LIVE.f1_next?.value?.race; if (!r) return "";
     const race = r.sessions.at(-1);
-    if (!race.time_confirmed) return "";
-    return `<div class="w"><b><span class="live"><i></i>F1 · ${esc(r.locality || r.country)}</span></b><span class="big tnum" data-until="${race.start}" data-min="${race.minutes}" data-done="Race done">--</span><br>to lights out, ${esc(istFull(race.start))} IST</div>`;
+    if (!race.time_confirmed || Date.parse(race.start) - Date.now() > 7 * 864e5) return "";
+    return `<a class="w" href="#paddock"><b><span class="live"><i></i>F1 · ${esc(r.locality || r.country)}</span></b><span class="big tnum" data-until="${race.start}" data-min="${race.minutes}" data-done="Race done">--</span><br>to lights out, ${esc(istFull(race.start))} IST</a>`;
   },
   railIndex(name) {
     const q = LIVE.markets?.value?.indices?.find(i => i.name === name); if (!q) return "";
     const col = q.change_pct < 0 ? "var(--bad)" : "var(--good)", s = q.spark?.slice(-22) || [];
-    return `<div class="w"><div class="row"><b>${esc(name)}</b><span class="${dir(q.change_pct)} tnum">${pct(q.change_pct)}</span></div><span class="big tnum">${inr(Math.round(q.price))}</span>${spark(s, col, 200, 40, s.length ? shortDate(q.spark_to && daysBack(q, 21)) : "", sparkLabel(q.spark_to))}${staleNote("markets")}</div>`;
-  },
-  railMadrid() {
-    const n = madridNext(); if (!n) return "";
-    return `<div class="w"><b>Madrid next</b><span class="big">${esc(shortTeam(n.label))}</span><br>${n.time_tbc ? esc(istDay(n.when_utc)) + ", time TBC" : esc(istFull(n.when_utc)) + " IST"}${n.detail ? ` · ${esc(n.detail)}` : ""}</div>`;
-  },
-  railIndia() {
-    const n = E.chronology?.india_cricket?.next; if (!n) return "";
-    return `<div class="w"><b>India next</b><span class="big">${esc(n.label)}</span><br>${esc(n.detail ? n.detail + " · " : "")}${n.time_tbc ? esc(istDay(n.when_utc)) : esc(istFull(n.when_utc)) + " IST"}</div>`;
+    return `<a class="w" href="#ledger"><div class="row"><b>${esc(name)}</b><span class="${dir(q.change_pct)} tnum">${pct(q.change_pct)}</span></div><span class="big tnum">${inr(Math.round(q.price))}</span>${spark(s, col, { w: 200, h: 34, mini: true })}${staleNote("markets")}</a>`;
   },
 };
 
-function daysBack(q, n) {
-  // label for the first point of the last n+1 closes
-  const all = q.spark || [];
-  if (!q.spark_from || !q.spark_to || all.length < 2) return q.spark_to;
-  const from = Date.parse(q.spark_from), to = Date.parse(q.spark_to);
-  const t = to - (to - from) * Math.min(1, n / (all.length - 1));
-  return new Date(t).toISOString().slice(0, 10);
-}
-const shortTeam = s => String(s).replace(/^Real Madrid (v|vs\.?) /i, "").replace(/ (v|vs\.?) Real Madrid$/i, "");
 
-function madridNext() {
-  const f = LIVE.football?.value?.next?.[0];
-  const chron = E.chronology?.madrid?.next;
-  if (f) return { label: f.opponent, when_utc: f.date, detail: f.home ? "Home" : "Away", time_tbc: !f.time_confirmed };
-  return chron || null;
-}
+
+
+
 
 function railHTML() {
   const prof = CFG.day_profiles[E.weekday] || {};
-  const fixturesFirst = prof.live_first === "fixtures";
-  const markets = LIVEBLOCKS.railIndex("Sensex") + LIVEBLOCKS.railIndex("Nasdaq-100");
-  const sport = LIVEBLOCKS.railF1() + LIVEBLOCKS.railMadrid() + LIVEBLOCKS.railIndia();
-  return LIVEBLOCKS.railWeather() + (fixturesFirst ? sport + markets : markets + sport);
+  const markets = CFG.markets.top_two.map(n => LIVEBLOCKS.railIndex(n)).join("");
+  const sport = LIVEBLOCKS.railF1();
+  return LIVEBLOCKS.railWeather() + (prof.live_first === "fixtures" ? sport + markets : markets + sport);
 }
 
-function madridBlock() {
+// Madridismo owns Madrid's fixtures: the next four, the last result, form and table.
+function madridBlock({ stacked = false } = {}) {
   const F = LIVE.football?.value, T = LIVE.laliga_table?.value;
-  let left = "", right = "";
+  let table = "";
   if (F?.next?.length) {
-    left = `<div class="tbl"><table><thead><tr><th>Next</th><th>Competition</th><th class="r">IST</th></tr></thead><tbody>${F.next.slice(0, 4).map((e, i) => `<tr class="${i === 0 ? "on" : ""}"><td>${esc(e.opponent)} (${e.home ? "H" : "A"})</td><td>${esc(e.competition || "")}</td><td class="r tnum">${e.time_confirmed ? esc(istFull(e.date)) : esc(istDay(e.date)) + ", time TBC"}</td></tr>`).join("")}</tbody></table></div><p class="note">Fixtures from ${esc(LIVE.football.source)}.${LIVE.football.stale ? " " + agoIST(LIVE.football.as_of) + "." : ""}</p>`;
+    table = `<div class="tbl"><table><thead><tr><th>Next</th><th>Competition</th><th class="r">IST</th></tr></thead><tbody>${F.next.slice(0, 4).map((e, i) => `<tr class="${i === 0 ? "on" : ""}"><td>${esc(e.opponent)} <small>${e.home ? "home" : "away"}</small></td><td>${esc(e.competition || "")}</td><td class="r tnum">${e.time_confirmed ? esc(istFull(e.date)) : esc(istDay(e.date)) + ", time TBC"}</td></tr>`).join("")}</tbody></table></div>`;
   }
   const lines = [];
   if (F?.last) {
@@ -251,22 +247,23 @@ function madridBlock() {
     const gap = top && top !== rm ? `, ${top.points - rm.points} behind ${esc(top.team)}` : top === rm ? ", top of the table" : "";
     lines.push(`<p><b>Table:</b> ${ordinal(rm.rank)} on ${rm.points} points${gap}.</p>`);
   }
-  right = lines.join("");
-  if (!left && !right) return "";
-  return `<div class="cols2"><div>${left}</div><div>${right}${staleNote("football")}</div></div>`;
+  const facts = lines.join("") + staleNote("football");
+  if (!table && !lines.length) return "";
+  return stacked ? `<div class="facts">${facts}</div>${table}` : `<div class="cols2"><div>${table}</div><div class="facts">${facts}</div></div>`;
 }
 const ordinal = n => n + (["th", "st", "nd", "rd"][(n % 100 - 20) % 10] || ["th", "st", "nd", "rd"][n % 100] || "th");
 
-function paddockBlock() {
+function paddockBlock({ stacked = false } = {}) {
   const N = LIVE.f1_next?.value, S = LIVE.f1_standings?.value, Lr = LIVE.f1_last?.value, D = E.sections?.paddock?.data || {};
-  let left = "", right = "";
+  let table = "";
   const n = Date.now();
   if (N?.race) {
     const tz = D.local_tz;
-    left = `<div class="tbl"><table><thead><tr><th>Session</th>${tz ? `<th class="r">Local</th>` : ""}<th class="r">IST</th></tr></thead><tbody>${N.race.sessions.map(s => {
+    const t = (iso, zone) => esc(fmt(iso, { weekday: "short", hour: "2-digit", minute: "2-digit" }, zone).replace(",", ""));
+    table = `<div class="tbl"><table><thead><tr><th>Session</th>${tz ? `<th class="r">Local</th>` : ""}<th class="r">IST</th></tr></thead><tbody>${N.race.sessions.map(s => {
       const st = stateOf({ start: Date.parse(s.start), end: Date.parse(s.start) + s.minutes * 6e4 }, n);
-      return `<tr class="${st === "on" ? "on" : ""}"><td>${esc(s.name)}${st === "on" ? ` <span class="live"><i></i>On now, go watch</span> <button class="refresh" data-refresh="f1_next">Refresh</button>` : st === "done" ? " ✓" : ""}</td>${tz ? `<td class="r tnum">${s.time_confirmed ? esc(fmt(s.start, { weekday: "short", hour: "2-digit", minute: "2-digit" }, tz).replace(",", "")) : "TBC"}</td>` : ""}<td class="r tnum">${s.time_confirmed ? esc(fmt(s.start, { weekday: "short", hour: "2-digit", minute: "2-digit" }).replace(",", "")) : "TBC"}</td></tr>`;
-    }).join("")}</tbody></table></div><p class="note">Times from ${esc(LIVE.f1_next.source)}.</p>`;
+      return `<tr class="${st === "on" ? "on" : st === "done" ? "done" : ""}"><td>${esc(s.name)}${st === "on" ? ` <span class="live"><i></i>On now</span> <button class="refresh" data-refresh="f1_next">Refresh</button>` : st === "done" ? ` <small>done</small>` : ""}</td>${tz ? `<td class="r tnum">${s.time_confirmed ? t(s.start, tz) : "TBC"}</td>` : ""}<td class="r tnum">${s.time_confirmed ? t(s.start) : "TBC"}</td></tr>`;
+    }).join("")}</tbody></table></div>`;
   }
   const bits = [];
   if (S?.drivers?.length) {
@@ -280,9 +277,9 @@ function paddockBlock() {
   }
   for (const note of D.notes || []) bits.push(`<p><b>${esc(note.label)}.</b> ${esc(note.text)}</p>`);
   if (N?.upcoming?.length) bits.push(`<p><b>Next three.</b> ${N.upcoming.map(u => `${esc(u.flag)} ${esc(u.name.replace(" Grand Prix", ""))} ${esc(istDay(u.date))}`).join(" · ")}</p>`);
-  right = bits.join("");
-  if (!left && !right) return "";
-  return `<div class="cols2"><div>${left}</div><div>${right}${staleNote("f1_standings")}</div></div>`;
+  if (!table && !bits.length) return "";
+  const facts = `<div class="facts">${bits.join("")}${staleNote("f1_standings")}</div>`;
+  return stacked ? table + facts : `<div class="cols2"><div>${table}</div>${facts}</div>`;
 }
 
 function tablesBlock() {
@@ -320,70 +317,133 @@ function warriorsBlock() {
   return bits.length ? `<div class="item" style="--acc:var(--acc-sp)"><div class="tag">NBA · Warriors</div>${bits.join(" ")}</div>` : "";
 }
 
+// Every figure gets a note that says something: the editor's driver for the day if there is one,
+// otherwise where the level sits in its own 3-month history.
+function assetNote(name, q) {
+  const D = E.sections?.ledger?.data || {};
+  const fmtN = v => (v >= 1000 ? inr(Math.round(v)) : v.toFixed(2));
+  const range = q?.lo3m != null ? `3-month range ${fmtN(q.lo3m)} to ${fmtN(q.hi3m)}` : "";
+  return [D.notes?.[name], q?.note || range].filter(Boolean).map(x => x.replace(/\.$/, "")).join(". ") + ".";
+}
+
 function ledgerBlock() {
   const M = LIVE.markets?.value, G = LIVE.gold_in?.value, D = E.sections?.ledger?.data || {};
   const prof = CFG.day_profiles[E.weekday] || {};
   let h = "";
   if (M?.indices?.length) {
-    h += `<div class="cols3">${M.indices.map(q => {
+    h += `<div class="cols3 panels">${M.indices.map(q => {
       const col = q.change_pct < 0 ? "var(--bad)" : "var(--good)";
-      const dma = D.dma?.[q.name];
-      const when = q.live ? "today, live" : `on ${new Date(q.session_date + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }).replace(/\bSept\b/, "Sep")}`;
-      return `<div class="panel"><div class="nm">${esc(q.name)}</div><div class="lvl tnum">${inr(Math.round(q.price))}</div><div class="${dir(q.change_pct)} tnum" style="font:700 13px var(--utilf)">${pct(q.change_pct)} ${esc(when)}</div>${spark(q.spark, col, 300, 64, sparkLabel(q.spark_from), sparkLabel(q.spark_to))}${dma ? `<p class="note">${esc(dma)}</p>` : ""}</div>`;
+      const when = q.live ? "today, live" : `on ${sparkLabel(q.session_date)}`;
+      const driver = D.notes?.[q.name];
+      return `<div class="panel"><div class="nm">${esc(q.name)}</div><div class="lvl tnum">${inr(Math.round(q.price))}</div><div class="chg ${dir(q.change_pct)} tnum">${pct(q.change_pct)} ${esc(when)}</div>${q.note ? `<div class="pnote">${esc(q.note)}</div>` : ""}${spark(q.spark, col, { from: sparkLabel(q.spark_from), to: sparkLabel(q.spark_to) })}${driver ? `<p class="note">${esc(driver)}</p>` : ""}${D.dma?.[q.name] ? `<p class="note">${esc(D.dma[q.name])}</p>` : ""}</div>`;
     }).join("")}</div>`;
   }
   const rows = [];
   for (const c of CFG.markets.cross) {
-    const note = D.notes?.[c.name] || "";
     if (c.source === "ibja") {
-      if (G) rows.push(`<tr><td><b style="font-weight:600">Gold 24K</b></td><td class="r tnum" style="padding-right:24px;white-space:nowrap">₹${inr(G.per_10g_24k)} / 10g</td><td class="sub">IBJA · 22K ₹${inr(G.per_10g_22k)}${note ? " · " + esc(note) : ""}</td></tr>`);
+      if (G) rows.push(`<tr><td><b>Gold 24K</b><br><small>IBJA, per 10g</small></td><td class="r tnum">₹${inr(G.per_10g_24k)}</td><td class="r tnum"></td><td class="sub">22K ₹${inr(G.per_10g_22k)}${D.notes?.[c.name] ? ". " + esc(D.notes[c.name]) : ""}</td></tr>`);
       continue;
     }
     const q = M?.cross?.find(x => x.symbol === c.yahoo); if (!q) continue;
-    const lvl = c.yahoo === "INR=X" ? q.price.toFixed(2) : c.yahoo === "BZ=F" ? "$" + usd(q.price, 2) : c.yahoo === "BTC-USD" ? "$" + usd(q.price) : inr(Math.round(q.price));
-    rows.push(`<tr><td><b style="font-weight:600">${esc(c.name)}</b></td><td class="r tnum" style="padding-right:24px;white-space:nowrap">${lvl}</td><td class="sub"><span class="${dir(q.change_pct)}">${pct(q.change_pct)}</span>${note ? " · " + esc(note) : ""}</td></tr>`);
+    const lvl = c.yahoo === "INR=X" ? "₹" + q.price.toFixed(2) : c.yahoo === "BZ=F" ? "$" + usd(q.price, 2) : c.yahoo === "BTC-USD" ? "$" + usd(q.price) : inr(Math.round(q.price));
+    rows.push(`<tr><td><b>${esc(c.name)}</b></td><td class="r tnum">${lvl}</td><td class="r tnum ${dir(q.change_pct)}">${pct(q.change_pct)}</td><td class="sub">${esc(assetNote(c.name, q))}</td></tr>`);
   }
-  if (rows.length) h += `<div class="tbl" style="margin-top:18px;max-width:760px"><table><thead><tr><th>Asset</th><th class="r" style="padding-right:24px">Level</th><th>Note</th></tr></thead><tbody>${rows.join("")}</tbody></table>${staleNote("markets")}</div>`;
+  if (rows.length) h += `<div class="tbl cross"><table><thead><tr><th>Asset</th><th class="r">Level</th><th class="r">Change</th><th>Note</th></tr></thead><tbody>${rows.join("")}</tbody></table>${staleNote("markets")}</div>`;
   if (h && prof.markets === "light_unless_important" && !(E.sections?.ledger?.stories?.length)) {
     h = `<details><summary class="asof" style="cursor:pointer;padding:6px 0">Weekend: markets folded. Tap to open.</summary>${h}</details>`;
   }
   return h;
 }
 
+// Sky & Streets: one plain sentence for the week, the hours that matter to the reader, a slim 7-day strip,
+// and other cities as a single line only when their weather is worth knowing.
+const dayName = ymd => (ymd === istDate() ? "today" : new Date(ymd + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "long", timeZone: "UTC" }));
+const dayShort = ymd => (ymd === istDate() ? "Today" : new Date(ymd + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", timeZone: "UTC" }));
+const wetness = p => (p == null ? "" : p >= 70 ? "wet" : p >= 40 ? "showery" : "dry");
+
+function weekSentence(days) {
+  const t = days[0], rest = days.slice(1);
+  const today = { wet: "Rain likely today", showery: "Showers possible today", dry: "Mostly dry today" }[wetness(t.rain_prob)] || "Today";
+  let s = `${today}, ${Math.round(t.max)}° at best.`;
+  const firstDry = rest.findIndex(d => wetness(d.rain_prob) === "dry");
+  if (wetness(t.rain_prob) !== "dry" && firstDry > -1) {
+    let end = firstDry; while (end + 1 < rest.length && wetness(rest[end + 1].rain_prob) === "dry") end++;
+    const run = rest.slice(firstDry, end + 1), hot = Math.round(Math.max(...run.map(d => d.max)));
+    s += ` Drier ${run.length > 1 ? `from ${dayName(run[0].date)} to ${dayName(run.at(-1).date)}` : `on ${dayName(run[0].date)}`}${hot > Math.round(t.max) ? `, warming to ${hot}°` : ""}.`;
+    const back = rest.slice(end + 1).find(d => wetness(d.rain_prob) === "wet");
+    if (back) s += ` Rain returns ${dayName(back.date)}.`;
+  } else if (wetness(t.rain_prob) === "dry") {
+    const wet = rest.find(d => wetness(d.rain_prob) === "wet");
+    s += wet ? ` Rain likely from ${dayName(wet.date)}.` : " No rain of note this week.";
+  } else {
+    s += " Unsettled all week.";
+  }
+  return s;
+}
+
+function keyHours(c) {
+  const H = c.hourly; if (!H?.length) return "";
+  const now = Date.now();
+  const picks = (CFG.weather.key_times || []).map(k => {
+    const slot = H.find(h => Number(h.time.slice(11, 13)) === k.hour && Date.parse(h.time + ":00+05:30") >= now - 30 * 6e4);
+    return slot && { ...k, slot };
+  }).filter(Boolean).sort((a, b) => a.slot.time.localeCompare(b.slot.time));
+  if (!picks.length) return "";
+  return `<div class="hours">${picks.map(p => `<div><span class="lbl">${esc(p.label)}</span><span class="t">${esc(fmt(p.slot.time + ":00+05:30", { hour: "2-digit", minute: "2-digit" }))}</span><span class="v">${wxAt(p.slot.code, p.hour)} ${Math.round(p.slot.temp)}°</span><span class="r ${p.slot.rain_prob >= 50 ? "wet" : ""}">${p.slot.rain_prob ?? "–"}% rain</span></div>`).join("")}</div>`;
+}
+
+function notableLine(c) {
+  const bad = c.daily.slice(0, 3).filter(d => (d.rain_prob ?? 0) >= 80 || d.max >= 40 || [65, 82, 95, 96, 99].includes(d.code));
+  if (!bad.length) return "";
+  const hot = bad.filter(d => d.max >= 40), wet = bad.filter(d => !(d.max >= 40));
+  const parts = [];
+  if (wet.length) parts.push(`${wet.some(d => (d.rain_mm ?? 0) >= 30 || [65, 82].includes(d.code)) ? "heavy rain" : "rain"} ${wet.map(d => dayName(d.date)).join(" and ")}`);
+  if (hot.length) parts.push(`${Math.round(Math.max(...hot.map(d => d.max)))}° heat ${hot.map(d => dayName(d.date)).join(" and ")}`);
+  return `<p class="city"><b>${esc(c.name)}:</b> ${esc(parts.join("; "))}.</p>`;
+}
+
 function skyBlock() {
   const W = LIVE.weather?.value; if (!W?.cities?.length) return "";
-  const day = d => (d.date === istDate() ? "Today" : new Date(d.date + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", timeZone: "UTC" }));
-  const grid = c => `<div class="wx">${c.daily.map(d => `<div><b>${day(d)}</b><span class="e" aria-hidden="true">${wx(d.code)[0]}</span>${Math.round(d.max)}° / ${Math.round(d.min)}°<br><span style="color:var(--muted)">${d.rain_prob ?? "–"}% rain</span></div>`).join("")}</div>`;
-  let h = grid(W.cities[0]);
-  for (const c of W.cities.slice(1)) h += `<h3 style="font:700 12px var(--utilf);letter-spacing:.1em;text-transform:uppercase;margin:18px 0 6px">${esc(c.name)} · notable this week</h3>` + grid(c);
+  const c = W.cities[0];
+  const strip = `<div class="strip7">${c.daily.map(d => `<div class="${wetness(d.rain_prob)}"><b>${dayShort(d.date)}</b><span class="e" aria-hidden="true">${wx(d.code)[0]}</span><span class="tnum">${Math.round(d.max)}°</span>${(d.rain_prob ?? 0) >= 40 ? `<small>${d.rain_prob}%</small>` : "<small>&nbsp;</small>"}</div>`).join("")}</div>`;
+  let h = `<p class="sky-lede">${esc(weekSentence(c.daily))}</p>${keyHours(c)}${strip}`;
+  const others = W.cities.slice(1).map(notableLine).join("");
+  if (others) h += `<div class="cities">${others}</div>`;
   h += `<div id="myloc"></div>`;
-  if (ROUTE.kind !== "edition" && navigator.geolocation) h += `<p class="note"><button class="refresh" id="locBtn">📍 Add weather where I am</button></p>`;
+  if (ROUTE.kind !== "edition" && navigator.geolocation && !store.get("h1400-loc")) h += `<p class="note"><button class="linkish" id="locBtn">📍 Add the weather where you are</button></p>`;
   const note = E.sections?.sky?.data?.note;
   if (note) h += `<p class="note">${esc(note)}</p>`;
   return h + staleNote("weather");
 }
 
+// The Fixture List is the next seven days across every sport, by day. Club and national-team fixtures further
+// out live in their own sections, so nothing repeats beyond the week.
 function fixturesBlock() {
-  const n = Date.now();
+  const n = Date.now(), horizon = n + 7 * 864e5;
   const rows = (E.fixtures || []).slice().sort((a, b) => a.when_utc.localeCompare(b.when_utc)).filter(f => {
-    const end = f.until_utc ? Date.parse(f.until_utc) : Date.parse(f.when_utc) + (f.minutes || 120) * 6e4;
-    return end > n - 6 * 36e5;
+    const start = Date.parse(f.when_utc), end = f.until_utc ? Date.parse(f.until_utc) : start + (f.minutes || 120) * 6e4;
+    return end > n && start < horizon;
   });
   if (!rows.length) return "";
-  return `<div class="tbl"><table><thead><tr><th>When</th><th>What</th><th>Where</th></tr></thead><tbody>${rows.map(f => {
+  const byDay = new Map();
+  for (const f of rows) {
+    const start = Date.parse(f.when_utc);
+    const key = start < n ? istDate() : istDate(new Date(start));
+    if (!byDay.has(key)) byDay.set(key, []);
+    byDay.get(key).push(f);
+  }
+  return `<div class="agenda">${[...byDay].map(([day, list]) => `<div class="day"><h3>${esc(dayName(day).replace(/^./, c => c.toUpperCase()))} <span>${esc(sparkLabel(day))}</span></h3><ul>${list.map(f => {
     const start = Date.parse(f.when_utc), end = f.until_utc ? Date.parse(f.until_utc) : start + (f.minutes || 120) * 6e4;
     const st = f.time_tbc ? "next" : stateOf({ start, end }, n);
-    const when = f.time_tbc ? `${istDay(f.when_utc)}, time TBC` : f.until_utc ? `${istDay(f.when_utc)} to ${istDay(f.until_utc)}` : istFull(f.when_utc);
-    return `<tr class="${st === "on" ? "on" : ""}"><td class="tnum">${esc(when)}</td><td>${esc(f.label)}${st === "on" ? ` <span class="live"><i></i>On now, go watch</span> <button class="refresh" data-refresh="fixtures">Refresh</button>` : st === "done" ? " · done" : ""}</td><td>${esc(f.where || "")}</td></tr>`;
-  }).join("")}</tbody></table></div>`;
+    const when = f.time_tbc ? "Time TBC" : f.until_utc ? `Runs to ${sparkLabel(istDate(new Date(f.until_utc)))}` : istTime(f.when_utc);
+    return `<li class="${st}"><span class="t tnum">${esc(when)}</span><span class="what">${esc(f.label)}${f.where ? ` <small>· ${esc(f.where)}</small>` : ""}${st === "on" ? ` <span class="live"><i></i>On now, go watch</span> <button class="refresh" data-refresh="fixtures">Refresh</button>` : ""}</span></li>`;
+  }).join("")}</ul></div>`).join("")}</div>`;
 }
 
 function creaseBlock() {
   const rows = E.sections?.crease?.data?.rows || [];
-  const t = rows.length ? `<table><tbody>${rows.map(r => `<tr class="${r.on ? "on" : ""}"><td>${esc(r.label)}</td><td>${esc(r.text)}</td></tr>`).join("")}</tbody></table>` : "";
-  const st = storiesBlock("crease");
-  if (!t) return st;
-  return st ? `<div class="cols2"><div>${t}</div><div>${st}</div></div>` : t;
+  const t = rows.length ? `<table class="kv"><tbody>${rows.map(r => `<tr class="${r.on ? "on" : ""}"><th scope="row">${esc(r.label)}</th><td>${esc(r.text)}</td></tr>`).join("")}</tbody></table>` : "";
+  return split(t, "crease");
 }
 
 function deuceBlock() {
@@ -406,39 +466,45 @@ function screenBlock() {
   return h + storiesBlock("screen");
 }
 
+// Live fallback only: the daily run curates Talk of the Day with a researched line per term.
+// Keep terms and headlines that are in English, deduplicate against the paper, mix the world feeds in turn.
+const english = t => /^[\x20-\x7E\u00C0-\u024F\u2018-\u201D\u2013\u2026₹]+$/.test(t || "");
 function liveTrends() {
   const G = LIVE.trends?.value?.geos; if (!G) return null;
   const heads = allStories().map(s => s.headline.toLowerCase());
   const seen = new Set();
   const pick = list => (list || []).filter(t => {
-    const k = t.term.toLowerCase();
-    if (seen.has(k) || (k.length >= 5 && heads.some(h => h.includes(k))) || !t.news?.[0]?.title) return false;
-    seen.add(k); return true;
-  }).slice(0, CFG.trends.target_each || 6).map(t => ({ term: t.term, what: t.news[0].title.slice(0, CFG.trends.max_what_chars || 140), url: t.news[0].url }));
-  // One feed per country reads like that country's sports page, so mix the world feeds in turn.
+    const k = t.term.toLowerCase(), news = t.news?.find(n => english(n.title));
+    if (!english(t.term) || !news || seen.has(k) || (k.length >= 5 && heads.some(h => h.includes(k)))) return false;
+    seen.add(k); t._news = news; return true;
+  }).slice(0, CFG.trends.target_each || 6).map(t => ({ term: t.term, traffic: t.traffic, what: t._news.title.slice(0, CFG.trends.max_what_chars || 140), url: t._news.url }));
   const geos = CFG.trends.world_geos.filter(g => G[g]?.length);
   const mixed = [];
   for (let i = 0; i < 20; i++) for (const g of geos) if (G[g][i]) mixed.push(G[g][i]);
-  const india = pick(G[CFG.trends.india_geo]);
-  return { india, world: pick(mixed), world_label: geos.length ? `World · ${geos.join(", ")}` : "World", live: true };
+  return { india: pick(G[CFG.trends.india_geo]), world: pick(mixed), live: true };
 }
 
 function talkBlock() {
   const T = E.trends?.india?.length || E.trends?.world?.length ? E.trends : liveTrends();
   if (!T || (!T.india?.length && !T.world?.length)) return "";
-  const col = (label, list) => (list?.length ? `<div><div class="nm" style="font:700 11px var(--utilf);letter-spacing:.12em;margin-bottom:4px">${esc(label)}</div>${list.map((t, i) => `<div class="trend"><b>${i + 1}</b><span><b style="color:var(--ink);font:700 15px var(--bodyf)">${esc(t.term)}</b> · ${t.url ? `<a href="${esc(t.url)}" target="_blank" rel="noopener" style="color:inherit">${esc(t.what)}</a>` : esc(t.what)}</span></div>`).join("")}</div>` : "");
-  return `<div class="cols2">${col("India", T.india)}${col(T.world_label || "World", T.world)}</div>${T.live ? `<p class="asof" style="margin-top:8px">${LIVE.trends?.stale ? `Google Trends ${agoIST(LIVE.trends.as_of)}` : "Live from Google Trends"}, with the top linked headline for each.</p>` : ""}`;
+  const col = (label, list) => (list?.length ? `<div><h3 class="colhead">${esc(label)}</h3>${list.map(t => `<p class="trend"><b>${esc(t.term)}</b>${t.traffic ? ` <span class="traffic">· ${esc(t.traffic)}</span>` : ""} <span class="dash">–</span> ${t.url ? `<a href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.what)}</a>` : esc(t.what)}</p>`).join("")}</div>` : "");
+  return `<div class="cols2 talk">${col("India", T.india)}${col("World", T.world)}</div>${T.live ? `<p class="asof" style="margin-top:8px">${LIVE.trends?.stale ? `Google Trends ${agoIST(LIVE.trends.as_of)}` : "Live from Google Trends"}, with the top English headline for each.</p>` : ""}`;
 }
 
+// Compact: one row per market, top outcomes inline with a thin bar for the favourite. Up to ten.
 function bettingBlock() {
   const liveM = LIVE.betting?.value?.markets || [];
-  const list = E.betting?.length ? E.betting : liveM.slice(0, CFG.betting.target || 5);
+  const list = (E.betting?.length ? E.betting : liveM).slice(0, CFG.betting.show || 10);
   if (!list.length) return "";
-  return `<div class="cols2">${list.map(b => {
-    const L = !LIVE.betting?.stale && liveM.find(m => m.id === b.id);
+  const idOf = b => (b.id?.includes(":") ? b.id : b.id ? `pm:${b.id}` : null);
+  const rows = list.map(b => {
+    const L = !LIVE.betting?.stale && liveM.find(m => m.id === idOf(b));
     const outs = (L?.outcomes?.length ? L.outcomes : b.outcomes).slice(0, 3);
-    return `<div class="item" style="--acc:var(--acc-wd)"><div class="tag">${esc(b.category || "World")}</div><h4><a href="${esc(b.url)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">${esc(b.title)}</a></h4><div class="odds">${outs.map(o => `<span>${esc(o.name)}</span><span class="r tnum" style="text-align:right">${Number(o.prob).toFixed(1)}%</span><div class="b"><span style="width:${Math.max(0, Math.min(100, o.prob))}%"></span></div>`).join("")}</div></div>`;
-  }).join("")}</div><p class="asof" style="margin-top:8px">${LIVE.betting && !LIVE.betting.stale ? "Live prices from Polymarket, by 24-hour volume, after the paper's exclusions" : `Polymarket prices ${agoIST(LIVE.betting?.as_of) || "at press time"}`}.</p>`;
+    const fav = outs[0];
+    const label = o => (o.name === "Yes" && outs.length === 1 ? "Yes" : o.name);
+    return `<li><div class="mk"><span class="cat">${esc(b.category || "World")} <span class="src">· ${esc(b.source || "Polymarket")}</span></span><a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title)}</a>${b.note ? `<small>${esc(b.note)}</small>` : ""}</div><div class="outs">${outs.map((o, i) => `<span class="${i === 0 ? "fav" : ""}">${esc(label(o))} <b class="tnum">${Math.round(o.prob)}%</b></span>`).join("")}</div><div class="bar"><span style="width:${Math.max(0, Math.min(100, fav.prob))}%"></span></div></li>`;
+  }).join("");
+  return `<ol class="markets">${rows}</ol><p class="asof" style="margin-top:8px">${LIVE.betting && !LIVE.betting.stale ? "Live prices" : `Prices ${agoIST(LIVE.betting?.as_of) || "at press time"}`}. Probabilities are what traders pay, not forecasts.</p>`;
 }
 
 function byeBlock() {
@@ -453,13 +519,13 @@ function deskBlock() {
 }
 
 // ------------------------------------------------------------------ page
+// Lead on the left with the briefs under it, second stories on the right: both columns end near the same line.
 function frontHTML() {
   const F = E.front;
-  const kick = s => `Front Page · ${s.kicker}`;
   return `<div class="front" id="front" style="scroll-margin-top:48px">
-${storyHTML({ ...F.lead, kicker: kick(F.lead) }, { lead: true })}
-<div class="side">${F.seconds.map(s => storyHTML({ ...s, kicker: s.kicker })).join("")}</div>
-${F.briefs.length ? `<div class="briefs">${F.briefs.map(b => briefHTML(b, "brief")).join("")}</div>` : ""}</div>`;
+<div class="lead">${storyHTML({ ...F.lead, kicker: `Front Page · ${F.lead.kicker}` }, { lead: true })}
+${F.briefs.length ? `<div class="briefs">${F.briefs.map(b => briefHTML(b, "brief")).join("")}</div>` : ""}</div>
+<div class="side">${F.seconds.map(s => storyHTML(s)).join("")}</div></div>`;
 }
 
 function render() {
@@ -472,11 +538,11 @@ function render() {
   $("#profile").textContent = E.profile_line;
 
   let h = frontHTML();
-  h += secWrap("fixtures", fixturesBlock() && `<div data-live="fixtures">${fixturesBlock()}</div>`, "All times IST · streaming shown only when confirmed");
-  h += secWrap("madrid", `<div data-live="madrid">${madridBlock()}</div>` + storiesBlock("madrid"));
+  h += secWrap("fixtures", `<div data-live="fixtures">${fixturesBlock()}</div>`, "Next 7 days · IST");
+  h += secWrap("madrid", split(`<div data-live="madrid" data-stacked="${E.sections?.madrid?.stories?.length ? 1 : ""}">${madridBlock({ stacked: !!E.sections?.madrid?.stories?.length })}</div>`, "madrid"));
   h += secWrap("pitch", storiesBlock("pitch"), "Football beyond Madrid");
   const race = LIVE.f1_next?.value?.race;
-  h += secWrap("paddock", `<div data-live="paddock">${paddockBlock()}</div>` + storiesBlock("paddock"), race ? `${race.flag} Round ${race.round ?? ""} · ${race.name}${race.locality ? " · " + race.locality : ""}` : undefined);
+  h += secWrap("paddock", split(`<div data-live="paddock" data-stacked="${E.sections?.paddock?.stories?.length ? 1 : ""}">${paddockBlock({ stacked: !!E.sections?.paddock?.stories?.length })}</div>`, "paddock"), race ? `${race.flag} Round ${race.round ?? ""} · ${race.name}${race.locality ? " · " + race.locality : ""}` : undefined);
   h += secWrap("crease", creaseBlock(), "India men · senior team");
   h += secWrap("deuce", deuceBlock(), "Tennis · big events first, then Alcaraz and Djokovic");
   h += secWrap("sidelines", `<div data-live="warriors">${warriorsBlock()}</div>` + storiesBlock("sidelines"), "Every other sport, when it matters");
@@ -485,17 +551,19 @@ function render() {
   h += secWrap("workshop", storiesBlock("workshop"), "Tech · AI · wearables");
   h += secWrap("pipeline", storiesBlock("pipeline"), "SDR · outbound · GTM");
   h += secWrap("ledger", `<div data-live="ledger">${ledgerBlock()}</div>` + storiesBlock("ledger"), "Markets · money · cards");
-  h += secWrap("sky", `<div data-live="sky">${skyBlock()}</div>` + storiesBlock("sky"), `${CFG.paper.home_city} · 7 days`);
+  h += secWrap("sky", `<div data-live="sky">${skyBlock()}</div>` + storiesBlock("sky"), `${CFG.paper.home_city} · the week ahead`);
   h += secWrap("namma", storiesBlock("namma"), `${CFG.paper.home_city} · fuller on Fri, Sat, Sun`);
   h += secWrap("screen", screenBlock(), "English and Hindi · theatre and OTT");
-  h += secWrap("talk", `<div data-live="talk">${talkBlock()}</div>`, `Google Trends${E.trends?.as_of ? " · " + E.trends.as_of : ""}`);
-  h += secWrap("betting", `<div data-live="betting">${bettingBlock()}</div>`, "What the world is betting on");
+  h += secWrap("talk", `<div data-live="talk">${talkBlock()}</div>`, "What people are searching for");
+  h += secWrap("betting", `<div data-live="betting">${bettingBlock()}</div>`, "What the world is betting on · Polymarket and Kalshi");
   h += secWrap("bye", byeBlock(), "Watch and do");
   h += deskBlock();
   if (E.editor_note) h += `<div class="editor">${esc(E.editor_note)}<span>${esc(CFG.paper.editor.signature)}</span></div>`;
   h += `<div class="house" id="house"><b>${esc(sec("house").name)}</b><p>${esc(E.house_note)}</p></div>`;
   h += `<div class="foot">${esc(`THE HOUSE OF 1400 · ${longDate(E.date).toUpperCase()} · NO. ${n} · EDITED BY ${CFG.paper.editor.signature.replace(", Editor", "").toUpperCase()}`)}</div>`;
   $("#main").innerHTML = h;
+  requestAnimationFrame(balanceFront);
+  document.fonts?.ready.then(balanceFront);
 
 
   // Read time
@@ -512,12 +580,27 @@ function render() {
   paintLive();
 }
 
+// On a wide screen, move trailing second stories under the lead while that evens the two columns.
+function balanceFront() {
+  const lead = document.querySelector(".front .lead"), side = document.querySelector(".front .side");
+  if (!lead || !side) return;
+  lead.querySelectorAll(".story.moved").forEach(el => side.appendChild(el));
+  if (innerWidth <= 980) return;
+  for (let i = 0; i < 3; i++) {
+    const last = side.querySelector(".story:last-of-type");
+    if (!last || side.querySelectorAll(".story").length < 2) break;
+    const gap = side.offsetHeight - lead.offsetHeight, h = last.offsetHeight;
+    if (gap <= h * 0.6) break;
+    last.classList.add("moved"); lead.appendChild(last);
+  }
+}
+
 function paintLive() {
   const L = LIVEBLOCKS.earL();
   $("#ear-l").innerHTML = L; $("#ear-l").hidden = !L;
   $("#ear-r").innerHTML = LIVEBLOCKS.earR(); $("#ear-r").hidden = false;
   $("#rail").innerHTML = railHTML();
-  const map = { talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, tables: tablesBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
+  const map = { talk: talkBlock, fixtures: fixturesBlock, madrid: () => madridBlock({ stacked: !!document.querySelector('[data-live="madrid"]')?.dataset.stacked }), paddock: () => paddockBlock({ stacked: !!document.querySelector('[data-live="paddock"]')?.dataset.stacked }), tables: tablesBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
   for (const [k, fn] of Object.entries(map)) {
     const el = document.querySelector(`[data-live="${k}"]`);
     if (!el) continue;
@@ -658,6 +741,8 @@ document.addEventListener("click", e => {
   if (t.id === "posterBtn") { const m = $("#pmenu"); m.hidden = !m.hidden; t.setAttribute("aria-expanded", !m.hidden); return; }
   if (t.dataset.poster) { $("#pmenu").hidden = true; openPoster(t.dataset.poster); return; }
 });
+let resizeT;
+addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(balanceFront, 200); });
 $("#modal").addEventListener("click", e => { if (e.target.id === "modal") $("#modal").hidden = true; });
 $("#poster").addEventListener("click", closePoster);
 document.addEventListener("keydown", e => { if (e.key === "Escape") { $("#modal").hidden = true; closePoster(); } });

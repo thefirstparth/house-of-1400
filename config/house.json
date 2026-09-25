@@ -284,7 +284,21 @@
         "lon": 81.85
       }
     ],
-    "use_reader_location": true
+    "use_reader_location": true,
+    "key_times": [
+      {
+        "label": "Heading out",
+        "hour": 16
+      },
+      {
+        "label": "Mid-shift",
+        "hour": 21
+      },
+      {
+        "label": "Heading home",
+        "hour": 2
+      }
+    ]
   },
   "trends": {
     "india_geo": "IN",
@@ -302,7 +316,7 @@
       "polymarket",
       "kalshi"
     ],
-    "target": 5,
+    "target": 10,
     "exclude": [
       "US domestic politics and elections",
       "US economic policy including the Fed",
@@ -313,7 +327,8 @@
       "tweet or post counts",
       "celebrity"
     ],
-    "override": "include an excluded market only if it clearly affects Parth"
+    "override": "include an excluded market only if it clearly affects Parth",
+    "show": 10
   },
   "day_profiles": {
     "mon": {

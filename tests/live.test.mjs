@@ -53,7 +53,7 @@ test("trends RSS parse", async () => {
 test("betting: exclusions applied, outcomes shaped", async () => {
   const r = await L.betting(new URLSearchParams());
   const ids = r.value.markets.map(m => m.id);
-  assert.deepEqual(ids, ["brazil-presidential-election", "iran-blockade"]);
+  assert.deepEqual(ids, ["pm:brazil-presidential-election", "pm:iran-blockade"]);
   assert.equal(r.value.markets[0].outcomes[0].name, "Flávio Bolsonaro"); assert.equal(r.value.markets[0].outcomes[0].prob, 56.3);
   assert.deepEqual(r.value.markets[1].outcomes, [{ name: "Yes", prob: 61.8 }]);
 });
@@ -64,4 +64,26 @@ test("fallback: failure returns ok:false, never a guess", async () => {
   const saved = globalThis.fetch; globalThis.fetch = async () => new Response("x", { status: 500 });
   try { for (const k of ["weather", "markets", "football", "gold_in"]) { const r = await L.LIVE[k](new URLSearchParams()); assert.equal(r.ok, false, k); assert.equal(r.value, null); } }
   finally { globalThis.fetch = saved; }
+});
+
+test("range notes: lows, highs, rupee wording, quiet ranges", () => {
+  const days = n => [...Array(n)].map((_, i) => `2026-07-${String(i + 1).padStart(2, "0")}`);
+  const mk = vals => days(vals.length).map((d, i) => ({ d, c: vals[i] }));
+  assert.equal(L.rangeNote(mk([...Array(20)].map((_, i) => 100 - i)), "^BSESN"), "Lowest close in 3 months");
+  assert.equal(L.rangeNote(mk([90, ...Array(18).fill(100), 95]), "^BSESN"), "Lowest close since 1 Jul");
+  assert.equal(L.rangeNote(mk([...Array(20)].map((_, i) => 90 + i)), "INR=X"), "Rupee at its weakest in 3 months");
+  assert.equal(L.rangeNote(mk([100, 104, 96, 103, 97, 102, 98, 101, 99, 100, 104, 96, 103, 97, 102, 98, 101, 99, 100, 100.5]), "^NSEI"), null);
+});
+
+test("kalshi: shaping and exclusions", () => {
+  const ev = (t, cat, ser, mk) => ({ title: t, category: cat, series_ticker: ser, event_ticker: ser + "-1", markets: mk });
+  const m = (name, p, v = 10) => ({ yes_sub_title: name, last_price_dollars: String(p), volume_24h_fp: String(v), status: "active" });
+  const out = L.filterKalshi([
+    ev("Best AI at the end of 2026?", "Science and Technology", "KXLLM1", [m("Claude", 0.72), m("ChatGPT", 0.12)]),
+    ev("Which party will win the U.S. Senate?", "Elections", "CONTROLS", [m("Democrats", 0.6)]),
+    ev("US gas prices this week", "Economics", "KXAAAGASW", [m("Above 4.30", 0.99), m("Above 4.32", 0.99)]),
+    ev("Brent this week", "Financials", "KXBRENT", [m("Above 100", 0.9), m("Above 105", 0.5)]),
+  ]);
+  assert.deepEqual(out.map(x => x.id), ["ks:KXLLM1-1"]);
+  assert.deepEqual(out[0].outcomes[0], { name: "Claude", prob: 72 });
 });

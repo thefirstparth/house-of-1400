@@ -258,6 +258,9 @@
         },
         "thread_id": {
           "type": "string"
+        },
+        "traffic": {
+          "type": "string"
         }
       }
     }
@@ -690,6 +693,12 @@
           },
           "url": {
             "$ref": "#/definitions/url"
+          },
+          "note": {
+            "$ref": "#/definitions/text"
+          },
+          "volume24h": {
+            "type": "number"
           }
         }
       }
