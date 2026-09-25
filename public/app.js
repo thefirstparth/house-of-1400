@@ -128,12 +128,13 @@ const wxAt = (c, hour) => ((hour >= 19 || hour < 6) && NIGHT[c] ? NIGHT[c] : wx(
 const sourcesLine = srcs => (srcs?.length ? `<div class="src">${srcs.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`).join(" · ")}</div>` : "");
 const newFor = x => (x.new_for_you ? `<span class="newfor">New for you</span>` : "");
 
+const THUMB = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v11H3V10z"/><path d="M7 10l4.2-7.2a2 2 0 0 1 3.7 1.3L14 9h5.6a2 2 0 0 1 2 2.4l-1.6 8A2 2 0 0 1 18 21H7"/></svg>`;
 function tools(st, withMore) {
   const v = store.get("h1400-votes") || {};
   const cur = v[st.id];
   const link = st.sources?.[0]?.url;
   const id = esc(st.id);
-  return `<div class="tools">${withMore ? `<button class="rm" data-more="${id}" aria-expanded="false">Full story</button>` : ""}${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">Source ↗</a>` : ""}<button data-clip="${id}" title="Share this story as an image">Share</button><span class="thumbs" role="group" aria-label="Tune future editions"><button class="th" data-th="up" data-story="${id}" aria-pressed="${cur === "up"}" title="More stories like this" aria-label="More stories like this">👍</button><button class="th" data-th="down" data-story="${id}" aria-pressed="${cur === "down"}" title="Fewer stories like this" aria-label="Fewer stories like this">👎</button></span></div>`;
+  return `<div class="tools">${withMore ? `<button class="rm" data-more="${id}" aria-expanded="false">Full story</button>` : ""}${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">Source ↗</a>` : ""}<button data-clip="${id}" title="Share this story as an image">Share</button><span class="thumbs" role="group" aria-label="Tune future editions"><button class="th" data-th="up" data-story="${id}" aria-pressed="${cur === "up"}" title="More stories like this" aria-label="More stories like this">${THUMB}</button><button class="th" data-th="down" data-story="${id}" aria-pressed="${cur === "down"}" title="Fewer stories like this" aria-label="Fewer stories like this"><span style="display:block;transform:rotate(180deg)">${THUMB}</span></button></span></div>`;
 }
 
 const why = w => (w?.text ? `<div class="why"><b>${w.personal ? "Why it matters for you" : "Why it matters"}</b>${esc(w.text)}</div>` : "");
@@ -228,7 +229,7 @@ function railHTML() {
 }
 
 // Madridismo owns Madrid's fixtures: the next four, the last result, form and table.
-function madridBlock({ stacked = false } = {}) {
+function madridBlock() {
   const F = LIVE.football?.value, T = LIVE.laliga_table?.value;
   let table = "";
   if (F?.next?.length) {
@@ -247,64 +248,56 @@ function madridBlock({ stacked = false } = {}) {
     const gap = top && top !== rm ? `, ${top.points - rm.points} behind ${esc(top.team)}` : top === rm ? ", top of the table" : "";
     lines.push(`<p><b>Table:</b> ${ordinal(rm.rank)} on ${rm.points} points${gap}.</p>`);
   }
-  const facts = lines.join("") + staleNote("football");
-  if (!table && !lines.length) return "";
-  return stacked ? `<div class="facts">${facts}</div>${table}` : `<div class="cols2"><div>${table}</div><div class="facts">${facts}</div></div>`;
+  let mini = "";
+  if (T?.rows?.length) {
+    const isUs = r => String(r.id) === String(CFG.follows.football_club.espn_id) || r.team === CFG.follows.football_club.name;
+    const rows = T.rows.slice(0, 5); const us = T.rows.find(isUs); if (us && !rows.includes(us)) rows.push(us);
+    mini = `<table class="compact liga"><thead><tr><th>#</th><th>La Liga</th><th class="r">P</th><th class="r">GD</th><th class="r">Pts</th></tr></thead><tbody>${rows.map(r => `<tr class="${isUs(r) ? "on" : ""}"><td class="tnum">${r.rank}</td><td>${esc(r.team)}</td><td class="r tnum">${r.played ?? ""}</td><td class="r tnum">${r.gd > 0 ? "+" : ""}${r.gd ?? ""}</td><td class="r tnum">${r.points}</td></tr>`).join("")}</tbody></table>`;
+  }
+  const facts = lines.filter(l => !l.startsWith("<p><b>Table:")).join("") + staleNote("football");
+  if (!table && !lines.length && !mini) return "";
+  return `<div class="cols2"><div>${table}</div><div class="facts">${facts}${mini}</div></div>`;
 }
 const ordinal = n => n + (["th", "st", "nd", "rd"][(n % 100 - 20) % 10] || ["th", "st", "nd", "rd"][n % 100] || "th");
 
-function paddockBlock({ stacked = false } = {}) {
+// Paddock Notes owns F1: this weekend's sessions, the key lines, the drivers' standings and the calendar.
+function paddockBlock() {
   const N = LIVE.f1_next?.value, S = LIVE.f1_standings?.value, Lr = LIVE.f1_last?.value, D = E.sections?.paddock?.data || {};
-  let table = "";
   const n = Date.now();
+  let sessions = "";
   if (N?.race) {
     const tz = D.local_tz;
     const t = (iso, zone) => esc(fmt(iso, { weekday: "short", hour: "2-digit", minute: "2-digit" }, zone).replace(",", ""));
-    table = `<div class="tbl"><table><thead><tr><th>Session</th>${tz ? `<th class="r">Local</th>` : ""}<th class="r">IST</th></tr></thead><tbody>${N.race.sessions.map(s => {
+    sessions = `<div class="tbl"><table class="compact"><thead><tr><th>This weekend</th>${tz ? `<th class="r">Local</th>` : ""}<th class="r">IST</th></tr></thead><tbody>${N.race.sessions.map(s => {
       const st = stateOf({ start: Date.parse(s.start), end: Date.parse(s.start) + s.minutes * 6e4 }, n);
-      return `<tr class="${st === "on" ? "on" : st === "done" ? "done" : ""}"><td>${esc(s.name)}${st === "on" ? ` <span class="live"><i></i>On now</span> <button class="refresh" data-refresh="f1_next">Refresh</button>` : st === "done" ? ` <small>done</small>` : ""}</td>${tz ? `<td class="r tnum">${s.time_confirmed ? t(s.start, tz) : "TBC"}</td>` : ""}<td class="r tnum">${s.time_confirmed ? t(s.start) : "TBC"}</td></tr>`;
+      return `<tr class="${st === "on" ? "on" : st === "done" ? "done" : ""}"><td>${esc(s.name)}${st === "on" ? ` <span class="live"><i></i>On now, go watch</span> <button class="refresh" data-refresh="f1_next">Refresh</button>` : st === "done" ? ` <small>done</small>` : ""}</td>${tz ? `<td class="r tnum">${s.time_confirmed ? t(s.start, tz) : "TBC"}</td>` : ""}<td class="r tnum">${s.time_confirmed ? t(s.start) : "TBC"}</td></tr>`;
     }).join("")}</tbody></table></div>`;
   }
   const bits = [];
-  if (S?.drivers?.length) {
-    const max = S.drivers.find(d => /Verstappen/.test(d.name)), lead = S.drivers[0];
-    if (max) bits.push(`<p><b>${esc(CFG.follows.f1_driver.label)}.</b> ${ordinal(max.pos)} on ${max.points} points${max === lead ? ", leading the championship" : `, ${lead.points - max.points} behind ${esc(lead.name)}`}.${D.max_note ? " " + esc(D.max_note) : ""}</p>`);
-    if (lead && lead !== max) { const second = S.drivers[1]; bits.push(`<p><b>Leader.</b> ${esc(lead.name)} (${esc(lead.team)}) on ${lead.points}${second ? `, ${lead.points - second.points} clear of ${esc(second.name)}` : ""}.</p>`); }
-  }
+  const max = S?.drivers?.find(d => /Verstappen/.test(d.name)), lead = S?.drivers?.[0];
+  if (max) bits.push(`<p><b>${esc(CFG.follows.f1_driver.label)}.</b> ${ordinal(max.pos)} on ${max.points} points${max === lead ? ", leading the championship" : `, ${lead.points - max.points} behind ${esc(lead.name)}`}.${D.max_note ? " " + esc(D.max_note) : ""}</p>`);
   if (Lr?.results?.length) {
     const w = Lr.results[0], mx = Lr.results.find(r => /Verstappen/.test(r.name));
     bits.push(`<p><b>Last race.</b> ${esc(Lr.flag)} ${esc(Lr.name)}: ${esc(w.name)} won${mx && mx !== w ? `, Verstappen ${ordinal(mx.pos)}` : ""}.</p>`);
   }
   for (const note of D.notes || []) bits.push(`<p><b>${esc(note.label)}.</b> ${esc(note.text)}</p>`);
-  if (N?.upcoming?.length) bits.push(`<p><b>Next three.</b> ${N.upcoming.map(u => `${esc(u.flag)} ${esc(u.name.replace(" Grand Prix", ""))} ${esc(istDay(u.date))}`).join(" · ")}</p>`);
-  if (!table && !bits.length) return "";
-  const facts = `<div class="facts">${bits.join("")}${staleNote("f1_standings")}</div>`;
-  return stacked ? table + facts : `<div class="cols2"><div>${table}</div>${facts}</div>`;
+  let standings = "";
+  if (S?.drivers?.length) {
+    const rows = S.drivers.slice(0, 8);
+    if (max && !rows.includes(max)) rows.push(max);
+    const top = lead.points || 1;
+    standings = `<div class="tbl"><table class="compact standings"><thead><tr><th>#</th><th>Drivers</th><th class="r">Pts</th><th class="r">Gap</th></tr></thead><tbody>${rows.map(d => `<tr class="${d === max ? "on" : ""}"><td class="tnum">${d.pos}</td><td>${esc(d.name.replace(/^Andrea /, ""))} <small>${esc(d.team || "")}</small><span class="mbar" style="width:${(d.points / top * 100).toFixed(1)}%"></span></td><td class="r tnum">${d.points}</td><td class="r tnum">${d === lead ? "" : "−" + (lead.points - d.points)}</td></tr>`).join("")}</tbody></table>${S.round ? `<p class="asof">After round ${S.round}. Source: ${esc(LIVE.f1_standings.source)}.</p>` : ""}</div>`;
+  }
+  let calendar = "";
+  if (N?.race || N?.upcoming?.length) {
+    const cal = [...(N.race ? [{ round: N.race.round, flag: N.race.flag, name: N.race.name, date: N.race.sessions.at(-1).start, now: true }] : []), ...(N.upcoming || [])];
+    calendar = `<div class="tbl"><table class="compact calendar"><thead><tr><th>Rd</th><th>Grand Prix</th><th class="r">Race</th></tr></thead><tbody>${cal.map(r => `<tr class="${r.now ? "on" : ""}"><td class="tnum">${r.round ?? ""}</td><td><span class="flag" aria-hidden="true">${esc(r.flag)}</span> ${esc(r.name)}</td><td class="r tnum">${esc(sparkLabel(istDate(new Date(r.date))))}</td></tr>`).join("")}</tbody></table></div>`;
+  }
+  if (!sessions && !bits.length && !standings && !calendar) return "";
+  return `<div class="cols2"><div>${sessions}</div><div class="facts">${bits.join("")}${staleNote("f1_standings")}</div></div>${standings || calendar ? `<div class="cols2 gap-top"><div>${standings}</div><div>${calendar}</div></div>` : ""}`;
 }
 
-function tablesBlock() {
-  const S = LIVE.f1_standings?.value, T = LIVE.laliga_table?.value, B = LIVE.nba?.value;
-  const cols = [];
-  if (S?.drivers?.length) {
-    const top = S.drivers[0].points || 1;
-    const rows = S.drivers.slice(0, 10);
-    const max = S.drivers.find(d => /Verstappen/.test(d.name));
-    if (max && !rows.includes(max)) rows.push(max);
-    cols.push(`<div class="tbl"><table><thead><tr><th>#</th><th>F1 drivers</th><th style="width:38%"></th><th class="r">Pts</th></tr></thead><tbody>${rows.map(d => `<tr class="${d === max ? "on" : ""}"><td>${d.pos}</td><td>${esc(d.name)}<br><small>${esc(d.team || "")}</small></td><td><span class="bar" style="width:${(d.points / top * 100).toFixed(1)}%;background:var(--acc-f1)"></span></td><td class="r tnum">${d.points}</td></tr>`).join("")}</tbody></table>${staleNote("f1_standings")}</div>`);
-  }
-  if (T?.rows?.length) {
-    const club = CFG.follows.football_club;
-    const isUs = r => String(r.id) === String(club.espn_id) || r.team === club.name;
-    const rows = T.rows.slice(0, 8);
-    const us = T.rows.find(isUs);
-    if (us && !rows.includes(us)) rows.push(us);
-    cols.push(`<div class="tbl"><table><thead><tr><th>#</th><th>La Liga</th><th class="r">P</th><th class="r">GD</th><th class="r">Pts</th></tr></thead><tbody>${rows.map(r => `<tr class="${isUs(r) ? "on" : ""}"><td>${r.rank}</td><td>${esc(r.team)}</td><td class="r tnum">${r.played ?? ""}</td><td class="r tnum">${r.gd > 0 ? "+" : ""}${r.gd ?? ""}</td><td class="r tnum">${r.points}</td></tr>`).join("")}</tbody></table>${staleNote("laliga_table")}</div>`);
-  }
-  if (B?.in_season && B.west?.length) {
-    cols.push(`<div class="tbl"><table><thead><tr><th>#</th><th>NBA West</th><th class="r">W</th><th class="r">L</th><th class="r">GB</th></tr></thead><tbody>${B.west.map(r => `<tr class="${/Warriors/.test(r.team) ? "on" : ""}"><td>${r.rank}</td><td>${esc(r.team)}</td><td class="r tnum">${r.wins}</td><td class="r tnum">${r.losses}</td><td class="r tnum">${esc(r.gb ?? "")}</td></tr>`).join("")}</tbody></table></div>`);
-  }
-  return cols.length ? `<div class="${cols.length > 1 ? "cols2" : ""}">${cols.join("")}</div>` : "";
-}
+
 
 function warriorsBlock() {
   const B = LIVE.nba?.value;
@@ -314,11 +307,9 @@ function warriorsBlock() {
   if (B.next?.length) bits.push(`Next: ${B.next.map(g => `${g.home ? "v" : "at"} ${esc(g.opponent)}, ${esc(istFull(g.date))} IST`).join("; ")}.`);
   const pos = B.west?.find(r => /Warriors/.test(r.team));
   if (pos) bits.push(`${ordinal(pos.rank)} in the West.`);
-  return bits.length ? `<div class="item" style="--acc:var(--acc-sp)"><div class="tag">NBA · Warriors</div>${bits.join(" ")}</div>` : "";
+  const west = B.west?.length ? `<table class="compact"><thead><tr><th>#</th><th>NBA West</th><th class="r">W</th><th class="r">L</th><th class="r">GB</th></tr></thead><tbody>${B.west.slice(0, 8).map(r => `<tr class="${/Warriors/.test(r.team) ? "on" : ""}"><td class="tnum">${r.rank}</td><td>${esc(r.team)}</td><td class="r tnum">${r.wins}</td><td class="r tnum">${r.losses}</td><td class="r tnum">${esc(r.gb ?? "")}</td></tr>`).join("")}</tbody></table>` : "";
+  return bits.length ? `<div class="cols2"><div class="item" style="--acc:var(--acc-sp)"><div class="tag">NBA · Warriors</div>${bits.join(" ")}</div><div>${west}</div></div>` : "";
 }
-
-// Every figure gets a note that says something: the editor's driver for the day if there is one,
-// otherwise where the level sits in its own 3-month history.
 function assetNote(name, q) {
   const D = E.sections?.ledger?.data || {};
   const fmtN = v => (v >= 1000 ? inr(Math.round(v)) : v.toFixed(2));
@@ -492,19 +483,21 @@ function talkBlock() {
 }
 
 // Compact: one row per market, top outcomes inline with a thin bar for the favourite. Up to ten.
+// Readable over dense: title on its own line, one row per outcome with its own bar. Up to ten markets.
+const MONTHS = { january: "Jan", february: "Feb", march: "Mar", april: "Apr", may: "May", june: "Jun", july: "Jul", august: "Aug", september: "Sep", october: "Oct", november: "Nov", december: "Dec" };
+const outcomeLabel = n => String(n).replace(/^(By|Through) (January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2})(, \d{4})?$/i, (_, w, m, d, y) => `${w} ${d} ${MONTHS[m.toLowerCase()]}${y || ""}`);
+
 function bettingBlock() {
   const liveM = LIVE.betting?.value?.markets || [];
   const list = (E.betting?.length ? E.betting : liveM).slice(0, CFG.betting.show || 10);
   if (!list.length) return "";
   const idOf = b => (b.id?.includes(":") ? b.id : b.id ? `pm:${b.id}` : null);
-  const rows = list.map(b => {
+  const cards = list.map(b => {
     const L = !LIVE.betting?.stale && liveM.find(m => m.id === idOf(b));
     const outs = (L?.outcomes?.length ? L.outcomes : b.outcomes).slice(0, 3);
-    const fav = outs[0];
-    const label = o => (o.name === "Yes" && outs.length === 1 ? "Yes" : o.name);
-    return `<li><div class="mk"><span class="cat">${esc(b.category || "World")} <span class="src">· ${esc(b.source || "Polymarket")}</span></span><a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title)}</a>${b.note ? `<small>${esc(b.note)}</small>` : ""}</div><div class="outs">${outs.map((o, i) => `<span class="${i === 0 ? "fav" : ""}">${esc(label(o))} <b class="tnum">${Math.round(o.prob)}%</b></span>`).join("")}</div><div class="bar"><span style="width:${Math.max(0, Math.min(100, fav.prob))}%"></span></div></li>`;
+    return `<li><div class="meta">${esc(b.category || "World")}<span> · ${esc(b.source || "Polymarket")}</span></div><a class="title" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title.replace(/\.\.\.\?$/, "…?"))}</a>${b.note ? `<small>${esc(b.note)}</small>` : ""}<ul>${outs.map((o, i) => `<li class="${i === 0 ? "fav" : ""}"><span>${esc(outcomeLabel(o.name))}</span><b class="tnum">${Math.round(o.prob)}%</b><i><em style="width:${Math.max(0, Math.min(100, o.prob))}%"></em></i></li>`).join("")}</ul></li>`;
   }).join("");
-  return `<ol class="markets">${rows}</ol><p class="asof" style="margin-top:8px">${LIVE.betting && !LIVE.betting.stale ? "Live prices" : `Prices ${agoIST(LIVE.betting?.as_of) || "at press time"}`}. Probabilities are what traders pay, not forecasts.</p>`;
+  return `<ol class="markets">${cards}</ol><p class="asof" style="margin-top:10px">${LIVE.betting && !LIVE.betting.stale ? "Live prices" : `Prices ${agoIST(LIVE.betting?.as_of) || "at press time"}`}. A price is what traders pay for a yes, not a forecast.</p>`;
 }
 
 function byeBlock() {
@@ -539,14 +532,13 @@ function render() {
 
   let h = frontHTML();
   h += secWrap("fixtures", `<div data-live="fixtures">${fixturesBlock()}</div>`, "Next 7 days · IST");
-  h += secWrap("madrid", split(`<div data-live="madrid" data-stacked="${E.sections?.madrid?.stories?.length ? 1 : ""}">${madridBlock({ stacked: !!E.sections?.madrid?.stories?.length })}</div>`, "madrid"));
+  h += secWrap("madrid", `<div data-live="madrid">${madridBlock()}</div>` + storiesBlock("madrid"));
   h += secWrap("pitch", storiesBlock("pitch"), "Football beyond Madrid");
   const race = LIVE.f1_next?.value?.race;
-  h += secWrap("paddock", split(`<div data-live="paddock" data-stacked="${E.sections?.paddock?.stories?.length ? 1 : ""}">${paddockBlock({ stacked: !!E.sections?.paddock?.stories?.length })}</div>`, "paddock"), race ? `${race.flag} Round ${race.round ?? ""} · ${race.name}${race.locality ? " · " + race.locality : ""}` : undefined);
+  h += secWrap("paddock", `<div data-live="paddock">${paddockBlock()}</div>` + storiesBlock("paddock"), race ? `${race.flag} Round ${race.round ?? ""} · ${race.name}${race.locality ? " · " + race.locality : ""}` : undefined);
   h += secWrap("crease", creaseBlock(), "India men · senior team");
   h += secWrap("deuce", deuceBlock(), "Tennis · big events first, then Alcaraz and Djokovic");
   h += secWrap("sidelines", `<div data-live="warriors">${warriorsBlock()}</div>` + storiesBlock("sidelines"), "Every other sport, when it matters");
-  h += secWrap("tables", `<div data-live="tables">${tablesBlock()}</div>`, "Standings, refreshed live");
   h += secWrap("dateline", storiesBlock("dateline"), "World & India");
   h += secWrap("workshop", storiesBlock("workshop"), "Tech · AI · wearables");
   h += secWrap("pipeline", storiesBlock("pipeline"), "SDR · outbound · GTM");
@@ -601,7 +593,7 @@ function paintLive() {
   $("#ear-l").innerHTML = L; $("#ear-l").hidden = !L;
   $("#ear-r").innerHTML = LIVEBLOCKS.earR(); $("#ear-r").hidden = false;
   $("#rail").innerHTML = railHTML();
-  const map = { talk: talkBlock, fixtures: fixturesBlock, madrid: () => madridBlock({ stacked: !!document.querySelector('[data-live="madrid"]')?.dataset.stacked }), paddock: () => paddockBlock({ stacked: !!document.querySelector('[data-live="paddock"]')?.dataset.stacked }), tables: tablesBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
+  const map = { talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
   for (const [k, fn] of Object.entries(map)) {
     const el = document.querySelector(`[data-live="${k}"]`);
     if (!el) continue;

@@ -32,11 +32,11 @@ IDs are stable. Names come from `config/house.json`.
 3. The Fixture List: everything coming up, IST, sorted by time. "Where" only when reliably confirmed.
 4. Madridismo: next 3 to 4 fixtures, last result, table position, then 0 to 3 stories (Managing Madrid first, other sources welcome)
 5. The Wider Pitch: football beyond Madrid, big developments not only matches
-6. Paddock Notes: current weekend sessions (local + IST), Max Watch, championship leader and gap, last race, next three
+6. Paddock Notes: current weekend sessions (local + IST), Max Watch, last race, drivers' standings (top 8 plus Max, points gap), calendar (current round plus next four)
 7. The Crease: India men senior team, next match and series (researched at 2 PM, chronology checked), team news
 8. Deuce: big upcoming tournaments first (Slams, Masters 1000, ATP Finals, Laver Cup, Davis Cup), then Alcaraz and Djokovic. NEXT MATCH when confirmed, otherwise NEXT EVENT with dates and "match TBD".
 9. The Sidelines: every other sport worldwide when it matters, including NBA/Warriors in season
-10. The Tables: F1 drivers, La Liga, NBA West in season. Live.
+10. (Retired 25 Sep: standings now live inside Paddock Notes, Madridismo and The Sidelines.)
 11. Dateline: world and India. Must-know floor applies.
 12. The Workshop: tech, AI, wearables, phones. Try / Wait / Ignore when supported.
 13. The Pipeline: SDR, outbound, GTM, SaaS. Only when useful.

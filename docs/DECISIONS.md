@@ -104,3 +104,9 @@ Made without Parth, per the build prompt. Change any of them freely.
 - **Polymarket only for The Betting Window** (Parth). Kalshi needed a 3-minute rate-limited crawl each run for little extra; `scripts/betting-candidates.mjs --kalshi` keeps it available, and the page still refreshes any `ks:` ids an edition carries.
 - **Schedule** 14:00, 14:29, 14:58, 15:27 IST with the information cut at 14:00 (Parth). The "late" line moves from 15:15 to 16:30.
 - **The validator enforces the review's minimums** so a daily run cannot repeat them by accident: Wider Pitch and Sidelines at least 2 items, Screen & Stage at least 3 titles (5 on Friday to Sunday), Talk of the Day at least 5 plus 5 in English with search volume, The Betting Window 8 to 10, Ledger driver notes, cut 14:00. A run may waive one only with a written reason in `coverage_waivers` (never printed).
+
+## 25 Sep 2026, Parth's second review
+- **Masthead numerals** now use DM Serif Display. Bodoni Moda's hairline 4 was unreadable on a phone; DM Serif keeps the display feel with a solid 4. Used for "1400" everywhere (masthead, login, posters, favicon); widget figures stay in Source Serif 4.
+- **Story tools** sit on one baseline at one height; the thumbs are drawn icons (consistent on every phone) that fill with the section colour when pressed.
+- **The Tables section is retired.** Its content moved to the sections that own it: F1 drivers' standings (top 8 plus Verstappen, with points gap and a thin bar) and a race calendar (current round plus the next four: round, flag, Grand Prix, race date) in Paddock Notes; a compact La Liga table (top 5 plus Madrid) in Madridismo; NBA West (top 8) in The Sidelines once the season starts. The `tables` entry stays in config so old editions still resolve.
+- **The Betting Window** keeps 8 to 10 markets but gives each room: category and source on a small line, the title on its own line, one row per outcome with its own bar; date ladders read "By 30 Sep".
