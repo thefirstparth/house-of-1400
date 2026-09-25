@@ -19,26 +19,28 @@ function syncPosters() {
   if (res.getResponseCode() !== 200) return;
   const m = JSON.parse(res.getContentText());
   const props = PropertiesService.getScriptProperties();
-  if (!m.date || props.getProperty("last_synced") === m.date) return;
+  // Keyed on the capture time, not the date: if a day's posters are captured again, the newer set replaces the old.
+  const key = m.captured_at || m.date;
+  if (!m.date || props.getProperty("last_synced") === key) return;
 
   const parent = DriveApp.getFolderById(PARENT_FOLDER_ID);
   const it = parent.getFoldersByName(m.date);
   const day = it.hasNext() ? it.next() : parent.createFolder(m.date);
   const have = {};
   const files = day.getFiles();
-  while (files.hasNext()) have[files.next().getName()] = true;
+  while (files.hasNext()) { const f = files.next(); have[f.getName()] = f; }
 
   let saved = 0;
   for (const f of m.files) {
     const name = `${f.title}.jpg`;
-    if (have[name]) continue;
-    const img = UrlFetchApp.fetch(`${SITE}/posters/latest/${encodeURIComponent(f.name)}?d=${m.date}`, { muteHttpExceptions: true });
+    const img = UrlFetchApp.fetch(`${SITE}/posters/latest/${encodeURIComponent(f.name)}?c=${encodeURIComponent(key)}`, { muteHttpExceptions: true });
     if (img.getResponseCode() !== 200) return; // try again next hour; nothing is marked done
+    if (have[name]) have[name].setTrashed(true); // an older capture of the same view
     day.createFile(img.getBlob().setName(name));
     saved++;
   }
-  props.setProperty("last_synced", m.date);
-  console.log(`Saved ${saved} poster(s) for ${m.date}`);
+  props.setProperty("last_synced", key);
+  console.log(`Saved ${saved} poster(s) for ${m.date} (captured ${key})`);
 }
 
 function install() {
