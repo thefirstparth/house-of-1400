@@ -164,6 +164,28 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
       if (n.covered_by && !ids.has(n.covered_by)) errors.push(`checks.national: covered_by "${n.covered_by}" is not an item in this edition`);
       if (!n.covered_by && !(n.answer && n.answer.length >= 15)) errors.push(`checks.national: "${n.story}" is neither covered (covered_by) nor explained (answer)`);
     }
+    // d) India's cricket times come from scripts/cricket-times.mjs (Cricbuzz's schedule, run today). A start time
+    // Cricbuzz has announced is printed, never "TBC", and the edition's next match agrees with it to 30 minutes.
+    if (E.date > "2026-09-26") {
+      let ct = null;
+      try { ct = read("ledger/cricket-times.json"); } catch {}
+      if (!ct || ct.date !== E.date) errors.push("cricket: run `node scripts/cricket-times.mjs` for India's match times (ledger/cricket-times.json is missing or not from today)");
+      else if (ct.error) warnings.push(`cricket: Cricbuzz was unavailable (${ct.error}); times must come from BCCI or ESPNcricinfo`);
+      else {
+        const ahead = ct.matches.filter(m => Date.parse(m.start) > cut);
+        const nx = E.chronology?.india_cricket?.next, first = ahead[0];
+        if (first && nx) {
+          if (first.time_announced && nx.time_tbc) errors.push(`chronology.india_cricket.next: marked time TBC, but Cricbuzz has ${first.desc} v ${first.opponent} at ${first.ist} IST`);
+          if (!nx.time_tbc && Math.abs(Date.parse(nx.when_utc) - Date.parse(first.start)) > 30 * 6e4) errors.push(`chronology.india_cricket.next: ${nx.when_utc} does not match Cricbuzz's ${first.desc} v ${first.opponent} at ${first.start}`);
+        }
+        for (const f of E.fixtures || []) {
+          if (f.entity !== "india_cricket") continue;
+          const m = ahead.find(x => Math.abs(Date.parse(x.start) - Date.parse(f.when_utc)) < 18 * 36e5);
+          if (m?.time_announced && f.time_tbc) errors.push(`fixtures: "${f.label}" is marked time TBC, but Cricbuzz has it at ${m.ist} IST`);
+          else if (m?.time_announced && Math.abs(Date.parse(m.start) - Date.parse(f.when_utc)) > 30 * 6e4) errors.push(`fixtures: "${f.label}" is at ${f.when_utc}, Cricbuzz has ${m.start}`);
+        }
+      }
+    }
     // Letters to the editor: every letter in today's inbox (scripts/letters.mjs) gets an answer in checks.letters,
     // saying what the editor did with it.
     let inbox = null;

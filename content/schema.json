@@ -163,6 +163,14 @@
               "boolean"
             ]
           }
+        },
+        "tone": {
+          "enum": [
+            "good",
+            "bad",
+            "mixed"
+          ],
+          "description": "How the news lands for the reader. Colours the 'Why it matters' box: good green, bad red, mixed or absent neutral. Set it only when it is clear."
         }
       }
     },
@@ -213,6 +221,14 @@
               "boolean"
             ]
           }
+        },
+        "tone": {
+          "enum": [
+            "good",
+            "bad",
+            "mixed"
+          ],
+          "description": "How the news lands for the reader. Colours the 'Why it matters' box: good green, bad red, mixed or absent neutral. Set it only when it is clear."
         }
       }
     },

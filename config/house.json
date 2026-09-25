@@ -15,139 +15,162 @@
       "id": "front",
       "name": "Front Page",
       "short": "Front Page",
-      "accent": "--ink"
+      "accent": "--ink",
+      "palette": "ink"
     },
     {
       "id": "week",
       "name": "The Week Ahead",
       "short": "Week Ahead",
-      "accent": "--ink"
+      "accent": "--ink",
+      "palette": "ink"
     },
     {
       "id": "fixtures",
       "name": "The Fixture List",
       "short": "Fixture List",
-      "accent": "--acc-f1"
+      "accent": "--acc-f1",
+      "palette": "slate"
     },
     {
       "id": "madrid",
       "name": "Madridismo",
       "short": "Madridismo",
-      "accent": "--acc-rm"
+      "accent": "--acc-rm",
+      "palette": "madrid"
     },
     {
       "id": "pitch",
       "name": "The Wider Pitch",
       "short": "Wider Pitch",
-      "accent": "--acc-sp"
+      "accent": "--acc-sp",
+      "palette": "pitch"
     },
     {
       "id": "paddock",
       "name": "Paddock Notes",
       "short": "Paddock Notes",
-      "accent": "--acc-f1"
+      "accent": "--acc-f1",
+      "palette": "f1"
     },
     {
       "id": "crease",
       "name": "The Crease",
       "short": "The Crease",
-      "accent": "--acc-sp"
+      "accent": "--acc-sp",
+      "palette": "india"
     },
     {
       "id": "deuce",
       "name": "Deuce",
       "short": "Deuce",
-      "accent": "--acc-sp"
+      "accent": "--acc-sp",
+      "palette": "tennis"
     },
     {
       "id": "sidelines",
       "name": "The Sidelines",
       "short": "Sidelines",
-      "accent": "--acc-sp"
+      "accent": "--acc-sp",
+      "palette": "track"
     },
     {
       "id": "tables",
       "name": "The Tables",
       "short": "The Tables",
-      "accent": "--acc-rm"
+      "accent": "--acc-rm",
+      "palette": "pitch"
     },
     {
       "id": "dateline",
       "name": "Dateline",
       "short": "Dateline",
-      "accent": "--acc-wd"
+      "accent": "--acc-wd",
+      "palette": "dispatch"
     },
     {
       "id": "workshop",
       "name": "The Workshop",
       "short": "Workshop",
-      "accent": "--acc-tc"
+      "accent": "--acc-tc",
+      "palette": "tech"
     },
     {
       "id": "pipeline",
       "name": "The Pipeline",
       "short": "Pipeline",
-      "accent": "--acc-tc"
+      "accent": "--acc-tc",
+      "palette": "tech"
     },
     {
       "id": "ledger",
       "name": "The Ledger",
       "short": "The Ledger",
-      "accent": "--acc-mk"
+      "accent": "--acc-mk",
+      "palette": "money"
     },
     {
       "id": "sky",
       "name": "Sky & Streets",
       "short": "Sky & Streets",
-      "accent": "--acc-wx"
+      "accent": "--acc-wx",
+      "palette": "sky"
     },
     {
       "id": "namma",
       "name": "Namma Beat",
       "short": "Namma Beat",
-      "accent": "--acc-ct"
+      "accent": "--acc-ct",
+      "palette": "namma"
     },
     {
       "id": "screen",
       "name": "Screen & Stage",
       "short": "Screen & Stage",
-      "accent": "--acc-en"
+      "accent": "--acc-en",
+      "palette": "screen"
     },
     {
       "id": "talk",
       "name": "Talk of the Day",
       "short": "Talk of the Day",
-      "accent": "--acc-wd"
+      "accent": "--acc-wd",
+      "palette": "slate"
     },
     {
       "id": "betting",
       "name": "The Betting Window",
       "short": "Betting Window",
-      "accent": "--acc-wd"
+      "accent": "--acc-wd",
+      "palette": "odds"
     },
     {
       "id": "bye",
       "name": "Before You Go",
       "short": "Before You Go",
-      "accent": "--ink"
+      "accent": "--ink",
+      "palette": "ink"
     },
     {
       "id": "desk",
       "name": "Your Desk",
       "short": "Your Desk",
-      "accent": "--ink"
+      "accent": "--ink",
+      "palette": "ink"
     },
     {
       "id": "letters",
       "name": "Letters to the Editor",
       "short": "Letters",
-      "accent": "--ink"
+      "accent": "--ink",
+      "palette": "ink"
     },
     {
       "id": "house",
       "name": "House Note",
       "short": "House Note",
-      "accent": "--acc-f1"
+      "accent": "--acc-f1",
+      "palette": "ink"
     }
   ],
   "follows": {

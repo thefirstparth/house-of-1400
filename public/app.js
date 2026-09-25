@@ -34,16 +34,17 @@ const shortDate = ymd => new Date(ymd + "T12:00:00Z").toLocaleDateString("en-GB"
 const agoIST = iso => (iso ? `as of ${istFull(iso)} IST` : "");
 const sec = id => CFG.sections.find(s => s.id === id) || { id, name: id, short: id, accent: "--ink" };
 const accent = id => `var(${sec(id).accent})`;
-// Colour families: each section's accent in the config belongs to one family (news, money, sport, Madrid, tech,
-// city, culture), which gives it a strong colour and a soft container colour.
-const FAMS = { "--acc-wd": "news", "--acc-mk": "money", "--acc-sp": "sport", "--acc-f1": "sport", "--acc-rm": "madrid", "--acc-tc": "tech", "--acc-wx": "city", "--acc-ct": "city", "--acc-en": "culture" };
-const famOfColor = c => FAMS[c] || "news";
-const fam = id => famOfColor(sec(id).accent);
+// Section palettes: each section's colours come from its subject (config sections[].palette): India blue for
+// cricket, tennis-ball yellow-green for tennis, F1 red, Madrid's crest purple, money green and so on. Good or bad
+// news is shown separately, by the story's tone.
+const FAMS = { "--acc-wd": "dispatch", "--acc-mk": "money", "--acc-sp": "pitch", "--acc-f1": "f1", "--acc-rm": "madrid", "--acc-tc": "tech", "--acc-wx": "sky", "--acc-ct": "namma", "--acc-en": "screen" };
+const famOfColor = c => FAMS[c] || "ink";
+const fam = id => sec(id).palette || famOfColor(sec(id).accent);
 // Section marks: a small drawn symbol in a seal, like the price stamps on old mastheads. Each family has its own
 // seal outline (the number of scallops), so the shape also tells you the kind of section.
-const SEAL = { news: [12, .07], money: [8, .085], sport: [10, .075], madrid: [6, .1], tech: [4, .11], city: [7, .09], culture: [9, .08] };
+const SEAL = { ink: [12, .06], slate: [12, .06], dispatch: [12, .07], money: [8, .085], odds: [8, .085], madrid: [6, .1], pitch: [10, .075], f1: [10, .075], india: [10, .075], tennis: [10, .075], track: [10, .075], tech: [4, .11], sky: [7, .09], namma: [7, .09], screen: [9, .08] };
 const sealPath = f => {
-  const [n, a] = SEAL[f] || SEAL.news, pts = [];
+  const [n, a] = SEAL[f] || SEAL.ink, pts = [];
   for (let i = 0; i < 120; i++) { const t = i / 120 * Math.PI * 2, r = 11.2 * (1 + a * Math.cos(n * t)) / (1 + a); pts.push(`${(12 + r * Math.sin(t)).toFixed(2)},${(12 - r * Math.cos(t)).toFixed(2)}`); }
   return "M" + pts.join("L") + "Z";
 };
@@ -178,17 +179,13 @@ const wxAt = (c, hour) => wxIcon(c, isNight(hour));
 const sourcesLine = srcs => (srcs?.length ? `<div class="src">${srcs.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`).join(" · ")}</div>` : "");
 const newFor = x => (x.new_for_you ? `<span class="newfor">New for you</span>` : "");
 
-const THUMB = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v11H3V10z"/><path d="M7 10l4.2-7.2a2 2 0 0 1 3.7 1.3L14 9h5.6a2 2 0 0 1 2 2.4l-1.6 8A2 2 0 0 1 18 21H7"/></svg>`;
-// Feedback is a letter to the editor, in words (EDITORIAL.md, Letters): one floating button for the whole paper,
-// which knows the story you are reading.
-const PEN = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>`;
 function tools(st, withMore) {
   const link = st.sources?.[0]?.url;
   const id = esc(st.id);
   return `<div class="tools">${withMore ? `<button class="rm" data-more="${id}" aria-expanded="false">Full story</button>` : ""}${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">Source ↗</a>` : ""}<button data-clip="${id}" title="Share this story as an image">Share</button></div>`;
 }
 
-const why = w => (w?.text ? `<div class="why"><b>${w.personal ? "Why it matters for you" : "Why it matters"}</b>${esc(w.text)}</div>` : "");
+const why = (w, tone) => (w?.text ? `<div class="why${tone === "good" || tone === "bad" ? " " + tone : ""}"><b>${w.personal ? "Why it matters for you" : "Why it matters"}</b>${esc(w.text)}</div>` : "");
 const VERDICT_TWI = { try: "Verdict: Try", wait: "Verdict: Wait", ignore: "Verdict: Ignore" };
 
 function byline(st) {
@@ -206,7 +203,7 @@ ${st.deck ? `<p class="deck">${esc(st.deck)}</p>` : ""}${byline(st)}
 <div class="body"><p class="${lead ? "first" : ""}">${esc(st.short)}</p>
 ${more ? `<div class="more" id="more-${esc(st.id)}" hidden>${st.more.map(p => `<p>${esc(p)}</p>`).join("")}</div>` : ""}
 ${st.verdict ? `<div class="verdictline" style="color:var(--acc)">${VERDICT_TWI[st.verdict]}</div>` : ""}
-${why(st.why)}</div>${tools(st, more)}</article>`;
+${why(st.why, st.tone)}</div>${tools(st, more)}</article>`;
 }
 
 function briefHTML(b, cls = "item") {
@@ -678,17 +675,30 @@ function talkBlock() {
 const MONTHS = { january: "Jan", february: "Feb", march: "Mar", april: "Apr", may: "May", june: "Jun", july: "Jul", august: "Aug", september: "Sep", october: "Oct", november: "Nov", december: "Dec" };
 const outcomeLabel = n => String(n).replace(/^(By|Through) (January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2})(, \d{4})?$/i, (_, w, m, d, y) => `${w} ${d} ${MONTHS[m.toLowerCase()]}${y || ""}`);
 
+// Each market as a betting slip: the favourite's price large on a tinted stub, how the money splits in one bar, the
+// rest as a legend. A market carried over from an earlier day carries the house stamp; a price that has moved since
+// press time says by how much.
 function bettingBlock() {
   const liveM = LIVE.betting?.value?.markets || [];
   const list = (E.betting?.length ? E.betting : liveM).slice(0, CFG.betting.show || 10);
   if (!list.length) return "";
   const idOf = b => (b.id?.includes(":") ? b.id : b.id ? `pm:${b.id}` : null);
-  const cards = list.map(b => {
+  const slips = list.map(b => {
     const L = !LIVE.betting?.stale && liveM.find(m => m.id === idOf(b));
-    const outs = (L?.outcomes?.length ? L.outcomes : b.outcomes).slice(0, 3);
-    return `<li><div class="meta">${esc(b.category || "World")}<span> · ${b.since && b.since < E.date ? `Trending since ${esc(sparkLabel(b.since))}` : esc(b.source || "Polymarket")}</span></div><a class="title" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title.replace(/\.\.\.\?$/, "…?"))}</a>${b.note ? `<small>${esc(b.note)}</small>` : ""}<ul>${outs.map((o, i) => `<li class="${i === 0 ? "fav" : ""}"><span>${esc(outcomeLabel(o.name))}</span><b class="tnum">${Math.round(o.prob)}%</b><i><em style="width:${Math.max(0, Math.min(100, o.prob))}%"></em></i></li>`).join("")}</ul></li>`;
+    const all = (L?.outcomes?.length ? L.outcomes : b.outcomes) || [];
+    if (!all.length) return "";
+    const yesNo = all.length === 1;
+    const outs = yesNo ? [{ name: all[0].name, prob: all[0].prob }, { name: "No", prob: Math.max(0, 100 - all[0].prob) }] : all.slice(0, 3);
+    const fav = outs[0], rest = Math.max(0, 100 - outs.reduce((a, o) => a + o.prob, 0));
+    const was = b.outcomes?.find(o => o.name === fav.name)?.prob, move = L && was != null ? fav.prob - was : 0;
+    const moved = Math.abs(move) >= 3 ? `<span class="mv ${move > 0 ? "up" : "dn"}">${move > 0 ? "▲" : "▼"} ${Math.abs(move).toFixed(0)} pts since press</span>` : "";
+    const since = b.since && b.since < E.date ? `<span class="stamp">Since ${esc(sparkLabel(b.since))}</span>` : "";
+    const segs = [...outs.map((o, i) => `<i class="s${i}" style="width:${Math.max(0, Math.min(100, o.prob)).toFixed(1)}%" title="${esc(outcomeLabel(o.name))} ${o.prob.toFixed(1)}%"></i>`), yesNo ? "" : `<i class="s9" style="width:${rest.toFixed(1)}%"></i>`].join("");
+    return `<li class="slip"><div class="stub"><b class="tnum">${Math.round(fav.prob)}<small>%</small></b><span>${esc(outcomeLabel(fav.name))}</span></div>
+<div class="sb"><div class="meta">${esc(b.category || "World")}${since}</div><a class="title" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title.replace(/\.\.\.\?$/, "…?"))}</a>${b.note ? `<small class="nt">${esc(b.note)}</small>` : ""}
+<div class="bar">${segs}</div><ul>${outs.slice(yesNo ? 0 : 1).map((o, i) => `<li><i class="s${yesNo ? i : i + 1}"></i>${esc(outcomeLabel(o.name))} <b class="tnum">${Math.round(o.prob)}%</b></li>`).join("")}${!yesNo && rest >= 1 ? `<li><i class="s9"></i>Others <b class="tnum">${Math.round(rest)}%</b></li>` : ""}</ul>${moved}</div></li>`;
   }).join("");
-  return `<ol class="markets">${cards}</ol><p class="asof" style="margin-top:10px">${LIVE.betting && !LIVE.betting.stale ? "Live prices" : `Prices ${agoIST(LIVE.betting?.as_of) || "at press time"}`}. A price is what traders pay for a yes, not a forecast.</p>`;
+  return `<ol class="slips">${slips}</ol><p class="asof" style="margin-top:12px">${LIVE.betting && !LIVE.betting.stale ? "Live prices" : `Prices ${agoIST(LIVE.betting?.as_of) || "at press time"}`} from Polymarket. A price is what traders pay for a yes, not a forecast.</p>`;
 }
 
 function byeBlock() {
@@ -711,7 +721,7 @@ const face = (sz = 28) => `<img class="face" src="/bhide.svg" alt="" width="${sz
 const editorNote = () => (E.editor_note ? `<div class="editor"><span class="eh">From the editor</span>${esc(E.editor_note)}<div class="sig"><img src="/bhide.svg" alt="" width="34" height="34"><a href="/editor">${esc(CFG.paper.editor.signature)}</a></div></div>` : "");
 function frontHTML() {
   const F = E.front, [s1, s2, ...rest] = F.seconds;
-  const minute = E.glance?.length ? `<div class="minute"><h3>The day in a minute</h3><div class="gd">${esc(longDate(E.date))}</div><ol>${E.glance.map(g => `<li data-fam="${famOfColor(g.color)}"><span>${esc(g.section)}</span><button data-go="${esc(g.target)}">${esc(g.line)}</button></li>`).join("")}</ol></div>` : "";
+  const minute = E.glance?.length ? `<div class="minute"><h3>The day in a minute</h3><div class="gd">${esc(longDate(E.date))}</div><ol>${E.glance.map(g => `<li data-fam="${(s => (s ? fam(s.section) : famOfColor(g.color)))(allStories().find(x => x.id === g.target))}"><span>${esc(g.section)}</span><button data-go="${esc(g.target)}">${esc(g.line)}</button></li>`).join("")}</ol></div>` : "";
   return `<div class="front" id="front" style="scroll-margin-top:60px">
 <div class="col fa">${storyHTML({ ...F.lead, kicker: `Front Page · ${F.lead.kicker}` }, { lead: true })}${s1 ? `<div class="pair">${[s1, s2].filter(Boolean).map(x => storyHTML(x)).join("")}</div>` : ""}</div>
 <div class="col fb">${rest.map(x => storyHTML(x)).join("")}${F.briefs.length ? `<div class="briefs">${F.briefs.map(b => briefHTML(b, "brief")).join("")}</div>` : ""}</div>
@@ -749,11 +759,9 @@ function render() {
   h += secWrap("betting", `<div data-live="betting">${bettingBlock()}</div>`, `What the world is betting on · ${markets}`);
   h += secWrap("bye", byeBlock(), "Watch and do");
   h += deskBlock();
-  h += secWrap("letters", lettersBlock(), E.letters?.length ? "The editor replies" : "Your notes to the paper");
   h += `<div class="house" id="house"><b>${esc(sec("house").name)}</b><p>${esc(E.house_note)}</p></div>`;
   h += `<div class="foot">${esc(`THE HOUSE OF 1400 · ${longDate(E.date).toUpperCase()} · NO. ${n} · EDITED BY ${CFG.paper.editor.signature.replace(", Editor", "").toUpperCase()}`)}<br><a href="/editor">About the editor</a> · <a href="/archive">The Archive</a></div>`;
   $("#main").innerHTML = h;
-  watchReading();
 
 
   // Read time
@@ -762,11 +770,6 @@ function render() {
   const full = skim + all.reduce((a, s) => a + words((s.more || []).join(" ")) + words(s.why?.text), 0);
   $("#readtime").textContent = `Skim: ${Math.max(1, Math.round(skim / 200))} min · Everything: ${Math.max(2, Math.round(full / 200))} min`;
 
-  // At a Glance
-  if (E.glance?.length) {
-    $("#glance").innerHTML = `<h4>At a Glance</h4><div class="gd">${esc(longDate(E.date))}</div>` + E.glance.map(g => `<button data-go="${esc(g.target)}" style="--c:${g.color ? `var(${esc(g.color)})` : "var(--ink)"}"><span>${esc(g.section)}</span>${esc(g.line)}</button>`).join("");
-    $("#glanceBtn").hidden = false;
-  }
   paintLive();
 }
 
@@ -832,60 +835,6 @@ function toggleMore(id) {
   m.hidden = !m.hidden;
   if (b) { b.textContent = m.hidden ? "Read more" : "Read less"; b.setAttribute("aria-expanded", !m.hidden); }
   return true;
-}
-
-// ------------------------------------------------------------------ letters to the editor
-function openLetter(id = "") {
-  const st = id ? findStory(id) : null;
-  const about = st ? `<div class="lt-about" data-fam="${fam(st.section)}"><span>About: <b>${esc(st.headline || st.title || "")}</b></span><button id="ltClear" title="Write about the whole paper instead" aria-label="Write about the whole paper instead">×</button></div>` : "";
-  $("#modal").innerHTML = `<div class="card letter"><div class="lt-head">${face(40)}<span>A letter to ${esc(CFG.paper.editor.signature.replace(", Editor", ""))}</span></div>${about}
-<textarea id="ltText" maxlength="1500" rows="6" placeholder="${st ? "More of this, less of that, a correction, a question…" : "What should the paper do more of, less of, or differently?"}"></textarea>
-<p class="lt-note">Bhide reads every letter before the next edition and notes what he did about it. The site has no password, so anyone with its link could read letters too.</p>
-<div class="row2"><button class="pri" id="sendLetter" data-id="${esc(id)}">Send</button><button data-close="1">Cancel</button></div></div>`;
-  $("#modal").hidden = false;
-  setTimeout(() => $("#ltText")?.focus(), 30);
-}
-// Which story is the reader on? The letter button says so, and a letter written now is about that story.
-let READ_IO;
-function watchReading() {
-  const fab = $("#fab"); if (!fab) return;
-  fab.hidden = false;
-  const seen = new Map();
-  const set = el => {
-    const id = el ? el.id.replace(/^s-/, "") : "";
-    fab.dataset.note = id; fab.dataset.fam = el?.dataset.fam || "";
-    $("#fabAbout").textContent = el ? `About: ${el.dataset.title}` : "About the whole paper";
-  };
-  try {
-    READ_IO?.disconnect();
-    READ_IO = new IntersectionObserver(es => {
-      es.forEach(e => seen.set(e.target, e.isIntersecting ? e.intersectionRatio : 0));
-      let best = null, top = 0.3;
-      seen.forEach((v, el) => { if (v > top) { top = v; best = el; } });
-      set(best);
-    }, { threshold: [0, .3, .6, .9], rootMargin: "-12% 0px -30% 0px" });
-    $$("#main [data-title]").forEach(el => READ_IO.observe(el));
-  } catch {}
-  set(null);
-}
-let lastY = 0;
-addEventListener("scroll", () => { const f = $("#fab"); if (f) f.classList.toggle("tight", innerWidth < 720 && scrollY > lastY && scrollY > 500); lastY = scrollY; }, { passive: true });
-async function sendLetter() {
-  const text = $("#ltText").value.trim(), id = $("#sendLetter").dataset.id || "";
-  if (text.length < 3) { toast("Write a line or two first."); return; }
-  const st = id ? findStory(id) : null;
-  $("#sendLetter").disabled = true;
-  try {
-    const r = await fetch("/api/letter", { method: "POST", headers: { "content-type": "application/json" },
-      body: JSON.stringify({ text, date: E.date, story_id: id || null, headline: st?.headline || null, section: st?.section || null }) });
-    if (!r.ok) throw new Error(r.status);
-    $("#modal").hidden = true; toast("Sent. The editor will read it before the next edition.");
-  } catch { $("#sendLetter").disabled = false; toast("Could not send. Try again in a minute."); }
-}
-function lettersBlock() {
-  const L = E.letters || [];
-  const replies = L.map(l => `<div class="lt-item"><blockquote>${esc(l.quote)}</blockquote><p>${esc(l.reply)}</p><span class="lt-sig">${face(24)}${esc(CFG.paper.editor.signature)}</span></div>`).join("");
-  return `${replies ? `<div class="lt-list">${replies}</div>` : ""}<button class="lt-write" data-note="">${PEN}<span>Write to the editor</span></button>`;
 }
 
 async function vote(id, dirn) {
@@ -959,13 +908,9 @@ document.addEventListener("click", e => {
     try { localStorage.setItem("h1400-theme", dk ? "light" : "dark"); } catch {}
     t.textContent = dk ? "Night" : "Day"; return;
   }
-  if (t.id === "glanceBtn") { const g = $("#glance"); g.hidden = !g.hidden; t.setAttribute("aria-expanded", !g.hidden); t.textContent = g.hidden ? "At a Glance" : "Close"; return; }
-  if (t.dataset.go) { const el = document.getElementById("s-" + t.dataset.go) || document.getElementById(t.dataset.go); el && el.scrollIntoView({ behavior: "smooth", block: "start" }); $("#glance").hidden = true; $("#glanceBtn").textContent = "At a Glance"; return; }
+  if (t.dataset.go) { const el = document.getElementById("s-" + t.dataset.go) || document.getElementById(t.dataset.go); el && el.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
   if (t.dataset.more) { toggleMore(t.dataset.more); return; }
   if (t.dataset.head) { if (!toggleMore(t.dataset.head)) toast("Short story. The full text is already shown."); return; }
-  if (t.dataset.note !== undefined) { openLetter(t.dataset.note); return; }
-  if (t.id === "sendLetter") { sendLetter(); return; }
-  if (t.id === "ltClear") { t.parentElement.remove(); $("#sendLetter").dataset.id = ""; return; }
   if (t.dataset.clip) { clip(t.dataset.clip); return; }
   if (t.dataset.close) { $("#modal").hidden = true; return; }
   if (t.id === "locBtn") { myLocation(true); return; }
@@ -1075,7 +1020,7 @@ function framedHTML() {
   return `<div class="framed" onclick="event.stopPropagation()">
 <div class="fm"><span class="the">The</span><span class="hof">House of</span><span class="yr">1400</span><span class="dt">${esc(longDate(E.date))} · No. ${E.edition_no} · Edited by ${esc(CFG.paper.editor.signature.replace(", Editor", ""))}</span></div>
 <div class="headline"><small>${esc(L.kicker)}</small>${esc(L.headline)}</div>
-<div class="cols"><div class="gl"><h5>At a Glance</h5><ul>${(E.glance || []).map(g => `<li style="--c:${g.color ? `var(${esc(g.color)})` : "var(--ink)"}"><span>${esc(g.section)}</span>${esc(g.line)}</li>`).join("")}</ul></div><div class="notes">${notes}</div></div>
+<div class="cols"><div class="gl"><h5>The day in a minute</h5><ul>${(E.glance || []).map(g => `<li style="--c:${g.color ? `var(${esc(g.color)})` : "var(--ink)"}"><span>${esc(g.section)}</span>${esc(g.line)}</li>`).join("")}</ul></div><div class="notes">${notes}</div></div>
 </div>`;
 }
 const CLOSE = `<button class="pclose" aria-label="Back to the paper" title="Back to the paper (Esc)">×</button>`;
@@ -1164,7 +1109,7 @@ async function renderEditor() {
     ["14:05", "Reads the front pages of the national papers, all leanings, and notes what leads two or more."],
     ["14:15", "Reads the regulators' notices and the money pages. Anything that changes what people pay, earn, save or insure goes on the list."],
     ["14:20", "Asks why every stock that fell off a cliff fell off it. “Financial stocks were weak” is not an answer."],
-    ["14:30", "Picks the lead. Writes At a Glance. Fixes every time to the minute in IST."],
+    ["14:30", "Picks the lead. Writes The day in a minute. Fixes every time to the minute in IST."],
     ["14:40", "Hands the pages to the checker, a program that reads for sources, dates, duplicates and banned words. He calls it the night desk."],
     ["14:45", "The paper goes live. On a big day he signs a short note at the end. On an ordinary day he says nothing, which he considers a courtesy."],
   ];
@@ -1271,8 +1216,17 @@ function route() {
   return { kind: "home" };
 }
 
+// Large monitors: the page is scaled up as a whole, like a browser zoom, so a 27-inch screen reads like the laptop
+// instead of a narrow column in a sea of margin. Posters and dialogs are left alone.
+function fitMonitor() {
+  const z = innerWidth >= 2100 ? Math.min(1.4, innerWidth / 2048) : 1;
+  for (const id of ["top", "idx", "layout", "late", "pastbar"]) { const el = document.getElementById(id); if (el) el.style.zoom = z === 1 ? "" : z.toFixed(3); }
+}
+addEventListener("resize", fitMonitor);
+
 async function boot() {
   ROUTE = route();
+  fitMonitor();
   {
     const r = document.documentElement, dk = r.getAttribute("data-theme") === "dark" || (!r.hasAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
     $("#themeBtn").textContent = dk ? "Day" : "Night";

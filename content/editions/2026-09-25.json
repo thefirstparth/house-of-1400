@@ -105,7 +105,8 @@
         "status": "talks on phased reopening",
         "brent_close": "106.60",
         "ceasefire_proposal_days": 60
-      }
+      },
+      "tone": "mixed"
     },
     "seconds": [
       {
@@ -134,7 +135,8 @@
           "sensex_close": "73580.54",
           "nifty_close": "23063.10",
           "date": "2026-09-24"
-        }
+        },
+        "tone": "bad"
       },
       {
         "id": "un-ai-rules",
@@ -169,7 +171,8 @@
         "facts": {
           "event": "UNSC session",
           "us_position": "rejects global governance"
-        }
+        },
+        "tone": "mixed"
       },
       {
         "id": "laver-cup-day-one",
@@ -303,7 +306,8 @@
             "status": "talks",
             "until": 2031,
             "current_expiry": 2029
-          }
+          },
+          "tone": "good"
         }
       ]
     },
@@ -428,7 +432,8 @@
           "facts": {
             "hockey_men": "beat South Korea 8-2",
             "rowing": "bronze men's double sculls"
-          }
+          },
+          "tone": "good"
         },
         {
           "id": "presidents-cup-day-one",
@@ -470,7 +475,8 @@
               "label": "Olympics.com",
               "url": "https://www.olympics.com/en/news/asian-games-2026-kabaddi-men-india-vs-chinese-taipei-group-a-match-report"
             }
-          ]
+          ],
+          "tone": "good"
         },
         {
           "id": "wnba-playoffs-set",
@@ -519,7 +525,8 @@
           "facts": {
             "us10y": "5.11",
             "date": "2026-09-23"
-          }
+          },
+          "tone": "bad"
         },
         {
           "id": "eci-commissioners-objections",
@@ -583,7 +590,8 @@
           ],
           "facts": {
             "speech": "UNGA 2026-09-23"
-          }
+          },
+          "tone": "bad"
         }
       ],
       "briefs": [
@@ -603,7 +611,8 @@
           "facts": {
             "fy27": "7.1",
             "previous": "6.3"
-          }
+          },
+          "tone": "good"
         }
       ]
     },
@@ -690,7 +699,8 @@
             "comments_until": "2026-10-25",
             "pb_fintech_24sep": "-33.27%",
             "commission_caps": "proposed return (removed 2023)"
-          }
+          },
+          "tone": "mixed"
         },
         {
           "id": "lounge-rules-oct",
@@ -718,7 +728,8 @@
             "amex_ptc_lounge_spend": "1 lakh per quarter",
             "bob_lounge_spend": "75000 per quarter",
             "effective": "2026-10-01"
-          }
+          },
+          "tone": "bad"
         }
       ],
       "data": {
@@ -754,7 +765,8 @@
             "cap": "300",
             "effective": "2026-10-15",
             "rollback": "ruled out"
-          }
+          },
+          "tone": "bad"
         }
       ]
     },
@@ -785,7 +797,8 @@
           "facts": {
             "trees": 1128,
             "petition": "20000+"
-          }
+          },
+          "tone": "bad"
         }
       ],
       "briefs": [
@@ -805,7 +818,8 @@
           "facts": {
             "expected": "mid-October",
             "stretch": "Kalena Agrahara to Tavarekere"
-          }
+          },
+          "tone": "bad"
         }
       ]
     },
@@ -881,10 +895,9 @@
     },
     "india_cricket": {
       "next": {
-        "when_utc": "2026-09-27T08:00:00Z",
+        "when_utc": "2026-09-27T08:30:00Z",
         "label": "West Indies",
-        "detail": "1st ODI · Thiruvananthapuram · time TBC",
-        "time_tbc": true
+        "detail": "1st ODI · Thiruvananthapuram"
       }
     },
     "f1": {
@@ -936,12 +949,11 @@
       "source": "Formula 1, Sky Sports, Crash.net"
     },
     {
-      "when_utc": "2026-09-27T08:00:00Z",
-      "time_tbc": true,
+      "when_utc": "2026-09-27T08:30:00Z",
       "label": "India v West Indies · 1st ODI · Thiruvananthapuram",
       "entity": "india_cricket",
       "where": null,
-      "source": "WION, The Tribune"
+      "source": "Cricbuzz, WION"
     },
     {
       "when_utc": "2026-09-30T00:00:00Z",
