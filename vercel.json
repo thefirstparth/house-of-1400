@@ -36,7 +36,7 @@
     },
     {
       "source": "/consensus/poster",
-      "destination": "/consensus.html"
+      "destination": "/consensus"
     }
   ],
   "functions": {
