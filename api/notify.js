@@ -42,7 +42,13 @@ async function send(text) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   if (!token) return { sent: false, reason: "TELEGRAM_BOT_TOKEN is not set in Vercel" };
   const chat = await chatId(token);
-  if (!chat) return { sent: false, reason: "no chat yet: send any message to the bot once, then try again" };
+  if (!chat) {
+    // Say which bot this token belongs to and what it can see, so the setup can be checked from here.
+    const me = await (await fetch(`https://api.telegram.org/bot${token}/getMe`)).json().catch(() => ({}));
+    const up = await (await fetch(`https://api.telegram.org/bot${token}/getUpdates`)).json().catch(() => ({}));
+    const seen = up.ok ? `${(up.result || []).length} recent update(s)` : `getUpdates error: ${up.description || "unknown"}`;
+    return { sent: false, reason: `no chat yet for @${me.result?.username || "?"} (${seen}): open that bot in Telegram, press Start or send any message, then try again` };
+  }
   const r = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: "POST", headers: { "content-type": "application/json" },
     body: JSON.stringify({ chat_id: chat, text, parse_mode: "HTML", disable_web_page_preview: true }),
