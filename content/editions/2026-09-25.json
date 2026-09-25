@@ -353,7 +353,7 @@
         "rows": [
           {
             "label": "Next",
-            "text": "1st ODI v West Indies · Greenfield Stadium, Thiruvananthapuram · Sun 27 Sep, time TBC (13:30 or 14:00 IST, sources differ)",
+            "text": "1st ODI v West Indies · Greenfield Stadium, Thiruvananthapuram · Sun 27 Sep, 14:00 IST",
             "on": true
           },
           {
@@ -4502,5 +4502,33 @@
   ],
   "coverage_waivers": {
     "cut": "Edition No. 1 was researched and published during the build session at 06:40 IST, before the 14:00 schedule existed."
-  }
+  },
+  "broadcast": [
+    {
+      "series": "West Indies tour of India, 2026",
+      "tv": [
+        "Star Sports network"
+      ],
+      "ott": [
+        "JioHotstar"
+      ],
+      "note": "subscription for live cricket",
+      "source": "https://www.wionews.com/sports/ind-vs-wi-2026-series-schedule-dates-venues-live-streaming-and-all-you-need-to-know-1790244772328",
+      "checked": "2026-09-25"
+    },
+    {
+      "series": "Asian Games 2026",
+      "tv": [
+        "Sony Sports 1",
+        "Sony Sports 2",
+        "Sony Sports 5"
+      ],
+      "ott": [
+        "SonyLIV"
+      ],
+      "note": "Hindi on Sony Sports 3",
+      "source": "https://www.olympics.com/en/news/asian-games-2026-watch-live-streaming-telecast-tv-channels-broadcast-india",
+      "checked": "2026-09-25"
+    }
+  ]
 }

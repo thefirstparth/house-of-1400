@@ -220,14 +220,29 @@
   "markets": {
     "indices": [
       {
+        "name": "Nifty 50",
+        "yahoo": "^NSEI",
+        "exchange": "India"
+      },
+      {
+        "name": "Nifty IT",
+        "yahoo": "^CNXIT",
+        "exchange": "India"
+      },
+      {
         "name": "Sensex",
         "yahoo": "^BSESN",
         "exchange": "India"
       },
       {
-        "name": "Nifty 50",
-        "yahoo": "^NSEI",
-        "exchange": "India"
+        "name": "S&P 500",
+        "yahoo": "^GSPC",
+        "exchange": "US"
+      },
+      {
+        "name": "Dow Jones",
+        "yahoo": "^DJI",
+        "exchange": "US"
       },
       {
         "name": "Nasdaq-100",
@@ -259,10 +274,6 @@
       {
         "name": "Bitcoin",
         "yahoo": "BTC-USD"
-      },
-      {
-        "name": "S&P 500",
-        "yahoo": "^GSPC"
       }
     ],
     "dma_sources": {
@@ -312,6 +323,26 @@
           5
         ]
       }
+    },
+    "poster": [
+      "Sensex",
+      "Nifty 50",
+      "Nasdaq-100"
+    ],
+    "mood": {
+      "India": {
+        "index": "^BSESN",
+        "vix": "^INDIAVIX",
+        "label": "India",
+        "vix_name": "India VIX"
+      },
+      "US": {
+        "index": "^GSPC",
+        "vix": "^VIX",
+        "label": "US",
+        "vix_name": "VIX"
+      },
+      "method": "Score 0 to 100 from four readings, each scaled 0 to 1: where the index sits in its 3-month range (30%), its 7-day move (25%, ±4% is the full scale), today's move (15%, ±1.5%), and the volatility index inverted within its own 3-month range (30%; calm is high). Below 25 Fearful, 25 to 44 Cautious, 45 to 55 Neutral, 56 to 74 Confident, 75 and above Exuberant."
     }
   },
   "weather": {
@@ -451,5 +482,11 @@
   },
   "site": {
     "telegram_ping": "lead headline + link, only after the edition is verified live"
+  },
+  "cricket": {
+    "cricbuzz_team_id": 2,
+    "cricbuzz_slug": "india",
+    "team": "India",
+    "note": "India men. Fixtures and results from Cricbuzz's team pages (times, venues, whether the time is officially announced). Where to watch is per series in each edition's broadcast list, verified by the daily run."
   }
 }

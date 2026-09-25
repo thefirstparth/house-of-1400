@@ -54,7 +54,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "cricket"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -103,6 +103,12 @@ function events() {
     const start = Date.parse(f.when_utc);
     const end = f.until_utc ? Date.parse(f.until_utc) : start + (f.minutes || 120) * 6e4;
     out.push({ label: f.label, start, end, entity: f.entity || "" });
+  }
+  // India's matches in the next week, from the live cricket feed, unless the edition already lists them.
+  for (const m of LIVE.cricket?.value?.next || []) {
+    const start = Date.parse(m.start);
+    if (!m.time_announced || start > Date.now() + 7 * 864e5 || out.some(o => Math.abs(o.start - start) < 30 * 6e4)) continue;
+    out.push({ label: `India v ${/^[A-Z]\d$/.test(m.opponent || "") ? "TBD" : m.opponent} · ${m.desc}`, start, end: m.end ? Date.parse(m.end) : start + 8 * 36e5, entity: "india_cricket" });
   }
   const race = LIVE.f1_next?.value?.race;
   if (race) for (const s of race.sessions) {
@@ -404,30 +410,57 @@ function mondayLedger(D) {
   return `<div class="monday"><div class="mhead">The weekend and the week</div><p class="mood">${esc(m.mood)}</p><div class="mcols">${list("Since Friday's close", m.weekend)}${list("This week", m.watch)}</div></div>`;
 }
 
+// The index board: level, 1D, 7D, 1M and a 30-day line for each index, India first, then the US.
+// 7D and 1M compare today's price with the last close on or before the same date 7 and 30 days back (hover shows it).
+function indexBoard(M, D) {
+  const REG = { India: "India", US: "United States" };
+  const ex = n => CFG.markets.indices.find(i => i.name === n)?.exchange;
+  const groups = [...new Set(CFG.markets.indices.map(i => i.exchange))];
+  const cell = (v, from) => `<td class="r tnum ${dir(v)}"${from ? ` title="vs close of ${esc(sparkLabel(from))}"` : ""}>${pct(v) || "–"}</td>`;
+  const rows = groups.map(g => {
+    const list = M.indices.filter(q => ex(q.name) === g);
+    if (!list.length) return "";
+    return `<tr class="grp"><th colspan="6">${esc(REG[g] || g)}</th></tr>` + list.map(q => {
+      const col = (q.chg_1m ?? q.change_pct) < 0 ? "var(--bad)" : "var(--good)";
+      const note = D.notes?.[q.name] || q.note || "";
+      return `<tr><td class="ix"><b>${esc(q.name)}</b><span class="st ${q.live ? "open" : ""}">${esc(hoursLine(q))}</span>${note ? `<small>${esc(note)}</small>` : ""}</td>
+<td class="r tnum lv">${inr(q.price, 2)}<small class="${dir(q.change_pct)}">${pts(q)}</small></td>${cell(q.change_pct)}${cell(q.chg_7d, q.from_7d)}${cell(q.chg_1m, q.from_1m)}<td class="sp">${q.spark30?.length > 2 ? spark(q.spark30, col, { w: 150, h: 36, mini: true }) : ""}</td></tr>`;
+    }).join("");
+  }).join("");
+  const moods = Object.keys(CFG.markets.mood || {}).map(k => M.mood?.[k]).filter(Boolean);
+  return `<div class="board-wrap"><div class="tbl board"><table><thead><tr><th>Index</th><th class="r">Level</th><th class="r">1D</th><th class="r">7D</th><th class="r">1M</th><th class="r">30 days</th></tr></thead><tbody>${rows}</tbody></table></div>${moods.length ? `<div class="moods">${moods.map(moodCard).join("")}<details class="mhow"><summary>How the mood is worked out</summary><p>${esc(CFG.markets.mood?.method || "")}</p></details></div>` : ""}</div>`;
+}
+function moodCard(m) {
+  const a = Math.PI * (1 - m.score / 100), cx = 100, cy = 96, r = 78;
+  const nx = cx + (r - 12) * Math.cos(a), ny = cy - (r - 12) * Math.sin(a);
+  const arc = (from, to, c) => { const p = t => [cx + r * Math.cos(Math.PI * (1 - t)), cy - r * Math.sin(Math.PI * (1 - t))]; const [x1, y1] = p(from), [x2, y2] = p(to); return `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${c}" stroke-width="12" fill="none" stroke-linecap="butt"/>`; };
+  const where = m.range_pos == null ? "" : m.range_pos <= 15 ? "near its 3-month low" : m.range_pos >= 85 ? "near its 3-month high" : `${m.range_pos}% of the way up its 3-month range`;
+  const calm = m.vix_pos == null ? "" : m.vix_pos <= 30 ? "calm for the quarter" : m.vix_pos >= 70 ? "jumpy for the quarter" : "middling for the quarter";
+  return `<div class="mood"><div class="mh"><span>${esc(m.region || "")} mood</span><span class="tnum">${m.score}/100</span></div>
+<svg viewBox="0 0 200 108" role="img" aria-label="${esc(m.region || "")} market mood ${m.score} out of 100">${arc(0, .25, "var(--bad)")}${arc(.25, .45, "color-mix(in srgb,var(--bad) 45%,var(--surface2))")}${arc(.45, .55, "var(--surface2)")}${arc(.55, .75, "color-mix(in srgb,var(--good) 45%,var(--surface2))")}${arc(.75, 1, "var(--good)")}
+<line x1="${cx}" y1="${cy}" x2="${nx.toFixed(1)}" y2="${ny.toFixed(1)}" stroke="var(--ink)" stroke-width="3.5" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="6" fill="var(--ink)"/></svg>
+<div class="mword">${esc(m.word || moodWord(m.score))}</div>
+<ul><li>${esc(m.index)} ${where}</li><li>7 days ${pct(m.chg_7d)} · today ${pct(m.change_pct)}</li>${m.vix != null ? `<li>${esc(m.vix_name)} ${m.vix} · ${calm}</li>` : ""}</ul></div>`;
+}
+const moodWord = s => (s < 25 ? "Fearful" : s < 45 ? "Cautious" : s <= 55 ? "Neutral" : s < 75 ? "Confident" : "Exuberant");
+
 function ledgerBlock() {
   const M = LIVE.markets?.value, G = LIVE.gold_in?.value, D = E.sections?.ledger?.data || {};
   const prof = CFG.day_profiles[E.weekday] || {};
   let h = mondayLedger(D);
-  if (M?.indices?.length) {
-    h += `<div class="cols3 panels">${M.indices.map(q => {
-      const col = q.change_pct < 0 ? "var(--bad)" : "var(--good)";
-      const when = q.live ? "today" : `at close, ${sparkLabel(q.session_date)}`;
-      const driver = D.notes?.[q.name];
-      return `<div class="panel"><div class="nm">${esc(q.name)}${mstate(q)}</div><div class="lvl tnum">${inr(Math.round(q.price))}</div><div class="chg ${dir(q.change_pct)} tnum">${pts(q)} <span class="pc">(${pct(q.change_pct)})</span> <span class="when">${esc(when)}</span></div>${q.note ? `<div class="pnote">${esc(q.note)}</div>` : ""}${spark(q.spark, col, { from: sparkLabel(q.spark_from), to: sparkLabel(q.spark_to) })}${driver ? `<p class="note">${esc(driver)}</p>` : ""}${D.dma?.[q.name] ? `<p class="note">${esc(D.dma[q.name])}</p>` : ""}</div>`;
-    }).join("")}</div>`;
-  }
+  if (M?.indices?.length) h += indexBoard(M, D);
   const rows = [];
   for (const c of CFG.markets.cross) {
     if (c.source === "ibja") {
-      if (G) rows.push(`<tr><td><b>Gold 24K</b><br><small>IBJA, per 10g</small></td><td class="r tnum">₹${inr(G.per_10g_24k)}</td><td class="r tnum ${dir(G.change_pct)}">${pct(G.change_pct)}<small>${pts({ price: G.per_10g_24k, prev: G.prev_10g, change_pct: G.change_pct }, "₹", 0)}</small></td><td class="sub">${esc([D.notes?.[c.name]?.replace(/\.$/, ""), goldNote(G), `22K ₹${inr(G.per_10g_22k)}`].filter(Boolean).join(". "))}.</td></tr>`);
+      if (G) rows.push(`<tr><td><b>Gold 24K</b><br><small>IBJA, per 10g</small></td><td class="r tnum">₹${inr(G.per_10g_24k)}</td><td class="r tnum ${dir(G.change_pct)}">${pct(G.change_pct)}<small>${pts({ price: G.per_10g_24k, prev: G.prev_10g, change_pct: G.change_pct }, "₹", 0)}</small></td><td class="r tnum hide-s">–</td><td class="r tnum hide-s ${dir(G.change_1m_pct)}"${G.month_from ? ` title="vs ${esc(sparkLabel(G.month_from))}"` : ""}>${pct(G.change_1m_pct) || "–"}</td><td class="sub">${esc([D.notes?.[c.name]?.replace(/\.$/, ""), goldNote(G), `22K ₹${inr(G.per_10g_22k)}`].filter(Boolean).join(". "))}.</td></tr>`);
       continue;
     }
     const q = M?.cross?.find(x => x.symbol === c.yahoo); if (!q) continue;
     const lvl = c.yahoo === "INR=X" ? "₹" + q.price.toFixed(2) : c.yahoo === "BZ=F" ? "$" + usd(q.price, 2) : c.yahoo === "BTC-USD" ? "$" + usd(q.price) : inr(Math.round(q.price));
     const unit = c.yahoo === "INR=X" ? "₹" : /^(BZ=F|BTC-USD)$/.test(c.yahoo) ? "$" : "", d = c.yahoo === "BTC-USD" ? 0 : 2;
-    rows.push(`<tr><td><b>${esc(c.name)}</b></td><td class="r tnum">${lvl}</td><td class="r tnum ${dir(q.change_pct)}">${pct(q.change_pct)}<small>${pts(q, unit, d)}</small></td><td class="sub">${esc(assetNote(c.name, q))}</td></tr>`);
+    rows.push(`<tr><td><b>${esc(c.name)}</b></td><td class="r tnum">${lvl}</td><td class="r tnum ${dir(q.change_pct)}">${pct(q.change_pct)}<small>${pts(q, unit, d)}</small></td><td class="r tnum hide-s ${dir(q.chg_7d)}">${pct(q.chg_7d) || "–"}</td><td class="r tnum hide-s ${dir(q.chg_1m)}">${pct(q.chg_1m) || "–"}</td><td class="sub">${esc(assetNote(c.name, q))}</td></tr>`);
   }
-  if (rows.length) h += `<div class="tbl cross"><table><thead><tr><th>Asset</th><th class="r">Level</th><th class="r">Change</th><th>Note</th></tr></thead><tbody>${rows.join("")}</tbody></table>${staleNote("markets")}</div>`;
+  if (rows.length) h += `<div class="tbl cross"><table><thead><tr><th>Asset</th><th class="r">Level</th><th class="r">1D</th><th class="r hide-s">7D</th><th class="r hide-s">1M</th><th>Note</th></tr></thead><tbody>${rows.join("")}</tbody></table>${staleNote("markets")}</div>`;
   if (h && prof.markets === "light_unless_important" && !(E.sections?.ledger?.stories?.length)) {
     h = `<details><summary class="asof" style="cursor:pointer;padding:6px 0">Weekend: markets folded. Tap to open.</summary>${h}</details>`;
   }
@@ -519,10 +552,25 @@ function fixturesBlock() {
   }).join("")}</ul></div>`).join("")}</div>`;
 }
 
+// India's matches from the live Cricbuzz feed; where to watch from the edition's verified broadcast list, by series.
+const seriesKey = s => String(s || "").toLowerCase().replace(/\b(19|20)\d\d\b|[^a-z ]/g, " ").replace(/\s+/g, " ").trim();
+const watchFor = series => (E.broadcast || []).find(b => seriesKey(b.series) === seriesKey(series) || seriesKey(series).includes(seriesKey(b.series)));
+function cricketTable() {
+  const C = LIVE.cricket?.value; if (!C) return "";
+  let h = "";
+  if (C.last) h += `<p class="cr-last"><b>Last:</b> ${esc(C.last.result)} <span>(${esc(C.last.desc)} v ${esc(C.last.opponent)}, ${esc(istDay(C.last.start))})</span></p>`;
+  const list = (C.next || []).slice(0, 6);
+  if (list.length) h += `<div class="tbl cr"><table><thead><tr><th>When (IST)</th><th>Match</th><th>Where</th><th>Watch in India</th></tr></thead><tbody>${list.map(m => {
+    const w = watchFor(m.series);
+    const opp = /^[A-Z]\d$/.test(m.opponent || "") ? `TBD (${m.opponent})` : m.opponent;
+    return `<tr><td class="tnum"><b>${esc(istDay(m.start))}</b><br>${m.time_announced ? esc(istTime(m.start)) : "time TBC"}</td><td><b>v ${esc(opp)}</b> · ${esc(m.desc)}<br><small>${esc(m.series)} · ${esc(m.format)}</small></td><td>${esc(m.ground || "")}${m.city ? `<br><small>${esc(m.city)}</small>` : ""}</td><td>${w ? `${esc([...(w.tv || [])].join(", "))}${w.ott?.length ? `<br><small>${esc(w.ott.join(", "))}${w.note ? " · " + esc(w.note) : ""}</small>` : ""}` : `<small>To be confirmed</small>`}</td></tr>`;
+  }).join("")}</tbody></table>${staleNote("cricket")}<p class="asof">Fixtures from Cricbuzz. Broadcasters checked by the editor per series.</p></div>`;
+  return h;
+}
 function creaseBlock() {
   const rows = E.sections?.crease?.data?.rows || [];
   const t = rows.length ? `<table class="kv"><tbody>${rows.map(r => `<tr class="${r.on ? "on" : ""}"><th scope="row">${esc(r.label)}</th><td>${esc(r.text)}</td></tr>`).join("")}</tbody></table>` : "";
-  return split(t, "crease");
+  return cricketTable() + split(t, "crease");
 }
 
 function deuceBlock() {
@@ -626,7 +674,7 @@ function render() {
   h += secWrap("pitch", storiesBlock("pitch"), "Football beyond Madrid");
   const race = LIVE.f1_next?.value?.race;
   h += secWrap("paddock", `<div data-live="paddock">${paddockBlock()}</div>` + storiesBlock("paddock"), race ? `${race.flag} Round ${race.round ?? ""} · ${race.name}${race.locality ? " · " + race.locality : ""}` : undefined);
-  h += secWrap("crease", creaseBlock(), "India men · senior team");
+  h += secWrap("crease", `<div data-live="crease">${creaseBlock()}</div>`, "India men · senior team");
   h += secWrap("deuce", deuceBlock(), "Tennis · big events first, then Alcaraz and Djokovic");
   h += secWrap("sidelines", `<div data-live="warriors">${warriorsBlock()}</div>` + storiesBlock("sidelines"), "Every other sport, when it matters");
   h += secWrap("dateline", storiesBlock("dateline"), "World & India");
@@ -682,7 +730,7 @@ function balanceFront() {
 
 function paintLive() {
   $("#rail").innerHTML = railHTML();
-  const map = { talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
+  const map = { crease: creaseBlock, talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
   for (const [k, fn] of Object.entries(map)) {
     const el = document.querySelector(`[data-live="${k}"]`);
     if (!el) continue;
@@ -921,7 +969,7 @@ function dashHTML() {
       const lvl = c.yahoo === "INR=X" ? "₹" + q.price.toFixed(2) : c.yahoo === "BZ=F" ? "$" + usd(q.price, 2) : "$" + usd(q.price);
       return `<div><span>${esc(c.name)}</span><b>${lvl}</b> <small class="${dir(q.change_pct)}">${pct(q.change_pct)}</small></div>`;
     }).join("");
-    mk = `<div class="idx3">${M.indices.map(q => `<div><span>${esc(q.name)}</span><span class="big">${inr(Math.round(q.price))}</span><b class="${dir(q.change_pct)}"><i>${pts(q)} </i>${pct(q.change_pct)}</b><small class="mc">${esc(hoursLine(q))}</small>${spark(q.spark?.slice(-22), q.change_pct < 0 ? "var(--bad)" : "var(--good)", { w: 200, h: 28, mini: true })}</div>`).join("")}</div><div class="cross">${cross}</div>`;
+    mk = `<div class="idx3">${(CFG.markets.poster || []).map(n => M.indices.find(i => i.name === n)).filter(Boolean).map(q => `<div><span>${esc(q.name)}</span><span class="big">${inr(Math.round(q.price))}</span><b class="${dir(q.change_pct)}"><i>${pts(q)} </i>${pct(q.change_pct)}</b><small class="mc">${esc(hoursLine(q))}</small>${spark(q.spark?.slice(-22), q.change_pct < 0 ? "var(--bad)" : "var(--good)", { w: 200, h: 28, mini: true })}</div>`).join("")}</div><div class="cross">${cross}</div>`;
   }
 
   const sport = [];

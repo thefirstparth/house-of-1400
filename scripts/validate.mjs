@@ -164,6 +164,19 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
       if (n.covered_by && !ids.has(n.covered_by)) errors.push(`checks.national: covered_by "${n.covered_by}" is not an item in this edition`);
       if (!n.covered_by && !(n.answer && n.answer.length >= 15)) errors.push(`checks.national: "${n.story}" is neither covered (covered_by) nor explained (answer)`);
     }
+    // Cricket: India's NEXT must agree with the Cricbuzz feed in the snapshot, and every India series starting in the
+    // next 14 days needs a verified broadcast entry.
+    const CR = E.snapshot?.cricket?.value;
+    if (CR?.next?.length) {
+      const first = CR.next.find(m => Date.parse(m.start) > cut);
+      const nx = E.chronology?.india_cricket?.next;
+      if (first && nx && !nx.time_tbc && Math.abs(Date.parse(nx.when_utc) - Date.parse(first.start)) > 30 * 6e4)
+        errors.push(`chronology: india_cricket.next is ${nx.when_utc} but Cricbuzz has ${first.desc} v ${first.opponent} at ${first.start}`);
+      const key = s => String(s || "").toLowerCase().replace(/\b(19|20)\d\d\b|[^a-z ]/g, " ").replace(/\s+/g, " ").trim();
+      const soon = [...new Set(CR.next.filter(m => Date.parse(m.start) < cut + 14 * 864e5).map(m => m.series))];
+      for (const s of soon) if (!(E.broadcast || []).some(b => key(b.series) === key(s) || key(s).includes(key(b.series))) && !E.coverage_waivers?.broadcast)
+        errors.push(`broadcast: no verified where-to-watch entry for "${s}" (starts within 14 days); add it to broadcast with a source`);
+    }
     // Letters to the editor: every letter in today's inbox (scripts/letters.mjs) gets an answer in checks.letters,
     // saying what the editor did with it.
     let inbox = null;

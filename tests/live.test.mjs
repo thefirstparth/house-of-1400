@@ -39,7 +39,9 @@ test("markets: null bars are dropped, change uses previous session close", async
   assert.ok(Math.abs(q.change_pct - -1.667) < 0.01);
   assert.ok(q.spark.every(Number.isFinite)); assert.equal(q.spark.at(-1), 73581);
   const m = await L.markets();
-  assert.equal(m.ok, true); assert.equal(m.value.indices.length, 3);
+  assert.equal(m.ok, true); assert.equal(m.value.indices.length, 6);
+  assert.deepEqual(Object.keys(m.value.mood), ["India", "US"]);
+  for (const k of ["India", "US"]) { const x = m.value.mood[k]; assert.ok(x.score >= 0 && x.score <= 100); assert.ok(x.word); }
   assert.ok(m.value.cross.find(c => c.symbol === "INR=X").price === 95.95);
 });
 test("gold: IBJA parse and ratio check", async () => {
