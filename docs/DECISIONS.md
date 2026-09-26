@@ -283,3 +283,7 @@ Made without Parth, per the build prompt. Change any of them freely.
 - Three looks: Day, Night and Retro (an old printed tide almanac: aged paper, printer's inks, halftone water, double rules, Libre Caslon Text for reading, IBM Plex Mono for numbers; its fonts load only when chosen). The button cycles and names the next look. Retro stays retro when the device is in dark mode.
 - Colophon aside: "Ideas by Parth. Typing by Claude. Complaints to Parth." with the Claude mark at text size, muted, warming to Claude orange on hover.
 - Readings every 15 minutes, each saved (the 30-minute save budget let a quiet site serve a reading up to 30 minutes old).
+
+## 26 Sep 2026: Andaaza tells the truth about updates; a calmer wave
+- "Next update" is the reading's time plus 15 minutes, never "a minute from now". A reading that is already due says "updating now" (the server is reading the markets), is not cached, and the page asks every 20 seconds until the new one arrives. Fresh readings are cached at the edge for a minute (was two, plus ten stale).
+- The water's wave is longer and calmer (72px, gentler crest), so the waterline crosses a number as one soft curve instead of zigzagging through a digit; the two-colour number stays.
