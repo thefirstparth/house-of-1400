@@ -7,26 +7,6 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/",
-      "has": [
-        {
-          "type": "host",
-          "value": "andaaza-live.vercel.app"
-        }
-      ],
-      "destination": "/andaaza"
-    },
-    {
-      "source": "/poster",
-      "has": [
-        {
-          "type": "host",
-          "value": "andaaza-live.vercel.app"
-        }
-      ],
-      "destination": "/andaaza"
-    },
-    {
       "source": "/archive",
       "destination": "/"
     },
