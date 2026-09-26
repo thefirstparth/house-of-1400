@@ -93,6 +93,17 @@
   ],
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "andaaza-live.vercel.app"
+        }
+      ],
+      "destination": "https://getandaaza.vercel.app/",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         {
