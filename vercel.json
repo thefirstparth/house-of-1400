@@ -52,7 +52,7 @@
     },
     "api/consensus.js": {
       "includeFiles": "config/consensus.json",
-      "maxDuration": 45
+      "maxDuration": 60
     }
   },
   "headers": [
