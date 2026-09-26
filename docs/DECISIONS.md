@@ -231,3 +231,10 @@ Made without Parth, per the build prompt. Change any of them freely.
 - Matches never take a card. Each sport has Coming up: the next week's matches with someone followed or a name on the topic's notable list, found live.
 - Cards are tickets in each subject's own colour: a gauge filled to the favourite's chance (the favourite is named once, there), then the split bar and the others.
 - Posters grow to fill a big monitor (from 2,100px) the way the pages do; laptops and phones are unchanged.
+
+## 26 Sep 2026: Consensus as a tide table
+- The page reads like a harbour's tide table: the name engraved over depth soundings, a reading (time, when markets were read, next reading, sources), and a tide board of staff gauges, the busiest question in each area.
+- The water is one mask shape (a crest on a tall column) sized in container units, so no seam shows between crest and body, even mid-hover. Cards no longer lift on hover.
+- Yesterday's level is a dashed mark: full width on the tide board (drawn in both layers so it reads above and below water), a notch on the scale edge of the small gauges so it never crosses a name.
+- Moving today is Currents: a strip from yesterday's level to today's. The world list rows fill like water to their chance.
+- The poster is the tide board plus Currents, Coming up and the world, on one screen.
