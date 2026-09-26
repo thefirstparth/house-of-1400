@@ -287,3 +287,11 @@ Made without Parth, per the build prompt. Change any of them freely.
 ## 26 Sep 2026: Andaaza tells the truth about updates; a calmer wave
 - "Next update" is the reading's time plus 15 minutes, never "a minute from now". A reading that is already due says "updating now" (the server is reading the markets), is not cached, and the page asks every 20 seconds until the new one arrives. Fresh readings are cached at the edge for a minute (was two, plus ten stale).
 - The water's wave is longer and calmer (72px, gentler crest), so the waterline crosses a number as one soft curve instead of zigzagging through a digit; the two-colour number stays.
+
+## 26 Sep 2026: Andaaza's water reads the data; lehariya; the bar waits
+- Sea state from the market: calm long swell under 2 points of movement in a day, normal, choppy from 8 points; each gauge's wave starts at its own phase (from its link), so no two move in step. Worked out in the browser from the reading.
+- The level is a registered CSS number: the tide board fills on first load, and every gauge flows from its old level to its new one when a reading arrives. Off for reduced motion; browsers without @property show the level directly.
+- Masthead background: lehariya (Rajasthani wave tie-dye; lehar is wave), diagonal wave bands in neel, marigold and tide, faint and fading to the edges. Replaces the contour lines.
+- Seals centred on the x-height middle of the title (the eye reads a lowercase word there), measured within 0.01em.
+- The top bar stays hidden over the header and tide board and slides in once they are scrolled past.
+- Phone poster no longer overflows (name line wraps).
