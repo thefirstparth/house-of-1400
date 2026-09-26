@@ -276,3 +276,8 @@ Made without Parth, per the build prompt. Change any of them freely.
 - Tide board labels name the market (La Liga, Champions League, World), never the reason it was picked; the slot (Real Madrid, India) only chooses. The gauge shows the leader; the followed side's chance rides on a chip. A yes/no question is headlined by the question, not "Yes". Board numbers sit wholly above or wholly under the water.
 - Yes/no tickets show the number alone. "RCP" and "approval average" markets count as US politics (excluded).
 - Type: Instrument Sans for everything read (narrow width only for the big numbers), Instrument Serif italic for the name and titles. Hero: "Guesses are cheap. These ones are paid for."
+
+## 26 Sep 2026: Andaaza's water writes over every number; a Retro look
+- Hero: "Watch the world change its mind."
+- Tide board: every number in the same place (bottom left); the water writes over it, the subject's colour above the line and white below, as on the tickets. Yesterday's level keeps its dashed line; its "was" label shows only when the mark is high enough (35%+) not to meet the number.
+- Three looks: Day, Night and Retro (an old printed tide almanac: aged paper, printer's inks, halftone water, double rules, Libre Caslon Text for reading, IBM Plex Mono for numbers; its fonts load only when chosen). The button cycles and names the next look. Retro stays retro when the device is in dark mode.
