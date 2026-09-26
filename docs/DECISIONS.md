@@ -264,3 +264,7 @@ Made without Parth, per the build prompt. Change any of them freely.
 - Hero: "Everyone has an andaaza. These ones have money on them." Beneath it a dictionary entry: a speaker (the device's own voice, Hindi if it has one), the word in Latin, Devanagari and Urdu scripts, and the meaning. The water-level explanation moved to How this works.
 - Renames: "The world is betting on" is now "Where the money is"; "How this page picks" is "How this works". Currents, Coming up and Miscellaneous keep their names; the top gauges have no title.
 - Each area title carries its Hindi name as a small marigold seal, the same device as the name: खेल, टेक, पैसा, दुनिया, परदा, फुटकर.
+
+## 26 Sep 2026: Andaaza's mark and colophon
+- The mark is the gauge drop: a drop outlined in neel with water inside, drawn on a 64 grid and centred both ways (the sketch sat high in a 100x120 box). The water moves; the same drop is the favicon and the poster mark.
+- Colophon: "Made with ♥ in India" (linking madewithloveinindia.org) "by Parth Bhatia", then "Prices from Polymarket, Kalshi and Manifold. Andaaza reads them; it takes no bets." Instagram leads (filled, in its own colours, with the handle), LinkedIn follows (quieter).
