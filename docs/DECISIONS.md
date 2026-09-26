@@ -255,3 +255,7 @@ Made without Parth, per the build prompt. Change any of them freely.
 - Name: Andaaza, Hindi and Urdu for an estimate, in the spirit of Namma Beat. The Devanagari अंदाज़ा sits beside the Bodoni name as a marigold seal (Tiro Devanagari Hindi, loaded for those letters only). Brand hue moves from sea teal to neel (indigo); the water stays.
 - Address /andaaza; /consensus, /pulse and /markets redirect permanently. The paper's button says Andaaza.
 - Fallbacks for a future with no one editing it (docs/ANDAAZA.md): newest reading in memory, Blob writes budgeted (reading every 30 min, Kalshi list every 6 h), a failed Kalshi read keeps re-pricing the last list, each browser keeps the last reading and shows it if the server is slow or down, a note when a reading is over three hours old, Node allowed to move past 22.
+
+## 26 Sep 2026: Andaaza's tide board, seven slots, leaders first
+- Seven slots: best AI model, Real Madrid, football, F1 (next race, else Drivers' title), cricket (India's next match), world, most traded. One row on desktop, four across on a tablet, two on a phone; no sideways scrolling.
+- Every gauge shows its market's real leader. A slot about someone (Real Madrid, India) adds that side's own chance on a chip when they are not the leader.
