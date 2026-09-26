@@ -268,3 +268,6 @@ Made without Parth, per the build prompt. Change any of them freely.
 ## 26 Sep 2026: Andaaza's mark and colophon
 - The mark is the gauge drop: a drop outlined in neel with water inside, drawn on a 64 grid and centred both ways (the sketch sat high in a 100x120 box). The water moves; the same drop is the favicon and the poster mark.
 - Colophon: "Made with ♥ in India" (linking madewithloveinindia.org) "by Parth Bhatia", then "Prices from Polymarket, Kalshi and Manifold. Andaaza reads them; it takes no bets." Instagram leads (filled, in its own colours, with the handle), LinkedIn follows (quieter).
+
+## 26 Sep 2026: Andaaza's header says the word once in each script
+- The name is the headword: Andaaza (Latin) and अंदाज़ा (the seal) above, then one dictionary line (speaker, /ən·daː·zaː/, noun · Hindi, Urdu, اندازہ, "an estimate, a guess, a rough calculation."), then the hero: "Everyone has one. These ones have money on them."
