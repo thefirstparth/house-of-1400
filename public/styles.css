@@ -841,3 +841,31 @@ table.wk tr:last-child td,table.wk tr:last-child th{border-bottom:0}
 
 /* Large monitors: laid out at 1,920px and scaled up by app.js (fitMonitor); nearly full width, small margins. */
 @media (min-width:2100px){.sheet,nav.idx>div{max-width:1880px}body{font-size:18px}}
+
+/* ---------- Phone (to 600px): one clear rhythm. Laptop, desktop and monitor are untouched. ---------- */
+@media (max-width:600px){
+ /* Top line in two tidy rows: date and number, then the markets' state and three icon buttons. */
+ .run{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;padding:10px 0}
+ #run-date{grid-column:1;font-weight:650;color:var(--ink)}
+ #run-vol{grid-column:2;text-align:right}
+ #run-cut{display:none}
+ .run-r{grid-column:1/-1;display:flex;align-items:center;gap:8px;width:100%}
+ .run-r .mk{margin-right:auto;gap:10px;white-space:nowrap}
+ .run-r .mk span{white-space:nowrap}
+ .run-r button,.run-r a.pl{padding:8px;gap:0;flex:none}
+ .run-r button span,.run-r a.pl span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+ .run-r .ic{width:18px;height:18px}
+ /* The folio: the day's note, then the reading time, then the links, each on its own line. */
+ .folio{flex-direction:column;gap:6px;padding:10px 0}
+ .nav-top{flex-wrap:wrap;justify-content:center;gap:4px 18px}
+ #readtime{flex-basis:100%;text-align:center}
+ /* A section's tables and figures end with room and a rule before its stories start. */
+ .sec>div:not(.sechead):not(.signal-slot)+.solo{margin-top:26px;padding-top:22px;border-top:1px solid var(--rule)}
+ /* Two-column story pairs become one column: every story gets the same top space. */
+ .cols2>.story:nth-child(2){padding-top:20px}
+ .story{padding:22px 0}
+ .cols2.gap-top{margin-top:26px}
+ /* Kick-off times and dates stay on one line; the middle column takes the wrap. */
+ .tbl td:last-child,.tbl th:last-child{white-space:nowrap}
+ .tbl table{font-size:14px}
+}

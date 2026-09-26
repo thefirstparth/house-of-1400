@@ -919,7 +919,11 @@ async function clip(id) {
   c.width = W; c.height = 10;
   x.font = "700 60px 'Roboto Serif', Georgia, serif"; const hl = wrap(x, st.headline, W - 2 * P);
   x.font = "400 34px 'Source Serif 4', Georgia, serif"; const bl = wrap(x, body, W - 2 * P);
-  const H = P + 40 + 40 + hl.length * 72 + 28 + bl.length * 52 + 60 + 40;
+  // Why it matters travels with the story, in its box and its good or bad colour, as on the page.
+  const wy = st.why?.text ? st.why : null, BP = 36;
+  x.font = "400 31px 'Source Serif 4', Georgia, serif"; const wl = wy ? wrap(x, wy.text, W - 2 * P - 2 * BP) : [];
+  const WH = wy ? BP + 30 + wl.length * 46 + BP - 8 : 0;
+  const H = P + 40 + 40 + hl.length * 72 + 28 + bl.length * 52 + (wy ? 28 + WH : 0) + 60 + 40;
   c.height = H;
   x.fillStyle = col("--paper") || "#ebe6da"; x.fillRect(0, 0, W, H);
   x.fillStyle = col("--ink") || "#191816";
@@ -934,6 +938,17 @@ async function clip(id) {
   for (const l of hl) { x.fillText(l, P, y); y += 72; }
   y += 16; x.font = "400 34px 'Source Serif 4', Georgia, serif";
   for (const l of bl) { x.fillText(l, P, y); y += 52; }
+  if (wy) {
+    y += 28;
+    const tone = st.tone === "good" || st.tone === "bad" ? st.tone : null, tc = tone ? col(tone === "good" ? "--good" : "--bad") : "";
+    const box = (fill, a = 1) => { x.globalAlpha = a; x.fillStyle = fill; x.beginPath(); x.roundRect ? x.roundRect(P, y, W - 2 * P, WH, [28, 28, 28, 6]) : x.rect(P, y, W - 2 * P, WH); x.fill(); x.globalAlpha = 1; };
+    if (tone && tc) box(tc, 0.15); else box(col("--surface") || "#e2dccd");
+    x.fillStyle = tc || col("--muted"); x.font = "700 20px 'Roboto Flex', Arial, sans-serif";
+    x.fillText(`${wy.personal ? "WHY IT MATTERS FOR YOU" : "WHY IT MATTERS"}${tone ? ` · ${tone.toUpperCase()} NEWS` : ""}`, P + BP, y + BP - 6);
+    x.fillStyle = col("--ink"); x.font = "400 31px 'Source Serif 4', Georgia, serif";
+    let yy = y + BP + 30; for (const l of wl) { x.fillText(l, P + BP, yy); yy += 46; }
+    y += WH;
+  }
   y += 24; x.fillStyle = col("--muted"); x.font = "500 20px 'Roboto Flex', Arial, sans-serif";
   x.fillText(`Edited by ${CFG.paper.editor.signature.replace(", Editor", "")}`, P, y);
   const blob = await new Promise(r => c.toBlob(r, "image/png"));
