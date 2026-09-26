@@ -1,5 +1,5 @@
-// Fetches the icons from Iconify once and writes them into public/app.js and public/andaaza.html (between
-// ICONS:BEGIN and ICONS:END), so neither page ever calls Iconify at run time. Run by hand when the list below changes:
+// Fetches the icons from Iconify once and writes them into public/app.js (between
+// ICONS:BEGIN and ICONS:END), so the page never calls Iconify at run time. Run by hand when the list below changes:
 //   node scripts/icons.mjs
 // Section marks and weather: Material Symbols, rounded (Apache 2.0). Team marks: Simple Icons (CC0), which are
 // single-colour by design, so they take the colour of the text around them. Trademarks belong to their owners.
@@ -63,19 +63,6 @@ const WANT = {
   "u:sun": "material-symbols:light-mode-rounded",
   "u:poster": "material-symbols:filter-frames-rounded",
 };
-// Andaaza (/andaaza) gets its own, smaller set, written into public/andaaza.html.
-const CONSENSUS = {
-  "a:sport": "material-symbols:exercise-rounded", "a:tech": "material-symbols:memory-rounded", "a:money": "material-symbols:payments-rounded",
-  "a:world": "material-symbols:globe-asia-rounded", "a:screen": "material-symbols:theaters-rounded", "a:misc": "material-symbols:auto-awesome-rounded",
-  "a:moves": "material-symbols:monitoring-rounded", "a:globe": "material-symbols:public-rounded",
-  "t:f1": "material-symbols:sports-score-rounded", "t:football": "material-symbols:sports-soccer-rounded", "t:cricket": "material-symbols:sports-cricket-rounded",
-  "t:tennis": "material-symbols:sports-tennis-rounded", "t:nba": "material-symbols:sports-basketball-rounded", "t:ai": "material-symbols:memory-rounded",
-  "t:money": "material-symbols:trending-up-rounded", "t:india": "material-symbols:flag-rounded", "t:world": "material-symbols:public-rounded",
-  "t:film": "material-symbols:movie-rounded", "t:ott": "material-symbols:live-tv-rounded", "t:celebs": "material-symbols:star-rounded",
-  "u:moon": "material-symbols:dark-mode-rounded", "u:sun": "material-symbols:light-mode-rounded", "u:poster": "material-symbols:filter-frames-rounded", "u:speak": "material-symbols:volume-up-rounded",
-  "s:instagram": "simple-icons:instagram", "s:linkedin": "simple-icons:linkedin", "u:retro": "material-symbols:radio-rounded", "s:claude": "simple-icons:claude",
-};
-
 async function build(WANT) {
   const byPrefix = {};
   for (const [k, v] of Object.entries(WANT)) { const [p, n] = v.split(":"); (byPrefix[p] ||= new Map()).set(n, [...(byPrefix[p].get(n) || []), k]); }
@@ -106,6 +93,4 @@ const put = (file, block, anchor) => {
 };
 const A = await build(WANT);
 put("public/app.js", A.block, "// ------------------------------------------------------------------ helpers");
-const C = await build(CONSENSUS);
-put("public/andaaza.html", C.block, "const $ = s => document.querySelector(s);");
-console.log(`icons: ${A.count} into public/app.js (${(A.block.length / 1024).toFixed(1)} KB), ${C.count} into public/andaaza.html (${(C.block.length / 1024).toFixed(1)} KB)`);
+console.log(`icons: ${A.count} into public/app.js (${(A.block.length / 1024).toFixed(1)} KB)`);

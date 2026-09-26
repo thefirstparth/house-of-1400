@@ -25,10 +25,6 @@
     {
       "source": "/poster/:name",
       "destination": "/"
-    },
-    {
-      "source": "/andaaza/poster",
-      "destination": "/andaaza"
     }
   ],
   "functions": {
@@ -41,10 +37,6 @@
     "api/live/[key].js": {
       "includeFiles": "config/{house.json,nifty500.csv}",
       "maxDuration": 20
-    },
-    "api/consensus.js": {
-      "includeFiles": "config/consensus.json",
-      "maxDuration": 60
     }
   },
   "headers": [
@@ -101,34 +93,44 @@
   ],
   "redirects": [
     {
-      "source": "/:path(andaaza|archive|editor|today|e/.*|poster/.*)",
+      "source": "/:path*",
       "has": [
         {
           "type": "host",
           "value": "andaaza-live.vercel.app"
         }
       ],
-      "destination": "/",
-      "permanent": false
+      "destination": "https://getandaaza.vercel.app/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/andaaza",
+      "destination": "https://getandaaza.vercel.app/",
+      "permanent": true
+    },
+    {
+      "source": "/andaaza/poster",
+      "destination": "https://getandaaza.vercel.app/poster",
+      "permanent": true
     },
     {
       "source": "/consensus",
-      "destination": "/andaaza",
+      "destination": "https://getandaaza.vercel.app/",
       "permanent": true
     },
     {
       "source": "/consensus/poster",
-      "destination": "/andaaza/poster",
+      "destination": "https://getandaaza.vercel.app/poster",
       "permanent": true
     },
     {
       "source": "/pulse",
-      "destination": "/andaaza",
+      "destination": "https://getandaaza.vercel.app/",
       "permanent": true
     },
     {
       "source": "/markets",
-      "destination": "/andaaza",
+      "destination": "https://getandaaza.vercel.app/",
       "permanent": true
     }
   ]

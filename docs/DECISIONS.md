@@ -303,3 +303,7 @@ Made without Parth, per the build prompt. Change any of them freely.
 
 ## 26 Sep 2026: Andaaza gets its own address
 - andaaza-live.vercel.app (andaaza.vercel.app belongs to another Vercel account) is a domain of the same project. middleware.js, which runs only on / and /poster, shows Andaaza there (Vercel serves index.html before any rewrite, so vercel.json alone cannot). On that address the paper's pages redirect home. house14.vercel.app and house14.vercel.app/andaaza are unchanged. A future domain: add it in Vercel's Domains and to ANDAAZA_HOSTS in middleware.js.
+
+## 26 Sep 2026: Andaaza moves out
+- Andaaza now lives in its own repository (thefirstparth/andaaza, private, with its history) and Vercel project (getandaaza, with its own Blob store), at https://getandaaza.vercel.app. Its files are gone from this repo.
+- Old addresses redirect there permanently: /andaaza, /consensus, /pulse, /markets (and their /poster), and every path on andaaza-live.vercel.app (still a domain of this project, kept only for the redirect). The paper's own routes are unchanged.
