@@ -7,6 +7,26 @@
   "trailingSlash": false,
   "rewrites": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "andaaza-live.vercel.app"
+        }
+      ],
+      "destination": "/andaaza"
+    },
+    {
+      "source": "/poster",
+      "has": [
+        {
+          "type": "host",
+          "value": "andaaza-live.vercel.app"
+        }
+      ],
+      "destination": "/andaaza"
+    },
+    {
       "source": "/archive",
       "destination": "/"
     },
@@ -100,6 +120,17 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/:path(andaaza|archive|editor|today|e/.*|poster/.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "andaaza-live.vercel.app"
+        }
+      ],
+      "destination": "/",
+      "permanent": false
+    },
     {
       "source": "/consensus",
       "destination": "/andaaza",
