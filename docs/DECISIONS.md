@@ -271,3 +271,8 @@ Made without Parth, per the build prompt. Change any of them freely.
 
 ## 26 Sep 2026: Andaaza's header says the word once in each script
 - The name is the headword: Andaaza (Latin) and अंदाज़ा (the seal) above, then one dictionary line (speaker, /ən·daː·zaː/, noun · Hindi, Urdu, اندازہ, "an estimate, a guess, a rough calculation."), then the hero: "Everyone has one. These ones have money on them."
+
+## 26 Sep 2026: Andaaza QA pass, and a new face
+- Tide board labels name the market (La Liga, Champions League, World), never the reason it was picked; the slot (Real Madrid, India) only chooses. The gauge shows the leader; the followed side's chance rides on a chip. A yes/no question is headlined by the question, not "Yes". Board numbers sit wholly above or wholly under the water.
+- Yes/no tickets show the number alone. "RCP" and "approval average" markets count as US politics (excluded).
+- Type: Instrument Sans for everything read (narrow width only for the big numbers), Instrument Serif italic for the name and titles. Hero: "Guesses are cheap. These ones are paid for."
