@@ -1,20 +1,21 @@
 {
   "version": 1,
-  "last_updated": "2026-09-25T22:25:23.587Z",
-  "last_edition": "2026-09-25",
+  "last_updated": "2026-09-26T08:49:36.199Z",
+  "last_edition": "2026-09-26",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
-      "title": "US and Iran discuss a phased deal to reopen Hormuz and lift the blockade",
+      "title": "Trump rejects Iran's plan to reopen Hormuz within seven days, reports say",
       "entities": [],
       "facts": {
-        "status": "talks on phased reopening",
-        "brent_close": "106.60",
-        "ceasefire_proposal_days": 60
+        "status": "US rejects 7-day plan (WSJ)",
+        "brent_close": "97.44",
+        "ceasefire_proposal_days": 60,
+        "reopen_days": 7
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-25",
-      "last_change": "2026-09-25",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
       "status": "active",
       "votes": {
         "up": 0,
@@ -61,15 +62,16 @@
     },
     {
       "thread_id": "laver-cup-2026",
-      "title": "Alcaraz opens his Laver Cup in doubles tonight at the O2",
+      "title": "Europe lead 3–1 at the Laver Cup; Alcaraz plays Fritz tonight",
       "entities": [],
       "facts": {
-        "alcaraz_friday": "doubles with Mensik v Fritz/Bublik",
-        "score": "0-0"
+        "alcaraz_friday": "won doubles 6-4 6-4",
+        "score": "Europe 3-1",
+        "alcaraz_saturday": "v Fritz"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-25",
-      "last_change": "2026-09-25",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
       "status": "active",
       "votes": {
         "up": 0,
@@ -190,15 +192,17 @@
     },
     {
       "thread_id": "asian-games-2026-india",
-      "title": "India's hockey men beat South Korea 8–2 as the athletics programme opens",
+      "title": "Anahat and Abhay Singh reach the Asian Games squash finals; Lakshya Sen goes out",
       "entities": [],
       "facts": {
         "hockey_men": "beat South Korea 8-2",
-        "rowing": "bronze men's double sculls"
+        "rowing": "bronze men's double sculls",
+        "squash": "Anahat and Abhay in finals",
+        "badminton": "Sen out; Sindhu and Hooda last 16"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-25",
-      "last_change": "2026-09-25",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
       "status": "active",
       "votes": {
         "up": 0,
@@ -352,14 +356,14 @@
     },
     {
       "thread_id": "presidents-cup-2026",
-      "title": "USA lead the Internationals 3–2 after the opening four-balls at Medinah",
+      "title": "Internationals sweep Friday's foursomes to lead the USA 7–3",
       "entities": [],
       "facts": {
-        "score": "USA 3-2"
+        "score": "Internationals 7-3"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-25",
-      "last_change": "2026-09-25",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
       "status": "active",
       "votes": {
         "up": 0,
@@ -369,12 +373,15 @@
     },
     {
       "thread_id": "asian-games-kabaddi",
-      "title": "Both Indian kabaddi teams into the semi-finals",
+      "title": "India's women keep their kabaddi title; the men play Iran for gold",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "women": "gold, beat Iran 37-34",
+        "men": "final v Iran"
+      },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-25",
-      "last_change": "2026-09-25",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
       "status": "active",
       "votes": {
         "up": 0,
@@ -447,17 +454,21 @@
     },
     {
       "thread_id": "irdai-distribution-reform-2026",
-      "title": "IRDAI proposes to bring back caps on insurance commissions; PB Fintech falls 33%",
+      "title": "IRDAI's draft would cut dealers' commission on car insurance and bar them refusing cashless repairs",
       "entities": [],
       "facts": {
         "status": "consultation paper",
         "comments_until": "2026-10-25",
         "pb_fintech_24sep": "-33.27%",
-        "commission_caps": "proposed return (removed 2023)"
+        "commission_caps": "proposed return (removed 2023)",
+        "motor_tp_new_dealer_commission": "nil",
+        "cashless_refusal": "barred",
+        "bima_sugam_fee_cap": "5%",
+        "pb_fintech_25sep": "-3.41%"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-25",
-      "last_change": "2026-09-25",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
       "status": "active",
       "votes": {
         "up": 0,
@@ -467,18 +478,20 @@
     },
     {
       "thread_id": "upi-mdr-2026",
-      "title": "UPI payments to businesses above ₹2,000 carry a 0.4% fee from 15 October",
+      "title": "Where the 0.4% UPI merchant fee will go",
       "entities": [],
       "facts": {
         "mdr": "0.4%",
         "threshold": "above 2000",
         "cap": "300",
         "effective": "2026-10-15",
-        "rollback": "ruled out"
+        "rollback": "ruled out",
+        "split": "40/30/20/10",
+        "tax": "no"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-25",
-      "last_change": "2026-09-25",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
       "status": "active",
       "votes": {
         "up": 0,
@@ -488,23 +501,394 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Two of three election commissioners objected 14 times to voter-roll decisions, report says; EC says decisions were unanimous",
+      "title": "Three NDA allies ask the Election Commission to explain its internal objections",
       "entities": [],
       "facts": {
         "objections": "14",
         "period": "Nov 2025 to Aug 2026",
         "ec_response": "decisions unanimous",
-        "status": "opposition seeks CEC removal"
+        "status": "NDA allies seek clarification; Supreme Court petition"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-25",
-      "last_change": "2026-09-25",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
       "section": "dateline"
+    },
+    {
+      "thread_id": "man-city-115-charges",
+      "title": "Manchester City found guilty on 114 of the 115 Premier League charges",
+      "entities": [],
+      "facts": {
+        "verdict": "guilty on 114 of 115",
+        "sanction": "not set",
+        "appeal": "expected"
+      },
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "bank-strike-sep-2026",
+      "title": "Banks open on Sunday ahead of a three-day strike from Monday",
+      "entities": [],
+      "facts": {
+        "strike": "28-30 Sep",
+        "sunday_27_open": true,
+        "atm_charges_sbi": "waived"
+      },
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "mbappe-knee-2026",
+      "title": "Mbappé leaves the France camp with a tendon injury in his left knee",
+      "entities": [],
+      "facts": {
+        "injury": "left knee tendon",
+        "status": "MRI at Valdebebas 26 Sep"
+      },
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "f1-baku-quali",
+      "title": "Russell on pole in Baku; Verstappen starts eighth, Antonelli 16th",
+      "entities": [],
+      "facts": {
+        "pole": "Russell",
+        "verstappen_grid": 8,
+        "antonelli_grid": 16
+      },
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "maharashtra-drought-2026",
+      "title": "Maharashtra declares drought in 265 of its 358 talukas",
+      "entities": [],
+      "facts": {
+        "talukas": "265 of 358",
+        "share": "74%"
+      },
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "ni-georgia-unl-2026",
+      "title": "Northern Ireland win in Georgia with Shea Charles's late volley",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "belgium-italy-unl-2026",
+      "title": "Belgium win 2–0 in Rome in Van Bommel's first game, spoiling Mancini's return",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "england-spain-unl-2026",
+      "title": "England host world champions Spain at Wembley tonight",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "kohli-odi-approach",
+      "title": "Kohli says he will bat more freely against West Indies",
+      "entities": [],
+      "facts": {
+        "stance": "play more freely"
+      },
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "us-china-trade-truce",
+      "title": "Xi's Washington visit ends with the trade truce extended to 10 January",
+      "entities": [],
+      "facts": {
+        "truce_until": "2027-01-10"
+      },
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "india-pak-unga-2026",
+      "title": "India calls Pakistan's UN speech false after Sharif credits Trump for the 2025 ceasefire",
+      "entities": [],
+      "facts": {
+        "event": "UNGA right of reply"
+      },
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "nagaland-hooch-2026",
+      "title": "Spurious liquor kills 19 in Nagaland, where alcohol is banned",
+      "entities": [],
+      "facts": {
+        "dead": 19
+      },
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "bangkok-floods-2026",
+      "title": "Bangkok declares a flood disaster zone",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "openai-rogue-agents",
+      "title": "OpenAI says its agents got past security on US government websites",
+      "entities": [],
+      "facts": {
+        "agencies": "SEC, Census Bureau, Education"
+      },
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "workshop"
+    },
+    {
+      "thread_id": "apple-leak-homepod-ipad",
+      "title": "Apple code points to a new HomePod mini, iPad mini and Apple TV 4K",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "workshop"
+    },
+    {
+      "thread_id": "rbi-bulk-deposit-rules-2026",
+      "title": "New rules on how banks set bulk deposit rates start on 1 October",
+      "entities": [],
+      "facts": {
+        "effective": "2026-10-01",
+        "bulk_threshold": "3 crore",
+        "publish_by": "10:00"
+      },
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "epf-wage-ceiling-2026",
+      "title": "EPF wage ceiling rises to ₹25,000 a month",
+      "entities": [],
+      "facts": {
+        "ceiling": 25000,
+        "effective": "2026-09-17"
+      },
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "nps-swasthya-2026",
+      "title": "NPS Swasthya, a pension account with health cover, is due on 1 October",
+      "entities": [],
+      "facts": {
+        "launch": "2026-10-01"
+      },
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "ola-electric-rights-2026",
+      "title": "Ola Electric's board weighs a rights issue on Monday",
+      "entities": [],
+      "facts": {
+        "board_meeting": "2026-09-28"
+      },
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "blr-garbage-revamp",
+      "title": "New garbage trucks may be late in some constituencies after bidders refuse work orders",
+      "entities": [],
+      "facts": {
+        "accepted": "6 of 21"
+      },
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "bwssb-jurisdiction-2026",
+      "title": "The water board now covers all of Bengaluru Urban district",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "higher-ground-fest-2026",
+      "title": "Higher Ground indie festival runs to Sunday at Prism",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-26",
+      "last_printed": "2026-09-26",
+      "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
     }
   ]
 }
