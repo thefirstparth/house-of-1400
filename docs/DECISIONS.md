@@ -297,3 +297,6 @@ Made without Parth, per the build prompt. Change any of them freely.
 - Phone poster no longer overflows (name line wraps).
 - The water breathes while open: the line bobs around its level (calm ±0.5, normal ±1, choppy ±2 points), each gauge on its own clock; numbers stay still; off for reduced motion.
 - The drop now leads the name inside it, sized in its ems and centred on the capitals (measured 0.000em off at 390, 768 and 1440 wide); same on the poster.
+
+## 26 Sep 2026: The House of 1400 no longer links to Andaaza
+- The paper's top line loses its Andaaza pill (and its styles and drop icon); the two sites share a project but not a link in either direction. /andaaza itself is unchanged.

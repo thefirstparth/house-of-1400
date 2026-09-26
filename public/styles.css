@@ -825,19 +825,15 @@ table.wk tr:last-child td,table.wk tr:last-child th{border-bottom:0}
 @media (max-width:720px){.colourbar{width:min(100%,300px);gap:8px}.colourbar span{height:6px}}
 
 /* ---------- the top line's three buttons, each with a job you can see ---------- */
-.run-r button,.run-r a.pl{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:6px 13px 6px 9px;font:700 12.5px/1 var(--sans);text-decoration:none;cursor:pointer;transition:transform .15s,background .2s}
-.run-r button:hover,.run-r a.pl:hover{transform:translateY(-1px)}
+.run-r button{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:6px 13px 6px 9px;font:700 12.5px/1 var(--sans);text-decoration:none;cursor:pointer;transition:transform .15s,background .2s}
+.run-r button:hover{transform:translateY(-1px)}
 .run-r .ic{width:16px;height:16px;vertical-align:0}
 /* Consensus: its own sea-blue, the colour of the other page */
-.run-r a.pl{background:#e4e6f7;color:#3f46a8}
-.run-r a.pl:hover{background:#d6d9f2}
 /* Poster: a framed print */
 #posterBtn{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--rule)}
 /* Night: ink by day with a moon; paper by night with a sun */
 #themeBtn{background:var(--ink);color:var(--paper)}
 #themeBtn .ic{color:#f0c860}
-:root[data-theme="dark"] .run-r a.pl{background:#1e2150;color:#b4b9f5}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .run-r a.pl{background:#1e2150;color:#b4b9f5}}
 
 /* Large monitors: laid out at 1,920px and scaled up by app.js (fitMonitor); nearly full width, small margins. */
 @media (min-width:2100px){.sheet,nav.idx>div{max-width:1880px}body{font-size:18px}}
@@ -852,8 +848,8 @@ table.wk tr:last-child td,table.wk tr:last-child th{border-bottom:0}
  .run-r{grid-column:1/-1;display:flex;align-items:center;gap:8px;width:100%}
  .run-r .mk{margin-right:auto;gap:10px;white-space:nowrap}
  .run-r .mk span{white-space:nowrap}
- .run-r button,.run-r a.pl{padding:8px;gap:0;flex:none}
- .run-r button span,.run-r a.pl span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+ .run-r button{padding:8px;gap:0;flex:none}
+ .run-r button span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
  .run-r .ic{width:18px;height:18px}
  /* The folio: the day's note, then the reading time, then the links, each on its own line. */
  .folio{flex-direction:column;gap:6px;padding:10px 0}
