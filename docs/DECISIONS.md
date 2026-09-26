@@ -238,3 +238,11 @@ Made without Parth, per the build prompt. Change any of them freely.
 - Yesterday's level is a dashed mark: full width on the tide board (drawn in both layers so it reads above and below water), a notch on the scale edge of the small gauges so it never crosses a name.
 - Moving today is Currents: a strip from yesterday's level to today's. The world list rows fill like water to their chance.
 - The poster is the tide board plus Currents, Coming up and the world, on one screen.
+
+## 26 Sep 2026: Consensus by Parth's preferences, fast and standalone
+- Speed: the last reading is saved in Blob and served at once; a new one is read in the background when it is over ten minutes old. Kalshi is read in full at most every six hours (an index of the ~450 events that fit a subject); in between its markets are re-priced a hundred per request. A reading takes about four seconds, not forty.
+- No Refresh button: the page shows and follows the next automatic update.
+- Tide board in Parth's order: best AI model (the company question for the nearest month), Real Madrid (next match, else Madrid's own chance in a market), relevant football, world, most traded; each falls back to its subject's top.
+- Each subject: must-haves (config topics[].must, at most must_cap each), follows, prefers (India first in money, streaming and celebrities), then by score (today's trade blended with lifetime trade). 3 to 9 per subject; the first three as cards, the rest as one-line rows.
+- Crypto out entirely. Barcelona stays followed as a rival (a hatewatch). World list is ten. Currents need $10k traded today and leave out weekly and monthly rankings.
+- Consensus stands alone: no link back to the House of 1400.
