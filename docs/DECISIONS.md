@@ -246,3 +246,7 @@ Made without Parth, per the build prompt. Change any of them freely.
 - Each subject: must-haves (config topics[].must, at most must_cap each), follows, prefers (India first in money, streaming and celebrities), then by score (today's trade blended with lifetime trade). 3 to 9 per subject; the first three as cards, the rest as one-line rows.
 - Crypto out entirely. Barcelona stays followed as a rival (a hatewatch). World list is ten. Currents need $10k traded today and leave out weekly and monthly rankings.
 - Consensus stands alone: no link back to the House of 1400.
+
+## 26 Sep 2026: Consensus colour as a system; Currents by agreement, not amount
+- Colour: a neutral ground, one brand hue (deep water), and every subject a tonal palette on one OKLCH hue wheel (ink, container, two lesser tones), so all are equally bold at one lightness; near-black night mode. Floating controls are a glass capsule (bottom right); the filter bar is glass. Larger corner radii.
+- Currents: a move counts when the favourite's spread (best ask minus best bid) is four points or less, the market clears the usual $2,000 floor on its own trade, and it is not a weekly or monthly ranking. The amount traded was only ever a proxy for a price being real; the spread measures it directly.
