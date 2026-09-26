@@ -295,3 +295,4 @@ Made without Parth, per the build prompt. Change any of them freely.
 - Seals centred on the x-height middle of the title (the eye reads a lowercase word there), measured within 0.01em.
 - The top bar stays hidden over the header and tide board and slides in once they are scrolled past.
 - Phone poster no longer overflows (name line wraps).
+- The water breathes while open: the line bobs around its level (calm ±0.5, normal ±1, choppy ±2 points), each gauge on its own clock; numbers stay still; off for reduced motion.
