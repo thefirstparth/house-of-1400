@@ -281,4 +281,4 @@ Made without Parth, per the build prompt. Change any of them freely.
 - Hero: "Watch the world change its mind."
 - Tide board: every number in the same place (bottom left); the water writes over it, the subject's colour above the line and white below, as on the tickets. Yesterday's level keeps its dashed line; its "was" label shows only when the mark is high enough (35%+) not to meet the number.
 - Three looks: Day, Night and Retro (an old printed tide almanac: aged paper, printer's inks, halftone water, double rules, Libre Caslon Text for reading, IBM Plex Mono for numbers; its fonts load only when chosen). The button cycles and names the next look. Retro stays retro when the device is in dark mode.
-- Colophon aside: "And Claude, who did the typing." with the Claude mark at text size, muted, warming to Claude orange on hover.
+- Colophon aside: "And Claude, who did as it was told." with the Claude mark at text size, muted, warming to Claude orange on hover.
