@@ -829,15 +829,15 @@ table.wk tr:last-child td,table.wk tr:last-child th{border-bottom:0}
 .run-r button:hover,.run-r a.pl:hover{transform:translateY(-1px)}
 .run-r .ic{width:16px;height:16px;vertical-align:0}
 /* Consensus: its own sea-blue, the colour of the other page */
-.run-r a.pl{background:#dcecef;color:#0f5f73}
-.run-r a.pl:hover{background:#cfe4e8}
+.run-r a.pl{background:#e4e6f7;color:#3f46a8}
+.run-r a.pl:hover{background:#d6d9f2}
 /* Poster: a framed print */
 #posterBtn{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--rule)}
 /* Night: ink by day with a moon; paper by night with a sun */
 #themeBtn{background:var(--ink);color:var(--paper)}
 #themeBtn .ic{color:#f0c860}
-:root[data-theme="dark"] .run-r a.pl{background:#12303a;color:#8fd3df}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .run-r a.pl{background:#12303a;color:#8fd3df}}
+:root[data-theme="dark"] .run-r a.pl{background:#1e2150;color:#b4b9f5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .run-r a.pl{background:#1e2150;color:#b4b9f5}}
 
 /* Large monitors: laid out at 1,920px and scaled up by app.js (fitMonitor); nearly full width, small margins. */
 @media (min-width:2100px){.sheet,nav.idx>div{max-width:1880px}body{font-size:18px}}

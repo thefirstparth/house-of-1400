@@ -1306,7 +1306,7 @@ async function boot() {
     const r = document.documentElement, dk = r.getAttribute("data-theme") === "dark" || (!r.hasAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
     themeLabel();
     const pb = $("#posterBtn"); if (pb) pb.innerHTML = `${icon("u:poster")}<span>Poster</span>`;
-    const cl = document.querySelector(".run-r a.pl"); if (cl) cl.innerHTML = `${icon("u:drop")}<span>Consensus</span>`;
+    const cl = document.querySelector(".run-r a.pl"); if (cl) cl.innerHTML = `${icon("u:drop")}<span>Andaaza</span>`;
   }
   // Config, edition and live data are requested together, not one after another.
   // index.html starts these in <head>, before this script has even downloaded.

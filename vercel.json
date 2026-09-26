@@ -27,16 +27,8 @@
       "destination": "/"
     },
     {
-      "source": "/pulse",
-      "destination": "/consensus"
-    },
-    {
-      "source": "/markets",
-      "destination": "/consensus"
-    },
-    {
-      "source": "/consensus/poster",
-      "destination": "/consensus"
+      "source": "/andaaza/poster",
+      "destination": "/andaaza"
     }
   ],
   "functions": {
@@ -105,6 +97,28 @@
     {
       "path": "/api/notify",
       "schedule": "30 10 * * *"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/consensus",
+      "destination": "/andaaza",
+      "permanent": true
+    },
+    {
+      "source": "/consensus/poster",
+      "destination": "/andaaza/poster",
+      "permanent": true
+    },
+    {
+      "source": "/pulse",
+      "destination": "/andaaza",
+      "permanent": true
+    },
+    {
+      "source": "/markets",
+      "destination": "/andaaza",
+      "permanent": true
     }
   ]
 }

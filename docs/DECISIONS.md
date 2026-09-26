@@ -250,3 +250,8 @@ Made without Parth, per the build prompt. Change any of them freely.
 ## 26 Sep 2026: Consensus colour as a system; Currents by agreement, not amount
 - Colour: a neutral ground, one brand hue (deep water), and every subject a tonal palette on one OKLCH hue wheel (ink, container, two lesser tones), so all are equally bold at one lightness; near-black night mode. Floating controls are a glass capsule (bottom right); the filter bar is glass. Larger corner radii.
 - Currents: a move counts when the favourite's spread (best ask minus best bid) is four points or less, the market clears the usual $2,000 floor on its own trade, and it is not a weekly or monthly ranking. The amount traded was only ever a proxy for a price being real; the spread measures it directly.
+
+## 26 Sep 2026: Consensus becomes Andaaza (अंदाज़ा), built to run untended
+- Name: Andaaza, Hindi and Urdu for an estimate, in the spirit of Namma Beat. The Devanagari अंदाज़ा sits beside the Bodoni name as a marigold seal (Tiro Devanagari Hindi, loaded for those letters only). Brand hue moves from sea teal to neel (indigo); the water stays.
+- Address /andaaza; /consensus, /pulse and /markets redirect permanently. The paper's button says Andaaza.
+- Fallbacks for a future with no one editing it (docs/ANDAAZA.md): newest reading in memory, Blob writes budgeted (reading every 30 min, Kalshi list every 6 h), a failed Kalshi read keeps re-pricing the last list, each browser keeps the last reading and shows it if the server is slow or down, a note when a reading is over three hours old, Node allowed to move past 22.
