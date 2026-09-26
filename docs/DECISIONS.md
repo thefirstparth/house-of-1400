@@ -259,3 +259,8 @@ Made without Parth, per the build prompt. Change any of them freely.
 ## 26 Sep 2026: Andaaza's tide board, seven slots, leaders first
 - Seven slots: best AI model, Real Madrid, football, F1 (next race, else Drivers' title), cricket (India's next match), world, most traded. One row on desktop, four across on a tablet, two on a phone; no sideways scrolling.
 - Every gauge shows its market's real leader. A slot about someone (Real Madrid, India) adds that side's own chance on a chip when they are not the leader.
+
+## 26 Sep 2026: Andaaza says what it is
+- Hero: "Everyone has an andaaza. These ones have money on them." Beneath it a dictionary entry: a speaker (the device's own voice, Hindi if it has one), the word in Latin, Devanagari and Urdu scripts, and the meaning. The water-level explanation moved to How this works.
+- Renames: "The world is betting on" is now "Where the money is"; "How this page picks" is "How this works". Currents, Coming up and Miscellaneous keep their names; the top gauges have no title.
+- Each area title carries its Hindi name as a small marigold seal, the same device as the name: खेल, टेक, पैसा, दुनिया, परदा, फुटकर.
