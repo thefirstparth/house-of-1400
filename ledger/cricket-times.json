@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-26",
+  "date": "2026-09-27",
   "source": "Cricbuzz",
-  "checked_at": "2026-09-26T08:37:56.493Z",
+  "checked_at": "2026-09-27T08:37:46.047Z",
   "matches": [
     {
       "desc": "1st ODI",
       "format": "ODI",
-      "series": "India v West Indies",
+      "series": "West Indies tour of India, 2026",
       "opponent": "West Indies",
       "start": "2026-09-27T08:30:00.000Z",
       "ist": "Sun 27 Sept, 14:00",

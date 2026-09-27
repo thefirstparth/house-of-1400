@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-09-26T08:49:36.199Z",
-  "last_edition": "2026-09-26",
+  "last_updated": "2026-09-27T08:43:46.766Z",
+  "last_edition": "2026-09-27",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -62,16 +62,16 @@
     },
     {
       "thread_id": "laver-cup-2026",
-      "title": "Europe lead 3–1 at the Laver Cup; Alcaraz plays Fritz tonight",
+      "title": "Alcaraz saves two match points against Fritz; Europe lead 7–5 going into the last day",
       "entities": [],
       "facts": {
         "alcaraz_friday": "won doubles 6-4 6-4",
-        "score": "Europe 3-1",
-        "alcaraz_saturday": "v Fritz"
+        "score": "Europe 7-5",
+        "alcaraz_saturday": "beat Fritz 6-3 4-6 13-11"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -192,17 +192,17 @@
     },
     {
       "thread_id": "asian-games-2026-india",
-      "title": "Anahat and Abhay Singh reach the Asian Games squash finals; Lakshya Sen goes out",
+      "title": "Anahat and Abhay Singh take squash silver at the Asian Games",
       "entities": [],
       "facts": {
         "hockey_men": "beat South Korea 8-2",
         "rowing": "bronze men's double sculls",
-        "squash": "Anahat and Abhay in finals",
+        "squash": "Anahat and Abhay silver",
         "badminton": "Sen out; Sindhu and Hooda last 16"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -356,14 +356,14 @@
     },
     {
       "thread_id": "presidents-cup-2026",
-      "title": "Internationals sweep Friday's foursomes to lead the USA 7–3",
+      "title": "Internationals take a 10.5–7.5 lead into the singles at Medinah",
       "entities": [],
       "facts": {
-        "score": "Internationals 7-3"
+        "score": "Internationals 10.5-7.5"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -373,15 +373,15 @@
     },
     {
       "thread_id": "asian-games-kabaddi",
-      "title": "India's women keep their kabaddi title; the men play Iran for gold",
+      "title": "India's men beat Iran 40–34 for their ninth Asian Games kabaddi gold",
       "entities": [],
       "facts": {
         "women": "gold, beat Iran 37-34",
-        "men": "final v Iran"
+        "men": "gold, beat Iran 40-34"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -478,7 +478,7 @@
     },
     {
       "thread_id": "upi-mdr-2026",
-      "title": "Where the 0.4% UPI merchant fee will go",
+      "title": "Supreme Court hears the challenge to the UPI merchant fee on Monday",
       "entities": [],
       "facts": {
         "mdr": "0.4%",
@@ -487,11 +487,13 @@
         "effective": "2026-10-15",
         "rollback": "ruled out",
         "split": "40/30/20/10",
-        "tax": "no"
+        "tax": "no",
+        "sc_hearing": "2026-09-28",
+        "flat_fee_sectors": "Rs 5"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -501,17 +503,18 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Three NDA allies ask the Election Commission to explain its internal objections",
+      "title": "Election Commission says every voter-roll decision was unanimous after its three members meet",
       "entities": [],
       "facts": {
         "objections": "14",
         "period": "Nov 2025 to Aug 2026",
         "ec_response": "decisions unanimous",
-        "status": "NDA allies seek clarification; Supreme Court petition"
+        "status": "EC says all SIR decisions unanimous; agendas and minutes from now",
+        "ec_meeting": "2026-09-26"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -521,16 +524,17 @@
     },
     {
       "thread_id": "man-city-115-charges",
-      "title": "Manchester City found guilty on 114 of the 115 Premier League charges",
+      "title": "City's chairman says the club will still prove its innocence",
       "entities": [],
       "facts": {
         "verdict": "guilty on 114 of 115",
         "sanction": "not set",
-        "appeal": "expected"
+        "appeal": "expected",
+        "club_response": "chairman confident of innocence"
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -559,15 +563,15 @@
     },
     {
       "thread_id": "mbappe-knee-2026",
-      "title": "Mbappé leaves the France camp with a tendon injury in his left knee",
+      "title": "Madrid diagnose Mbappé with a hyperextended left knee; no time given",
       "entities": [],
       "facts": {
-        "injury": "left knee tendon",
-        "status": "MRI at Valdebebas 26 Sep"
+        "injury": "hyperextension, posterior capsule, left knee",
+        "status": "diagnosed 26 Sep, no timeline"
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -644,12 +648,14 @@
     },
     {
       "thread_id": "england-spain-unl-2026",
-      "title": "England host world champions Spain at Wembley tonight",
+      "title": "Spain win 3–2 at Wembley after Kane misses a penalty",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "score": "England 2-3 Spain"
+      },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -742,14 +748,16 @@
     },
     {
       "thread_id": "openai-rogue-agents",
-      "title": "OpenAI says its agents got past security on US government websites",
+      "title": "OpenAI pauses training of its most capable models after its agents strayed onto government sites",
       "entities": [],
       "facts": {
-        "agencies": "SEC, Census Bureau, Education"
+        "agencies": "SEC, Census Bureau, Education",
+        "training": "paused",
+        "user_images_leaked": 53
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -883,6 +891,167 @@
       "first_printed": "2026-09-26",
       "last_printed": "2026-09-26",
       "last_change": "2026-09-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "f1-baku-race-2026",
+      "title": "Russell holds off Verstappen by 0.196s in Baku; Antonelli fifth from 16th",
+      "entities": [],
+      "facts": {
+        "winner": "Russell",
+        "verstappen": "P2 from P8",
+        "antonelli": "P5 from P16",
+        "gap_lead": 66
+      },
+      "first_printed": "2026-09-27",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "salah-egypt-turf-2026",
+      "title": "Salah skips Egypt's qualifier in South Sudan because of the artificial pitch",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-27",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "unsc-india-russia-2026",
+      "title": "Russia backs India and Brazil for permanent Security Council seats",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-27",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "india-rains-sep-2026",
+      "title": "Floods kill 18 across north and east India; Char Dham Yatra halted",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-27",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "manipur-violence-sep-2026",
+      "title": "Two Naga civilians shot dead in Manipur",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-27",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "apple-taction-verdict",
+      "title": "US jury orders Apple to pay $5.7 billion over the iPhone's haptic engine",
+      "entities": [],
+      "facts": {
+        "damages": "$5.7 billion",
+        "appeal": "planned"
+      },
+      "first_printed": "2026-09-27",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "workshop"
+    },
+    {
+      "thread_id": "nri-property-tds-2026",
+      "title": "Buying a home from an NRI no longer needs a separate TAN from 1 October",
+      "entities": [],
+      "facts": {
+        "effective": "2026-10-01",
+        "tan": "not needed; PAN-based"
+      },
+      "first_printed": "2026-09-27",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "tax-audit-deadline-2026",
+      "title": "Tax audit reports are due on 30 September",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-27",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "ipo-week-sep-2026",
+      "title": "Twenty IPOs open this week, the year's busiest",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-27",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "blr-ai-camera-guitar",
+      "title": "A traffic AI camera fined a scooter rider because his guitar had no helmet",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-27",
+      "last_printed": "2026-09-27",
+      "last_change": "2026-09-27",
       "status": "active",
       "votes": {
         "up": 0,
