@@ -27,6 +27,27 @@ for (const f of ["dist/content/latest.json", ...readdirSync("dist/content/editio
   writeFileSync(f, JSON.stringify(e));
 }
 
+// Front-page illustrations (lib/art.js). The brief for the illustrator comes from today's edition; each day's
+// manifest is checked against its edition and replaced in dist by the checked one, so the page only ever sees
+// images that fit their slot. A bad file never fails the build: it is listed under "rejected" and not shown.
+try {
+  const { brief, checkArt } = await import("../lib/art.js");
+  mkdirSync("dist/art", { recursive: true });
+  if (existsSync("content/latest.json")) writeFileSync("dist/art/brief.json", JSON.stringify(brief(JSON.parse(readFileSync("content/latest.json", "utf8"))), null, 2));
+  for (const d of existsSync("public/art") ? readdirSync("public/art") : []) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(d) || !existsSync(`public/art/${d}/manifest.json`)) continue;
+    let out;
+    try {
+      const ed = `content/editions/${d}.json`;
+      if (!existsSync(ed)) throw new Error(`no edition for ${d}`);
+      const read = f => (existsSync(`public/art/${d}/${f}`) ? readFileSync(`public/art/${d}/${f}`) : null);
+      out = checkArt(JSON.parse(readFileSync(ed, "utf8")), JSON.parse(readFileSync(`public/art/${d}/manifest.json`, "utf8")), read);
+    } catch (e) { out = { items: [], rejected: [{ reason: String(e.message || e) }] }; }
+    writeFileSync(`dist/art/${d}/manifest.json`, JSON.stringify({ date: d, checked_at: new Date().toISOString(), ...out }, null, 2));
+    console.log(`build: art ${d}: ${out.items.length} shown, ${out.rejected.length} rejected${out.rejected.length ? ` (${out.rejected.map(r => `${r.story_id || ""} ${r.reason}`).join("; ")})` : ""}`);
+  }
+} catch (e) { console.warn(`build: art skipped: ${e.message}`); }
+
 // Version the script and stylesheet by content hash so browsers can keep them for a year (vercel.json headers).
 let html = readFileSync("dist/index.html", "utf8");
 for (const f of ["app.js", "styles.css"]) {

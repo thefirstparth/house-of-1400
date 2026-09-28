@@ -60,6 +60,7 @@ Empty sections are omitted, never padded.
 - Clip: renders the story as a clean image card (html-to-image or canvas) and uses the Web Share API on phone, download on laptop.
 - Thumbs: "More like this" / "Less". Visible state plus a short toast. POST `/api/vote` stores `{date, story_id, thread_id, section, vote}` (Vercel Blob or KV if configured; otherwise localStorage only). The daily run reads votes via `/api/votes` with `RUN_KEY`.
 - "New for you" label on stories picked for guessed interests.
+- Front-page illustrations (optional, added after the paper is out): an outside illustrator draws for the lead and up to four second stories from `/art/brief.json` and pushes them to `public/art/YYYY-MM-DD/`. The build checks every image against the edition (`lib/art.js`: slot, shape, size, format, alt text) and serves only those that pass; the page shows an image only in its story's fixed-shape slot, labelled "Illustration", and checks for new ones every five minutes until 17:00 IST. No illustration for death, disaster or violence, and no realistic likeness of a real person.
 - At a Glance: floating button, opens the day's top lines, tap to jump.
 
 ## Live layer
