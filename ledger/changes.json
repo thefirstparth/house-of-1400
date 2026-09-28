@@ -1,0 +1,16 @@
+{
+  "note": "The money calendar: every rule, price, charge, tax or rate change the paper has found, whoever announced it, with its effective date. The daily run adds what it finds; a change taking effect in the next 30 days stays owed until it is printed (checks.changes; the validator asks, publish marks it). EDITORIAL.md, Research.",
+  "changes": [
+    {
+      "id": "trai-recharge-rules-2026",
+      "what": "TRAI's Telecom Consumers Protection (13th Amendment) Regulations: operators must offer voice-and-SMS-only recharge packs at every validity they sell, including 30-day plans and one longer plan",
+      "who": "TRAI",
+      "announced": "2026-09-22",
+      "effective": "2026-10-22",
+      "effective_note": "30 days after gazette notification; the exact date follows the gazette",
+      "sources": ["https://www.trai.gov.in/notifications/press-release/trai-releases-telecom-consumer-protection-13th-amendment-regulations", "https://www.pib.gov.in/PressReleaseDetail.aspx?PRID=2313349&reg=48&lang=1"],
+      "section": "ledger",
+      "found_by": "Parth (a miss; ledger/lessons.json)"
+    }
+  ]
+}

@@ -931,6 +931,33 @@
               }
             }
           }
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "covered_by": {
+                "type": "string"
+              },
+              "action": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "money_net": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },

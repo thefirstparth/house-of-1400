@@ -1,4 +1,4 @@
-// The money sweep's two groups and the lessons ledger (validate.mjs, ledger/lessons.json, config money.groups).
+// The money sweep's must-reads, the wider net, the money calendar (ledger/changes.json) and the lessons ledger.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -6,23 +6,30 @@ import { readFileSync } from "node:fs";
 import { validateEdition } from "../scripts/validate.mjs";
 
 const base = JSON.parse(readFileSync(new URL("../content/editions/2026-09-28.json", import.meta.url), "utf8"));
-const lessonErrors = E => validateEdition(E).errors.filter(e => /checks\.(money_sweep|lessons)/.test(e));
+const moneyErrors = E => validateEdition(E).errors.filter(e => /checks\.(money_sweep|money_net|changes|lessons)/.test(e));
 // A copy of the 28 Sep edition dated 29 Sep (other date checks are not the point here).
-const next = (checks = {}) => ({ ...base, date: "2026-09-29", checks: { ...base.checks, ...checks } });
+const SWEEP = ["https://www.rbi.org.in/x", "https://news.google.com/rss/search?q=site:pib.gov.in+when:2d&hl=en-IN", "https://www.livemint.com/rss/money"];
+const NET = ["https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-IN", "https://economictimes.indiatimes.com/wealth"];
+const TRAI = { id: "trai-recharge-rules-2026", covered_by: base.front.lead.id };
+const next = (checks = {}, date = "2026-09-29") => ({ ...base, date, checks: { ...base.checks, money_sweep: SWEEP, money_net: NET, changes: [TRAI], ...checks } });
 
-test("from 29 Sep the money sweep needs a page from each group: money rules and prices people pay", () => {
-  const onlyFinance = lessonErrors(next({ money_sweep: ["https://www.rbi.org.in/x", "https://www.livemint.com/rss/money", "https://economictimes.indiatimes.com/wealth"], lessons: [{ id: "2026-09-28-trai-recharge", action: "Printed as a Ledger brief today." }] }));
-  assert.ok(onlyFinance.some(e => /prices and charges people pay/.test(e)), "TRAI, PIB and the other price-setters must be read");
-  const both = lessonErrors(next({ money_sweep: ["https://www.rbi.org.in/x", "https://news.google.com/rss/search?q=site:pib.gov.in+when:2d&hl=en-IN", "https://www.livemint.com/rss/money"], lessons: [{ id: "2026-09-28-trai-recharge", action: "Printed as a Ledger brief today." }] }));
-  assert.deepEqual(both, []);
-  assert.deepEqual(lessonErrors(base), [], "editions before 29 Sep are not held to the new rule");
+test("editions before 29 Sep are not held to the new rules", () => {
+  assert.deepEqual(moneyErrors(base), []);
 });
 
-test("an owed story from a lesson must be printed or explained", () => {
-  const sweep = ["https://www.rbi.org.in/x", "https://www.trai.gov.in/rss.xml", "https://www.livemint.com/rss/money"];
-  assert.ok(lessonErrors(next({ money_sweep: sweep })).some(e => /2026-09-28-trai-recharge still owes/.test(e)));
-  assert.ok(lessonErrors(next({ money_sweep: sweep, lessons: [{ id: "2026-09-28-trai-recharge", covered_by: "no-such-item" }] })).some(e => /not an item/.test(e)));
-  const id = base.front.lead.id;
-  assert.deepEqual(lessonErrors(next({ money_sweep: sweep, lessons: [{ id: "2026-09-28-trai-recharge", covered_by: id }] })), []);
-  assert.deepEqual(lessonErrors({ ...next({ money_sweep: sweep }), date: "2026-10-23" }), [], "after its date the owed story is no longer asked for");
+test("the must-reads: a page from each group, money rules and prices people pay", () => {
+  const e = moneyErrors(next({ money_sweep: ["https://www.rbi.org.in/x", "https://www.livemint.com/rss/money", "https://economictimes.indiatimes.com/wealth"] }));
+  assert.ok(e.some(x => /prices and charges people pay/.test(x)));
+  assert.deepEqual(moneyErrors(next()), []);
+});
+
+test("the wider net must be recorded", () => {
+  assert.ok(moneyErrors(next({ money_net: [] })).some(x => /money_net/.test(x)));
+});
+
+test("a change taking effect within 30 days stays owed until printed or explained", () => {
+  assert.ok(moneyErrors(next({ changes: [] })).some(x => /trai-recharge-rules-2026/.test(x)), "TRAI (from 22 Oct) is owed on 29 Sep");
+  assert.ok(moneyErrors(next({ changes: [{ id: "trai-recharge-rules-2026", covered_by: "no-such-item" }] })).some(x => /not an item/.test(x)));
+  assert.deepEqual(moneyErrors(next({ changes: [{ id: "trai-recharge-rules-2026", action: "Withdrawn by TRAI on 28 Sep; nothing changes." }] })), []);
+  assert.deepEqual(moneyErrors(next({ changes: [] }, "2026-10-23")), [], "after it takes effect it is no longer asked for");
 });

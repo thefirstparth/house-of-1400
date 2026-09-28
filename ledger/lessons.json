@@ -6,10 +6,13 @@
       "reported": "2026-09-28",
       "missed": "TRAI's Telecom Consumers Protection (13th Amendment) Regulations: prepaid users get 30-day recharge plans and voice-and-SMS-only packs at every validity (notified 22 Sep 2026, in force 30 days after gazette notification, about 22 Oct). Raghav Chadha's statement on 27 Sep brought it back into the news.",
       "url": "https://www.moneycontrol.com/news/india/30-day-mobile-recharges-voice-only-plans-to-be-offered-under-new-trai-rules-raghav-chadha-14039303.html",
-      "sources": ["https://www.trai.gov.in/notifications/press-release/trai-releases-telecom-consumer-protection-13th-amendment-regulations", "https://www.pib.gov.in/PressReleaseDetail.aspx?PRID=2313349&reg=48&lang=1"],
+      "sources": [
+        "https://www.trai.gov.in/notifications/press-release/trai-releases-telecom-consumer-protection-13th-amendment-regulations",
+        "https://www.pib.gov.in/PressReleaseDetail.aspx?PRID=2313349&reg=48&lang=1"
+      ],
       "why": "The money test covers it (it changes what nearly every Indian pays), but the money sweep read only money regulators, so TRAI was never read; the story was not a front-page lead, so the national sweep missed it too; and the money calendar did not catch a change taking effect within 30 days.",
-      "fix": "Money test widened to prices and charges set by any regulator (EDITORIAL.md); money sweep now has two groups, finance and prices (config money.groups), each checked by the validator; PIB (every ministry and TRAI) and TRAI's feed added to the sweep.",
-      "owed": { "what": "a Ledger brief (Money in India) on the new TRAI recharge rules: what changes for prepaid users and when", "section": "ledger", "until": "2026-10-22" }
+      "fix": "Money test widened to prices and charges set by any regulator (EDITORIAL.md); money sweep now has two groups, finance and prices (config money.groups), each checked by the validator; PIB (every ministry and TRAI) and TRAI's feed added to the sweep. Then (Parth, 28 Sep): keep the named must-reads and add a wider net on top (the question \"what changed what people pay?\" across broad news, checks.money_net) and a changes calendar that remembers every change found until it is printed (ledger/changes.json).",
+      "tracked_in": "ledger/changes.json: trai-recharge-rules-2026 (owed until printed)"
     }
   ]
 }

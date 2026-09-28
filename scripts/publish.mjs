@@ -56,4 +56,15 @@ if (covered.length && existsSync("ledger/lessons.json")) {
   }
   writeFileSync("ledger/lessons.json", JSON.stringify(L, null, 2) + "\n");
 }
+// Money calendar: a change covered in this edition is marked printed; one answered as no longer news is settled.
+const handled = E.checks?.changes || [];
+if (handled.length && existsSync("ledger/changes.json")) {
+  const C = JSON.parse(readFileSync("ledger/changes.json", "utf8"));
+  for (const c of C.changes || []) {
+    const a = handled.find(x => x.id === c.id);
+    if (!a || c.printed_on || c.settled) continue;
+    if (a.covered_by) c.printed_on = E.date; else c.settled = { on: E.date, why: a.action };
+  }
+  writeFileSync("ledger/changes.json", JSON.stringify(C, null, 2) + "\n");
+}
 console.log(`Published ${E.date} (No. ${E.edition_no}). ${ledger.threads.length} threads in the ledger.`);

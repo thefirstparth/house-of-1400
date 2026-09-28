@@ -213,6 +213,22 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
       }
     }
     for (const r of E.letters || []) if (!(E.checks?.letters || []).some(l => l.id === r.letter_id)) errors.push(`letters: reply to ${r.letter_id} is not in checks.letters`);
+    // The wider net and the money calendar (ledger/changes.json), from 29 Sep 2026: the run records the broad pages and
+    // searches it used, and every change taking effect in the next 30 days that has not been printed is printed or
+    // answered in checks.changes. publish.mjs marks it printed.
+    if (E.date > "2026-09-28") {
+      if ((E.checks?.money_net || []).length < 2) errors.push("checks.money_net: record the pages and searches used for the wider net (at least two): what changed what people in India pay, earn, save, borrow, invest or insure?");
+      let cal = null;
+      try { cal = read("ledger/changes.json"); } catch {}
+      const soon = new Date(Date.parse(E.date + "T00:00:00Z") + 30 * 864e5).toISOString().slice(0, 10);
+      for (const c of cal?.changes || []) {
+        if (c.printed_on || c.settled || !c.effective || c.effective < E.date || c.effective > soon) continue;
+        const a = (E.checks?.changes || []).find(x => x.id === c.id);
+        if (!a) errors.push(`checks.changes: "${c.what.slice(0, 80)}" (${c.who}, from ${c.effective}) takes effect within 30 days and has not been printed; print it and record {id: "${c.id}", covered_by}, or say why it is no longer news in {id, action}`);
+        else if (a.covered_by && !ids.has(a.covered_by)) errors.push(`checks.changes: covered_by "${a.covered_by}" is not an item in this edition`);
+        else if (!a.covered_by && !((a.action || "").trim().length >= 15)) errors.push(`checks.changes: ${c.id} needs covered_by or an action saying why it is no longer news`);
+      }
+    }
     // Lessons (ledger/lessons.json): a story the paper missed and still owes is printed, or its lesson is answered with
     // the reason it is no longer news. publish.mjs marks an owed story printed once checks.lessons covers it.
     let lessons = null;
