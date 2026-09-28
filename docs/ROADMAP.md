@@ -11,6 +11,7 @@ Future plans Parth has asked for, and the "later" items agreed along the way. No
 ## Agreed for later
 
 - **Source trial results (8 Oct 2026).** The ten-edition trial ends with the 8 Oct edition. Then a section-by-section recommendation from the scorecards (`ledger/trial/`, `/trial`): switch on, keep trialling, or drop. Nothing changes in the paper until Parth decides.
+- **Section floors that follow the news (after the trial, from 9 Oct 2026).** Part 3 of the section-size middle ground (Parth, 28 Sep): the reading list counts how many widely covered stories each section had that day; on a heavy day the floor rises, on a quiet day it falls. Fixed floors stay until then; they are never raised by hand (that forces filler on quiet days).
 - **Bhide in the cartoons (about late October 2026).** A small recurring Bhide with his red pencil in one cartoon a day, like R.K. Laxman's Common Man. Parth: not now, maybe in a month.
 - **Illustrations after a fix.** An open page stops looking for new images once the first ones arrive, so a corrected image Bunty pushes later shows only after a reload. Optional: keep checking until 17:00 IST.
 - **NSE's official data.** On 28 Sep its daily data was two sessions old and its live-market server was empty during trading hours. Revisit if the trial shows it has caught up; it could then be a second source for movers and one of the two published sources the DMA rule needs.

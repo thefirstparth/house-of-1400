@@ -1462,5 +1462,41 @@
         ]
       }
     }
+  },
+  "section_ranges": {
+    "note": "The usual upper end of each section (EDITORIAL.md, Section briefs). Going past it is a warning, never an error: keep the strongest and move the rest to briefs, or keep it long if the news is that big. The floors are unchanged (validate.mjs).",
+    "front": {
+      "max_items": 11,
+      "label": "The Front Page"
+    },
+    "madrid": {
+      "max_items": 3,
+      "label": "Madridismo (stories and briefs)"
+    },
+    "pitch": {
+      "max_items": 5,
+      "label": "The Wider Pitch"
+    },
+    "sidelines": {
+      "max_items": 5,
+      "label": "The Sidelines"
+    },
+    "dateline": {
+      "max_stories": 5,
+      "label": "Dateline (full stories)"
+    },
+    "screen": {
+      "max_weekday": 5,
+      "max_weekend": 8,
+      "label": "Screen & Stage (current titles)"
+    },
+    "talk": {
+      "max_each": 7,
+      "label": "Talk of the Day (per list)"
+    },
+    "week_ahead": {
+      "max_items": 12,
+      "label": "The Week Ahead"
+    }
   }
 }

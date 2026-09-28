@@ -822,11 +822,41 @@
     },
     "coverage_waivers": {
       "type": "object",
+      "$comment": "Not printed. Why a coverage minimum is not met today (validate.mjs). From 29 Sep 2026 a section floor needs the object form: the reason and what was considered.",
       "additionalProperties": {
-        "type": "string",
-        "minLength": 10
-      },
-      "$comment": "Not printed. A reason a coverage minimum is not met today (validate.mjs)."
+        "oneOf": [
+          {
+            "type": "string",
+            "minLength": 10
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "why"
+            ],
+            "properties": {
+              "why": {
+                "type": "string",
+                "minLength": 10
+              },
+              "considered": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 10
+                }
+              },
+              "looked_at": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
     },
     "checks": {
       "type": "object",

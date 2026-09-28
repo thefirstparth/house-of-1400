@@ -142,7 +142,25 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     ["betting", (E.betting?.length || 0) >= 8, "The Betting Window needs 8 to 10 markets"],
     ["ledger_notes", ["Sensex", "Nifty 50", "Nasdaq-100"].some(n => E.sections?.ledger?.data?.notes?.[n]), "The Ledger needs driver notes (sections.ledger.data.notes) for the indices"],
   ];
-  for (const [key, met, msg] of need) if (!met && !E.coverage_waivers?.[key]) errors.push(`coverage: ${msg}, or explain in coverage_waivers.${key}`);
+  for (const [key, met, msg] of need) {
+    if (met) continue;
+    const w = E.coverage_waivers?.[key];
+    if (!w) { errors.push(`coverage: ${msg}, or explain in coverage_waivers.${key}`); continue; }
+    // From 29 Sep 2026 a thin section shows the working (Parth, 28 Sep): the stories considered and why each fell
+    // short, or, when there were none, where Bhide looked. Floors are unchanged; a thin section is printed thin.
+    if (E.date > "2026-09-28" && !((w.considered || []).length >= 2 || (w.looked_at || []).length >= 2))
+      errors.push(`coverage_waivers.${key}: a thin section needs {why, considered: ["candidate: why it fell short", ...]} (at least two), or {why, looked_at: [pages or searches]} (at least two) when there was nothing to consider`);
+  }
+  // The usual upper end of each section (config section_ranges): a warning, never an error.
+  let RG = {};
+  try { RG = read("config/house.json").section_ranges || {}; } catch {}
+  const over = (key, n, max, what) => { if (max && n > max) warnings.push(`long: ${RG[key]?.label || key} has ${n} ${what}; its usual range tops out at ${max}. Keep the strongest and move the rest to briefs, or keep it if the news is that big.`); };
+  over("front", 1 + (E.front?.seconds?.length || 0) + (E.front?.briefs?.length || 0), RG.front?.max_items, "items");
+  for (const k of ["madrid", "pitch", "sidelines"]) over(k, count(k), RG[k]?.max_items, "items");
+  over("dateline", E.sections?.dateline?.stories?.length || 0, RG.dateline?.max_stories, "full stories");
+  over("screen", (E.screen || []).filter(x => !x.coming_soon).length, weekend ? RG.screen?.max_weekend : RG.screen?.max_weekday, "current titles");
+  for (const g of ["india", "world"]) over("talk", E.trends?.[g]?.length || 0, RG.talk?.max_each, `${g} trends`);
+  over("week_ahead", E.week_ahead?.length || 0, RG.week_ahead?.max_items, "items");
   if ((E.betting?.length || 0) > 10) errors.push("coverage: The Betting Window shows at most 10 markets");
   // From 26 Sep 2026 the daily run must show its sweeps (checks) and keep what is still trending in The Betting Window.
   if (E.date > "2026-09-25") {

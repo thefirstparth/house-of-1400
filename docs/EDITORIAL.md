@@ -86,6 +86,8 @@ Parth writes to the editor from the page ("Write to the editor" on any story, or
 ## Section briefs
 Every section keeps its named sources and topics as must-checks. Each also has a wider-net question: ask it too, so something big outside the list still gets in.
 
+**Section size is your judgment, within two guards.** Some sections have a floor (the validator lists them). If a section genuinely falls short, print it short, never padded, and show your working in `coverage_waivers.<key>` as `{why, considered: ["candidate: why it fell short", ...]}` (at least two), or `{why, looked_at: [pages or searches]}` when there was nothing to consider. Each section also has a usual upper end (config `section_ranges`); going past it gives a warning: keep the strongest and move the rest to briefs, unless the news really is that big.
+
 - **Front Page:** strongest 5 to 11 items across everything. One true lead when deserved.
 - **Madridismo:** NEXT (IST and local, competition, venue, streaming only if reliably confirmed), LAST result, recent form, table. Then 0 to 3 items: club news, availability, contracts, discipline; strong tactical or data analysis gets real space (conclusion, evidence, what to watch). Managing Madrid first, other sources welcome. Wider net: what are Madrid supporters and the Spanish press talking about today that the fixtures do not show?
 - **The Wider Pitch:** big football developments anywhere: transfers, managers, major results, rulings. On an international break, cover the internationals (Nations League, qualifiers, big friendlies) and managerial pressure; the section should rarely be empty. Aim for 1 to 2 stories plus 2 to 3 briefs. Wider net: what is the football world talking about today, wherever it happened?

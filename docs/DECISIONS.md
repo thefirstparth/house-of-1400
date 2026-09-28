@@ -354,3 +354,9 @@ Made without Parth, per the build prompt. Change any of them freely.
 - The money calendar now remembers: `ledger/changes.json` holds every rule, price, charge, tax or rate change found, whoever announced it, with its effective date. A change taking effect within 30 days stays owed until it is printed or explained (`checks.changes`; validated from 29 Sep; publish marks it). The TRAI recharge rules (from 22 Oct) are its first entry, moved there from the lesson.
 - Every other section keeps its named sources and topics and gains one wider-net question (EDITORIAL.md, Section briefs), for example The Sidelines: "beyond the sports named here, what did the sporting world, and India, talk about today?"
 - Section minimums are unchanged for now; Parth is weighing a middle ground.
+
+## 28 Sep 2026: Section size is Bhide's judgment, within two guards
+- Parth wants no empty sections and no bloated ones, decided by Bhide. Fixed floors are not raised (a higher fixed floor forces filler on quiet days); they stay as they were.
+- A thin section, from 29 Sep, shows its working: `coverage_waivers.<key>` becomes `{why, considered: [...]}` (at least two candidates and why each fell short) or `{why, looked_at: [...]}` when there was nothing to consider. It is printed thin, never padded. Editions up to 28 Sep keep the one-line reason.
+- A soft upper end per section (config `section_ranges`, taken from EDITORIAL.md's usual ranges): going past it is a warning asking Bhide to keep the strongest and move the rest to briefs, never an error. No edition so far goes past it.
+- After the trial, floors that follow the news (ROADMAP.md).
