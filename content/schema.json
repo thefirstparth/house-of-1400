@@ -910,6 +910,27 @@
               }
             }
           }
+        },
+        "lessons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "covered_by": {
+                "type": "string"
+              },
+              "action": {
+                "type": "string"
+              }
+            }
+          }
         }
       }
     },

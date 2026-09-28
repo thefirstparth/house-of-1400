@@ -45,4 +45,15 @@ if (answered.length) {
   h.ids = [...new Set([...(h.ids || []), ...answered])].slice(-2000);
   writeFileSync("ledger/letters-handled.json", JSON.stringify(h, null, 2) + "\n");
 }
+// Lessons: an owed story covered in this edition is marked printed, so later runs stop being asked for it.
+const covered = (E.checks?.lessons || []).filter(l => l.covered_by || l.action);
+if (covered.length && existsSync("ledger/lessons.json")) {
+  const L = JSON.parse(readFileSync("ledger/lessons.json", "utf8"));
+  for (const l of L.lessons || []) {
+    const a = covered.find(x => x.id === l.id);
+    if (!a || !l.owed || l.owed.printed_on || l.owed.settled) continue;
+    if (a.covered_by) l.owed.printed_on = E.date; else l.owed.settled = { on: E.date, why: a.action };
+  }
+  writeFileSync("ledger/lessons.json", JSON.stringify(L, null, 2) + "\n");
+}
 console.log(`Published ${E.date} (No. ${E.edition_no}). ${ledger.threads.length} threads in the ledger.`);

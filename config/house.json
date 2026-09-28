@@ -719,6 +719,21 @@
         "kind": "official"
       },
       {
+        "id": "pib-gnews",
+        "section": "ledger",
+        "name": "PIB, English (via Google News)",
+        "url": "https://news.google.com/rss/search?q=site:pib.gov.in+when:2d&hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "search"
+      },
+      {
+        "id": "trai",
+        "section": "ledger",
+        "name": "TRAI",
+        "url": "https://www.trai.gov.in/rss.xml",
+        "kind": "official",
+        "max_age_h": 72
+      },
+      {
         "id": "bbc-world",
         "section": "dateline",
         "name": "BBC, world",
@@ -1336,5 +1351,116 @@
       "Pen and ink on newsprint, with one accent colour from the story's section",
       "Bold flat colour, modern editorial illustration"
     ]
+  },
+  "money": {
+    "note": "The India money sweep's sources (EDITORIAL.md, Research). Both groups are read every run and the validator checks that checks.money_sweep has at least one page from each. When a miss shows a body was needed, add it here and record the miss in ledger/lessons.json.",
+    "groups": {
+      "finance": {
+        "label": "bodies that set rules on money",
+        "bodies": [
+          {
+            "name": "Reserve Bank of India",
+            "sets": "banks, loans, deposits, cards, payments",
+            "url": "https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx"
+          },
+          {
+            "name": "SEBI",
+            "sets": "markets, mutual funds, brokers, IPOs",
+            "url": "https://www.sebi.gov.in/sebirss.xml"
+          },
+          {
+            "name": "IRDAI",
+            "sets": "insurance premiums, commissions, claims",
+            "url": "https://irdai.gov.in/press-releases"
+          },
+          {
+            "name": "PFRDA",
+            "sets": "NPS and pensions",
+            "url": "https://www.pfrda.org.in/"
+          },
+          {
+            "name": "NPCI",
+            "sets": "UPI and payment charges",
+            "url": "https://www.npci.org.in/"
+          },
+          {
+            "name": "Income Tax (CBDT)",
+            "sets": "income tax",
+            "url": "https://www.incometaxindia.gov.in/"
+          },
+          {
+            "name": "CBIC and the GST Council",
+            "sets": "GST and customs",
+            "url": "https://gstcouncil.gov.in/"
+          }
+        ],
+        "hosts": [
+          "rbi.org.in",
+          "sebi.gov.in",
+          "irdai.gov.in",
+          "pfrda.org.in",
+          "npci.org.in",
+          "incometaxindia.gov.in",
+          "incometax.gov.in",
+          "cbic.gov.in",
+          "gstcouncil.gov.in",
+          "finmin.nic.in",
+          "dea.gov.in"
+        ]
+      },
+      "prices": {
+        "label": "bodies that set prices and charges people pay",
+        "bodies": [
+          {
+            "name": "PIB (every ministry and TRAI, English)",
+            "sets": "fuel and LPG, power, airfares and airport fees, railway fares, tolls, drug prices, consumer rules, telecom",
+            "url": "https://news.google.com/rss/search?q=site:pib.gov.in+when:2d&hl=en-IN&gl=IN&ceid=IN:en"
+          },
+          {
+            "name": "TRAI",
+            "sets": "mobile, broadband and DTH tariffs and consumer rules",
+            "url": "https://www.trai.gov.in/rss.xml"
+          },
+          {
+            "name": "KERC",
+            "sets": "electricity tariffs in Karnataka (Bengaluru bills)",
+            "url": "https://kerc.karnataka.gov.in/"
+          },
+          {
+            "name": "NPPA",
+            "sets": "medicine prices",
+            "url": "https://nppa.gov.in/"
+          },
+          {
+            "name": "DGCA and Civil Aviation",
+            "sets": "airfares, refunds, airport charges",
+            "url": "https://www.dgca.gov.in/"
+          },
+          {
+            "name": "Department of Consumer Affairs (CCPA)",
+            "sets": "consumer protection, dark patterns, labelling",
+            "url": "https://consumeraffairs.nic.in/"
+          }
+        ],
+        "hosts": [
+          "pib.gov.in",
+          "trai.gov.in",
+          "dot.gov.in",
+          "kerc.karnataka.gov.in",
+          "cercind.gov.in",
+          "nppa.gov.in",
+          "pngrb.gov.in",
+          "dgca.gov.in",
+          "civilaviation.gov.in",
+          "aera.gov.in",
+          "consumeraffairs.nic.in",
+          "mopng.gov.in",
+          "morth.nic.in",
+          "nhai.gov.in",
+          "indianrailways.gov.in",
+          "powermin.gov.in"
+        ]
+      }
+    }
   }
 }

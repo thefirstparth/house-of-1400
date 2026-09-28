@@ -161,6 +161,15 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     // b) The India money sweep: at least three sources from three different sites, read for this edition.
     const hosts = new Set((E.checks?.money_sweep || []).map(u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return null; } }).filter(Boolean));
     if (hosts.size < 3) errors.push("checks.money_sweep: list the regulator and personal-finance pages read for the India money sweep (at least 3 sites)");
+    //    From 29 Sep 2026 (ledger/lessons.json, the TRAI miss): at least one page from each group in config money.groups,
+    //    the bodies that set rules on money and the bodies that set prices and charges people pay. A Google News search
+    //    restricted to a body's site (site:pib.gov.in) counts for that body.
+    if (E.date > "2026-09-28") {
+      const G = read("config/house.json").money?.groups || {};
+      const sweep = E.checks?.money_sweep || [];
+      const hit = (u, h) => { try { const x = new URL(u); const host = x.hostname.replace(/^www\./, ""); return host === h || host.endsWith(`.${h}`) || decodeURIComponent(x.search).includes(`site:${h}`); } catch { return false; } };
+      for (const [k, g] of Object.entries(G)) if (!sweep.some(u => (g.hosts || []).some(h => hit(u, h)))) errors.push(`checks.money_sweep: read at least one page from ${g.label} (config money.groups.${k}: ${(g.bodies || []).map(x => x.name).join(", ")})`);
+    }
     // c) The national front-page sweep: the India stories leading the national press are in the paper or explained.
     const nat = E.checks?.national || [];
     const natHosts = new Set((E.checks?.national_sweep || []).map(u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return null; } }).filter(Boolean));
@@ -204,6 +213,18 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
       }
     }
     for (const r of E.letters || []) if (!(E.checks?.letters || []).some(l => l.id === r.letter_id)) errors.push(`letters: reply to ${r.letter_id} is not in checks.letters`);
+    // Lessons (ledger/lessons.json): a story the paper missed and still owes is printed, or its lesson is answered with
+    // the reason it is no longer news. publish.mjs marks an owed story printed once checks.lessons covers it.
+    let lessons = null;
+    try { lessons = read("ledger/lessons.json"); } catch {}
+    for (const l of lessons?.lessons || []) {
+      const o = l.owed;
+      if (!o || o.printed_on || o.settled || (o.until && E.date > o.until) || l.reported >= E.date) continue;
+      const a = (E.checks?.lessons || []).find(x => x.id === l.id);
+      if (!a) errors.push(`checks.lessons: lesson ${l.id} still owes ${o.what}; print it and record {id, covered_by}, or say why it is no longer news in {id, action}`);
+      else if (a.covered_by && !ids.has(a.covered_by)) errors.push(`checks.lessons: covered_by "${a.covered_by}" is not an item in this edition`);
+      else if (!a.covered_by && !((a.action || "").trim().length >= 15)) errors.push(`checks.lessons: lesson ${l.id} needs covered_by or an action saying why it is no longer news`);
+    }
     // d) Markets still trending carry over (ledger/betting-carry.json, written by scripts/betting-candidates.mjs).
     let carry = null;
     try { carry = read("ledger/betting-carry.json"); } catch {}

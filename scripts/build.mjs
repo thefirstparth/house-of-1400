@@ -10,7 +10,7 @@ mkdirSync("dist/config", { recursive: true });
 // The page reads the config; the daily run's reading list and the trial settings are not for it.
 const fullConfig = JSON.parse(readFileSync("config/house.json", "utf8"));
 const config = { ...fullConfig };
-delete config.sources; delete config.trial; delete config.art;
+delete config.sources; delete config.trial; delete config.art; delete config.money;
 writeFileSync("dist/config/house.json", JSON.stringify(config, null, 2) + "\n");
 // The source trial's scorecards for /trial (not the raw reading lists in ledger/trial/wire/).
 if (existsSync("ledger/trial")) {
