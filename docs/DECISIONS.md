@@ -360,3 +360,13 @@ Made without Parth, per the build prompt. Change any of them freely.
 - A thin section, from 29 Sep, shows its working: `coverage_waivers.<key>` becomes `{why, considered: [...]}` (at least two candidates and why each fell short) or `{why, looked_at: [...]}` when there was nothing to consider. It is printed thin, never padded. Editions up to 28 Sep keep the one-line reason.
 - A soft upper end per section (config `section_ranges`, taken from EDITORIAL.md's usual ranges): going past it is a warning asking Bhide to keep the strongest and move the rest to briefs, never an error. No edition so far goes past it.
 - After the trial, floors that follow the news (ROADMAP.md).
+
+## 29 Sep 2026: Parth's review of the 28 Sep paper
+- **Front page white space:** the columns are balanced in the browser. The lead and The Day in a Minute stay put; the second stories and briefs are measured in every column and placed where the page ends highest and the columns most level, keeping the paper's order where it costs under two lines. Rerun on width change, fonts and illustrations. On a phone the order is unchanged.
+- **Front page:** a Sidelines sport reaches it only with India in it or at the world's very biggest events.
+- **The Week Ahead:** a world item only if it would earn a place in Dateline.
+- **Stories moved to the Front Page** leave a one-line link in their own section, so a section never looks empty because of them.
+- **The Crease:** each series under way shows its match count; an "After this" row with the next series is always there (validated; `lib/cricket.js` counts from Cricbuzz).
+- **Sky & Streets:** Ranchi and Prayagraj show one line for now (temperature, sky, air) and one sentence only when something is worth saying (rain coming, heat, humidity or feels-like change, air turning worse). The seven-day strip, humidity and feels-like line are gone from those cards.
+- **Screen & Stage:** OMDb and TMDB go into the paper now, not only the trial (Parth expected them in the paper): the run reads `/api/live/screen` in research. 2 to 4 Coming soon titles every day (validated), with TMDB's upcoming list as a source. The Screen & Stage trial score is no longer blind from 29 Sep.
+- **Air quality** stays Open-Meteo (a model estimate) for now; official CPCB readings need a data.gov.in key (Parth's call).

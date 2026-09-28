@@ -216,6 +216,7 @@ async function loadArt(tries = 0) {
         const el = document.getElementById(`s-${id}`);
         if (el && !el.querySelector(":scope > figure.art")) el.querySelector(":scope > .body")?.insertAdjacentHTML("beforebegin", artFig(id));
       }
+      balanceFront(true);
       if (Object.keys(ART).length) return;
     }
   } catch {}
@@ -250,7 +251,9 @@ function secWrap(id, body, sub) {
 function storiesBlock(id, { beside = false } = {}) {
   const S = E.sections?.[id] || {};
   const st = S.stories || [], br = S.briefs || [];
-  let h = "";
+  // The section's stories that run on the Front Page: one line each, so the section never looks empty for them.
+  const F = E.front || {}, up = [F.lead, ...(F.seconds || []), ...(F.briefs || [])].filter(x => x?.section === id);
+  let h = up.length ? `<ul class="onfront">${up.map(x => `<li><span>On the Front Page</span><button data-go="${esc(x.id)}">${esc(x.headline)} ↑</button></li>`).join("")}</ul>` : "";
   // A lone story on a wide page reads in two columns; beside data it stays one.
   if (st.length) h += `<div class="${beside ? "stack" : st.length > 1 ? "cols2" : "solo"}">${st.map(x => storyHTML(x)).join("")}</div>`;
   if (br.length) h += `<div class="${beside ? "stack" : br.length > 2 ? "cols3" : br.length === 2 ? "cols2" : ""}">${br.map(b => briefHTML(b)).join("")}</div>`;
@@ -614,13 +617,39 @@ ${D.some(d => d.humidity != null) ? row("Humidity", "w:humidity", d => `<td>${d.
 ${Object.keys(A).length ? row("Air", "w:air", d => `<td>${A[d.date] != null ? aqiChip(A[d.date]) : "–"}</td>`) : ""}</tbody></table></div>`;
 }
 
-// The family cities, every day: now, the week in a sentence, what changed, and a small strip.
+// The family cities, every day: one line for now, then one sentence only when something is worth saying.
+function familyInsight(c) {
+  const N = c.daily || [], P = c.past || [], out = [];
+  const soon = N.slice(0, 3).find(d => wetness(d.rain_prob) === "wet");
+  if (soon) out.push(`rain likely ${dayName(soon.date) === "today" ? "today" : dayName(soon.date)}`);
+  else if (P.filter(d => (d.rain_mm ?? 0) >= 2).length >= 3 && N.slice(0, 5).every(d => wetness(d.rain_prob) === "dry")) out.push("a dry spell ahead after a wet week");
+  if (P.length >= 4 && N.length >= 4) {
+    const dt = mean(N, "max") - mean(P, "max");
+    if (Math.abs(dt) >= 1.5) out.push(`${Math.round(Math.abs(dt))}° ${dt > 0 ? "warmer" : "cooler"} by day than last week`);
+    const hN = mean(N, "humidity"), hP = mean(P, "humidity");
+    if (hN != null && hP != null && Math.abs(hN - hP) >= 8) out.push(`${hN > hP ? "more humid" : "less humid"}, around ${Math.round(hN)}% from ${Math.round(hP)}%`);
+  }
+  const f = c.current.feels, t = c.current.temp;
+  if (f != null && t != null && Math.abs(f - t) >= 3) out.push(`feels ${Math.round(f)}° against ${Math.round(t)}° on the thermometer`);
+  else if (P.length >= 4 && mean(N, "feels_max") != null && mean(P, "feels_max") != null) {
+    const df = mean(N, "feels_max") - mean(P, "feels_max");
+    if (Math.abs(df) >= 2) out.push(`feels ${Math.round(Math.abs(df))}° ${df > 0 ? "hotter" : "cooler"} at midday than last week`);
+  }
+  const A = c.air;
+  if (A?.daily?.length && A.past?.length) {
+    const was = mean(A.past, "aqi"), peak = A.daily.reduce((a, x) => (x.aqi > a.aqi ? x : a));
+    if (AQI.indexOf(aqiCat(peak.aqi)) > AQI.indexOf(aqiCat(was))) out.push(`air turning ${aqiCat(peak.aqi)[1].toLowerCase()}, up to ${peak.aqi} ${dayName(peak.date) === "today" ? "today" : "by " + dayName(peak.date)}`);
+  }
+  if (!out.length) return "";
+  const t2 = out.slice(0, 3).join("; ");
+  return `<p class="fam-ins">${esc(t2.charAt(0).toUpperCase() + t2.slice(1))}.</p>`;
+}
+
 function familyCity(c, hr) {
   const A = c.air, cat = A ? aqiCat(A.now) : null;
   return `<div class="fam"><h4>${esc(c.name)}</h4>
-<div class="now"><span class="big tnum">${Math.round(c.current.temp)}°</span>${wxIcon(c.current.code, isNight(hr))}<div><b>${esc(wx(c.current.code)[1])}</b>, feels ${Math.round(c.current.feels)}°<br>Humidity ${Math.round(c.current.humidity)}%${A ? ` · Air ${aqiChip(A.now)} ${esc(cat[1].toLowerCase())}` : ""}</div></div>
-<p class="wk-line">${esc(weekSentence(c.daily))}</p>${sinceLastWeek(c)}
-<div class="mini7">${c.daily.slice(0, 7).map(d => `<div class="${(d.rain_prob ?? 0) >= 60 ? "wet" : ""}"><b>${dayShort(d.date)}</b>${wxIcon(d.code)}<span class="tnum">${Math.round(d.max)}°</span><small class="tnum">${Math.round(d.min)}°</small></div>`).join("")}</div></div>`;
+<div class="now"><span class="big tnum">${Math.round(c.current.temp)}°</span>${wxIcon(c.current.code, isNight(hr))}<div><b>${esc(wx(c.current.code)[1])}</b>${A ? ` · Air ${aqiChip(A.now)} ${esc(cat[1].toLowerCase())}` : ""}</div></div>
+${familyInsight(c)}</div>`;
 }
 
 function skyBlock() {
@@ -802,13 +831,91 @@ function deskBlock() {
 const face = (sz = 28) => `<img class="face" src="/bhide.svg" alt="" width="${sz}" height="${sz}">`;
 const editorNote = () => (E.editor_note ? `<div class="editor"><span class="eh">From the editor</span>${esc(E.editor_note)}<div class="sig"><img src="/bhide.svg" alt="" width="34" height="34"><a href="/editor">${esc(CFG.paper.editor.signature)}</a></div></div>` : "");
 function frontHTML() {
-  const F = E.front, [s1, s2, ...rest] = F.seconds;
+  const F = E.front;
   const minute = E.glance?.length ? `<div class="minute"><h3>The day in a minute</h3><div class="gd">${esc(longDate(E.date))}</div><ol>${E.glance.map(g => `<li data-fam="${(s => (s ? fam(s.section) : famOfColor(g.color)))(allStories().find(x => x.id === g.target))}"><span>${esc(g.section)}</span><button data-go="${esc(g.target)}">${esc(g.line)}</button></li>`).join("")}</ol></div>` : "";
   return `<div class="front" id="front" style="scroll-margin-top:60px">
-<div class="col fa">${storyHTML({ ...F.lead, kicker: `Front Page · ${F.lead.kicker}` }, { lead: true })}${s1 ? `<div class="pair">${[s1, s2].filter(Boolean).map(x => storyHTML(x)).join("")}</div>` : ""}</div>
-<div class="col fb">${rest.map(x => storyHTML(x)).join("")}${F.briefs.length ? `<div class="briefs">${F.briefs.map(b => briefHTML(b, "brief")).join("")}</div>` : ""}</div>
-<div class="col fc">${minute}${editorNote()}</div></div>`;
+<div class="col fa">${storyHTML({ ...F.lead, kicker: `Front Page · ${F.lead.kicker}` }, { lead: true })}<div class="ftail"></div></div>
+<div class="col fb"><div class="ftail">${F.seconds.map(x => storyHTML(x)).join("")}${F.briefs.length ? `<div class="briefs">${F.briefs.map(b => briefHTML(b, "brief")).join("")}</div>` : ""}</div></div>
+<div class="col fc">${minute}${editorNote()}<div class="ftail"></div></div></div>`;
 }
+
+// The front page's columns end level. The lead, and The Day in a Minute with the note, stay where they are; the second
+// stories and the briefs are shared out between the columns so that the page ends as high as it can and the columns
+// as level as they can. Each column keeps the paper's order (stories by rank, then briefs), and a story under the lead
+// sits in pairs when the column is wide enough. Every unit is measured in every column once; the best arrangement is
+// then worked out by sum, not by trial layouts. Recomputed when the width changes, when fonts arrive and when an
+// illustration lands, so no edition ever needs hand fixing. On a phone the order is as it always was: the lead and two
+// second stories, the day in a minute, then the rest.
+let frontW = 0;
+function balanceFront(force = false) {
+  const front = $("#front"); if (!front) return;
+  if (!force && front.clientWidth === frontW) return;
+  frontW = front.clientWidth;
+  const [fa, fb, fc] = [".fa", ".fb", ".fc"].map(c => front.querySelector(`:scope > ${c}`));
+  const tails = [fa, fb, fc].map(c => c.querySelector(":scope > .ftail"));
+  const units = [...front.querySelectorAll(".ftail .story, .ftail .brief")];
+  if (!units.length) return;
+  const isStory = u => u.classList.contains("story");
+  const ncols = getComputedStyle(front).gridTemplateColumns.split(" ").filter(Boolean).length;
+  const targets = ncols >= 3 ? [0, 1, 2] : [0, 1];
+  // Put each unit in the tail it is given (-1: nowhere), stories first, briefs in their own block.
+  const put = where => {
+    tails.forEach((t, ti) => {
+      const st = units.filter((u, i) => where[i] === ti && isStory(u)), br = units.filter((u, i) => where[i] === ti && !isStory(u));
+      const kids = [];
+      if (st.length) { if (ti === 0) { const p = document.createElement("div"); p.className = "pair"; p.append(...st); kids.push(p); } else kids.push(...st); }
+      if (br.length) { const w = document.createElement("div"); w.className = "briefs"; w.append(...br); kids.push(w); }
+      t.replaceChildren(...kids);
+    });
+  };
+  if (ncols < 2) { let k = 0; return put(units.map(u => (isStory(u) && k++ < 2 ? 0 : 1))); }
+  const H = el => el.getBoundingClientRect().height;
+  // Where each column ends with nothing added: under the lead, under the note, and (column b) its top.
+  put(units.map(() => -1));
+  const baseA = fa.getBoundingClientRect().bottom, baseC = fc.getBoundingClientRect().bottom, topB = fb.getBoundingClientRect().top;
+  // Every unit measured in every column.
+  const size = {};
+  for (const ti of targets) {
+    put(units.map(() => ti));
+    const t = tails[ti], pair = t.querySelector(":scope > .pair"), briefs = t.querySelector(":scope > .briefs");
+    const h = units.map(H);
+    const first = t.querySelector(".story");
+    const pad = first ? parseFloat(getComputedStyle(first).paddingTop) - parseFloat(getComputedStyle(units.find((u, i) => isStory(u) && u !== first) || first).paddingTop) : 0;
+    const two = pair ? getComputedStyle(pair).gridTemplateColumns.split(" ").filter(Boolean).length > 1 : false;
+    const pairOv = pair ? H(pair) - rowsOf(units.map((u, i) => (isStory(u) ? h[i] : null)).filter(x => x != null), two) : 0;
+    const briefOv = briefs ? H(briefs) - units.reduce((a, u, i) => a + (isStory(u) ? 0 : h[i]), 0) : 0;
+    size[ti] = { h, pad, two, pairOv, briefOv };
+  }
+  function rowsOf(hs, two) { let s = 0; if (!two) return hs.reduce((a, x) => a + x, 0); for (let i = 0; i < hs.length; i += 2) s += Math.max(hs[i], hs[i + 1] ?? 0); return s; }
+  const tailH = (ti, idx) => {
+    if (!idx.length) return 0;
+    const z = size[ti], st = idx.filter(i => isStory(units[i])), br = idx.filter(i => !isStory(units[i]));
+    let x = 0;
+    if (st.length) x += ti === 0 ? z.pairOv + rowsOf(st.map(i => z.h[i]), z.two) : st.reduce((a, i) => a + z.h[i], 0) + (ti === 1 ? z.pad : 0);
+    if (br.length) x += z.briefOv + br.reduce((a, i) => a + z.h[i], 0);
+    return x;
+  };
+  const ends = where => {
+    const by = targets.map(ti => units.map((u, i) => i).filter(i => where[i] === ti));
+    const a = baseA + tailH(0, by[0]), b = by[1].length ? topB + tailH(1, by[1]) : null, c = baseC + (ncols >= 3 ? tailH(2, by[2]) : 0);
+    return ncols >= 3 ? [a, b ?? topB, c] : [a, Math.max(b ?? 0, baseC)];
+  };
+  // Every arrangement (at most 3^10). The page's end comes first, but within two lines of the best end the paper's
+  // order wins (fewest items read out of rank, going down one column and then the next), then the most level columns.
+  const n = units.length, k = targets.length, where = new Array(n).fill(0), all = [];
+  const total = k ** Math.min(n, 10);
+  for (let m = 0; m < total; m++) {
+    let x = m; for (let i = 0; i < n; i++) { where[i] = i < 10 ? x % k : k - 1; x = Math.floor(x / k); }
+    const e = ends(where), hi = Math.max(...e);
+    let inv = 0; for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) if (where[i] > where[j]) inv++;
+    all.push({ hi, spread: hi - Math.min(...e), inv, where: [...where] });
+  }
+  const top = Math.min(...all.map(a => a.hi)) + 48;
+  const best = all.filter(a => a.hi <= top).sort((a, b) => a.inv - b.inv || a.spread - b.spread)[0];
+  put(best.where);
+}
+let balanceT;
+addEventListener("resize", () => { clearTimeout(balanceT); balanceT = setTimeout(() => balanceFront(), 120); });
 
 // The masthead's colour bar, Bhide's idea: the strip a press prints at the edge of the sheet to check its inks, here
 // one patch for each section's colour in the order of the paper, between two registration marks.
@@ -848,6 +955,9 @@ function render() {
   h += `<div class="house" id="house"><b>${esc(sec("house").name)}</b><p>${esc(E.house_note)}</p></div>`;
   h += `<div class="foot">${esc(`THE HOUSE OF 1400 · ${longDate(E.date).toUpperCase()} · NO. ${n} · EDITED BY ${CFG.paper.editor.signature.replace(", Editor", "").toUpperCase()}`)}<br><a href="/editor">About the editor</a> · <a href="/archive">The Archive</a></div>`;
   $("#main").innerHTML = h;
+  balanceFront(true);
+  document.fonts?.ready.then(() => balanceFront(true));
+  $$("#front img").forEach(img => img.complete || img.addEventListener("load", () => balanceFront(true), { once: true }));
 
 
   // Read time

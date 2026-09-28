@@ -1488,7 +1488,8 @@
     "screen": {
       "max_weekday": 5,
       "max_weekend": 8,
-      "label": "Screen & Stage (current titles)"
+      "label": "Screen & Stage (current titles)",
+      "max_coming_soon": 4
     },
     "talk": {
       "max_each": 7,

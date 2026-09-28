@@ -181,8 +181,9 @@ nav.idx a.cur .seal .shape{fill:var(--sheet)}
 .front .col{display:flex;flex-direction:column;min-width:0}
 .pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:0 32px;border-top:3px double var(--ink)}
 .pair .story{border-bottom:0}
-.fb>.story:first-child{padding-top:0}
-.fb .briefs{border-top:2px solid var(--ink);margin-top:4px}
+.fb .ftail>.story:first-child{padding-top:0}
+.front .briefs{border-top:2px solid var(--ink);margin-top:4px}
+.fa .ftail .pair+.briefs{margin-top:14px}
 @media (min-width:1000px){
  .front{grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);grid-template-areas:"a c" "a b";grid-template-rows:auto 1fr}
  .front .fa{padding-right:40px;border-right:1px solid var(--rule)}
@@ -747,15 +748,7 @@ table.wk tr:last-child td,table.wk tr:last-child th{border-bottom:0}
 .fam .now{display:flex;align-items:center;gap:10px;font:14px/1.45 var(--sans);color:var(--ink2)}
 .fam .now .big{font:700 34px/1 var(--sans);color:var(--ink)}
 .fam .now .wxi{width:30px;height:30px}
-.fam .wk-line{font:16px/1.5 var(--serif);margin:10px 0 8px}
-.fam .chg{margin:0 0 10px;font-size:14.5px}
-.mini7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;border-top:1px solid var(--rule2);padding-top:8px}
-.mini7 div{display:grid;justify-items:center;gap:2px;font:600 13px/1.2 var(--sans);padding:4px 0;border-radius:10px}
-.mini7 div.wet{background:var(--sky-c);color:var(--sky-on)}
-.mini7 b{font:700 10.5px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.mini7 .wet b,.mini7 .wet small{color:inherit}
-.mini7 .wxi{width:20px;height:20px}
-.mini7 small{color:var(--muted);font-size:12px}
+.fam .fam-ins{font:16px/1.5 var(--serif);margin:10px 0 2px}
 @media (max-width:720px){table.wk{font-size:13px}table.wk th,table.wk td{padding:7px 2px}table.wk tbody th .ic{display:none}.aqi{min-width:28px;padding:2px 5px;font-size:11.5px}}
 @media (max-width:720px){
  .hours{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
@@ -870,3 +863,10 @@ table.wk tr:last-child td,table.wk tr:last-child th{border-bottom:0}
  .tbl td:last-child,.tbl th:last-child{white-space:nowrap}
  .tbl table{font-size:14px}
 }
+
+/* ---------- a section's stories that run on the Front Page ---------- */
+.onfront{list-style:none;margin:0 0 14px;padding:0}
+.onfront li{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:8px 0;border-bottom:1px solid var(--rule2)}
+.onfront span{font:700 10.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--acc,var(--muted))}
+.onfront button{all:unset;cursor:pointer;font:600 16px/1.35 var(--serif);color:var(--ink)}
+.onfront button:hover,.onfront button:focus-visible{text-decoration:underline}

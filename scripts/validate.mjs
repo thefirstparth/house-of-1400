@@ -138,6 +138,8 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     ["pitch", count("pitch") >= 2, "The Wider Pitch needs at least 2 items"],
     ["sidelines", count("sidelines") >= 2, "The Sidelines needs at least 2 items"],
     ["screen", (E.screen || []).filter(x => !x.coming_soon).length >= (weekend ? 5 : 3), `Screen & Stage needs at least ${weekend ? 5 : 3} current titles`],
+    // From 29 Sep 2026 (Parth, 28 Sep): 2 to 4 Coming soon titles every day.
+    ["screen_soon", E.date <= "2026-09-28" || (E.screen || []).filter(x => x.coming_soon).length >= 2, "Screen & Stage needs at least 2 Coming soon titles (coming_soon: true)"],
     ["talk", (E.trends?.india?.length || 0) >= 5 && (E.trends?.world?.length || 0) >= 5, "Talk of the Day needs at least 5 India and 5 world trends"],
     ["betting", (E.betting?.length || 0) >= 8, "The Betting Window needs 8 to 10 markets"],
     ["ledger_notes", ["Sensex", "Nifty 50", "Nasdaq-100"].some(n => E.sections?.ledger?.data?.notes?.[n]), "The Ledger needs driver notes (sections.ledger.data.notes) for the indices"],
@@ -159,6 +161,7 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   for (const k of ["madrid", "pitch", "sidelines"]) over(k, count(k), RG[k]?.max_items, "items");
   over("dateline", E.sections?.dateline?.stories?.length || 0, RG.dateline?.max_stories, "full stories");
   over("screen", (E.screen || []).filter(x => !x.coming_soon).length, weekend ? RG.screen?.max_weekend : RG.screen?.max_weekday, "current titles");
+  over("screen", (E.screen || []).filter(x => x.coming_soon).length, RG.screen?.max_coming_soon, "Coming soon titles");
   for (const g of ["india", "world"]) over("talk", E.trends?.[g]?.length || 0, RG.talk?.max_each, `${g} trends`);
   over("week_ahead", E.week_ahead?.length || 0, RG.week_ahead?.max_items, "items");
   if ((E.betting?.length || 0) > 10) errors.push("coverage: The Betting Window shows at most 10 markets");
@@ -216,6 +219,17 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
           const m = ahead.find(x => Math.abs(Date.parse(x.start) - Date.parse(f.when_utc)) < 18 * 36e5);
           if (m?.time_announced && f.time_tbc) errors.push(`fixtures: "${f.label}" is marked time TBC, but Cricbuzz has it at ${m.ist} IST`);
           else if (m?.time_announced && Math.abs(Date.parse(m.start) - Date.parse(f.when_utc)) > 30 * 6e4) errors.push(`fixtures: "${f.label}" is at ${f.when_utc}, Cricbuzz has ${m.start}`);
+        }
+        // From 29 Sep 2026 (Parth, 28 Sep): The Crease says how many matches each series under way has, and always
+        // carries an "After this" row with India's next series.
+        if (E.date > "2026-09-28" && ct.series?.length) {
+          const rows = E.sections?.crease?.data?.rows || [], txt = r => `${r.label} ${r.text}`;
+          const next = ct.series.find(x => !x.now);
+          if (next && !rows.some(r => /after this/i.test(r.label) && new RegExp(String(next.opponent || "").split(" ")[0], "i").test(r.text)))
+            errors.push(`crease: add an "After this" row (sections.crease.data.rows) with India's next series: ${next.name} from ${next.from} (see ledger/cricket-times.json)`);
+          for (const x of ct.series.filter(x => x.now && x.parts.some(p => p.total)))
+            if (!rows.some(r => new RegExp(String(x.opponent || "").split(" ")[0], "i").test(txt(r)) && x.parts.some(p => p.total && new RegExp(`\\b${p.total}\\b`).test(txt(r)))))
+              warnings.push(`crease: say how many matches the ${x.name} has (${x.parts.filter(p => p.total).map(p => `${p.format} ${p.total}`).join(", ")}) in its row`);
         }
       }
     }

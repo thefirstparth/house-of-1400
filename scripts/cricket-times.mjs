@@ -5,6 +5,7 @@
 // Usage: node scripts/cricket-times.mjs
 import { writeFileSync } from "node:fs";
 import { ensureProxy } from "./proxy.mjs";
+import { seriesOf } from "../lib/cricket.js";
 ensureProxy();
 
 const TEAM = 2, BASE = "https://www.cricbuzz.com/cricket-team/india/2";
@@ -37,10 +38,13 @@ try {
         url: `https://www.cricbuzz.com/live-cricket-scores/${o.matchId}` };
     })
     .filter(m => Date.parse(m.start) > now - 12 * 36e5)
-    .sort((a, b) => a.start.localeCompare(b.start)).slice(0, 12);
+    .sort((a, b) => a.start.localeCompare(b.start)).slice(0, 40);
   if (!matches.length) throw new Error("no India matches found on the schedule page");
-  result = { date: today, source: "Cricbuzz", checked_at: new Date().toISOString(), matches };
+  const series = seriesOf(matches);
+  result = { date: today, source: "Cricbuzz", checked_at: new Date().toISOString(), matches, series };
   for (const m of matches) console.log(`${m.ist} IST${m.time_announced ? "" : " (time not announced)"}  ${m.desc} v ${m.opponent}  ${m.city || ""}  [${m.series}]`);
+  console.log("\nSeries (for The Crease rows: one row per series under way with its match count, then an \"After this\" row):");
+  for (const x of series) console.log(`  ${x.now ? "NOW  " : "NEXT "} ${x.name}: ${x.parts.map(p => `${p.format} ${p.total ? `(${p.total} matches${p.played ? `, ${p.played} played` : ""})` : ""}`).join(", ")} · from ${x.from}`);
 } catch (e) {
   result = { date: today, source: "Cricbuzz", checked_at: new Date().toISOString(), error: String(e.message || e), matches: [] };
   console.error(`cricket-times: ${result.error}. Find the times on BCCI or ESPNcricinfo instead, and say so in the edition.`);
