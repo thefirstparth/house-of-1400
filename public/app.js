@@ -87,7 +87,11 @@ async function live(key, qs = "") {
     try {
       const pre = !qs && PRE[key]; delete PRE[key];
       const j = await (pre || getJSON(`/api/live/${key}${qs}`));
-      if (j?.ok && j.value) return (LIVE[key] = { value: j.value, as_of: j.as_of, source: j.source, stale: false });
+      if (j?.ok && j.value) {
+        // A mood reading missing from this fetch keeps the last published one we had, with its own time.
+        if (key === "markets") { const prev = LIVE.markets?.value?.mood || E?.snapshot?.markets?.value?.mood || {}; for (const [k, m] of Object.entries(prev)) if (m?.name && !j.value.mood?.[k]) (j.value.mood ||= {})[k] = { ...m, stale: true }; }
+        return (LIVE[key] = { value: j.value, as_of: j.as_of, source: j.source, stale: false });
+      }
     } catch {}
   }
   const s = E?.snapshot?.[key];
@@ -493,19 +497,35 @@ function indexBoard(M, G, D) {
   const moods = Object.keys(CFG.markets.mood || {}).map(k => M?.mood?.[k]).filter(Boolean);
   return `<div class="board-wrap"><div class="board" data-fam="money"><div class="tbl"><table><thead><tr><th>Market</th><th class="r">Level</th><th class="r">1D</th><th class="r">7D</th><th class="r">1M</th><th class="r">30 days</th></tr></thead><tbody>${rows}</tbody></table></div>
 <p class="foot2">Levels from Yahoo Finance, gold from IBJA. 7D and 1M as Moneycontrol publishes them${anyCalc ? "; † where no source we can reach publishes the figure, it is worked out from official daily closes" : ""}. Hover a figure for its date.</p>${staleNote("markets")}</div>
-${moods.length ? `<div class="moods">${moods.map(moodCard).join("")}<details class="mhow"><summary>How the mood is worked out</summary><p>${esc(CFG.markets.mood?.method || "")}</p></details></div>` : ""}</div>`;
+${moods.length ? `<div class="moods">${moods.map(moodCard).join("")}<details class="mhow"><summary>About these readings</summary><p>${esc(CFG.markets.mood?.method || "")}</p></details></div>` : ""}</div>`;
 }
+// A published mood reading (Tickertape for India, CNN for the US): the publisher's own bands and words, its
+// comparisons, its time. Editions from before 28 Sep carry the paper's old calculated reading, drawn the old way.
 function moodCard(m) {
   const cx = 100, cy = 96, r = 78;
   const arc = (from, to, c) => { const p = t => [cx + r * Math.cos(Math.PI * (1 - t)), cy - r * Math.sin(Math.PI * (1 - t))]; const [x1, y1] = p(from), [x2, y2] = p(to); return `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${c}" stroke-width="14" fill="none"/>`; };
-  const where = m.range_pos == null ? "" : m.range_pos <= 15 ? "near its 3-month low" : m.range_pos >= 85 ? "near its 3-month high" : `${m.range_pos}% of the way up its 3-month range`;
-  const calm = m.vix_pos == null ? "" : m.vix_pos <= 30 ? "calm for the quarter" : m.vix_pos >= 70 ? "jumpy for the quarter" : "middling for the quarter";
-  const word = m.word || moodWord(m.score), tone = m.score < 45 ? "var(--bad)" : m.score > 55 ? "var(--good)" : "var(--muted)";
-  return `<div class="mood"><div class="mh"><span>${esc(m.region || "")} · ${esc(m.index || "")}</span><b class="tnum">${m.score}</b></div><div class="mword" style="color:${tone}">${esc(word)}</div>
-<svg viewBox="0 0 200 110" role="img" aria-label="${esc(m.region || "")} market mood ${m.score} out of 100, ${esc(word)}">${arc(0.004, .246, "var(--bad)")}${arc(.254, .446, "color-mix(in srgb,var(--bad) 50%,var(--surface2))")}${arc(.454, .546, "var(--surface2)")}${arc(.554, .746, "color-mix(in srgb,var(--good) 50%,var(--surface2))")}${arc(.754, .996, "var(--good)")}
+  const word = m.word || moodWord(m.score);
+  const toneOf = w => (/fear|fearful|cautious/i.test(w) ? "bad" : /greed|confident|exuberant/i.test(w) ? "good" : "neutral");
+  const colour = (w, strong) => { const t = toneOf(w); return t === "neutral" ? "var(--surface2)" : strong ? `var(--${t})` : `color-mix(in srgb,var(--${t}) 50%,var(--surface2))`; };
+  const bands = m.bands || [{ from: 0, word: "Fearful" }, { from: 25, word: "Cautious" }, { from: 45, word: "Neutral" }, { from: 56, word: "Confident" }, { from: 75, word: "Exuberant" }];
+  const arcs = bands.map((b, i) => { const to = (bands[i + 1]?.from ?? 100) / 100; return arc(b.from / 100 + 0.004, to - 0.004, colour(b.word, i === 0 || i === bands.length - 1)); }).join("");
+  const tone = toneOf(word) === "neutral" ? "var(--muted)" : `var(--${toneOf(word)})`;
+  const cmp = (label, v) => (v == null ? "" : `${label} <b class="tnum">${Math.round(v)}</b>`);
+  let lines;
+  if (m.name) {
+    const was = [cmp("a week ago", m.prev_week), cmp("a month ago", m.prev_month)].filter(Boolean).join(" · ");
+    lines = `${was ? `<li>${was}</li>` : ""}<li><a href="${esc(m.url)}" target="_blank" rel="noopener">${esc(m.name)}</a>${m.as_of ? ` · ${m.stale ? "last reading " : ""}${esc(agoIST(m.as_of))}` : ""}</li>`;
+  } else {
+    const where = m.range_pos == null ? "" : m.range_pos <= 15 ? "near its 3-month low" : m.range_pos >= 85 ? "near its 3-month high" : `${m.range_pos}% of the way up its 3-month range`;
+    const calm = m.vix_pos == null ? "" : m.vix_pos <= 30 ? "calm for the quarter" : m.vix_pos >= 70 ? "jumpy for the quarter" : "middling for the quarter";
+    lines = `<li>${esc(m.index)} ${where}</li><li>7 days ${pct(m.chg_7d)} · today ${pct(m.change_pct)}</li>${m.vix != null ? `<li>${esc(m.vix_name)} ${m.vix} · ${calm}</li>` : ""}`;
+  }
+  return `<div class="mood"><div class="mh"><span>${esc(m.region || "")}${m.name ? "" : ` · ${esc(m.index || "")}`}</span><b class="tnum">${m.score}</b></div><div class="mword" style="color:${tone}">${esc(word)}</div>
+<svg viewBox="0 0 200 110" role="img" aria-label="${esc(m.region || "")} market mood ${m.score} out of 100, ${esc(word)}${m.name ? `, ${esc(m.name)}` : ""}">${arcs}
 <g class="needle" style="--a:${(-90 + 180 * m.score / 100).toFixed(1)}deg"><line x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy - r + 14}" stroke="var(--ink)" stroke-width="3.5" stroke-linecap="round"/></g><circle cx="${cx}" cy="${cy}" r="6" fill="var(--ink)"/></svg>
-<ul><li>${esc(m.index)} ${where}</li><li>7 days ${pct(m.chg_7d)} · today ${pct(m.change_pct)}</li>${m.vix != null ? `<li>${esc(m.vix_name)} ${m.vix} · ${calm}</li>` : ""}</ul></div>`;
+<ul>${lines}</ul></div>`;
 }
+const moodTone = m => { const w = m.word || moodWord(m.score); return /fear|cautious/i.test(w) ? "var(--bad)" : /greed|confident|exuberant/i.test(w) ? "var(--good)" : "var(--muted)"; };
 const moodWord = s => (s < 25 ? "Fearful" : s < 45 ? "Cautious" : s <= 55 ? "Neutral" : s < 75 ? "Confident" : "Exuberant");
 
 function ledgerBlock() {
@@ -1069,7 +1089,7 @@ function dashHTML() {
     const show = (CFG.markets.poster || []).map(n => M.indices.find(i => i.name === n)).filter(Boolean);
     const moods = Object.keys(CFG.markets.mood || {}).map(k => M.mood?.[k]).filter(Boolean);
     mk = `<div class="idx">${show.map(q => `<div><span>${esc(q.name)}</span><b>${inr(Math.round(q.price))}</b><i class="${dir(q.change_pct)}">${pct(q.change_pct)}</i>${spark(q.spark30 || q.spark?.slice(-22), q.change_pct < 0 ? "var(--bad)" : "var(--good)", { w: 200, h: 28, mini: true })}</div>`).join("")}</div>` +
-      (moods.length ? `<div class="moodline">${moods.map(m => `<span>${esc(m.region)} <b style="color:${m.score < 45 ? "var(--bad)" : m.score > 55 ? "var(--good)" : "var(--muted)"}">${esc(m.word || moodWord(m.score))}</b> ${m.score}</span>`).join("")}</div>` : "");
+      (moods.length ? `<div class="moodline">${moods.map(m => `<span>${esc(m.region)} <b style="color:${moodTone(m)}">${esc(m.word || moodWord(m.score))}</b> ${m.score}</span>`).join("")}</div>` : "");
   }
 
   const sport = [];

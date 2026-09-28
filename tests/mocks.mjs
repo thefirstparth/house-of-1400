@@ -13,6 +13,8 @@ const race = (off, round, name, country) => ({ season: "2026", round: String(rou
   date: d(now + off), time: "11:00:00Z", Qualifying: { date: d(now + off - day), time: "12:00:00Z" }, FirstPractice: { date: d(now + off - 2 * day), time: "08:30:00Z" } });
 
 const ROUTES = [
+  [/api\.tickertape\.in\/mmi/, () => ({ success: true, data: { date: iso(now), indicator: 16.19, lastDay: { indicator: 16.15 }, lastWeek: { indicator: 22.72 }, lastMonth: { indicator: 54.75 }, lastYear: { indicator: 78.41 } } })],
+  [/fearandgreed\/graphdata/, () => ({ fear_and_greed: { score: 37, rating: "fear", timestamp: iso(now), previous_close: 36.11, previous_1_week: 30.43, previous_1_month: 59.6, previous_1_year: 50.66 }, fear_and_greed_historical: { data: Array.from({ length: 40 }, (_, i) => ({ x: now - i * day, y: 40 + i % 7 })) } })],
   [/air-quality-api/, () => [0, 1, 2].map(() => ({ current: { time: "2026-09-26T03:00", us_aqi: 40, pm2_5: 5 }, hourly: { time: Array.from({ length: 48 }, (_, i) => `2026-09-${String(25 + Math.floor(i / 24)).padStart(2, "0")}T${String(i % 24).padStart(2, "0")}:00`), us_aqi: Array.from({ length: 48 }, (_, i) => 30 + i) } }))],
   [/open-meteo/, () => ({ current: { temperature_2m: 22.4, apparent_temperature: 23, weather_code: 63, relative_humidity_2m: 80, time: `${d(now)}T12:00` },
     daily: { time: [...Array(7)].map((_, i) => d(now + i * day)), weather_code: Array(7).fill(3), temperature_2m_max: Array(7).fill(28), temperature_2m_min: Array(7).fill(20), precipitation_probability_max: Array(7).fill(40), precipitation_sum: Array(7).fill(1) } })],

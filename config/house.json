@@ -355,18 +355,58 @@
     ],
     "mood": {
       "India": {
-        "index": "^BSESN",
-        "vix": "^INDIAVIX",
         "label": "India",
-        "vix_name": "India VIX"
+        "source": "tickertape",
+        "name": "Tickertape Market Mood Index",
+        "url": "https://www.tickertape.in/market-mood-index",
+        "bands": [
+          {
+            "from": 0,
+            "word": "Extreme fear"
+          },
+          {
+            "from": 30,
+            "word": "Fear"
+          },
+          {
+            "from": 50,
+            "word": "Greed"
+          },
+          {
+            "from": 70,
+            "word": "Extreme greed"
+          }
+        ]
       },
       "US": {
-        "index": "^GSPC",
-        "vix": "^VIX",
         "label": "US",
-        "vix_name": "VIX"
+        "source": "cnn",
+        "name": "CNN Fear & Greed Index",
+        "url": "https://edition.cnn.com/markets/fear-and-greed",
+        "bands": [
+          {
+            "from": 0,
+            "word": "Extreme fear"
+          },
+          {
+            "from": 25,
+            "word": "Fear"
+          },
+          {
+            "from": 45,
+            "word": "Neutral"
+          },
+          {
+            "from": 56,
+            "word": "Greed"
+          },
+          {
+            "from": 76,
+            "word": "Extreme greed"
+          }
+        ]
       },
-      "method": "Score 0 to 100 from four readings, each scaled 0 to 1: where the index sits in its 3-month range (30%), its 7-day move (25%, ±4% is the full scale), today's move (15%, ±1.5%), and the volatility index inverted within its own 3-month range (30%; calm is high). Below 25 Fearful, 25 to 44 Cautious, 45 to 55 Neutral, 56 to 74 Confident, 75 and above Exuberant."
+      "method": "Published readings, never our own calculation. India: Tickertape's Market Mood Index, from foreign investors' flows, volatility (India VIX), momentum, market breadth, price strength and demand for gold, updated through the trading day. US: CNN's Fear & Greed Index, from seven readings (stock momentum and strength, breadth, put and call options, junk-bond demand, volatility and safe-haven demand), updated through the US trading day. Each gauge uses its publisher's own bands and words. If a publisher cannot be reached, the gauge keeps its last reading with that reading's time."
     },
     "returns_note": "7D and 1M are Moneycontrol's published figures where it publishes them (its Indian figures agree with NSE's own). Where no reliable source publishes them (Nasdaq-100, Brent, the rupee, gold and Bitcoin today), they are worked out from official daily closes and marked as calculated."
   },

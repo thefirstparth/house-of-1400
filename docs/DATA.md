@@ -21,6 +21,7 @@ All endpoints below were tested on 25 Sep 2026 unless marked otherwise.
 | fx | Yahoo `INR=X` | `open.er-api.com/v6/latest/USD` | 15 min | |
 | crypto | Yahoo `BTC-USD` | CoinGecko simple price | 5 min | Agreed within $10 |
 | trends | Google Trends RSS `trends.google.com/trending/rss?geo=IN` (and world geos in config) | | 30 min | Items include linked news articles. Server-side only |
+| mood (inside markets) | Tickertape Market Mood Index `api.tickertape.in/mmi/now` (India); CNN Fear & Greed `production.dataviz.cnn.io/index/fearandgreed/graphdata` (US) | each tried twice; then this server's last good reading, marked stale; then the edition snapshot | as markets | Published readings only, never calculated (28 Sep). Publishers' own bands and words, their week and month comparisons. CNN answers only a request that looks like its own page (origin and referer edition.cnn.com); a plain one gets 418 |
 | movers | NSE's Nifty 500 list (`nsearchives.nseindia.com`, copy in `config/nifty500.csv`) priced with Yahoo `v7/finance/spark` | the config copy of the list | 30 min | Run-only (the page never asks). Flags 8% stock moves, 2.5% industry medians and same-day clusters over two sessions |
 | signals | Polymarket Gamma tagged events | | 30 min | The "market's view" line in Paddock Notes, Madridismo, The Crease and Deuce |
 | betting | Polymarket Gamma `gamma-api.polymarket.com/events?active=true&closed=false&order=volume24hr&ascending=false` | none (Kalshi retired 25 Sep 2026) | 30 min | Apply config exclusions. India volume is tiny; world only |

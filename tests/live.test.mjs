@@ -44,6 +44,8 @@ test("markets: null bars are dropped, change uses previous session close", async
   assert.equal(m.ok, true); assert.equal(m.value.indices.length, 6);
   assert.deepEqual(Object.keys(m.value.mood), ["India", "US"]);
   for (const k of ["India", "US"]) { const x = m.value.mood[k]; assert.ok(x.score >= 0 && x.score <= 100); assert.ok(x.word); }
+  assert.equal(m.value.mood.India.score, 16); assert.equal(m.value.mood.India.word, "Extreme fear"); assert.equal(m.value.mood.India.name, "Tickertape Market Mood Index");
+  assert.equal(m.value.mood.India.prev_week, 22.7); assert.equal(m.value.mood.US.word, "Fear"); assert.equal(m.value.mood.US.prev_month, 59.6); assert.equal(m.value.mood.US.spark30.length, 30);
   assert.ok(m.value.cross.find(c => c.symbol === "INR=X").price === 95.95);
 });
 test("gold: IBJA parse and ratio check", async () => {
@@ -105,4 +107,9 @@ test("movers: sessions aligned by date, stocks, clusters", () => {
   assert.equal(r.clusters[0].industry, "Fin");
   assert.equal(r.clusters[0].direction, "down");
   assert.deepEqual(r.clusters[0].stocks.map(x => x.symbol), ["A", "B", "C"]);
+});
+
+test("mood bands: the publisher's words at its own boundaries", () => {
+  const IN = [{ from: 0, word: "Extreme fear" }, { from: 30, word: "Fear" }, { from: 50, word: "Greed" }, { from: 70, word: "Extreme greed" }];
+  assert.deepEqual([0, 29.9, 30, 49.9, 50, 70, 100].map(x => L.moodWordFor(IN, x)), ["Extreme fear", "Extreme fear", "Fear", "Fear", "Greed", "Extreme greed", "Extreme greed"]);
 });

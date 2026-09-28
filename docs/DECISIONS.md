@@ -321,3 +321,8 @@ Made without Parth, per the build prompt. Change any of them freely.
 - Placement cannot go wrong: the build checks each image against the edition (`lib/art.js`: a listed slot, one image per story, PNG/JPEG/WebP, at most 400 KB, the slot's shape within 3%, a minimum width, one-sentence alt text) and serves only the ones that pass, with the reasons for the rest in the served manifest. The page draws a figure only for a story with a checked image, with its width and height set, so nothing moves and no empty frame appears. A bad file never fails the build.
 - Rules (Parth, 2A): illustration style, never photo-realistic; no realistic likeness of a real person; stories about death, disaster or violence get no slot (skipped in code, listed in the brief); labelled "Illustration".
 - Daily runs never write `public/art/`; a push rejected because the illustrator pushed first is rebased and pushed again.
+
+## 28 Sep 2026: Market mood from its publishers
+- The Ledger's two mood gauges were the paper's own calculation (index range, 7-day and daily move, volatility) and disagreed badly with the published readings on 28 Sep: ours said the US was 80, "Exuberant", CNN said 37, "Fear"; ours said India 40, Tickertape 16. Parth: use Tickertape's Market Mood Index for India and CNN's Fear & Greed Index for the US (1A), in their own bands and words, with a week ago and a month ago and the source named.
+- Never a wrong or missing gauge (2A): each source is tried twice; then the server's last good reading with its own time; then the edition snapshot on the page. Our old calculation is never swapped in, because it measures something else. Editions before 28 Sep keep the calculated reading they printed.
+- No editor's remark on the gauges (3B).
