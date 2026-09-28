@@ -584,7 +584,13 @@
       "call",
       "skip",
       "early"
-    ]
+    ],
+    "upcoming": {
+      "days_ahead": 35,
+      "days_back": 60,
+      "per_language": 6,
+      "note": "TMDB windows for Screen & Stage candidates: films and series due in the next days_ahead days, and cinema releases of the last days_back days now streaming in India; per_language most popular in Hindi and in English."
+    }
   },
   "site": {
     "telegram_ping": "lead headline + link, only after the edition is verified live"
