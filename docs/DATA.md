@@ -29,7 +29,7 @@ All endpoints below were tested on 25 Sep 2026 unless marked otherwise.
 ## Not live (daily run researches these)
 - India men's cricket: next match and series come from research, two reliable sources, chronology checked. Exact IST start times come from Cricbuzz's India schedule page (`node scripts/cricket-times.mjs`, `ledger/cricket-times.json`, validated). ESPNcricinfo's API refuses access, but its RSS feeds work (checked 28 Sep: `espncricinfo.com/rss/content/story/feeds/0.xml`, and `6.xml` for India).
 - Tennis player next match and next event (see the tennis row: ESPN has most matches, not team events).
-- Screen & Stage verdicts. Optional keys later: OMDb (IMDb, Rotten Tomatoes, Metacritic in one call) and TMDB (India watch providers, upcoming releases). Without keys, research reviews on the web.
+- Screen & Stage verdicts: since 29 Sep the run reads `/api/live/screen` in research, with OMDb (IMDb, Rotten Tomatoes, Metacritic in one call) and TMDB (India watch providers, the Coming soon candidates). If either key fails, research reviews on the web. A changed key in Vercel takes effect only after the next deploy.
 
 ## Source trial (29 Sep to 8 Oct 2026)
 Run-only keys in `lib/trial.js`, called by `scripts/trial.mjs` after the edition is live and never by the page, the snapshot or `npm test` (docs/SOURCES-AUDIT.md, DECISIONS 28 Sep).
