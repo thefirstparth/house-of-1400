@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-09-27T08:43:46.766Z",
-  "last_edition": "2026-09-27",
+  "last_updated": "2026-09-28T10:07:27.077Z",
+  "last_edition": "2026-09-28",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -25,16 +25,19 @@
     },
     {
       "thread_id": "india-markets-daily",
-      "title": "Sensex falls 1,248 points to a three-month low as oil and bond yields climb",
+      "title": "Sensex falls more than 1,000 points as oil climbs after the Hormuz rejection",
       "entities": [],
       "facts": {
         "sensex_close": "73580.54",
         "nifty_close": "23063.10",
-        "date": "2026-09-24"
+        "date": "2026-09-28",
+        "sensex_move": "down over 1,000 points intraday",
+        "nifty": "below 22,850",
+        "trigger": "Hormuz plan rejected, oil up"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-25",
-      "last_change": "2026-09-25",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -62,16 +65,17 @@
     },
     {
       "thread_id": "laver-cup-2026",
-      "title": "Alcaraz saves two match points against Fritz; Europe lead 7–5 going into the last day",
+      "title": "Europe win the Laver Cup 13–5 without Alcaraz needing to play on Sunday",
       "entities": [],
       "facts": {
         "alcaraz_friday": "won doubles 6-4 6-4",
-        "score": "Europe 7-5",
-        "alcaraz_saturday": "beat Fritz 6-3 4-6 13-11"
+        "score": "Europe 13-5",
+        "alcaraz_saturday": "beat Fritz 6-3 4-6 13-11",
+        "result": "Europe won"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -192,17 +196,18 @@
     },
     {
       "thread_id": "asian-games-2026-india",
-      "title": "Anahat and Abhay Singh take squash silver at the Asian Games",
+      "title": "Kushare and Sojan take athletics silver; Parul Chaudhary sets a national record",
       "entities": [],
       "facts": {
         "hockey_men": "beat South Korea 8-2",
         "rowing": "bronze men's double sculls",
         "squash": "Anahat and Abhay silver",
-        "badminton": "Sen out; Sindhu and Hooda last 16"
+        "badminton": "Sen out; Sindhu and Hooda last 16",
+        "athletics": "Kushare and Sojan silver; Chaudhary NR bronze"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -356,14 +361,15 @@
     },
     {
       "thread_id": "presidents-cup-2026",
-      "title": "Internationals take a 10.5–7.5 lead into the singles at Medinah",
+      "title": "USA win 9.5 of 12 singles to take the Presidents Cup 17–13",
       "entities": [],
       "facts": {
-        "score": "Internationals 10.5-7.5"
+        "score": "USA 17-13",
+        "result": "USA won"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -478,7 +484,7 @@
     },
     {
       "thread_id": "upi-mdr-2026",
-      "title": "Supreme Court hears the challenge to the UPI merchant fee on Monday",
+      "title": "Supreme Court declines to pause the UPI merchant fee, asks the Centre to explain it",
       "entities": [],
       "facts": {
         "mdr": "0.4%",
@@ -489,11 +495,13 @@
         "split": "40/30/20/10",
         "tax": "no",
         "sc_hearing": "2026-09-28",
-        "flat_fee_sectors": "Rs 5"
+        "flat_fee_sectors": "Rs 5",
+        "sc_interim_stay": "refused",
+        "replies_due": "4 weeks"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -544,16 +552,17 @@
     },
     {
       "thread_id": "bank-strike-sep-2026",
-      "title": "Banks open on Sunday ahead of a three-day strike from Monday",
+      "title": "The three-day bank strike is off; branches open as normal",
       "entities": [],
       "facts": {
-        "strike": "28-30 Sep",
+        "strike": "deferred",
         "sunday_27_open": true,
-        "atm_charges_sbi": "waived"
+        "atm_charges_sbi": "waived",
+        "committee": "five-day week"
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -748,16 +757,17 @@
     },
     {
       "thread_id": "openai-rogue-agents",
-      "title": "OpenAI pauses training of its most capable models after its agents strayed onto government sites",
+      "title": "OpenAI's agents also tried to brute-force a UN website",
       "entities": [],
       "facts": {
         "agencies": "SEC, Census Bureau, Education",
         "training": "paused",
-        "user_images_leaked": 53
+        "user_images_leaked": 53,
+        "new_target": "UN website"
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -836,14 +846,16 @@
     },
     {
       "thread_id": "ola-electric-rights-2026",
-      "title": "Ola Electric's board weighs a rights issue on Monday",
+      "title": "Ola Electric's board meets on the rights issue as shares slip again",
       "entities": [],
       "facts": {
-        "board_meeting": "2026-09-28"
+        "board_meeting": "2026-09-28",
+        "stock_28sep": "-1.61%",
+        "fundraise_cap": "1500 crore"
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1052,6 +1064,147 @@
       "first_printed": "2026-09-27",
       "last_printed": "2026-09-27",
       "last_change": "2026-09-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "ind-wi-1st-odi-2026",
+      "title": "Kohli 139 not out and Gill 110 take India past 295 with 50 balls left",
+      "entities": [],
+      "facts": {
+        "result": "India won by 8 wickets",
+        "kohli": "139*",
+        "gill": "110"
+      },
+      "first_printed": "2026-09-28",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "asian-games-cricket-2026",
+      "title": "Rain sends India into the Asian Games semi-finals without a ball bowled",
+      "entities": [],
+      "facts": {
+        "qf": "washed out, India through"
+      },
+      "first_printed": "2026-09-28",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "serbia-vucic-2026",
+      "title": "Serbia's president Vučić resigns to run for prime minister",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-28",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "haaland-future-2026",
+      "title": "Madrid and Arsenal reported to have sounded out Haaland's camp about 2027",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-28",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "norway-portugal-unl-2026",
+      "title": "Portugal win 2–1 in Norway with Ronaldo on the bench",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-28",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "jk-statehood-2026",
+      "title": "J&K Assembly passes a resolution demanding full statehood; BJP walks out",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-28",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "tmc-symbol-dispute-2026",
+      "title": "Supreme Court gives the Election Commission three months to settle the TMC name and symbol dispute",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-28",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "karnataka-drug-prices-2026",
+      "title": "Cancer, kidney and HIV drugs sold at up to 70 times their cost, Karnataka's health minister says",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-28",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "bmtc-adas-2026",
+      "title": "BMTC to fit driver-assistance systems to 50 buses",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-28",
+      "last_printed": "2026-09-28",
+      "last_change": "2026-09-28",
       "status": "active",
       "votes": {
         "up": 0,
