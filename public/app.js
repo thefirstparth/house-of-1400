@@ -205,24 +205,31 @@ function artFig(id) {
   if (!a) return "";
   return `<figure class="art art-${esc(a.slot)}"><img src="${esc(a.src)}" width="${a.w}" height="${a.h}" alt="${esc(a.alt)}" loading="lazy" decoding="async"><figcaption>${esc(a.credit || "Illustration")}</figcaption></figure>`;
 }
+// Today's illustrations can land after the paper, and Bunty may add or redraw some later: an open page checks the
+// manifest every five minutes until 17:00 IST, and adds, replaces or removes each story's image to match it.
 async function loadArt(tries = 0) {
   if (!E?.date) return;
   try {
     const r = await fetch(`/art/${E.date}/manifest.json`, { cache: "no-store" });
     if (r.ok) {
       const m = await r.json();
-      ART = Object.fromEntries((m.items || []).map(i => [i.story_id, i]));
-      for (const id of Object.keys(ART)) {
-        const el = document.getElementById(`s-${id}`);
-        if (el && !el.querySelector(":scope > figure.art")) el.querySelector(":scope > .body")?.insertAdjacentHTML("beforebegin", artFig(id));
+      const next = Object.fromEntries((m.items || []).map(i => [i.story_id, i]));
+      let changed = false;
+      for (const id of new Set([...Object.keys(ART), ...Object.keys(next)])) {
+        const was = ART[id], now = next[id];
+        if (was && now && was.src === now.src && was.alt === now.alt && was.credit === now.credit) continue;
+        const el = document.getElementById(`s-${id}`); if (!el) continue;
+        ART[id] = now; if (!now) delete ART[id];
+        el.querySelector(":scope > figure.art")?.remove();
+        if (now) el.querySelector(":scope > .body")?.insertAdjacentHTML("beforebegin", artFig(id));
+        changed = true;
       }
-      balanceFront(true);
-      if (Object.keys(ART).length) return;
+      ART = next;
+      if (changed) balanceFront(true);
     }
   } catch {}
-  // Today's illustrations can land after the paper: look again every five minutes until 17:00 IST.
   const hm = new Date().toLocaleTimeString("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false });
-  if (ROUTE?.kind !== "edition" && E.date === istDate() && hm < "17:00" && tries < 40) setTimeout(() => loadArt(tries + 1), LIVE_EVERY);
+  if (ROUTE?.kind !== "edition" && E.date === istDate() && hm < "17:00" && tries < 60) setTimeout(() => loadArt(tries + 1), LIVE_EVERY);
 }
 
 function storyHTML(st, { lead = false, kickerPrefix = "" } = {}) {

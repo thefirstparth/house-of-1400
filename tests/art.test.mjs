@@ -50,7 +50,8 @@ test("check: only images that fit their order are shown, with reasons for the re
     { story_id: "lead-1", file: "square.png", alt: "Second for the lead." },
   ] };
   const { items, rejected } = checkArt(E, manifest, f => files[f] || null);
-  assert.deepEqual(items.map(i => `${i.slot}:${i.story_id}:${i.src}`), ["wide:lead-1:/art/2026-09-29/lead.webp", "standard:trophy:/art/2026-09-29/t.png"]);
+  assert.deepEqual(items.map(i => `${i.slot}:${i.story_id}:${i.src.split("?")[0]}`), ["wide:lead-1:/art/2026-09-29/lead.webp", "standard:trophy:/art/2026-09-29/t.png"]);
+  assert.match(items[0].src, /\?v=[0-9a-f]{8}$/, "a redrawn image under the same name gets a new address, so no browser keeps the old one");
   assert.equal(rejected.length, 3);
   const one = (id, file) => checkArt({ ...E }, { date: "2026-09-29", items: [{ story_id: id, file, alt: "A drawing." }] }, f => files[f] || null).rejected[0]?.reason;
   assert.match(one("trophy", "square.png"), /not 4:3/);
