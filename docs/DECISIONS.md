@@ -332,3 +332,8 @@ Made without Parth, per the build prompt. Change any of them freely.
 - Two limits stay, both about accuracy, not design: no art for death, disaster or violence (also enforced in code), and never photo-realistic images of real people (cartoon and caricature are fine).
 - Shapes follow where the story sits: 16:9 for the front-page lead, 4:3 everywhere else. The build's image checks and the page's fixed slots are unchanged, so an image can only appear inside the story it was ordered for.
 - Orders are warnings in the validator, never errors: art never holds up the paper.
+
+## 28 Sep 2026: The illustrator decides the look; Bhide decides the stories
+- Parth: the two limits (no art for death, disaster or violence; never photo-realistic images of real people) belong to Bhide's choice of stories, not to the illustrator or the code. The code filter is gone; EDITORIAL.md keeps them as Bhide's judgment. Parth gives the illustrator any design rules himself.
+- The brief gives the illustrator the paper's look as inspiration only (config `art`: the paper, its colours, each ordered story's section colour, and the two styles Parth likes: pen and ink with one section accent, and bold flat colour).
+- The site checks only what the page needs: the story was ordered, one image per story, its shape (16:9 lead, 4:3 elsewhere), a readable PNG, JPEG, WebP or GIF, at most 600 KB (raised from 400 for animation), and alt text. Images are shown without review (Parth: he will say if something breaks). No recurring Bhide character for now; revisit in about a month.

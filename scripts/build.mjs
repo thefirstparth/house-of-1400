@@ -9,7 +9,7 @@ cpSync("content", "dist/content", { recursive: true, filter: src => !src.endsWit
 mkdirSync("dist/config", { recursive: true });
 // The page reads the config; the daily run's reading list and the trial settings are not for it.
 const config = JSON.parse(readFileSync("config/house.json", "utf8"));
-delete config.sources; delete config.trial;
+delete config.sources; delete config.trial; delete config.art;
 writeFileSync("dist/config/house.json", JSON.stringify(config, null, 2) + "\n");
 // The source trial's scorecards for /trial (not the raw reading lists in ledger/trial/wire/).
 if (existsSync("ledger/trial")) {
@@ -34,7 +34,7 @@ for (const f of ["dist/content/latest.json", ...readdirSync("dist/content/editio
 try {
   const { brief, checkArt } = await import("../lib/art.js");
   mkdirSync("dist/art", { recursive: true });
-  if (existsSync("content/latest.json")) writeFileSync("dist/art/brief.json", JSON.stringify(brief(JSON.parse(readFileSync("content/latest.json", "utf8"))), null, 2));
+  if (existsSync("content/latest.json")) writeFileSync("dist/art/brief.json", JSON.stringify(brief(JSON.parse(readFileSync("content/latest.json", "utf8")), JSON.parse(readFileSync("config/house.json", "utf8"))), null, 2));
   for (const d of existsSync("public/art") ? readdirSync("public/art") : []) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(d) || !existsSync(`public/art/${d}/manifest.json`)) continue;
     let out;

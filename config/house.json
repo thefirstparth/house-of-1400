@@ -1302,5 +1302,34 @@
       ]
     },
     "alert_radius_km": 60
+  },
+  "art": {
+    "note": "Context for the illustrator (Codex), published in /art/brief.json. Inspiration, not rules: the illustrator decides the idea and the style. Parth sets any design rules directly with the illustrator.",
+    "paper": "The House of 1400: a calm, factual afternoon newspaper for one reader in Bengaluru, edited by the fictional T. A. Bhide, a strict, well-read, dryly witty editor of the old school. Warm newsprint paper, near-black ink, one colour per section.",
+    "paper_colours": {
+      "paper": "#f3f1ea",
+      "ink": "#15140f"
+    },
+    "section_colours": {
+      "ink": "#15140f",
+      "slate": "#3b4a5e",
+      "dispatch": "#1f3f73",
+      "money": "#00704a",
+      "odds": "#8a6200",
+      "madrid": "#4f2f9e",
+      "pitch": "#2e7d32",
+      "f1": "#d0021b",
+      "india": "#1440a8",
+      "tennis": "#566f00",
+      "track": "#ad4a1c",
+      "tech": "#00697a",
+      "sky": "#0a72a8",
+      "namma": "#946000",
+      "screen": "#ae2168"
+    },
+    "styles_the_editor_likes": [
+      "Pen and ink on newsprint, with one accent colour from the story's section",
+      "Bold flat colour, modern editorial illustration"
+    ]
   }
 }

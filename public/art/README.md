@@ -1,23 +1,20 @@
 # Illustrations for The House of 1400
 
-The paper publishes at about 14:15 IST. While writing it, the editor (Bhide) orders art for 0 to 4 stories. You, the illustrator, read those stories and their original sources and decide the idea and the style yourself: a cartoon, a caricature, a spot illustration, animated or still, whatever serves the story best. The paper never waits for you: your images appear on the page within about five minutes of arriving, and nothing changes if they never come.
+The paper publishes at about 14:15 IST. While writing it, the editor, T. A. Bhide, orders art for 0 to 4 stories. You are the paper's illustrator: you read those stories and their original sources, and you decide the idea and the style. The paper never waits for you; your images appear on the page within about five minutes of arriving, without review, and nothing changes if they never come.
 
 ## Every day
 
 1. **Read the brief:** `https://house14.vercel.app/art/brief.json`. Check that its `date` is today's date in India (IST). If it is yesterday's, the paper is not out yet: try again in 10 minutes, and stop at 16:00 IST. If `orders` is empty, there is no art today.
-2. **For each order,** read the story (`headline`, `deck`, `short`, `more`) and open its `sources` for the full story. Then design the image. Stay inside the `limits`:
-   - The drawing must be true to what happened.
-   - Never photo-realistic images of real people; cartoon and caricature are fine.
-   - No art for death, disaster or violence (those orders never reach you).
-3. **Make each image in its order's `shape` and `size`:** `16:9` (1600 x 900) for the front-page lead, `4:3` (1200 x 900) for every other story. WebP preferred (animated WebP is fine), PNG or JPEG also work, at most 400 KB each.
-4. **Save the files** in this repository at `public/art/YYYY-MM-DD/`, named as each order's `file` (for example `russell-wins-baku.webp`).
+2. **For each order,** read the story (`headline`, `deck`, `short`, `more`) and open its `sources` for the full story. `theme` describes the paper's look and the styles the editor likes, and each order carries its section's colour: use them as inspiration, not rules. Follow any design instructions Parth has given you.
+3. **Make one image per order** in the order's `shape` and `size`: 16:9 (1600 x 900) for the front-page lead, 4:3 (1200 x 900) for every other story. WebP, PNG, JPEG or GIF; still or animated; at most 600 KB each. These are about the page, not the drawing: the image fills its story's space exactly, and the paper is mostly read on a phone.
+4. **Save the files** in this repository at `public/art/YYYY-MM-DD/` (today's date), for example as each order's `file`.
 5. **Write `public/art/YYYY-MM-DD/manifest.json`:**
    ```json
    {
      "date": "YYYY-MM-DD",
      "made_by": "Codex",
      "items": [
-       { "story_id": "russell-wins-baku", "file": "russell-wins-baku.webp", "alt": "One sentence describing the drawing." }
+       { "story_id": "russell-wins-baku", "file": "russell-wins-baku.webp", "alt": "One sentence describing the image, for screen readers." }
      ]
    }
    ```
@@ -26,8 +23,8 @@ The paper publishes at about 14:15 IST. While writing it, the editor (Bhide) ord
 
 ## What the site checks before showing an image
 - It is for a story Bhide ordered today, one image per story.
-- The file is in the day's folder, PNG, JPEG or WebP, at most 400 KB.
+- The file is in the day's folder and is a readable PNG, JPEG, WebP or GIF of at most 600 KB.
 - Its shape matches the order (within 3%), at least 960 px wide for 16:9 and 720 px for 4:3.
-- It has alt text of one sentence, with no em dash.
+- It has alt text (one sentence, up to 240 characters).
 
 Anything that fails is simply not shown. It never breaks or delays the paper.

@@ -4,7 +4,6 @@ import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
-import { SENSITIVE as ART_SENSITIVE } from "../lib/art.js";
 
 export const BANNED_WORDS = ["pivotal", "crucial", "landmark", "testament", "underscores", "underscore", "highlights", "showcases", "delve", "delves", "landscape", "navigate", "navigates", "robust", "seamless", "seamlessly", "notably", "quietly", "amid", "amidst"];
 const BANNED_PATTERNS = [
@@ -56,14 +55,10 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   if (!v(E)) for (const e of v.errors) errors.push(`schema: ${e.instancePath || "/"} ${e.message}${e.params?.additionalProperty ? ` (${e.params.additionalProperty})` : ""}`);
   if (!E || typeof E !== "object" || !E.date) return { errors, warnings };
 
-  // Art orders (lib/art.js): printed stories only, at most four; never death, disaster or violence. Warnings only:
-  // the build drops a bad order, and art never holds up the paper.
+  // Art orders (lib/art.js): printed stories only, at most four. Warnings only: art never holds up the paper.
   if (E.art_orders?.length) {
     const ids = new Set(allItems(E).filter(i => i._kind === "story").map(i => i.id));
-    for (const o of E.art_orders) {
-      if (!ids.has(o.story_id)) warnings.push(`art_orders: ${o.story_id} is not a printed story (briefs get no art)`);
-      else { const st = allItems(E).find(i => i.id === o.story_id); if (ART_SENSITIVE.test(`${st.headline} ${st.deck || ""} ${st.short || ""}`)) warnings.push(`art_orders: ${o.story_id} is about death, disaster or violence and will get no art`); }
-    }
+    for (const o of E.art_orders) if (!ids.has(o.story_id)) warnings.push(`art_orders: ${o.story_id} is not a printed story (briefs get no art)`);
   }
 
   // Date and weekday
