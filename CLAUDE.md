@@ -24,7 +24,7 @@ Half static, half live, like the Daily Prophet: the news is written once a day a
 **Daily run** (a scheduled edition run, following `docs/RUNBOOK.md`):
 - Only write `content/editions/YYYY-MM-DD.json`, `content/latest.json`, `content/archive.json`, and files under `ledger/`.
 - Never touch code, styles, config or docs during a daily run.
-- `public/art/` belongs to the outside illustrator (see `public/art/README.md`): daily runs never write there.
+- `public/art/` belongs to the illustrator, Bunty Brushwala (drawn by Codex; see `public/art/README.md`): daily runs never write there.
 - If validation fails, do not publish a broken edition. Retry per the runbook. Yesterday's paper staying up is the very last resort.
 
 ## Hard rules

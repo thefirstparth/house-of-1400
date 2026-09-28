@@ -1304,7 +1304,12 @@
     "alert_radius_km": 60
   },
   "art": {
-    "note": "Context for the illustrator (Codex), published in /art/brief.json. Inspiration, not rules: the illustrator decides the idea and the style. Parth sets any design rules directly with the illustrator.",
+    "illustrator": {
+      "name": "Bunty Brushwala",
+      "credit": "Illustration by Bunty Brushwala",
+      "about": "The paper's illustrator (the drawings are made by Codex). Bhide orders; Bunty decides what to draw and how."
+    },
+    "note": "Context for Bunty Brushwala, the illustrator, published in /art/brief.json. Inspiration, not rules: Bunty decides the idea and the style. Parth sets any design rules with Bunty directly.",
     "paper": "The House of 1400: a calm, factual afternoon newspaper for one reader in Bengaluru, edited by the fictional T. A. Bhide, a strict, well-read, dryly witty editor of the old school. Warm newsprint paper, near-black ink, one colour per section.",
     "paper_colours": {
       "paper": "#f3f1ea",

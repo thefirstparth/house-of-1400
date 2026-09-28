@@ -337,3 +337,6 @@ Made without Parth, per the build prompt. Change any of them freely.
 - Parth: the two limits (no art for death, disaster or violence; never photo-realistic images of real people) belong to Bhide's choice of stories, not to the illustrator or the code. The code filter is gone; EDITORIAL.md keeps them as Bhide's judgment. Parth gives the illustrator any design rules himself.
 - The brief gives the illustrator the paper's look as inspiration only (config `art`: the paper, its colours, each ordered story's section colour, and the two styles Parth likes: pen and ink with one section accent, and bold flat colour).
 - The site checks only what the page needs: the story was ordered, one image per story, its shape (16:9 lead, 4:3 elsewhere), a readable PNG, JPEG, WebP or GIF, at most 600 KB (raised from 400 for animation), and alt text. Images are shown without review (Parth: he will say if something breaks). No recurring Bhide character for now; revisit in about a month.
+
+## 28 Sep 2026: The illustrator is Bunty Brushwala
+- Parth named the paper's illustrator Bunty Brushwala (the drawings are made by Codex). The name is in config `art.illustrator`, the brief (`illustrator`, and the manifest's `made_by`), the README he works from, and under every image on the page: "Illustration by Bunty Brushwala".

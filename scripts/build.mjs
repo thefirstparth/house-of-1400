@@ -8,7 +8,8 @@ cpSync("public", "dist", { recursive: true });
 cpSync("content", "dist/content", { recursive: true, filter: src => !src.endsWith("schema.json") });
 mkdirSync("dist/config", { recursive: true });
 // The page reads the config; the daily run's reading list and the trial settings are not for it.
-const config = JSON.parse(readFileSync("config/house.json", "utf8"));
+const fullConfig = JSON.parse(readFileSync("config/house.json", "utf8"));
+const config = { ...fullConfig };
 delete config.sources; delete config.trial; delete config.art;
 writeFileSync("dist/config/house.json", JSON.stringify(config, null, 2) + "\n");
 // The source trial's scorecards for /trial (not the raw reading lists in ledger/trial/wire/).
@@ -33,8 +34,9 @@ for (const f of ["dist/content/latest.json", ...readdirSync("dist/content/editio
 // images that fit their slot. A bad file never fails the build: it is listed under "rejected" and not shown.
 try {
   const { brief, checkArt } = await import("../lib/art.js");
+  const credit = fullConfig.art?.illustrator?.credit || "Illustration";
   mkdirSync("dist/art", { recursive: true });
-  if (existsSync("content/latest.json")) writeFileSync("dist/art/brief.json", JSON.stringify(brief(JSON.parse(readFileSync("content/latest.json", "utf8")), JSON.parse(readFileSync("config/house.json", "utf8"))), null, 2));
+  if (existsSync("content/latest.json")) writeFileSync("dist/art/brief.json", JSON.stringify(brief(JSON.parse(readFileSync("content/latest.json", "utf8")), fullConfig), null, 2));
   for (const d of existsSync("public/art") ? readdirSync("public/art") : []) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(d) || !existsSync(`public/art/${d}/manifest.json`)) continue;
     let out;
@@ -42,7 +44,7 @@ try {
       const ed = `content/editions/${d}.json`;
       if (!existsSync(ed)) throw new Error(`no edition for ${d}`);
       const read = f => (existsSync(`public/art/${d}/${f}`) ? readFileSync(`public/art/${d}/${f}`) : null);
-      out = checkArt(JSON.parse(readFileSync(ed, "utf8")), JSON.parse(readFileSync(`public/art/${d}/manifest.json`, "utf8")), read);
+      out = checkArt(JSON.parse(readFileSync(ed, "utf8")), JSON.parse(readFileSync(`public/art/${d}/manifest.json`, "utf8")), read, credit);
     } catch (e) { out = { items: [], rejected: [{ reason: String(e.message || e) }] }; }
     writeFileSync(`dist/art/${d}/manifest.json`, JSON.stringify({ date: d, checked_at: new Date().toISOString(), ...out }, null, 2));
     console.log(`build: art ${d}: ${out.items.length} shown, ${out.rejected.length} rejected${out.rejected.length ? ` (${out.rejected.map(r => `${r.story_id || ""} ${r.reason}`).join("; ")})` : ""}`);

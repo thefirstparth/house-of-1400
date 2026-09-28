@@ -59,4 +59,6 @@ test("check: only images that fit their order are shown, with reasons for the re
   assert.match(one("trophy", "../../content/latest.json"), /plain name/);
   assert.match(one("trophy", "missing.webp"), /not found/);
   assert.equal(checkArt(E, { date: "2026-09-28", items: [] }, () => null).items.length, 0);
+  assert.equal(checkArt(E, { items: [manifest.items[0]] }, f => files[f] || null, "Illustration by Bunty Brushwala").items[0].credit, "Illustration by Bunty Brushwala");
+  assert.equal(brief(E, { art: { illustrator: { name: "Bunty Brushwala" } } }).manifest.format.made_by, "Bunty Brushwala");
 });
