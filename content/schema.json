@@ -974,6 +974,24 @@
           }
         }
       }
+    },
+    "art_orders": {
+      "type": "array",
+      "maxItems": 4,
+      "$comment": "Not printed. Bhide's art orders: the stories an outside illustrator may draw for (lib/art.js, /art/brief.json). The illustrator decides the idea and the style from the story and its sources.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "story_id"
+        ],
+        "properties": {
+          "story_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
     }
   }
 }

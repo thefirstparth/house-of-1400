@@ -107,5 +107,11 @@ Parth writes to the editor from the page ("Write to the editor" on any story, or
 - **Before You Go:** Watch and Do lines only. No restating.
 - **House Note:** one to three short lines. A true, surprising or funny fact with a light, dry turn at the end. Gentle personification is allowed occasionally. Model it on: "The Alcaraz–Shelton quarter-final finished at 03:33 in New York; even the official record book had to stay up late." Never a motivational line, never a fake quote.
 
+## Art orders
+While writing, choose 0 to 4 printed stories (any section, never a brief) that deserve a drawing, and list them in `art_orders` as `{story_id}`. That is the whole order: the illustrator (Codex) reads each story in full with its sources and decides the idea and the style. The orders are never shown to readers.
+- A story earns art when there is a picture in the moment: a photo finish, a trophy lifted, a launch, a comeback, a quirky city story, a market day with a clear shape. Good news and light news first; bad news only when it can be drawn without mocking anyone who is hurt.
+- Never death, disaster, violence, crime or private individuals (the code drops such orders anyway).
+- Most days one to three; some days none. No quota, no filler.
+
 ## Final audit before publishing
 Coverage and must-know floor, ranking, chronology (NEXT/LAST correct and consistent), facts and dates, dedup and refill, sources on every substantive story, banned-pattern scan, no process language, no empty or placeholder text, schema valid.

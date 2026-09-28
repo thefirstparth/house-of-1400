@@ -8,21 +8,24 @@ const png = (w, h) => { const b = Buffer.alloc(33); b.writeUInt32BE(0x89504e47, 
 const webpX = (w, h, animated = false) => { const b = Buffer.alloc(40); b.write("RIFF", 0); b.write("WEBP", 8); b.write("VP8X", 12); b[20] = animated ? 2 : 0; b.writeUIntLE(w - 1, 24, 3); b.writeUIntLE(h - 1, 27, 3); return b; };
 const jpeg = (w, h) => Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x04, 0, 0, 0xff, 0xc0, 0x00, 0x11, 0x08, h >> 8, h & 255, w >> 8, w & 255, 3, 0, 0, 0, 0]);
 
-const E = { date: "2026-09-29", edition_no: 5, front: {
-  lead: { id: "lead-1", headline: "RBI holds the repo rate", short: "The central bank kept rates unchanged.", section: "ledger" },
-  seconds: [
-    { id: "s-1", headline: "Madrid beat Villarreal 2-0", short: "Two second-half goals.", section: "madrid" },
-    { id: "s-2", headline: "Floods kill 18 across north India", short: "Rivers rose after heavy rain.", section: "dateline" },
-    { id: "s-3", headline: "Apple launches a new watch", short: "India price announced.", section: "workshop" },
-    { id: "s-4", headline: "Verstappen fastest in practice", short: "Red Bull quickest.", section: "paddock" },
-    { id: "s-5", headline: "A sixth second story", short: "Not a slot.", section: "pitch" },
-  ] } };
+const E = { date: "2026-09-29", edition_no: 5,
+  front: {
+    lead: { id: "lead-1", headline: "Russell beats Verstappen by 0.196s", short: "A photo finish in Baku.", section: "paddock", sources: [{ label: "Formula 1", url: "https://formula1.com/a" }] },
+    seconds: [
+      { id: "s-1", headline: "Madrid beat Villarreal 2-0", short: "Two second-half goals.", section: "madrid" },
+      { id: "s-2", headline: "Floods kill 18 across north India", short: "Rivers rose after heavy rain.", section: "dateline" },
+    ],
+    briefs: [{ id: "b-1", headline: "A brief", text: "Short." }] },
+  sections: { sidelines: { stories: [{ id: "trophy", headline: "India win the kabaddi gold", short: "Ninth title.", section: "sidelines" }] } },
+  art_orders: [{ story_id: "lead-1" }, { story_id: "trophy" }, { story_id: "s-2" }, { story_id: "b-1" }] };
 
-test("slots: the lead and up to four seconds, tragedy skipped", () => {
+test("orders: Bhide's picks from any section, with the full story and sources; tragedy and briefs dropped", () => {
   const { slots, skipped } = artSlots(E);
-  assert.deepEqual(slots.map(s => `${s.slot}:${s.story_id}`), ["lead:lead-1", "second:s-1", "second:s-3", "second:s-4"]);
-  assert.deepEqual(skipped.map(s => s.story_id), ["s-2"]);
+  assert.deepEqual(slots.map(s => `${s.kind}:${s.story_id}`), ["wide:lead-1", "standard:trophy"]);
+  assert.deepEqual(slots[0].sources, [{ label: "Formula 1", url: "https://formula1.com/a" }]);
+  assert.deepEqual(skipped.map(s => s.story_id), ["s-2", "b-1"]);
   assert.equal(brief(E).folder, "public/art/2026-09-29/");
+  assert.equal(brief({ ...E, art_orders: undefined }).orders.length, 0);
 });
 
 test("image sizes read from the file", () => {
@@ -32,25 +35,24 @@ test("image sizes read from the file", () => {
   assert.equal(imageSize(Buffer.from("not an image at all, just text")), null);
 });
 
-test("check: only images that fit their slot are shown, with reasons for the rest", () => {
-  const files = { "lead.webp": webpX(1600, 900), "s1.png": png(1200, 900), "square.png": png(900, 900), "tiny.png": png(400, 300), "big.jpg": Buffer.concat([jpeg(1200, 900), Buffer.alloc(500 * 1024)]) };
+test("check: only images that fit their order are shown, with reasons for the rest", () => {
+  const files = { "lead.webp": webpX(1600, 900), "t.png": png(1200, 900), "square.png": png(900, 900), "tiny.png": png(400, 300), "big.jpg": Buffer.concat([jpeg(1200, 900), Buffer.alloc(500 * 1024)]) };
   const manifest = { date: "2026-09-29", items: [
-    { story_id: "lead-1", file: "lead.webp", alt: "A vault door held shut." },
-    { story_id: "s-1", file: "s1.png", alt: "A white shirt raising two fingers." },
-    { story_id: "s-1", file: "s1.png", alt: "Again." },
-    { story_id: "s-2", file: "s1.png", alt: "Skipped story." },
-    { story_id: "s-3", file: "square.png", alt: "Wrong shape." },
-    { story_id: "s-4", file: "tiny.png", alt: "Too small." },
-    { story_id: "s-5", file: "s1.png", alt: "Not a slot." },
-    { story_id: "s-4", file: "../../content/latest.json", alt: "Escape." },
-    { story_id: "s-4", file: "big.jpg", alt: "Too heavy." },
-    { story_id: "s-4", file: "missing.webp", alt: "Missing." },
+    { story_id: "lead-1", file: "lead.webp", alt: "Two cars at a photo finish." },
+    { story_id: "trophy", file: "t.png", alt: "A kabaddi team lifting a trophy." },
+    { story_id: "trophy", file: "t.png", alt: "Again." },
+    { story_id: "s-1", file: "t.png", alt: "Not ordered." },
+    { story_id: "s-2", file: "t.png", alt: "Dropped order." },
+    { story_id: "lead-1", file: "square.png", alt: "Second for the lead." },
   ] };
   const { items, rejected } = checkArt(E, manifest, f => files[f] || null);
-  assert.deepEqual(items.map(i => `${i.slot}:${i.story_id}:${i.src}`), ["lead:lead-1:/art/2026-09-29/lead.webp", "second:s-1:/art/2026-09-29/s1.png"]);
-  assert.equal(rejected.length, 8);
-  assert.ok(rejected.some(r => /not 4:3/.test(r.reason)));
-  assert.ok(rejected.some(r => /plain name/.test(r.reason)));
-  assert.ok(rejected.some(r => /limit is 400 KB/.test(r.reason)));
+  assert.deepEqual(items.map(i => `${i.slot}:${i.story_id}:${i.src}`), ["wide:lead-1:/art/2026-09-29/lead.webp", "standard:trophy:/art/2026-09-29/t.png"]);
+  assert.equal(rejected.length, 4);
+  const one = (id, file) => checkArt({ ...E }, { date: "2026-09-29", items: [{ story_id: id, file, alt: "A drawing." }] }, f => files[f] || null).rejected[0]?.reason;
+  assert.match(one("trophy", "square.png"), /not 4:3/);
+  assert.match(one("trophy", "tiny.png"), /not 4:3|wide/);
+  assert.match(one("trophy", "big.jpg"), /limit is 400 KB/);
+  assert.match(one("trophy", "../../content/latest.json"), /plain name/);
+  assert.match(one("trophy", "missing.webp"), /not found/);
   assert.equal(checkArt(E, { date: "2026-09-28", items: [] }, () => null).items.length, 0);
 });

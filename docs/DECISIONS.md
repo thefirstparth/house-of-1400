@@ -326,3 +326,9 @@ Made without Parth, per the build prompt. Change any of them freely.
 - The Ledger's two mood gauges were the paper's own calculation (index range, 7-day and daily move, volatility) and disagreed badly with the published readings on 28 Sep: ours said the US was 80, "Exuberant", CNN said 37, "Fear"; ours said India 40, Tickertape 16. Parth: use Tickertape's Market Mood Index for India and CNN's Fear & Greed Index for the US (1A), in their own bands and words, with a week ago and a month ago and the source named.
 - Never a wrong or missing gauge (2A): each source is tried twice; then the server's last good reading with its own time; then the edition snapshot on the page. Our old calculation is never swapped in, because it measures something else. Editions before 28 Sep keep the calculated reading they printed.
 - No editor's remark on the gauges (3B).
+
+## 28 Sep 2026: Bhide orders the art, Codex designs it
+- Replaces the automatic front-page slots above. Parth: Codex is very good at images, so the idea and the style come from Codex; Bhide only says which stories deserve a drawing. While writing, the run lists 0 to 4 printed stories (any section, never a brief) in the edition's hidden `art_orders` (`{story_id}` only; EDITORIAL.md, Art orders). The build strips them from what readers get and publishes them in `/art/brief.json` with each story in full and its original sources.
+- Two limits stay, both about accuracy, not design: no art for death, disaster or violence (also enforced in code), and never photo-realistic images of real people (cartoon and caricature are fine).
+- Shapes follow where the story sits: 16:9 for the front-page lead, 4:3 everywhere else. The build's image checks and the page's fixed slots are unchanged, so an image can only appear inside the story it was ordered for.
+- Orders are warnings in the validator, never errors: art never holds up the paper.

@@ -23,11 +23,12 @@ for (const f of ["dist/content/latest.json", ...readdirSync("dist/content/editio
   if (!f.endsWith(".json") || !existsSync(f)) continue;
   const e = JSON.parse(readFileSync(f, "utf8"));
   delete e.checks;
+  delete e.art_orders; // Bhide's art orders are for the illustrator (/art/brief.json), not the reader
   if (e.snapshot) delete e.snapshot.movers;
   writeFileSync(f, JSON.stringify(e));
 }
 
-// Front-page illustrations (lib/art.js). The brief for the illustrator comes from today's edition; each day's
+// Illustrations (lib/art.js). The brief for the illustrator comes from today's edition (Bhide's art orders); each day's
 // manifest is checked against its edition and replaced in dist by the checked one, so the page only ever sees
 // images that fit their slot. A bad file never fails the build: it is listed under "rejected" and not shown.
 try {
