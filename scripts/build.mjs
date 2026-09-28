@@ -7,7 +7,15 @@ mkdirSync("dist", { recursive: true });
 cpSync("public", "dist", { recursive: true });
 cpSync("content", "dist/content", { recursive: true, filter: src => !src.endsWith("schema.json") });
 mkdirSync("dist/config", { recursive: true });
-cpSync("config/house.json", "dist/config/house.json");
+// The page reads the config; the daily run's reading list and the trial settings are not for it.
+const config = JSON.parse(readFileSync("config/house.json", "utf8"));
+delete config.sources; delete config.trial;
+writeFileSync("dist/config/house.json", JSON.stringify(config, null, 2) + "\n");
+// The source trial's scorecards for /trial (not the raw reading lists in ledger/trial/wire/).
+if (existsSync("ledger/trial")) {
+  mkdirSync("dist/trial", { recursive: true });
+  for (const f of readdirSync("ledger/trial")) if (f.endsWith(".json")) cpSync(`ledger/trial/${f}`, `dist/trial/${f}`);
+}
 if (!existsSync("dist/content/latest.json")) console.warn("build: no content/latest.json yet");
 // The run's working notes (checks) and the market-movers scan are for the 14:00 run and the validator, not the
 // reader: strip them from the served editions so the page stays light.

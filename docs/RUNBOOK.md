@@ -29,7 +29,7 @@ A daily run only needs to reach GitHub and our Vercel domain. It never calls the
 If `RUN_KEY` is missing or `/api/live` answers 401, record that, skip the snapshot (the page still fetches live data itself) and carry on with the edition.
 
 ## Steps
-1. **Already done?** Fetch `https://<site>/api/health` (or read `content/latest.json` on `main`). If `edition` equals today's IST date, stop.
+1. **Already done?** Fetch `https://<site>/api/health` (or read `content/latest.json` on `main`). If `edition` equals today's IST date, stop, except: during the source trial (config `trial`, 29 Sep to 8 Oct 2026), if `ledger/trial/YYYY-MM-DD.json` for today is missing on `main`, do step 12 first, then stop.
 2. **Load context:** `config/house.json`, `ledger/story-ledger.json`, the last 3 editions, new letters to the editor from `node scripts/letters.mjs` (answer each in `checks.letters`; see EDITORIAL.md, Letters). Work out the weekday profile.
 3. **Live snapshot:** `node scripts/snapshot.mjs content/editions/YYYY-MM-DD.json` calls every `/api/live/*` function on our Vercel site (with `RUN_KEY`) and stores the results under `snapshot` (fallback values with `as_of`). Never call the third-party APIs directly in a daily run.
 4. **Chronology:** build the ordered fixture timelines (EDITORIAL.md, Sports chronology). Save them in memory for every section.
@@ -40,18 +40,4 @@ If `RUN_KEY` is missing or `/api/live` answers 401, record that, skip the snapsh
 9. **Publish:** write `content/editions/YYYY-MM-DD.json`, copy to `content/latest.json`, update `content/archive.json` and `ledger/story-ledger.json`, and include `ledger/betting-carry.json`, `ledger/letters-inbox.json` and `ledger/letters-handled.json`. One commit, message `Edition YYYY-MM-DD`, push to `main`.
 10. **Verify:** poll `/api/health` until it reports today's date (up to 10 minutes).
 11. **Notify:** only after step 10 passes, `curl -s -X POST "https://house14.vercel.app/api/notify?run=<main|retry1|retry2|retry3>"` (no key needed; it sends at most once per edition). Telegram gets the lead, At a Glance, the editor's note and a one-line run status. A Vercel cron at 16:00 IST sends the summary if a run forgot, or one "no paper today" message if nothing went live. If Telegram is not configured it answers `sent: false`; carry on.
-
-## Failure handling
-- Any step fails: fix what can be fixed within the run and continue. If the run cannot publish, stop cleanly. The next retry picks it up.
-- If research is partial, publish with fewer stories rather than nothing, as long as validation passes.
-- A live function failing never blocks the edition; the snapshot records it.
-- If all four runs fail, the site keeps yesterday's edition and shows a small "Today's paper is late" line automatically after 16:30 IST. This is the last resort.
-
-## Your Desk
-Only if Gmail and Google Calendar tools are available in the run. If they are not, omit the section. Never write personal data anywhere except the edition JSON in this private repo. The site has no password (Parth keeps the link private), so keep Your Desk to what he needs: no message bodies, no email addresses, no codes or account details.
-
-## Posters (16:00 IST, separate routine)
-After the edition is live, a routine at 16:00 IST captures every poster view for Google Drive.
-1. `node scripts/posters.mjs` (waits up to 60 minutes for `/api/health` to report today, then screenshots the five poster views, desktop and phone, into `public/posters/latest/` with `manifest.json`). If today's edition never goes live, it exits without capturing; stop there.
-2. Commit only `public/posters/latest/`, message `Posters YYYY-MM-DD`, push to main.
-3. The Google Apps Script in `docs/drive-sync.gs`, running in Parth's Google account, copies the new set into Drive within the hour: "The House of 1400 · Posters" / YYYY-MM-DD.
+12. **Source trial (29 Sep to 8 Oct 2026 only; config `trial`).** Only after step 10 has passed, so it can never delay or change the paper: `node scripts/trial.mjs YYYY-MM-DD`. It asks the trial sources (`/api/live/wire`, `tennis_players`, `screen`, `nse`, `alerts`, `cricket_where`, `intl_football`, `calendar`) what they would have given the paper at the cut and scores that against the published edition. Commit only `ledger/trial/`, message `Trial YYYY-MM-DD`, push to `main`. If it fails, record nothing and stop; never edit the edition because of it. Never run it, or read `ledger/trial/`, before the edition is published: during the trial the paper is made exactly as before.

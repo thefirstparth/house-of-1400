@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Source Trial</title>
+<link rel="icon" href="/favicon.svg">
+<style>
+:root { --paper: #ebe6da; --card: #f4f0e6; --ink: #191816; --muted: #4f4a41; --rule: #b3aa98; --good: #1f6b3a; --bad: #9b2a1f; --warn: #8a5a00; --chip: #e2dccd; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #171614; --card: #201f1c; --ink: #ece6d8; --muted: #b4ab99; --rule: #4a453c; --good: #7fcf95; --bad: #f09a8e; --warn: #e8c070; --chip: #2b2925; } }
+:root[data-theme="dark"] { --paper: #171614; --card: #201f1c; --ink: #ece6d8; --muted: #b4ab99; --rule: #4a453c; --good: #7fcf95; --bad: #f09a8e; --warn: #e8c070; --chip: #2b2925; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.55 Georgia, "Source Serif 4", serif; }
+main { max-width: 980px; margin: 0 auto; padding: 24px 16px 64px; }
+h1 { font-size: 30px; line-height: 1.15; margin: 0 0 6px; }
+h2 { font: 700 13px/1.3 system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; margin: 34px 0 10px; padding-top: 12px; border-top: 2px solid var(--ink); }
+p { margin: 0 0 10px; }
+.lede { color: var(--muted); max-width: 64ch; }
+.sans, table, .chips, .kpis, select { font-family: system-ui, -apple-system, "Instrument Sans", sans-serif; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 16px 0; }
+.kpi { background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px; }
+.kpi b { display: block; font-size: 26px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.kpi span { font-size: 14px; color: var(--muted); }
+.wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-size: 13px; color: var(--muted); font-weight: 600; }
+td.num, th.num { text-align: right; white-space: nowrap; }
+td:first-child a { white-space: nowrap; }
+.good { color: var(--good); } .bad { color: var(--bad); } .warn { color: var(--warn); }
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; }
+.chip { background: var(--chip); border-radius: 999px; padding: 3px 10px; font-size: 13px; }
+select { font-size: 16px; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--rule); background: var(--card); color: var(--ink); }
+details { margin: 6px 0; } summary { cursor: pointer; font-family: system-ui, sans-serif; font-size: 15px; }
+.bar { height: 6px; background: var(--chip); border-radius: 3px; overflow: hidden; min-width: 60px; }
+.bar i { display: block; height: 100%; background: var(--good); }
+.note { background: var(--card); border-left: 3px solid var(--rule); padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 10px 0; }
+.empty { color: var(--muted); font-style: italic; }
+a { color: inherit; }
+</style>
+</head>
+<body>
+<main>
+  <p class="sans small muted">The House of 1400 · behind the scenes</p>
+  <h1>Source trial</h1>
+  <p class="lede">For ten editions the paper is made exactly as before. After each one goes live, the new sources are asked what they would have given it at the 14:00 cut, and the answers are compared with what was printed. Nothing on this page reaches the paper.</p>
+  <div id="app"><p class="empty">Loading the scorecards…</p></div>
+</main>
+<script type="module">
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const pct = (a, b) => b ? Math.round(100 * a / b) : null;
+const fmtDay = d => new Date(d + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
+const ist = u => u ? new Date(u).toLocaleString("en-GB", { timeZone: "Asia/Kolkata", weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) + " IST" : "";
+const table = (head, rows) => rows.length ? `<div class="wrap"><table><thead><tr>${head.map(h => `<th${h.num ? ' class="num"' : ""}>${esc(h.t ?? h)}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table></div>` : `<p class="empty">Nothing today.</p>`;
+
+let NAMES = {};
+try { const c = await (await fetch("/config/house.json")).json(); for (const s of c.sections) NAMES[s.id] = s.name; } catch {}
+NAMES.cards = "Cards & Points";
+
+let index;
+try { index = await (await fetch("/trial/index.json", { cache: "no-store" })).json(); }
+catch { $("#app").innerHTML = `<p class="empty">The first scorecard appears after the first trial edition (${"29 Sep"}).</p>`; throw 0; }
+
+function overview() {
+  const rows = index.days.map(d => `<tr><td><a href="#${d.date}">${esc(fmtDay(d.date))}</a></td>
+    <td class="num">${d.coverage_pct ?? "–"}%</td><td class="num">${d.india_missed ?? "–"}</td><td class="num">${d.world_missed ?? "–"}</td>
+    <td class="num">${d.tier3_only ?? "–"}</td><td class="num ${d.tennis_disagreements ? "warn" : ""}">${d.tennis_disagreements ?? "–"}</td><td class="num ${d.sources_failed ? "bad" : ""}">${d.sources_failed ?? "–"}</td></tr>`);
+  return `<h2>Every day so far · ${index.days.length} of 10</h2>
+  <p class="small muted sans">Trial editions ${esc(fmtDay(index.from))} to ${esc(fmtDay(index.until))}.</p>
+  ${table(["Edition", { t: "Printed stories already in the list", num: 1 }, { t: "India stories to judge", num: 1 }, { t: "World stories to judge", num: 1 }, { t: "Stories on weak sources only", num: 1 }, { t: "Tennis disagreements", num: 1 }, { t: "Sources that failed", num: 1 }], rows)}`;
+}
+
+function day(c) {
+  const out = [];
+  const cov = c.coverage, s = c.summary;
+  out.push(`<h2>${esc(fmtDay(c.date))} in detail</h2>
+  <p class="small muted sans">News window ${esc(ist(c.window.from))} to ${esc(ist(c.window.to))}. Scored ${esc(ist(c.generated_at))}.</p>
+  <div class="kpis">
+    <div class="kpi"><b>${s.coverage_pct ?? "–"}%</b><span>of printed stories were already in the new reading list</span></div>
+    <div class="kpi"><b>${s.india_missed ?? "–"}</b><span>India stories the list had that the paper did not print (to judge)</span></div>
+    <div class="kpi"><b>${s.tier3_only ?? "–"}</b><span>printed stories resting only on weak sources</span></div>
+    <div class="kpi"><b>${s.sources_failed ?? "–"}</b><span>trial sources that failed</span></div>
+  </div>`);
+
+  if (cov) {
+    const secs = Object.entries(cov.by_section).sort((a, b) => b[1].printed - a[1].printed);
+    out.push(`<h2>1 · Would the reading list have had it?</h2>
+    <p class="lede">Each printed story, and whether the new reading list already carried it at the cut. A story found by research alone is where research earns its keep.</p>
+    ${table(["Section", { t: "Printed", num: 1 }, { t: "In the list", num: 1 }, ""], secs.map(([k, v]) => `<tr><td>${esc(NAMES[k] || k)}</td><td class="num">${v.printed}</td><td class="num">${v.found}</td><td style="width:30%"><div class="bar"><i style="width:${pct(v.found, v.printed)}%"></i></div></td></tr>`))}
+    <details><summary>Every story and its match</summary>${table(["Section", "Printed headline", "Reading list"], cov.items.map(i => `<tr><td class="small">${esc(NAMES[i.section] || i.section)}</td><td>${esc(i.headline)}</td><td class="small ${i.found ? "" : "warn"}">${i.found ? `${esc(i.match.title)} <span class="muted">· ${esc(i.match.outlet)}${i.match.how === "same page" ? " · same page" : ""}</span>` : "Not in the list: found by research"}</td></tr>`))}</details>`);
+  }
+
+  if (c.missed) {
+    const list = (rows, show) => table(["Story", show, "Outlets"], rows.map(r => `<tr><td>${esc(r.title)}</td><td class="num">${r[show === "National outlets" ? "national" : "n"]}</td><td class="small muted">${esc(r.outlets.join(", "))}</td></tr>`));
+    out.push(`<h2>2 · What the list had that the paper did not print</h2>
+    <p class="lede">For you to judge. Many are rightly left out (celebrity, viral, local); any that you would have wanted is a story the new list would have added.</p>
+    <p class="sans small"><b>India</b> · led by three or more national outlets: ${c.missed.india.total}, of which the paper covered ${c.missed.india.covered}.</p>
+    ${list(c.missed.india.not_covered, "National outlets")}
+    <p class="sans small" style="margin-top:16px"><b>World</b> · carried by six or more outlets: ${c.missed.world.total}, of which the paper covered ${c.missed.world.covered}.</p>
+    ${list(c.missed.world.not_covered, "Outlets")}`);
+  }
+
+  if (c.talk?.rows) out.push(`<h2>3 · Talk of the Day: were Google's own articles as good?</h2>
+    <p class="lede">Google Trends attaches two or three articles to each term. If the best of them is as good a source as the one the paper found by searching, the search could be skipped.</p>
+    <p class="sans small">As good or better: <b>${c.talk.as_good} of ${c.talk.total}</b>.</p>
+    ${table(["Term", "Paper cited", "Best attached article"], c.talk.rows.map(r => `<tr><td>${esc(r.term)}</td><td class="small">${esc(r.printed || "–")} <span class="muted">${r.printed_tier ? `tier ${r.printed_tier}` : ""}</span></td><td class="small ${r.attached_as_good ? "good" : "muted"}">${r.best_attached ? `${esc(r.best_attached.outlet)} <span class="muted">tier ${r.best_attached.tier}</span>` : "none attached"}</td></tr>`))}`);
+
+  if (Array.isArray(c.tennis)) out.push(`<h2>4 · Tennis: ESPN against the paper</h2>
+    <p class="lede">If ESPN's next match agrees with the researched one every day, Deuce can take it straight from ESPN.</p>
+    ${table(["Player", "ESPN says", "Paper said", "Verdict"], c.tennis.map(t => `<tr><td>${esc(t.player)}</td><td class="small">${t.espn ? `${esc(t.espn.event)}, ${esc(t.espn.round || "")} v ${esc(t.espn.opponent || "TBD")} · ${esc(ist(t.espn.when_utc))}` : "no match listed"}</td><td class="small">${t.paper ? esc(t.paper.text) : esc(t.paper_event || "no match")}</td><td class="small ${t.verdict.startsWith("agree") ? "good" : "warn"}">${esc(t.verdict)}</td></tr>`))}`);
+
+  if (c.screen?.titles) {
+    const k = c.screen.keys;
+    out.push(`<h2>5 · Screen & Stage: ratings and charts</h2>
+    ${k && (!k.omdb || !k.tmdb) ? `<p class="note sans small">${!k.omdb ? "The OMDb key is not set in Vercel. " : ""}${!k.tmdb ? "The TMDB key is not set in Vercel." : ""}</p>` : ""}
+    ${table(["Title", "Paper's verdict", { t: "IMDb", num: 1 }, { t: "Rotten Tomatoes", num: 1 }, { t: "Metacritic", num: 1 }, "Streaming in India (TMDB)", "Paper said"], c.screen.titles.map(t => `<tr><td>${esc(t.title)}</td><td>${esc(t.verdict || "")}</td><td class="num">${esc(t.imdb ?? "–")}</td><td class="num">${esc(t.rotten_tomatoes ?? "–")}</td><td class="num">${esc(t.metacritic ?? "–")}</td><td class="small">${esc((t.tmdb_stream_in || []).join(", ") || (t.tmdb_error ? "–" : "not streaming"))}</td><td class="small">${esc(t.where || "")}</td></tr>`))}
+    <p class="sans small" style="margin-top:12px"><b>India's JustWatch top 10 not in the paper:</b></p><div class="chips">${Array.isArray(c.screen.chart_not_printed) ? c.screen.chart_not_printed.map(x => `<span class="chip">${esc(x)}</span>`).join("") : `<span class="muted small">${esc(c.screen.chart_not_printed?.error || "unavailable")}</span>`}</div>
+    <p class="sans small" style="margin-top:12px"><b>Films Sacnilk is tracking at the box office:</b></p><div class="chips">${Array.isArray(c.screen.box_office_tracked) ? c.screen.box_office_tracked.map(x => `<span class="chip">${esc(x)}</span>`).join("") : `<span class="muted small">${esc(c.screen.box_office_tracked?.error || "unavailable")}</span>`}</div>`);
+  }
+
+  if (c.movers) {
+    const m = c.movers;
+    out.push(`<h2>6 · The Ledger: NSE's own data against the current scan</h2>
+    <p class="sans">${m.nse_data_date ? `NSE's data was for <b>${esc(m.nse_data_date)}</b>; the paper's scan was for <b>${esc(m.yahoo_latest_session)}</b> ${m.days_behind ? `<span class="bad">(${m.days_behind} day(s) behind)</span>` : `<span class="good">(same session)</span>`}.` : `<span class="bad">NSE did not answer.</span>`}</p>
+    ${Array.isArray(m.nse_moves_not_flagged) ? `<p class="sans small">Moves of 8% or more on NSE that the scan did not flag: ${m.nse_moves_not_flagged.length ? m.nse_moves_not_flagged.map(esc).join(", ") : "none"}.</p>` : m.nse_moves_not_flagged ? `<p class="sans small muted">${esc(m.nse_moves_not_flagged)}.</p>` : ""}
+    ${m.corporate_actions ? `<p class="sans small">Corporate actions in the last 30 days for flagged stocks: ${Object.entries(m.corporate_actions).map(([k, v]) => `${esc(k)} ${Array.isArray(v) ? (v.length ? v.map(a => esc(a.subject || a.purpose || JSON.stringify(a))).join("; ") : "none") : "error"}`).join(" · ")}</p>` : ""}`);
+  }
+
+  if (Array.isArray(c.cricket_where)) out.push(`<h2>7 · Cricket: where to watch</h2>
+    <p class="lede">WhereIsCricket's broadcaster for each India match, as one of the two confirmations the Fixture List needs.</p>
+    ${table(["Match", "Starts", "TV", "Streaming", "Paper's fixture"], c.cricket_where.map(r => `<tr><td>${esc(r.match)}</td><td class="small">${esc(ist(r.when_utc))}</td><td class="small">${esc(r.tv || "–")}</td><td class="small">${esc(r.ott || "–")}</td><td class="small">${r.paper_fixture ? `${esc(r.paper_fixture)}${r.paper_where ? ` · where: ${esc(r.paper_where)}` : " · <span class=muted>no where printed</span>"}` : '<span class="muted">not in the fixture list</span>'}</td></tr>`))}`);
+
+  out.push(`<h2>8 · Weather alerts, internationals, calendar</h2>
+    <p class="sans small"><b>Official weather alerts near Bengaluru, Ranchi or Prayagraj:</b> ${Array.isArray(c.alerts) ? (c.alerts.length ? "" : "none today.") : "unavailable."}</p>
+    ${Array.isArray(c.alerts) && c.alerts.length ? table(["City", "Severity", "What", "Until"], c.alerts.map(a => `<tr><td>${esc(a.city)}</td><td class="${/warning|red|orange/i.test(a.severity + a.colour) ? "bad" : "warn"}">${esc(a.severity)}</td><td class="small">${esc(a.type)} · ${esc(a.area)}${a.message ? `<br><span class="muted">${esc(a.message)}</span>` : ""}</td><td class="small">${esc(a.until)}</td></tr>`)) : ""}
+    <p class="sans small" style="margin-top:12px"><b>National-team football in the next week:</b> ${c.internationals ? c.internationals.upcoming.length ? "" : "none scheduled." : "unavailable."}</p>
+    ${c.internationals?.upcoming?.length ? `<div class="chips">${c.internationals.upcoming.map(m => `<span class="chip">${esc(m.home)} v ${esc(m.away)} · ${esc(ist(m.when_utc))}</span>`).join("")}</div>` : ""}
+    <p class="sans small" style="margin-top:12px"><b>Official dates in the next 30 days:</b></p>
+    <div class="chips">${[...(Array.isArray(c.calendar?.fomc) ? c.calendar.fomc : []), ...(Array.isArray(c.calendar?.india_holidays) ? c.calendar.india_holidays : [])].sort((a, b) => a.date.localeCompare(b.date)).map(x => `<span class="chip">${esc(fmtDay(x.date))} · ${esc(x.what)}</span>`).join("") || '<span class="muted small">none</span>'}</div>`);
+
+  if (c.sources_quality) {
+    const q = c.sources_quality;
+    out.push(`<h2>9 · Source quality</h2>
+    <p class="sans small">Links cited: <b>${q.links_by_tier[1]}</b> official or primary · <b>${q.links_by_tier[2]}</b> reputable outlets · <b>${q.links_by_tier[3]}</b> other.</p>
+    ${q.tier3_only.length ? table(["Section", "Story resting only on other sources", "Sites"], q.tier3_only.map(w => `<tr><td class="small">${esc(NAMES[w.section] || w.section)}</td><td>${esc(w.headline)}</td><td class="small muted">${esc(w.domains.join(", "))}</td></tr>`)) : `<p class="sans small good">Every printed story had at least one official or reputable source.</p>`}`);
+  }
+
+  out.push(`<h2>10 · Health of the trial sources</h2>
+    ${table(["Source", "Result", { t: "Time", num: 1 }], Object.entries(c.sources).map(([k, v]) => `<tr><td>${esc(k.replace(/_/g, " "))}</td><td class="small ${v.ok ? "good" : "bad"}">${v.ok ? "ok" : esc(v.error)}</td><td class="num small">${(v.ms / 1000).toFixed(1)} s</td></tr>`))}
+    ${c.feeds ? `<p class="sans small" style="margin-top:10px">Reading list: ${c.feeds.total} feeds, ${c.feeds.items} items, ${c.feeds.stories} grouped stories. ${c.feeds.failed.length ? `<span class="bad">Failed: ${esc(c.feeds.failed.join("; "))}.</span>` : "None failed."} ${c.feeds.empty.length ? `<span class="muted">Nothing inside the window: ${esc(c.feeds.empty.join(", "))}.</span>` : ""}</p>` : ""}`);
+  return out.join("");
+}
+
+async function show(date) {
+  let c;
+  try { c = await (await fetch(`/trial/${date}.json`, { cache: "no-store" })).json(); } catch { $("#detail").innerHTML = `<p class="empty">No scorecard for ${esc(date)}.</p>`; return; }
+  $("#detail").innerHTML = day(c);
+}
+
+const dates = index.days.map(d => d.date);
+$("#app").innerHTML = `${overview()}
+  <p class="sans" style="margin-top:22px"><label>Show a day: <select id="pick">${dates.slice().reverse().map(d => `<option value="${d}">${esc(fmtDay(d))}</option>`).join("")}</select></label></p>
+  <div id="detail"></div>`;
+const want = location.hash.slice(1);
+const first = dates.includes(want) ? want : dates[dates.length - 1];
+$("#pick").value = first;
+$("#pick").onchange = e => { location.hash = e.target.value; };
+window.onhashchange = () => { const d = location.hash.slice(1); if (dates.includes(d)) { $("#pick").value = d; show(d); } };
+if (first) show(first);
+</script>
+</body>
+</html>

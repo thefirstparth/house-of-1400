@@ -548,5 +548,719 @@
   },
   "site": {
     "telegram_ping": "lead headline + link, only after the edition is verified live"
+  },
+  "sources": {
+    "note": "The daily reading list (the Wire), read by /api/live/wire. During the source trial (see `trial`) the daily run does not use it while making the paper; scripts/trial.mjs reads it only after the edition is live. kind: signal = Google News top and topic pages (their order and related-coverage lists rank and group the day), search = Google News search (discovery only, never cited), official = a regulator or body, news = an outlet. Stories never cite the Wire: they cite the publisher's own page. Tested 28 Sep 2026.",
+    "national_outlets": [
+      "The Hindu",
+      "The Indian Express",
+      "Indian Express",
+      "Hindustan Times",
+      "The Times of India",
+      "Times of India",
+      "NDTV",
+      "ThePrint",
+      "The Economic Times",
+      "Economic Times",
+      "Mint",
+      "Livemint",
+      "Business Standard",
+      "Deccan Herald",
+      "The Tribune",
+      "Tribune India",
+      "Telegraph India",
+      "The Telegraph",
+      "India Today",
+      "News18",
+      "Scroll.in",
+      "The New Indian Express",
+      "Moneycontrol",
+      "Firstpost",
+      "The Wire"
+    ],
+    "feeds": [
+      {
+        "id": "gn-in-top",
+        "section": "front",
+        "name": "Google News India, top stories",
+        "url": "https://news.google.com/rss?hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "signal"
+      },
+      {
+        "id": "gn-in-nation",
+        "section": "dateline",
+        "name": "Google News India, nation",
+        "url": "https://news.google.com/rss/headlines/section/topic/NATION?hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "signal"
+      },
+      {
+        "id": "gn-in-world",
+        "section": "dateline",
+        "name": "Google News India, world",
+        "url": "https://news.google.com/rss/headlines/section/topic/WORLD?hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "signal"
+      },
+      {
+        "id": "gn-in-business",
+        "section": "ledger",
+        "name": "Google News India, business",
+        "url": "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "signal"
+      },
+      {
+        "id": "gn-in-sports",
+        "section": "sidelines",
+        "name": "Google News India, sports",
+        "url": "https://news.google.com/rss/headlines/section/topic/SPORTS?hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "signal"
+      },
+      {
+        "id": "gn-in-tech",
+        "section": "workshop",
+        "name": "Google News India, technology",
+        "url": "https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "signal"
+      },
+      {
+        "id": "gn-us-top",
+        "section": "front",
+        "name": "Google News US, top stories",
+        "url": "https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en",
+        "kind": "signal"
+      },
+      {
+        "id": "gn-us-business",
+        "section": "ledger",
+        "name": "Google News US, business",
+        "url": "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-US&gl=US&ceid=US:en",
+        "kind": "signal"
+      },
+      {
+        "id": "hindu-national",
+        "section": "dateline",
+        "name": "The Hindu, national",
+        "url": "https://www.thehindu.com/news/national/feeder/default.rss",
+        "kind": "news"
+      },
+      {
+        "id": "ie-india",
+        "section": "dateline",
+        "name": "The Indian Express, India",
+        "url": "https://indianexpress.com/section/india/feed/",
+        "kind": "news",
+        "max": 60
+      },
+      {
+        "id": "ht-india",
+        "section": "dateline",
+        "name": "Hindustan Times, India",
+        "url": "https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml",
+        "kind": "news"
+      },
+      {
+        "id": "ndtv-top",
+        "section": "dateline",
+        "name": "NDTV, top stories",
+        "url": "https://feeds.feedburner.com/ndtvnews-top-stories",
+        "kind": "news"
+      },
+      {
+        "id": "toi-top",
+        "section": "dateline",
+        "name": "The Times of India, top stories",
+        "url": "https://timesofindia.indiatimes.com/rssfeedstopstories.cms",
+        "kind": "news"
+      },
+      {
+        "id": "pib",
+        "section": "dateline",
+        "name": "PIB (English)",
+        "url": "https://pib.gov.in/RssMain.aspx?ModId=6&Lang=1&Regid=3",
+        "kind": "official"
+      },
+      {
+        "id": "bbc-world",
+        "section": "dateline",
+        "name": "BBC, world",
+        "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+        "kind": "news"
+      },
+      {
+        "id": "guardian-world",
+        "section": "dateline",
+        "name": "The Guardian, world",
+        "url": "https://www.theguardian.com/world/rss",
+        "kind": "news"
+      },
+      {
+        "id": "aljazeera",
+        "section": "dateline",
+        "name": "Al Jazeera",
+        "url": "https://www.aljazeera.com/xml/rss/all.xml",
+        "kind": "news"
+      },
+      {
+        "id": "reuters",
+        "section": "dateline",
+        "name": "Reuters (via Google News)",
+        "url": "https://news.google.com/rss/search?q=site%3Areuters.com%20when%3A1d&hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "search"
+      },
+      {
+        "id": "ap",
+        "section": "dateline",
+        "name": "AP (via Google News)",
+        "url": "https://news.google.com/rss/search?q=site%3Aapnews.com%20when%3A1d&hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "search"
+      },
+      {
+        "id": "rbi-press",
+        "section": "ledger",
+        "name": "RBI press releases",
+        "url": "https://www.rbi.org.in/pressreleases_rss.xml",
+        "kind": "official",
+        "max_age_h": 72
+      },
+      {
+        "id": "rbi-notifications",
+        "section": "ledger",
+        "name": "RBI notifications",
+        "url": "https://www.rbi.org.in/notifications_rss.xml",
+        "kind": "official",
+        "max_age_h": 72
+      },
+      {
+        "id": "rbi-speeches",
+        "section": "ledger",
+        "name": "RBI speeches",
+        "url": "https://www.rbi.org.in/speeches_rss.xml",
+        "kind": "official",
+        "max_age_h": 72
+      },
+      {
+        "id": "sebi",
+        "section": "ledger",
+        "name": "SEBI",
+        "url": "https://www.sebi.gov.in/sebirss.xml",
+        "kind": "official",
+        "max_age_h": 72
+      },
+      {
+        "id": "et-wealth",
+        "section": "ledger",
+        "name": "ET Wealth",
+        "url": "https://economictimes.indiatimes.com/wealth/rssfeeds/837555174.cms",
+        "kind": "news"
+      },
+      {
+        "id": "mint-money",
+        "section": "ledger",
+        "name": "Mint, money",
+        "url": "https://www.livemint.com/rss/money",
+        "kind": "news"
+      },
+      {
+        "id": "mint-insurance",
+        "section": "ledger",
+        "name": "Mint, insurance",
+        "url": "https://www.livemint.com/rss/insurance",
+        "kind": "news",
+        "max_age_h": 72
+      },
+      {
+        "id": "bs-pf",
+        "section": "ledger",
+        "name": "Business Standard, personal finance",
+        "url": "https://www.business-standard.com/rss/finance/personal-finance-10317.rss",
+        "kind": "news"
+      },
+      {
+        "id": "et-markets",
+        "section": "ledger",
+        "name": "ET Markets",
+        "url": "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",
+        "kind": "news"
+      },
+      {
+        "id": "mint-markets",
+        "section": "ledger",
+        "name": "Mint, markets",
+        "url": "https://www.livemint.com/rss/markets",
+        "kind": "news"
+      },
+      {
+        "id": "bs-markets",
+        "section": "ledger",
+        "name": "Business Standard, markets",
+        "url": "https://www.business-standard.com/rss/markets-106.rss",
+        "kind": "news"
+      },
+      {
+        "id": "bl-markets",
+        "section": "ledger",
+        "name": "BusinessLine, markets",
+        "url": "https://www.thehindubusinessline.com/markets/feeder/default.rss",
+        "kind": "news"
+      },
+      {
+        "id": "ndtv-profit",
+        "section": "ledger",
+        "name": "NDTV Profit",
+        "url": "https://feeds.feedburner.com/ndtvprofit-latest",
+        "kind": "news"
+      },
+      {
+        "id": "marketwatch",
+        "section": "ledger",
+        "name": "MarketWatch, top stories",
+        "url": "https://feeds.content.dowjones.io/public/rss/mw_topstories",
+        "kind": "news"
+      },
+      {
+        "id": "gn-tax",
+        "section": "ledger",
+        "name": "Income tax (via Google News)",
+        "url": "https://news.google.com/rss/search?q=CBDT%20OR%20%22income%20tax%22%20India%20when%3A2d&hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "search"
+      },
+      {
+        "id": "gn-gst",
+        "section": "ledger",
+        "name": "GST (via Google News)",
+        "url": "https://news.google.com/rss/search?q=%22GST%20council%22%20OR%20CBIC%20OR%20%22GST%20rate%22%20when%3A2d&hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "search"
+      },
+      {
+        "id": "gn-cards",
+        "section": "cards",
+        "name": "Credit cards (via Google News)",
+        "url": "https://news.google.com/rss/search?q=%22credit%20card%22%20(devaluation%20OR%20lounge%20OR%20%22annual%20fee%22%20OR%20rewards%20OR%20RBI)%20India%20when%3A2d&hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "search"
+      },
+      {
+        "id": "lfal",
+        "section": "cards",
+        "name": "LiveFromALounge",
+        "url": "https://livefromalounge.com/feed/",
+        "kind": "news",
+        "max_age_h": 72
+      },
+      {
+        "id": "managing-madrid",
+        "section": "madrid",
+        "name": "Managing Madrid",
+        "url": "https://www.managingmadrid.com/rss/current.xml",
+        "kind": "news",
+        "max_age_h": 48
+      },
+      {
+        "id": "gn-madrid",
+        "section": "madrid",
+        "name": "Real Madrid (via Google News)",
+        "url": "https://news.google.com/rss/search?q=%22Real%20Madrid%22%20when%3A1d&hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "search",
+        "max": 40
+      },
+      {
+        "id": "bbc-football",
+        "section": "pitch",
+        "name": "BBC, football",
+        "url": "https://feeds.bbci.co.uk/sport/football/rss.xml",
+        "kind": "news"
+      },
+      {
+        "id": "guardian-football",
+        "section": "pitch",
+        "name": "The Guardian, football",
+        "url": "https://www.theguardian.com/football/rss",
+        "kind": "news"
+      },
+      {
+        "id": "espn-fc",
+        "section": "pitch",
+        "name": "ESPN FC",
+        "url": "https://www.espn.com/espn/rss/soccer/news",
+        "kind": "news"
+      },
+      {
+        "id": "f1-com",
+        "section": "paddock",
+        "name": "Formula 1",
+        "url": "https://www.formula1.com/en/latest/all.xml",
+        "kind": "official",
+        "undated": true
+      },
+      {
+        "id": "motorsport-f1",
+        "section": "paddock",
+        "name": "Motorsport.com, F1",
+        "url": "https://www.motorsport.com/rss/f1/news/",
+        "kind": "news"
+      },
+      {
+        "id": "the-race",
+        "section": "paddock",
+        "name": "The Race",
+        "url": "https://www.the-race.com/feed/",
+        "kind": "news"
+      },
+      {
+        "id": "racefans",
+        "section": "paddock",
+        "name": "RaceFans",
+        "url": "https://www.racefans.net/feed/",
+        "kind": "news"
+      },
+      {
+        "id": "fia",
+        "section": "paddock",
+        "name": "FIA press releases",
+        "url": "https://www.fia.com/rss/press-release",
+        "kind": "official",
+        "max_age_h": 48
+      },
+      {
+        "id": "cricinfo",
+        "section": "crease",
+        "name": "ESPNcricinfo",
+        "url": "https://www.espncricinfo.com/rss/content/story/feeds/0.xml",
+        "kind": "news"
+      },
+      {
+        "id": "cricinfo-india",
+        "section": "crease",
+        "name": "ESPNcricinfo, India",
+        "url": "https://www.espncricinfo.com/rss/content/story/feeds/6.xml",
+        "kind": "news"
+      },
+      {
+        "id": "bbc-cricket",
+        "section": "crease",
+        "name": "BBC, cricket",
+        "url": "https://feeds.bbci.co.uk/sport/cricket/rss.xml",
+        "kind": "news"
+      },
+      {
+        "id": "tennis-majors",
+        "section": "deuce",
+        "name": "Tennis Majors",
+        "url": "https://www.tennismajors.com/feed",
+        "kind": "news"
+      },
+      {
+        "id": "bbc-tennis",
+        "section": "deuce",
+        "name": "BBC, tennis",
+        "url": "https://feeds.bbci.co.uk/sport/tennis/rss.xml",
+        "kind": "news"
+      },
+      {
+        "id": "bbc-sport",
+        "section": "sidelines",
+        "name": "BBC Sport",
+        "url": "https://feeds.bbci.co.uk/sport/rss.xml",
+        "kind": "news"
+      },
+      {
+        "id": "sportstar",
+        "section": "sidelines",
+        "name": "Sportstar",
+        "url": "https://sportstar.thehindu.com/feeder/default.rss",
+        "kind": "news",
+        "max": 60
+      },
+      {
+        "id": "gn-indian-sport",
+        "section": "sidelines",
+        "name": "Indian sport (via Google News)",
+        "url": "https://news.google.com/rss/search?q=kabaddi%20OR%20%22Indian%20hockey%22%20OR%20badminton%20OR%20%22Neeraj%20Chopra%22%20OR%20chess%20India%20when%3A2d&hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "search",
+        "max": 40
+      },
+      {
+        "id": "techmeme",
+        "section": "workshop",
+        "name": "Techmeme",
+        "url": "https://www.techmeme.com/feed.xml",
+        "kind": "news"
+      },
+      {
+        "id": "verge",
+        "section": "workshop",
+        "name": "The Verge",
+        "url": "https://www.theverge.com/rss/index.xml",
+        "kind": "news"
+      },
+      {
+        "id": "techcrunch",
+        "section": "workshop",
+        "name": "TechCrunch",
+        "url": "https://techcrunch.com/feed/",
+        "kind": "news"
+      },
+      {
+        "id": "gsmarena",
+        "section": "workshop",
+        "name": "GSMArena",
+        "url": "https://www.gsmarena.com/rss-news-reviews.php3",
+        "kind": "news"
+      },
+      {
+        "id": "autocar-india",
+        "section": "workshop",
+        "name": "Autocar India",
+        "url": "https://www.autocarindia.com/rss/all",
+        "kind": "news"
+      },
+      {
+        "id": "openai",
+        "section": "workshop",
+        "name": "OpenAI",
+        "url": "https://openai.com/news/rss.xml",
+        "kind": "official",
+        "max_age_h": 72,
+        "max": 20
+      },
+      {
+        "id": "deepmind",
+        "section": "workshop",
+        "name": "Google DeepMind",
+        "url": "https://deepmind.google/blog/rss.xml",
+        "kind": "official",
+        "max_age_h": 72,
+        "max": 20
+      },
+      {
+        "id": "gn-ai-labs",
+        "section": "workshop",
+        "name": "AI labs (via Google News)",
+        "url": "https://news.google.com/rss/search?q=Anthropic%20OR%20OpenAI%20OR%20%22Google%20DeepMind%22%20when%3A1d&hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "search",
+        "max": 40
+      },
+      {
+        "id": "hindu-bengaluru",
+        "section": "namma",
+        "name": "The Hindu, Bengaluru",
+        "url": "https://www.thehindu.com/news/cities/bangalore/feeder/default.rss",
+        "kind": "news"
+      },
+      {
+        "id": "toi-bengaluru",
+        "section": "namma",
+        "name": "The Times of India, Bengaluru",
+        "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128833038.cms",
+        "kind": "news"
+      },
+      {
+        "id": "ht-bengaluru",
+        "section": "namma",
+        "name": "Hindustan Times, Bengaluru",
+        "url": "https://www.hindustantimes.com/feeds/rss/cities/bengaluru-news/rssfeed.xml",
+        "kind": "news"
+      },
+      {
+        "id": "gn-blr-civic",
+        "section": "namma",
+        "name": "Bengaluru civic (via Google News)",
+        "url": "https://news.google.com/rss/search?q=BBMP%20OR%20GBA%20OR%20BMRCL%20OR%20BWSSB%20OR%20BESCOM%20OR%20%22Namma%20Metro%22%20when%3A2d&hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "search"
+      },
+      {
+        "id": "variety",
+        "section": "screen",
+        "name": "Variety",
+        "url": "https://variety.com/feed/",
+        "kind": "news"
+      },
+      {
+        "id": "deadline",
+        "section": "screen",
+        "name": "Deadline",
+        "url": "https://deadline.com/feed/",
+        "kind": "news"
+      },
+      {
+        "id": "ie-entertainment",
+        "section": "screen",
+        "name": "The Indian Express, entertainment",
+        "url": "https://indianexpress.com/section/entertainment/feed/",
+        "kind": "news",
+        "max": 60
+      },
+      {
+        "id": "bollywood-hungama",
+        "section": "screen",
+        "name": "Bollywood Hungama",
+        "url": "https://www.bollywoodhungama.com/rss/news.xml",
+        "kind": "news"
+      }
+    ],
+    "tiers": {
+      "1": [
+        "rbi.org.in",
+        "sebi.gov.in",
+        "pib.gov.in",
+        "irdai.gov.in",
+        "npci.org.in",
+        "incometax.gov.in",
+        "cbic.gov.in",
+        "gst.gov.in",
+        "eci.gov.in",
+        "sci.gov.in",
+        "mea.gov.in",
+        "isro.gov.in",
+        "realmadrid.com",
+        "laliga.com",
+        "uefa.com",
+        "fifa.com",
+        "formula1.com",
+        "fia.com",
+        "atptour.com",
+        "wtatennis.com",
+        "lavercup.com",
+        "bcci.tv",
+        "icc-cricket.com",
+        "olympics.com",
+        "nba.com",
+        "pgatour.com",
+        "openai.com",
+        "anthropic.com",
+        "deepmind.google",
+        "blog.google",
+        "apple.com",
+        "samsung.com",
+        "netflix.com",
+        "bmrc.co.in",
+        "bbmp.gov.in",
+        "imd.gov.in",
+        "federalreserve.gov",
+        "un.org",
+        "who.int",
+        "nseindia.com",
+        "bseindia.com",
+        "prokabaddi.com"
+      ],
+      "2": [
+        "reuters.com",
+        "apnews.com",
+        "bloomberg.com",
+        "ft.com",
+        "wsj.com",
+        "nytimes.com",
+        "washingtonpost.com",
+        "economist.com",
+        "bbc.com",
+        "bbc.co.uk",
+        "theguardian.com",
+        "cnbc.com",
+        "cnn.com",
+        "cbsnews.com",
+        "pbs.org",
+        "npr.org",
+        "usnews.com",
+        "abc.net.au",
+        "irishtimes.com",
+        "thenationalnews.com",
+        "aljazeera.com",
+        "dw.com",
+        "france24.com",
+        "theverge.com",
+        "techcrunch.com",
+        "arstechnica.com",
+        "wired.com",
+        "engadget.com",
+        "gsmarena.com",
+        "techmeme.com",
+        "appleinsider.com",
+        "thenextweb.com",
+        "thehindu.com",
+        "thehindubusinessline.com",
+        "indianexpress.com",
+        "hindustantimes.com",
+        "timesofindia.indiatimes.com",
+        "economictimes.indiatimes.com",
+        "livemint.com",
+        "business-standard.com",
+        "ndtv.com",
+        "ndtvprofit.com",
+        "theprint.in",
+        "scroll.in",
+        "deccanherald.com",
+        "tribuneindia.com",
+        "telegraphindia.com",
+        "newindianexpress.com",
+        "indiatoday.in",
+        "moneycontrol.com",
+        "businesstoday.in",
+        "financialexpress.com",
+        "firstpost.com",
+        "news18.com",
+        "outlookindia.com",
+        "wionews.com",
+        "aninews.in",
+        "ptinews.com",
+        "espn.com",
+        "espn.in",
+        "espncricinfo.com",
+        "skysports.com",
+        "nytimes.com",
+        "marca.com",
+        "as.com",
+        "goal.com",
+        "cbssports.com",
+        "sports.yahoo.com",
+        "managingmadrid.com",
+        "motorsport.com",
+        "autosport.com",
+        "the-race.com",
+        "racefans.net",
+        "crash.net",
+        "wisden.com",
+        "cricbuzz.com",
+        "sportstar.thehindu.com",
+        "tennismajors.com",
+        "golfdigest.com",
+        "variety.com",
+        "deadline.com",
+        "hollywoodreporter.com",
+        "rottentomatoes.com",
+        "metacritic.com",
+        "imdb.com",
+        "bollywoodhungama.com",
+        "autocarindia.com",
+        "livefromalounge.com",
+        "polymarket.com",
+        "upstox.com",
+        "seekingalpha.com"
+      ],
+      "note": "Tier 1: official and primary sources. Tier 2: reputable outlets. Anything else is tier 3. Scored in the trial only, until Parth switches it on (then a validator warning, never a failure)."
+    }
+  },
+  "trial": {
+    "from": "2026-09-29",
+    "until": "2026-10-08",
+    "note": "Ten-edition trial of the new sources (Parth, 28 Sep). The daily run makes the paper exactly as before; after it is live, scripts/trial.mjs collects what the new sources would have given it and scores that against the printed edition (ledger/trial/, the /trial page). Nothing reaches the paper until Parth switches a section on.",
+    "intl_football": [
+      "uefa.nations",
+      "fifa.friendly",
+      "fifa.worldq.uefa",
+      "fifa.worldq.conmebol",
+      "fifa.worldq.afc"
+    ],
+    "alert_places": {
+      "Bengaluru": [
+        "Bengaluru",
+        "Bangalore"
+      ],
+      "Ranchi": [
+        "Ranchi"
+      ],
+      "Prayagraj": [
+        "Prayagraj",
+        "Allahabad"
+      ]
+    },
+    "alert_radius_km": 60
   }
 }
