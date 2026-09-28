@@ -1,20 +1,8 @@
 {
-  "date": "2026-09-27",
+  "date": "2026-09-28",
   "source": "Cricbuzz",
-  "checked_at": "2026-09-27T08:37:46.047Z",
+  "checked_at": "2026-09-28T10:01:53.962Z",
   "matches": [
-    {
-      "desc": "1st ODI",
-      "format": "ODI",
-      "series": "West Indies tour of India, 2026",
-      "opponent": "West Indies",
-      "start": "2026-09-27T08:30:00.000Z",
-      "ist": "Sun 27 Sept, 14:00",
-      "time_announced": true,
-      "ground": "Greenfield International Stadium",
-      "city": "Thiruvananthapuram",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/151532"
-    },
     {
       "desc": "2nd Quarter-Final",
       "format": "T20",
@@ -38,6 +26,18 @@
       "ground": "Barsapara Cricket Stadium",
       "city": "Guwahati",
       "url": "https://www.cricbuzz.com/live-cricket-scores/151543"
+    },
+    {
+      "desc": "2nd Semi-Final",
+      "format": "T20",
+      "series": "Asian Games 2026",
+      "opponent": "TBC",
+      "start": "2026-10-01T04:30:00.000Z",
+      "ist": "Thu 1 Oct, 10:00",
+      "time_announced": true,
+      "ground": "Korogi Sports Park",
+      "city": "Nisshin",
+      "url": "https://www.cricbuzz.com/live-cricket-scores/171060"
     },
     {
       "desc": "3rd ODI",
