@@ -59,8 +59,32 @@ Distinct websites cited per section (3 editions, stories and briefs):
 
 What does not need changing: the live layer's sources and fallbacks, Yahoo plus Moneycontrol for markets, IBJA for gold, Polymarket, Cricbuzz for India's match times, and every two-source rule.
 
-## 2. Friend's repo: kyloprat/kylo-news
-Not reachable. GitHub answers 404 to the page, the git clone and the API, and a web search finds nothing, so it is private or the name is different. To audit it: have kyloprat make it public or add you as a collaborator (then this session can attach it), or send the correct link.
+## 2. Friend's repo: kyloprat/kylo-news ("Morning Paper")
+Private repo; audited from the zip Parth supplied (28 Sep). This is the most engineered of the three, and the most useful evidence, because **it measured itself against this paper.**
+
+### How it works
+A Vercel job gathers everything into a stored "pool": 197 registered feeds plus about 30 data sources. It dedupes and clusters stories, ranks them, and fetches article text for the top ones. A claude.ai routine (Opus, 09:30 IST) then reads a compressed pool (under 150 KB) through their own connector and publishes through the same connector. **The routine does no web research at all: the pool is its only source of facts.** Its sandbox cannot reach the web.
+
+### Their sources (197 feeds, by lane)
+| Lane | Feeds | Highlights |
+|---|---|---|
+| India | 24 | The Hindu, IE (India, Explained, Political Pulse), HT, TOI, ET, Mint, BS, NDTV, ThePrint, Tribune, Deccan Herald; **Google News India Top and Nation**; PIB via Google News; Bengaluru civic (BBMP, BDA, BWSSB, BESCOM, BMRCL) via Google News |
+| Markets and money | 33 | ET, Mint (markets, money, **insurance**), BS (markets, economy, PF), ET Wealth, BusinessLine, **RBI press, notifications, speeches**, SEBI via Google News, TRAI, CNBC, Bloomberg Markets, FT, NYT, Reuters Business via Google News, Moneycontrol PF via Google News; Google News searches for **credit cards, income tax (CBDT), GST**; Tickertape Market Mood and CNN Fear and Greed |
+| World | 32 | BBC, Guardian, NYT, FT, Al Jazeera, DW, NPR, UN News, Reuters and AP via Google News, **Google News World/US Top/US World**; science and climate feeds |
+| Tech | 54 | Verge, TechCrunch, Ars, Wired, Engadget, Guardian and NYT Tech, MIT Tech Review AI, **OpenAI, DeepMind, Google AI, Hugging Face blogs**, AI labs via Google News, security (CISA, CERT-In, Krebs), 9to5Mac/Google, MacRumors, Android Police, many engineering blogs |
+| Sport | 45 | BBC (sport, football, cricket, tennis, golf), Guardian, **ESPNcricinfo**, formula1.com, Motorsport, Autosport, RaceFans, The Race, The Athletic, **Google News India Sports**, international football, ATP/WTA, golf and Indian sport via Google News |
+| Culture | 5 | Variety, Deadline, Guardian TV, streaming via Google News |
+| Trends | 3 | Google Trends IN, US, GB |
+
+Data sources beyond feeds: Yahoo (indices, ~40 instruments), IBJA, **NSE's official MCP servers** (keyless: breadth, top movers, corporate actions, stock history), NSE website APIs (FII/DII, IPO calendar, holidays, corporate announcements), NSDL FPI flows, FRED, bank FD rate pages, InvestorGain IPO GMP, Polymarket, Kalshi, Manifold, The Odds API (key), football-data.org (key), FotMob, ESPN (scoreboards for Nations League and friendlies, NBA, cricket header), Jolpica, OpenF1, **WhereIsCricket** (India TV and streaming per match), a hand-kept broadcast-rights table with as-of dates, **JustWatch India streaming chart** (keyless GraphQL), **TMDB** (key), StreamRank Prime Video India, **Sacnilk** India box office, Netflix Top 10, **Sachet** (NDMA/IMD severe-weather alerts), Open-Meteo, Wikipedia, the Fed's FOMC calendar, Google's Indian holidays calendar, GDELT (rate-limited, unwired).
+
+### What they measured (their spec `gather-quality-design.md`, 26 Sep)
+- **Feeds alone miss much of what this paper prints.** Their benchmark included house14's 25 Sep stories. Their pipeline found 1 of 11 (9%) before their quality work and 27% after it, even with 197 feeds. Missed: the US 10-year yield at its highest since 2007 (no feed carried it), the AI labs' safety body (no feed), premium cards cutting lounge access (only in points blogs), the Election Commission row and the OECD forecast (older than the feeds keep items). **Our research layer is what makes the paper an 8/10; feeds must feed it, not replace it.**
+- **Headline-overlap matching does not group stories.** Two outlets' headlines on one event rarely share enough words: one story from 9 feeds became 14 separate "stories". A looser headline-overlap dedupe they tried wrongly merged different stories 32% of the time, and was rejected.
+- **Google News Top and topic feeds are the best free ranking signal.** Each item carries its position (what leads today) and a list of up to five other outlets that ran the same story. Using those lists to group stories raised recall on their curated list from 31% to 75%.
+- **Feeds forget fast.** Indian top-story feeds hold 10 to 24 hours; Al Jazeera 9. A 24-hour news window needs the gather at the cut, not earlier, and research for anything older.
+- **Google News links need decoding.** Items link to news.google.com; 0 of 489 resolved without a separate decode step. They keep the publisher's name from the feed instead.
+- **Rejected on probe:** Moneycontrol and WSJ feeds (stale for years), ThePrint, Tribune, WION and Deccan Herald (XML their parser rejects), PIB direct (Hindi and undated), SEBI direct (undated), ATP RSS (403), FotMob's API (robots.txt disallows it).
 
 ## 3. Friend's repo: RishabhRaj7/the-daily-index
 Next.js app that builds the paper on request: it reads RSS feeds in code, then Gemini picks and writes. Its sources:
@@ -106,7 +130,13 @@ Refused or stale from here (re-test from Vercel before ruling out): CNBC RSS 403
 Ordered by gain. Each says what protects accuracy.
 
 ### R1. The Wire: one call for the day's news (biggest win)
-A run-only `/api/live/wire` (like `movers`: called by the snapshot, never by the page) that reads about 45 vetted feeds from section 4 in parallel on Vercel and returns compact JSON: for each item the title, outlet, publisher URL, time and a snippet of 300 characters or less. Only items inside the news window (since the previous edition's cut). It dedupes, then **clusters the same story across outlets**. The feed list goes in `config/house.json` under `sources.feeds`, grouped by section, so it can change without code.
+A run-only `/api/live/wire` (like `movers`: called by the snapshot, never by the page) that reads about 45 vetted feeds from section 4 in parallel on Vercel and returns compact JSON: for each item the title, outlet, publisher URL, time and a snippet of 300 characters or less. Only items inside the news window (since the previous edition's cut). The feed list goes in `config/house.json` under `sources.feeds`, grouped by section, so it can change without code.
+
+Lessons from kylo-news, built in from the start:
+- **Group stories by Google News coverage lists, not headline overlap.** Add Google News India Top, India Nation, India Business, India Sports, World, and US Top/Business/Technology as "signal" feeds. Their position ranks the day's leads, and their related-coverage lists say which outlets ran the same story. Headline-overlap matching failed in kylo's measurements (above).
+- **The Wire is a floor and a checklist, never the only source.** Kylo's feed-only paper found 27% of our stories at best. The run keeps researching, and the Wire tells it what the major outlets lead with so nothing obvious is missed.
+- **Gather at the cut.** Feeds keep 9 to 24 hours; call the Wire at 14:00, not earlier.
+- **Cite the publisher, never a Google link.** Resolve Google News links to the outlet's own URL, or find the article on the outlet's site before citing.
 - Replaces the 11 to 12 sweep fetches and most discovery searches with one request.
 - The national rule becomes mechanical: every India cluster carried by two or more national outlets is listed, and the validator checks each one appears in `checks.national`. That is stricter than today.
 - Accuracy guard: the Wire is for discovery only. A story is still verified by reading the article itself, and the two-source rules stay. Web search stays for verification and for anything the feeds do not cover.
@@ -136,18 +166,35 @@ One Google News RSS query per followed subject (Real Madrid, Verstappen, Alcaraz
 ### R9. Fix DATA.md
 Bring it in line with the code (movers, signals, Moneycontrol, air quality, Cricbuzz, ESPN tennis, ESPNcricinfo RSS) so runs stop working around claims that are no longer true.
 
+### R10. Data sources borrowed from kylo-news (probed 28 Sep from the cloud container)
+| Source | Probe | For | Guard |
+|---|---|---|---|
+| **NSE official MCP** (`mcp.nseindia.in`, keyless): market breadth, top movers, corporate actions, stock history, 52-week highs and lows, moving averages | 200, 26 tools across two servers | The Ledger: a second source for movers (today Yahoo only), corporate actions to help answer "why did it move", and NSE-published moving averages | NSE's figures are published, not calculated by us, so they can be one of the two agreeing DMA sources; the two-source rule stays |
+| **Sachet** (NDMA and IMD severe-weather alerts, keyless JSON) | 200, 40 active alerts | Sky & Streets: a line only when Bengaluru, Ranchi or Prayagraj has a WATCH or WARNING | Official; show only watch and warning levels |
+| **WhereIsCricket** (India TV and streaming per match) | 200, 108 listings | The Fixture List "where" for India cricket | One of the two confirmations the rule already asks for |
+| **ESPN soccer scoreboards** (Nations League, friendlies, qualifiers) | 200, 8 Nations League events | The Wider Pitch and The Fixture List on international breaks | Same host we already use |
+| **JustWatch India streaming chart** (keyless GraphQL) | reachable; kylo's verified query needed | Screen & Stage: the popularity starting point, in place of searching FlixPatrol and JustWatch | Chart rank only; verdicts still from reviews |
+| **Sacnilk** India box office | kylo verified 27 Sep | Screen & Stage: Hindi theatrical performance | Label as Sacnilk's figure |
+| **Google News searches for money topics** (credit card changes, CBDT, GST Council, SEBI and PIB site searches), **Mint Insurance**, **RBI speeches** | kylo registry | The Ledger, Money in India, Cards & Points | Discovery only; cite the regulator or outlet |
+| **Calendars**: Fed FOMC page, Google's Indian holidays calendar, NSE trading holidays and IPO calendar | kylo registry | The Week Ahead and the Monday Ledger "watch" list | Dates from the official page |
+
+NSE's website APIs (FII/DII flows, corporate announcements) answered 403 from this machine; kylo reads them from its own machines. Test from Vercel before relying on them.
+
 ### Not recommended
 - Netflix Top 10 TSV (31 MB for a weekly list; research does this fine).
 - Reddit (needs OAuth; weak signal for this paper).
 - Anything that writes from snippets (the-daily-index does this; our paper verifies against the article).
 - Removing web search. It stays for verification and for what no feed covers.
+- Kylo's model: a routine with no web access that writes only from the pool. It is the cheapest per run, but on kylo's own measurements it would have missed most of what this paper printed on 25 Sep.
+- The Odds API, football-data.org and FotMob: need keys or break robots.txt, and ESPN plus Polymarket already cover what the paper prints.
 
 ## 6. What changes for the run
 Today: snapshot, then about 12 sweep fetches, then open-ended search across every section. Proposed: snapshot plus the Wire (one call), OMDb/TMDB for Screen, ESPN for tennis, then targeted reads of the shortlisted articles and search only for gaps and second sources. The run already publishes in 13 to 19 minutes (08:30 UTC start; commits at 08:43 on 27 Sep and 08:49 on 26 Sep), so the main gains are fewer calls and tokens, a steadier set of sources, and national and money coverage checked in code. Run transcripts were not available to this audit, so tool-call counts before and after should be measured on the first week of Wire runs.
 
 ## 7. Suggested build order
 1. R9 (DATA.md) and R4 (tennis): small, no new sources.
-2. R1 Wire + R7 regulators + R5 cricket, with the national-cluster validator check. Test every feed from Vercel first. Run one edition with both the old sweeps and the Wire, and compare.
-3. R3 Trends from attachments, R2 tiers (warn only).
-4. R6 once the keys exist. R8 last.
+2. R1 Wire (with the Google News signal feeds) + R7 regulators + R5 cricket, with the national-cluster validator check. Test every feed from Vercel first. Run one edition with both the old sweeps and the Wire, and compare. Measure recall like kylo did: of the stories the edition printed, how many the Wire had.
+3. R10's NSE MCP (movers cross-check, corporate actions), Sachet alerts, WhereIsCricket, ESPN internationals.
+4. R3 Trends from attachments, R2 tiers (warn only).
+5. R6 (OMDb and TMDB, once the keys exist) with JustWatch and Sacnilk. R8 last.
 Then the design overhaul.
