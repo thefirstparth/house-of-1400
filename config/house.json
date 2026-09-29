@@ -173,6 +173,63 @@
       "palette": "ink"
     }
   ],
+  "desks": [
+    {
+      "id": "front",
+      "name": "Front Page",
+      "heading": false,
+      "sections": [
+        "week"
+      ]
+    },
+    {
+      "id": "news",
+      "name": "News",
+      "sections": [
+        "dateline",
+        "namma"
+      ]
+    },
+    {
+      "id": "money",
+      "name": "Money",
+      "sections": [
+        "ledger"
+      ]
+    },
+    {
+      "id": "sport",
+      "name": "Sport",
+      "sections": [
+        "fixtures",
+        "madrid",
+        "pitch",
+        "paddock",
+        "crease",
+        "deuce",
+        "sidelines"
+      ]
+    },
+    {
+      "id": "tech",
+      "name": "Tech & AI",
+      "sections": [
+        "workshop",
+        "pipeline"
+      ]
+    },
+    {
+      "id": "life",
+      "name": "Life",
+      "sections": [
+        "screen",
+        "sky",
+        "talk",
+        "betting",
+        "bye"
+      ]
+    }
+  ],
   "follows": {
     "football_club": {
       "name": "Real Madrid",

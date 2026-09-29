@@ -28,6 +28,8 @@ Match `design/reference.html` (approved: "Design A with C").
 
 ## Sections, in order
 IDs are stable. Names come from `config/house.json`.
+
+**Desks (from 30 Sep 2026):** on the page the sections below are grouped under six desks, in the order and membership of config `desks`: Front Page (the front, The Week Ahead; no heading), News (Dateline, Namma Beat), Money (The Ledger), Sport (The Fixture List, Madridismo, The Wider Pitch, Paddock Notes, The Crease, Deuce, The Sidelines), Tech & AI (The Workshop, The Pipeline), Life (Screen & Stage, Sky & Streets, Talk of the Day, The Betting Window, Before You Go). Your Desk, Letters and the House Note follow, as before. A desk's heading shows only while one of its sections does; the section index lists sections in page order under each desk's name. Grouping is presentation only: ids, data, rules and checks are unchanged. The list below describes each section; its order is the pre-desk order.
 1. Masthead with ears (weather left, next-up countdown right), folio with day profile line
 2. Front Page: 1 lead, up to 4 second stories, 3 briefs. Lead chosen by ranking, never by section.
 3. The Fixture List: everything coming up, IST, sorted by time. "Where" only when reliably confirmed.

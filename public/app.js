@@ -957,6 +957,21 @@ addEventListener("resize", () => { clearTimeout(balanceT); balanceT = setTimeout
 // The masthead's colour bar, Bhide's idea: the strip a press prints at the edge of the sheet to check its inks, here
 // one patch for each section's colour in the order of the paper, between two registration marks.
 const colourBar = () => `<i class="rm"></i><span>${[...new Set(CFG.sections.map(x => x.palette).filter(p => p && !["ink", "slate"].includes(p)))].map(p => `<b style="background:var(--${p})"></b>`).join("")}</span><i class="rm"></i>`;
+// The desks (config desks, agreed 29 Sep 2026): the sections grouped under six headings on one page. Only the order and
+// the headings change; every section keeps its id, colours and content. Without a desks list the old order stands.
+const OLD_ORDER = ["week", "fixtures", "madrid", "pitch", "paddock", "crease", "deuce", "sidelines", "dateline", "workshop", "pipeline", "ledger", "sky", "namma", "screen", "talk", "betting", "bye"];
+function desksHTML(S) {
+  let h = "";
+  const placed = new Set();
+  for (const d of CFG.desks || []) {
+    const inner = (d.sections || []).filter(id => !placed.has(id)).map(id => (placed.add(id), S[id] || "")).join("");
+    if (!inner) continue;
+    h += `<div class="dgroup" id="dg-${esc(d.id)}" data-desk="${esc(d.name)}">${d.heading === false ? "" : `<h2 class="deskhead"><span>${esc(d.name)}</span></h2>`}${inner}</div>`;
+  }
+  for (const id of OLD_ORDER) if (!placed.has(id) && S[id]) h += S[id];
+  return h;
+}
+
 function render() {
   const cb = $("#colourbar"); if (cb) cb.innerHTML = colourBar();
   const n = E.edition_no;
@@ -968,26 +983,29 @@ function render() {
   $("#profile").textContent = E.profile_line;
 
   let h = frontHTML();
-  if (E.week_ahead?.length) h += secWrap("week", weekBlock(), "Monday to Sunday · what to watch");
-  h += secWrap("fixtures", `<div data-live="fixtures">${fixturesBlock()}</div>`, "Next 7 days · IST");
-  h += secWrap("madrid", `<div data-live="madrid">${madridBlock()}</div>` + storiesBlock("madrid"));
-  h += secWrap("pitch", `<div data-live="intl">${intlBlock()}</div>` + storiesBlock("pitch"), "Football beyond Madrid");
+  // Every section is built as before, then placed under its desk (config desks); a section no desk names keeps its old place.
+  const S = {};
+  if (E.week_ahead?.length) S.week = secWrap("week", weekBlock(), "Monday to Sunday · what to watch");
+  S.fixtures = secWrap("fixtures", `<div data-live="fixtures">${fixturesBlock()}</div>`, "Next 7 days · IST");
+  S.madrid = secWrap("madrid", `<div data-live="madrid">${madridBlock()}</div>` + storiesBlock("madrid"));
+  S.pitch = secWrap("pitch", `<div data-live="intl">${intlBlock()}</div>` + storiesBlock("pitch"), "Football beyond Madrid");
   const race = LIVE.f1_next?.value?.race;
-  h += secWrap("paddock", `<div data-live="paddock">${paddockBlock()}</div>` + storiesBlock("paddock"), race ? `${race.flag} Round ${race.round ?? ""} · ${race.name}${race.locality ? " · " + race.locality : ""}` : undefined);
-  h += secWrap("crease", creaseBlock(), "India men · senior team");
-  h += secWrap("deuce", deuceBlock(), "Tennis · big events first, then Alcaraz and Djokovic");
-  h += secWrap("sidelines", `<div data-live="warriors">${warriorsBlock()}</div>` + storiesBlock("sidelines"), "Every other sport, when it matters");
-  h += secWrap("dateline", storiesBlock("dateline"), "World & India");
-  h += secWrap("workshop", storiesBlock("workshop"), "Tech · AI · wearables");
-  h += secWrap("pipeline", storiesBlock("pipeline"), "SDR · outbound · GTM");
-  h += secWrap("ledger", `<div data-live="ledger">${ledgerBlock()}</div>` + storiesBlock("ledger"), "Markets · money · cards");
-  h += secWrap("sky", `<div data-live="sky">${skyBlock()}</div>` + storiesBlock("sky"), [CFG.paper.home_city, ...(CFG.weather.family || []).map(c => c.name)].join(", ").replace(/, ([^,]*)$/, " and $1") + " · the week ahead");
-  h += secWrap("namma", storiesBlock("namma"), `${CFG.paper.home_city} · fuller on Fri, Sat, Sun`);
-  h += secWrap("screen", screenBlock(), "English and Hindi · theatre and OTT");
-  h += secWrap("talk", `<div data-live="talk">${talkBlock()}</div>`, "What people are searching for");
+  S.paddock = secWrap("paddock", `<div data-live="paddock">${paddockBlock()}</div>` + storiesBlock("paddock"), race ? `${race.flag} Round ${race.round ?? ""} · ${race.name}${race.locality ? " · " + race.locality : ""}` : undefined);
+  S.crease = secWrap("crease", creaseBlock(), "India men · senior team");
+  S.deuce = secWrap("deuce", deuceBlock(), "Tennis · big events first, then Alcaraz and Djokovic");
+  S.sidelines = secWrap("sidelines", `<div data-live="warriors">${warriorsBlock()}</div>` + storiesBlock("sidelines"), "Every other sport, when it matters");
+  S.dateline = secWrap("dateline", storiesBlock("dateline"), "World & India");
+  S.workshop = secWrap("workshop", storiesBlock("workshop"), "Tech · AI · wearables");
+  S.pipeline = secWrap("pipeline", storiesBlock("pipeline"), "SDR · outbound · GTM");
+  S.ledger = secWrap("ledger", `<div data-live="ledger">${ledgerBlock()}</div>` + storiesBlock("ledger"), "Markets · money · cards");
+  S.sky = secWrap("sky", `<div data-live="sky">${skyBlock()}</div>` + storiesBlock("sky"), [CFG.paper.home_city, ...(CFG.weather.family || []).map(c => c.name)].join(", ").replace(/, ([^,]*)$/, " and $1") + " · the week ahead");
+  S.namma = secWrap("namma", storiesBlock("namma"), `${CFG.paper.home_city} · fuller on Fri, Sat, Sun`);
+  S.screen = secWrap("screen", screenBlock(), "English and Hindi · theatre and OTT");
+  S.talk = secWrap("talk", `<div data-live="talk">${talkBlock()}</div>`, "What people are searching for");
   const markets = [...new Set((E.betting || []).map(b => b.source || "Polymarket"))].join(" and ") || "Polymarket";
-  h += secWrap("betting", `<div data-live="betting">${bettingBlock()}</div>`, `What the world is betting on · ${markets}`);
-  h += secWrap("bye", byeBlock(), "Watch and do");
+  S.betting = secWrap("betting", `<div data-live="betting">${bettingBlock()}</div>`, `What the world is betting on · ${markets}`);
+  S.bye = secWrap("bye", byeBlock(), "Watch and do");
+  h += desksHTML(S);
   h += deskBlock();
   h += `<div class="house" id="house"><b>${esc(sec("house").name)}</b><p>${esc(E.house_note)}</p></div>`;
   h += `<div class="foot">${esc(`THE HOUSE OF 1400 · ${longDate(E.date).toUpperCase()} · NO. ${n} · EDITED BY ${CFG.paper.editor.signature.replace(", Editor", "").toUpperCase()}`)}<br><a href="/editor">About the editor</a> · <a href="/archive">The Archive</a></div>`;
@@ -1029,11 +1047,20 @@ function paintLive() {
     const empty = !body.some(el => el.textContent.trim() || el.querySelector("svg,table,img"));
     if (s.hidden !== empty) { s.hidden = empty; changed = true; }
   }
+  // A desk shows only while one of its sections does.
+  for (const d of $$(".dgroup")) { const none = ![...d.querySelectorAll("section.sec")].some(x => !x.hidden); if (d.hidden !== none) d.hidden = none; }
   const race = LIVE.f1_next?.value?.race, ph = document.querySelector("#paddock .sechead span");
   if (race && ph) ph.textContent = `${race.flag} Round ${race.round ?? ""} · ${race.name}${race.locality ? " · " + race.locality : ""}`;
   if (changed || !$("#idx a")) {
-    const present = CFG.sections.filter(x => { const el = document.getElementById(x.id); return el && !el.hidden; });
-    $("#idx div").innerHTML = present.map(x => `<a href="#${x.id}" data-fam="${fam(x.id)}">${seal(x.id, 22)}${esc(x.short)}</a>`).join("");
+    // In the order of the page, with each desk's name before its sections.
+    const present = CFG.sections.map(x => ({ x, el: document.getElementById(x.id) })).filter(o => o.el && !o.el.hidden)
+      .sort((a, b) => (a.el.compareDocumentPosition(b.el) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1)).map(o => o.x);
+    let lastDesk = null;
+    $("#idx div").innerHTML = present.map(x => {
+      const d = document.getElementById(x.id).closest(".dgroup"), label = d && d.querySelector(":scope > .deskhead") && d !== lastDesk ? `<span class="dk">${esc(d.dataset.desk)}</span>` : "";
+      lastDesk = d || lastDesk;
+      return `${label}<a href="#${x.id}" data-fam="${fam(x.id)}">${seal(x.id, 22)}${esc(x.short)}</a>`;
+    }).join("");
     observeIndex(present);
   }
   paintSignals();
@@ -1050,7 +1077,10 @@ function observeIndex(present) {
     const io = IO = new IntersectionObserver(es => es.forEach(en => {
       if (!en.isIntersecting) return;
       links.forEach(l => l.classList.toggle("cur", l.getAttribute("href") === "#" + en.target.id));
-      const c = links.find(l => l.classList.contains("cur")); c && c.scrollIntoView({ block: "nearest", inline: "center" });
+      // Centre the current chip by scrolling the chip bar only: scrollIntoView would also stop the page's own smooth
+      // scroll on a phone, so a tapped chip landed short of its section.
+      const c = links.find(l => l.classList.contains("cur")), bar = c?.parentElement;
+      if (c && bar && bar.scrollWidth > bar.clientWidth) bar.scrollTo({ left: c.offsetLeft - (bar.clientWidth - c.offsetWidth) / 2, behavior: "smooth" });
     }), { rootMargin: "-45% 0px -50% 0px" });
     present.forEach(s => { const el = document.getElementById(s.id); el && io.observe(el); });
   } catch {}
