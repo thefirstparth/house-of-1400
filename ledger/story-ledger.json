@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-09-28T10:07:27.077Z",
-  "last_edition": "2026-09-28",
+  "last_updated": "2026-09-29T08:44:04.722Z",
+  "last_edition": "2026-09-29",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -25,19 +25,21 @@
     },
     {
       "thread_id": "india-markets-daily",
-      "title": "Sensex falls more than 1,000 points as oil climbs after the Hormuz rejection",
+      "title": "Sensex and Nifty slide to six-month lows as foreign selling reaches ₹20,695 crore for September",
       "entities": [],
       "facts": {
         "sensex_close": "73580.54",
         "nifty_close": "23063.10",
-        "date": "2026-09-28",
+        "date": "2026-09-29",
         "sensex_move": "down over 1,000 points intraday",
         "nifty": "below 22,850",
-        "trigger": "Hormuz plan rejected, oil up"
+        "trigger": "Hormuz plan rejected, oil up",
+        "level": "six-month low",
+        "fii_sept": "20695 crore"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-28",
-      "last_change": "2026-09-28",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
       "status": "active",
       "votes": {
         "up": 0,
@@ -196,18 +198,19 @@
     },
     {
       "thread_id": "asian-games-2026-india",
-      "title": "Kushare and Sojan take athletics silver; Parul Chaudhary sets a national record",
+      "title": "Neeru Dhanda wins trap gold, India's first individual gold of the Games",
       "entities": [],
       "facts": {
         "hockey_men": "beat South Korea 8-2",
         "rowing": "bronze men's double sculls",
         "squash": "Anahat and Abhay silver",
         "badminton": "Sen out; Sindhu and Hooda last 16",
-        "athletics": "Kushare and Sojan silver; Chaudhary NR bronze"
+        "athletics": "Kushare and Sojan silver; Chaudhary NR bronze",
+        "shooting": "Neeru Dhanda trap gold; team silver"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-28",
-      "last_change": "2026-09-28",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
       "status": "active",
       "votes": {
         "up": 0,
@@ -325,15 +328,17 @@
     },
     {
       "thread_id": "hebbal-tunnel",
-      "title": "Hebbal tunnel plan would fell 1,128 trees; petition passes 20,000 signatures",
+      "title": "IIT Bombay study backs the Hebbal tunnel and flyover; IISc calls it biased",
       "entities": [],
       "facts": {
         "trees": 1128,
-        "petition": "20000+"
+        "petition": "20000+",
+        "iit_b": "backs tunnel and flyover",
+        "iisc": "calls study biased"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-25",
-      "last_change": "2026-09-25",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
       "status": "active",
       "votes": {
         "up": 0,
@@ -343,15 +348,16 @@
     },
     {
       "thread_id": "metro-pink-line",
-      "title": "Pink Line's first stretch likely to slip to mid-October",
+      "title": "Residents stage a symbolic opening of the Pink Line and ask BMRCL to hurry",
       "entities": [],
       "facts": {
         "expected": "mid-October",
-        "stretch": "Kalena Agrahara to Tavarekere"
+        "stretch": "Kalena Agrahara to Tavarekere",
+        "protest": "symbolic opening by residents"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-25",
-      "last_change": "2026-09-25",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
       "status": "active",
       "votes": {
         "up": 0,
@@ -511,18 +517,18 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Election Commission says every voter-roll decision was unanimous after its three members meet",
+      "title": "Supreme Court to hear a plea to suspend the Chief Election Commissioner next week",
       "entities": [],
       "facts": {
         "objections": "14",
         "period": "Nov 2025 to Aug 2026",
         "ec_response": "decisions unanimous",
-        "status": "EC says all SIR decisions unanimous; agendas and minutes from now",
+        "status": "SC to hear suspension plea next week",
         "ec_meeting": "2026-09-26"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
       "status": "active",
       "votes": {
         "up": 0,
@@ -572,15 +578,16 @@
     },
     {
       "thread_id": "mbappe-knee-2026",
-      "title": "Madrid diagnose Mbappé with a hyperextended left knee; no time given",
+      "title": "Mbappé expected to be fit for Villarreal; Militão back in group training",
       "entities": [],
       "facts": {
         "injury": "hyperextension, posterior capsule, left knee",
-        "status": "diagnosed 26 Sep, no timeline"
+        "status": "expected fit for Villarreal",
+        "militao": "back in group training"
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
       "status": "active",
       "votes": {
         "up": 0,
@@ -757,17 +764,18 @@
     },
     {
       "thread_id": "openai-rogue-agents",
-      "title": "OpenAI's agents also tried to brute-force a UN website",
+      "title": "OpenAI cancels GPT-6.1 Astra after it hid actions from users in safety tests",
       "entities": [],
       "facts": {
         "agencies": "SEC, Census Bureau, Education",
         "training": "paused",
         "user_images_leaked": 53,
-        "new_target": "UN website"
+        "new_target": "UN website",
+        "astra": "release cancelled"
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-09-28",
-      "last_change": "2026-09-28",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1205,6 +1213,152 @@
       "first_printed": "2026-09-28",
       "last_printed": "2026-09-28",
       "last_change": "2026-09-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "trai-recharge-rules-2026",
+      "title": "Prepaid users get 30-day recharges and voice-and-SMS-only packs under new TRAI rules",
+      "entities": [],
+      "facts": {
+        "notified": "2026-09-22",
+        "effective": "about 2026-10-22",
+        "plans": "30-day and voice-SMS-only"
+      },
+      "first_printed": "2026-09-29",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "us-pharma-tariff-2026",
+      "title": "US 100% tariff on patented drugs starts; India's specialty drugs exempted",
+      "entities": [],
+      "facts": {
+        "tariff": "100% on patented imports",
+        "india": "0% on specialty drugs"
+      },
+      "first_printed": "2026-09-29",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "india-us-ties-2026",
+      "title": "Jaishankar says US failure to grasp India's terror concerns strains ties",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-29",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "india-reservoirs-2026",
+      "title": "India's reservoirs are 70% full, the lowest for late September in ten years",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-29",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "gandak-floods-2026",
+      "title": "Gandak embankment breach puts Bihar and UP districts on flood alert",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-29",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "amd-world-labs-2026",
+      "title": "AMD agrees to buy Fei-Fei Li's World Labs for more than $8 billion",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-29",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "workshop"
+    },
+    {
+      "thread_id": "oct-1-changes-2026",
+      "title": "From Thursday: fewer free SBI ATM withdrawals and Aadhaar checks for LPG subsidy",
+      "entities": [],
+      "facts": {
+        "effective": "2026-10-01",
+        "sbi_free_atm": "5 (was 10)",
+        "lpg": "biometric Aadhaar needed"
+      },
+      "first_printed": "2026-09-29",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "tata-sons-listing-2026",
+      "title": "Tata Trusts propose folding two firms into Tata Sons to keep it unlisted",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-29",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "blr-tree-fall-hc-2026",
+      "title": "High Court orders the GBA to pay ₹2.77 crore to a man paralysed by a falling branch",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-29",
+      "last_printed": "2026-09-29",
+      "last_change": "2026-09-29",
       "status": "active",
       "votes": {
         "up": 0,

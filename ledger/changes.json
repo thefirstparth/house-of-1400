@@ -8,9 +8,54 @@
       "announced": "2026-09-22",
       "effective": "2026-10-22",
       "effective_note": "30 days after gazette notification; the exact date follows the gazette",
-      "sources": ["https://www.trai.gov.in/notifications/press-release/trai-releases-telecom-consumer-protection-13th-amendment-regulations", "https://www.pib.gov.in/PressReleaseDetail.aspx?PRID=2313349&reg=48&lang=1"],
+      "sources": [
+        "https://www.trai.gov.in/notifications/press-release/trai-releases-telecom-consumer-protection-13th-amendment-regulations",
+        "https://www.pib.gov.in/PressReleaseDetail.aspx?PRID=2313349&reg=48&lang=1"
+      ],
       "section": "ledger",
-      "found_by": "Parth (a miss; ledger/lessons.json)"
+      "found_by": "Parth (a miss; ledger/lessons.json)",
+      "printed_on": "2026-09-29"
+    },
+    {
+      "id": "sbi-atm-charges-oct-2026",
+      "what": "SBI cuts free other-bank ATM transactions for salary accounts from 10 to 5 a month; basic savings accounts get 4 free withdrawals, then Rs 15 plus GST each",
+      "who": "SBI",
+      "announced": "2026-09",
+      "effective": "2026-10-01",
+      "sources": [
+        "https://www.livemint.com/money/personal-finance/new-rules-from-october-sbi-atm-charges-bulk-fd-rates-fee-on-upi-aadhaar-verification-for-lpg-subsidy-and-more-11790617791321.html",
+        "https://upstox.com/news/personal-finance/latest-updates/11-financial-changes-coming-in-october-2026-rbi-mpc-sbi-atm-rules-fd-rules-lpg-kyc-upi-mdr-small-savings-itr-deadline-and-more/article-200981/"
+      ],
+      "section": "ledger",
+      "found_by": "daily run 2026-09-29 (wider net)",
+      "printed_on": "2026-09-29"
+    },
+    {
+      "id": "lpg-biometric-aadhaar-2026",
+      "what": "Domestic LPG users must complete biometric Aadhaar authentication to keep booking subsidised 14.2 kg cylinders",
+      "who": "Oil marketing companies / Petroleum ministry",
+      "announced": "2026-09",
+      "effective": "2026-10-01",
+      "sources": [
+        "https://www.inkl.com/news/5-rule-changes-from-october-1-sbi-atm-charges-mdr-on-upi-bulk-fd-rates-kyc-for-lpg-subsidy-and-more",
+        "https://www.latestly.com/india/information/new-rules-from-october-1-2026-sbi-atm-fee-lpg-biometric-kyc-nps-charges-and-more-that-could-impact-your-wallet-7624465.html"
+      ],
+      "section": "ledger",
+      "found_by": "daily run 2026-09-29 (wider net)",
+      "printed_on": "2026-09-29"
+    },
+    {
+      "id": "us-pharma-tariff-2026",
+      "what": "US 100% tariff on patented drug imports from 29 Sep; specialty drugs (rare disease, cell and gene therapies, ADCs) from India and 19 others at 0%",
+      "who": "US Commerce Department",
+      "announced": "2026-09-28",
+      "effective": "2026-09-29",
+      "sources": [
+        "https://www.business-standard.com/markets/capital-market-news/us-waives-tariff-on-specialty-drugs-imported-from-india-and-19-other-countries-126092900378_1.html"
+      ],
+      "section": "ledger",
+      "found_by": "daily run 2026-09-29",
+      "printed_on": "2026-09-29"
     }
   ]
 }
