@@ -66,6 +66,12 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
       const got = new Set((E.art_orders || []).map(o => o.story_id).filter(id => ids.has(id)));
       if (got.size < Math.min(2, ids.size)) warnings.push(`art_orders: ${got.size} ordered; order 2 to 5 printed stories`);
       if (got.size > 5) warnings.push(`art_orders: ${got.size} ordered; at most 5 are drawn`);
+      // Spread through the paper, not a quota: only a nudge when every drawing is on the Front Page and the sections
+      // below print full stories of their own.
+      const front = new Set([E.front?.lead?.id, ...(E.front?.seconds || []).map(s => s.id)]);
+      const below = allItems(E).filter(i => i._kind === "story" && i._where.startsWith("sections."));
+      if (got.size >= 2 && [...got].every(id => front.has(id)) && below.length)
+        warnings.push(`art_orders: every drawing is on the Front Page; look again at the sections' own stories (${below.slice(0, 4).map(i => i.id).join(", ")}${below.length > 4 ? ", ..." : ""}): a drawing does more good further down`);
     }
   }
 

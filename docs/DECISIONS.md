@@ -382,3 +382,4 @@ Made without Parth, per the build prompt. Change any of them freely.
 - **Internationals:** the national teams Parth follows (config `follows.national_teams`) show their latest score and next match in The Wider Pitch, live from ESPN; no writing needed, so the next day's paper has the score.
 - **AI and Reuters:** Reuters (worldwide), US technology and science topic pages and an AI search join the reading list; The Workshop leads with AI and has an AI sweep and wider-net question. A separate AI section waits for the section restructure.
 - **Lessons** for the five misses and the Anthropic IPO prospectus (owed until 2 Oct) in ledger/lessons.json.
+- **Drawings spread through the paper** (Parth, 29 Sep, after all four sat on the Front Page; those four were ordered by hand in a build session, not by Bhide): guidance to look at each section's best story, no quota; a warning when every order is on the Front Page and sections print full stories.
