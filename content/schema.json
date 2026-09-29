@@ -281,6 +281,52 @@
           "type": "string"
         }
       }
+    },
+    "line": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "thread_id",
+        "headline",
+        "url",
+        "source"
+      ],
+      "$comment": "An 'Also in' line (from 30 Sep 2026): a story worth knowing that does not need an article. One headline in the paper's words, the publisher's link, the outlet and, when known, when it was published.",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/id"
+        },
+        "thread_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "headline": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 140
+        },
+        "url": {
+          "$ref": "#/definitions/url"
+        },
+        "source": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 60
+        },
+        "time_ist": {
+          "type": "string",
+          "pattern": "^\\d{2}:\\d{2}$"
+        },
+        "date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "kicker": {
+          "type": "string",
+          "maxLength": 30
+        }
+      }
     }
   },
   "properties": {
@@ -405,6 +451,13 @@
           },
           "data": {
             "type": "object"
+          },
+          "lines": {
+            "type": "array",
+            "maxItems": 6,
+            "items": {
+              "$ref": "#/definitions/line"
+            }
           }
         }
       }
@@ -987,6 +1040,30 @@
           "type": "array",
           "items": {
             "type": "string"
+          }
+        },
+        "wire": {
+          "type": "array",
+          "$comment": "Not printed. The wire check (scripts/wire-check.mjs, from 30 Sep 2026): an answer for each widely covered story the paper does not visibly carry.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "covered_by": {
+                "type": "string"
+              },
+              "skip": {
+                "type": "string",
+                "minLength": 12
+              }
+            }
           }
         }
       }

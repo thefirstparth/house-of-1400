@@ -4,6 +4,7 @@ import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
+import { matchItem } from "../lib/trial.js";
 
 export const BANNED_WORDS = ["pivotal", "crucial", "landmark", "testament", "underscores", "underscore", "highlights", "showcases", "delve", "delves", "landscape", "navigate", "navigates", "robust", "seamless", "seamlessly", "notably", "quietly", "amid", "amidst"];
 const BANNED_PATTERNS = [
@@ -43,6 +44,7 @@ export function allItems(E) {
   for (const [id, S] of Object.entries(E.sections || {})) {
     S.stories?.forEach((s, i) => items.push({ ...s, _where: `sections.${id}.stories[${i}]`, _kind: "story" }));
     S.briefs?.forEach((s, i) => items.push({ ...s, _where: `sections.${id}.briefs[${i}]`, _kind: "brief" }));
+    S.lines?.forEach((s, i) => items.push({ ...s, section: id, sources: [{ label: s.source, url: s.url }], _where: `sections.${id}.lines[${i}]`, _kind: "line" }));
   }
   return items;
 }
@@ -265,6 +267,38 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
         if (!a) errors.push(`checks.changes: "${c.what.slice(0, 80)}" (${c.who}, from ${c.effective}) takes effect within 30 days and has not been printed; print it and record {id: "${c.id}", covered_by}, or say why it is no longer news in {id, action}`);
         else if (a.covered_by && !ids.has(a.covered_by)) errors.push(`checks.changes: covered_by "${a.covered_by}" is not an item in this edition`);
         else if (!a.covered_by && !((a.action || "").trim().length >= 15)) errors.push(`checks.changes: ${c.id} needs covered_by or an action saying why it is no longer news`);
+      }
+    }
+    // Tennis (from 30 Sep 2026, Parth: ESPN's schedule is right): a match ESPN lists for a followed player in the next
+    // three days is printed as that player's next match, at ESPN's time (within 30 minutes). If ESPN is wrong, say why
+    // in coverage_waivers.tennis_espn.
+    if (E.date > "2026-09-29" && !E.coverage_waivers?.tennis_espn) {
+      for (const p of E.snapshot?.tennis_players?.value?.players || []) {
+        const n = p.next, when = Date.parse(n?.when_utc || "");
+        if (!n || !(when > cut) || when - cut > 72 * 36e5) continue;
+        const mine = (E.tennis?.players || []).find(x => x.name === p.name)?.next_match;
+        const espn = `${n.round ? n.round + " " : ""}v ${n.opponent} at ${n.event}, ${new Date(when).toISOString()}`;
+        if (!mine) errors.push(`tennis: ESPN has ${p.name}'s next match (${espn}); print it as next_match, or explain in coverage_waivers.tennis_espn`);
+        else if (!mine.when_utc || Math.abs(Date.parse(mine.when_utc) - when) > 30 * 6e4) errors.push(`tennis: ${p.name}'s next match differs from ESPN (${espn}); use ESPN's, or explain in coverage_waivers.tennis_espn`);
+      }
+    }
+    // The wire check (from 30 Sep 2026, Parth's review of 29 Sep; scripts/wire-check.mjs): every story the day's news
+    // widely agreed on is carried (a story, a brief or an "Also in" line) or answered in checks.wire with {id, covered_by}
+    // or {id, skip} (why it is not for this paper).
+    if (E.date > "2026-09-29") {
+      let wc = null;
+      try { wc = read("ledger/wire-check.json"); } catch {}
+      if (!wc || wc.date !== E.date) warnings.push("wire: run `node scripts/wire-check.mjs content/editions/YYYY-MM-DD.json` and answer what it lists (checks.wire)");
+      else if (wc.error) warnings.push(`wire: the reading list was unavailable (${wc.error})`);
+      else {
+        const printed = items, answers = new Map((E.checks?.wire || []).map(w => [w.id, w]));
+        for (const c of wc.candidates || []) {
+          const a = answers.get(c.id);
+          if (a?.covered_by) { if (!ids.has(a.covered_by)) errors.push(`checks.wire: covered_by "${a.covered_by}" is not an item in this edition`); continue; }
+          if (a?.skip) { if (a.skip.trim().length < 12) errors.push(`checks.wire: say why "${c.title}" is not for this paper`); continue; }
+          if (printed.some(it => matchItem(it, [{ title: c.title }]))) continue;
+          errors.push(`checks.wire: "${c.title}" (${c.n} outlets) is neither in the paper nor answered; print it (a story, a brief or an Also in line) and record {id: "${c.id}", covered_by}, or {id: "${c.id}", skip: "why not"}`);
+        }
       }
     }
     // Lessons (ledger/lessons.json): a story the paper missed and still owes is printed, or its lesson is answered with

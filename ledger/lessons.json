@@ -13,6 +13,53 @@
       "why": "The money test covers it (it changes what nearly every Indian pays), but the money sweep read only money regulators, so TRAI was never read; the story was not a front-page lead, so the national sweep missed it too; and the money calendar did not catch a change taking effect within 30 days.",
       "fix": "Money test widened to prices and charges set by any regulator (EDITORIAL.md); money sweep now has two groups, finance and prices (config money.groups), each checked by the validator; PIB (every ministry and TRAI) and TRAI's feed added to the sweep. Then (Parth, 28 Sep): keep the named must-reads and add a wider net on top (the question \"what changed what people pay?\" across broad news, checks.money_net) and a changes calendar that remembers every change found until it is printed (ledger/changes.json).",
       "tracked_in": "ledger/changes.json: trai-recharge-rules-2026 (owed until printed)"
+    },
+    {
+      "id": "2026-09-29-early-winter",
+      "reported": "2026-09-29",
+      "missed": "Delhi turns chilly and snow reaches Uttarakhand and Himachal before September ends (29 Sep); covered by News18, The Hindu, NDTV, Down To Earth, The New Indian Express.",
+      "why": "Seen in the national sweep but treated as routine weather. A weather turn that is early, unusual or national in scale is news, not weather.",
+      "fix": "EDITORIAL.md, Dateline: an unusual or national weather turn (early winter, a heatwave, a monsoon milestone, a cyclone) is a Dateline brief; Sky & Streets stays for the cities' forecasts."
+    },
+    {
+      "id": "2026-09-29-bullet-train",
+      "reported": "2026-09-29",
+      "missed": "Mumbai-Ahmedabad bullet train timeline falls short of Japan's expectations but is 'moving forward' (29 Sep); The Hindu, Deccan Herald, TOI, ET.",
+      "why": "Seen, but big national infrastructure progress was not weighed as news.",
+      "fix": "EDITORIAL.md, Dateline: a milestone, delay or cost change on a flagship national project (bullet train, big airports, expressways, metro lines outside Bengaluru) is at least a brief."
+    },
+    {
+      "id": "2026-09-29-starship-orbit",
+      "reported": "2026-09-29",
+      "missed": "SpaceX's Starship reaches orbit for the first time despite an engine failure (29 Sep); BBC, The Economist, The Hindu, CNBC and more.",
+      "why": "No section claimed space and science, so a first-of-its-kind milestone fell between The Workshop and Dateline.",
+      "fix": "EDITORIAL.md, The Workshop now covers science and space firsts (launches, missions, discoveries); Dateline only when governments are at the centre."
+    },
+    {
+      "id": "2026-09-29-ios-update",
+      "reported": "2026-09-29",
+      "missed": "Apple iOS 27.0.1 out now with core bug fixes for all iPhone users (29 Sep); Forbes, 9to5Mac, MacRumors, CNET.",
+      "why": "The Workshop read launches and platform changes as new products only; a software update every iPhone user gets is useful news.",
+      "fix": "EDITORIAL.md, The Workshop: updates that reach everyone on a major platform (iOS, Android, Windows, WhatsApp), and what they fix, are at least a brief."
+    },
+    {
+      "id": "2026-09-29-us-iran-talks",
+      "reported": "2026-09-29",
+      "missed": "The US and Iran separately talk with mediators in a new bid to end the war (29 Sep); Reuters, Al Jazeera, WSJ, Axios, The Hindu.",
+      "why": "The war was on the Front Page through the markets (oil), but a diplomatic step in the same war was not printed.",
+      "fix": "EDITORIAL.md, Dateline: in a war or crisis the paper follows, every diplomatic move (talks, mediators, ceasefire terms) is news in its own right, not only its effect on markets."
+    },
+    {
+      "id": "2026-09-29-anthropic-ipo",
+      "reported": "2026-09-29",
+      "missed": "Anthropic's IPO prospectus shows a sweeping AI vision and surging costs (Reuters, 28 Sep).",
+      "url": "https://www.reuters.com/business/finance/anthropics-ipo-prospectus-shows-sweeping-ai-vision-surging-costs-2026-09-28/",
+      "why": "Reuters was not among the sources, and The Workshop had no wider question for AI; the IPO appeared only as a betting market.",
+      "fix": "Reuters added to the sources (config sources, via Google News); The Workshop gains an AI sweep and a wider-net question for AI (EDITORIAL.md).",
+      "owed": {
+        "what": "Anthropic's IPO prospectus (Reuters, 28 Sep): what it says about revenue, costs and plans",
+        "until": "2026-10-02"
+      }
     }
   ]
 }

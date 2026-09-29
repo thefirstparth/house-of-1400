@@ -79,7 +79,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -264,6 +264,9 @@ function storiesBlock(id, { beside = false } = {}) {
   // A lone story on a wide page reads in two columns; beside data it stays one.
   if (st.length) h += `<div class="${beside ? "stack" : st.length > 1 ? "cols2" : "solo"}">${st.map(x => storyHTML(x)).join("")}</div>`;
   if (br.length) h += `<div class="${beside ? "stack" : br.length > 2 ? "cols3" : br.length === 2 ? "cols2" : ""}">${br.map(b => briefHTML(b)).join("")}</div>`;
+  // Also in: stories worth knowing that need no article, one headline each with the publisher's link.
+  const ln = S.lines || [];
+  if (ln.length) h += `<div class="alsoin"><h4>Also in ${esc(sec(id)?.name || "")}</h4><ul>${ln.map(l => `<li id="s-${esc(l.id)}">${l.kicker ? `<span class="tag">${esc(l.kicker)}</span>` : ""}<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.headline)}</a><small>${esc([l.source, l.time_ist ? `${l.time_ist} IST` : l.date ? shortDate(l.date) : ""].filter(Boolean).join(" · "))}</small></li>`).join("")}</ul></div>`;
   return h;
 }
 
@@ -678,6 +681,33 @@ function skyBlock() {
 
 // The Fixture List is the next seven days across every sport, by day. Club and national-team fixtures further
 // out live in their own sections, so nothing repeats beyond the week.
+// Internationals for the national teams Parth follows (config follows.national_teams): each one's latest score from the
+// last four days and its next match in the next ten, from ESPN. Scores arrive by themselves, so the day after a match
+// the paper shows the result without anyone writing it.
+const LEAGUE = { "uefa.nations": "Nations League", "fifa.friendly": "Friendly", "fifa.worldq.uefa": "World Cup qualifier", "fifa.worldq.conmebol": "World Cup qualifier", "fifa.worldq.afc": "World Cup qualifier" };
+function intlBlock() {
+  const M = LIVE.intl_football?.value?.matches || [], teams = CFG.follows?.national_teams || [];
+  if (!M.length || !teams.length) return "";
+  const now = Date.now(), rows = [], used = new Set();
+  const plays = (m, t) => m.home === t || m.away === t;
+  for (const t of teams) {
+    const mine = M.filter(m => plays(m, t)).sort((a, b) => a.when_utc.localeCompare(b.when_utc));
+    const last = mine.filter(m => m.state === "post" && m.score && now - Date.parse(m.when_utc) < 4 * 864e5).pop();
+    const live = mine.find(m => m.state === "in");
+    const next = mine.find(m => m.state === "pre" && Date.parse(m.when_utc) - now < 10 * 864e5);
+    for (const [m, kind] of [[last, "last"], [live, "live"], [next, "next"]]) {
+      if (!m) continue;
+      const key = `${m.home}|${m.away}|${m.when_utc}`; if (used.has(key)) continue; used.add(key);
+      const [h, a] = String(m.score || "").split("-");
+      const teamsHTML = kind === "next" ? `${esc(m.home)} v ${esc(m.away)}` : `${esc(m.home)} <b class="tnum">${esc(h)}–${esc(a)}</b> ${esc(m.away)}`;
+      rows.push({ t: m.when_utc, html: `<tr><td class="sub">${kind === "next" ? "Next" : kind === "live" ? "Live" : "Result"}</td><td>${teamsHTML}</td><td class="sub">${esc(LEAGUE[m.league] || "")}</td><td class="sub r">${esc(fmt(m.when_utc, { weekday: "short", day: "numeric", month: "short" }))}${kind === "next" ? ` · ${esc(fmt(m.when_utc, { hour: "2-digit", minute: "2-digit" }))} IST` : ""}</td></tr>` });
+    }
+  }
+  if (!rows.length) return "";
+  rows.sort((a, b) => a.t.localeCompare(b.t));
+  return `<div class="tbl" style="margin-bottom:14px"><table><thead><tr><th colspan="4">Internationals · ${esc(teams.join(", "))}</th></tr></thead><tbody>${rows.map(r => r.html).join("")}</tbody></table></div>${staleNote("intl_football")}`;
+}
+
 function fixturesBlock() {
   const n = Date.now(), horizon = n + 7 * 864e5;
   const rows = (E.fixtures || []).slice().sort((a, b) => a.when_utc.localeCompare(b.when_utc)).filter(f => {
@@ -941,7 +971,7 @@ function render() {
   if (E.week_ahead?.length) h += secWrap("week", weekBlock(), "Monday to Sunday · what to watch");
   h += secWrap("fixtures", `<div data-live="fixtures">${fixturesBlock()}</div>`, "Next 7 days · IST");
   h += secWrap("madrid", `<div data-live="madrid">${madridBlock()}</div>` + storiesBlock("madrid"));
-  h += secWrap("pitch", storiesBlock("pitch"), "Football beyond Madrid");
+  h += secWrap("pitch", `<div data-live="intl">${intlBlock()}</div>` + storiesBlock("pitch"), "Football beyond Madrid");
   const race = LIVE.f1_next?.value?.race;
   h += secWrap("paddock", `<div data-live="paddock">${paddockBlock()}</div>` + storiesBlock("paddock"), race ? `${race.flag} Round ${race.round ?? ""} · ${race.name}${race.locality ? " · " + race.locality : ""}` : undefined);
   h += secWrap("crease", creaseBlock(), "India men · senior team");
@@ -985,7 +1015,7 @@ function paintLive() {
   const rail = railHTML(); if ($("#rail").dataset.html !== rail) { $("#rail").innerHTML = rail; $("#rail").dataset.html = rail; }
   const [eL, eR] = earsHTML(); $("#earL").innerHTML = eL; $("#earR").innerHTML = eR;
   $("#mkts").innerHTML = marketDots();
-  const map = { talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
+  const map = { intl: intlBlock, talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
   for (const [k, fn] of Object.entries(map)) {
     const el = document.querySelector(`[data-live="${k}"]`);
     if (!el) continue;

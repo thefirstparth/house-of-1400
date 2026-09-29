@@ -206,7 +206,13 @@
     "rival_club_line": {
       "name": "Barcelona",
       "rule": "one dry line only for a real loss, knockout, setback or funny incident"
-    }
+    },
+    "national_teams": [
+      "Brazil",
+      "Spain",
+      "Portugal",
+      "England"
+    ]
   },
   "beats": {
     "primary": [
@@ -682,6 +688,20 @@
         "kind": "signal"
       },
       {
+        "id": "gn-us-tech",
+        "section": "workshop",
+        "name": "Google News US, technology",
+        "url": "https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=en-US&gl=US&ceid=US:en",
+        "kind": "signal"
+      },
+      {
+        "id": "gn-us-science",
+        "section": "workshop",
+        "name": "Google News US, science",
+        "url": "https://news.google.com/rss/headlines/section/topic/SCIENCE?hl=en-US&gl=US&ceid=US:en",
+        "kind": "signal"
+      },
+      {
         "id": "hindu-national",
         "section": "dateline",
         "name": "The Hindu, national",
@@ -763,8 +783,8 @@
       {
         "id": "reuters",
         "section": "dateline",
-        "name": "Reuters (via Google News)",
-        "url": "https://news.google.com/rss/search?q=site%3Areuters.com%20when%3A1d&hl=en-IN&gl=IN&ceid=IN:en",
+        "name": "Reuters, worldwide (via Google News)",
+        "url": "https://news.google.com/rss/search?q=site%3Areuters.com%20when%3A1d&hl=en-US&gl=US&ceid=US%3Aen",
         "kind": "search"
       },
       {
@@ -1155,6 +1175,13 @@
         "name": "Bollywood Hungama",
         "url": "https://www.bollywoodhungama.com/rss/news.xml",
         "kind": "news"
+      },
+      {
+        "id": "gn-ai",
+        "section": "workshop",
+        "name": "AI news, worldwide (Google News search)",
+        "url": "https://news.google.com/rss/search?q=%22artificial%20intelligence%22%20OR%20%22AI%20agent%22%20OR%20%22AI%20model%22%20when%3A1d&hl=en-US&gl=US&ceid=US%3Aen",
+        "kind": "search"
       }
     ],
     "tiers": {

@@ -8,32 +8,14 @@ import { fileURLToPath } from "node:url";
 import { ensureProxy } from "./proxy.mjs";
 import { remoteLive, SITE_URL, useRemote } from "./remote.mjs";
 import { allItems } from "./validate.mjs";
-import { hostOf, tokens } from "../lib/trial.js";
+import { hostOf, matchItem, NOISE, normUrl, tokens } from "../lib/trial.js";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const readJSON = p => JSON.parse(readFileSync(new URL(p, `file://${root}`), "utf8"));
 const H = 36e5;
 
-// ---------------------------------------------------------------- matching
-const NOISE = /\b(hints?|answers?|wordle|strands|connections|horoscope|live updates?|lottery|price today|rate today|weather today|result today|live score|how to watch|where to watch|box office|collection day|viral|trailer|teaser|bigg boss|in all its colou?rs|review:)/i;
-const normUrl = u => { try { const x = new URL(u); return (x.hostname.replace(/^(www|m|amp)\./, "") + x.pathname.replace(/\/amp\/?$|\/$/, "")).toLowerCase(); } catch { return null; } };
-
-// A printed item is "in the Wire" when a Wire headline shares at least three meaningful words with it and those
-// words are at least 40% of that headline, or when the Wire has the very page the story cites. The matched
-// headline is kept so a person can check the call.
-export function matchItem(item, candidates) {
-  const urls = new Set((item.sources || []).map(s => normUrl(s.url)).filter(Boolean));
-  for (const c of candidates) if (c.url && urls.has(normUrl(c.url))) return { how: "same page", title: c.title, outlet: c.outlet };
-  const mine = new Set(tokens(`${item.headline || item.term || ""} ${String(item.short || item.text || item.what || "").slice(0, 400)} ${String(item.more || item.answer || "").slice(0, 1200)}`));
-  let best = null;
-  for (const c of candidates) {
-    const t = [...new Set(tokens(c.title))];
-    if (t.length < 3) continue;
-    const shared = t.filter(w => mine.has(w)).length, score = shared / t.length;
-    if (shared >= 3 && score >= 0.4 && (!best || score > best.score)) best = { how: "headline", title: c.title, outlet: c.outlet, score: Math.round(score * 100) / 100 };
-  }
-  return best;
-}
+// ---------------------------------------------------------------- matching (lib/trial.js, shared with the wire check)
+export { matchItem } from "../lib/trial.js";
 
 export function candidatesOf(wire) {
   const out = [];
