@@ -1144,6 +1144,12 @@
           "story_id": {
             "type": "string",
             "minLength": 1
+          },
+          "why": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 200,
+            "$comment": "Only needed for a third or later drawing on the Front Page: what makes this story a better picture than the sections' own."
           }
         }
       }

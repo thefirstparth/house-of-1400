@@ -83,3 +83,11 @@ test("source tiers", () => {
   const q = sourceQuality({ front: { lead: { headline: "h", sources: [{ url: "https://latestly.com/a" }] } }, sections: {} }, tiers);
   assert.equal(q.tier3_only.length, 1);
 });
+
+test("Tennis Explorer: next match from a player's page, Prague time to UTC", async () => {
+  const { parseTennisExplorer } = await import("../lib/trial.js");
+  const html = `<table class="result gamedetail"><tbody><tr class="one"><td><a href="/beijing/2026/atp-men/">Beijing</a></td><td title="1. round">1R</td><td class="time noWrp">30.09. 13:00</td><th class="t-name"><a href="/match-detail/?id=1" title="Click for match detail">Borges N. - Djokovic N.</a></th></tr></tbody></table>`;
+  assert.deepEqual(parseTennisExplorer(html, "Novak Djokovic", Date.parse("2026-09-29T12:00:00Z")),
+    { event: "Beijing", round: "1. round", when_utc: "2026-09-30T11:00:00.000Z", opponent: "Borges N.", source: "Tennis Explorer" });
+  assert.equal(parseTennisExplorer("<p>No upcoming matches.</p>", "Novak Djokovic"), null);
+});

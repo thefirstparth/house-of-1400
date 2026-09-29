@@ -37,13 +37,18 @@ test("validator: every candidate is carried, answered or skipped with a reason; 
   } finally { if (had) writeFileSync(path, saved); else rmSync(path); }
 });
 
-test("validator: ESPN's next match for a followed player is printed at ESPN's time", () => {
+test("validator: tennis is enforced only when ESPN and Tennis Explorer agree", () => {
   const base = JSON.parse(readFileSync(new URL("../content/editions/2026-09-29.json", import.meta.url), "utf8"));
-  const snap = { tennis_players: { value: { players: [{ name: "Carlos Alcaraz", next: { event: "Japan Open", round: "Round 1", when_utc: "2026-10-01T04:00Z", opponent: "Alex Michelsen" } }] }, as_of: "x", source: "ESPN" } };
-  const E = { ...base, date: "2026-09-30", weekday: "wed", snapshot: { ...base.snapshot, ...snap } };
-  const t = x => validateEdition(x).errors.filter(e => /^tennis:/.test(e));
-  assert.equal(t(E).length, 1);
+  const espn = { event: "Japan Open", round: "Round 1", when_utc: "2026-10-01T04:00Z", opponent: "Alex Michelsen" };
+  const snap = backup => ({ tennis_players: { value: { players: [{ name: "Carlos Alcaraz", next: espn, backup, agree: backup ? Math.abs(Date.parse(backup.when_utc) - Date.parse(espn.when_utc)) <= 18e5 : null }] }, as_of: "x", source: "ESPN, Tennis Explorer" } });
+  const E = b => ({ ...base, date: "2026-09-30", weekday: "wed", snapshot: { ...base.snapshot, ...snap(b) } });
+  const t = x => validateEdition(x);
+  const agreeing = E({ ...espn, opponent: "Michelsen A.", source: "Tennis Explorer" });
+  assert.equal(t(agreeing).errors.filter(e => /^tennis:/.test(e)).length, 1, "both agree and the paper has nothing: an error");
   const players = [{ name: "Carlos Alcaraz", next_match: { text: "Japan Open R1 v Alex Michelsen, Thu 1 Oct, 09:30 IST", when_utc: "2026-10-01T04:00:00Z" } }];
-  assert.deepEqual(t({ ...E, tennis: { ...base.tennis, players } }), []);
-  assert.deepEqual(t({ ...E, coverage_waivers: { ...(E.coverage_waivers || {}), tennis_espn: "ESPN shows last week's draw; ATP confirms the match is on Friday." } }), []);
+  assert.deepEqual(t({ ...agreeing, tennis: { ...base.tennis, players } }).errors.filter(e => /^tennis:/.test(e)), []);
+  const split = E({ ...espn, when_utc: "2026-10-01T01:00:00Z", opponent: "Michelsen A.", source: "Tennis Explorer" });
+  assert.deepEqual(t(split).errors.filter(e => /^tennis:/.test(e)), [], "sources disagree: never a block");
+  assert.ok(t(split).warnings.some(w => /^tennis:/.test(w)));
+  assert.deepEqual(t(E(null)).errors.filter(e => /^tennis:/.test(e)), [], "one source only: never a block");
 });

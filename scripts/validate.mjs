@@ -66,12 +66,13 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
       const got = new Set((E.art_orders || []).map(o => o.story_id).filter(id => ids.has(id)));
       if (got.size < Math.min(2, ids.size)) warnings.push(`art_orders: ${got.size} ordered; order 2 to 5 printed stories`);
       if (got.size > 5) warnings.push(`art_orders: ${got.size} ordered; at most 5 are drawn`);
-      // Spread through the paper, not a quota: only a nudge when every drawing is on the Front Page and the sections
-      // below print full stories of their own.
+      // Spread through the paper (Parth, 29 Sep): up to two drawings on the Front Page as a matter of course; a third or
+      // more is fine when the day calls for it, with a line in the order (why) saying what makes it a better picture
+      // than the sections' own stories. A warning, never a block.
       const front = new Set([E.front?.lead?.id, ...(E.front?.seconds || []).map(s => s.id)]);
-      const below = allItems(E).filter(i => i._kind === "story" && i._where.startsWith("sections."));
-      if (got.size >= 2 && [...got].every(id => front.has(id)) && below.length)
-        warnings.push(`art_orders: every drawing is on the Front Page; look again at the sections' own stories (${below.slice(0, 4).map(i => i.id).join(", ")}${below.length > 4 ? ", ..." : ""}): a drawing does more good further down`);
+      const onFront = (E.art_orders || []).filter(o => front.has(o.story_id));
+      if (onFront.length > 2 && onFront.slice(2).some(o => !(o.why || "").trim()))
+        warnings.push(`art_orders: ${onFront.length} drawings on the Front Page; for each beyond two say why in the order (why), or give it to a section's own story`);
     }
   }
 
@@ -275,17 +276,24 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
         else if (!a.covered_by && !((a.action || "").trim().length >= 15)) errors.push(`checks.changes: ${c.id} needs covered_by or an action saying why it is no longer news`);
       }
     }
-    // Tennis (from 30 Sep 2026, Parth: ESPN's schedule is right): a match ESPN lists for a followed player in the next
-    // three days is printed as that player's next match, at ESPN's time (within 30 minutes). If ESPN is wrong, say why
-    // in coverage_waivers.tennis_espn.
-    if (E.date > "2026-09-29" && !E.coverage_waivers?.tennis_espn) {
+    // Tennis next matches (from 30 Sep 2026): two independent sources, ESPN and Tennis Explorer (tennis_players in the
+    // snapshot). When both list the same match in the next three days, it is printed at that time (an error if not).
+    // When they disagree, or only one lists a match, the run checks the tournament's order of play and prints what it
+    // confirms, or the match with "time TBC": a warning, never a block. Nothing is enforced when neither answers.
+    if (E.date > "2026-09-29") {
       for (const p of E.snapshot?.tennis_players?.value?.players || []) {
-        const n = p.next, when = Date.parse(n?.when_utc || "");
-        if (!n || !(when > cut) || when - cut > 72 * 36e5) continue;
+        const e = p.next, b = p.backup, soon = x => x && Date.parse(x.when_utc) > cut && Date.parse(x.when_utc) - cut <= 72 * 36e5;
+        if (!soon(e) && !soon(b)) continue;
         const mine = (E.tennis?.players || []).find(x => x.name === p.name)?.next_match;
-        const espn = `${n.round ? n.round + " " : ""}v ${n.opponent} at ${n.event}, ${new Date(when).toISOString()}`;
-        if (!mine) errors.push(`tennis: ESPN has ${p.name}'s next match (${espn}); print it as next_match, or explain in coverage_waivers.tennis_espn`);
-        else if (!mine.when_utc || Math.abs(Date.parse(mine.when_utc) - when) > 30 * 6e4) errors.push(`tennis: ${p.name}'s next match differs from ESPN (${espn}); use ESPN's, or explain in coverage_waivers.tennis_espn`);
+        const say = x => `${x.round ? x.round + " " : ""}v ${x.opponent} at ${x.event}, ${new Date(Date.parse(x.when_utc)).toISOString()} (${x.source || "ESPN"})`;
+        if (soon(e) && soon(b) && p.agree) {
+          if (!mine) errors.push(`tennis: ESPN and Tennis Explorer agree on ${p.name}'s next match (${say(e)}); print it as next_match`);
+          else if (!mine.when_utc || Math.abs(Date.parse(mine.when_utc) - Date.parse(e.when_utc)) > 30 * 6e4) errors.push(`tennis: ${p.name}'s next match differs from what ESPN and Tennis Explorer agree on (${say(e)})`);
+        } else {
+          const seen = [e, b].filter(soon).map(say).join(" | ");
+          if (!mine) warnings.push(`tennis: a source lists ${p.name}'s next match (${seen}); check the tournament's order of play and print it (time TBC if unconfirmed)`);
+          else if (soon(e) && soon(b)) warnings.push(`tennis: the sources disagree on ${p.name}'s next match (${seen}); make sure the printed time is the one the tournament confirms, or TBC`);
+        }
       }
     }
     // The wire check (from 30 Sep 2026, Parth's review of 29 Sep; scripts/wire-check.mjs): every story the day's news
