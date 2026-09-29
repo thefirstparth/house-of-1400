@@ -1,0 +1,1062 @@
+{
+ "date": "2026-09-29",
+ "window": {
+  "from": "2026-09-28T08:30:00.000Z",
+  "to": "2026-09-29T08:30:00.000Z"
+ },
+ "generated_at": "2026-09-29T08:45:00.980Z",
+ "sources": {
+  "wire": {
+   "ok": true,
+   "ms": 11221
+  },
+  "tennis_players": {
+   "ok": true,
+   "ms": 977
+  },
+  "screen": {
+   "ok": true,
+   "ms": 2064
+  },
+  "nse": {
+   "ok": false,
+   "ms": 11870,
+   "error": "NSE MCP initialize 504"
+  },
+  "alerts": {
+   "ok": true,
+   "ms": 2545
+  },
+  "cricket_where": {
+   "ok": false,
+   "ms": 1454,
+   "error": "fetch failed"
+  },
+  "intl_football": {
+   "ok": true,
+   "ms": 1512
+  },
+  "calendar": {
+   "ok": true,
+   "ms": 1233
+  }
+ },
+ "coverage": {
+  "items": [
+   {
+    "section": "ledger",
+    "kind": "story",
+    "id": "sensex-six-month-low",
+    "headline": "Sensex and Nifty slide to six-month lows as foreign selling reaches ₹20,695 crore for September",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "Nifty Bank crashes 1,800 points in 2 days, slips below 54K for first time in 4 months. What’s next?",
+     "outlet": "ET Markets"
+    }
+   },
+   {
+    "section": "ledger",
+    "kind": "story",
+    "id": "trai-30-day-recharges",
+    "headline": "Prepaid users get 30-day recharges and voice-and-SMS-only packs under new TRAI rules",
+    "found": true,
+    "match": {
+     "how": "headline",
+     "title": "TRAI releases Telecom Subscription Data as on August 2026",
+     "outlet": "TRAI",
+     "score": 0.43
+    }
+   },
+   {
+    "section": "workshop",
+    "kind": "story",
+    "id": "openai-scraps-astra",
+    "headline": "OpenAI cancels GPT-6.1 Astra after it hid actions from users in safety tests",
+    "found": true,
+    "match": {
+     "how": "headline",
+     "title": "OpenAI shelves new model after safety tests",
+     "outlet": "MorungExpress",
+     "score": 0.8
+    }
+   },
+   {
+    "section": "ledger",
+    "kind": "story",
+    "id": "us-pharma-tariff-india-exempt",
+    "headline": "US 100% tariff on patented drugs starts; India's specialty drugs exempted",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "US waives tariff on specialty drugs imported from India and 19 other countries",
+     "outlet": "Business Standard, markets"
+    }
+   },
+   {
+    "section": "dateline",
+    "kind": "story",
+    "id": "sc-to-hear-cec-plea",
+    "headline": "Supreme Court to hear a plea to suspend the Chief Election Commissioner next week",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "Supreme Court agrees to list next week plea to suspend CEC Gyanesh Kumar from office",
+     "outlet": "The Hindu, national"
+    }
+   },
+   {
+    "section": "madrid",
+    "kind": "brief",
+    "id": "mbappe-fit-for-villarreal",
+    "headline": "Mbappé expected to be fit for Villarreal; Militão back in group training",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "Madrid Daily: Militão rejoins training, Florentino’s court date, and Cestero’s omission",
+     "outlet": "Managing Madrid"
+    }
+   },
+   {
+    "section": "sidelines",
+    "kind": "brief",
+    "id": "neeru-dhanda-gold",
+    "headline": "Neeru Dhanda wins trap gold, India's first individual gold of the Games",
+    "found": true,
+    "match": {
+     "how": "headline",
+     "title": "Asian Games 2026: Neeru Dhanda Wins Gold Medal For India In Women's Trap Shooting",
+     "outlet": "NDTV Profit",
+     "score": 0.67
+    }
+   },
+   {
+    "section": "dateline",
+    "kind": "brief",
+    "id": "jaishankar-us-ties",
+    "headline": "Jaishankar says US failure to grasp India's terror concerns strains ties",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "Jaishankar on US ties: Lack of understanding on India's cross-border terror concerns can impact relations",
+     "outlet": "Hindustan Times, India"
+    }
+   },
+   {
+    "section": "dateline",
+    "kind": "brief",
+    "id": "reservoirs-ten-year-low",
+    "headline": "India's reservoirs are 70% full, the lowest for late September in ten years",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "At 70%, India’s water reserves at 10-year low",
+     "outlet": "The Indian Express, India"
+    }
+   },
+   {
+    "section": "dateline",
+    "kind": "brief",
+    "id": "gandak-breach",
+    "headline": "Gandak embankment breach puts Bihar and UP districts on flood alert",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "Flood threat in several Bihar, UP districts as Nepal rains trigger breach in Gandak embankment",
+     "outlet": "The Indian Express, India"
+    }
+   },
+   {
+    "section": "workshop",
+    "kind": "brief",
+    "id": "amd-world-labs",
+    "headline": "AMD agrees to buy Fei-Fei Li's World Labs for more than $8 billion",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "AMD is acquiring AI company World Labs in a deal worth more than $8 billion",
+     "outlet": "The Verge"
+    }
+   },
+   {
+    "section": "ledger",
+    "kind": "story",
+    "id": "october-1-changes",
+    "headline": "From Thursday: fewer free SBI ATM withdrawals and Aadhaar checks for LPG subsidy",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "New rules from October: SBI ATM charges, bulk FD rates, fee on UPI, Aadhaar verification for LPG subsidy, and more",
+     "outlet": "Mint, money"
+    }
+   },
+   {
+    "section": "ledger",
+    "kind": "brief",
+    "id": "tata-trusts-recast",
+    "headline": "Tata Trusts propose folding two firms into Tata Sons to keep it unlisted",
+    "found": true,
+    "match": {
+     "how": "headline",
+     "title": "Tata Trusts moots two mergers to avoid Tata Sons listing",
+     "outlet": "livemint.com",
+     "score": 0.63
+    }
+   },
+   {
+    "section": "namma",
+    "kind": "brief",
+    "id": "hebbal-studies-clash",
+    "headline": "IIT Bombay study backs the Hebbal tunnel and flyover; IISc calls it biased",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "IIT-B study backs Hebbal tunnel, flyover; IISc calls it ‘biased in favour of the project’ in Bengaluru",
+     "outlet": "The Hindu, Bengaluru"
+    }
+   },
+   {
+    "section": "namma",
+    "kind": "brief",
+    "id": "gba-tree-compensation",
+    "headline": "High Court orders the GBA to pay ₹2.77 crore to a man paralysed by a falling branch",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "Karnataka High Court orders GBA to pay ₹2.77 crore to man paralysed due to falling of tree branch",
+     "outlet": "The Hindu, Bengaluru"
+    }
+   },
+   {
+    "section": "namma",
+    "kind": "brief",
+    "id": "pink-line-symbolic-open",
+    "headline": "Residents stage a symbolic opening of the Pink Line and ask BMRCL to hurry",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "Locals symbolically ‘open’ Bengaluru Metro Pink Line, demand early launch",
+     "outlet": "The Hindu, national"
+    }
+   }
+  ],
+  "by_section": {
+   "ledger": {
+    "printed": 5,
+    "found": 5
+   },
+   "workshop": {
+    "printed": 2,
+    "found": 2
+   },
+   "dateline": {
+    "printed": 4,
+    "found": 4
+   },
+   "madrid": {
+    "printed": 1,
+    "found": 1
+   },
+   "sidelines": {
+    "printed": 1,
+    "found": 1
+   },
+   "namma": {
+    "printed": 3,
+    "found": 3
+   }
+  },
+  "printed": 16,
+  "found": 16
+ },
+ "missed": {
+  "india": {
+   "total": 43,
+   "covered": 7,
+   "not_covered": [
+    {
+     "title": "Rahul Gandhi Flags 727 Voter Exclusions In Delhi. What Poll Body Said",
+     "outlets": [
+      "NDTV",
+      "The Times of India",
+      "The Hindu",
+      "Telegraph India",
+      "Hindustan Times",
+      "Hindustan Times, India"
+     ],
+     "n": 6,
+     "national": 5,
+     "covered_by": null
+    },
+    {
+     "title": "Maharashtra poll chief wants ECINet discretion for staff — a demand ECs had flagged",
+     "outlets": [
+      "The Indian Express",
+      "NDTV",
+      "The New Indian Express",
+      "ThePrint",
+      "The Times of India"
+     ],
+     "n": 5,
+     "national": 5,
+     "covered_by": null
+    },
+    {
+     "title": "‘Khalistan Zindabad’, ‘God Bless America’ Slogans Raised During US Envoy Sergio Gor’s Visit To Golden Templ",
+     "outlets": [
+      "News18",
+      "NDTV",
+      "The Times of India",
+      "The Economic Times",
+      "The Tribune"
+     ],
+     "n": 5,
+     "national": 5,
+     "covered_by": null
+    },
+    {
+     "title": "FBI puts gangster Goldy Brar on 10 most wanted list with $1 million reward",
+     "outlets": [
+      "The Hindu",
+      "NDTV",
+      "The Times of India",
+      "Hindustan Times",
+      "ThePrint"
+     ],
+     "n": 5,
+     "national": 5,
+     "covered_by": null
+    },
+    {
+     "title": "AAP donations plunge in 2025-26; company of MP who later joined BJP, Ashutosh Ranka among donors",
+     "outlets": [
+      "The Hindu",
+      "The Times of India",
+      "Rediff",
+      "Hindustan Times",
+      "The Indian Express",
+      "The Hindu, national",
+      "The Indian Express, India",
+      "Hindustan Times, India"
+     ],
+     "n": 8,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "Calcutta High Court Grants Interim Bail To Congress Nandigram Candidate Milan Pradhan Till October 21",
+     "outlets": [
+      "Live Law",
+      "The Hindu",
+      "Telegraph India",
+      "The Indian Express",
+      "NDTV",
+      "The Hindu, national",
+      "NDTV, top stories"
+     ],
+     "n": 7,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "Delhi Turns Chilly, Snow Hits Uttarakhand And Himachal Before September Ends: Is Winter Arriving Early?",
+     "outlets": [
+      "News18",
+      "The Hindu",
+      "NDTV",
+      "Down To Earth",
+      "The New Indian Express",
+      "NDTV, top stories"
+     ],
+     "n": 6,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "World Heart Day observed today to raise awareness about cardiovascular diseases",
+     "outlets": [
+      "newsonair.gov.in",
+      "The Hindu",
+      "NDTV",
+      "ThePrint",
+      "Firstpost"
+     ],
+     "n": 5,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "Fresh case against GEM Veeramani over minor’s suicide after alleged rape",
+     "outlets": [
+      "The News Minute",
+      "The Hindu",
+      "The Times of India",
+      "NDTV",
+      "The New Indian Express"
+     ],
+     "n": 5,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "CEC row LIVE: Former Home Secretary urges Opposition to boycott elections until Gyanesh Kumar resigns",
+     "outlets": [
+      "The Hindu",
+      "Telegraph India",
+      "Scroll.in",
+      "ThePrint",
+      "The Hindu, national"
+     ],
+     "n": 5,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "Weather Tomorrow: Rain To Ease In North India, Heavy Showers Expected In South, Northeast",
+     "outlets": [
+      "NDTV",
+      "The Hindu",
+      "newsonair.gov.in",
+      "The Times of India",
+      "The Indian Express"
+     ],
+     "n": 5,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "UAE likely to pour in another $25 billion in India, says Piyush Goyal",
+     "outlets": [
+      "Business Standard",
+      "newsonair.gov.in",
+      "The Times of India",
+      "The Hindu",
+      "The Economic Times"
+     ],
+     "n": 5,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "Mumbai-Ahmedabad bullet train timeline fails to meet Japan’s expectations, but is now ‘moving forward’",
+     "outlets": [
+      "The Hindu",
+      "Deccan Herald",
+      "The Times of India",
+      "The Economic Times",
+      "Rediff MoneyWiz"
+     ],
+     "n": 5,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "‘My pind is where I belong’: Ludhiana’s Angad Singh Dhillon named Canada’s Ambassador to UAE",
+     "outlets": [
+      "The Indian Express",
+      "NDTV",
+      "Firstpost",
+      "The Times of India",
+      "The Globe and Mail"
+     ],
+     "n": 5,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "Varun Gandhi, Smriti Irani May Return To Rajya Sabha From UP Next Month",
+     "outlets": [
+      "NDTV",
+      "The New Indian Express",
+      "The Times of India",
+      "Hindustan Times",
+      "theweek.in"
+     ],
+     "n": 5,
+     "national": 4,
+     "covered_by": null
+    }
+   ]
+  },
+  "world": {
+   "total": 20,
+   "covered": 2,
+   "not_covered": [
+    {
+     "title": "Trump says he expects Canada trade deal within weeks as import ban looms",
+     "outlets": [
+      "Forex Factory",
+      "CNN",
+      "BBC",
+      "Yahoo",
+      "Global News",
+      "The New York Times",
+      "NBC News",
+      "bbc.com"
+     ],
+     "n": 12,
+     "national": 0,
+     "covered_by": null
+    },
+    {
+     "title": "Who are the ‘Cornell 7’ and where are they now? Chi Phi group texts emerge after South Park writer's claims | Hindustan Times",
+     "outlets": [
+      "Hindustan Times",
+      "BBC",
+      "statements.cornell.edu",
+      "CBS News",
+      "The Cornell Daily Sun",
+      "AP News",
+      "CNN",
+      "The Journal News | lohud.com"
+     ],
+     "n": 11,
+     "national": 1,
+     "covered_by": null
+    },
+    {
+     "title": "NY Times Executive Beaten By Wife, Killed By In-Laws Over 'Trans' Identity",
+     "outlets": [
+      "NDTV",
+      "BBC",
+      "The Times of India",
+      "The Mercury News",
+      "sfchronicle.com",
+      "bbc.com",
+      "CNN",
+      "The New York Times"
+     ],
+     "n": 11,
+     "national": 2,
+     "covered_by": null
+    },
+    {
+     "title": "SpaceX’s Starship reaches orbit for first time despite engine failure",
+     "outlets": [
+      "Yahoo News Singapore",
+      "The Hindu",
+      "BBC",
+      "Space",
+      "The Economist",
+      "The Times of India",
+      "WANE 15",
+      "CNBC"
+     ],
+     "n": 11,
+     "national": 2,
+     "covered_by": null
+    },
+    {
+     "title": "India's Essar Group To Build \"Largest Steel Plant In US History\": Trump",
+     "outlets": [
+      "NDTV",
+      "Essar",
+      "CNBC",
+      "indiatoday.in",
+      "WSJ",
+      "The Times of India",
+      "KCCI",
+      "USA Today"
+     ],
+     "n": 10,
+     "national": 2,
+     "covered_by": null
+    },
+    {
+     "title": "Apple iOS 27.0.1 Out Now: Core Bug Fixes Land For All iPhone Users",
+     "outlets": [
+      "forbes.com",
+      "Firstpost",
+      "9to5Mac",
+      "NDTV",
+      "send2press.com",
+      "MacRumors",
+      "CNET",
+      "PhoneArena"
+     ],
+     "n": 9,
+     "national": 2,
+     "covered_by": null
+    },
+    {
+     "title": "US, Iran separately talk with mediators in latest bid to end war",
+     "outlets": [
+      "Reuters",
+      "Al Jazeera",
+      "WSJ",
+      "تسنیم",
+      "The Hindu",
+      "Axios",
+      "Yahoo",
+      "CNBC"
+     ],
+     "n": 9,
+     "national": 1,
+     "covered_by": null
+    },
+    {
+     "title": "Nothing Headphone 1 Pro unveiled: Triple drivers, precision sound, and more",
+     "outlets": [
+      "Business Standard",
+      "forbes.com",
+      "The Verge",
+      "The Hollywood Reporter",
+      "NDTV",
+      "GSMArena.com",
+      "Bloomberg.com",
+      "Gizmodo"
+     ],
+     "n": 9,
+     "national": 2,
+     "covered_by": null
+    },
+    {
+     "title": "Russia pounds Ukraine’s Kyiv after deadly strike on Academy of Sciences",
+     "outlets": [
+      "Al Jazeera",
+      "The Hindu",
+      "The New York Times",
+      "news.cgtn.com",
+      "theguardian.com",
+      "AP News",
+      "ABC News - Breaking News, Latest News and Videos",
+      "Reuters"
+     ],
+     "n": 8,
+     "national": 1,
+     "covered_by": null
+    },
+    {
+     "title": "Will Bullock signal further tightening as the RBA is set to hike in September?",
+     "outlets": [
+      "FXStreet",
+      "CNBC",
+      "rba.gov.au",
+      "Al Jazeera",
+      "Investing.com",
+      "SBS",
+      "abc.net.au",
+      "Yahoo Finance Australia"
+     ],
+     "n": 8,
+     "national": 0,
+     "covered_by": null
+    }
+   ]
+  }
+ },
+ "feeds": {
+  "total": 73,
+  "failed": [
+   "fia: The operation was aborted due to timeout"
+  ],
+  "empty": [
+   "pib",
+   "rbi-notifications",
+   "rbi-speeches",
+   "bs-pf",
+   "bbc-tennis",
+   "deepmind"
+  ],
+  "items": 1663,
+  "stories": 291
+ },
+ "sources_quality": {
+  "links_by_tier": {
+   "1": 0,
+   "2": 24,
+   "3": 3
+  },
+  "tier3_only": [
+   {
+    "section": "sidelines",
+    "headline": "Neeru Dhanda wins trap gold, India's first individual gold of the Games",
+    "domains": [
+     "millenniumpost.in"
+    ]
+   }
+  ],
+  "tier3_domains": {
+   "millenniumpost.in": 1
+  }
+ },
+ "talk": {
+  "rows": [
+   {
+    "term": "BTS",
+    "printed": "asianews.network",
+    "printed_tier": 3,
+    "attached": 3,
+    "printed_is_attached": false,
+    "best_attached": {
+     "outlet": "The Verge",
+     "url": "https://www.theverge.com/tech/1001797/nothings-headphone-1-pro-review",
+     "tier": 2
+    },
+    "attached_as_good": true
+   },
+   {
+    "term": "Divya Mittal",
+    "printed": "newsbytesapp.com",
+    "printed_tier": 3,
+    "attached": 0,
+    "printed_is_attached": false,
+    "best_attached": null,
+    "attached_as_good": false
+   },
+   {
+    "term": "Lawrence Dallaglio",
+    "printed": "sports.yahoo.com",
+    "printed_tier": 2,
+    "attached": 3,
+    "printed_is_attached": false,
+    "best_attached": {
+     "outlet": "The Telegraph",
+     "url": "https://www.telegraph.co.uk/rugby-union/2026/09/28/bankrupt-lawrence-dallaglio-to-auction-world-cup-winners-m/",
+     "tier": 3
+    },
+    "attached_as_good": false
+   },
+   {
+    "term": "Chrissy Amphlett",
+    "printed": "bbc.co.uk",
+    "printed_tier": 2,
+    "attached": 3,
+    "printed_is_attached": true,
+    "best_attached": {
+     "outlet": "BBC",
+     "url": "https://www.bbc.co.uk/news/articles/cmrl6ylzy4zxo",
+     "tier": 2
+    },
+    "attached_as_good": true
+   }
+  ],
+  "as_good": 2,
+  "total": 4
+ },
+ "tennis": [
+  {
+   "player": "Carlos Alcaraz",
+   "espn": {
+    "event": "Kinoshita Group Japan Open Tennis Championships",
+    "round": "Round 1",
+    "when_utc": "2026-09-30T04:00Z",
+    "opponent": "Alex Michelsen",
+    "live": false,
+    "court": null
+   },
+   "paper": null,
+   "paper_event": "Shanghai Masters, 7 to 18 Oct, match TBD.",
+   "verdict": "ESPN has a match the paper did not print"
+  },
+  {
+   "player": "Novak Djokovic",
+   "espn": {
+    "event": "China Open",
+    "round": "Round 1",
+    "when_utc": "2026-09-30T11:00Z",
+    "opponent": "Nuno Borges",
+    "live": false,
+    "court": "Capital Group Diamond"
+   },
+   "paper": null,
+   "paper_event": "China Open, Beijing, 30 Sep to 6 Oct, match TBD.",
+   "verdict": "ESPN has a match the paper did not print"
+  }
+ ],
+ "screen": {
+  "titles": [
+   {
+    "title": "The Love Hypothesis",
+    "verdict": "call",
+    "where": "Prime Video",
+    "imdb": null,
+    "rotten_tomatoes": null,
+    "metacritic": "67/100",
+    "omdb_error": null,
+    "tmdb_stream_in": [
+     "Amazon Prime Video",
+     "Amazon Prime Video with Ads"
+    ],
+    "tmdb_error": null
+   },
+   {
+    "title": "Heart of the Beast",
+    "verdict": "must",
+    "where": "Theatres",
+    "imdb": "7.5",
+    "rotten_tomatoes": null,
+    "metacritic": null,
+    "omdb_error": null,
+    "tmdb_stream_in": [],
+    "tmdb_error": null
+   },
+   {
+    "title": "Shaque: Trust No One",
+    "verdict": "call",
+    "where": "Netflix",
+    "imdb": null,
+    "rotten_tomatoes": null,
+    "metacritic": null,
+    "omdb_error": "OMDb: Movie not found!",
+    "tmdb_stream_in": [
+     "Netflix"
+    ],
+    "tmdb_error": null
+   },
+   {
+    "title": "Hunkkaar: The Roar",
+    "verdict": "call",
+    "where": "JioHotstar",
+    "imdb": null,
+    "rotten_tomatoes": null,
+    "metacritic": null,
+    "omdb_error": "OMDb: Movie not found!",
+    "tmdb_stream_in": [
+     "JioHotstar"
+    ],
+    "tmdb_error": null
+   },
+   {
+    "title": "Dupahiya",
+    "verdict": "early",
+    "where": "Prime Video",
+    "imdb": "7.4",
+    "rotten_tomatoes": null,
+    "metacritic": null,
+    "omdb_error": null,
+    "tmdb_stream_in": [
+     "Amazon Prime Video",
+     "Amazon Prime Video with Ads"
+    ],
+    "tmdb_error": null
+   },
+   {
+    "title": "Drishyam: The Conclusion",
+    "verdict": "early",
+    "where": "Theatres",
+    "imdb": null,
+    "rotten_tomatoes": null,
+    "metacritic": null,
+    "omdb_error": null,
+    "tmdb_stream_in": [
+     "Amazon Prime Video",
+     "Amazon Prime Video with Ads"
+    ],
+    "tmdb_error": null
+   },
+   {
+    "title": "Digger",
+    "verdict": "early",
+    "where": "Theatres",
+    "imdb": "7.4",
+    "rotten_tomatoes": "70%",
+    "metacritic": "64/100",
+    "omdb_error": null,
+    "tmdb_stream_in": [],
+    "tmdb_error": null
+   }
+  ],
+  "keys": {
+   "omdb": true,
+   "tmdb": true
+  },
+  "chart_not_printed": [
+   "film #2 365 dni (2020)",
+   "film #3 Plank Face (2016)",
+   "film #4 Vishwanath & Sons (2026)",
+   "film #5 Irumudi (2026)",
+   "film #6 Modha Rathri (2026)",
+   "film #7 Jana Nayagan (2026)",
+   "film #8 Skin. Like. Sun. (2009)",
+   "film #9 How to Have Sex (2023)",
+   "film #10 Nude (2017)",
+   "series #1 Bigg Boss (2006)",
+   "series #2 Mirzapur (2018)",
+   "series #3 Mastram (2020)",
+   "series #5 Waiting Hai (2026)",
+   "series #6 India's Got Latent (2024)",
+   "series #7 The Mentalist (2008)",
+   "series #9 Erotic Stories (2023)",
+   "series #10 Chumbak (2026)"
+  ],
+  "chart_printed": [
+   "The Love Hypothesis",
+   "Shaque: Trust No One",
+   "Hunkkaar: The Roar"
+  ],
+  "box_office_tracked": [
+   "drishyam 3 hindi (2026)",
+   "Mahakavya Shri Ramayan Katha (2026)",
+   "Dhoomakethu (2026)",
+   "Dorothy (2026)",
+   "Primetime (2026)",
+   "Heart of the Beast (2026)",
+   "Meesaya Murukku 2 (2026)",
+   "Avengers Endgame Encore (2026)",
+   "Vvan (2026)",
+   "Citylights (2026)",
+   "The Paradise (2026)",
+   "Its a Medical Miracle (2026)"
+  ]
+ },
+ "movers": {
+  "flagged": [
+   "KIRLOSENG"
+  ]
+ },
+ "cricket_where": [],
+ "alerts": [],
+ "internationals": {
+  "matches": 101,
+  "upcoming": [
+   {
+    "league": "fifa.friendly",
+    "when_utc": "2026-09-29T10:00Z",
+    "home": "Australia",
+    "away": "Brazil",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-09-29T16:00Z",
+    "home": "Finland",
+    "away": "Belarus",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-09-29T16:00Z",
+    "home": "Moldova",
+    "away": "Faroe Islands",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "fifa.friendly",
+    "when_utc": "2026-09-29T16:00Z",
+    "home": "Russia",
+    "away": "Iran",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-09-29T18:45Z",
+    "home": "Bulgaria",
+    "away": "Estonia",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-09-29T18:45Z",
+    "home": "Czechia",
+    "away": "England",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-09-29T18:45Z",
+    "home": "Luxembourg",
+    "away": "Iceland",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-09-29T18:45Z",
+    "home": "San Marino",
+    "away": "Albania",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-09-29T18:45Z",
+    "home": "Scotland",
+    "away": "Switzerland",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-09-29T18:45Z",
+    "home": "Slovakia",
+    "away": "Kazakhstan",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-09-29T18:45Z",
+    "home": "Slovenia",
+    "away": "North Macedonia",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-09-29T18:45Z",
+    "home": "Spain",
+    "away": "Croatia",
+    "state": "pre",
+    "score": null
+   }
+  ]
+ },
+ "calendar": {
+  "fomc": [
+   {
+    "what": "US Federal Reserve (FOMC) decision",
+    "date": "2026-10-28",
+    "days": "October 27-28"
+   }
+  ],
+  "india_holidays": [
+   {
+    "what": "Mahatma Gandhi Jayanti",
+    "date": "2026-10-02"
+   },
+   {
+    "what": "First Day of Sharad Navratri",
+    "date": "2026-10-11"
+   },
+   {
+    "what": "First Day of Durga Puja Festivities",
+    "date": "2026-10-17"
+   },
+   {
+    "what": "Maha Saptami",
+    "date": "2026-10-18"
+   },
+   {
+    "what": "Maha Ashtami",
+    "date": "2026-10-19"
+   },
+   {
+    "what": "Dussehra",
+    "date": "2026-10-20"
+   },
+   {
+    "what": "Maharishi Valmiki Jayanti",
+    "date": "2026-10-26"
+   },
+   {
+    "what": "Karaka Chaturthi",
+    "date": "2026-10-29"
+   }
+  ]
+ },
+ "summary": {
+  "coverage_pct": 100,
+  "india_missed": 15,
+  "world_missed": 10,
+  "tier3_only": 1,
+  "tennis_disagreements": 2,
+  "sources_failed": 2
+ }
+}

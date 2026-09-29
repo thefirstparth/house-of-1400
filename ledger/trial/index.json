@@ -1,0 +1,15 @@
+{
+ "days": [
+  {
+   "date": "2026-09-29",
+   "coverage_pct": 100,
+   "india_missed": 15,
+   "world_missed": 10,
+   "tier3_only": 1,
+   "tennis_disagreements": 2,
+   "sources_failed": 2
+  }
+ ],
+ "from": "2026-09-29",
+ "until": "2026-10-08"
+}
