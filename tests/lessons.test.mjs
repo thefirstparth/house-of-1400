@@ -1,7 +1,7 @@
 // The money sweep's must-reads, the wider net, the money calendar (ledger/changes.json) and the lessons ledger.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 
 import { validateEdition } from "../scripts/validate.mjs";
 
@@ -28,8 +28,14 @@ test("the wider net must be recorded", () => {
 });
 
 test("a change taking effect within 30 days stays owed until printed or explained", () => {
+  // The live ledger moves on (the 29 Sep paper printed TRAI): test against the change as it stood before it was printed.
+  const path = new URL("../ledger/changes.json", import.meta.url), saved = readFileSync(path, "utf8"), L = JSON.parse(saved);
+  L.changes = L.changes.filter(c => c.id === "trai-recharge-rules-2026").map(({ printed_on, settled, ...c }) => c);
+  writeFileSync(path, JSON.stringify(L));
+  try {
   assert.ok(moneyErrors(next({ changes: [] })).some(x => /trai-recharge-rules-2026/.test(x)), "TRAI (from 22 Oct) is owed on 29 Sep");
   assert.ok(moneyErrors(next({ changes: [{ id: "trai-recharge-rules-2026", covered_by: "no-such-item" }] })).some(x => /not an item/.test(x)));
   assert.deepEqual(moneyErrors(next({ changes: [{ id: "trai-recharge-rules-2026", action: "Withdrawn by TRAI on 28 Sep; nothing changes." }] })), []);
   assert.deepEqual(moneyErrors(next({ changes: [] }, "2026-10-23")), [], "after it takes effect it is no longer asked for");
+  } finally { writeFileSync(path, saved); }
 });

@@ -56,9 +56,15 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   if (!E || typeof E !== "object" || !E.date) return { errors, warnings };
 
   // Art orders (lib/art.js): printed stories only, at most four. Warnings only: art never holds up the paper.
-  if (E.art_orders?.length) {
+  {
     const ids = new Set(allItems(E).filter(i => i._kind === "story").map(i => i.id));
-    for (const o of E.art_orders) if (!ids.has(o.story_id)) warnings.push(`art_orders: ${o.story_id} is not a printed story (briefs get no art)`);
+    for (const o of E.art_orders || []) if (!ids.has(o.story_id)) warnings.push(`art_orders: ${o.story_id} is not a printed story (briefs get no art)`);
+    // From 30 Sep 2026 (Parth, 29 Sep): four a day, the lead always one of them.
+    if (E.date > "2026-09-29") {
+      const want = Math.min(4, ids.size), got = new Set((E.art_orders || []).map(o => o.story_id).filter(id => ids.has(id)));
+      if (got.size < want) warnings.push(`art_orders: ${got.size} ordered; order ${want} (the lead and the best pictures)`);
+      if (E.front?.lead?.id && !got.has(E.front.lead.id)) warnings.push("art_orders: the lead should always have a drawing");
+    }
   }
 
   // Date and weekday
