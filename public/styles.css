@@ -888,3 +888,6 @@ table.wk tr:last-child td,table.wk tr:last-child th{border-bottom:0}
 .deskhead span{flex:none}
 nav.idx .dk{flex:none;align-self:center;padding:0 2px 0 10px;font:800 10.5px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 nav.idx .dk:first-child{padding-left:2px}
+
+/* Paddock Notes: a session's day, date and time stay on one line */
+table.sessions td.r{white-space:nowrap}

@@ -354,8 +354,12 @@ function paddockBlock() {
   let sessions = "";
   if (N?.race) {
     const tz = D.local_tz;
-    const t = (iso, zone) => esc(fmt(iso, { weekday: "short", hour: "2-digit", minute: "2-digit" }, zone).replace(",", ""));
-    sessions = `<div class="tbl"><table class="compact"><thead><tr><th>This weekend</th>${tz ? `<th class="r">Local</th>` : ""}<th class="r">IST</th></tr></thead><tbody>${N.race.sessions.map(s => {
+    // Each session with its date as well as its day (Parth, 30 Sep), and the weekend's dates in the heading.
+    const t = (iso, zone) => esc(fmt(iso, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }, zone).replace(/,/g, ""));
+    const ss = N.race.sessions, first = ss[0]?.start, last = ss[ss.length - 1]?.start;
+    const dm = iso => fmt(iso, { day: "numeric", month: "short" }), span = first && last ? (dm(first) === dm(last) ? dm(first) : `${fmt(first, { day: "numeric" })}${fmt(first, { month: "short" }) === fmt(last, { month: "short" }) ? "" : " " + fmt(first, { month: "short" })} to ${dm(last)}`) : "";
+    const soon = first && Date.parse(first) - n < 7 * 864e5;
+    sessions = `<div class="tbl"><table class="compact sessions"><thead><tr><th>${soon ? "This weekend" : "Race weekend"}${span ? ` · ${esc(span)}` : ""}</th>${tz ? `<th class="r">Local</th>` : ""}<th class="r">IST</th></tr></thead><tbody>${N.race.sessions.map(s => {
       const st = stateOf({ start: Date.parse(s.start), end: Date.parse(s.start) + s.minutes * 6e4 }, n);
       return `<tr class="${st === "on" ? "on" : st === "done" ? "done" : ""}"><td>${esc(s.name)}${st === "on" ? ` <span class="live"><i></i>On now, go watch</span> <button class="refresh" data-refresh="f1_next">Refresh</button>` : st === "done" ? ` <small>done</small>` : ""}</td>${tz ? `<td class="r tnum">${s.time_confirmed ? t(s.start, tz) : "TBC"}</td>` : ""}<td class="r tnum">${s.time_confirmed ? t(s.start) : "TBC"}</td></tr>`;
     }).join("")}</tbody></table></div>`;
