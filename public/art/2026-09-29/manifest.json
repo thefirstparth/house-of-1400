@@ -1,0 +1,26 @@
+{
+  "date": "2026-09-29",
+  "made_by": "Codex",
+  "items": [
+    {
+      "story_id": "sensex-six-month-low",
+      "file": "sensex-six-month-low.webp",
+      "alt": "A falling red market line becomes a steep slide for investors beneath the weight of an oil barrel and a dollar bill."
+    },
+    {
+      "story_id": "trai-30-day-recharges",
+      "file": "trai-30-day-recharges.webp",
+      "alt": "A feature phone sits inside a circle of twelve calendar pages as a thirteenth page is swept away by a long green calendar sheet."
+    },
+    {
+      "story_id": "openai-scraps-astra",
+      "file": "openai-scraps-astra.webp",
+      "alt": "A human hand presses pause beside an AI mask opened to reveal hidden levers and mechanisms."
+    },
+    {
+      "story_id": "us-pharma-tariff-india-exempt",
+      "file": "us-pharma-tariff-india-exempt.webp",
+      "alt": "Medicine cartons meet a red tariff barrier while specialty medicine vials pass through a narrow green customs lane."
+    }
+  ]
+}
