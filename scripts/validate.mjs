@@ -276,24 +276,22 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
         else if (!a.covered_by && !((a.action || "").trim().length >= 15)) errors.push(`checks.changes: ${c.id} needs covered_by or an action saying why it is no longer news`);
       }
     }
-    // Tennis next matches (from 30 Sep 2026): two independent sources, ESPN and Tennis Explorer (tennis_players in the
-    // snapshot). When both list the same match in the next three days, it is printed at that time (an error if not).
-    // When they disagree, or only one lists a match, the run checks the tournament's order of play and prints what it
-    // confirms, or the match with "time TBC": a warning, never a block. Nothing is enforced when neither answers.
+    // Tennis next matches (from 30 Sep 2026; Parth, 29 Sep): ESPN's time is printed, and Tennis Explorer is the second
+    // opinion (tennis_players in the snapshot). ESPN lists a match in the next three days: it is printed at ESPN's time.
+    // Tennis Explorer has a different time: the player's note says so, with that time in IST, so Parth knows to check.
+    // Only Tennis Explorer lists one: a warning to check and print it.
     if (E.date > "2026-09-29") {
+      const ist = iso => new Date(iso).toLocaleTimeString("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hour12: false });
       for (const p of E.snapshot?.tennis_players?.value?.players || []) {
         const e = p.next, b = p.backup, soon = x => x && Date.parse(x.when_utc) > cut && Date.parse(x.when_utc) - cut <= 72 * 36e5;
-        if (!soon(e) && !soon(b)) continue;
-        const mine = (E.tennis?.players || []).find(x => x.name === p.name)?.next_match;
-        const say = x => `${x.round ? x.round + " " : ""}v ${x.opponent} at ${x.event}, ${new Date(Date.parse(x.when_utc)).toISOString()} (${x.source || "ESPN"})`;
-        if (soon(e) && soon(b) && p.agree) {
-          if (!mine) errors.push(`tennis: ESPN and Tennis Explorer agree on ${p.name}'s next match (${say(e)}); print it as next_match`);
-          else if (!mine.when_utc || Math.abs(Date.parse(mine.when_utc) - Date.parse(e.when_utc)) > 30 * 6e4) errors.push(`tennis: ${p.name}'s next match differs from what ESPN and Tennis Explorer agree on (${say(e)})`);
-        } else {
-          const seen = [e, b].filter(soon).map(say).join(" | ");
-          if (!mine) warnings.push(`tennis: a source lists ${p.name}'s next match (${seen}); check the tournament's order of play and print it (time TBC if unconfirmed)`);
-          else if (soon(e) && soon(b)) warnings.push(`tennis: the sources disagree on ${p.name}'s next match (${seen}); make sure the printed time is the one the tournament confirms, or TBC`);
-        }
+        const P = (E.tennis?.players || []).find(x => x.name === p.name), mine = P?.next_match;
+        const say = x => `${x.round ? x.round + " " : ""}v ${x.opponent} at ${x.event}, ${ist(x.when_utc)} IST`;
+        if (soon(e)) {
+          if (!mine) errors.push(`tennis: ESPN has ${p.name}'s next match (${say(e)}); print it as next_match`);
+          else if (!mine.when_utc || Math.abs(Date.parse(mine.when_utc) - Date.parse(e.when_utc)) > 30 * 6e4) errors.push(`tennis: ${p.name}'s next match should be at ESPN's time (${say(e)})`);
+          if (soon(b) && p.agree === false && !String(P?.note || "").includes(ist(b.when_utc)))
+            errors.push(`tennis: Tennis Explorer has ${p.name}'s match at ${ist(b.when_utc)} IST, not ${ist(e.when_utc)}; say so in one line in the player's note so Parth can check`);
+        } else if (soon(b) && !mine) warnings.push(`tennis: only Tennis Explorer lists ${p.name}'s next match (${say(b)}); check the tournament's order of play and print it (time TBC if unconfirmed)`);
       }
     }
     // The wire check (from 30 Sep 2026, Parth's review of 29 Sep; scripts/wire-check.mjs): every story the day's news
