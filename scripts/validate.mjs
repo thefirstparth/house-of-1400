@@ -55,15 +55,15 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   if (!v(E)) for (const e of v.errors) errors.push(`schema: ${e.instancePath || "/"} ${e.message}${e.params?.additionalProperty ? ` (${e.params.additionalProperty})` : ""}`);
   if (!E || typeof E !== "object" || !E.date) return { errors, warnings };
 
-  // Art orders (lib/art.js): printed stories only, at most four. Warnings only: art never holds up the paper.
+  // Art orders (lib/art.js): printed stories only, 2 to 5. Warnings only: art never holds up the paper.
   {
     const ids = new Set(allItems(E).filter(i => i._kind === "story").map(i => i.id));
     for (const o of E.art_orders || []) if (!ids.has(o.story_id)) warnings.push(`art_orders: ${o.story_id} is not a printed story (briefs get no art)`);
-    // From 30 Sep 2026 (Parth, 29 Sep): four a day, the lead always one of them.
+    // From 30 Sep 2026 (Parth, 29 Sep): 2 to 5 a day, how many and which is Bhide's call.
     if (E.date > "2026-09-29") {
-      const want = Math.min(4, ids.size), got = new Set((E.art_orders || []).map(o => o.story_id).filter(id => ids.has(id)));
-      if (got.size < want) warnings.push(`art_orders: ${got.size} ordered; order ${want} (the lead and the best pictures)`);
-      if (E.front?.lead?.id && !got.has(E.front.lead.id)) warnings.push("art_orders: the lead should always have a drawing");
+      const got = new Set((E.art_orders || []).map(o => o.story_id).filter(id => ids.has(id)));
+      if (got.size < Math.min(2, ids.size)) warnings.push(`art_orders: ${got.size} ordered; order 2 to 5 printed stories`);
+      if (got.size > 5) warnings.push(`art_orders: ${got.size} ordered; at most 5 are drawn`);
     }
   }
 
