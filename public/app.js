@@ -25,9 +25,11 @@ function pts(q, unit = "", d = 2) {
   return `${a < 0 ? "−" : "+"}${unit}${Math.abs(a).toLocaleString("en-IN", { minimumFractionDigits: d, maximumFractionDigits: d })}`;
 }
 const fmt = (iso, o, tz = TZ) => new Date(iso).toLocaleString("en-GB", { timeZone: tz, hour12: false, ...o }).replace(/\bSept\b/g, "Sep");
-const istFull = iso => fmt(iso, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).replace(",", "");
-const istTime = iso => fmt(iso, { hour: "2-digit", minute: "2-digit" });
-const istDay = iso => fmt(iso, { weekday: "short", day: "numeric", month: "short" }).replace(",", "");
+// One way to write a day and a time across the paper: "Thu 1 Oct" and "Thu 1 Oct, 10:00" (IST unless a zone is given).
+// Say "IST" after a time wherever no column heading already does.
+const istTime = (iso, tz = TZ) => fmt(iso, { hour: "2-digit", minute: "2-digit" }, tz);
+const istDay = (iso, tz = TZ) => fmt(iso, { weekday: "short", day: "numeric", month: "short" }, tz).replace(/,/g, "");
+const istFull = (iso, tz = TZ) => `${istDay(iso, tz)}, ${istTime(iso, tz)}`;
 const istDate = (d = new Date()) => d.toLocaleDateString("en-CA", { timeZone: TZ });
 const longDate = ymd => new Date(ymd + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 const shortDate = ymd => new Date(ymd + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }).replace(/\bSept\b/, "Sep").toUpperCase();
@@ -50,8 +52,8 @@ const sealPath = f => {
 };
 const icon = (k, cls = "ic") => { const i = ICONS[k]; return i ? `<svg class="${cls}" viewBox="${i[0]}" aria-hidden="true">${i[1]}</svg>` : ""; };
 const seal = (id, size = 44) => { const f = fam(id), i = ICONS["s:" + id] || ICONS["s:front"]; return `<svg class="seal" data-fam="${f}" width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path class="shape" d="${sealPath(f)}"/><svg class="gl" x="5.5" y="5.5" width="13" height="13" viewBox="${i[0]}">${i[1]}</svg></svg>`; };
-// Team marks are single-colour (Simple Icons), so they sit in the text colour like a printed logo. Clubs use ESPN's
-// crests in greyscale, the way a newspaper would print them.
+// Team marks are single-colour (Simple Icons), so they sit in the text colour like a printed logo. Clubs use their
+// official crests from ESPN, in colour (Parth, 1 Oct: crests in colour, or none).
 const crest = (id, alt = "") => (id ? `<img class="crest" src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/${encodeURIComponent(id)}.png&h=40&w=40" width="18" height="18" alt="${esc(alt)}" loading="lazy" decoding="async">` : "");
 const words = s => (String(s || "").match(/\S+/g) || []).length;
 const store = {
@@ -117,6 +119,9 @@ async function refreshLive() {
   paintLive();
 }
 
+// Where the figures come from and how to read them, folded at the end of a block so it never reads like a listing
+// (Parth, 1 Oct). What the reader must see stays visible: a stale reading's "as of" time (staleNote).
+const aboutFig = text => (text ? `<details class="figsrc"><summary>Sources</summary><p>${text}</p></details>` : "");
 function staleNote(k) {
   const L = LIVE[k];
   // Say "from the snapshot" only once a live fetch has failed, or on a past edition.
@@ -427,12 +432,14 @@ function earsHTML() {
   if (M?.indices?.length) {
     const firsts = [...new Set(CFG.markets.indices.map(i => i.exchange))].map(ex => M.indices.find(q => CFG.markets.indices.find(i => i.name === q.name)?.exchange === ex)).filter(Boolean);
     const [a, ...rest] = firsts;
-    // Below the index: the other market's index, then oil and gold, each with the day's move.
+    // Below the index, a small table (Parth, 1 Oct): the other market's index, Brent and gold, each with its level, the
+    // move in points or money, the day's move and the month's (the one longer window every one of them has).
     const brent = (M.cross || []).find(q => /brent/i.test(q.name)), G = LIVE.gold_in?.value;
-    const more = [...rest.map(q => `<span class="er"><span>${esc(q.name)}</span><span class="${dir(q.change_pct)}">${pct(q.change_pct)}</span></span>`),
-      brent ? `<span class="er"><span>Brent $${esc(brent.price.toFixed(2))}</span><span class="${dir(brent.change_pct)}">${pct(brent.change_pct)}</span></span>` : "",
-      G?.per_10g_24k ? `<span class="er"><span>Gold ₹${inr(G.per_10g_24k)}</span>${G.change_pct != null ? `<span class="${dir(G.change_pct)}">${pct(G.change_pct)}</span>` : ""}</span>` : ""].join("");
-    R = `<a class="ear r" href="#ledger"><small>${esc(a.name)} · ${a.live ? "live" : "at close"}</small><b>${inr(a.price, 0)}</b><span class="${dir(a.change_pct)}">${pts(a, "", 0)} · ${pct(a.change_pct)}</span><span class="ers">${more}</span></a>`;
+    const gold = G?.per_10g_24k ? { name: "Gold 24K", price: G.per_10g_24k, prev: G.prev_10g ?? null, change_pct: G.change_pct ?? null, chg_1m: G.change_1m_pct ?? null } : null;
+    const lvl = (q, u, d) => `${u}${d ? q.price.toLocaleString("en-IN", { minimumFractionDigits: d, maximumFractionDigits: d }) : inr(q.price)}`;
+    const line = (q, name, u = "", d = 0) => `<tr><th scope="row">${esc(name)}<small class="tnum">${lvl(q, u, d)}</small></th><td class="tnum ${dir(q.change_pct)}">${pts(q, "", d || 0) || "–"}</td><td class="tnum ${dir(q.change_pct)}">${pct(q.change_pct) || "–"}</td><td class="tnum ${dir(q.chg_1m)}">${pct(q.chg_1m) || "–"}</td></tr>`;
+    const rows = [...rest.map(q => line(q, q.name, "", 0)), brent ? line(brent, "Brent", "$", 2) : "", gold ? line(gold, "Gold", "₹", 0) : ""].join("");
+    R = `<a class="ear r" href="#ledger"><small>${esc(a.name)} · ${a.live ? "live" : "at close"}</small><b>${inr(a.price, 0)}</b><span class="erl"><span class="${dir(a.change_pct)}">${pts(a, "", 0)} · ${pct(a.change_pct)}</span>${a.chg_1m != null ? ` <span class="erm">1M <span class="${dir(a.chg_1m)}">${pct(a.chg_1m)}</span></span>` : ""}</span>${rows ? `<table class="ert"><thead><tr><th></th><th>Chg</th><th>1D</th><th>1M</th></tr></thead><tbody>${rows}</tbody></table>` : ""}</a>`;
   }
   return [L, R];
 }
@@ -447,6 +454,13 @@ function madridComps() {
   const T = LIVE.laliga_table?.value;
   const liga = (CFG.follows.football_club.competitions || []).find(c => c.espn === CFG.follows.football_club.league);
   return T?.rows?.length ? [{ key: liga?.key || "league", label: liga?.label || "La Liga", rows: T.rows }] : [];
+}
+// A club's ESPN id from the competition's own table, by name (FotMob's lists carry FotMob ids, not ESPN's); none if unsure.
+const plain = t => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/\b(fc|cf|sc|ac|club|de|the)\b/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+function clubId(c, team) {
+  const t = plain(team); if (!t) return null;
+  const hit = (c.rows || []).filter(r => [r.team, r.short].some(n => plain(n) === t));
+  return hit.length === 1 ? hit[0].id : null;
 }
 function madridBlock() {
   const F = LIVE.football?.value, club = CFG.follows.football_club;
@@ -490,14 +504,14 @@ function madridBlock() {
       };
       return `<table class="compact liga${open ? " open" : ""}" data-t="${esc(id)}"><thead><tr><th class="rk">#</th><th>Club</th><th class="r" title="Played">P</th><th class="r" title="Won">W</th><th class="r" title="Drawn">D</th><th class="r" title="Lost">L</th><th class="r gd" title="Goal difference">GD</th><th class="r" title="Points">Pts</th></tr></thead><tbody>${c.rows.map(tr).join("")}</tbody></table>` +
         (zones.length ? `<p class="zones"${open ? "" : " hidden"}>${zones.map(([n, col]) => `<span><i${col ? ` style="--zc:${col}"` : ""}></i>${esc(n)}</span>`).join("")}</p>` : "") +
-        (rest > 0 ? `<button class="lmore" data-tmore="${esc(id)}" aria-expanded="${open}" data-n="${c.rows.length}">${open ? "Top " + TOPR + " only" : `Full table, all ${c.rows.length}`}</button>` : "");
+        (rest > 0 ? `<button class="lmore" data-tmore="${esc(id)}" aria-expanded="${open}" data-n="${c.rows.length}">${open ? `Show top ${TOPR}` : `Show all ${c.rows.length} clubs`}</button>` : "");
     };
     const fmtV = (k, v) => k === "ratings" ? Number(v).toFixed(2) : v;
     // Minutes played beside goals and assists (Parth, 1 Oct), when FotMob has them for the player.
     const listOf = (c, k, title, unit) => {
       const L = c[k]; if (!L?.length) return "";
       const id = `${c.key}-${k}`, open = MX.open.has(id), more = Math.max(0, L.length - TOPL), mins = L.some(p => p.minutes != null);
-      return `<div class="ldr${mins ? " m" : ""}"><div class="ldh"><h4>${title}</h4>${mins ? `<span class="mh" title="Minutes played">Min</span>` : ""}<span class="vh" title="${esc({ G: "Goals", A: "Assists", Avg: "Average rating" }[unit] || unit)}">${unit}</span></div><ol>${L.map((p, i) => `<li class="${ourPlayer(p) ? "on" : ""}${i >= TOPL ? " x" : ""}"${i >= TOPL && !open ? " hidden" : ""}><span class="rk tnum">${p.rank ?? i + 1}</span><span class="pl"><b title="${esc(p.name)}">${esc(p.name)}</b>${p.team ? `<small>${esc(p.team)}</small>` : ""}</span>${mins ? `<span class="mn tnum">${p.minutes != null ? esc(inr(p.minutes, 0)) : ""}</span>` : ""}<span class="v tnum">${esc(fmtV(k, p.value))}</span></li>`).join("")}</ol>${more ? `<button class="lmore" data-lmore="${esc(id)}" aria-expanded="${open}">${open ? "Show fewer" : `${more} more`}</button>` : ""}</div>`;
+      return `<div class="ldr${mins ? " m" : ""}"><div class="ldh"><h4>${title}</h4>${mins ? `<span class="mh" title="Minutes played">Min</span>` : ""}<span class="vh" title="${esc({ G: "Goals", A: "Assists", Avg: "Average rating" }[unit] || unit)}">${unit}</span></div><ol>${L.map((p, i) => `<li class="${ourPlayer(p) ? "on" : ""}${i >= TOPL ? " x" : ""}"${i >= TOPL && !open ? " hidden" : ""}><span class="rk tnum">${p.rank ?? i + 1}</span><span class="pl"><b title="${esc(p.name)}">${esc(p.name)}</b>${p.team ? `<small>${crest(p.team_id || clubId(c, p.team), "")}${esc(p.team)}</small>` : ""}</span>${mins ? `<span class="mn tnum">${p.minutes != null ? esc(inr(p.minutes, 0)) : ""}</span>` : ""}<span class="v tnum">${esc(fmtV(k, p.value))}</span></li>`).join("")}</ol>${more ? `<button class="lmore" data-lmore="${esc(id)}" aria-expanded="${open}">${open ? "Show fewer" : `Show ${more} more`}</button>` : ""}</div>`;
     };
     const body = c => {
       const lists = [listOf(c, "goals", "Top scorers", "G"), listOf(c, "assists", "Assists", "A"), listOf(c, "ratings", "Ratings", "Avg")].filter(Boolean);
@@ -523,7 +537,7 @@ function toggleTable(id, btn) {
   t.querySelectorAll("tr.x").forEach(r => { r.hidden = !open; });
   const z = btn.parentElement.querySelector(".zones"); if (z) z.hidden = !open;
   btn.setAttribute("aria-expanded", open);
-  btn.textContent = open ? `Top ${CFG.follows.football_club.show?.table_rows || 7} only` : `Full table, all ${btn.dataset.n}`;
+  btn.textContent = open ? `Show top ${CFG.follows.football_club.show?.table_rows || 7}` : `Show all ${btn.dataset.n} clubs`;
   // Folding a long table back up should not leave the reader far below it.
   if (!open && t.getBoundingClientRect().top < 0) t.scrollIntoView({ block: "start" });
 }
@@ -531,11 +545,14 @@ function toggleLeaders(id, btn) {
   const open = !MX.open.has(id); open ? MX.open.add(id) : MX.open.delete(id);
   btn.closest(".ldr").querySelectorAll("li.x").forEach(li => { li.hidden = !open; });
   btn.setAttribute("aria-expanded", open);
-  btn.textContent = open ? "Show fewer" : `${btn.closest(".ldr").querySelectorAll("li.x").length} more`;
+  btn.textContent = open ? "Show fewer" : `Show ${btn.closest(".ldr").querySelectorAll("li.x").length} more`;
 }
 const ordinal = n => n + (["th", "st", "nd", "rd"][(n % 100 - 20) % 10] || ["th", "st", "nd", "rd"][n % 100] || "th");
 
 // Paddock Notes owns F1: this weekend's sessions, the key lines, the drivers' standings and the calendar.
+// Bhide's Max Watch note, less any sentence that repeats the standings the line already prints live (1 Oct audit;
+// the validator stops new ones, this keeps an edition written before that clean).
+const maxNote = t => String(t || "").split(/(?<=[.;])\s+/).filter(x => !/\bstandings\b|\bpoints?\b|\bbehind\b|\bchampionship\b/i.test(x)).join(" ").replace(/;$/, ".").trim();
 function paddockBlock() {
   const N = LIVE.f1_next?.value, S = LIVE.f1_standings?.value, Lr = LIVE.f1_last?.value, D = E.sections?.paddock?.data || {};
   const n = Date.now();
@@ -543,7 +560,7 @@ function paddockBlock() {
   if (N?.race) {
     const tz = D.local_tz;
     // Each session with its date as well as its day (Parth, 30 Sep), and the weekend's dates in the heading.
-    const t = (iso, zone) => esc(fmt(iso, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }, zone).replace(/,/g, ""));
+    const t = (iso, zone) => esc(istFull(iso, zone));
     const ss = N.race.sessions, first = ss[0]?.start, last = ss[ss.length - 1]?.start;
     const dm = iso => fmt(iso, { day: "numeric", month: "short" }), span = first && last ? (dm(first) === dm(last) ? dm(first) : `${fmt(first, { day: "numeric" })}${fmt(first, { month: "short" }) === fmt(last, { month: "short" }) ? "" : " " + fmt(first, { month: "short" })} to ${dm(last)}`) : "";
     const soon = first && Date.parse(first) - n < 7 * 864e5;
@@ -555,10 +572,10 @@ function paddockBlock() {
   const bits = [], who = CFG.follows.f1_driver.name, isMax = d => d?.name === who || d?.shown === who;
   const done = !!N?.season_over, season = S?.season || N?.season || "";
   const max = S?.drivers?.find(isMax), lead = S?.drivers?.[0];
-  if (max) bits.push(`<p><b>${esc(CFG.follows.f1_driver.label)}.</b> ${done || S.prior ? `Finished the ${season} season ${ordinal(max.pos)} on ${max.points} points` : `${ordinal(max.pos)} on ${max.points} points`}${max === lead ? (done || S.prior ? ", champion" : ", leading the championship") : `, ${lead.points - max.points} behind ${esc(f1Name(lead))}`}.${D.max_note ? " " + esc(D.max_note) : ""}</p>`);
+  if (max) bits.push(`<p><b>${esc(CFG.follows.f1_driver.label)}:</b> ${done || S.prior ? `Finished the ${season} season ${ordinal(max.pos)} on ${max.points} points` : `${ordinal(max.pos)} on ${max.points} points`}${max === lead ? (done || S.prior ? ", champion" : ", leading the championship") : `, ${lead.points - max.points} behind ${esc(f1Name(lead))}`}.${maxNote(D.max_note) ? " " + esc(maxNote(D.max_note)) : ""}</p>`);
   // Once the season is decided: its champions, drivers' and constructors'.
-  if ((done || S?.prior) && lead) { const C = S.constructors?.[0]; bits.unshift(`<p><b>${esc(season)} champions.</b> ${esc(f1Name(lead))} won the drivers' title${lead.team ? ` for ${esc(lead.team)}` : ""}${C ? `; ${esc(C.name)} the constructors'` : ""}.</p>`); }
-  for (const note of D.notes || []) bits.push(`<p><b>${esc(note.label)}.</b> ${esc(note.text)}</p>`);
+  if ((done || S?.prior) && lead) { const C = S.constructors?.[0]; bits.unshift(`<p><b>${esc(season)} champions:</b> ${esc(f1Name(lead))} won the drivers' title${lead.team ? ` for ${esc(lead.team)}` : ""}${C ? `; ${esc(C.name)} the constructors'` : ""}.</p>`); }
+  for (const note of D.notes || []) bits.push(`<p><b>${esc(note.label)}:</b> ${esc(note.text)}</p>`);
   // The circuit as F1 draws it (OpenF1's map for the weekend), beside the sessions.
   const T = N?.race?.track;
   const track = T?.image ? `<figure class="f1-track"><img src="${esc(T.image)}" alt="${esc(`${T.circuit || N.race.locality || ""} circuit map, with corners, sectors and overtake zones`)}" loading="lazy" decoding="async" width="1252" height="704"><figcaption>${esc([N.next_season ? `${N.race.season} opener` : N.race.round ? `Round ${N.race.round}` : "", T.circuit || N.race.circuit].filter(Boolean).join(" · "))}</figcaption></figure>` : "";
@@ -592,7 +609,7 @@ function f1Champ(S, isMax, done) {
     return `<div class="f1-pan" id="f1p-${kind}"${kind === cur ? "" : " hidden"}><ol class="f1s">${rows.map((d, i) => {
       const x = i >= F1TOP && !(kind === "drivers" && isMax(d)), pin = i > F1TOP && kind === "drivers" && isMax(d);
       return `<li class="${kind === "drivers" && isMax(d) ? "on" : ""}${x ? " x" : ""}${pin ? " pin" : ""}"${x && !open ? " hidden" : ""} style="--tc:${esc(d.colour || "var(--muted)")}"><span class="p tnum">${d.pos}</span><span class="n">${esc(name(d))}${code(d) ? ` <i>${esc(code(d))}</i>` : ""}</span><b class="pts tnum">${d.points}</b><span class="bar" aria-hidden="true"><i style="width:${Math.max(1.5, d.points / top * 100).toFixed(1)}%"></i></span></li>`;
-    }).join("")}</ol>${more > 0 ? `<button class="lmore" data-f1more="${id}" data-n="${rows.length}" data-what="${kind === "drivers" ? "drivers" : "teams"}" aria-expanded="${open}">${open ? `Top ${F1TOP} only` : `Show all ${rows.length} ${kind === "drivers" ? "drivers" : "teams"}`}</button>` : ""}</div>`;
+    }).join("")}</ol>${more > 0 ? `<button class="lmore" data-f1more="${id}" data-n="${rows.length}" data-what="${kind === "drivers" ? "drivers" : "teams"}" aria-expanded="${open}">${open ? `Show top ${F1TOP}` : `Show all ${rows.length} ${kind === "drivers" ? "drivers" : "teams"}`}</button>` : ""}</div>`;
   };
   const tabs = S.constructors?.length ? `<div class="ctabs" role="tablist" aria-label="Championship">${[["drivers", "Drivers"], ["constructors", "Constructors"]].map(([k, l]) => `<button role="tab" data-f1board="${k}" aria-selected="${k === cur}">${l}</button>`).join("")}</div>` : `<div class="ctabs one"><span>Drivers</span></div>`;
   return `<div class="f1-box"><div class="f1k">Championship <span>${title}</span></div>${tabs}${list("drivers", S.drivers, f1Name, d => d.code)}${S.constructors?.length ? list("constructors", S.constructors, d => d.name, () => "") : ""}</div>`;
@@ -607,13 +624,13 @@ function f1LastRace(L, isMax) {
   const id = "f1-last", open = F1.open.has(id), rest = R.slice(3);
   return `<div class="f1-box"><div class="f1k">Last race <span>${L.season && L.season !== String(new Date().getFullYear()) ? esc(L.season) + " · " : ""}Round ${L.round}</span></div><h4 class="f1-h">${esc(L.flag)} ${esc(L.name)}</h4>
 <div class="podium">${step(R[1], 72)}${step(R[0], 104)}${step(R[2], 52)}</div>
-<ol class="f1r">${rest.map((r, i) => `<li class="${isMax(r) ? "on" : ""}${i >= 4 ? " x" : ""}"${i >= 4 && !open ? " hidden" : ""} style="--tc:${esc(r.colour || "var(--muted)")}"><span class="p tnum">${r.pos}</span><span class="n">${esc(f1Short(r))}</span><small>${esc(r.team || "")}</small><span class="g tnum">${esc(gap(r))}</span></li>`).join("")}</ol>${rest.length > 4 ? `<button class="lmore" data-f1more="${id}" data-n="${R.length}" data-what="drivers" aria-expanded="${open}">${open ? "Fewer" : `Show all ${R.length} drivers`}</button>` : ""}</div>`;
+<ol class="f1r">${rest.map((r, i) => `<li class="${isMax(r) ? "on" : ""}${i >= 4 ? " x" : ""}"${i >= 4 && !open ? " hidden" : ""} style="--tc:${esc(r.colour || "var(--muted)")}"><span class="p tnum">${r.pos}</span><span class="n">${esc(f1Short(r))}</span><small>${esc(r.team || "")}</small><span class="g tnum">${esc(gap(r))}</span></li>`).join("")}</ol>${rest.length > 4 ? `<button class="lmore" data-f1more="${id}" data-n="${R.length}" data-what="drivers" aria-expanded="${open}">${open ? "Show fewer" : `Show all ${R.length} drivers`}</button>` : ""}</div>`;
 }
 function f1Toggle(id, btn) {
   const open = !F1.open.has(id); open ? F1.open.add(id) : F1.open.delete(id);
   btn.parentElement.querySelectorAll("li.x").forEach(li => { li.hidden = !open; });
   btn.setAttribute("aria-expanded", open);
-  btn.textContent = open ? (id === "f1-last" ? "Fewer" : `Top ${F1TOP} only`) : `Show all ${btn.dataset.n} ${btn.dataset.what}`;
+  btn.textContent = open ? (id === "f1-last" ? "Show fewer" : `Show top ${F1TOP}`) : `Show all ${btn.dataset.n} ${btn.dataset.what}`;
 }
 function f1Board(k) {
   F1.board = k; store.set("h1400-f1board", k);
@@ -744,34 +761,33 @@ function indexBoard(M, G, D) {
   const anyCalc = [...(M?.indices || []), ...(M?.cross || [])].some(q => q.returns_calc) || !!G;
   const moods = Object.keys(CFG.markets.mood || {}).map(k => M?.mood?.[k]).filter(Boolean);
   return `<div class="board-wrap"><div class="board" data-fam="money"><div class="tbl"><table><thead><tr><th>Market</th><th class="r">Level</th><th class="r">1D</th><th class="r">7D</th><th class="r">1M</th><th class="r">30 days</th></tr></thead><tbody>${rows}</tbody></table></div>
-<p class="foot2">Levels from Yahoo Finance, gold from IBJA. 7D and 1M as Moneycontrol publishes them${anyCalc ? "; † where no source we can reach publishes the figure, it is worked out from official daily closes" : ""}. Hover a figure for its date.</p>${staleNote("markets")}</div>
-${moods.length ? `<div class="moods">${moods.map(moodCard).join("")}<details class="mhow"><summary>About these readings</summary><p>${esc(CFG.markets.mood?.method || "")}</p></details></div>` : ""}</div>`;
+${aboutFig(`Levels from Yahoo Finance, gold from IBJA. 7D and 1M as Moneycontrol publishes them${anyCalc ? "; † where no source we can reach publishes the figure, it is worked out from official daily closes" : ""}. Hover a figure for its date.`)}${staleNote("markets")}</div>
+${moods.length ? `<div class="moods">${moods.map(moodCard).join("")}${aboutFig(esc(CFG.markets.mood?.method || ""))}</div>` : ""}</div>`;
 }
 // A published mood reading (Tickertape for India, CNN for the US): the publisher's own bands and words, its
 // comparisons, its time. Editions from before 28 Sep carry the paper's old calculated reading, drawn the old way.
 function moodCard(m) {
-  const cx = 100, cy = 96, r = 78;
-  const arc = (from, to, c) => { const p = t => [cx + r * Math.cos(Math.PI * (1 - t)), cy - r * Math.sin(Math.PI * (1 - t))]; const [x1, y1] = p(from), [x2, y2] = p(to); return `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${c}" stroke-width="14" fill="none"/>`; };
+  // Clean over dramatic (Parth, 1 Oct): the reading and its word, a slim 0 to 100 scale in the publisher's bands with
+  // today marked, then the comparisons and the volatility index as a small table.
   const word = m.word || moodWord(m.score);
   const toneOf = w => (/fear|fearful|cautious/i.test(w) ? "bad" : /greed|confident|exuberant/i.test(w) ? "good" : "neutral");
-  const colour = (w, strong) => { const t = toneOf(w); return t === "neutral" ? "var(--surface2)" : strong ? `var(--${t})` : `color-mix(in srgb,var(--${t}) 50%,var(--surface2))`; };
-  const bands = m.bands || [{ from: 0, word: "Fearful" }, { from: 25, word: "Cautious" }, { from: 45, word: "Neutral" }, { from: 56, word: "Confident" }, { from: 75, word: "Exuberant" }];
-  const arcs = bands.map((b, i) => { const to = (bands[i + 1]?.from ?? 100) / 100; return arc(b.from / 100 + 0.004, to - 0.004, colour(b.word, i === 0 || i === bands.length - 1)); }).join("");
   const tone = toneOf(word) === "neutral" ? "var(--muted)" : `var(--${toneOf(word)})`;
-  const cmp = (label, v) => (v == null ? "" : `${label} <b class="tnum">${Math.round(v)}</b>`);
-  let lines;
+  const bands = m.bands || [{ from: 0, word: "Fearful" }, { from: 25, word: "Cautious" }, { from: 45, word: "Neutral" }, { from: 56, word: "Confident" }, { from: 75, word: "Exuberant" }];
+  const at = v => `${Math.max(0, Math.min(100, v)).toFixed(1)}%`;
+  const segs = bands.map((b, i) => { const to = bands[i + 1]?.from ?? 100, on = m.score >= b.from && m.score < (bands[i + 1]?.from ?? 101);
+    return `<i style="width:${to - b.from}%${on ? `;background:${tone}` : ""}" title="${esc(b.word)}: ${b.from} to ${to}"></i>`; }).join("");
+  const scale = `<div class="mscale" role="img" aria-label="${esc(m.region || "")} ${m.score} of 100, ${esc(word)}"><div class="mbar">${segs}${m.prev_month != null ? `<span class="mtick" style="left:${at(m.prev_month)}" title="A month ago ${Math.round(m.prev_month)}"></span>` : ""}<span class="mdot" style="left:${at(m.score)}"></span></div><div class="mends"><span>${esc(bands[0].word)}</span><span>${esc(bands.at(-1).word)}</span></div></div>`;
+  const row = (label, v, extra = "") => (v == null ? "" : `<tr><td>${label}</td><td class="r tnum">${v}${extra}</td></tr>`);
+  let rows, src = "";
   if (m.name) {
-    const was = [cmp("a week ago", m.prev_week), cmp("a month ago", m.prev_month)].filter(Boolean).join(" · ");
-    lines = `${was ? `<li>${was}</li>` : ""}<li><a href="${esc(m.url)}" target="_blank" rel="noopener">${esc(m.name)}</a>${m.as_of ? ` · ${m.stale ? "last reading " : ""}${esc(agoIST(m.as_of))}` : ""}</li>`;
+    rows = row("Yesterday", m.prev_day) + row("A week ago", m.prev_week) + row("A month ago", m.prev_month)
+      + (m.vix ? row(esc(m.vix.name), m.vix.value, m.vix.change_pct != null ? ` <small>(${pct(m.vix.change_pct)})</small>` : "") : "");
+    src = `<p class="msrc"><a href="${esc(m.url)}" target="_blank" rel="noopener">${esc(m.name)}</a>${m.as_of ? ` · ${m.stale ? "last reading " : ""}${esc(agoIST(m.as_of))}` : ""}</p>`;
   } else {
-    const where = m.range_pos == null ? "" : m.range_pos <= 15 ? "near its 3-month low" : m.range_pos >= 85 ? "near its 3-month high" : `${m.range_pos}% of the way up its 3-month range`;
-    const calm = m.vix_pos == null ? "" : m.vix_pos <= 30 ? "calm for the quarter" : m.vix_pos >= 70 ? "jumpy for the quarter" : "middling for the quarter";
-    lines = `<li>${esc(m.index)} ${where}</li><li>7 days ${pct(m.chg_7d)} · today ${pct(m.change_pct)}</li>${m.vix != null ? `<li>${esc(m.vix_name)} ${m.vix} · ${calm}</li>` : ""}`;
+    const where = m.range_pos == null ? "" : m.range_pos <= 15 ? "near its 3-month low" : m.range_pos >= 85 ? "near its 3-month high" : `${m.range_pos}% up its 3-month range`;
+    rows = row(esc(m.index || "Index"), where) + row("7 days", pct(m.chg_7d)) + (m.vix != null ? row(esc(m.vix_name), m.vix) : "");
   }
-  return `<div class="mood"><div class="mh"><span>${esc(m.region || "")}${m.name ? "" : ` · ${esc(m.index || "")}`}</span><b class="tnum">${m.score}</b></div><div class="mword" style="color:${tone}">${esc(word)}</div>
-<svg viewBox="0 0 200 110" role="img" aria-label="${esc(m.region || "")} market mood ${m.score} out of 100, ${esc(word)}${m.name ? `, ${esc(m.name)}` : ""}">${arcs}
-<g class="needle" style="--a:${(-90 + 180 * m.score / 100).toFixed(1)}deg"><line x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy - r + 14}" stroke="var(--ink)" stroke-width="3.5" stroke-linecap="round"/></g><circle cx="${cx}" cy="${cy}" r="6" fill="var(--ink)"/></svg>
-<ul>${lines}</ul></div>`;
+  return `<div class="mood"><div class="mh"><span>${esc(m.region || "")}</span><b class="tnum">${m.score}</b></div><div class="mword" style="color:${tone}">${esc(word)}</div>${scale}<table class="mt"><tbody>${rows}</tbody></table>${src}</div>`;
 }
 const moodTone = m => { const w = m.word || moodWord(m.score); return /fear|cautious/i.test(w) ? "var(--bad)" : /greed|confident|exuberant/i.test(w) ? "var(--good)" : "var(--muted)"; };
 const moodWord = s => (s < 25 ? "Fearful" : s < 45 ? "Cautious" : s <= 55 ? "Neutral" : s < 75 ? "Confident" : "Exuberant");
@@ -791,7 +807,7 @@ function flowsBlock() {
   }
   if (M) h += `<p class="fl-m">Foreign investors have ${M.net >= 0 ? "put in" : "taken out"} <b class="tnum ${M.net >= 0 ? "up" : "dn"}">${crore(M.net)}</b> in ${esc(new Date(M.month + "-15T12:00:00Z").toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" }))} so far.</p>`;
   const src = [F.day && `${fmt(F.day.date + "T12:00:00Z", { day: "numeric", month: "short" })}: NSE provisional figures for the cash market (${esc(F.day.scope)})`, M && `month: NSDL, foreign investment in equity over ${M.days} session${M.days === 1 ? "" : "s"}`].filter(Boolean).join("; ");
-  return `<div class="ledx"><h4>Who bought and sold${F.day ? ` <span>${esc(fmt(F.day.date + "T12:00:00Z", { weekday: "short", day: "numeric", month: "short" }).replace(/,/g, ""))}</span>` : ""}</h4>${h}<p class="asof">${src}.${staleNote("flows")}</p></div>`;
+  return `<div class="ledx"><h4 class="subhd">Who bought and sold${F.day ? ` <span>${esc(istDay(F.day.date + "T12:00:00Z"))}</span>` : ""}</h4>${h}${aboutFig(src + ".")}${staleNote("flows")}</div>`;
 }
 // Breadth: how many of the Nifty 500 rose and fell (one split bar), the large companies that moved most, and the
 // industries that moved most, as ruled lists like a newspaper's stock tables.
@@ -801,11 +817,11 @@ function breadthBlock() {
   const sg = v => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}%`;
   const list = (title, rows, name) => rows?.length ? `<div class="br-l"><h5>${esc(title)}</h5><ol>${rows.map(x => `<li><span>${esc(name(x))}</span><b class="tnum ${x.pct >= 0 ? "up" : "dn"}">${sg(x.pct)}</b></li>`).join("")}</ol></div>` : "";
   const co = x => x.name.replace(/ (Ltd|Limited)\.?$/, ""), from = B.movers_from || "Nifty 500";
-  const when = B.day === istDate() && fmt(new Date().toISOString(), { hour: "2-digit", minute: "2-digit" }) < "15:40" ? "so far today" : esc(fmt(B.day + "T12:00:00Z", { weekday: "short", day: "numeric", month: "short" }).replace(/,/g, ""));
-  return `<div class="ledx"><h4>Breadth <span>${when}</span></h4>
+  const when = B.day === istDate() && fmt(new Date().toISOString(), { hour: "2-digit", minute: "2-digit" }) < "15:40" ? "so far today" : esc(istDay(B.day + "T12:00:00Z"));
+  return `<div class="ledx"><h4 class="subhd">Breadth <span>${when}</span></h4>
 <div class="adv"><div class="adv-n"><b class="tnum up">${B.up} rose</b><b class="tnum dn">${B.down} fell</b></div><div class="adv-bar" role="img" aria-label="${B.up} of ${n} Nifty 500 stocks rose, ${B.down} fell"><i class="up" style="width:${up}%"></i><i class="dn"></i></div><div class="adv-s">${n >= 500 ? "Nifty 500" : `${n} of the Nifty 500`}${B.flat ? ` · ${B.flat} unchanged` : ""}</div></div>
 <div class="br-g">${list(`Rose most · ${from}`, B.gainers, co)}${list(`Fell most · ${from}`, B.losers, co)}${list("Industries up most", B.best, x => x.industry)}${list("Industries down most", B.worst, x => x.industry)}</div>
-<p class="asof">Closing prices from Yahoo Finance for NSE's index lists; an industry's move is the median of its Nifty 500 stocks.${staleNote("movers")}</p></div>`;
+${aboutFig("Closing prices from Yahoo Finance for NSE's index lists; an industry's move is the median of its Nifty 500 stocks.")}${staleNote("movers")}</div>`;
 }
 function ledgerExtras() {
   const h = flowsBlock() + breadthBlock();
@@ -943,8 +959,8 @@ function skyBlock() {
   const [c, ...others] = cities, hr = Number(fmt(new Date().toISOString(), { hour: "2-digit" }));
   let h = `<p class="sky-lede">${esc(weekSentence(c.daily))}</p>${sinceLastWeek(c)}${keyHours(c)}${weekGrid(c)}`;
   const fam = others.filter(x => x.family);
-  if (fam.length) h += `<h3 class="famhead">${esc(fam.map(x => x.name).join(" and "))}</h3><div class="fams">${fam.map(x => familyCity(x, hr)).join("")}</div>`;
-  h += `<p class="asof">Weather and air from Open-Meteo. "Air now" is this hour's reading; "Air peak" is each day's worst hour, on the US AQI scale.</p>`;
+  if (fam.length) h += `<h3 class="subhd famhead">${esc(fam.map(x => x.name).join(" and "))}</h3><div class="fams">${fam.map(x => familyCity(x, hr)).join("")}</div>`;
+  h += `${aboutFig('Weather and air from Open-Meteo. "Air now" is this hour\'s reading; "Air peak" is each day\'s worst hour, on the US AQI scale.')}`;
   h += `<div id="myloc"></div>`;
   if (ROUTE.kind !== "edition" && navigator.geolocation && !store.get("h1400-loc")) h += `<p class="note"><button class="linkish" id="locBtn">Add the weather where you are</button></p>`;
   const note = E.sections?.sky?.data?.note;
@@ -973,12 +989,12 @@ function intlBlock() {
       const key = `${m.home}|${m.away}|${m.when_utc}`; if (used.has(key)) continue; used.add(key);
       const [h, a] = String(m.score || "").split("-");
       const teamsHTML = kind === "next" ? `${esc(m.home)} v ${esc(m.away)}` : `${esc(m.home)} <b class="tnum">${esc(h)}–${esc(a)}</b> ${esc(m.away)}`;
-      rows.push({ t: m.when_utc, html: `<tr><td class="sub">${kind === "next" ? "Next" : kind === "live" ? "Live" : "Result"}</td><td>${teamsHTML}</td><td class="sub">${esc(LEAGUE[m.league] || "")}</td><td class="sub r">${esc(fmt(m.when_utc, { weekday: "short", day: "numeric", month: "short" }))}${kind === "next" ? ` · ${esc(fmt(m.when_utc, { hour: "2-digit", minute: "2-digit" }))} IST` : ""}</td></tr>` });
+      rows.push({ t: m.when_utc, html: `<tr><td class="sub">${kind === "next" ? "Next" : kind === "live" ? "Live" : "Result"}</td><td>${teamsHTML}</td><td class="sub">${esc(LEAGUE[m.league] || "")}</td><td class="sub r">${esc(kind === "next" ? istFull(m.when_utc) + " IST" : istDay(m.when_utc))}</td></tr>` });
     }
   }
   if (!rows.length) return "";
   rows.sort((a, b) => a.t.localeCompare(b.t));
-  return `<div class="tbl" style="margin-bottom:14px"><table><thead><tr><th colspan="4">Internationals · ${esc(teams.join(", "))}</th></tr></thead><tbody>${rows.map(r => r.html).join("")}</tbody></table></div>${staleNote("intl_football")}`;
+  return `<h4 class="subhd" style="margin-top:0">Internationals <span>${esc(teams.join(", "))}</span></h4><div class="tbl" style="margin-bottom:14px"><table><tbody>${rows.map(r => r.html).join("")}</tbody></table></div>${staleNote("intl_football")}`;
 }
 
 // What happened in a finished match on the fixture list: tennis from ESPN, India's cricket from The Crease (Cricbuzz),
@@ -1026,7 +1042,7 @@ function fixturesBlock() {
 // the next tour. The edition's own rows are the fallback when Cricbuzz is unavailable.
 function creaseLive() {
   const C = LIVE.crease?.value; if (!C || (!C.next && !C.main)) return "";
-  const day = iso => fmt(iso, { weekday: "short", day: "numeric", month: "short" }).replace(/,/g, "");
+  const day = iso => istDay(iso);
   const when = m => `${day(m.start)}${m.time_announced ? `, ${istTime(m.start)} IST` : ", time TBC"}`;
   const place = m => [m.ground, m.city].filter(Boolean).join(", ");
   const res = m => m.state === "live" ? `<em class="cz-live"><i></i>Live · ${esc(m.status || "in play")}</em>` : m.state === "done" ? `<em class="${m.won === true ? "up" : m.won === false ? "dn" : ""}">${esc((m.status || "").replace(/^India won/i, "Won").replace(/ due to .*$/i, "") || "Result")}</em>` : "";
@@ -1041,14 +1057,14 @@ function creaseLive() {
     return `<li class="${m.state}${isNext ? " is-next" : ""}${m.won === true ? " won" : m.won === false ? " lost" : ""}"><b>${esc(m.n ? m.desc.replace(/ (ODI|T20I|Test)$/i, "") : m.desc)}</b><span>${esc(day(m.start))}</span><span>${esc(m.city || "")}</span>${res(m)}${m.score ? `<span class="cz-ts tnum">${esc(m.score.replace(/ \([^)]*ov\)/g, ""))}</span>` : ""}</li>`;
   }).join("")}</ol></div>`;
   const M = C.main;
-  if (M) h += `<div class="cz-series"><h4>${esc(M.name.replace(/,? \d{4}$/, ""))}</h4>${M.formats.map((f, i) => strip(f, i === 0 || f.matches.some(m => N && m.id === N.id))).join("")}</div>`;
+  if (M) h += `<div class="cz-series"><h4 class="subhd">${esc(M.name.replace(/,? \d{4}$/, ""))}</h4>${M.formats.map((f, i) => strip(f, i === 0 || f.matches.some(m => N && m.id === N.id))).join("")}</div>`;
   for (const A of C.also || []) {
     const up = A.formats.flatMap(f => f.matches).find(m => m.state !== "done" && !(N && m.id === N.id)), last = A.formats.flatMap(f => f.matches).filter(m => m.state === "done").at(-1);
     h += `<p class="cz-line"><b>Also:</b> ${esc(A.name.replace(/,? \d{4}$/, ""))}${up ? ` · ${esc(up.desc)}${up.opponent && up.opponent !== "TBC" ? ` v ${esc(up.opponent)}` : ""} · ${esc(when(up))}${up.city ? ` · ${esc(up.city)}` : ""}` : ""}${last ? ` <span class="asof">(last: ${esc(last.desc)}${last.opponent ? ` v ${esc(last.opponent)}` : ""}, ${esc((last.status || "").replace(/^India won/i, "won").replace(/ due to .*$/i, "").toLowerCase())})</span>` : ""}</p>`;
   }
   const T = C.after;
   if (T) h += `<p class="cz-line"><b>Next tour:</b> ${esc(T.name.replace(/,? \d{4}$/, ""))} · from ${esc(day(T.first))} · ${esc(T.formats.map(f => `${f.total || f.matches.length} ${f.label}`).join(", "))}</p>`;
-  return `<div class="cz">${h}<p class="asof">Schedule and results from Cricbuzz, checked every ten minutes.${staleNote("crease")}</p></div>`;
+  return `<div class="cz">${h}${aboutFig("Schedule and results from Cricbuzz.")}${staleNote("crease")}</div>`;
 }
 function creaseBlock() {
   const rows = E.sections?.crease?.data?.rows || [];
@@ -1068,12 +1084,12 @@ function deuceData() {
     const lv = LT.find(t => t.player === p.name && !t.final), done = LT.find(t => t.player === p.name && t.final), n = Date.now(), st = lv && fixState(lv, n);
     const won = done && /^Won/.test(done.result), sc = done ? done.result.replace(/^(Won|Lost)\s*/, "") : "";
     const todayLine = done ? `<p style="margin:6px 0 4px"><b>${playedDay(done.when_utc)}:</b> <span class="${won ? "up" : "dn"}">${won ? "Beat" : "Lost to"} ${esc(done.opponent || "")}${sc ? " " + esc(sc) : ""}</span> · ${esc([done.event, done.round].filter(Boolean).join(", "))}</p>` : "";
-    const nextLine = lv ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc([lv.round, `v ${lv.opponent || "TBC"}`].filter(Boolean).join(" "))} · ${esc(lv.event)} · ${esc(fmt(lv.when_utc, { weekday: "short", day: "numeric", month: "short" }).replace(/,/g, ""))}, ${esc(istTime(lv.when_utc))} IST${lv.court ? ` · ${esc(lv.court)}` : ""}.${st === "on" ? ` <span class="live"><i></i>On court now</span>` : st === "due" || (st === "next" && lv.held) ? ` <span class="due">${esc(dueWhy(lv))}</span>` : ""}</p>${lv.other ? `<p class="note">Another listing (Tennis Explorer) has it at ${esc(lv.other)} IST, so worth a look nearer the time.</p>` : ""}<p class="asof">Live from ESPN; order of play can shift with the matches before it.${staleNote("tennis_players")}</p>`
+    const nextLine = lv ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc([lv.round, `v ${lv.opponent || "TBC"}`].filter(Boolean).join(" "))} · ${esc(lv.event)} · ${esc(istFull(lv.when_utc))} IST${lv.court ? ` · ${esc(lv.court)}` : ""}.${st === "on" ? ` <span class="live"><i></i>On court now</span>` : st === "due" || (st === "next" && lv.held) ? ` <span class="due">${esc(dueWhy(lv))}</span>` : ""}</p>${lv.other ? `<p class="note">Another listing (Tennis Explorer) has it at ${esc(lv.other)} IST, so worth a look nearer the time.</p>` : ""}`
       : p.next_match ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc(p.next_match.text)}</p>` : "";
     // With a live match, the live match says where the player plays next; the edition's line may be out of date.
     const ev = p.next_event && !lv ? `<p style="margin:6px 0 4px"><b>${p.next_match ? "Event" : "Next event"}:</b> ${esc(p.next_event.text)}${p.next_match || /TBD/i.test(p.next_event.text) ? "" : " Match TBD."}</p>` : "";
     return `<div class="panel"><div class="nm">${esc(p.name)}</div>${todayLine}${nextLine}${ev}${p.note && !lv?.other ? `<p class="note">${esc(p.note)}</p>` : ""}</div>`;
-  }).join("")}</div>`;
+  }).join("")}</div>${LT.length ? aboutFig("Next matches from ESPN; a time is when the match is listed, and the order of play can shift with the matches before it.") + staleNote("tennis_players") : ""}`;
   return h;
 }
 
@@ -1086,7 +1102,7 @@ function screenBlock() {
   let h = "";
   if (now.length) h += table(now);
   if (now.length) h += `<div class="legend">${Object.entries(VERDICT).map(([k, [c, l]]) => `<div><span class="verdict ${c}">${l}</span>${{ must: "Critics and audiences both strongly positive", good: "Clearly positive, a few reservations", call: "Split reviews, or good but niche", skip: "Clearly negative on both", early: "Fewer than three reputable reviews so far" }[k]}</div>`).join("")}</div>`;
-  if (soon.length) h += `<h3 style="font:700 12px var(--utilf);letter-spacing:.1em;text-transform:uppercase;margin:22px 0 6px;color:var(--acc)">Coming soon</h3>` + table(soon);
+  if (soon.length) h += `<h3 class="subhd">Coming soon</h3>` + table(soon);
   return h + storiesBlock("screen");
 }
 
@@ -1111,8 +1127,8 @@ function liveTrends() {
 function talkBlock() {
   const T = E.trends?.india?.length || E.trends?.world?.length ? E.trends : liveTrends();
   if (!T || (!T.india?.length && !T.world?.length)) return "";
-  const col = (label, list) => (list?.length ? `<div><h3 class="colhead">${esc(label)}</h3>${list.map(t => `<p class="trend"><b>${esc(t.term)}</b>${t.traffic ? ` <span class="traffic">· ${esc(String(t.traffic).replace(/\d{4,}/, n => Number(n).toLocaleString("en-US")))}</span>` : ""} <span class="tdash">–</span> ${t.url ? `<a href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.what)}</a>` : esc(t.what)}</p>`).join("")}</div>` : "");
-  return `<div class="cols2 talk">${col("India", T.india)}${col("World", T.world)}</div>${T.live ? `<p class="asof" style="margin-top:8px">${LIVE.trends?.stale ? `Google Trends ${agoIST(LIVE.trends.as_of)}` : "Live from Google Trends"}, with the top English headline for each.</p>` : ""}`;
+  const col = (label, list) => (list?.length ? `<div><h3 class="subhd colhead">${esc(label)}</h3>${list.map(t => `<p class="trend"><b>${esc(t.term)}</b>${t.traffic ? ` <span class="traffic">· ${esc(String(t.traffic).replace(/\d{4,}/, n => Number(n).toLocaleString("en-US")))}</span>` : ""} <span class="tdash">–</span> ${t.url ? `<a href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.what)}</a>` : esc(t.what)}</p>`).join("")}</div>` : "");
+  return `<div class="cols2 talk">${col("India", T.india)}${col("World", T.world)}</div>${T.live ? (LIVE.trends?.stale ? `<p class="asof" style="margin-top:8px">Google Trends ${esc(agoIST(LIVE.trends.as_of))}</p>` : "") + aboutFig("Google Trends, with the top English headline for each search.") : ""}`;
 }
 
 // Compact: one row per market, top outcomes inline with a thin bar for the favourite. Up to ten.
@@ -1142,18 +1158,10 @@ function paintSignals() {
   }
 }
 
-// Each market as a betting slip in the colour of its subject (config betting.category_palettes): the favourite's
-// price large on a solid stub over a wavy progress line, how the money splits in one bar, the rest as a legend. The
-// first market leads, full width. A market carried from an earlier day wears the house stamp; when a price has moved
-// since press time the slip names who moved and from what to what.
+// Each market as a line of the paper: the likeliest outcome's price large, the title, how the money splits in one
+// bar with a single accent, the rest as a legend. The first market leads, full width; a price that moved since press
+// time says who moved and from what to what. (The poster still colours markets by subject: betPalette.)
 const betPalette = cat => { const c = String(cat || "").toLowerCase(); const hit = Object.entries(CFG.betting.category_palettes || {}).find(([k]) => new RegExp(`(^|[^a-z])${k}([^a-z]|$)`).test(c)); return hit ? hit[1] : "odds"; };
-let waveN = 0;
-function wave(p) {
-  const id = `wv${++waveN}`, W = 100, pts = [];
-  for (let x = 0; x <= W; x += 1) pts.push(`${x},${(5 + 2.2 * Math.sin(x / 100 * Math.PI * 2 * 7)).toFixed(2)}`);
-  const d = "M" + pts.join("L");
-  return `<svg class="wave" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><defs><clipPath id="${id}"><rect x="0" y="0" width="${Math.max(0, Math.min(100, p)).toFixed(1)}" height="10"/></clipPath></defs><path d="${d}" class="wt"/><path d="${d}" class="wf" clip-path="url(#${id})"/></svg>`;
-}
 // A date ladder ("By 31 Oct", "Through 7 Oct") in date order, without rungs already past or closing within a day
 // (all but settled), unless nothing later is left. The live feed does this; the edition's copy may be hours old.
 function ladder(outs) {
@@ -1166,29 +1174,35 @@ function bettingBlock() {
   const liveM = LIVE.betting?.value?.markets || [];
   const list = (E.betting?.length ? E.betting : liveM).slice(0, CFG.betting.show || 10);
   if (!list.length) return "";
-  waveN = 0;
   const idOf = b => (b.id?.includes(":") ? b.id : b.id ? `pm:${b.id}` : null);
   const slips = list.map((b, n) => {
     const L = !LIVE.betting?.stale && liveM.find(m => m.id === idOf(b));
-    const all = ladder((L?.outcomes?.length ? L.outcomes : b.outcomes) || []);
-    if (!all.length) return "";
-    const yesNo = all.length === 1;
-    const outs = yesNo ? [{ name: all[0].name, prob: all[0].prob }, { name: "No", prob: Math.max(0, 100 - all[0].prob) }] : all.slice(0, 3);
-    const fav = outs[0], rest = Math.max(0, 100 - outs.reduce((a, o) => a + o.prob, 0));
-    // The biggest move since press, by name, in percentages on both sides.
+    const got = ladder((L?.outcomes?.length ? L.outcomes : b.outcomes) || []);
+    if (!got.length) return "";
+    // A date ladder ("By 31 Oct", "By 15 Nov") stays in date order and its prices are not shares of one pie, so it has
+    // no "Others"; any other market lists its outcomes from likeliest down. Either way the headline figure is the
+    // likeliest outcome (Parth, 1 Oct: it led with a 1% rung).
+    const isLadder = got.length > 1 && got.every(o => /^(By|Through) /.test(o.name));
+    const yesNo = got.length === 1;
+    const outs = yesNo ? [{ name: got[0].name, prob: got[0].prob }, { name: "No", prob: Math.max(0, 100 - got[0].prob) }] : isLadder ? got.slice(0, 3) : [...got].sort((x, y) => y.prob - x.prob).slice(0, 3);
+    const fav = outs.reduce((x, y) => (y.prob > x.prob ? y : x)), others = outs.filter(o => o !== fav);
+    const rest = isLadder || yesNo ? 0 : Math.max(0, 100 - outs.reduce((a, o) => a + o.prob, 0));
     let mv = "";
     if (L) {
-      const moves = all.map(o => ({ o, was: b.outcomes?.find(p => p.name === o.name)?.prob })).filter(x => x.was != null).map(x => ({ ...x, d: x.o.prob - x.was }));
+      const moves = got.map(o => ({ o, was: b.outcomes?.find(p => p.name === o.name)?.prob })).filter(x => x.was != null).map(x => ({ ...x, d: x.o.prob - x.was }));
       const top = moves.sort((x, y) => Math.abs(y.d) - Math.abs(x.d))[0];
       if (top && Math.abs(top.d) >= (CFG.betting.carry?.min_move_pts || 5)) mv = `<span class="mv ${top.d > 0 ? "up" : "dn"}">${top.d > 0 ? "▲" : "▼"} ${esc(outcomeLabel(top.o.name))}: ${Math.round(top.was)}% at press, ${Math.round(top.o.prob)}% now</span>`;
     }
-    const since = b.since && b.since < E.date ? `<span class="stamp">Since ${esc(sparkLabel(b.since))}</span>` : "";
-    const segs = [...outs.map((o, i) => `<i class="s${i}" style="width:${Math.max(0, Math.min(100, o.prob)).toFixed(1)}%" title="${esc(outcomeLabel(o.name))} ${o.prob.toFixed(1)}%"></i>`), yesNo ? "" : `<i class="s9" style="width:${rest.toFixed(1)}%"></i>`].join("");
-    return `<li class="slip${n === 0 ? " lead" : ""}" data-fam="${betPalette(b.category)}"><div class="stub"><b class="tnum">${Math.round(fav.prob)}<small>%</small></b>${wave(fav.prob)}<span>${esc(outcomeLabel(fav.name))}</span></div>
+    const since = b.since && b.since < E.date ? `<span class="since">since ${esc(sparkLabel(b.since))}</span>` : "";
+    const w = v => Math.max(0, Math.min(100, v)).toFixed(1);
+    const bar = isLadder || yesNo ? `<i class="s0" style="width:${w(fav.prob)}%" title="${esc(outcomeLabel(fav.name))} ${fav.prob.toFixed(1)}%"></i>`
+      : [fav, ...others].map((o, i) => `<i class="s${i}" style="width:${w(o.prob)}%" title="${esc(outcomeLabel(o.name))} ${o.prob.toFixed(1)}%"></i>`).join("");
+    const lis = (yesNo ? [] : others).map((o, i) => `<li><i class="s${isLadder ? 9 : i + 1}"></i>${esc(outcomeLabel(o.name))} <b class="tnum">${Math.round(o.prob)}%</b></li>`).join("") + (rest >= 1 ? `<li><i class="s9"></i>Others <b class="tnum">${Math.round(rest)}%</b></li>` : "");
+    return `<li class="slip${n === 0 ? " lead" : ""}"><div class="stub"><b class="tnum">${Math.round(fav.prob)}<small>%</small></b><span>${esc(yesNo ? "Yes" : outcomeLabel(fav.name))}</span></div>
 <div class="sb"><div class="meta">${esc(b.category || "World")}${since}</div><a class="title" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(vsV(b.title).replace(/\.\.\.\?$/, "…?"))}</a>${b.note ? `<small class="nt">${esc(b.note)}</small>` : ""}
-<div class="bar">${segs}</div><ul>${outs.slice(yesNo ? 0 : 1).map((o, i) => `<li><i class="s${yesNo ? i : i + 1}"></i>${esc(outcomeLabel(o.name))} <b class="tnum">${Math.round(o.prob)}%</b></li>`).join("")}${!yesNo && rest >= 1 ? `<li><i class="s9"></i>Others <b class="tnum">${Math.round(rest)}%</b></li>` : ""}</ul>${mv}</div></li>`;
+<div class="bar">${bar}</div>${lis ? `<ul>${lis}</ul>` : ""}${mv}</div></li>`;
   }).join("");
-  return `<ol class="slips">${slips}</ol><p class="asof" style="margin-top:12px">${LIVE.betting && !LIVE.betting.stale ? "Live prices" : `Prices ${agoIST(LIVE.betting?.as_of) || "at press time"}`} from Polymarket. A price is what traders pay for a yes, read as the chance they give it.</p>`;
+  return `<ol class="slips">${slips}</ol>${LIVE.betting && !LIVE.betting.stale ? "" : `<p class="asof" style="margin-top:12px">Prices ${esc(agoIST(LIVE.betting?.as_of) || "at press time")}</p>`}${aboutFig("Prices from Polymarket. A price is what traders pay for a yes, read as the chance they give it.")}`;
 }
 
 function byeBlock() {

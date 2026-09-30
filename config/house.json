@@ -459,7 +459,11 @@
             "from": 70,
             "word": "Extreme greed"
           }
-        ]
+        ],
+        "vix": {
+          "name": "India VIX",
+          "yahoo": "^INDIAVIX"
+        }
       },
       "US": {
         "label": "US",
@@ -487,7 +491,11 @@
             "from": 76,
             "word": "Extreme greed"
           }
-        ]
+        ],
+        "vix": {
+          "name": "VIX",
+          "yahoo": "^VIX"
+        }
       },
       "method": "Published readings, never our own calculation. India: Tickertape's Market Mood Index, from foreign investors' flows, volatility (India VIX), momentum, market breadth, price strength and demand for gold, updated through the trading day. US: CNN's Fear & Greed Index, from seven readings (stock momentum and strength, breadth, put and call options, junk-bond demand, volatility and safe-haven demand), updated through the US trading day. Each gauge uses its publisher's own bands and words. If a publisher cannot be reached, the gauge keeps its last reading with that reading's time."
     },
