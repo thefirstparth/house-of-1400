@@ -8,6 +8,15 @@
    "tier3_only": 1,
    "tennis_disagreements": 2,
    "sources_failed": 2
+  },
+  {
+   "date": "2026-09-30",
+   "coverage_pct": 100,
+   "india_missed": 15,
+   "world_missed": 10,
+   "tier3_only": 4,
+   "tennis_disagreements": 1,
+   "sources_failed": 1
   }
  ],
  "from": "2026-09-29",
