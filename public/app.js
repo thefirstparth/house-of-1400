@@ -392,7 +392,7 @@ function skyEar(w) {
   const arc = a ? `${arcSVG(a, m)}<div class="se-times"><span>${a.day ? "↑" : "↓"} ${tm(a.from)}</span><span class="se-mid">${hm(a.to - n)} to ${a.day ? "sunset" : "sunrise"}</span><span>${tm(a.to)} ${a.day ? "↓" : "↑"}</span></div>` : "";
   const st = [];
   if (w.current.humidity != null) st.push(`<span><small>Humidity</small><b class="tnum">${Math.round(w.current.humidity)}%</b>${esc(humidWord(w.current.humidity, w.current.temp))}</span>`);
-  if (A?.now != null) st.push(`<span><small>Air</small><b class="tnum">${Math.round(A.now)}</b>${esc(airWord(A.now))}</span>`);
+  if (A?.now != null) st.push(`<span><small>Air now</small><b class="tnum">${Math.round(A.now)}</b>${esc(airWord(A.now))}</span>`);
   if (night) st.push(`<span><small>Moon</small><b class="tnum">${Math.round(m.lit * 100)}% lit</b>${esc(m.name.toLowerCase())}</span>`);
   else if (d.rain_prob != null) st.push(`<span><small>Rain</small><b class="tnum">${d.rain_prob}%</b>chance</span>`);
   return `<a class="ear skyear ${night ? "is-night" : "is-day"}" href="#sky"><small>${esc(w.name)} · ${night ? "tonight" : "now"}</small>${top}${arc}<div class="se-st">${st.join("")}</div></a>`;
@@ -811,7 +811,7 @@ function weekGrid(c) {
 ${row("Temp", "", d => `<td><b>${Math.round(d.max)}°</b><small>${Math.round(d.min)}°</small></td>`)}
 ${row("Rain", "w:rain", d => `<td class="${(d.rain_prob ?? 0) >= 60 ? "wet" : ""}">${d.rain_prob ?? "–"}%</td>`)}
 ${D.some(d => d.humidity != null) ? row("Humidity", "w:humidity", d => `<td>${d.humidity != null ? Math.round(d.humidity) + "%" : "–"}</td>`) : ""}
-${Object.keys(A).length ? row("Air", "w:air", d => `<td>${A[d.date] != null ? aqiChip(A[d.date]) : "–"}</td>`) : ""}</tbody></table></div>`;
+${Object.keys(A).length ? row("Air peak", "w:air", d => `<td>${A[d.date] != null ? aqiChip(A[d.date]) : "–"}</td>`) : ""}</tbody></table></div>`;
 }
 
 // The family cities, every day: one line for now, then one sentence only when something is worth saying.
@@ -858,7 +858,7 @@ function skyBlock() {
   let h = `<p class="sky-lede">${esc(weekSentence(c.daily))}</p>${sinceLastWeek(c)}${keyHours(c)}${weekGrid(c)}`;
   const fam = others.filter(x => x.family);
   if (fam.length) h += `<h3 class="famhead">${esc(fam.map(x => x.name).join(" and "))}</h3><div class="fams">${fam.map(x => familyCity(x, hr)).join("")}</div>`;
-  h += `<p class="asof">Weather and air from Open-Meteo. Air is the day's highest reading on the US AQI scale.</p>`;
+  h += `<p class="asof">Weather and air from Open-Meteo. "Air now" is this hour's reading; "Air peak" is each day's worst hour, on the US AQI scale.</p>`;
   h += `<div id="myloc"></div>`;
   if (ROUTE.kind !== "edition" && navigator.geolocation && !store.get("h1400-loc")) h += `<p class="note"><button class="linkish" id="locBtn">Add the weather where you are</button></p>`;
   const note = E.sections?.sky?.data?.note;

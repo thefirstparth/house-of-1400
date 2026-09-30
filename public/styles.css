@@ -984,7 +984,7 @@ table.sessions td.r{white-space:nowrap}
 .skyear .se-times{display:flex;justify-content:space-between;gap:6px;font:500 11.5px var(--sans);color:var(--muted);margin-top:2px}
 .skyear .se-mid{text-align:center;flex:1}
 .skyear .se-st{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px;padding-top:7px;border-top:1px solid var(--rule)}
-.skyear .se-st span{display:flex;flex-direction:column;font:12px/1.25 var(--sans);color:var(--muted)}
+.skyear .se-st span{display:flex;flex-direction:column;align-items:center;text-align:center;font:12px/1.25 var(--sans);color:var(--muted)}
 .skyear .se-st small{font:700 9.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .skyear .se-st b{display:block;margin:1px 0 0;font:700 18px/1.15 var(--hl);color:var(--ink)}
 .skyear.is-day .se-st b{color:var(--ink)}
