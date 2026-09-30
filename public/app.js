@@ -454,21 +454,31 @@ function madridBlock() {
   if (comps.length) {
     const cur = comps.find(c => c.key === MX.comp) ? MX.comp : comps[0].key;
     const signed = n => n == null ? "" : n > 0 ? `+${n}` : n < 0 ? `−${-n}` : "0";
+    const SHOW = club.show || {}, TOPR = SHOW.table_rows || 7, TOPL = SHOW.leaders || 5;
+    // The top rows plus Madrid; the rest of the table stays folded behind "Full table" (Parth, 1 Oct).
     const tableOf = c => {
       if (!c.rows?.length) return "";
-      const rows = c.rows.slice(0, 5), us = c.rows.find(isUs);
-      if (us && !rows.includes(us)) rows.push(us);
+      const id = `${c.key}-table`, open = MX.open.has(id), rest = c.rows.length - TOPR - (c.rows.slice(TOPR).some(isUs) ? 1 : 0);
+      const zones = [...new Map(c.rows.filter(r => r.zone?.name).map(r => [r.zone.name, r.zone.color])).entries()];
       const cell = v => `<td class="r tnum">${v ?? ""}</td>`;
-      return `<table class="compact liga"><thead><tr><th class="rk">#</th><th>Club</th><th class="r" title="Played">P</th><th class="r" title="Won">W</th><th class="r" title="Drawn">D</th><th class="r" title="Lost">L</th><th class="r gd" title="Goal difference">GD</th><th class="r" title="Points">Pts</th></tr></thead><tbody>${rows.map((r, i) => `<tr class="${isUs(r) ? "on" : ""}${i === 5 ? " gap" : ""}"><td class="rk tnum">${r.rank}</td><td class="club">${crest(r.id, "")}<span class="lg">${esc(r.team)}</span><span class="sh">${esc(r.short || r.team)}</span></td>${cell(r.played)}${cell(r.wins)}${cell(r.draws)}${cell(r.losses)}<td class="r gd tnum">${signed(r.gd)}</td><td class="r tnum pts">${r.points ?? ""}</td></tr>`).join("")}</tbody></table>`;
+      const tr = (r, i) => {
+        const x = i >= TOPR && !isUs(r), pin = i >= TOPR && isUs(r) && i > TOPR;
+        const z = r.zone?.color ? ` style="--zc:${r.zone.color}"` : "";
+        return `<tr class="${isUs(r) ? "on" : ""}${x ? " x" : ""}${pin ? " pin" : ""}${r.zone?.color ? " z" : ""}"${x && !open ? " hidden" : ""}${z}><td class="rk tnum"${r.zone?.name ? ` title="${esc(r.zone.name)}"` : ""}>${r.rank}</td><td class="club">${crest(r.id, "")}<span class="lg">${esc(r.team)}</span><span class="sh">${esc(r.short || r.team)}</span></td>${cell(r.played)}${cell(r.wins)}${cell(r.draws)}${cell(r.losses)}<td class="r gd tnum">${signed(r.gd)}</td><td class="r tnum pts">${r.points ?? ""}</td></tr>`;
+      };
+      return `<table class="compact liga${open ? " open" : ""}" data-t="${esc(id)}"><thead><tr><th class="rk">#</th><th>Club</th><th class="r" title="Played">P</th><th class="r" title="Won">W</th><th class="r" title="Drawn">D</th><th class="r" title="Lost">L</th><th class="r gd" title="Goal difference">GD</th><th class="r" title="Points">Pts</th></tr></thead><tbody>${c.rows.map(tr).join("")}</tbody></table>` +
+        (zones.length ? `<p class="zones"${open ? "" : " hidden"}>${zones.map(([n, col]) => `<span><i${col ? ` style="--zc:${col}"` : ""}></i>${esc(n)}</span>`).join("")}</p>` : "") +
+        (rest > 0 ? `<button class="lmore" data-tmore="${esc(id)}" aria-expanded="${open}" data-n="${c.rows.length}">${open ? "Top " + TOPR + " only" : `Full table, all ${c.rows.length}`}</button>` : "");
     };
     const fmtV = (k, v) => k === "ratings" ? Number(v).toFixed(2) : v;
+    // Minutes played beside goals and assists (Parth, 1 Oct), when FotMob has them for the player.
     const listOf = (c, k, title, unit) => {
       const L = c[k]; if (!L?.length) return "";
-      const id = `${c.key}-${k}`, open = MX.open.has(id), more = Math.max(0, L.length - 5);
-      return `<div class="ldr"><div class="ldh"><h4>${title}</h4><span>${unit}</span></div><ol>${L.map((p, i) => `<li class="${ourPlayer(p) ? "on" : ""}${i >= 5 ? " x" : ""}"${i >= 5 && !open ? " hidden" : ""}><span class="rk tnum">${p.rank ?? i + 1}</span><span class="pl"><b>${esc(p.name)}</b>${p.team ? `<small>${esc(p.team)}</small>` : ""}</span><span class="v tnum">${esc(fmtV(k, p.value))}</span></li>`).join("")}</ol>${more ? `<button class="lmore" data-lmore="${esc(id)}" aria-expanded="${open}">${open ? "Show fewer" : `${more} more`}</button>` : ""}</div>`;
+      const id = `${c.key}-${k}`, open = MX.open.has(id), more = Math.max(0, L.length - TOPL), mins = L.some(p => p.minutes != null);
+      return `<div class="ldr${mins ? " m" : ""}"><div class="ldh"><h4>${title}</h4>${mins ? `<span class="mh" title="Minutes played">Min</span>` : ""}<span class="vh" title="${esc({ G: "Goals", A: "Assists", Avg: "Average rating" }[unit] || unit)}">${unit}</span></div><ol>${L.map((p, i) => `<li class="${ourPlayer(p) ? "on" : ""}${i >= TOPL ? " x" : ""}"${i >= TOPL && !open ? " hidden" : ""}><span class="rk tnum">${p.rank ?? i + 1}</span><span class="pl"><b title="${esc(p.name)}">${esc(p.name)}</b>${p.team ? `<small>${esc(p.team)}</small>` : ""}</span>${mins ? `<span class="mn tnum">${p.minutes != null ? esc(inr(p.minutes, 0)) : ""}</span>` : ""}<span class="v tnum">${esc(fmtV(k, p.value))}</span></li>`).join("")}</ol>${more ? `<button class="lmore" data-lmore="${esc(id)}" aria-expanded="${open}">${open ? "Show fewer" : `${more} more`}</button>` : ""}</div>`;
     };
     const body = c => {
-      const lists = [listOf(c, "goals", "Top scorers", "Goals"), listOf(c, "assists", "Assists", "Assists"), listOf(c, "ratings", "Ratings", "Avg")].filter(Boolean);
+      const lists = [listOf(c, "goals", "Top scorers", "G"), listOf(c, "assists", "Assists", "A"), listOf(c, "ratings", "Ratings", "Avg")].filter(Boolean);
       return `<div class="cgrid">${tableOf(c) ? `<div class="ctab">${tableOf(c)}</div>` : ""}${lists.length ? `<div class="ldrs n${lists.length}">${lists.join("")}</div>` : ""}</div>`;
     };
     const tabs = comps.length > 1
@@ -483,6 +493,17 @@ function pickComp(key) {
   MX.comp = key; store.set("h1400-comp", key);
   $$(".comps [data-comp]").forEach(b => { const on = b.dataset.comp === key; b.setAttribute("aria-selected", on); b.tabIndex = on ? 0 : -1; });
   $$(".comps .cpan").forEach(p => { p.hidden = p.id !== "cpan-" + key; });
+}
+function toggleTable(id, btn) {
+  const open = !MX.open.has(id); open ? MX.open.add(id) : MX.open.delete(id);
+  const t = btn.parentElement.querySelector(`table[data-t="${CSS.escape(id)}"]`);
+  t.classList.toggle("open", open);
+  t.querySelectorAll("tr.x").forEach(r => { r.hidden = !open; });
+  const z = btn.parentElement.querySelector(".zones"); if (z) z.hidden = !open;
+  btn.setAttribute("aria-expanded", open);
+  btn.textContent = open ? `Top ${CFG.follows.football_club.show?.table_rows || 7} only` : `Full table, all ${btn.dataset.n}`;
+  // Folding a long table back up should not leave the reader far below it.
+  if (!open && t.getBoundingClientRect().top < 0) t.scrollIntoView({ block: "start" });
 }
 function toggleLeaders(id, btn) {
   const open = !MX.open.has(id); open ? MX.open.add(id) : MX.open.delete(id);
@@ -1421,6 +1442,7 @@ document.addEventListener("click", e => {
   if (t.dataset.go) { const el = document.getElementById("s-" + t.dataset.go) || document.getElementById(t.dataset.go); el && el.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
   if (t.dataset.comp) { pickComp(t.dataset.comp); return; }
   if (t.dataset.lmore) { toggleLeaders(t.dataset.lmore, t); return; }
+  if (t.dataset.tmore) { toggleTable(t.dataset.tmore, t); return; }
   if (t.dataset.more) { toggleMore(t.dataset.more); return; }
   if (t.dataset.head) { if (!toggleMore(t.dataset.head)) toast("Short story. The full text is already shown."); return; }
   if (t.dataset.clip) { clip(t.dataset.clip); return; }

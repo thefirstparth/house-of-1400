@@ -274,7 +274,13 @@ table.liga td.gd,table.liga th.gd{width:44px}
 table.liga td:last-child,table.liga th:last-child{padding-right:8px;width:42px}
 table.liga td.pts{font-weight:700}
 table.liga tr.on td.pts{font-weight:800}
-table.liga tr.gap td{border-top:1.5px dotted var(--rule2)}
+table.liga:not(.open) tr.pin td{border-top:1.5px dotted var(--rule2)}
+table.liga th.rk,table.liga td.rk{padding-left:7px}
+/* Zones (ESPN's: Round of 16, play-offs, relegation) as a thin bar by the rank, only in the full table, with its key below. */
+table.liga.open tr.z td.rk{background-image:linear-gradient(var(--zc),var(--zc));background-size:3px 62%;background-position:0 50%;background-repeat:no-repeat}
+.zones{display:flex;flex-wrap:wrap;gap:4px 14px;margin:8px 0 0;font:12px/1.4 var(--sans);color:var(--muted)}
+.zones[hidden]{display:none}
+.zones i{display:inline-block;width:3px;height:11px;background:var(--zc,var(--rule2));margin-right:6px;vertical-align:-1px}
 table.liga td.club{overflow:hidden;text-overflow:ellipsis;max-width:0;width:auto}
 table.liga .sh{display:none}
 /* Madridismo's competitions: tabs in the table-header style, the table beside three leader lists. */
@@ -288,23 +294,28 @@ table.liga .sh{display:none}
 .cgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:18px 40px}
 .ldrs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 28px}
 .ldrs.n2{grid-template-columns:repeat(2,minmax(0,1fr))}.ldrs.n1{grid-template-columns:minmax(0,1fr)}
-.ldh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid var(--ink);padding:6px 0 6px}
+.ldh{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 8px;align-items:baseline;border-bottom:1.5px solid var(--ink);padding:6px 8px 6px 0}
+.ldr.m .ldh{grid-template-columns:minmax(0,1fr) 34px 24px}
+.ldh .mh,.ldh .vh{text-align:right}
 .ldh h4{margin:0;font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
-.ldh span{padding-right:8px;font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ldh span{font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .ldr ol{list-style:none;margin:0;padding:0}
 .ldr li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:0 8px;align-items:center;padding:6px 8px 6px 0;border-bottom:1px solid var(--rule);font:14.5px/1.3 var(--sans)}
 .ldr li[hidden]{display:none}
 .ldr li .rk{color:var(--muted);font-size:13px}
 .ldr li .pl{min-width:0}
-.ldr li b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ldr li b{display:block;font-weight:600;line-height:1.2}
 .ldr li small{display:block;color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ldr li .v{font-weight:700}
+.ldr li .v{font-weight:700;text-align:right}
+.ldr.m li{grid-template-columns:20px minmax(0,1fr) 34px 24px;gap:0 6px}
+.ldr li .mn{text-align:right;color:var(--muted);font-size:13px}
+.ldr li.on .mn{color:inherit;opacity:.8}
 .ldr li.on{background:var(--fc,var(--surface));color:var(--fo,var(--ink));border-radius:8px;box-shadow:-8px 0 0 var(--fc,var(--surface));border-bottom-color:transparent}
 .ldr li.on small,.ldr li.on .rk{color:inherit;opacity:.8}
 .lmore{appearance:none;background:none;border:0;padding:8px 0 0;font:600 12.5px var(--sans);color:var(--f,var(--acc));cursor:pointer}
 .lmore::after{content:" ↓"}.lmore[aria-expanded="true"]::after{content:" ↑"}
 .lmore:hover{text-decoration:underline}
-@media (min-width:1180px){.cgrid{grid-template-columns:minmax(0,1.05fr) minmax(0,1.6fr)}}
+@media (min-width:1260px){.cgrid{grid-template-columns:minmax(0,.95fr) minmax(0,1.85fr);gap:18px 28px}.ldrs{gap:18px 22px}}
 @media (max-width:720px){
  .ldrs,.ldrs.n2{grid-template-columns:minmax(0,1fr)}
  table.liga .lg{display:none}

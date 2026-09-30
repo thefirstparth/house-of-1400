@@ -235,6 +235,7 @@
       "name": "Real Madrid",
       "espn_id": 86,
       "league": "esp.1",
+      "show": { "table_rows": 7, "leaders": 5 },
       "competitions": [
         { "key": "liga", "label": "La Liga", "espn": "esp.1", "fotmob": 87, "fotmob_slug": "laliga" },
         { "key": "ucl", "label": "Champions League", "espn": "uefa.champions", "fotmob": 42, "fotmob_slug": "champions-league" }

@@ -1,7 +1,7 @@
 // Madridismo's competitions (lib/football.js): ESPN's tables and leaders, FotMob's pages, and the tie rule at tenth.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { espnTable, espnLeaders, fotmobLeague, fotmobStat, nextData, topN } from "../lib/football.js";
+import { espnTable, espnLeaders, fotmobLeague, fotmobStat, nextData, topN, withMinutes } from "../lib/football.js";
 
 const st = (o) => Object.entries(o).map(([name, value]) => ({ name, value, displayValue: String(value) }));
 const entry = (id, name, rank, p, w, d, l, gd, pts) => ({ team: { id, displayName: name, shortDisplayName: name.split(" ")[0] }, stats: st({ rank, gamesPlayed: p, wins: w, ties: d, losses: l, pointDifferential: gd, points: pts }) });
@@ -42,4 +42,29 @@ test("FotMob: the table, the season id and a stat list with team names", () => {
   const r = fotmobStat({ data: { statsData: [{ name: "Raphinha", teamId: 8634, statValue: { value: 9.01 } }, { name: "Kylian Mbappé", teamId: 8633, statValue: { value: 8.18 } }] } }, teams);
   assert.deepEqual(r.map(p => [p.rank, p.name, p.team, p.value]), [[1, "Raphinha", "Barcelona", 9.01], [2, "Kylian Mbappé", "Real Madrid", 8.18]]);
   assert.throws(() => nextData("<html></html>"), /no page data/);
+});
+
+test("withMinutes: by FotMob id, by name without accents, by surname and club; never a guess", () => {
+  const mins = [
+    { name: "Javi Hernández", team: "Espanyol", fm_id: 1, value: 561 },
+    { name: "Tete Morente", team: "Elche", fm_id: 2, value: 398 },
+    { name: "Raphinha", team: "Barcelona", fm_id: 3, value: 555 },
+    { name: "Iñaki Williams", team: "Athletic Club", fm_id: 4, value: 600 },
+    { name: "Nico Williams", team: "Athletic Club", fm_id: 5, value: 500 },
+  ];
+  const out = withMinutes([
+    { name: "Javi Hernandez", team: "Espanyol", value: 4 },
+    { name: "José Antonio Morente", team: "Elche", value: 3 },
+    { name: "Someone", team: "Barcelona", fm_id: 3, value: 2 },
+    { name: "I. Williams", team: "Athletic Club", value: 1 },
+    { name: "Unknown Player", team: "Girona", value: 1 },
+  ], mins);
+  assert.deepEqual(out.map(p => p.minutes ?? null), [561, 398, 555, null, null], "two Williamses at one club: no minutes rather than the wrong ones");
+  assert.ok(out.every(p => !("fm_id" in p)));
+});
+
+test("espnTable keeps ESPN's zone for each row", () => {
+  const e = entry("86", "Real Madrid", 1, 1, 1, 0, 0, 1, 3);
+  e.note = { description: "Qualifies for round of 16", color: "#81D6AC" };
+  assert.deepEqual(espnTable({ standings: { entries: [e] } })[0].zone, { name: "Qualifies for round of 16", color: "#81D6AC" });
 });
