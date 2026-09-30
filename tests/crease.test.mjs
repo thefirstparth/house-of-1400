@@ -60,3 +60,27 @@ test("the live Crease: next match, the series match by match with its score, the
   assert.deepEqual(v.also.map(a => [a.name, a.formats[0].total, a.formats[0].score]), [["Asian Games 2026", null, null]], "a tournament has no series score or length");
   assert.equal(v.after.name, "India tour of New Zealand 2026");
 });
+
+test("the Crease keeps today's match, with its result, until midnight IST (Parth, 1 Oct)", async () => {
+  const { creaseView, keptToday } = await import("../lib/cricket.js");
+  const m = (id, series, desc, n, opp, start, state, status = null, won = null) => ({ id, series, format: n ? "ODI" : "T20", desc, n, opponent: opp, start, time_announced: true, city: "X", ground: null, state, status, won });
+  const M = [
+    m(1, "West Indies tour of India, 2026", "1st ODI", 1, "West Indies", "2026-09-27T08:30:00.000Z", "done", "India won by 8 wkts", true),
+    m(2, "West Indies tour of India, 2026", "2nd ODI", 2, "West Indies", "2026-09-30T08:30:00.000Z", "done", "India won by 5 wkts", true),
+    m(3, "West Indies tour of India, 2026", "3rd ODI", 3, "West Indies", "2026-10-03T08:30:00.000Z", "next"),
+    m(6, "Asian Games 2026", "2nd Semi-Final", null, "Sri Lanka", "2026-10-01T04:30:00.000Z", "next"),
+  ];
+  // 22:00 IST on the day: the ODI is done, the next match is tomorrow's semi-final in another series.
+  const night = creaseView(M, Date.parse("2026-09-30T16:30:00Z"));
+  assert.equal(night.today.id, 2);
+  assert.equal(night.next.id, 6);
+  assert.equal(night.main.name, "West Indies tour of India, 2026", "today's series stays in charge");
+  assert.equal(night.main.formats[0].score, "India lead 2–0");
+  // 06:00 IST the next day: the semi-final's series takes over.
+  const after = creaseView(M, Date.parse("2026-09-30T19:00:00Z") + 36e5 * 5.5);
+  assert.equal(after.today, null);
+  assert.equal(after.main.name, "Asian Games 2026");
+  // A late match keeps 12 hours from its start even past midnight.
+  assert.ok(keptToday(Date.parse("2026-09-30T17:30:00Z"), Date.parse("2026-09-30T20:00:00Z")));
+  assert.ok(!keptToday(Date.parse("2026-10-01T04:30:00Z"), Date.parse("2026-09-30T20:00:00Z")), "a match that has not started is not today's result");
+});

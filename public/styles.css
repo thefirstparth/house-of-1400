@@ -373,6 +373,9 @@ sup.calc{font-size:.72em;color:var(--muted);margin-left:1px}
 .agenda li .t{font-weight:700;color:var(--f)}
 .agenda li.on{background:var(--fc);color:var(--fo);border-radius:12px;padding-inline:10px}
 .agenda li small{color:var(--muted)}
+/* A match already played today stays until midnight IST, quieter, with its result (Parth, 1 Oct). */
+.agenda li.done .t,.agenda li.done .what{color:var(--muted)}
+.agenda li .res{display:inline-block;margin-left:4px;font-weight:600;color:var(--ink2)}
 
 /* ---------- sky & streets ---------- */
 .sky-lede{font:400 22px/1.4 var(--serif);max-width:58ch;margin:2px 0 16px;text-wrap:pretty}
@@ -1007,6 +1010,9 @@ table.sessions td.r{white-space:nowrap}
 
 /* ---------- The Crease, live: the next match, the series match by match, what else, the next tour ---------- */
 .cz-next{padding-bottom:14px;border-bottom:2px solid var(--ink)}
+.cz-today{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--rule)}
+.cz-today h3{font-size:clamp(20px,2vw,24px)}
+.cz-today .cz-when em{font:600 16px var(--sans);font-style:normal}
 .cz-k{font:700 11px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--acc,var(--muted))}
 .cz-next h3{margin:4px 0 2px;font:700 clamp(24px,2.6vw,30px)/1.1 var(--hl);color:var(--ink)}
 .cz-next p{margin:2px 0;font:15.5px/1.45 var(--serif);color:var(--ink2)}
