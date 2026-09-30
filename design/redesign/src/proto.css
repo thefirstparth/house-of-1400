@@ -1,0 +1,54 @@
+/* ================================================================ REDESIGN PROTOTYPE (mock only)
+   Six desks, each in one colour. The desk opener carries the colour; sections inside it get a quieter head. */
+
+/* the desk bar: six desks, then the current desk's sections */
+nav.idx .dtabs{max-width:1320px;margin:0 auto;padding:0 clamp(16px,3vw,40px);display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav.idx .dtabs::-webkit-scrollbar{display:none}
+nav.idx .dtabs a{flex:1 1 0;justify-content:center;padding:11px 6px 9px;border-radius:0;font:800 12px/1 var(--sans);font-variation-settings:"wdth" 80;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
+nav.idx .dtabs a:hover{background:none;color:var(--f)}
+nav.idx .dtabs a.cur{background:none;color:var(--f);border-bottom-color:var(--f)}
+nav.idx>div.dtabs{padding-top:0;padding-bottom:0}
+nav.idx>div.dchipw{display:block;max-width:none;padding:0;overflow:visible;border-top:1px solid var(--rule2)}
+nav.idx .dtabs .sh{display:none}
+nav.idx .dchips{max-width:1320px;margin:0 auto;padding:6px clamp(16px,3vw,40px);display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.idx .dchips::-webkit-scrollbar{display:none}
+nav.idx .dchips:empty{display:none}
+nav.idx .dchips a{font-size:13px}
+nav.idx .dchips a .seal{width:20px;height:20px}
+
+/* desk opener: the desk's name as a section front, Bhide's lede, and one live line per section */
+.dgroup{margin-top:72px;scroll-margin-top:96px}
+.dgroup#dg-front{margin-top:0}
+.deskfront{border-top:8px solid var(--f);padding-top:12px;margin-bottom:8px}
+.df-mast{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1.5px solid var(--ink);padding-bottom:8px}
+.df-mast h2{margin:0;font:900 clamp(44px,6.4vw,84px)/.9 var(--head);letter-spacing:-.015em;color:var(--f)}
+.df-d{font:700 11.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.df-lede{margin:16px 0 18px;max-width:68ch;font:400 clamp(18px,1.7vw,21px)/1.5 var(--serif);color:var(--ink)}
+.df-lede::first-letter{font-weight:700}
+.df-idx{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:0 32px}
+.df-idx li{border-top:1px solid var(--rule)}
+.df-idx a{display:grid;grid-template-columns:26px minmax(0,1fr);gap:1px 10px;align-items:center;padding:10px 0 11px;text-decoration:none;color:inherit}
+.df-idx a .seal{grid-row:1/3;width:26px;height:26px;align-self:start}
+.df-idx a .seal .shape{fill:var(--fc)}
+.df-idx b{font:800 12px/1.2 var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--f)}
+.df-idx span{font:14.5px/1.35 var(--sans);color:var(--ink2)}
+.df-idx span:empty{display:none}
+.df-idx a:hover b{text-decoration:underline}
+
+/* sections inside a desk: a newspaper head in the desk colour, not a filled band */
+.dgroup section.sec{margin-top:44px;scroll-margin-top:104px}
+.dgroup .sechead{background:none;color:var(--ink);border-radius:0;padding:0 0 9px;border-bottom:2px solid var(--f);margin-bottom:20px;gap:12px}
+.dgroup .sechead .seal{width:40px;height:40px}
+.dgroup .sechead .seal .shape{fill:var(--fc)}
+.dgroup .sechead h2{color:var(--f);font-size:clamp(22px,2.3vw,28px)}
+.dgroup .sechead span{color:var(--muted)}
+.deskhead{display:none}
+
+@media (max-width:720px){
+ nav.idx .dtabs{padding:0 8px;gap:0}
+ nav.idx .dtabs a{padding:12px 2px 9px;font-size:11.5px;letter-spacing:.06em;flex:1 1 0}
+ nav.idx .dtabs .lg{display:none}nav.idx .dtabs .sh{display:inline}
+ .df-idx{grid-template-columns:1fr}
+ .dgroup{margin-top:56px}
+}
+.board-wrap>*{min-width:0}
