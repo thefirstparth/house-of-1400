@@ -52,3 +52,39 @@ test("validator: tennis prints ESPN's time, and says so when Tennis Explorer dif
   assert.deepEqual(errs({ ...split, tennis: { ...base.tennis, players: [{ name: "Carlos Alcaraz", next_match: nm, note: "Tennis Explorer has it at 06:30 IST. Worth a look at Tokyo's order of play before you set an alarm." }] } }), []);
   assert.deepEqual(errs(E(null, other, null)), [], "only the backup lists it: a warning, never a block");
 });
+
+// Paywalled feeds are leads (Parth, 1 Oct: no NYT subscription): the paper finds the story at an open outlet.
+test("leads: the name in a summary, open outlets only, and the same story", async () => {
+  const { leadName, pickElsewhere } = await import("../lib/trial.js");
+  assert.equal(leadName("Bill Draper began funding start-ups in the early 1960s. He has died at 98."), null, "a name that opens a sentence is not used");
+  assert.equal(leadName("For safety reasons, Gemini 4 Argon will initially be available only to some companies."), "Gemini 4 Argon");
+  assert.equal(leadName("Researchers ask why patients, like former Senator Ben Sasse, develop resistance."), "Senator Ben Sasse");
+  const S = { paywalled: { outlets: ["The New York Times", "Financial Times"], hosts: ["nytimes.com", "ft.com"] }, not_outlets: { names: ["instagram.com", "reddit"] }, national_outlets: ["NDTV"] };
+  const ftc = { title: "F.T.C. Investigates OpenAI and Anthropic Over Potential Consumer Harms", summary: "The agency will examine whether A.I. labs have broken federal laws." };
+  const hits = [
+    { title: "FTC is investigating OpenAI, Anthropic and other AI companies over consumer harms", outlet: "CNBC", url: "u1" },
+    { title: "FTC investigates OpenAI and Anthropic over potential consumer harms", outlet: "The New York Times", url: "u2" },
+    { title: "FTC probes OpenAI Anthropic consumer harms", outlet: "ft.com", url: "u3" },
+    { title: "FTC investigating OpenAI Anthropic over consumer harms", outlet: "instagram.com", url: "u4" },
+    { title: "OpenAI launches a new model", outlet: "The Verge", url: "u5" },
+    { title: "FTC opens probe into AI giants including Anthropic and OpenAI over consumer harms", outlet: "NDTV", url: "u6" },
+  ];
+  assert.deepEqual(pickElsewhere(ftc, hits, S).map(h => h.outlet), ["NDTV", "CNBC"], "national outlets first; no paywalled, social or unrelated results");
+  const argon = { title: "Google Releases a New Flagship A.I. Model, With Limits", summary: "For safety reasons, Gemini 4 Argon will initially be available only to some companies." };
+  assert.deepEqual(pickElsewhere(argon, [
+    { title: "Google announces Gemini 4 Argon as its new frontier model", outlet: "9to5Google", url: "a" },
+    { title: "Google releases a new flagship AI model", outlet: "Tech Site", url: "b" },
+  ], S).map(h => h.outlet), ["9to5Google"], "a lead that names something needs the name");
+});
+
+test("validator: from 1 Oct nothing may rest only on paywalled outlets", async () => {
+  const { validateEdition } = await import("../scripts/validate.mjs");
+  const base = JSON.parse(readFileSync(new URL("../content/latest.json", import.meta.url), "utf8"));
+  const E = structuredClone(base); E.date = "2026-10-01"; E.weekday = "thu";
+  const b = Object.values(E.sections).flatMap(s => s.briefs || [])[0];
+  const pay = e => validateEdition(e).errors.filter(x => /paywalled/.test(x));
+  b.sources = [{ label: "The New York Times", url: "https://www.nytimes.com/2026/09/30/technology/x.html" }];
+  assert.equal(pay(E).length, 1);
+  b.sources.push({ label: "CNBC", url: "https://www.cnbc.com/x" });
+  assert.equal(pay(E).length, 0, "an open outlet beside it is enough");
+});

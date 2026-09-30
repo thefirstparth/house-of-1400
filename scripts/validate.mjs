@@ -85,6 +85,16 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
 
   // Sources on every substantive story
   for (const s of items) if (s._kind === "story" && !(s.sources || []).some(x => /^https?:\/\//.test(x.url))) errors.push(`sources: ${s._where} has no source URL`);
+  // From 1 Oct 2026 (Parth has no subscription to them): nothing printed may rest only on paywalled outlets (config
+  // sources.paywalled). Find the story at an open outlet and link that; the wire check lists open outlets for each lead.
+  if (E.date >= "2026-10-01") {
+    let PW = []; try { PW = read("config/house.json").sources?.paywalled?.hosts || []; } catch {}
+    const paid = u => { try { const h = new URL(u).hostname.replace(/^www\./, ""); return PW.some(p => h === p || h.endsWith("." + p)); } catch { return false; } };
+    for (const s of items) {
+      const urls = (s.sources || []).map(x => x.url).filter(u => /^https?:\/\//.test(u || ""));
+      if (urls.length && urls.every(paid)) errors.push(`sources: ${s._where} links only paywalled outlets (${[...new Set(urls.map(u => new URL(u).hostname.replace(/^www\./, "")))].join(", ")}); link an open outlet that reports it (ledger/wire-check.json lists them under leads)`);
+    }
+  }
 
   // Unique ids and one editorial home per thread (trends and betting included)
   const seenId = new Map(), seenThread = new Map();
