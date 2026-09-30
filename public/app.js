@@ -585,7 +585,7 @@ function breadthBlock() {
   const B = LIVE.movers?.value?.breadth; if (!B || !(B.up + B.down)) return "";
   const n = B.up + B.down + (B.flat || 0), st = x => `${esc(x.name.replace(/ Ltd\.?$/, ""))} <b class="tnum ${x.pct >= 0 ? "up" : "dn"}">${x.pct >= 0 ? "+" : ""}${x.pct.toFixed(1)}%</b>`;
   const ind = x => `${esc(x.industry)} <b class="tnum ${x.pct >= 0 ? "up" : "dn"}">${x.pct >= 0 ? "+" : ""}${x.pct.toFixed(1)}%</b>`;
-  return `<div class="ledx"><h4>Breadth</h4><p class="br-line"><b class="tnum up">${B.up} up</b>, <b class="tnum dn">${B.down} down</b> of ${n} Nifty 500 stocks ${B.day === istDate() && fmt(new Date().toISOString(), { hour: "2-digit", minute: "2-digit" }) < "15:40" ? "so far today" : `on ${esc(fmt(B.day + "T12:00:00Z", { day: "numeric", month: "short" }))}`}.</p>
+  return `<div class="ledx"><h4>Breadth</h4><p class="br-line"><b class="tnum up">${B.up} up</b>, <b class="tnum dn">${B.down} down</b> ${n >= 500 ? "in the Nifty 500" : `of ${n} Nifty 500 stocks`} ${B.day === istDate() && fmt(new Date().toISOString(), { hour: "2-digit", minute: "2-digit" }) < "15:40" ? "so far today" : `on ${esc(fmt(B.day + "T12:00:00Z", { day: "numeric", month: "short" }))}`}.</p>
 <div class="br-grid"><div><span>Rose most</span>${B.gainers.map(st).join("<br>")}</div><div><span>Fell most</span>${B.losers.map(st).join("<br>")}</div><div><span>Industries up most</span>${B.best.map(ind).join("<br>")}</div><div><span>Industries down most</span>${B.worst.map(ind).join("<br>")}</div></div>
 <p class="asof">Closing prices from Yahoo Finance for NSE's Nifty 500 list; an industry is the median of its stocks.${staleNote("movers")}</p></div>`;
 }
