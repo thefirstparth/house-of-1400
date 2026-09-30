@@ -896,7 +896,7 @@ nav.idx .dk:first-child{padding-left:2px}
 table.sessions td.r{white-space:nowrap}
 
 /* A tennis match whose time has passed but play has not started (ESPN): the court is running late */
-.due{font:600 12px var(--sans);color:var(--warn);margin-left:6px}
+.due{display:block;margin-top:2px;font:italic 400 14px/1.4 var(--serif);color:var(--muted)}
 
 /* ---------- The Ledger: who bought and sold, breadth (newspaper tables, the paper's own inks) ---------- */
 .ledx{margin-top:30px;padding-top:12px;border-top:2px solid var(--ink)}

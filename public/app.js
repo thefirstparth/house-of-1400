@@ -128,7 +128,7 @@ function staleNote(k) {
 // Tennis matches move all day (a court runs late, a match is pulled), so the followed players' next matches come
 // live from ESPN, refreshed every five minutes, with Tennis Explorer as the second opinion. A live match replaces
 // the edition's own line for that player. A match is "on" only when ESPN says play has started; once its time has
-// passed without that, it is "due" (the court is running late), never "go watch".
+// passed without that, it is "due", with the reason when ESPN shows one (the match still on its court, a delay), never "go watch".
 const lastName = n => String(n || "").split(" ").pop();
 function liveTennis() {
   return (LIVE.tennis_players?.value?.players || []).filter(p => p.next?.when_utc).map(p => {
@@ -136,7 +136,8 @@ function liveTennis() {
     const other = b && p.agree === false && Math.abs(Date.parse(b.when_utc) - start) > 30 * 6e4 ? istTime(b.when_utc) : null;
     // minutes: how long the line stays up; a match that has not started stays "due" while ESPN still lists it.
     return { label: `${lastName(p.name)} v ${x.opponent || "TBC"} · ${x.event}${x.round ? `, ${x.round}` : ""}`, when_utc: new Date(start).toISOString(), minutes: 720,
-      entity: "tennis", player: p.name, live: !!x.live, court: x.court || null, other, source: "ESPN", event: x.event, round: x.round, opponent: x.opponent };
+      entity: "tennis", player: p.name, live: !!x.live, court: x.court || null, other, source: "ESPN", event: x.event, round: x.round, opponent: x.opponent,
+      held: x.held || null, court_now: x.court_now || null, ahead: x.ahead_on_court || 0 };
   });
 }
 // The edition's fixtures, with the live tennis matches in place of the edition's lines for the same players.
@@ -145,6 +146,18 @@ function allFixtures() {
   const keep = (E.fixtures || []).filter(f => f.until_utc || f.entity !== "tennis" || !names.some(nm => f.label.includes(nm)));
   return [...keep, ...T];
 }
+// Why a due match has not started, in a few plain words: ESPN's postponement or delay, else the match still on the same
+// court (with its score so far) and how many more come first, else simply not started yet.
+const dueWhy = f => {
+  if (f.held) return String(f.held).replace(/^./, c => c.toUpperCase());
+  const c = f.court_now;
+  if (c?.players?.length === 2) {
+    const [a, b] = c.players.map(lastName), more = Math.max(0, (f.ahead || 0) - 0);
+    return `Waiting for ${a} v ${b} to finish on ${f.court || "the court"}${c.score ? ` (${c.score})` : ""}${more ? `, then ${more === 1 ? "one more match" : `${more} more matches`}` : ""}`;
+  }
+  if (f.ahead) return `${f.ahead === 1 ? "One match" : `${f.ahead} matches`} still to play before it on ${f.court || "the court"}`;
+  return "Not started yet";
+};
 const fixState = (f, n) => {
   const start = Date.parse(f.when_utc), end = f.until_utc ? Date.parse(f.until_utc) : start + (f.minutes || 120) * 6e4;
   if (f.until_utc) return n >= end ? "done" : n >= start ? "span" : "next";
@@ -158,7 +171,7 @@ function events() {
     if (f.time_tbc || f.until_utc) continue; // a tournament's dates are not a session to watch
     const start = Date.parse(f.when_utc);
     const end = start + (f.minutes || 120) * 6e4;
-    out.push({ label: f.label, start, end, entity: f.entity || "", st: fixState(f, n) });
+    out.push({ label: f.label, start, end, entity: f.entity || "", st: fixState(f, n), f });
   }
   const race = LIVE.f1_next?.value?.race;
   if (race) for (const s of race.sessions) {
@@ -175,7 +188,7 @@ function tick() {
   const nx = ev.find(e => stateOf(e, n) !== "done");
   const sn = nx && stateOf(nx, n);
   $$('[data-cd="sess"]').forEach(el => (el.textContent = !nx ? "All clear" : sn === "on" ? "On now" : sn === "due" ? "Due now" : cd(Math.max(0, nx.start - n))));
-  $$('[data-cd="sessname"]').forEach(el => (el.textContent = !nx ? "" : sn === "on" ? `${nx.label} · go watch` : sn === "due" ? `${nx.label} · the court is running late` : `${nx.label} · ${istFull(new Date(nx.start).toISOString())} IST`));
+  $$('[data-cd="sessname"]').forEach(el => (el.textContent = !nx ? "" : sn === "on" ? `${nx.label} · go watch` : sn === "due" ? `${nx.label} · ${dueWhy(nx.f || {}).replace(/^./, c => c.toLowerCase())}` : `${nx.label} · ${istFull(new Date(nx.start).toISOString())} IST`));
   $$("[data-until]").forEach(el => {
     const t = Date.parse(el.dataset.until), dur = Number(el.dataset.min || 120) * 6e4;
     el.textContent = n < t ? cd(t - n) : n < t + dur ? "On now, go watch" : el.dataset.done || "Done";
@@ -854,7 +867,7 @@ function fixturesBlock() {
     const st = f.time_tbc ? "next" : fixState(f, n);
     const when = f.time_tbc ? "Time TBC" : f.until_utc ? `Runs to ${sparkLabel(istDate(new Date(f.until_utc)))}` : istTime(f.when_utc);
     const extra = f.source === "ESPN" ? `${f.court ? ` <small>· ${esc(f.court)}</small>` : ""}${f.other ? ` <small>· another listing says ${esc(f.other)}</small>` : ""}` : "";
-    const tag = st === "on" ? ` <span class="live"><i></i>On now, go watch</span> <button class="refresh" data-refresh="fixtures">Refresh</button>` : st === "due" ? ` <span class="due">Due now, the court is running late</span>` : "";
+    const tag = st === "on" ? ` <span class="live"><i></i>On now, go watch</span> <button class="refresh" data-refresh="fixtures">Refresh</button>` : st === "due" || (st === "next" && f.held) ? ` <span class="due">${esc(dueWhy(f))}</span>` : "";
     return `<li class="${st === "span" ? "next" : st === "due" ? "next" : st}"><span class="t tnum">${esc(when)}</span><span class="what">${esc(f.label)}${f.where ? ` <small>· ${esc(f.where)}</small>` : ""}${extra}${tag}</span></li>`;
   }).join("")}</ul></div>`).join("")}</div>`;
 }
@@ -901,7 +914,7 @@ function deuceData() {
   const LT = liveTennis();
   if (T.players?.length) h += `<div class="cols2">${T.players.map(p => {
     const lv = LT.find(t => t.player === p.name), n = Date.now(), st = lv && fixState(lv, n);
-    const nextLine = lv ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc([lv.round, `v ${lv.opponent || "TBC"}`].filter(Boolean).join(" "))} · ${esc(lv.event)} · ${esc(fmt(lv.when_utc, { weekday: "short", day: "numeric", month: "short" }).replace(/,/g, ""))}, ${esc(istTime(lv.when_utc))} IST${lv.court ? ` · ${esc(lv.court)}` : ""}.${st === "on" ? ` <span class="live"><i></i>On court now</span>` : st === "due" ? ` <span class="due">Due now, the court is running late</span>` : ""}</p>${lv.other ? `<p class="note">Another listing (Tennis Explorer) has it at ${esc(lv.other)} IST, so worth a look nearer the time.</p>` : ""}<p class="asof">Live from ESPN; order of play can shift with the matches before it.${staleNote("tennis_players")}</p>`
+    const nextLine = lv ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc([lv.round, `v ${lv.opponent || "TBC"}`].filter(Boolean).join(" "))} · ${esc(lv.event)} · ${esc(fmt(lv.when_utc, { weekday: "short", day: "numeric", month: "short" }).replace(/,/g, ""))}, ${esc(istTime(lv.when_utc))} IST${lv.court ? ` · ${esc(lv.court)}` : ""}.${st === "on" ? ` <span class="live"><i></i>On court now</span>` : st === "due" || (st === "next" && lv.held) ? ` <span class="due">${esc(dueWhy(lv))}</span>` : ""}</p>${lv.other ? `<p class="note">Another listing (Tennis Explorer) has it at ${esc(lv.other)} IST, so worth a look nearer the time.</p>` : ""}<p class="asof">Live from ESPN; order of play can shift with the matches before it.${staleNote("tennis_players")}</p>`
       : p.next_match ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc(p.next_match.text)}</p>` : "";
     // With a live match, the live match says where the player plays next; the edition's line may be out of date.
     const ev = p.next_event && !lv ? `<p style="margin:6px 0 4px"><b>${p.next_match ? "Event" : "Next event"}:</b> ${esc(p.next_event.text)}${p.next_match || /TBD/i.test(p.next_event.text) ? "" : " Match TBD."}</p>` : "";

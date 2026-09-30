@@ -91,3 +91,18 @@ test("Tennis Explorer: next match from a player's page, Prague time to UTC", asy
     { event: "Beijing", round: "1. round", when_utc: "2026-09-30T11:00:00.000Z", opponent: "Borges N.", source: "Tennis Explorer" });
   assert.equal(parseTennisExplorer("<p>No upcoming matches.</p>", "Novak Djokovic"), null);
 });
+
+test("tennis: why a due match has not started (the match on its court, or ESPN's own word)", () => {
+  const comp = (date, state, court, a, b, extra = {}) => ({ date, status: { type: { state, detail: extra.detail || "Scheduled", name: extra.name || "STATUS_SCHEDULED" } }, venue: { court },
+    competitors: [{ athlete: { displayName: a }, linescores: extra.sa || [] }, { athlete: { displayName: b }, linescores: extra.sb || [] }] });
+  const sb = { events: [{ name: "China Open", groupings: [{ grouping: { displayName: "Men's Singles" }, competitions: [
+    comp("2026-09-30T08:00Z", "in", "Diamond", "Jannik Sinner", "Holger Rune", { sa: [{ value: 6 }, { value: 3 }], sb: [{ value: 4 }, { value: 2 }] }),
+    comp("2026-09-30T09:30Z", "pre", "Diamond", "Casper Ruud", "Tommy Paul"),
+    comp("2026-09-30T11:00Z", "pre", "Diamond", "Novak Djokovic", "Nuno Borges"),
+    comp("2026-09-30T11:00Z", "pre", "Lotus", "Carlos Alcaraz", "Alex Michelsen", { detail: "Postponed", name: "STATUS_POSTPONED" }),
+  ] }] }] };
+  const [d, a] = tennisPlayers(sb, ["Novak Djokovic", "Carlos Alcaraz"]);
+  assert.deepEqual(d.next.court_now, { players: ["Jannik Sinner", "Holger Rune"], score: "6–4, 3–2" });
+  assert.equal(d.next.ahead_on_court, 1);
+  assert.equal(a.next.held, "Postponed");
+});
