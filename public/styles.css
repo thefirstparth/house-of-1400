@@ -1059,23 +1059,23 @@ table.sessions td.r{white-space:nowrap}
 .f1s .pts{font:700 16.5px var(--f1font)}
 .f1s .bar{grid-column:2/4;height:5px;border-radius:3px;background:var(--rule2);overflow:hidden}
 .f1s .bar i{display:block;height:100%;background:var(--tc);border-radius:3px}
-.f1s li.on .n,.f1s li.on .p,.f1s li.on .pts{font-weight:900;color:var(--ink)}
+.f1s li.on .p{color:var(--ink)}
 .f1s li.pin{border-top:1.5px dotted var(--rule2)}
 .f1-h{margin:6px 0 14px;font:700 21px/1.2 var(--f1font);color:var(--ink)}
 .podium{display:grid;grid-template-columns:1fr 1.12fr 1fr;align-items:end;gap:8px}
 .pd{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0}
-.pd b{font:700 15.5px/1.2 var(--f1font);color:var(--ink);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pd b{font:700 15.5px/1.2 var(--f1font);color:var(--ink);max-width:100%;white-space:nowrap;padding:3px 0}
 .pd small{font:600 11px var(--f1font);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pd span{font:600 13px var(--f1font);color:var(--ink2);margin:2px 0 6px}
+.pd>span{font:600 13px var(--f1font);color:var(--ink2);margin:2px 0 6px}
 .pd i{display:flex;justify-content:center;width:100%;padding-top:10px;background:var(--tc);color:var(--to);border-radius:10px 10px 0 0;font:italic 900 32px/1 var(--f1font)}
 .f1r{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
 .f1r li{display:grid;grid-template-columns:24px minmax(0,1fr) minmax(0,.9fr) auto;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--rule);font:15px/1.3 var(--f1font)}
 .f1r li[hidden]{display:none}
 .f1r .p{color:var(--muted);font-weight:600}
-.f1r .n{font-weight:700;color:var(--ink);border-left:4px solid var(--tc);padding-left:8px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.f1r .n{font-weight:700;color:var(--ink);border-left:4px solid var(--tc);padding-left:8px;min-width:0;white-space:nowrap}
 .f1r small{color:var(--muted);font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .f1r .g{text-align:right;color:var(--ink2)}
-.f1r li.on .n{font-weight:900}
+
 .f1-box .lmore{font-family:var(--f1font);font-weight:700}
 .f1-next{margin-top:26px;font-family:var(--f1font)}
 .f1-next h5{margin:0 0 8px;font:900 12.5px var(--f1font);letter-spacing:.13em;text-transform:uppercase;color:var(--ink)}
@@ -1085,3 +1085,11 @@ table.sessions td.r{white-space:nowrap}
 .f1-next li b{font-weight:700;font-size:15.5px;color:var(--ink)}
 .f1-next li small{font-size:13px;color:var(--muted)}
 @media (max-width:720px){.podium{gap:6px}.pd b{font-size:14px}.pd i{font-size:26px}.f1r li{grid-template-columns:22px minmax(0,1fr) auto}.f1r small{display:none}}
+/* Bhide's red pencil (the colour of his proof marks on the editor's page) ringing the followed driver */
+.f1-box{--pencil:#b3261e}
+:root[data-theme="dark"] .f1-box{--pencil:#ff7b6e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .f1-box{--pencil:#ff7b6e}}
+.pen{position:relative;display:inline-block;padding:0 4px;margin:0 10px 0 -4px}
+.pen svg{position:absolute;left:-13px;top:-9px;width:calc(100% + 26px);height:calc(100% + 17px);overflow:visible;pointer-events:none;transform:rotate(-2deg)}
+.pen path{fill:none;stroke:var(--pencil);stroke-width:2.1;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.9}
+.f1r .n{overflow:visible}
