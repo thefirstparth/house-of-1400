@@ -1013,6 +1013,8 @@ table.sessions td.r{white-space:nowrap}
 .cz-today{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--rule)}
 .cz-today h3{font-size:clamp(20px,2vw,24px)}
 .cz-today .cz-when em{font:600 16px var(--sans);font-style:normal}
+.cz-sc{font:600 14.5px/1.4 var(--sans)!important;color:var(--ink)!important;margin-top:2px!important}
+.cz-strip li .cz-ts{font:500 11.5px/1.3 var(--sans);color:var(--ink2);margin-top:1px}
 .cz-k{font:700 11px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--acc,var(--muted))}
 .cz-next h3{margin:4px 0 2px;font:700 clamp(24px,2.6vw,30px)/1.1 var(--hl);color:var(--ink)}
 .cz-next p{margin:2px 0;font:15.5px/1.45 var(--serif);color:var(--ink2)}

@@ -84,3 +84,17 @@ test("the Crease keeps today's match, with its result, until midnight IST (Parth
   assert.ok(keptToday(Date.parse("2026-09-30T17:30:00Z"), Date.parse("2026-09-30T20:00:00Z")));
   assert.ok(!keptToday(Date.parse("2026-10-01T04:30:00Z"), Date.parse("2026-09-30T20:00:00Z")), "a match that has not started is not today's result");
 });
+
+test("cricket scores: innings in batting order, overs as a reader writes them, all out as runs alone", async () => {
+  const { inningsLine } = await import("../lib/cricket.js");
+  const t = (id, s) => ({ teamId: id, teamSName: s });
+  const odi = { matchFormat: "ODI", team1: t(10, "WI"), team2: t(2, "IND"),
+    matchScore: { team1Score: { inngs1: { inningsId: 1, runs: 405, wickets: 7, overs: 49.6 } }, team2Score: { inngs1: { inningsId: 2, runs: 406, wickets: 2, overs: 43.3 } } } };
+  assert.equal(inningsLine(odi), "WI 405/7 (50 ov) · IND 406/2 (43.3 ov)");
+  const bowledOut = { ...odi, team2: t(2, "IND"), matchScore: { team1Score: { inngs1: { inningsId: 2, runs: 94, wickets: 10, overs: 13.6 } }, team2Score: { inngs1: { inningsId: 1, runs: 221, wickets: 7, overs: 19.6 } } } };
+  assert.equal(inningsLine(bowledOut), "IND 221/7 (20 ov) · WI 94 (14 ov)", "the side batting first comes first");
+  const test = { matchFormat: "TEST", team1: t(2, "IND"), team2: t(9, "ENG"),
+    matchScore: { team1Score: { inngs1: { inningsId: 1, runs: 320, wickets: 10, overs: 98.2 }, inngs2: { inningsId: 3, runs: 180, wickets: 4, overs: 40 } }, team2Score: { inngs1: { inningsId: 2, runs: 250, wickets: 10, overs: 80 } } } };
+  assert.equal(inningsLine(test), "IND 320 & 180/4 · ENG 250");
+  assert.equal(inningsLine({ matchFormat: "ODI", team1: t(1, "A"), team2: t(2, "B") }), null);
+});

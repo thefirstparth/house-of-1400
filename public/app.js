@@ -939,7 +939,7 @@ function resultOf(f) {
     const C = LIVE.crease?.value;
     const all = C ? [C.today, C.next, ...[C.main, ...(C.also || [])].flatMap(x => x?.formats?.flatMap(y => y.matches) || [])] : [];
     const m = all.find(x => x && x.state === "done" && near(x.start));
-    if (m) return (m.status || "").replace(/ due to .*$/i, "");
+    if (m) return [(m.status || "").replace(/ due to .*$/i, ""), m.score].filter(Boolean).join(" · ");
   }
   const L = LIVE.football?.value?.last;
   if (/madrid|football/.test(f.entity || "") && L?.score && near(L.date)) return `${L.winner === "us" ? "Won" : L.winner === "them" ? "Lost" : "Drew"} ${L.score.us}–${L.score.them}`;
@@ -981,11 +981,13 @@ function creaseLive() {
   const res = m => m.state === "live" ? `<em class="cz-live"><i></i>Live · ${esc(m.status || "in play")}</em>` : m.state === "done" ? `<em class="${m.won === true ? "up" : m.won === false ? "dn" : ""}">${esc((m.status || "").replace(/^India won/i, "Won").replace(/ due to .*$/i, "") || "Result")}</em>` : "";
   let h = "";
   const N = C.next, D = C.today && keptToday(Date.parse(C.today.start)) ? C.today : null;
-  if (D) h += `<div class="cz-next cz-today"><div class="cz-k">Today</div><h3>India v ${esc(D.opponent)}</h3><p>${esc(D.desc)} · ${esc(place(D))}</p><p class="cz-when">${res(D)}</p></div>`;
-  if (N) h += `<div class="cz-next"><div class="cz-k">${N.state === "live" ? "Live now" : "Next match"}</div><h3>India v ${esc(N.opponent)}</h3><p>${esc(N.desc)} · ${esc(place(N))}</p><p class="cz-when">${N.state === "live" ? res(N) : `${esc(when(N))}${N.time_announced ? ` · <span data-until="${esc(N.start)}" data-min="480" data-done="">--</span>` : ""}`}</p></div>`;
+  // The scorecard in a line (Parth, 1 Oct: tennis had its score, cricket only its result).
+  const card = m => m.score ? `<p class="cz-sc tnum">${esc(m.score)}</p>` : "";
+  if (D) h += `<div class="cz-next cz-today"><div class="cz-k">Today</div><h3>India v ${esc(D.opponent)}</h3><p>${esc(D.desc)} · ${esc(place(D))}</p><p class="cz-when">${res(D)}</p>${card(D)}</div>`;
+  if (N) h += `<div class="cz-next"><div class="cz-k">${N.state === "live" ? "Live now" : "Next match"}</div><h3>India v ${esc(N.opponent)}</h3><p>${esc(N.desc)} · ${esc(place(N))}</p><p class="cz-when">${N.state === "live" ? res(N) : `${esc(when(N))}${N.time_announced ? ` · <span data-until="${esc(N.start)}" data-min="480" data-done="">--</span>` : ""}`}</p>${N.state === "live" ? card(N) : ""}</div>`;
   const strip = (f, big) => `<div class="cz-f"><h5>${esc(f.label)}${f.total ? ` · ${f.total} matches` : ""}${f.score ? ` · <b>${esc(f.score)}</b>` : ""}</h5><ol class="cz-strip${big ? "" : " small"}">${f.matches.map(m => {
     const isNext = N && m.id === N.id;
-    return `<li class="${m.state}${isNext ? " is-next" : ""}${m.won === true ? " won" : m.won === false ? " lost" : ""}"><b>${esc(m.n ? m.desc.replace(/ (ODI|T20I|Test)$/i, "") : m.desc)}</b><span>${esc(day(m.start))}</span><span>${esc(m.city || "")}</span>${res(m)}</li>`;
+    return `<li class="${m.state}${isNext ? " is-next" : ""}${m.won === true ? " won" : m.won === false ? " lost" : ""}"><b>${esc(m.n ? m.desc.replace(/ (ODI|T20I|Test)$/i, "") : m.desc)}</b><span>${esc(day(m.start))}</span><span>${esc(m.city || "")}</span>${res(m)}${m.score ? `<span class="cz-ts tnum">${esc(m.score.replace(/ \([^)]*ov\)/g, ""))}</span>` : ""}</li>`;
   }).join("")}</ol></div>`;
   const M = C.main;
   if (M) h += `<div class="cz-series"><h4>${esc(M.name.replace(/,? \d{4}$/, ""))}</h4>${M.formats.map((f, i) => strip(f, i === 0 || f.matches.some(m => N && m.id === N.id))).join("")}</div>`;
