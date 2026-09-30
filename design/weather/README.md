@@ -24,3 +24,19 @@ Data behind them (all free, no key):
   compute 1991 to 2020 normals once from ERA5 (Open-Meteo archive) and keep them in a data file.
 
 Rebuild: `node design/weather/build.mjs` (bakes the data file into `variants.html`).
+
+## Round two (1 Oct): less rain, more trend
+
+Parth picked A's approach but found it too much about rain, with too much white space, and asked for trends week over
+week and month over month (temperature, feels like, air if reliable, wind if relevant, sunrise and sunset), no rain
+charts, the same for Ranchi and Prayagraj. `variants2.html` (from `src2.html` and `data2-2026-10-01.json`):
+
+- **D · The trend table:** a short column and a "now" grid, then two tables: week to week (last week as measured, this
+  week, next week) and month to month (October to December against a usual year). Family: one table each.
+- **E · The season in one picture:** day-to-night temperature bars from last week to December, usual months dashed,
+  air under each; four short facts beside. Family: the same chart each.
+- **F · What is changing:** tiles for days, nights, air, rain (words only), daylight and humidity, each from, to and why.
+
+New data: station normals from Meteostat (daily records 1991 to 2020 for Bengaluru HAL 43295, Ranchi 42701,
+Allahabad 42475); ECMWF seasonal corrected by its September error against the station; Copernicus air quality for
+2022 to 2025 for the usual months; sunrise and sunset from NOAA's formula. Wind is left out while it is calm.

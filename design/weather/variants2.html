@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sky & Streets, round two</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..800;1,8..60,300..700&family=Roboto+Serif:wdth,wght@85..100,600..800&family=Roboto+Flex:wdth,wght@62..100,400..800&display=swap">
+<style>
+:root{color-scheme:light;
+ --paper:#f3f1ea;--sheet:#fbfaf6;--surface:#e9e6dc;--ink:#15140f;--ink2:#3a3830;--muted:#625d52;--rule:#d5d0c3;--rule2:#e4e0d5;
+ --sky:#0a72a8;--sky-c:#d2ecfa;--sky-on:#003550;--warm:#c0561d;--cool:#2f5fa8;--sun:#b86e00;
+ --aq1:#0b7a43;--aq2:#8a6a00;--aq3:#c0561d;--aq4:#c0261d;--aq1c:#d8efe0;--aq2c:#f3e7bf;--aq3c:#f8dccb;--aq4c:#f6d2cf;
+ --serif:"Source Serif 4",Georgia,serif;--hl:"Roboto Serif","Source Serif 4",Georgia,serif;--sans:"Roboto Flex",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
+ --paper:#131210;--sheet:#1b1a17;--surface:#22201c;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;
+ --sky:#7ccbf2;--sky-c:#0a3550;--sky-on:#d2ecfa;--warm:#ff9c6b;--cool:#8fb4f0;--sun:#f2b552;
+ --aq1:#5fd08f;--aq2:#e7c35a;--aq3:#ff9c6b;--aq4:#ff8a7e;--aq1c:#123a24;--aq2c:#3a3010;--aq3c:#43240f;--aq4c:#4a1714}}
+:root[data-theme="dark"]{color-scheme:dark;
+ --paper:#131210;--sheet:#1b1a17;--surface:#22201c;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;
+ --sky:#7ccbf2;--sky-c:#0a3550;--sky-on:#d2ecfa;--warm:#ff9c6b;--cool:#8fb4f0;--sun:#f2b552;
+ --aq1:#5fd08f;--aq2:#e7c35a;--aq3:#ff9c6b;--aq4:#ff8a7e;--aq1c:#123a24;--aq2c:#3a3010;--aq3c:#43240f;--aq4c:#4a1714}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.5 var(--serif);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(16px,3vw,40px) 80px}
+.tnum,table{font-variant-numeric:lining-nums tabular-nums}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--rule);font:600 13px var(--sans);color:var(--muted)}
+.bar button{font:700 13px var(--sans);border:0;border-radius:99px;padding:8px 14px;background:var(--ink);color:var(--paper);cursor:pointer}
+.intro{max-width:74ch;margin:24px 0 8px;font-size:16.5px;color:var(--ink2)}
+.vlabel{margin:60px 0 14px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;border-top:8px solid var(--ink);padding-top:12px}
+.vlabel b{font:900 13px var(--sans);letter-spacing:.14em;text-transform:uppercase}
+.vlabel span{font:italic 17px var(--serif);color:var(--muted)}
+.sechead{background:var(--sky-c);color:var(--sky-on);border-radius:26px;padding:11px 22px;margin-bottom:20px}
+.sechead h2{margin:0;font:800 33px/1 var(--sans);font-variation-settings:"wdth" 80;letter-spacing:.015em;text-transform:uppercase}
+.sechead span{font:italic 15.5px var(--serif);display:block;margin-top:3px}
+.k{font:700 11.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--sky);margin:0 0 4px}
+.sub{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-top:1.5px solid var(--ink);padding-top:8px;margin:24px 0 10px}
+.sub b{font:800 12.5px var(--sans);letter-spacing:.12em;text-transform:uppercase}
+.sub em{font:italic 14px var(--serif);color:var(--muted)}
+.note{font:13px/1.45 var(--sans);color:var(--muted);margin:8px 0 0;max-width:80ch}
+svg text{font-family:var(--sans)}
+.lede{font:700 clamp(26px,3vw,36px)/1.12 var(--hl);margin:0 0 8px;letter-spacing:-.01em}
+.dek{font:18px/1.5 var(--serif);margin:0;color:var(--ink2)}
+.now{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--rule)}
+.now div{padding:9px 12px 9px 0;border-bottom:1px solid var(--rule2)}
+.now div:not(:nth-child(3n+1)){padding-left:12px;border-left:1px solid var(--rule2)}
+.now span{display:block;font:700 10.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.now b{font:800 21px/1.2 var(--sans);font-variation-settings:"wdth" 78}
+.now small{font:500 12.5px var(--sans);color:var(--muted);display:block}
+.top{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:36px;align-items:start}
+.chip{display:inline-block;font:800 11px/1 var(--sans);padding:4px 7px;border-radius:99px;letter-spacing:.02em;white-space:nowrap}
+.aq1{background:var(--aq1c);color:var(--aq1)}.aq2{background:var(--aq2c);color:var(--aq2)}.aq3{background:var(--aq3c);color:var(--aq3)}.aq4{background:var(--aq4c);color:var(--aq4)}
+/* variant 1: the trend table */
+table.tr{width:100%;border-collapse:collapse}
+table.tr th{font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:right;padding:6px 8px;border-bottom:1.5px solid var(--ink);vertical-align:bottom}
+table.tr th small{display:block;font:500 11px var(--sans);letter-spacing:0;text-transform:none}
+table.tr th:first-child,table.tr td:first-child{text-align:left;padding-left:0}
+table.tr td{padding:9px 8px;border-bottom:1px solid var(--rule2);text-align:right;font:600 15.5px var(--sans);white-space:nowrap}
+table.tr td:first-child{font:600 14.5px var(--sans);color:var(--ink2)}
+table.tr td.w{white-space:normal;font:14.5px/1.35 var(--serif);text-align:left;color:var(--ink2);min-width:150px}
+.ar{font:800 12px var(--sans);margin-left:3px}.up{color:var(--warm)}.dn{color:var(--cool)}.eq{color:var(--muted)}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px}
+.fam h3{margin:0 0 2px;font:800 20px var(--sans);font-variation-settings:"wdth" 80;text-transform:uppercase;letter-spacing:.02em;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.fam h3 small{font:500 13.5px var(--sans);text-transform:none;letter-spacing:0;color:var(--muted)}
+.fam .l{font:600 17.5px/1.35 var(--hl);margin:4px 0 8px}
+.fam>div{border-top:1.5px solid var(--ink);padding-top:10px}
+/* variant 2 */
+.season{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:32px;align-items:start}
+.facts{list-style:none;margin:0;padding:0}
+.facts li{padding:9px 0;border-top:1px solid var(--rule2);font:16px/1.45 var(--serif)}
+.facts li b{display:block;font:700 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--sky);margin-bottom:1px}
+/* variant 3 */
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.tile{background:var(--sheet);border:1px solid var(--rule);border-radius:18px;padding:12px 14px 10px;min-width:0}
+.tile h4{margin:0;font:800 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.tile .big{font:800 26px/1.1 var(--sans);font-variation-settings:"wdth" 76;margin:4px 0 2px}
+.tile .big i{font-style:normal;color:var(--muted);font-weight:600;font-size:20px;margin:0 4px}
+.tile p{margin:0;font:14.5px/1.4 var(--serif);color:var(--ink2)}
+.tiles.sm{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tiles.sm .big{font-size:22px}
+@media (max-width:900px){.top,.season{grid-template-columns:1fr;gap:18px}.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){.two{grid-template-columns:1fr;gap:22px}.sechead h2{font-size:26px}.now b{font-size:18px}
+ table.tr td,table.tr th{padding-left:5px;padding-right:5px}table.tr td{font-size:14px}table.tr .hide{display:none}.tiles{gap:8px}.tile{padding:10px 11px}.tile .big{font-size:21px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="bar"><span>Sky & Streets · round two · real forecasts of Thu 1 Oct · not the live paper</span><button id="th" type="button">Night</button></div>
+<p class="intro">Less rain, more trend, and no rain charts. Behind all three: the forecast the paper reads (the week, today by the hour), ECMWF's 51-run ensemble (two weeks), ECMWF's seasonal forecast (the months, corrected by how far it was off in September), the city's own weather station over 1991 to 2020 for "usual", air quality from the Copernicus service (the last 92 days, the next five, and Octobers to Decembers of 2022 to 2025 for what usually happens), and sunrise and sunset worked out from the calendar. Wind only appears when it is worth a mention; this week it is not (under 15 km/h everywhere). Every sentence is written by rules from the numbers.</p>
+
+<div class="vlabel"><b>D · The trend table</b><span>A short column on top, then one table: how each thing moves, week to week and month to month.</span></div>
+<div id="D"></div>
+<div class="vlabel"><b>E · The season in one picture</b><span>Day and night temperatures as a range, from last week to December, with the air under it.</span></div>
+<div id="E"></div>
+<div class="vlabel"><b>F · What is changing</b><span>One tile per thing that is moving: from, to, and why it matters.</span></div>
+<div id="F"></div>
+</div>
+
+<script>
+const D = {"as_of":"2026-09-30T22:13:57.291Z","cities":[{"name":"Bengaluru","family":false,"current":{"temp":20.4,"feels":24.2,"code":2,"humidity":99,"time":"2026-10-01T03:30"},"today":{"date":"2026-10-01","code":51,"max":28.5,"min":20,"rain_prob":46,"rain_mm":0.9,"humidity":78,"feels_max":32.6,"sunrise":"2026-10-01T06:08","sunset":"2026-10-01T18:09"},"daily":[{"date":"2026-10-01","code":51,"max":28.5,"min":20,"rain_prob":46,"rain_mm":0.9,"humidity":78,"feels_max":32.6,"sunrise":"2026-10-01T06:08","sunset":"2026-10-01T18:09"},{"date":"2026-10-02","code":51,"max":28.7,"min":20.2,"rain_prob":24,"rain_mm":0.5,"humidity":73,"feels_max":32.2,"sunrise":"2026-10-02T06:09","sunset":"2026-10-02T18:09"},{"date":"2026-10-03","code":3,"max":29,"min":20.3,"rain_prob":25,"rain_mm":0,"humidity":74,"feels_max":32.6,"sunrise":"2026-10-03T06:09","sunset":"2026-10-03T18:08"},{"date":"2026-10-04","code":51,"max":28.7,"min":20.2,"rain_prob":75,"rain_mm":1.9,"humidity":78,"feels_max":33.7,"sunrise":"2026-10-04T06:09","sunset":"2026-10-04T18:07"},{"date":"2026-10-05","code":55,"max":28,"min":19.7,"rain_prob":92,"rain_mm":5.4,"humidity":85,"feels_max":32.9,"sunrise":"2026-10-05T06:09","sunset":"2026-10-05T18:07"},{"date":"2026-10-06","code":53,"max":28.7,"min":19.3,"rain_prob":89,"rain_mm":6,"humidity":82,"feels_max":33.5,"sunrise":"2026-10-06T06:09","sunset":"2026-10-06T18:06"},{"date":"2026-10-07","code":51,"max":27.5,"min":19.4,"rain_prob":69,"rain_mm":0.6,"humidity":77,"feels_max":31.3,"sunrise":"2026-10-07T06:09","sunset":"2026-10-07T18:05"}],"hourly":[{"time":"2026-10-01T03:00","temp":20.4,"rain_prob":31,"code":2},{"time":"2026-10-01T04:00","temp":20.2,"rain_prob":18,"code":2},{"time":"2026-10-01T05:00","temp":20,"rain_prob":8,"code":1},{"time":"2026-10-01T06:00","temp":20,"rain_prob":3,"code":2},{"time":"2026-10-01T07:00","temp":21.4,"rain_prob":1,"code":1},{"time":"2026-10-01T08:00","temp":23.4,"rain_prob":2,"code":1},{"time":"2026-10-01T09:00","temp":25.4,"rain_prob":5,"code":2},{"time":"2026-10-01T10:00","temp":26.7,"rain_prob":11,"code":51},{"time":"2026-10-01T11:00","temp":27.6,"rain_prob":18,"code":3},{"time":"2026-10-01T12:00","temp":28.3,"rain_prob":26,"code":3},{"time":"2026-10-01T13:00","temp":28.5,"rain_prob":35,"code":51},{"time":"2026-10-01T14:00","temp":28.3,"rain_prob":41,"code":3},{"time":"2026-10-01T15:00","temp":28.2,"rain_prob":41,"code":1},{"time":"2026-10-01T16:00","temp":27.9,"rain_prob":37,"code":51},{"time":"2026-10-01T17:00","temp":27.1,"rain_prob":35,"code":2},{"time":"2026-10-01T18:00","temp":25.8,"rain_prob":38,"code":3},{"time":"2026-10-01T19:00","temp":25.2,"rain_prob":43,"code":3},{"time":"2026-10-01T20:00","temp":24.5,"rain_prob":43,"code":51},{"time":"2026-10-01T21:00","temp":23.1,"rain_prob":36,"code":51},{"time":"2026-10-01T22:00","temp":21.9,"rain_prob":24,"code":51},{"time":"2026-10-01T23:00","temp":21.6,"rain_prob":14,"code":0},{"time":"2026-10-02T00:00","temp":21.5,"rain_prob":8,"code":1},{"time":"2026-10-02T01:00","temp":21.2,"rain_prob":3,"code":1},{"time":"2026-10-02T02:00","temp":20.8,"rain_prob":0,"code":1},{"time":"2026-10-02T03:00","temp":20.5,"rain_prob":0,"code":1},{"time":"2026-10-02T04:00","temp":20.4,"rain_prob":0,"code":1},{"time":"2026-10-02T05:00","temp":20.2,"rain_prob":0,"code":0},{"time":"2026-10-02T06:00","temp":20.2,"rain_prob":0,"code":0},{"time":"2026-10-02T07:00","temp":21.6,"rain_prob":0,"code":1},{"time":"2026-10-02T08:00","temp":23.7,"rain_prob":0,"code":2},{"time":"2026-10-02T09:00","temp":25.5,"rain_prob":0,"code":3},{"time":"2026-10-02T10:00","temp":26.8,"rain_prob":0,"code":1},{"time":"2026-10-02T11:00","temp":27.8,"rain_prob":0,"code":51},{"time":"2026-10-02T12:00","temp":28.3,"rain_prob":3,"code":51},{"time":"2026-10-02T13:00","temp":28.7,"rain_prob":8,"code":51},{"time":"2026-10-02T14:00","temp":28.5,"rain_prob":12,"code":51}],"air_now":75,"sun":{"rise":"2026-10-01T06:08","set":"2026-10-01T18:09"},"weeks":[{"from":"2026-09-24","to":"2026-09-30","hi":28.4,"lo":20.1,"feels":31.7,"hum":78,"rainy":4,"actual":true,"aqi":64},{"from":"2026-10-01","to":"2026-10-07","hi":28.4,"lo":19.6,"feels":32.4,"hum":null,"wind":12,"rainy":4,"aqi":98},{"from":"2026-10-08","to":"2026-10-13","hi":27.5,"lo":19.2,"feels":31.3,"hum":null,"wind":9,"rainy":3},{"from":"2026-10-15","to":"2026-10-21","hi":28.7,"lo":20.9,"feels":null,"hum":53,"wind":null,"rainy":0},{"from":"2026-10-22","to":"2026-10-28","hi":28.3,"lo":20.2,"feels":null,"hum":58,"wind":null,"rainy":0},{"from":"2026-10-29","to":"2026-11-04","hi":28.6,"lo":19.9,"feels":null,"hum":52,"wind":null,"rainy":0}],"months":[{"month":"2026-10","usual_hi":28.6,"usual_lo":19.7,"hi":27.1,"lo":19},{"month":"2026-11","usual_hi":27.7,"usual_lo":18.2,"hi":26.3,"lo":18.2},{"month":"2026-12","usual_hi":27.3,"usual_lo":16.3,"hi":26,"lo":16.8}],"bias":{"hi":0.8,"lo":0.2},"usual":{"9":{"hi":28.8,"lo":20,"n":900},"10":{"hi":28.6,"lo":19.7,"n":921},"11":{"hi":27.7,"lo":18.2,"n":898},"12":{"hi":27.3,"lo":16.3,"n":923}},"air":{"aug":39,"sep":59,"next5":[{"d":"2026-10-01","mean":87,"peak":127},{"d":"2026-10-02","mean":99,"peak":113},{"d":"2026-10-03","mean":95,"peak":99},{"d":"2026-10-04","mean":101,"peak":129},{"d":"2026-10-05","mean":109,"peak":109}],"months":[{"m":9,"mean":48},{"m":10,"mean":78},{"m":11,"mean":83},{"m":12,"mean":84}]},"gfs_hum":[57,50,53,58,52],"gfs_hi":[29.8,29.7,28.7,28.3,28.6],"ecd":[{"d":"2026-10-01","hi":28.8,"lo":20,"hi10":28.5,"hi90":29.3,"lo10":19.4,"lo90":20.6,"feels":32.5},{"d":"2026-10-02","hi":28.9,"lo":19.5,"hi10":28.5,"hi90":29.3,"lo10":19.1,"lo90":20,"feels":32.1},{"d":"2026-10-03","hi":28.8,"lo":19.7,"hi10":28.2,"hi90":29.5,"lo10":19.2,"lo90":20.1,"feels":32.2},{"d":"2026-10-04","hi":28.8,"lo":19.8,"hi10":28.4,"hi90":29.4,"lo10":19.3,"lo90":20.2,"feels":33.4},{"d":"2026-10-05","hi":28.4,"lo":19.5,"hi10":27.6,"hi90":29.4,"lo10":19,"lo90":20.2,"feels":33.1},{"d":"2026-10-06","hi":27.6,"lo":19.2,"hi10":26.8,"hi90":28.1,"lo10":18.7,"lo90":20,"feels":32},{"d":"2026-10-07","hi":27.3,"lo":19.6,"hi10":26.6,"hi90":28.1,"lo10":18.6,"lo90":20.2,"feels":31.3},{"d":"2026-10-08","hi":27.2,"lo":19.6,"hi10":25.9,"hi90":28,"lo10":18.6,"lo90":20.3,"feels":31.3},{"d":"2026-10-09","hi":27.1,"lo":19.1,"hi10":26.4,"hi90":28.3,"lo10":18.4,"lo90":19.9,"feels":31.6},{"d":"2026-10-10","hi":27.5,"lo":19,"hi10":26.9,"hi90":28.4,"lo10":18,"lo90":19.7,"feels":31.8},{"d":"2026-10-11","hi":27.8,"lo":18.9,"hi10":26.7,"hi90":28.4,"lo10":18.3,"lo90":19.9,"feels":31.2},{"d":"2026-10-12","hi":27.6,"lo":19.2,"hi10":26.5,"hi90":28.6,"lo10":18.7,"lo90":20.1,"feels":31.1},{"d":"2026-10-13","hi":27.6,"lo":19.2,"hi10":26.5,"hi90":28.8,"lo10":18.2,"lo90":20.2,"feels":31}],"aq30":[{"d":"2026-09-01","mean":38,"peak":40},{"d":"2026-09-02","mean":40,"peak":46},{"d":"2026-09-03","mean":48,"peak":50},{"d":"2026-09-04","mean":49,"peak":51},{"d":"2026-09-05","mean":51,"peak":53},{"d":"2026-09-06","mean":55,"peak":60},{"d":"2026-09-07","mean":59,"peak":61},{"d":"2026-09-08","mean":59,"peak":60},{"d":"2026-09-09","mean":56,"peak":59},{"d":"2026-09-10","mean":61,"peak":62},{"d":"2026-09-11","mean":64,"peak":67},{"d":"2026-09-12","mean":71,"peak":72},{"d":"2026-09-13","mean":58,"peak":64},{"d":"2026-09-14","mean":77,"peak":88},{"d":"2026-09-15","mean":80,"peak":98},{"d":"2026-09-16","mean":64,"peak":68},{"d":"2026-09-17","mean":65,"peak":69},{"d":"2026-09-18","mean":50,"peak":54},{"d":"2026-09-19","mean":54,"peak":54},{"d":"2026-09-20","mean":56,"peak":57},{"d":"2026-09-21","mean":53,"peak":57},{"d":"2026-09-22","mean":49,"peak":53},{"d":"2026-09-23","mean":54,"peak":55},{"d":"2026-09-24","mean":54,"peak":55},{"d":"2026-09-25","mean":37,"peak":48},{"d":"2026-09-26","mean":36,"peak":52},{"d":"2026-09-27","mean":59,"peak":77},{"d":"2026-09-28","mean":89,"peak":111},{"d":"2026-09-29","mean":85,"peak":104},{"d":"2026-09-30","mean":88,"peak":106},{"d":"2026-10-01","mean":87,"peak":127},{"d":"2026-10-02","mean":99,"peak":113},{"d":"2026-10-03","mean":95,"peak":99},{"d":"2026-10-04","mean":101,"peak":129},{"d":"2026-10-05","mean":109,"peak":109}],"ens":[{"date":"2026-10-01","chance":43},{"date":"2026-10-02","chance":0},{"date":"2026-10-03","chance":0},{"date":"2026-10-04","chance":51},{"date":"2026-10-05","chance":84},{"date":"2026-10-06","chance":82},{"date":"2026-10-07","chance":69},{"date":"2026-10-08","chance":78},{"date":"2026-10-09","chance":80},{"date":"2026-10-10","chance":69},{"date":"2026-10-11","chance":41},{"date":"2026-10-12","chance":27},{"date":"2026-10-13","chance":29}],"rain_month":{"month":"2026-10","days":31,"p50":119,"p10":64,"p90":190,"normal":141,"wetter":35,"tmax":28,"tnorm":22.54}},{"name":"Ranchi","family":true,"current":{"temp":20.7,"feels":22.2,"code":1,"humidity":87,"time":"2026-10-01T03:30"},"today":{"date":"2026-10-01","code":3,"max":28.5,"min":20.3,"rain_prob":0,"rain_mm":0,"humidity":74,"feels_max":31.7,"sunrise":"2026-10-01T05:40","sunset":"2026-10-01T17:36"},"daily":[{"date":"2026-10-01","code":3,"max":28.5,"min":20.3,"rain_prob":0,"rain_mm":0,"humidity":74,"feels_max":31.7,"sunrise":"2026-10-01T05:40","sunset":"2026-10-01T17:36"},{"date":"2026-10-02","code":1,"max":28.6,"min":20,"rain_prob":0,"rain_mm":0,"humidity":73,"feels_max":32,"sunrise":"2026-10-02T05:40","sunset":"2026-10-02T17:35"},{"date":"2026-10-03","code":0,"max":28.5,"min":20.3,"rain_prob":0,"rain_mm":0,"humidity":71,"feels_max":31.4,"sunrise":"2026-10-03T05:41","sunset":"2026-10-03T17:34"},{"date":"2026-10-04","code":0,"max":28.9,"min":19.6,"rain_prob":0,"rain_mm":0,"humidity":66,"feels_max":31,"sunrise":"2026-10-04T05:41","sunset":"2026-10-04T17:33"},{"date":"2026-10-05","code":51,"max":28.5,"min":19.6,"rain_prob":25,"rain_mm":0.3,"humidity":67,"feels_max":30.2,"sunrise":"2026-10-05T05:41","sunset":"2026-10-05T17:32"},{"date":"2026-10-06","code":51,"max":28.4,"min":19.4,"rain_prob":53,"rain_mm":0.3,"humidity":74,"feels_max":30.4,"sunrise":"2026-10-06T05:42","sunset":"2026-10-06T17:31"},{"date":"2026-10-07","code":51,"max":27.8,"min":20.2,"rain_prob":71,"rain_mm":2.4,"humidity":82,"feels_max":32,"sunrise":"2026-10-07T05:42","sunset":"2026-10-07T17:30"}],"air_now":85,"sun":{"rise":"2026-10-01T05:40","set":"2026-10-01T17:36"},"weeks":[{"from":"2026-09-24","to":"2026-09-30","hi":26.8,"lo":21.2,"feels":29.1,"hum":87,"rainy":3,"actual":true,"aqi":72},{"from":"2026-10-01","to":"2026-10-07","hi":28.7,"lo":19.6,"feels":31.7,"hum":null,"wind":13,"rainy":0,"aqi":106},{"from":"2026-10-08","to":"2026-10-13","hi":27.3,"lo":19.3,"feels":31.3,"hum":null,"wind":8,"rainy":0},{"from":"2026-10-15","to":"2026-10-21","hi":27.4,"lo":18.4,"feels":null,"hum":65,"wind":null,"rainy":0},{"from":"2026-10-22","to":"2026-10-28","hi":27.1,"lo":17.8,"feels":null,"hum":58,"wind":null,"rainy":0},{"from":"2026-10-29","to":"2026-11-04","hi":27.1,"lo":17.4,"feels":null,"hum":53,"wind":null,"rainy":0}],"months":[{"month":"2026-10","usual_hi":29.3,"usual_lo":18.7,"hi":29.4,"lo":17.6},{"month":"2026-11","usual_hi":27,"usual_lo":13.8,"hi":27.6,"lo":14.8},{"month":"2026-12","usual_hi":24.2,"usual_lo":9.9,"hi":25.1,"lo":11.8}],"bias":{"hi":-1.7,"lo":0},"usual":{"9":{"hi":29.9,"lo":21.9,"n":820},"10":{"hi":29.3,"lo":18.7,"n":906},"11":{"hi":27,"lo":13.8,"n":864},"12":{"hi":24.2,"lo":9.9,"n":885}},"air":{"aug":69,"sep":74,"next5":[{"d":"2026-10-01","mean":92,"peak":118},{"d":"2026-10-02","mean":106,"peak":116},{"d":"2026-10-03","mean":113,"peak":113},{"d":"2026-10-04","mean":111,"peak":113},{"d":"2026-10-05","mean":106,"peak":107}],"months":[{"m":9,"mean":71},{"m":10,"mean":103},{"m":11,"mean":142},{"m":12,"mean":140}]},"gfs_hum":[70,67,65,58,53],"gfs_hi":[29,28.9,27.4,27.1,27.1],"ecd":[{"d":"2026-10-01","hi":28.9,"lo":19.9,"hi10":28.5,"hi90":29.2,"lo10":19.5,"lo90":20.3,"feels":32.5},{"d":"2026-10-02","hi":28.9,"lo":19.3,"hi10":28.6,"hi90":29.2,"lo10":18.8,"lo90":19.8,"feels":32.1},{"d":"2026-10-03","hi":28.9,"lo":19.6,"hi10":28.6,"hi90":29,"lo10":19.3,"lo90":19.9,"feels":31.6},{"d":"2026-10-04","hi":29.1,"lo":19.1,"hi10":28.8,"hi90":29.4,"lo10":18.7,"lo90":19.5,"feels":31.4},{"d":"2026-10-05","hi":28.9,"lo":19.4,"hi10":28.2,"hi90":29.3,"lo10":19.1,"lo90":19.7,"feels":30.8},{"d":"2026-10-06","hi":28.1,"lo":20,"hi10":27.4,"hi90":28.5,"lo10":19.5,"lo90":20.7,"feels":31.7},{"d":"2026-10-07","hi":28,"lo":19.7,"hi10":27.4,"hi90":28.5,"lo10":19.3,"lo90":20.5,"feels":31.9},{"d":"2026-10-08","hi":27.7,"lo":19.6,"hi10":26.9,"hi90":28.3,"lo10":19,"lo90":20,"feels":31.4},{"d":"2026-10-09","hi":27.1,"lo":19.4,"hi10":26.1,"hi90":28.4,"lo10":18.4,"lo90":19.9,"feels":31.1},{"d":"2026-10-10","hi":27.1,"lo":19.2,"hi10":25.8,"hi90":28.1,"lo10":18.3,"lo90":20.1,"feels":31},{"d":"2026-10-11","hi":27.1,"lo":19.2,"hi10":26,"hi90":28.5,"lo10":18.4,"lo90":19.9,"feels":31.1},{"d":"2026-10-12","hi":27.5,"lo":19.2,"hi10":26.7,"hi90":28.5,"lo10":17.9,"lo90":20.2,"feels":31.5},{"d":"2026-10-13","hi":27.5,"lo":19.2,"hi10":27,"hi90":28.3,"lo10":17.9,"lo90":20.2,"feels":31.4}],"aq30":[{"d":"2026-09-01","mean":39,"peak":44},{"d":"2026-09-02","mean":44,"peak":66},{"d":"2026-09-03","mean":57,"peak":59},{"d":"2026-09-04","mean":63,"peak":74},{"d":"2026-09-05","mean":73,"peak":76},{"d":"2026-09-06","mean":79,"peak":82},{"d":"2026-09-07","mean":82,"peak":83},{"d":"2026-09-08","mean":82,"peak":85},{"d":"2026-09-09","mean":70,"peak":78},{"d":"2026-09-10","mean":73,"peak":101},{"d":"2026-09-11","mean":63,"peak":73},{"d":"2026-09-12","mean":39,"peak":50},{"d":"2026-09-13","mean":50,"peak":80},{"d":"2026-09-14","mean":71,"peak":80},{"d":"2026-09-15","mean":77,"peak":103},{"d":"2026-09-16","mean":79,"peak":109},{"d":"2026-09-17","mean":93,"peak":102},{"d":"2026-09-18","mean":78,"peak":113},{"d":"2026-09-19","mean":118,"peak":162},{"d":"2026-09-20","mean":135,"peak":154},{"d":"2026-09-21","mean":91,"peak":102},{"d":"2026-09-22","mean":91,"peak":139},{"d":"2026-09-23","mean":59,"peak":82},{"d":"2026-09-24","mean":27,"peak":33},{"d":"2026-09-25","mean":32,"peak":34},{"d":"2026-09-26","mean":44,"peak":60},{"d":"2026-09-27","mean":80,"peak":93},{"d":"2026-09-28","mean":112,"peak":118},{"d":"2026-09-29","mean":113,"peak":117},{"d":"2026-09-30","mean":94,"peak":104},{"d":"2026-10-01","mean":92,"peak":118},{"d":"2026-10-02","mean":106,"peak":116},{"d":"2026-10-03","mean":113,"peak":113},{"d":"2026-10-04","mean":111,"peak":113},{"d":"2026-10-05","mean":106,"peak":107}],"ens":[{"date":"2026-10-01","chance":0},{"date":"2026-10-02","chance":0},{"date":"2026-10-03","chance":0},{"date":"2026-10-04","chance":0},{"date":"2026-10-05","chance":0},{"date":"2026-10-06","chance":14},{"date":"2026-10-07","chance":20},{"date":"2026-10-08","chance":31},{"date":"2026-10-09","chance":33},{"date":"2026-10-10","chance":24},{"date":"2026-10-11","chance":24},{"date":"2026-10-12","chance":8},{"date":"2026-10-13","chance":2}],"rain_month":{"month":"2026-10","days":31,"p50":19,"p10":8,"p90":64,"normal":82,"wetter":6,"tmax":27.7,"tnorm":22.2}},{"name":"Prayagraj","family":true,"current":{"temp":23.6,"feels":27.5,"code":0,"humidity":87,"time":"2026-10-01T03:30"},"today":{"date":"2026-10-01","code":1,"max":32.3,"min":23.3,"rain_prob":0,"rain_mm":0,"humidity":75,"feels_max":37.2,"sunrise":"2026-10-01T05:54","sunset":"2026-10-01T17:49"},"daily":[{"date":"2026-10-01","code":1,"max":32.3,"min":23.3,"rain_prob":0,"rain_mm":0,"humidity":75,"feels_max":37.2,"sunrise":"2026-10-01T05:54","sunset":"2026-10-01T17:49"},{"date":"2026-10-02","code":0,"max":32.2,"min":23.5,"rain_prob":0,"rain_mm":0,"humidity":74,"feels_max":36.2,"sunrise":"2026-10-02T05:55","sunset":"2026-10-02T17:48"},{"date":"2026-10-03","code":0,"max":31.9,"min":22.8,"rain_prob":0,"rain_mm":0,"humidity":74,"feels_max":36,"sunrise":"2026-10-03T05:55","sunset":"2026-10-03T17:47"},{"date":"2026-10-04","code":0,"max":32.7,"min":23.3,"rain_prob":0,"rain_mm":0,"humidity":65,"feels_max":35.9,"sunrise":"2026-10-04T05:56","sunset":"2026-10-04T17:46"},{"date":"2026-10-05","code":0,"max":32.6,"min":23.2,"rain_prob":4,"rain_mm":0,"humidity":68,"feels_max":36.5,"sunrise":"2026-10-05T05:56","sunset":"2026-10-05T17:45"},{"date":"2026-10-06","code":51,"max":31,"min":23.6,"rain_prob":36,"rain_mm":0.9,"humidity":78,"feels_max":37.2,"sunrise":"2026-10-06T05:56","sunset":"2026-10-06T17:44"},{"date":"2026-10-07","code":95,"max":30.3,"min":23.1,"rain_prob":55,"rain_mm":12.6,"humidity":88,"feels_max":36.4,"sunrise":"2026-10-07T05:57","sunset":"2026-10-07T17:43"}],"air_now":100,"sun":{"rise":"2026-10-01T05:54","set":"2026-10-01T17:49"},"weeks":[{"from":"2026-09-24","to":"2026-09-30","hi":29.3,"lo":23.7,"feels":33.1,"hum":85,"rainy":4,"actual":true,"aqi":85},{"from":"2026-10-01","to":"2026-10-07","hi":31.7,"lo":22.6,"feels":36.3,"hum":null,"wind":13,"rainy":0,"aqi":120},{"from":"2026-10-08","to":"2026-10-13","hi":30.3,"lo":22.3,"feels":35.9,"hum":null,"wind":7,"rainy":0},{"from":"2026-10-15","to":"2026-10-21","hi":31.5,"lo":22.5,"feels":null,"hum":54,"wind":null,"rainy":0},{"from":"2026-10-22","to":"2026-10-28","hi":31,"lo":21.8,"feels":null,"hum":48,"wind":null,"rainy":0},{"from":"2026-10-29","to":"2026-11-04","hi":31,"lo":21.3,"feels":null,"hum":45,"wind":null,"rainy":0}],"months":[{"month":"2026-10","usual_hi":33.8,"usual_lo":21.5,"hi":33.5,"lo":21.9},{"month":"2026-11","usual_hi":30.3,"usual_lo":15.4,"hi":32.2,"lo":17.3},{"month":"2026-12","usual_hi":25.2,"usual_lo":10.7,"hi":28.6,"lo":13.1}],"bias":{"hi":-3.2,"lo":-0.6},"usual":{"9":{"hi":34,"lo":25.8,"n":600},"10":{"hi":33.8,"lo":21.5,"n":707},"11":{"hi":30.3,"lo":15.4,"n":643},"12":{"hi":25.2,"lo":10.7,"n":647}},"air":{"aug":96,"sep":84,"next5":[{"d":"2026-10-01","mean":115,"peak":138},{"d":"2026-10-02","mean":151,"peak":153},{"d":"2026-10-03","mean":136,"peak":151},{"d":"2026-10-04","mean":101,"peak":113},{"d":"2026-10-05","mean":99,"peak":99}],"months":[{"m":9,"mean":101},{"m":10,"mean":134},{"m":11,"mean":179},{"m":12,"mean":181}]},"gfs_hum":[60,55,54,48,45],"gfs_hi":[33,33.1,31.5,31,31],"ecd":[{"d":"2026-10-01","hi":32.1,"lo":22.2,"hi10":31.9,"hi90":32.4,"lo10":22,"lo90":22.6,"feels":36.4},{"d":"2026-10-02","hi":32.2,"lo":22.2,"hi10":32,"hi90":32.5,"lo10":22,"lo90":22.6,"feels":36.3},{"d":"2026-10-03","hi":32,"lo":22.2,"hi10":31.7,"hi90":32.3,"lo10":21.8,"lo90":22.6,"feels":35.9},{"d":"2026-10-04","hi":32.4,"lo":22.7,"hi10":32.1,"hi90":32.6,"lo10":22.2,"lo90":23.1,"feels":36},{"d":"2026-10-05","hi":32.5,"lo":22.6,"hi10":32.1,"hi90":32.7,"lo10":22.2,"lo90":23,"feels":36.6},{"d":"2026-10-06","hi":30.9,"lo":23.2,"hi10":30.1,"hi90":31.6,"lo10":22.6,"lo90":23.8,"feels":36.7},{"d":"2026-10-07","hi":30.1,"lo":23,"hi10":28.6,"hi90":31.1,"lo10":22.1,"lo90":23.7,"feels":36},{"d":"2026-10-08","hi":30,"lo":22.8,"hi10":28.7,"hi90":31.2,"lo10":21.8,"lo90":23.5,"feels":35.7},{"d":"2026-10-09","hi":30.2,"lo":22.5,"hi10":28.5,"hi90":31.3,"lo10":21.6,"lo90":23.5,"feels":35.8},{"d":"2026-10-10","hi":30.3,"lo":22.5,"hi10":28.2,"hi90":31.5,"lo10":21.1,"lo90":23.3,"feels":35.8},{"d":"2026-10-11","hi":30.2,"lo":22.2,"hi10":28,"hi90":31.1,"lo10":20.9,"lo90":23,"feels":35.7},{"d":"2026-10-12","hi":30.6,"lo":21.9,"hi10":28.9,"hi90":31.4,"lo10":20.7,"lo90":22.8,"feels":36.2},{"d":"2026-10-13","hi":30.7,"lo":21.8,"hi10":29.1,"hi90":31.7,"lo10":20.6,"lo90":22.9,"feels":35.9}],"aq30":[{"d":"2026-09-01","mean":64,"peak":66},{"d":"2026-09-02","mean":61,"peak":63},{"d":"2026-09-03","mean":60,"peak":69},{"d":"2026-09-04","mean":88,"peak":94},{"d":"2026-09-05","mean":82,"peak":87},{"d":"2026-09-06","mean":69,"peak":79},{"d":"2026-09-07","mean":66,"peak":69},{"d":"2026-09-08","mean":71,"peak":73},{"d":"2026-09-09","mean":97,"peak":142},{"d":"2026-09-10","mean":111,"peak":123},{"d":"2026-09-11","mean":79,"peak":87},{"d":"2026-09-12","mean":68,"peak":85},{"d":"2026-09-13","mean":71,"peak":84},{"d":"2026-09-14","mean":80,"peak":119},{"d":"2026-09-15","mean":122,"peak":151},{"d":"2026-09-16","mean":89,"peak":121},{"d":"2026-09-17","mean":74,"peak":96},{"d":"2026-09-18","mean":78,"peak":101},{"d":"2026-09-19","mean":91,"peak":135},{"d":"2026-09-20","mean":103,"peak":135},{"d":"2026-09-21","mean":108,"peak":122},{"d":"2026-09-22","mean":98,"peak":134},{"d":"2026-09-23","mean":86,"peak":94},{"d":"2026-09-24","mean":63,"peak":72},{"d":"2026-09-25","mean":40,"peak":52},{"d":"2026-09-26","mean":38,"peak":46},{"d":"2026-09-27","mean":69,"peak":86},{"d":"2026-09-28","mean":117,"peak":150},{"d":"2026-09-29","mean":160,"peak":164},{"d":"2026-09-30","mean":106,"peak":151},{"d":"2026-10-01","mean":115,"peak":138},{"d":"2026-10-02","mean":151,"peak":153},{"d":"2026-10-03","mean":136,"peak":151},{"d":"2026-10-04","mean":101,"peak":113},{"d":"2026-10-05","mean":99,"peak":99}],"ens":[{"date":"2026-10-01","chance":0},{"date":"2026-10-02","chance":0},{"date":"2026-10-03","chance":0},{"date":"2026-10-04","chance":0},{"date":"2026-10-05","chance":0},{"date":"2026-10-06","chance":14},{"date":"2026-10-07","chance":41},{"date":"2026-10-08","chance":10},{"date":"2026-10-09","chance":20},{"date":"2026-10-10","chance":8},{"date":"2026-10-11","chance":8},{"date":"2026-10-12","chance":4},{"date":"2026-10-13","chance":0}],"rain_month":{"month":"2026-10","days":31,"p50":10,"p10":4,"p90":19,"normal":35,"wetter":0,"tmax":30.3,"tnorm":25.6}}]};
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const R = Math.round, Cap = s => s[0].toUpperCase() + s.slice(1);
+const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], MONL = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const wd = d => new Date(d + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", timeZone: "UTC" });
+const dm = d => `${+d.slice(8, 10)} ${MON[+d.slice(5, 7) - 1]}`;
+const TODAY = D.cities[0].today.date;
+const ahead = d => R((Date.parse(d + "T12:00:00Z") - Date.parse(TODAY + "T12:00:00Z")) / 864e5);
+const say = d => { const n = ahead(d); return n === 0 ? "today" : n === 1 ? "tomorrow" : n < 7 ? wd(d) : `${wd(d)} ${dm(d)}`; };
+const mname = m => MONL[+m.slice(5, 7) - 1];
+const span = (a, b) => (a.slice(5, 7) === b.slice(5, 7) ? `${wd(a)} ${+a.slice(8)} to ${wd(b)} ${dm(b)}` : `${wd(a)} ${dm(a)} to ${wd(b)} ${dm(b)}`);
+
+// ---------------------------------------------------------------- sunrise and sunset (NOAA's method), IST
+function sun(lat, lon, ymd) {
+  const rad = Math.PI / 180, d = new Date(ymd + "T12:00:00Z"), J = d / 864e5 + 2440587.5, n = Math.round(J - 2451545.0008);
+  const Js = n - lon / 360, M = (357.5291 + 0.98560028 * Js) % 360, C = 1.9148 * Math.sin(M * rad) + 0.02 * Math.sin(2 * M * rad) + 0.0003 * Math.sin(3 * M * rad);
+  const L = (M + C + 180 + 102.9372) % 360, Jt = 2451545 + Js + 0.0053 * Math.sin(M * rad) - 0.0069 * Math.sin(2 * L * rad);
+  const dec = Math.asin(Math.sin(L * rad) * Math.sin(23.44 * rad)), w = Math.acos((Math.sin(-0.833 * rad) - Math.sin(lat * rad) * Math.sin(dec)) / (Math.cos(lat * rad) * Math.cos(dec))) / rad;
+  const t = j => new Date((j - 2440587.5) * 864e5 + 5.5 * 36e5).toISOString().slice(11, 16);
+  return { rise: t(Jt - w / 360), set: t(Jt + w / 360), mins: R((2 * w / 360) * 1440) };
+}
+const LL = { Bengaluru: [12.97, 77.59], Ranchi: [23.34, 85.31], Prayagraj: [25.44, 81.85] };
+const mins = t => +t.slice(0, 2) * 60 + +t.slice(3);
+const hm = m => `${Math.floor(m / 60)}h ${m % 60}m`;
+
+// ---------------------------------------------------------------- the words
+const aqCat = a => (a <= 50 ? [1, "good"] : a <= 100 ? [2, "moderate"] : a <= 150 ? [3, "poor for sensitive lungs"] : a <= 200 ? [4, "unhealthy"] : [4, "very unhealthy"]);
+const chip = a => a == null ? "" : `<span class="chip aq${aqCat(a)[0]}" title="US AQI ${a}: ${aqCat(a)[1]}">${a} · ${aqCat(a)[1].replace("poor for sensitive lungs", "poor")}</span>`;
+const arrow = (a, b, t = 0.6) => (a == null || b == null ? "" : b - a > t ? `<span class="ar up" title="up ${(b - a).toFixed(1)}">▲</span>` : a - b > t ? `<span class="ar dn" title="down ${(a - b).toFixed(1)}">▼</span>` : `<span class="ar eq">▬</span>`);
+function rainWords(c) { // rain in words only: when it comes and when it goes
+  const E = c.ens.slice(1), wet = E.filter(e => e.chance >= 50), sh = E.filter(e => e.chance >= 30);
+  if (wet.length >= 3) { const a = wet[0].date, b = wet.at(-1).date; return `rain likely most days, ${span(a, b)}`; }
+  if (wet.length) return `rain likely ${wet.map(e => say(e.date)).join(" and ")}`;
+  if (sh.length) return `dry, with a chance of a shower ${sh.length === 1 ? "on " + say(sh[0].date) : "from " + say(sh[0].date)}`;
+  return "dry for the next two weeks";
+}
+function humWords(c) { const g = c.gfs_hum, d = g.at(-1) - g[0]; return d <= -8 ? "drying out through October" : d >= 8 ? "getting more humid" : "about as humid all month"; }
+function sunNow(c) { const [la, lo] = LL[c.name], a = sun(la, lo, TODAY), b = sun(la, lo, "2026-10-31"), d = sun(la, lo, "2026-12-01"); return { a, b, d }; }
+function headline(c) {
+  const w = c.weeks, m = c.months, drop = R(w[1].lo - m[2].lo), A = c.air.months;
+  const temp = drop >= 5 ? `Nights cool from ${R(w[1].lo)}° to about ${R(m[2].lo)}° by December` : drop >= 2 ? "Mild through December, nights a little cooler" : "Mild through December";
+  const air = aqCat(A[2].mean)[0] >= 4 ? "the air usually turns unhealthy in November" : A[2].mean - A[0].mean >= 30 ? "the air usually worsens after the rains" : "";
+  return air ? `${temp}; ${air}` : temp;
+}
+function column(c) { // three or four sentences
+  const w = c.weeks, m = c.months, s = sunNow(c), air = c.air, u = c.usual;
+  const out = [];
+  out.push(`${Cap(rainWords(c))}; ${R(c.today.rain_prob)}% chance of rain today.`.replace(/^Rain likely most days, /, "Rain is likely most days, "));
+  const dT = w[1].hi - w[0].hi;
+  out.push(`Days ${Math.abs(dT) < 0.7 ? "hold" : dT > 0 ? "warm" : "cool"} at about ${R(w[1].hi)}° this week${Math.abs(dT) >= 0.7 ? ` after ${R(w[0].hi)}° last week` : ""}, feeling like ${R(w[1].feels)}° in the afternoon; nights ${R(w[1].lo)}°.`);
+  out.push(`The air has turned ${aqCat(w[1].aqi)[1]} this week (AQI about ${w[1].aqi}, from ${w[0].aqi} last week); in the last three years it averaged ${air.months[1].mean} in October and ${air.months[2].mean} in November.`);
+  const lean = m[1].hi - u[11].hi;
+  out.push(`November usually brings days of ${R(u[11].hi)}° and nights of ${R(u[11].lo)}°${Math.abs(lean) >= 1 ? `; this year leans ${lean > 0 ? "warmer" : "cooler"}, about ${R(m[1].hi)}° by day` : ""}. Sunset moves from ${s.a.set} to ${s.b.set} by the end of October.`);
+  return out;
+}
+
+// ---------------------------------------------------------------- D: the trend table
+function trendTable(c, { set = "weeks" } = {}) {
+  const w = c.weeks, m = c.months, u = c.usual, s = sunNow(c), air = c.air;
+  const cols = [
+    { h: "Last week", s: "as it was", hi: w[0].hi, lo: w[0].lo, fe: w[0].feels, aq: w[0].aqi },
+    { h: "This week", s: `from ${dm(w[1].from)}`, hi: w[1].hi, lo: w[1].lo, fe: w[1].feels, aq: w[1].aqi },
+    { h: "Next week", s: `from ${dm(w[2].from)}`, hi: w[2].hi, lo: w[2].lo, fe: w[2].feels, aq: null },
+    { h: "October", s: `usual ${R(u[10].hi)}° / ${R(u[10].lo)}°`, hi: m[0].hi, lo: m[0].lo, aq: air.months[1].mean, aqu: true, sd: "2026-10-15" },
+    { h: "November", s: `usual ${R(u[11].hi)}° / ${R(u[11].lo)}°`, hi: m[1].hi, lo: m[1].lo, aq: air.months[2].mean, aqu: true, sd: "2026-11-15" },
+    { h: "December", s: `usual ${R(u[12].hi)}° / ${R(u[12].lo)}°`, hi: m[2].hi, lo: m[2].lo, aq: air.months[3].mean, aqu: true, sd: "2026-12-15" } ];
+  cols[0].sd = c.weeks[0].to; cols[1].sd = TODAY; cols[2].sd = c.weeks[2].from;
+  const C2 = set === "weeks" ? cols.slice(0, 3) : set === "months" ? cols.slice(3) : [cols[1], cols[4], cols[5]];
+  const short = set !== "weeks";
+  const row = (lab, k, fmt = v => `${R(v)}°`) => `<tr><td>${lab}</td>${C2.map((x, i) => `<td class="${x.cls || ""}">${x[k] == null ? "–" : fmt(x[k])}${i && x[k] != null && C2[i - 1][k] != null ? arrow(C2[i - 1][k], x[k]) : ""}</td>`).join("")}</tr>`;
+  return `<table class="tr"><thead><tr><th></th>${C2.map(x => `<th class="${x.cls || ""}">${x.h}<small>${x.s}</small></th>`).join("")}</tr></thead><tbody>
+${row("Days", "hi")}${row("Nights", "lo")}${short ? "" : row("Feels like", "fe")}
+<tr><td>Air</td>${C2.map(x => `<td class="${x.cls || ""}">${x.aq == null ? "–" : chip(x.aq)}${x.aqu ? `<small style="display:block;font:500 11px var(--sans);color:var(--muted)">usual, 2022–25</small>` : ""}</td>`).join("")}</tr>
+<tr><td>Sunset</td>${C2.map(x => `<td>${sun(...LL[c.name], x.sd).set}${x.aqu ? `<small style="display:block;font:500 11px var(--sans);color:var(--muted)">mid-month</small>` : ""}</td>`).join("")}</tr>
+</tbody></table>`;
+}
+function nowGrid(c) {
+  const s = sunNow(c);
+  return `<div class="now">
+<div><span>Now</span><b>${R(c.current.temp)}°</b><small>feels ${R(c.current.feels)}°</small></div>
+<div><span>Today</span><b>${R(c.today.max)}° / ${R(c.today.min)}°</b><small>feels ${R(c.today.feels_max)}° at the hottest</small></div>
+<div><span>Rain today</span><b>${c.today.rain_prob}%</b><small>${c.today.rain_prob >= 50 ? "likely" : c.today.rain_prob >= 20 ? "possible" : "unlikely"}</small></div>
+<div><span>Air now</span><b>${c.air_now}</b><small>${aqCat(c.air_now)[1]}</small></div>
+<div><span>Humidity</span><b>${c.today.humidity}%</b><small>today on average; ${humWords(c)}</small></div>
+<div><span>Daylight</span><b>${s.a.rise}–${s.a.set}</b><small>${hm(s.a.mins)}, ${R(s.a.mins - s.b.mins)} min less by 31 Oct</small></div></div>`;
+}
+const secHead = `<div class="sechead"><h2>Sky & Streets</h2><span>Bengaluru, then Ranchi and Prayagraj · this week, next week and the months ahead · times in IST</span></div>`;
+const B = D.cities[0], F = D.cities.filter(c => c.family);
+function Dv() {
+  $("#D").innerHTML = secHead + `<div class="top"><div><p class="k">Bengaluru</p><h3 class="lede">${esc(headline(B))}</h3><p class="dek">${column(B).map(esc).join(" ")}</p></div><div>${nowGrid(B)}</div></div>
+<div class="two"><div><div class="sub"><b>Week to week</b><em>last week as measured</em></div>${trendTable(B)}</div><div><div class="sub"><b>Month to month</b><em>this year against a usual year</em></div>${trendTable(B, { set: "months" })}</div></div>
+<p class="note">▲ ▼ against the column before. Weeks: the forecast; last week: as measured. Months: ECMWF's seasonal forecast, corrected by how far off it was in September; "usual" is the city's weather station, 1991 to 2020. Air: US AQI from Copernicus; for the months, the average of 2022 to 2025.</p>
+<div class="sub"><b>Ranchi and Prayagraj</b><em>where the family is</em></div>
+<div class="two fam">${F.map(c => `<div><h3>${esc(c.name)}<small>${R(c.current.temp)}° now · feels ${R(c.today.feels_max)}° by day · air ${c.air_now}</small></h3><p class="l">${esc(headline(c))}</p>${trendTable(c, { set: "family" })}</div>`).join("")}</div>`;
+}
+
+// ---------------------------------------------------------------- E: the season in one picture
+function seasonChart(c, { w = 720, compact = false } = {}) {
+  const wk = c.weeks, m = c.months, P = [
+    { l: "Last wk", s: "measured", hi: wk[0].hi, lo: wk[0].lo, aq: wk[0].aqi },
+    { l: "This wk", s: dm(wk[1].from), hi: wk[1].hi, lo: wk[1].lo, aq: wk[1].aqi, now: true },
+    { l: "Next wk", s: dm(wk[2].from), hi: wk[2].hi, lo: wk[2].lo },
+    { l: "Oct", s: "month", hi: m[0].hi, lo: m[0].lo, uhi: c.usual[10].hi, ulo: c.usual[10].lo, aq: c.air.months[1].mean, au: 1 },
+    { l: "Nov", s: "month", hi: m[1].hi, lo: m[1].lo, uhi: c.usual[11].hi, ulo: c.usual[11].lo, aq: c.air.months[2].mean, au: 1 },
+    { l: "Dec", s: "month", hi: m[2].hi, lo: m[2].lo, uhi: c.usual[12].hi, ulo: c.usual[12].lo, aq: c.air.months[3].mean, au: 1 } ];
+  const all = P.flatMap(p => [p.hi, p.lo, p.uhi, p.ulo]).filter(x => x != null), t0 = Math.floor(Math.min(...all) - 1), t1 = Math.ceil(Math.max(...all) + 1);
+  const h = compact ? 196 : 256, top = 30, bot = compact ? 64 : 74, pad = 34, bw = (w - pad - 8) / P.length, y = t => top + (1 - (t - t0) / (t1 - t0)) * (h - top - bot);
+  let s = `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="${esc(c.name)}: day and night temperatures from last week to December">`;
+  for (let t = Math.ceil(t0 / 5) * 5; t <= t1; t += 5) s += `<line x1="${pad}" x2="${w - 4}" y1="${y(t)}" y2="${y(t)}" stroke="var(--rule2)"/><text x="${pad - 6}" y="${y(t) + 4}" text-anchor="end" font-size="11" fill="var(--muted)">${t}°</text>`;
+  s += `<line x1="${pad + bw * 3 - 2}" x2="${pad + bw * 3 - 2}" y1="${top - 12}" y2="${h - bot + 8}" stroke="var(--rule)" stroke-dasharray="3 3"/>`;
+  P.forEach((p, i) => {
+    const cx = pad + i * bw + bw / 2, bwid = Math.min(26, bw * 0.34);
+    if (p.uhi != null) s += `<rect x="${cx - bwid / 2 - 5}" y="${y(p.uhi)}" width="${bwid + 10}" height="${y(p.ulo) - y(p.uhi)}" rx="6" fill="none" stroke="var(--muted)" stroke-dasharray="3 3"><title>Usual ${MONL[[9, 10, 11][i - 3]]}: ${R(p.uhi)}° by day, ${R(p.ulo)}° at night (1991–2020)</title></rect>`;
+    s += `<rect x="${cx - bwid / 2}" y="${y(p.hi)}" width="${bwid}" height="${Math.max(4, y(p.lo) - y(p.hi))}" rx="${bwid / 2}" fill="url(#g${c.name})"><title>${p.l}: ${R(p.hi)}° by day, ${R(p.lo)}° at night</title></rect>`;
+    s += `<text x="${cx}" y="${y(p.hi) - 6}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--warm)">${R(p.hi)}°</text><text x="${cx}" y="${y(p.lo) + 15}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--cool)">${R(p.lo)}°</text>`;
+    s += `<text x="${cx}" y="${h - bot + 22}" text-anchor="middle" font-size="12" font-weight="${p.now ? 800 : 700}" fill="var(--${p.now ? "ink" : "ink2"})">${p.l}</text><text x="${cx}" y="${h - bot + 36}" text-anchor="middle" font-size="10.5" fill="var(--muted)">${p.s}</text>`;
+    if (p.aq != null) { const [k] = aqCat(p.aq); s += `<rect x="${cx - 26}" y="${h - bot + 44}" width="52" height="${compact ? 16 : 18}" rx="9" fill="var(--aq${k}c)"><title>Air ${p.aq}${p.au ? " (usual, 2022–25)" : ""}</title></rect><text x="${cx}" y="${h - bot + (compact ? 56 : 57)}" text-anchor="middle" font-size="11" font-weight="800" fill="var(--aq${k})">${p.aq}</text>`; }
+  });
+  s += `<text x="${pad - 6}" y="${h - bot + 57}" text-anchor="end" font-size="10.5" font-weight="700" fill="var(--muted)">AIR</text>`;
+  s += `<rect x="${w - 118}" y="2" width="12" height="10" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="2 2"/><text x="${w - 102}" y="11" font-size="10.5" fill="var(--muted)">a usual month</text>`;
+  return s + `<defs><linearGradient id="g${c.name}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--warm)"/><stop offset="1" stop-color="var(--cool)"/></linearGradient></defs></svg>`;
+}
+function facts(c) {
+  const s = sunNow(c), w = c.weeks, u = c.usual, air = c.air;
+  return `<ul class="facts">
+<li><b>Today</b>${R(c.today.max)}° / ${R(c.today.min)}°, feels ${R(c.today.feels_max)}° at the hottest; ${c.today.rain_prob}% chance of rain.</li>
+<li><b>Rain</b>${esc(Cap(rainWords(c)))}.</li>
+<li><b>Air</b>${esc(Cap(aqCat(w[1].aqi)[1]))} this week (${w[1].aqi}, from ${w[0].aqi}). Usually ${air.months[1].mean} in October, ${air.months[2].mean} in November.</li>
+<li><b>Humidity and light</b>${c.today.humidity}% today on average, ${esc(humWords(c))}. Sunset ${s.a.set} today, ${s.b.set} by 31 Oct.</li></ul>`;
+}
+function Ev() {
+  const cw = $("#E").clientWidth, ph = cw < 700;
+  $("#E").innerHTML = secHead + `<div class="season"><div><p class="k">Bengaluru · from last week to December</p><h3 class="lede">${esc(headline(B))}</h3>${seasonChart(B, { w: ph ? cw : 720 })}
+<p class="note">Each bar runs from the night's low to the day's high. Dashed boxes: a usual month at the city's weather station (1991–2020). Months: ECMWF's seasonal forecast, corrected by how far off it was in September. Air: US AQI, the months from 2022 to 2025.</p></div><div>${facts(B)}</div></div>
+<div class="sub"><b>Ranchi and Prayagraj</b><em>where the family is</em></div>
+<div class="two fam">${F.map(c => `<div><h3>${esc(c.name)}<small>${R(c.current.temp)}° now · feels ${R(c.today.feels_max)}° by day</small></h3><p class="l">${esc(headline(c))}</p>${seasonChart(c, { w: ph ? cw : 560, compact: true })}</div>`).join("")}</div>`;
+}
+
+// ---------------------------------------------------------------- F: what is changing
+function spark(vals, { w = 150, h = 34, col = "var(--warm)", fmt = v => R(v) + "°" } = {}) {
+  const v = vals.filter(x => x != null), a = Math.min(...v), b = Math.max(...v), y = x => 6 + (1 - (x - a) / ((b - a) || 1)) * (h - 14), X = i => 4 + i * ((w - 8) / (vals.length - 1));
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" aria-hidden="true"><polyline points="${vals.map((x, i) => `${X(i)},${y(x)}`).join(" ")}" fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round"/>${[0, vals.length - 1].map(i => `<circle cx="${X(i)}" cy="${y(vals[i])}" r="3.5" fill="${col}"/>`).join("")}</svg>`;
+}
+function tiles(c, sm = false) {
+  const w = c.weeks, m = c.months, u = c.usual, s = sunNow(c), air = c.air, t = [];
+  if (sm) t.push(`<div class="tile"><h4>This week</h4><div class="big" style="font-size:19px">${R(c.today.max)}° · feels ${R(c.today.feels_max)}°</div><p>${esc(Cap(rainWords(c)))}; ${esc(humWords(c))}.</p></div>`);
+  if (!sm) t.push(`<div class="tile"><h4>Days</h4><div class="big">${R(w[0].hi)}°<i>→</i>${R(m[2].hi)}°</div>${spark([w[0].hi, w[1].hi, w[2].hi, m[0].hi, m[1].hi, m[2].hi])}<p>Last week to December. Feels like ${R(w[1].feels)}° this week.</p></div>`);
+  t.push(`<div class="tile"><h4>Nights</h4><div class="big">${R(w[1].lo)}°<i>→</i>${R(m[2].lo)}°</div>${spark([w[0].lo, w[1].lo, w[2].lo, m[0].lo, m[1].lo, m[2].lo], { col: "var(--cool)" })}<p>${R(w[1].lo - m[2].lo) >= 3 ? `About ${R(w[1].lo - m[2].lo)}° cooler by December; usually ${R(u[12].lo)}°.` : "Little change by December."}</p></div>`);
+  t.push(`<div class="tile"><h4>Air</h4><div class="big">${chip(w[0].aqi)}<i>→</i>${chip(w[1].aqi)}</div>${spark([air.months[0].mean, air.months[1].mean, air.months[2].mean, air.months[3].mean], { col: "var(--aq3)", fmt: v => v })}<p>Last week to this week. The line: a usual September to December, ${air.months[0].mean} rising to ${air.months[3].mean}.</p></div>`);
+  if (!sm) t.push(`<div class="tile"><h4>Rain</h4><div class="big" style="font-size:20px">${c.today.rain_prob}% today</div><p>${esc(Cap(rainWords(c)))}. October: about ${c.rain_month.p50} mm expected, usual ${c.rain_month.normal} mm.</p></div>`);
+  t.push(`<div class="tile"><h4>Daylight</h4><div class="big">${s.a.set}<i>→</i>${s.b.set}</div><p>Sunset today, then on 31 Oct; ${hm(s.a.mins)} of daylight now, ${hm(s.d.mins)} by 1 Dec.</p></div>`);
+  if (!sm) t.push(`<div class="tile"><h4>Humidity</h4><div class="big">${c.today.humidity}%</div><p>Today on average; ${esc(humWords(c))}.</p></div>`);
+  return `<div class="tiles${sm ? " sm" : ""}">${t.join("")}</div>`;
+}
+function Fv() {
+  $("#F").innerHTML = secHead + `<p class="k">Bengaluru</p><h3 class="lede">${esc(headline(B))}</h3>${tiles(B)}
+<p class="note">Arrows run from now (or last week) to December. Months: ECMWF's seasonal forecast, corrected by how far off it was in September; "usual": the city's weather station, 1991 to 2020; air for the months: 2022 to 2025.</p>
+<div class="sub"><b>Ranchi and Prayagraj</b><em>where the family is</em></div>
+<div class="two fam">${F.map(c => `<div><h3>${esc(c.name)}<small>${R(c.current.temp)}° now · air ${c.air_now}</small></h3><p class="l">${esc(headline(c))}</p>${tiles(c, true)}</div>`).join("")}</div>`;
+}
+const all = () => { Dv(); Ev(); Fv(); };
+all(); let rw = innerWidth; addEventListener("resize", () => { if (innerWidth !== rw) { rw = innerWidth; all(); } });
+$("#th").onclick = () => { const r = document.documentElement, dk = r.dataset.theme === "dark" || (!r.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches); r.dataset.theme = dk ? "light" : "dark"; };
+</script>
+</body>
+</html>

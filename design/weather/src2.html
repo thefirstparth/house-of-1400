@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sky & Streets, round two</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..800;1,8..60,300..700&family=Roboto+Serif:wdth,wght@85..100,600..800&family=Roboto+Flex:wdth,wght@62..100,400..800&display=swap">
+<style>
+:root{color-scheme:light;
+ --paper:#f3f1ea;--sheet:#fbfaf6;--surface:#e9e6dc;--ink:#15140f;--ink2:#3a3830;--muted:#625d52;--rule:#d5d0c3;--rule2:#e4e0d5;
+ --sky:#0a72a8;--sky-c:#d2ecfa;--sky-on:#003550;--warm:#c0561d;--cool:#2f5fa8;--sun:#b86e00;
+ --aq1:#0b7a43;--aq2:#8a6a00;--aq3:#c0561d;--aq4:#c0261d;--aq1c:#d8efe0;--aq2c:#f3e7bf;--aq3c:#f8dccb;--aq4c:#f6d2cf;
+ --serif:"Source Serif 4",Georgia,serif;--hl:"Roboto Serif","Source Serif 4",Georgia,serif;--sans:"Roboto Flex",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
+ --paper:#131210;--sheet:#1b1a17;--surface:#22201c;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;
+ --sky:#7ccbf2;--sky-c:#0a3550;--sky-on:#d2ecfa;--warm:#ff9c6b;--cool:#8fb4f0;--sun:#f2b552;
+ --aq1:#5fd08f;--aq2:#e7c35a;--aq3:#ff9c6b;--aq4:#ff8a7e;--aq1c:#123a24;--aq2c:#3a3010;--aq3c:#43240f;--aq4c:#4a1714}}
+:root[data-theme="dark"]{color-scheme:dark;
+ --paper:#131210;--sheet:#1b1a17;--surface:#22201c;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;
+ --sky:#7ccbf2;--sky-c:#0a3550;--sky-on:#d2ecfa;--warm:#ff9c6b;--cool:#8fb4f0;--sun:#f2b552;
+ --aq1:#5fd08f;--aq2:#e7c35a;--aq3:#ff9c6b;--aq4:#ff8a7e;--aq1c:#123a24;--aq2c:#3a3010;--aq3c:#43240f;--aq4c:#4a1714}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.5 var(--serif);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(16px,3vw,40px) 80px}
+.tnum,table{font-variant-numeric:lining-nums tabular-nums}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--rule);font:600 13px var(--sans);color:var(--muted)}
+.bar button{font:700 13px var(--sans);border:0;border-radius:99px;padding:8px 14px;background:var(--ink);color:var(--paper);cursor:pointer}
+.intro{max-width:74ch;margin:24px 0 8px;font-size:16.5px;color:var(--ink2)}
+.vlabel{margin:60px 0 14px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;border-top:8px solid var(--ink);padding-top:12px}
+.vlabel b{font:900 13px var(--sans);letter-spacing:.14em;text-transform:uppercase}
+.vlabel span{font:italic 17px var(--serif);color:var(--muted)}
+.sechead{background:var(--sky-c);color:var(--sky-on);border-radius:26px;padding:11px 22px;margin-bottom:20px}
+.sechead h2{margin:0;font:800 33px/1 var(--sans);font-variation-settings:"wdth" 80;letter-spacing:.015em;text-transform:uppercase}
+.sechead span{font:italic 15.5px var(--serif);display:block;margin-top:3px}
+.k{font:700 11.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--sky);margin:0 0 4px}
+.sub{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-top:1.5px solid var(--ink);padding-top:8px;margin:24px 0 10px}
+.sub b{font:800 12.5px var(--sans);letter-spacing:.12em;text-transform:uppercase}
+.sub em{font:italic 14px var(--serif);color:var(--muted)}
+.note{font:13px/1.45 var(--sans);color:var(--muted);margin:8px 0 0;max-width:80ch}
+svg text{font-family:var(--sans)}
+.lede{font:700 clamp(26px,3vw,36px)/1.12 var(--hl);margin:0 0 8px;letter-spacing:-.01em}
+.dek{font:18px/1.5 var(--serif);margin:0;color:var(--ink2)}
+.now{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--rule)}
+.now div{padding:9px 12px 9px 0;border-bottom:1px solid var(--rule2)}
+.now div:not(:nth-child(3n+1)){padding-left:12px;border-left:1px solid var(--rule2)}
+.now span{display:block;font:700 10.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.now b{font:800 21px/1.2 var(--sans);font-variation-settings:"wdth" 78}
+.now small{font:500 12.5px var(--sans);color:var(--muted);display:block}
+.top{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:36px;align-items:start}
+.chip{display:inline-block;font:800 11px/1 var(--sans);padding:4px 7px;border-radius:99px;letter-spacing:.02em;white-space:nowrap}
+.aq1{background:var(--aq1c);color:var(--aq1)}.aq2{background:var(--aq2c);color:var(--aq2)}.aq3{background:var(--aq3c);color:var(--aq3)}.aq4{background:var(--aq4c);color:var(--aq4)}
+/* variant 1: the trend table */
+table.tr{width:100%;border-collapse:collapse}
+table.tr th{font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:right;padding:6px 8px;border-bottom:1.5px solid var(--ink);vertical-align:bottom}
+table.tr th small{display:block;font:500 11px var(--sans);letter-spacing:0;text-transform:none}
+table.tr th:first-child,table.tr td:first-child{text-align:left;padding-left:0}
+table.tr td{padding:9px 8px;border-bottom:1px solid var(--rule2);text-align:right;font:600 15.5px var(--sans);white-space:nowrap}
+table.tr td:first-child{font:600 14.5px var(--sans);color:var(--ink2)}
+table.tr td.w{white-space:normal;font:14.5px/1.35 var(--serif);text-align:left;color:var(--ink2);min-width:150px}
+.ar{font:800 12px var(--sans);margin-left:3px}.up{color:var(--warm)}.dn{color:var(--cool)}.eq{color:var(--muted)}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px}
+.fam h3{margin:0 0 2px;font:800 20px var(--sans);font-variation-settings:"wdth" 80;text-transform:uppercase;letter-spacing:.02em;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.fam h3 small{font:500 13.5px var(--sans);text-transform:none;letter-spacing:0;color:var(--muted)}
+.fam .l{font:600 17.5px/1.35 var(--hl);margin:4px 0 8px}
+.fam>div{border-top:1.5px solid var(--ink);padding-top:10px}
+/* variant 2 */
+.season{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:32px;align-items:start}
+.facts{list-style:none;margin:0;padding:0}
+.facts li{padding:9px 0;border-top:1px solid var(--rule2);font:16px/1.45 var(--serif)}
+.facts li b{display:block;font:700 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--sky);margin-bottom:1px}
+/* variant 3 */
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.tile{background:var(--sheet);border:1px solid var(--rule);border-radius:18px;padding:12px 14px 10px;min-width:0}
+.tile h4{margin:0;font:800 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.tile .big{font:800 26px/1.1 var(--sans);font-variation-settings:"wdth" 76;margin:4px 0 2px}
+.tile .big i{font-style:normal;color:var(--muted);font-weight:600;font-size:20px;margin:0 4px}
+.tile p{margin:0;font:14.5px/1.4 var(--serif);color:var(--ink2)}
+.tiles.sm{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tiles.sm .big{font-size:22px}
+@media (max-width:900px){.top,.season{grid-template-columns:1fr;gap:18px}.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){.two{grid-template-columns:1fr;gap:22px}.sechead h2{font-size:26px}.now b{font-size:18px}
+ table.tr td,table.tr th{padding-left:5px;padding-right:5px}table.tr td{font-size:14px}table.tr .hide{display:none}.tiles{gap:8px}.tile{padding:10px 11px}.tile .big{font-size:21px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="bar"><span>Sky & Streets · round two · real forecasts of Thu 1 Oct · not the live paper</span><button id="th" type="button">Night</button></div>
+<p class="intro">Less rain, more trend, and no rain charts. Behind all three: the forecast the paper reads (the week, today by the hour), ECMWF's 51-run ensemble (two weeks), ECMWF's seasonal forecast (the months, corrected by how far it was off in September), the city's own weather station over 1991 to 2020 for "usual", air quality from the Copernicus service (the last 92 days, the next five, and Octobers to Decembers of 2022 to 2025 for what usually happens), and sunrise and sunset worked out from the calendar. Wind only appears when it is worth a mention; this week it is not (under 15 km/h everywhere). Every sentence is written by rules from the numbers.</p>
+
+<div class="vlabel"><b>D · The trend table</b><span>A short column on top, then one table: how each thing moves, week to week and month to month.</span></div>
+<div id="D"></div>
+<div class="vlabel"><b>E · The season in one picture</b><span>Day and night temperatures as a range, from last week to December, with the air under it.</span></div>
+<div id="E"></div>
+<div class="vlabel"><b>F · What is changing</b><span>One tile per thing that is moving: from, to, and why it matters.</span></div>
+<div id="F"></div>
+</div>
+
+<script>
+const D = __DATA__;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const R = Math.round, Cap = s => s[0].toUpperCase() + s.slice(1);
+const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], MONL = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const wd = d => new Date(d + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", timeZone: "UTC" });
+const dm = d => `${+d.slice(8, 10)} ${MON[+d.slice(5, 7) - 1]}`;
+const TODAY = D.cities[0].today.date;
+const ahead = d => R((Date.parse(d + "T12:00:00Z") - Date.parse(TODAY + "T12:00:00Z")) / 864e5);
+const say = d => { const n = ahead(d); return n === 0 ? "today" : n === 1 ? "tomorrow" : n < 7 ? wd(d) : `${wd(d)} ${dm(d)}`; };
+const mname = m => MONL[+m.slice(5, 7) - 1];
+const span = (a, b) => (a.slice(5, 7) === b.slice(5, 7) ? `${wd(a)} ${+a.slice(8)} to ${wd(b)} ${dm(b)}` : `${wd(a)} ${dm(a)} to ${wd(b)} ${dm(b)}`);
+
+// ---------------------------------------------------------------- sunrise and sunset (NOAA's method), IST
+function sun(lat, lon, ymd) {
+  const rad = Math.PI / 180, d = new Date(ymd + "T12:00:00Z"), J = d / 864e5 + 2440587.5, n = Math.round(J - 2451545.0008);
+  const Js = n - lon / 360, M = (357.5291 + 0.98560028 * Js) % 360, C = 1.9148 * Math.sin(M * rad) + 0.02 * Math.sin(2 * M * rad) + 0.0003 * Math.sin(3 * M * rad);
+  const L = (M + C + 180 + 102.9372) % 360, Jt = 2451545 + Js + 0.0053 * Math.sin(M * rad) - 0.0069 * Math.sin(2 * L * rad);
+  const dec = Math.asin(Math.sin(L * rad) * Math.sin(23.44 * rad)), w = Math.acos((Math.sin(-0.833 * rad) - Math.sin(lat * rad) * Math.sin(dec)) / (Math.cos(lat * rad) * Math.cos(dec))) / rad;
+  const t = j => new Date((j - 2440587.5) * 864e5 + 5.5 * 36e5).toISOString().slice(11, 16);
+  return { rise: t(Jt - w / 360), set: t(Jt + w / 360), mins: R((2 * w / 360) * 1440) };
+}
+const LL = { Bengaluru: [12.97, 77.59], Ranchi: [23.34, 85.31], Prayagraj: [25.44, 81.85] };
+const mins = t => +t.slice(0, 2) * 60 + +t.slice(3);
+const hm = m => `${Math.floor(m / 60)}h ${m % 60}m`;
+
+// ---------------------------------------------------------------- the words
+const aqCat = a => (a <= 50 ? [1, "good"] : a <= 100 ? [2, "moderate"] : a <= 150 ? [3, "poor for sensitive lungs"] : a <= 200 ? [4, "unhealthy"] : [4, "very unhealthy"]);
+const chip = a => a == null ? "" : `<span class="chip aq${aqCat(a)[0]}" title="US AQI ${a}: ${aqCat(a)[1]}">${a} · ${aqCat(a)[1].replace("poor for sensitive lungs", "poor")}</span>`;
+const arrow = (a, b, t = 0.6) => (a == null || b == null ? "" : b - a > t ? `<span class="ar up" title="up ${(b - a).toFixed(1)}">▲</span>` : a - b > t ? `<span class="ar dn" title="down ${(a - b).toFixed(1)}">▼</span>` : `<span class="ar eq">▬</span>`);
+function rainWords(c) { // rain in words only: when it comes and when it goes
+  const E = c.ens.slice(1), wet = E.filter(e => e.chance >= 50), sh = E.filter(e => e.chance >= 30);
+  if (wet.length >= 3) { const a = wet[0].date, b = wet.at(-1).date; return `rain likely most days, ${span(a, b)}`; }
+  if (wet.length) return `rain likely ${wet.map(e => say(e.date)).join(" and ")}`;
+  if (sh.length) return `dry, with a chance of a shower ${sh.length === 1 ? "on " + say(sh[0].date) : "from " + say(sh[0].date)}`;
+  return "dry for the next two weeks";
+}
+function humWords(c) { const g = c.gfs_hum, d = g.at(-1) - g[0]; return d <= -8 ? "drying out through October" : d >= 8 ? "getting more humid" : "about as humid all month"; }
+function sunNow(c) { const [la, lo] = LL[c.name], a = sun(la, lo, TODAY), b = sun(la, lo, "2026-10-31"), d = sun(la, lo, "2026-12-01"); return { a, b, d }; }
+function headline(c) {
+  const w = c.weeks, m = c.months, drop = R(w[1].lo - m[2].lo), A = c.air.months;
+  const temp = drop >= 5 ? `Nights cool from ${R(w[1].lo)}° to about ${R(m[2].lo)}° by December` : drop >= 2 ? "Mild through December, nights a little cooler" : "Mild through December";
+  const air = aqCat(A[2].mean)[0] >= 4 ? "the air usually turns unhealthy in November" : A[2].mean - A[0].mean >= 30 ? "the air usually worsens after the rains" : "";
+  return air ? `${temp}; ${air}` : temp;
+}
+function column(c) { // three or four sentences
+  const w = c.weeks, m = c.months, s = sunNow(c), air = c.air, u = c.usual;
+  const out = [];
+  out.push(`${Cap(rainWords(c))}; ${R(c.today.rain_prob)}% chance of rain today.`.replace(/^Rain likely most days, /, "Rain is likely most days, "));
+  const dT = w[1].hi - w[0].hi;
+  out.push(`Days ${Math.abs(dT) < 0.7 ? "hold" : dT > 0 ? "warm" : "cool"} at about ${R(w[1].hi)}° this week${Math.abs(dT) >= 0.7 ? ` after ${R(w[0].hi)}° last week` : ""}, feeling like ${R(w[1].feels)}° in the afternoon; nights ${R(w[1].lo)}°.`);
+  out.push(`The air has turned ${aqCat(w[1].aqi)[1]} this week (AQI about ${w[1].aqi}, from ${w[0].aqi} last week); in the last three years it averaged ${air.months[1].mean} in October and ${air.months[2].mean} in November.`);
+  const lean = m[1].hi - u[11].hi;
+  out.push(`November usually brings days of ${R(u[11].hi)}° and nights of ${R(u[11].lo)}°${Math.abs(lean) >= 1 ? `; this year leans ${lean > 0 ? "warmer" : "cooler"}, about ${R(m[1].hi)}° by day` : ""}. Sunset moves from ${s.a.set} to ${s.b.set} by the end of October.`);
+  return out;
+}
+
+// ---------------------------------------------------------------- D: the trend table
+function trendTable(c, { set = "weeks" } = {}) {
+  const w = c.weeks, m = c.months, u = c.usual, s = sunNow(c), air = c.air;
+  const cols = [
+    { h: "Last week", s: "as it was", hi: w[0].hi, lo: w[0].lo, fe: w[0].feels, aq: w[0].aqi },
+    { h: "This week", s: `from ${dm(w[1].from)}`, hi: w[1].hi, lo: w[1].lo, fe: w[1].feels, aq: w[1].aqi },
+    { h: "Next week", s: `from ${dm(w[2].from)}`, hi: w[2].hi, lo: w[2].lo, fe: w[2].feels, aq: null },
+    { h: "October", s: `usual ${R(u[10].hi)}° / ${R(u[10].lo)}°`, hi: m[0].hi, lo: m[0].lo, aq: air.months[1].mean, aqu: true, sd: "2026-10-15" },
+    { h: "November", s: `usual ${R(u[11].hi)}° / ${R(u[11].lo)}°`, hi: m[1].hi, lo: m[1].lo, aq: air.months[2].mean, aqu: true, sd: "2026-11-15" },
+    { h: "December", s: `usual ${R(u[12].hi)}° / ${R(u[12].lo)}°`, hi: m[2].hi, lo: m[2].lo, aq: air.months[3].mean, aqu: true, sd: "2026-12-15" } ];
+  cols[0].sd = c.weeks[0].to; cols[1].sd = TODAY; cols[2].sd = c.weeks[2].from;
+  const C2 = set === "weeks" ? cols.slice(0, 3) : set === "months" ? cols.slice(3) : [cols[1], cols[4], cols[5]];
+  const short = set !== "weeks";
+  const row = (lab, k, fmt = v => `${R(v)}°`) => `<tr><td>${lab}</td>${C2.map((x, i) => `<td class="${x.cls || ""}">${x[k] == null ? "–" : fmt(x[k])}${i && x[k] != null && C2[i - 1][k] != null ? arrow(C2[i - 1][k], x[k]) : ""}</td>`).join("")}</tr>`;
+  return `<table class="tr"><thead><tr><th></th>${C2.map(x => `<th class="${x.cls || ""}">${x.h}<small>${x.s}</small></th>`).join("")}</tr></thead><tbody>
+${row("Days", "hi")}${row("Nights", "lo")}${short ? "" : row("Feels like", "fe")}
+<tr><td>Air</td>${C2.map(x => `<td class="${x.cls || ""}">${x.aq == null ? "–" : chip(x.aq)}${x.aqu ? `<small style="display:block;font:500 11px var(--sans);color:var(--muted)">usual, 2022–25</small>` : ""}</td>`).join("")}</tr>
+<tr><td>Sunset</td>${C2.map(x => `<td>${sun(...LL[c.name], x.sd).set}${x.aqu ? `<small style="display:block;font:500 11px var(--sans);color:var(--muted)">mid-month</small>` : ""}</td>`).join("")}</tr>
+</tbody></table>`;
+}
+function nowGrid(c) {
+  const s = sunNow(c);
+  return `<div class="now">
+<div><span>Now</span><b>${R(c.current.temp)}°</b><small>feels ${R(c.current.feels)}°</small></div>
+<div><span>Today</span><b>${R(c.today.max)}° / ${R(c.today.min)}°</b><small>feels ${R(c.today.feels_max)}° at the hottest</small></div>
+<div><span>Rain today</span><b>${c.today.rain_prob}%</b><small>${c.today.rain_prob >= 50 ? "likely" : c.today.rain_prob >= 20 ? "possible" : "unlikely"}</small></div>
+<div><span>Air now</span><b>${c.air_now}</b><small>${aqCat(c.air_now)[1]}</small></div>
+<div><span>Humidity</span><b>${c.today.humidity}%</b><small>today on average; ${humWords(c)}</small></div>
+<div><span>Daylight</span><b>${s.a.rise}–${s.a.set}</b><small>${hm(s.a.mins)}, ${R(s.a.mins - s.b.mins)} min less by 31 Oct</small></div></div>`;
+}
+const secHead = `<div class="sechead"><h2>Sky & Streets</h2><span>Bengaluru, then Ranchi and Prayagraj · this week, next week and the months ahead · times in IST</span></div>`;
+const B = D.cities[0], F = D.cities.filter(c => c.family);
+function Dv() {
+  $("#D").innerHTML = secHead + `<div class="top"><div><p class="k">Bengaluru</p><h3 class="lede">${esc(headline(B))}</h3><p class="dek">${column(B).map(esc).join(" ")}</p></div><div>${nowGrid(B)}</div></div>
+<div class="two"><div><div class="sub"><b>Week to week</b><em>last week as measured</em></div>${trendTable(B)}</div><div><div class="sub"><b>Month to month</b><em>this year against a usual year</em></div>${trendTable(B, { set: "months" })}</div></div>
+<p class="note">▲ ▼ against the column before. Weeks: the forecast; last week: as measured. Months: ECMWF's seasonal forecast, corrected by how far off it was in September; "usual" is the city's weather station, 1991 to 2020. Air: US AQI from Copernicus; for the months, the average of 2022 to 2025.</p>
+<div class="sub"><b>Ranchi and Prayagraj</b><em>where the family is</em></div>
+<div class="two fam">${F.map(c => `<div><h3>${esc(c.name)}<small>${R(c.current.temp)}° now · feels ${R(c.today.feels_max)}° by day · air ${c.air_now}</small></h3><p class="l">${esc(headline(c))}</p>${trendTable(c, { set: "family" })}</div>`).join("")}</div>`;
+}
+
+// ---------------------------------------------------------------- E: the season in one picture
+function seasonChart(c, { w = 720, compact = false } = {}) {
+  const wk = c.weeks, m = c.months, P = [
+    { l: "Last wk", s: "measured", hi: wk[0].hi, lo: wk[0].lo, aq: wk[0].aqi },
+    { l: "This wk", s: dm(wk[1].from), hi: wk[1].hi, lo: wk[1].lo, aq: wk[1].aqi, now: true },
+    { l: "Next wk", s: dm(wk[2].from), hi: wk[2].hi, lo: wk[2].lo },
+    { l: "Oct", s: "month", hi: m[0].hi, lo: m[0].lo, uhi: c.usual[10].hi, ulo: c.usual[10].lo, aq: c.air.months[1].mean, au: 1 },
+    { l: "Nov", s: "month", hi: m[1].hi, lo: m[1].lo, uhi: c.usual[11].hi, ulo: c.usual[11].lo, aq: c.air.months[2].mean, au: 1 },
+    { l: "Dec", s: "month", hi: m[2].hi, lo: m[2].lo, uhi: c.usual[12].hi, ulo: c.usual[12].lo, aq: c.air.months[3].mean, au: 1 } ];
+  const all = P.flatMap(p => [p.hi, p.lo, p.uhi, p.ulo]).filter(x => x != null), t0 = Math.floor(Math.min(...all) - 1), t1 = Math.ceil(Math.max(...all) + 1);
+  const h = compact ? 196 : 256, top = 30, bot = compact ? 64 : 74, pad = 34, bw = (w - pad - 8) / P.length, y = t => top + (1 - (t - t0) / (t1 - t0)) * (h - top - bot);
+  let s = `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="${esc(c.name)}: day and night temperatures from last week to December">`;
+  for (let t = Math.ceil(t0 / 5) * 5; t <= t1; t += 5) s += `<line x1="${pad}" x2="${w - 4}" y1="${y(t)}" y2="${y(t)}" stroke="var(--rule2)"/><text x="${pad - 6}" y="${y(t) + 4}" text-anchor="end" font-size="11" fill="var(--muted)">${t}°</text>`;
+  s += `<line x1="${pad + bw * 3 - 2}" x2="${pad + bw * 3 - 2}" y1="${top - 12}" y2="${h - bot + 8}" stroke="var(--rule)" stroke-dasharray="3 3"/>`;
+  P.forEach((p, i) => {
+    const cx = pad + i * bw + bw / 2, bwid = Math.min(26, bw * 0.34);
+    if (p.uhi != null) s += `<rect x="${cx - bwid / 2 - 5}" y="${y(p.uhi)}" width="${bwid + 10}" height="${y(p.ulo) - y(p.uhi)}" rx="6" fill="none" stroke="var(--muted)" stroke-dasharray="3 3"><title>Usual ${MONL[[9, 10, 11][i - 3]]}: ${R(p.uhi)}° by day, ${R(p.ulo)}° at night (1991–2020)</title></rect>`;
+    s += `<rect x="${cx - bwid / 2}" y="${y(p.hi)}" width="${bwid}" height="${Math.max(4, y(p.lo) - y(p.hi))}" rx="${bwid / 2}" fill="url(#g${c.name})"><title>${p.l}: ${R(p.hi)}° by day, ${R(p.lo)}° at night</title></rect>`;
+    s += `<text x="${cx}" y="${y(p.hi) - 6}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--warm)">${R(p.hi)}°</text><text x="${cx}" y="${y(p.lo) + 15}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--cool)">${R(p.lo)}°</text>`;
+    s += `<text x="${cx}" y="${h - bot + 22}" text-anchor="middle" font-size="12" font-weight="${p.now ? 800 : 700}" fill="var(--${p.now ? "ink" : "ink2"})">${p.l}</text><text x="${cx}" y="${h - bot + 36}" text-anchor="middle" font-size="10.5" fill="var(--muted)">${p.s}</text>`;
+    if (p.aq != null) { const [k] = aqCat(p.aq); s += `<rect x="${cx - 26}" y="${h - bot + 44}" width="52" height="${compact ? 16 : 18}" rx="9" fill="var(--aq${k}c)"><title>Air ${p.aq}${p.au ? " (usual, 2022–25)" : ""}</title></rect><text x="${cx}" y="${h - bot + (compact ? 56 : 57)}" text-anchor="middle" font-size="11" font-weight="800" fill="var(--aq${k})">${p.aq}</text>`; }
+  });
+  s += `<text x="${pad - 6}" y="${h - bot + 57}" text-anchor="end" font-size="10.5" font-weight="700" fill="var(--muted)">AIR</text>`;
+  s += `<rect x="${w - 118}" y="2" width="12" height="10" rx="3" fill="none" stroke="var(--muted)" stroke-dasharray="2 2"/><text x="${w - 102}" y="11" font-size="10.5" fill="var(--muted)">a usual month</text>`;
+  return s + `<defs><linearGradient id="g${c.name}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--warm)"/><stop offset="1" stop-color="var(--cool)"/></linearGradient></defs></svg>`;
+}
+function facts(c) {
+  const s = sunNow(c), w = c.weeks, u = c.usual, air = c.air;
+  return `<ul class="facts">
+<li><b>Today</b>${R(c.today.max)}° / ${R(c.today.min)}°, feels ${R(c.today.feels_max)}° at the hottest; ${c.today.rain_prob}% chance of rain.</li>
+<li><b>Rain</b>${esc(Cap(rainWords(c)))}.</li>
+<li><b>Air</b>${esc(Cap(aqCat(w[1].aqi)[1]))} this week (${w[1].aqi}, from ${w[0].aqi}). Usually ${air.months[1].mean} in October, ${air.months[2].mean} in November.</li>
+<li><b>Humidity and light</b>${c.today.humidity}% today on average, ${esc(humWords(c))}. Sunset ${s.a.set} today, ${s.b.set} by 31 Oct.</li></ul>`;
+}
+function Ev() {
+  const cw = $("#E").clientWidth, ph = cw < 700;
+  $("#E").innerHTML = secHead + `<div class="season"><div><p class="k">Bengaluru · from last week to December</p><h3 class="lede">${esc(headline(B))}</h3>${seasonChart(B, { w: ph ? cw : 720 })}
+<p class="note">Each bar runs from the night's low to the day's high. Dashed boxes: a usual month at the city's weather station (1991–2020). Months: ECMWF's seasonal forecast, corrected by how far off it was in September. Air: US AQI, the months from 2022 to 2025.</p></div><div>${facts(B)}</div></div>
+<div class="sub"><b>Ranchi and Prayagraj</b><em>where the family is</em></div>
+<div class="two fam">${F.map(c => `<div><h3>${esc(c.name)}<small>${R(c.current.temp)}° now · feels ${R(c.today.feels_max)}° by day</small></h3><p class="l">${esc(headline(c))}</p>${seasonChart(c, { w: ph ? cw : 560, compact: true })}</div>`).join("")}</div>`;
+}
+
+// ---------------------------------------------------------------- F: what is changing
+function spark(vals, { w = 150, h = 34, col = "var(--warm)", fmt = v => R(v) + "°" } = {}) {
+  const v = vals.filter(x => x != null), a = Math.min(...v), b = Math.max(...v), y = x => 6 + (1 - (x - a) / ((b - a) || 1)) * (h - 14), X = i => 4 + i * ((w - 8) / (vals.length - 1));
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" aria-hidden="true"><polyline points="${vals.map((x, i) => `${X(i)},${y(x)}`).join(" ")}" fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round"/>${[0, vals.length - 1].map(i => `<circle cx="${X(i)}" cy="${y(vals[i])}" r="3.5" fill="${col}"/>`).join("")}</svg>`;
+}
+function tiles(c, sm = false) {
+  const w = c.weeks, m = c.months, u = c.usual, s = sunNow(c), air = c.air, t = [];
+  if (sm) t.push(`<div class="tile"><h4>This week</h4><div class="big" style="font-size:19px">${R(c.today.max)}° · feels ${R(c.today.feels_max)}°</div><p>${esc(Cap(rainWords(c)))}; ${esc(humWords(c))}.</p></div>`);
+  if (!sm) t.push(`<div class="tile"><h4>Days</h4><div class="big">${R(w[0].hi)}°<i>→</i>${R(m[2].hi)}°</div>${spark([w[0].hi, w[1].hi, w[2].hi, m[0].hi, m[1].hi, m[2].hi])}<p>Last week to December. Feels like ${R(w[1].feels)}° this week.</p></div>`);
+  t.push(`<div class="tile"><h4>Nights</h4><div class="big">${R(w[1].lo)}°<i>→</i>${R(m[2].lo)}°</div>${spark([w[0].lo, w[1].lo, w[2].lo, m[0].lo, m[1].lo, m[2].lo], { col: "var(--cool)" })}<p>${R(w[1].lo - m[2].lo) >= 3 ? `About ${R(w[1].lo - m[2].lo)}° cooler by December; usually ${R(u[12].lo)}°.` : "Little change by December."}</p></div>`);
+  t.push(`<div class="tile"><h4>Air</h4><div class="big">${chip(w[0].aqi)}<i>→</i>${chip(w[1].aqi)}</div>${spark([air.months[0].mean, air.months[1].mean, air.months[2].mean, air.months[3].mean], { col: "var(--aq3)", fmt: v => v })}<p>Last week to this week. The line: a usual September to December, ${air.months[0].mean} rising to ${air.months[3].mean}.</p></div>`);
+  if (!sm) t.push(`<div class="tile"><h4>Rain</h4><div class="big" style="font-size:20px">${c.today.rain_prob}% today</div><p>${esc(Cap(rainWords(c)))}. October: about ${c.rain_month.p50} mm expected, usual ${c.rain_month.normal} mm.</p></div>`);
+  t.push(`<div class="tile"><h4>Daylight</h4><div class="big">${s.a.set}<i>→</i>${s.b.set}</div><p>Sunset today, then on 31 Oct; ${hm(s.a.mins)} of daylight now, ${hm(s.d.mins)} by 1 Dec.</p></div>`);
+  if (!sm) t.push(`<div class="tile"><h4>Humidity</h4><div class="big">${c.today.humidity}%</div><p>Today on average; ${esc(humWords(c))}.</p></div>`);
+  return `<div class="tiles${sm ? " sm" : ""}">${t.join("")}</div>`;
+}
+function Fv() {
+  $("#F").innerHTML = secHead + `<p class="k">Bengaluru</p><h3 class="lede">${esc(headline(B))}</h3>${tiles(B)}
+<p class="note">Arrows run from now (or last week) to December. Months: ECMWF's seasonal forecast, corrected by how far off it was in September; "usual": the city's weather station, 1991 to 2020; air for the months: 2022 to 2025.</p>
+<div class="sub"><b>Ranchi and Prayagraj</b><em>where the family is</em></div>
+<div class="two fam">${F.map(c => `<div><h3>${esc(c.name)}<small>${R(c.current.temp)}° now · air ${c.air_now}</small></h3><p class="l">${esc(headline(c))}</p>${tiles(c, true)}</div>`).join("")}</div>`;
+}
+const all = () => { Dv(); Ev(); Fv(); };
+all(); let rw = innerWidth; addEventListener("resize", () => { if (innerWidth !== rw) { rw = innerWidth; all(); } });
+$("#th").onclick = () => { const r = document.documentElement, dk = r.dataset.theme === "dark" || (!r.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches); r.dataset.theme = dk ? "light" : "dark"; };
+</script>
+</body>
+</html>
