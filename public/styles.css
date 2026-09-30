@@ -412,7 +412,7 @@ sup.calc{font-size:.72em;color:var(--muted);margin-left:1px}
 .talk .trend{display:block;font:16.5px/1.5 var(--serif);padding:10px 0;border-bottom:1px solid var(--rule);margin:0;max-width:none}
 .talk .trend b{font:700 15px var(--sans)}
 .talk .trend .traffic{font:600 13.5px var(--sans);color:var(--muted)}
-.talk .trend .dash{color:var(--muted)}
+.talk .trend .tdash{color:var(--muted)}
 .talk .trend a{color:inherit;text-decoration:none}
 .talk .trend a:hover{text-decoration:underline}
 

@@ -78,6 +78,9 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
 
   // Date and weekday
   const wd = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"][new Date(E.date + "T12:00:00Z").getUTCDay()];
+  // Max Watch opens with the live position, points and gap; the note must not say them again (1 Oct audit).
+  const mn = E.sections?.paddock?.data?.max_note;
+  if (mn && /\bstandings\b|\bpoints?\b|\bbehind\b|\bchampionship\b/i.test(mn)) errors.push(`paddock: max_note repeats the standings the page already prints live ("${mn.slice(0, 60)}"); say only what the numbers do not`);
   if (E.weekday !== wd) errors.push(`weekday: ${E.weekday} but ${E.date} is ${wd}`);
   const cut = Date.parse(`${E.date}T${E.cut_ist || "14:00"}:00+05:30`);
 

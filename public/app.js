@@ -131,6 +131,8 @@ function staleNote(k) {
 const lastName = n => String(n || "").split(" ").pop();
 // A match played today stays on the page until midnight IST, with its result, and a late one for at least 12 hours
 // (Parth, 1 Oct: the day's ODI and Djokovic's match vanished the moment they ended).
+// What to call the day of a match kept from the last 12 hours: "Today" only on the same IST date (after midnight it is "Wed").
+const playedDay = iso => (istDate(new Date(iso)) === istDate() ? "Today" : new Date(iso).toLocaleDateString("en-GB", { weekday: "short", timeZone: TZ }));
 const keptToday = (start, n = Date.now()) => start <= n && (istDate(new Date(start)) === istDate() || start > n - 12 * 36e5);
 // A tennis score from ESPN's note ("(6) Novak Djokovic (SER) bt Nuno Borges (POR) 6-3 7-6 (7-2)"): the sets only.
 const setScore = note => (String(note || "").match(/\)\s*((?:\d+-\d+(?:\s*\(\d+-\d+\))?[\s,]*)+(?:\s*(?:ret\.?|retired|w\/o|walkover))?)\s*$/i)?.[1] || "").trim().replace(/(\d)-(\d)/g, "$1–$2");
@@ -234,7 +236,14 @@ function wxIcon(code, night = false, label = "") {
 const isNight = hour => hour >= 19 || hour < 6;
 const wxAt = (c, hour) => wxIcon(c, isNight(hour));
 
-const sourcesLine = srcs => (srcs?.length ? `<div class="src">${srcs.map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`).join(" · ")}</div>` : "");
+// An outlet cited twice is named once, its further reports numbered after it ("BBC Sport 1 · 2"), not "BBC Sport · BBC Sport".
+const sourcesLine = srcs => {
+  if (!srcs?.length) return "";
+  const by = new Map();
+  for (const s of srcs) { if (!by.has(s.label)) by.set(s.label, []); by.get(s.label).push(s.url); }
+  const a = (u, t) => `<a href="${esc(u)}" target="_blank" rel="noopener">${t}</a>`;
+  return `<div class="src">${[...by].map(([l, us]) => us.length === 1 ? a(us[0], esc(l)) : `${a(us[0], esc(l))} ${us.slice(1).map((u, i) => a(u, i + 2)).join(" ")}`).join(" · ")}</div>`;
+};
 const newFor = x => (x.new_for_you ? `<span class="newfor">New for you</span>` : "");
 
 function tools(st, withMore) {
@@ -1025,7 +1034,7 @@ function creaseLive() {
   const N = C.next, D = C.today && keptToday(Date.parse(C.today.start)) ? C.today : null;
   // The scorecard in a line (Parth, 1 Oct: tennis had its score, cricket only its result).
   const card = m => m.score ? `<p class="cz-sc tnum">${esc(m.score)}</p>` : "";
-  if (D) h += `<div class="cz-next cz-today"><div class="cz-k">Today</div><h3>India v ${esc(D.opponent)}</h3><p>${esc(D.desc)} · ${esc(place(D))}</p><p class="cz-when">${res(D)}</p>${card(D)}</div>`;
+  if (D) h += `<div class="cz-next cz-today"><div class="cz-k">${playedDay(D.start)}</div><h3>India v ${esc(D.opponent)}</h3><p>${esc(D.desc)} · ${esc(place(D))}</p><p class="cz-when">${res(D)}</p>${card(D)}</div>`;
   if (N) h += `<div class="cz-next"><div class="cz-k">${N.state === "live" ? "Live now" : "Next match"}</div><h3>India v ${esc(N.opponent)}</h3><p>${esc(N.desc)} · ${esc(place(N))}</p><p class="cz-when">${N.state === "live" ? res(N) : `${esc(when(N))}${N.time_announced ? ` · <span data-until="${esc(N.start)}" data-min="480" data-done="">--</span>` : ""}`}</p>${N.state === "live" ? card(N) : ""}</div>`;
   const strip = (f, big) => `<div class="cz-f"><h5>${esc(f.label)}${f.total ? ` · ${f.total} matches` : ""}${f.score ? ` · <b>${esc(f.score)}</b>` : ""}</h5><ol class="cz-strip${big ? "" : " small"}">${f.matches.map(m => {
     const isNext = N && m.id === N.id;
@@ -1058,7 +1067,7 @@ function deuceData() {
   if (T.players?.length) h += `<div class="cols2">${T.players.map(p => {
     const lv = LT.find(t => t.player === p.name && !t.final), done = LT.find(t => t.player === p.name && t.final), n = Date.now(), st = lv && fixState(lv, n);
     const won = done && /^Won/.test(done.result), sc = done ? done.result.replace(/^(Won|Lost)\s*/, "") : "";
-    const todayLine = done ? `<p style="margin:6px 0 4px"><b>Today:</b> <span class="${won ? "up" : "dn"}">${won ? "Beat" : "Lost to"} ${esc(done.opponent || "")}${sc ? " " + esc(sc) : ""}</span> · ${esc([done.event, done.round].filter(Boolean).join(", "))}</p>` : "";
+    const todayLine = done ? `<p style="margin:6px 0 4px"><b>${playedDay(done.when_utc)}:</b> <span class="${won ? "up" : "dn"}">${won ? "Beat" : "Lost to"} ${esc(done.opponent || "")}${sc ? " " + esc(sc) : ""}</span> · ${esc([done.event, done.round].filter(Boolean).join(", "))}</p>` : "";
     const nextLine = lv ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc([lv.round, `v ${lv.opponent || "TBC"}`].filter(Boolean).join(" "))} · ${esc(lv.event)} · ${esc(fmt(lv.when_utc, { weekday: "short", day: "numeric", month: "short" }).replace(/,/g, ""))}, ${esc(istTime(lv.when_utc))} IST${lv.court ? ` · ${esc(lv.court)}` : ""}.${st === "on" ? ` <span class="live"><i></i>On court now</span>` : st === "due" || (st === "next" && lv.held) ? ` <span class="due">${esc(dueWhy(lv))}</span>` : ""}</p>${lv.other ? `<p class="note">Another listing (Tennis Explorer) has it at ${esc(lv.other)} IST, so worth a look nearer the time.</p>` : ""}<p class="asof">Live from ESPN; order of play can shift with the matches before it.${staleNote("tennis_players")}</p>`
       : p.next_match ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc(p.next_match.text)}</p>` : "";
     // With a live match, the live match says where the player plays next; the edition's line may be out of date.
@@ -1102,13 +1111,14 @@ function liveTrends() {
 function talkBlock() {
   const T = E.trends?.india?.length || E.trends?.world?.length ? E.trends : liveTrends();
   if (!T || (!T.india?.length && !T.world?.length)) return "";
-  const col = (label, list) => (list?.length ? `<div><h3 class="colhead">${esc(label)}</h3>${list.map(t => `<p class="trend"><b>${esc(t.term)}</b>${t.traffic ? ` <span class="traffic">· ${esc(t.traffic)}</span>` : ""} <span class="dash">–</span> ${t.url ? `<a href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.what)}</a>` : esc(t.what)}</p>`).join("")}</div>` : "");
+  const col = (label, list) => (list?.length ? `<div><h3 class="colhead">${esc(label)}</h3>${list.map(t => `<p class="trend"><b>${esc(t.term)}</b>${t.traffic ? ` <span class="traffic">· ${esc(String(t.traffic).replace(/\d{4,}/, n => Number(n).toLocaleString("en-US")))}</span>` : ""} <span class="tdash">–</span> ${t.url ? `<a href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.what)}</a>` : esc(t.what)}</p>`).join("")}</div>` : "");
   return `<div class="cols2 talk">${col("India", T.india)}${col("World", T.world)}</div>${T.live ? `<p class="asof" style="margin-top:8px">${LIVE.trends?.stale ? `Google Trends ${agoIST(LIVE.trends.as_of)}` : "Live from Google Trends"}, with the top English headline for each.</p>` : ""}`;
 }
 
 // Compact: one row per market, top outcomes inline with a thin bar for the favourite. Up to ten.
 // Readable over dense: title on its own line, one row per outcome with its own bar. Up to ten markets.
 const MONTHS = { january: "Jan", february: "Feb", march: "Mar", april: "Apr", may: "May", june: "Jun", july: "Jul", august: "Aug", september: "Sep", october: "Oct", november: "Nov", december: "Dec" };
+const vsV = t => String(t || "").replace(/ vs\.? /g, " v ");
 const outcomeLabel = n => String(n).replace(/^(By|Through) (January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2})(, \d{4})?$/i, (_, w, m, d, y) => `${w} ${d} ${MONTHS[m.toLowerCase()]}${y || ""}`);
 
 // The market's view, one line in a section: what Polymarket traders make of the next race or match. Kept small and
@@ -1116,7 +1126,7 @@ const outcomeLabel = n => String(n).replace(/^(By|Through) (January|February|Mar
 function signalHTML(g) {
   if (!g?.outcomes?.length) return "";
   const o = g.outcomes.slice(0, 3), vol = g.volume >= 1e6 ? `$${(g.volume / 1e6).toFixed(1)}m` : g.volume >= 1e3 ? `$${Math.round(g.volume / 1e3)}k` : `$${g.volume}`;
-  return `<div class="signal" data-fam="odds"><div class="sg-h"><span class="sg-k">${icon("s:betting")}The market's view</span><span class="sg-t">${esc(g.label || g.title)}</span></div>
+  return `<div class="signal" data-fam="odds"><div class="sg-h"><span class="sg-k">${icon("s:betting")}The market's view</span><span class="sg-t">${esc(vsV(g.label || g.title))}</span></div>
 <div class="sg-o">${o.map((x, i) => `<span class="${i === 0 ? "fav" : ""}"><b class="tnum">${Math.round(x.prob)}%</b> ${esc(outcomeLabel(x.name))}</span>`).join("")}</div>
 <div class="sg-bar">${o.map((x, i) => `<i class="s${i}" style="width:${Math.max(0, Math.min(100, x.prob)).toFixed(1)}%"></i>`).join("")}</div>
 <a class="sg-src" href="${esc(g.url)}" target="_blank" rel="noopener">Polymarket · ${vol} traded ↗</a></div>`;
@@ -1144,6 +1154,14 @@ function wave(p) {
   const d = "M" + pts.join("L");
   return `<svg class="wave" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><defs><clipPath id="${id}"><rect x="0" y="0" width="${Math.max(0, Math.min(100, p)).toFixed(1)}" height="10"/></clipPath></defs><path d="${d}" class="wt"/><path d="${d}" class="wf" clip-path="url(#${id})"/></svg>`;
 }
+// A date ladder ("By 31 Oct", "Through 7 Oct") in date order, without rungs already past or closing within a day
+// (all but settled), unless nothing later is left. The live feed does this; the edition's copy may be hours old.
+function ladder(outs) {
+  const at = o => { const m = String(o.name).match(/^(?:By|Through) ([A-Z][a-z]+ \d{1,2})(?:, (\d{4}))?$/); return m ? Date.parse(`${m[1]}, ${m[2] || E.date.slice(0, 4)} 23:59:00 GMT-0400`) : NaN; };
+  if (outs.length < 2 || !outs.every(o => at(o) > 0)) return outs;
+  const n = Date.now(), open = outs.filter(o => at(o) > n), later = open.filter(o => at(o) > n + 864e5);
+  return (later.length ? later : open.length ? open : outs).slice().sort((x, y) => at(x) - at(y));
+}
 function bettingBlock() {
   const liveM = LIVE.betting?.value?.markets || [];
   const list = (E.betting?.length ? E.betting : liveM).slice(0, CFG.betting.show || 10);
@@ -1152,7 +1170,7 @@ function bettingBlock() {
   const idOf = b => (b.id?.includes(":") ? b.id : b.id ? `pm:${b.id}` : null);
   const slips = list.map((b, n) => {
     const L = !LIVE.betting?.stale && liveM.find(m => m.id === idOf(b));
-    const all = (L?.outcomes?.length ? L.outcomes : b.outcomes) || [];
+    const all = ladder((L?.outcomes?.length ? L.outcomes : b.outcomes) || []);
     if (!all.length) return "";
     const yesNo = all.length === 1;
     const outs = yesNo ? [{ name: all[0].name, prob: all[0].prob }, { name: "No", prob: Math.max(0, 100 - all[0].prob) }] : all.slice(0, 3);
@@ -1167,7 +1185,7 @@ function bettingBlock() {
     const since = b.since && b.since < E.date ? `<span class="stamp">Since ${esc(sparkLabel(b.since))}</span>` : "";
     const segs = [...outs.map((o, i) => `<i class="s${i}" style="width:${Math.max(0, Math.min(100, o.prob)).toFixed(1)}%" title="${esc(outcomeLabel(o.name))} ${o.prob.toFixed(1)}%"></i>`), yesNo ? "" : `<i class="s9" style="width:${rest.toFixed(1)}%"></i>`].join("");
     return `<li class="slip${n === 0 ? " lead" : ""}" data-fam="${betPalette(b.category)}"><div class="stub"><b class="tnum">${Math.round(fav.prob)}<small>%</small></b>${wave(fav.prob)}<span>${esc(outcomeLabel(fav.name))}</span></div>
-<div class="sb"><div class="meta">${esc(b.category || "World")}${since}</div><a class="title" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.title.replace(/\.\.\.\?$/, "…?"))}</a>${b.note ? `<small class="nt">${esc(b.note)}</small>` : ""}
+<div class="sb"><div class="meta">${esc(b.category || "World")}${since}</div><a class="title" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(vsV(b.title).replace(/\.\.\.\?$/, "…?"))}</a>${b.note ? `<small class="nt">${esc(b.note)}</small>` : ""}
 <div class="bar">${segs}</div><ul>${outs.slice(yesNo ? 0 : 1).map((o, i) => `<li><i class="s${yesNo ? i : i + 1}"></i>${esc(outcomeLabel(o.name))} <b class="tnum">${Math.round(o.prob)}%</b></li>`).join("")}${!yesNo && rest >= 1 ? `<li><i class="s9"></i>Others <b class="tnum">${Math.round(rest)}%</b></li>` : ""}</ul>${mv}</div></li>`;
   }).join("");
   return `<ol class="slips">${slips}</ol><p class="asof" style="margin-top:12px">${LIVE.betting && !LIVE.betting.stale ? "Live prices" : `Prices ${agoIST(LIVE.betting?.as_of) || "at press time"}`} from Polymarket. A price is what traders pay for a yes, read as the chance they give it.</p>`;
@@ -1608,7 +1626,7 @@ function dashHTML() {
 
   const bets = (E.betting?.length ? E.betting : B).slice(0, 4).map(b => {
     const L = B.find(m => m.id === b.id); const o = (L?.outcomes?.length ? L.outcomes : b.outcomes)[0];
-    return o ? `<div class="bet" data-fam="${betPalette(b.category)}"><span>${esc(b.title.replace(/\.\.\.\?$/, "…?"))}</span><b>${Math.round(o.prob)}%</b><small>${esc(outcomeLabel(o.name))}</small><i><em style="width:${Math.min(100, o.prob)}%"></em></i></div>` : "";
+    return o ? `<div class="bet" data-fam="${betPalette(b.category)}"><span>${esc(vsV(b.title).replace(/\.\.\.\?$/, "…?"))}</span><b>${Math.round(o.prob)}%</b><small>${esc(outcomeLabel(o.name))}</small><i><em style="width:${Math.min(100, o.prob)}%"></em></i></div>` : "";
   }).join("");
 
   return `<div class="dash" onclick="event.stopPropagation()">
