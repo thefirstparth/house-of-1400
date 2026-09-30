@@ -570,8 +570,7 @@ const f1Name = d => d?.shown || d?.name || "";
 const f1Short = d => { const n = f1Name(d).split(" "); return n.length > 1 ? `${n[0][0]}. ${n.slice(1).join(" ")}` : n[0]; };
 // Text on a team-colour block: dark on light colours, white on dark ones.
 const onColour = hex => { const h = String(hex || "").replace("#", ""); if (h.length !== 6) return "var(--ink)"; const [r, g, b] = [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(c => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)); return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.35 ? "#15140f" : "#ffffff"; };
-// Max, marked the way Bhide marks a proof: a ring in his red pencil round the name, no heavier type (Parth, 1 Oct).
-const penRing = (html, on) => on ? `<span class="pen" title="${esc(CFG.follows.f1_driver.label)}">${html}<svg viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true"><path d="M14 23C9 10 62 4 116 5c52 1 82 8 79 18-3 11-51 14-99 13C46 35 7 32 7 21 8 13 31 8 58 7"/></svg></span>` : html;
+// The followed driver is marked the way Madridismo marks Madrid: a pill in the section's colour (Parth, 1 Oct).
 const F1 = { board: store.get("h1400-f1board") || "drivers", open: new Set() };
 const F1TOP = 5;
 function f1Champ(S, isMax, done) {
@@ -583,7 +582,7 @@ function f1Champ(S, isMax, done) {
     const more = rows.length - F1TOP - (rows.slice(F1TOP).some(isMax) ? 1 : 0);
     return `<div class="f1-pan" id="f1p-${kind}"${kind === cur ? "" : " hidden"}><ol class="f1s">${rows.map((d, i) => {
       const x = i >= F1TOP && !(kind === "drivers" && isMax(d)), pin = i > F1TOP && kind === "drivers" && isMax(d);
-      return `<li class="${kind === "drivers" && isMax(d) ? "on" : ""}${x ? " x" : ""}${pin ? " pin" : ""}"${x && !open ? " hidden" : ""} style="--tc:${esc(d.colour || "var(--muted)")}"><span class="p tnum">${d.pos}</span><span class="n">${penRing(esc(name(d)), kind === "drivers" && isMax(d))}${code(d) ? ` <i>${esc(code(d))}</i>` : ""}</span><b class="pts tnum">${d.points}</b><span class="bar" aria-hidden="true"><i style="width:${Math.max(1.5, d.points / top * 100).toFixed(1)}%"></i></span></li>`;
+      return `<li class="${kind === "drivers" && isMax(d) ? "on" : ""}${x ? " x" : ""}${pin ? " pin" : ""}"${x && !open ? " hidden" : ""} style="--tc:${esc(d.colour || "var(--muted)")}"><span class="p tnum">${d.pos}</span><span class="n">${esc(name(d))}${code(d) ? ` <i>${esc(code(d))}</i>` : ""}</span><b class="pts tnum">${d.points}</b><span class="bar" aria-hidden="true"><i style="width:${Math.max(1.5, d.points / top * 100).toFixed(1)}%"></i></span></li>`;
     }).join("")}</ol>${more > 0 ? `<button class="lmore" data-f1more="${id}" data-n="${rows.length}" data-what="${kind === "drivers" ? "drivers" : "teams"}" aria-expanded="${open}">${open ? `Top ${F1TOP} only` : `Show all ${rows.length} ${kind === "drivers" ? "drivers" : "teams"}`}</button>` : ""}</div>`;
   };
   const tabs = S.constructors?.length ? `<div class="ctabs" role="tablist" aria-label="Championship">${[["drivers", "Drivers"], ["constructors", "Constructors"]].map(([k, l]) => `<button role="tab" data-f1board="${k}" aria-selected="${k === cur}">${l}</button>`).join("")}</div>` : `<div class="ctabs one"><span>Drivers</span></div>`;
@@ -595,11 +594,11 @@ function f1LastRace(L, isMax) {
   const gap = r => { const st = r.status || "", lap = /^\+(\d+) Laps?$/i.exec(st);
     return r.time || (lap ? `+${lap[1]} lap${lap[1] === "1" ? "" : "s"}` : /^Lapped$/i.test(st) ? "+1 lap" : /disqualif/i.test(st) ? "DSQ" : st === "Finished" ? "" : st ? "DNF" : ""); };
   const R = L.results;
-  const step = (r, h) => r ? `<div class="pd p${r.pos}"><b>${penRing(esc(f1Short(r)), isMax(r))}</b><small>${esc(r.team || "")}</small><span class="tnum">${esc(gap(r))}</span><i style="--tc:${esc(r.colour || "var(--muted)")};--to:${onColour(r.colour)};height:${h}px">${r.pos}</i></div>` : "";
+  const step = (r, h) => r ? `<div class="pd p${r.pos}${isMax(r) ? " on" : ""}"><b>${esc(f1Short(r))}</b><small>${esc(r.team || "")}</small><span class="tnum">${esc(gap(r))}</span><i style="--tc:${esc(r.colour || "var(--muted)")};--to:${onColour(r.colour)};height:${h}px">${r.pos}</i></div>` : "";
   const id = "f1-last", open = F1.open.has(id), rest = R.slice(3);
   return `<div class="f1-box"><div class="f1k">Last race <span>${L.season && L.season !== String(new Date().getFullYear()) ? esc(L.season) + " · " : ""}Round ${L.round}</span></div><h4 class="f1-h">${esc(L.flag)} ${esc(L.name)}</h4>
 <div class="podium">${step(R[1], 72)}${step(R[0], 104)}${step(R[2], 52)}</div>
-<ol class="f1r">${rest.map((r, i) => `<li class="${isMax(r) ? "on" : ""}${i >= 4 ? " x" : ""}"${i >= 4 && !open ? " hidden" : ""} style="--tc:${esc(r.colour || "var(--muted)")}"><span class="p tnum">${r.pos}</span><span class="n">${penRing(esc(f1Short(r)), isMax(r))}</span><small>${esc(r.team || "")}</small><span class="g tnum">${esc(gap(r))}</span></li>`).join("")}</ol>${rest.length > 4 ? `<button class="lmore" data-f1more="${id}" data-n="${R.length}" data-what="drivers" aria-expanded="${open}">${open ? "Fewer" : `Show all ${R.length} drivers`}</button>` : ""}</div>`;
+<ol class="f1r">${rest.map((r, i) => `<li class="${isMax(r) ? "on" : ""}${i >= 4 ? " x" : ""}"${i >= 4 && !open ? " hidden" : ""} style="--tc:${esc(r.colour || "var(--muted)")}"><span class="p tnum">${r.pos}</span><span class="n">${esc(f1Short(r))}</span><small>${esc(r.team || "")}</small><span class="g tnum">${esc(gap(r))}</span></li>`).join("")}</ol>${rest.length > 4 ? `<button class="lmore" data-f1more="${id}" data-n="${R.length}" data-what="drivers" aria-expanded="${open}">${open ? "Fewer" : `Show all ${R.length} drivers`}</button>` : ""}</div>`;
 }
 function f1Toggle(id, btn) {
   const open = !F1.open.has(id); open ? F1.open.add(id) : F1.open.delete(id);
@@ -619,9 +618,9 @@ function warriorsBlock() {
   const bits = [];
   if (B.last) bits.push(`Last: ${B.last.winner === "us" ? "beat" : "lost to"} ${esc(B.last.opponent)} ${esc(B.last.score?.us)}–${esc(B.last.score?.them)}.`);
   if (B.next?.length) bits.push(`Next: ${B.next.map(g => `${g.home ? "v" : "at"} ${esc(g.opponent)}, ${esc(istFull(g.date))} IST`).join("; ")}.`);
-  const pos = B.west?.find(r => /Warriors/.test(r.team));
+  const ours = r => r.team === CFG.follows.nba_team.name || r.team === B.team, pos = B.west?.find(ours);
   if (pos) bits.push(`${ordinal(pos.rank)} in the West.`);
-  const west = B.west?.length ? `<table class="compact"><thead><tr><th>#</th><th>NBA West</th><th class="r">W</th><th class="r">L</th><th class="r">GB</th></tr></thead><tbody>${B.west.slice(0, 8).map(r => `<tr class="${/Warriors/.test(r.team) ? "on" : ""}"><td class="tnum">${r.rank}</td><td>${esc(r.team)}</td><td class="r tnum">${r.wins}</td><td class="r tnum">${r.losses}</td><td class="r tnum">${esc(r.gb ?? "")}</td></tr>`).join("")}</tbody></table>` : "";
+  const west = B.west?.length ? `<table class="compact"><thead><tr><th>#</th><th>NBA West</th><th class="r">W</th><th class="r">L</th><th class="r">GB</th></tr></thead><tbody>${B.west.slice(0, 8).map(r => `<tr class="${ours(r) ? "on" : ""}"><td class="tnum">${r.rank}</td><td>${esc(r.team)}</td><td class="r tnum">${r.wins}</td><td class="r tnum">${r.losses}</td><td class="r tnum">${esc(r.gb ?? "")}</td></tr>`).join("")}</tbody></table>` : "";
   return bits.length ? `<div class="cols2"><div class="item" style="--acc:var(--acc-sp)"><div class="tag">NBA · Warriors</div>${bits.join(" ")}</div><div>${west}</div></div>` : "";
 }
 function assetNote(name, q) {
