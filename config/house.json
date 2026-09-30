@@ -815,6 +815,13 @@
         "kind": "news"
       },
       {
+        "id": "scroll",
+        "section": "dateline",
+        "name": "Scroll",
+        "url": "https://feeds.feedburner.com/ScrollinArticles.rss",
+        "kind": "news"
+      },
+      {
         "id": "pib",
         "section": "dateline",
         "name": "PIB (English)",
@@ -1214,6 +1221,29 @@
         "kind": "news"
       },
       {
+        "id": "ars",
+        "section": "workshop",
+        "name": "Ars Technica",
+        "url": "https://feeds.arstechnica.com/arstechnica/index",
+        "kind": "news"
+      },
+      {
+        "id": "restofworld",
+        "section": "workshop",
+        "name": "Rest of World",
+        "url": "https://restofworld.org/feed/latest",
+        "kind": "news",
+        "max_age_h": 72
+      },
+      {
+        "id": "axios",
+        "section": "workshop",
+        "name": "Axios, technology and AI business (via Google News)",
+        "url": "https://news.google.com/rss/search?q=site%3Aaxios.com%20%28AI%20OR%20OpenAI%20OR%20Anthropic%20OR%20Google%20OR%20Meta%20OR%20Apple%20OR%20Nvidia%20OR%20chips%20OR%20startups%20OR%20IPO%29%20when%3A1d&hl=en-US&gl=US&ceid=US%3Aen",
+        "kind": "search",
+        "max": 20
+      },
+      {
         "id": "autocar-india",
         "section": "workshop",
         "name": "Autocar India",
@@ -1468,7 +1498,9 @@
         "livefromalounge.com",
         "polymarket.com",
         "upstox.com",
-        "seekingalpha.com"
+        "seekingalpha.com",
+        "restofworld.org",
+        "axios.com"
       ],
       "note": "Tier 1: official and primary sources. Tier 2: reputable outlets. Anything else is tier 3. Scored in the trial only, until Parth switches it on (then a validator warning, never a failure)."
     },
