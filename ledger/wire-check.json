@@ -1,0 +1,899 @@
+{
+  "date": "2026-09-30",
+  "window": {
+    "from": "2026-09-29T08:30:00.000Z",
+    "to": "2026-09-30T08:38:10.694Z"
+  },
+  "checked_at": "2026-09-30T08:38:15.284Z",
+  "candidates": [
+    {
+      "id": "can-stifle-trump-ai-leaders-self-police",
+      "title": "'We can't stifle it': Trump says AI leaders 'have to self-police' AI technology",
+      "region": "india",
+      "section_hint": "dateline",
+      "n": 11,
+      "national": 3,
+      "outlets": [
+        "Fortune",
+        "Reuters",
+        "The Times of India",
+        "The Economic Times",
+        "NDTV",
+        "Al Jazeera",
+        "Fox Business",
+        "CNN"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMiigFBVV95cUxPaE03d3ZfeUZTQ2lPeVNUYWJ1RFUxU3NTZW43MW1Wa1I0bnhxNHgxRzVoS1dRTzRwaDBqVlkweXVqZl9VZ2VfaHR6VEEzaUcwbk9CQlBabHNNaTVRa1NjVHhEWWxvTkRJNmo1bWJpdGdvS0pXemxWbFNjU3BOSlFFVTQ5ck90VE04UHc?oc=5",
+        "https://www.ndtv.com/world-news/donald-trump-elon-musk-sundar-pichai-for-new-ai-name-but-official-document-cant-spell-united-states-right-12118700#publisher=newsstand"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "internet-convinced-elon-musk-xai-trolled-openai",
+      "title": "The internet is convinced Elon Musk’s xAI trolled OpenAI’s ‘Dots’ launch",
+      "region": "topic",
+      "section_hint": "ledger",
+      "n": 10,
+      "national": 1,
+      "outlets": [
+        "techcrunch.com",
+        "OpenAI",
+        "The Hindu",
+        "cnbc.com",
+        "The Guardian",
+        "NBC News",
+        "Al Jazeera",
+        "Reuters"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMipgFBVV95cUxQQ19vQXp6TWF6VFpOeHZPTWdKVV8yMnNadlhrczcwZXdva2JBX01MOWY2M3hmbDR4UVRnbGJVWWFVcFQwZlNHeXlSZ2dMTV9vbmh2TUZVMHNCdnBmZTlTM1ZqeHJ1a2dqMzIxWGZGQVhyUmNGcXA3aTZxVjBwRkdseFBjakE1aWRjYTlTZmEzWVk2bHBFbXNXT3ZmUzI0NHU5ZEdNbjZB?oc=5",
+        "https://www.aljazeera.com/economy/2026/9/30/openai-launches-dots-personal-ai-assistant-built-to-handle-everything?traffic_source=rss",
+        "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOdHpSWDN2U2FHZk9uM2NIZVVkQjVWQXBudENFN09DM3ZWdWlBdVdCdndKTFlQa2duMmpYcDVYamdOSGNhTnBkQmQ1dG01T3ZYU2Zyb2VEXzg1VG05N1dwR0FWZlNqWDlNNldWS2VEcGlDby1TQ1JUMy1La1R1TncwQkN1OVRIN2lEeDJpQTQ2VkNXZ2lmVG12bHBPOU5sZW9sX2FvSlk5VGhTU3c?oc=5"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "man-city-guilty-sham-payments-inflating-revenues",
+      "title": "Man City guilty of 'sham payments' & inflating revenues by ₹11,000 crore: Premier League | Manchester City have the right to appeal | Inshorts",
+      "region": "topic",
+      "section_hint": "sidelines",
+      "n": 9,
+      "national": 0,
+      "outlets": [
+        "Inshorts",
+        "Premier League",
+        "bbc.com",
+        "ESPN India",
+        "The Guardian",
+        "Sky Sports",
+        "Manchester City FC",
+        "The Guardian, football"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMiywFBVV95cUxQTmt3TDVPQWFZQnJ0ajY1SFJMZHBaZWtjM0xrdVpONWdXcXFqTDR0cHdOQ3llb0U1NGZOZU1JTFZSMm5hR1JBYVFvVTlJdkI2OU5OSmdaSV9uT1c4V2FHYUx2SmFXZWFncWRKSTd3YUJpMzJsVmdrN0F4aGdudmQ3d3AyQjYxVloySDZ4S1JheU5iQTNZM2xWTmVKbFhCUDF5NFdwVFR3N3V3VEtqMENiTjVoZjhxUjdUeVotMW5JSVlpNVFCYmx3N0tIWdIB0AFBVV95cUxPajVuT1dEREt2RU5aalJURVo1bFpFQ2k2bTd1TnpoWFg4bWYyenBWOU01TGNLTllpeXVKUnFNSW01alU4eVJ2Z1NQNHp3d1F6S1ZMZ1ZKRC1uZ3YtTm9hVlNrZ01WWkZaaEt5cmZlcC10STBPWVpiMmlvaHhlel9jQ3cyQjN4dlhKaEp0OVBzVUlkamFZb0E5VlYwOUpVN2lZYkp0V1I3Y2tVX3p0OWVsU0NxaXBSbjA3WWRJLW5zS3hzVGdQYThGQVpOUFA5WVly?oc=5",
+        "https://www.theguardian.com/football/2026/sep/29/disguised-funding-and-dishonest-witnesses-key-findings-in-manchester-city-case-premier-league",
+        "https://www.espn.com/soccer/story/_/id/50060178/manchester-city-premier-league-guilty-verdict-accounting-gab-marcotti"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "us-offers-up-40-million-barrels-spr",
+      "title": "US offers up to 40 million barrels from the SPR",
+      "region": "topic",
+      "section_hint": "ledger",
+      "n": 9,
+      "national": 1,
+      "outlets": [
+        "investingLive",
+        "Reuters",
+        "The Times of India",
+        "Crude Oil Prices Today | OilPrice.com",
+        "24/7 Wall St.",
+        "NPR",
+        "Bloomberg.com",
+        "thenationalnews.com"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMijwFBVV95cUxOQzJIMV9lUWVnTXNVZjZMSzZZdXh2SUlKWGZmUTZHN1MzdGtZVDVvRllCdXVZQzlJakFCWGdfNE42Z3VsZUhHdHVydHlSdm1GXzlBMzJna0pobUY2N2hZMzloempQNTFGUzhrdzNnTXhvQ0hkRzlTcjdsU2ZFczZRWFBkWlU2WFdkcEdFUzdfWQ?oc=5"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "apple-patches-coregraphics-zero-day-linked-sophisticated",
+      "title": "Apple Patches CoreGraphics Zero-Day Linked To Sophisticated Targeted Attacks",
+      "region": "topic",
+      "section_hint": "workshop",
+      "n": 9,
+      "national": 0,
+      "outlets": [
+        "LinkedIn",
+        "techcrunch.com",
+        "The Hacker News",
+        "Forbes",
+        "Dark Reading",
+        "Tom's Guide",
+        "TechCrunch",
+        "malwarebytes.com"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMimAFBVV95cUxNMGJTaHAwWk5IeFpCSWJPV3lNX0RLRFdQbDFSRTc1MWtLSWdfbkNvME5oR2NIQk1WOHlzVmszdzllcm9tX3poR2ZIWC1kN2lLeG5sZDdabTd6YXJiQ1pGNlVNTkdRS1FldEtvSUR0eE02UFdCdWtYM295MktaZEhpZjNGQ1BfaGlManJEdjhkaDZrMjRIZW5lNw?oc=5"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "xbox-mythic-achievements-rolling-out-now-bringing",
+      "title": "Xbox Mythic Achievements are rolling out now, bringing ultra‑rare goals and deeper progression tracking to Insiders",
+      "region": "topic",
+      "section_hint": "workshop",
+      "n": 9,
+      "national": 0,
+      "outlets": [
+        "Windows Central",
+        "XBOX Wire",
+        "polygon.com",
+        "Kotaku",
+        "Push Square",
+        "The Verge",
+        "windowscentral.com",
+        "Polygon.com"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMi7gFBVV95cUxNR3RIZ0x1ZkVsdHZzYUxiUmU1cjkzNFhRNUVISDZqMjBZM0hNSWZCMW5oRDAzMFJYUHE4ektTZlVpbjdKRkFqLUJ1dFhRLU1jRHNHdDZ2RDYxNEllMV9FX1VYWjRubjM0VUVyM01wdTlzVWFKUnhydTRVS1NjczFzTlNSU2Njd3hRRmVVUURrN01vUU51X0FNNHhReUFiTGVrOV94c3VrbHdWc1Ewd3lOQXZobDNYNDRlS1pqZk85WG1qclJPS3VfdEw0Wlk2XzlMejVFclBuaTNYS2JraG5DT3pRVzVzRC1wQXoyZ3hn?oc=5",
+        "https://www.theverge.com/news/1002099/xbox-mythic-achievement-announcement-feature"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "israel-bound-flight-diverted-saudi-arabia-brawl",
+      "title": "Israel-bound flight diverted to Saudi Arabia after brawl between pilots, Israeli official says",
+      "region": "world",
+      "section_hint": "dateline",
+      "n": 9,
+      "national": 2,
+      "outlets": [
+        "Reuters",
+        "CNN",
+        "NDTV",
+        "The Times of India",
+        "The Times of Israel",
+        "WSJ",
+        "bbc.com",
+        "NDTV, top stories"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMixAFBVV95cUxOWnpLNmZJUXN6UzQ0RlhKSFhxT2xYMWZ1R1VwYVdZX3ZuZWFTYUZyV1VYTVhralA5Y0ROVjlNVl9XOGpTSWhEcGM3UE01WVA3clNKcm5KdDZ2dUY1U3FyODdsWkkzSWs2VW5NZUJWQXFYQ0dxamNudlljZl92REs3SnFXSEUzTEswdjh4NnRia2VWZGd2TGE2SmZ6VDBQTXpiRDM0SDZSZ29ubUZUd3Zsa0E4LTBoRmxpSDRjd0JkcmhYbkNV?oc=5",
+        "https://www.ndtv.com/world-news/fight-between-pilots-what-happened-inside-diverted-dubai-tel-aviv-flight-12118796#publisher=newsstand",
+        "https://www.bbc.co.uk/news/articles/cqjdv7pmj9dno?at_medium=RSS&at_campaign=rss"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "south-korea-north-korean-mines-behind-dmz",
+      "title": "South Korea says North Korean mines behind DMZ blast violated armistice",
+      "region": "world",
+      "section_hint": "dateline",
+      "n": 8,
+      "national": 1,
+      "outlets": [
+        "Reuters",
+        "bbc.com",
+        "The Times of India",
+        "The Guardian",
+        "AP News",
+        "koreatimes.co.kr",
+        "BBC, world",
+        "The Guardian, world"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMixAFBVV95cUxPNVlYaXY4enp5MHkwNUU1UFdXaUFfV09pbEVRTUFGdEhnYzFfNnk4dUlkZVZIQWhIUGNrVU9NNlQ4bjFKNlRJdFJHQXlPdUgzU0NNcGREcVM0MWd2Q2V6RkJSalpMbzFHUEpnRjlZYTRHdl84eE9QakdCYUZ3dUxJQXloNnBzTFRXTkFFdjhCdVBfSzFxMktHWTlxN0hHdVIwbWhtRUZLalpmU2pNR19mTGVMVnp0WC1SempSMlY5VGl0UkdS?oc=5",
+        "https://www.bbc.co.uk/news/articles/cwj3dkvpm4e7o?at_medium=RSS&at_campaign=rss",
+        "https://www.theguardian.com/world/2026/sep/30/south-korea-apology-north-korea-mine-injures-soldiers"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "oil-holds-losses-middle-east-supply-recovers",
+      "title": "Oil holds losses as Middle East supply recovers; set for monthly jump",
+      "region": "topic",
+      "section_hint": "ledger",
+      "n": 8,
+      "national": 0,
+      "outlets": [
+        "Investing.com",
+        "WSJ",
+        "cnbc.com",
+        "Bloomberg.com",
+        "barchart.com",
+        "oilprice.com",
+        "The New York Times",
+        "CNBC"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMixAFBVV95cUxPQ2U3QjBSRFpSSTIzU1RjeEt4bmVidmRVVEg0Y1cwYktEVi0ycVB5MFFXa1B0ajc5ZFhKNlgzLVVvRXBLNFJoRmpuT3JadlpYZ0F5Q2NIM3VtQ01GazVIM0ZHSXhxLWRrRHc5RmJQUWo3TVpXT1gxWmNrS01pUE9FS21kQVg4dVMtX3ljSzRwQXJZSkM5a09JMXNnWFY0dVd0WDZmSnFSenprTkVzbVNiYnI1Wld1RC1jYW9ibFYwbGVnRWRN?oc=5"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "openai-reportedly-talks-raise-30b-round-4t",
+      "title": "OpenAI reportedly in talks to raise $30B round at $1.4T valuation",
+      "region": "topic",
+      "section_hint": "ledger",
+      "n": 8,
+      "national": 0,
+      "outlets": [
+        "techcrunch.com",
+        "Gizmodo",
+        "Bloomberg.com",
+        "Financial Times",
+        "The Verge",
+        "TechCrunch",
+        "Yahoo Finance",
+        "Reuters"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMinwFBVV95cUxNbG1ZOUhidTdfOHItTC14RXRPd2JiYkZaNEFTdnJZVzJZSmJhR1JzLWFSWlVvM2hRV0NKLW9takFBbW9xcXdJMW05WWIzS0xtT1dnTUhZWUd2Z1NvZzMySjJ5M0htNWNHa1VySEU1OVVuSERkaGsweFdFaktSRTBmTk9sNjJiVHV6cGN0ZHVoVDE5Z0YzQmdoUUlxWnQzRlU?oc=5",
+        "https://www.theverge.com/ai-artificial-intelligence/1002505/sam-altman-openai-ipo-devday-ai-safety",
+        "https://techcrunch.com/2026/09/29/openai-reportedly-in-talks-to-raise-30b-round-at-1-4t-valuation/"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "witcher-remastered-amd-gpu-issues-bugs-fixes",
+      "title": "Witcher 3 Remastered AMD GPU Issues: Bugs & Fixes [2026]",
+      "region": "topic",
+      "section_hint": "workshop",
+      "n": 8,
+      "national": 0,
+      "outlets": [
+        "tech-insider.org",
+        "TechPowerUp",
+        "NVIDIA",
+        "Forbes",
+        "TechSpot",
+        "CD PROJEKT RED | Relacje Inwestorskie",
+        "tweaktown.com",
+        "ign.com"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMidEFVX3lxTE4yMDJKTGZ4MHlGSmtSN0FwOXE0Yy02V19PNjNhRlhKeUZ5MzlkSkVEclhDaXhtWHR0aXpjS09oOERMQTR4MWh3T0lRUkFtWnhTQXc2dGFkeE1XaFRBRjV3TUt2VXJEMmpTRk1JMXRKbE5HVVNs?oc=5"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "iphone-18-pro-owners-report-speaker-crackling",
+      "title": "iPhone 18 Pro Owners Report Speaker Crackling Days After Face ID Fix",
+      "region": "topic",
+      "section_hint": "workshop",
+      "n": 8,
+      "national": 1,
+      "outlets": [
+        "finance.biggo.com",
+        "9to5Mac",
+        "Firstpost",
+        "PCMag Middle East",
+        "PhoneArena",
+        "MacRumors",
+        "AppleInsider",
+        "TechRadar"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMidkFVX3lxTE91ZHBETm5YVGwwa0ctV1EtMml5c2dDb2hUbndyN3lzZUVkOXBuTlBWeGtKYzJrSEtxa2RuTmVxSmkzNXc2cnFMWFA2YTRpdFU4N2dHWDFFek1DY1BDQUgxaURGS1NrX3puOGdFX0lXNTVRMkdDNEE?oc=5"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "firefox-just-got-redesign-round-tabs-themes",
+      "title": "Firefox just got a redesign with round tabs, new themes, and Compact Mode",
+      "region": "topic",
+      "section_hint": "workshop",
+      "n": 8,
+      "national": 0,
+      "outlets": [
+        "The Verge",
+        "The Mozilla Blog",
+        "arstechnica.com",
+        "9to5Linux",
+        "Liliputing",
+        "Ars Technica",
+        "Engadget",
+        "TechPowerUp"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMihgFBVV95cUxPRGYyaUdWZ2luQW5WZUZ4UkRyemNncUhiUHlNU2g0SjI3TDRENjdyNlczajY5QzVhVTNmalg1WTJMTHRmUTItRWpvaWVZeURZQVVvZ2MzcmZYVjJBZS1IMEtkVDRNZ3BaZUNNU0ltcFhqZFdiNWlvRmVDRUpmamdBaUdlYXo3Zw?oc=5"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "better-together-dungeons-ii",
+      "title": "Better together in Dungeons II",
+      "region": "topic",
+      "section_hint": "workshop",
+      "n": 8,
+      "national": 2,
+      "outlets": [
+        "Minecraft",
+        "The Economic Times",
+        "The Times of India",
+        "Insider Gaming",
+        "XBOX Wire",
+        "Game Informer",
+        "ign.com",
+        "nintendo.com"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMiaEFVX3lxTFB4Ml9oWXcyUmhoT0tYX1FqbHd0SVF5aUdwWERCVU90WnFJa1VtMzFXM25FdWFNVEMzOVVUcDZSeTZ3cFJfNDRkVWU0VVh5aXBVdzFpM1NObzVEWGdtVGhYQ0xYZ1lCcGxf?oc=5"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "chinese-factory-activity-expands-september-ai-boom",
+      "title": "Chinese factory activity expands in September amid AI boom",
+      "region": "world",
+      "section_hint": "ledger",
+      "n": 8,
+      "national": 0,
+      "outlets": [
+        "Reuters",
+        "cnbc.com",
+        "Forex Factory",
+        "Bloomberg.com",
+        "Investing.com India",
+        "CNBC",
+        "WSJ",
+        "Investing.com"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMirwFBVV95cUxOR2hBclpDSnZBY0I0SjlMLVdOb3psd0dpV3NpNERFTTB5TkE1eXEzNm43TXVHV1BqMGZIZXYyZXJ3WVFBa0lXYXc4aWxsbXItUGtkQUdzUVMzQ2lMQmtxNTJRYUROYlBZbGlPVGJJclI0YlpMcEdJVXpWakRjU3QzeFM5Sm4tNnh5VVd4MnREbHN0VkIxOG51bjNnUUI5aHJGQmdLLXZnYnBld0N1Ym84?oc=5",
+        "https://news.google.com/rss/articles/CBMirwFBVV95cUxOR2hBclpDSnZBY0I0SjlMLVdOb3psd0dpV3NpNERFTTB5TkE1eXEzNm43TXVHV1BqMGZIZXYyZXJ3WVFBa0lXYXc4aWxsbXItUGtkQUdzUVMzQ2lMQmtxNTJRYUROYlBZbGlPVGJJclI0YlpMcEdJVXpWakRjU3QzeFM5Sm4tNnh5VVd4MnREbHN0VkIxOG51bjNnUUI5aHJGQmdLLXZnYnBld0N1Ym84?oc=5",
+        "https://news.google.com/rss/articles/CBMitAFBVV95cUxNNjA4dXdpcEFnY3JRblFGOEJmOC04cTNSakJsOHY3UnBIX2NDRlIwb1Q1UF9jZGZqVGFIUWYzRDVKd2VEYmFuNFpUbU0tZEVDNmpNVHpKc3I3VFhpTWxFc2JqZ2RmNmR2bUVIVGtFYUROcEpVUlVOZlJ2LWRPcGpta1VGNjVJcFllNmhzb2RNWXJORVpGdkNUWVRpckI3R3RtNnczWktxenBVZUtOdUxsMkNsQ1E?oc=5"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "openai-wants-chatgpt-app-store-ai-safety",
+      "title": "OpenAI Wants ChatGPT To Be The App Store For AI As Safety Concerns Grow",
+      "region": "world",
+      "section_hint": "workshop",
+      "n": 8,
+      "national": 1,
+      "outlets": [
+        "NDTV",
+        "techcrunch.com",
+        "CNA",
+        "afaqs!",
+        "inc.com",
+        "TechCrunch",
+        "the-decoder.com",
+        "Engadget"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPTHlZSzdWSExUdDFNemk3ZWhLTXF4dU1qenVlcThpcklyb3hwNVlCMUJURXM4ZUc4VGpDbE01VDlsVXdpdXpHcmEya21nSFJQOTlBa2Joa1lUSVJWYnpFeU1VX0xmZWhhNkNwYkdvWTFaMm05VF9CRGNvbkJkc1UyMmJrWkJBTUVWdFR3SG1ncm44Z1dsQWNacEsyS2Z1RzhZS0pjZzJuS2stV1VMUl9JZzREZzE4MXlOVFVybXJDYUdHa2fSAcsBQVVfeXFMT3htZXN4NEN1NWFUS1JyRHZUYjNUUE11ZnVVRDV1WE5ITHN0QjlzT0V3cDlfZTBsYXpJVktDVGVwemhXbnlmaWhTTlIydTYzQktFUEpvWVJpYjVaVmJrNWg5czF4VlJpY1NNeDRJSzR2RGc3TFBHTzF5aHNFeThWekFjWS1PcHF6R04xaktObWV6b1A1ak04eVFnSVFabDMwLXJIb0lDVmhwWXc4dFJqT1Zwa3lRcHhGMmtxSE44UEV5N0NGRGNJbVotUWc?oc=5",
+        "https://techcrunch.com/2026/09/29/openais-latest-features-take-direct-aim-at-the-app-store-model/",
+        "https://techcrunch.com/2026/09/29/openai-takes-on-microsoft-with-the-launch-of-what-feels-a-whole-lot-like-chatgpts-own-office-suite/"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "another-bihar-shocker-jamui-banka-minors-abused",
+      "title": "Another Bihar shocker: After Jamui, Banka, minors abused, assaulted on camera near Gaya hill",
+      "region": "topic",
+      "section_hint": null,
+      "n": 7,
+      "national": 2,
+      "outlets": [
+        "The Times of India",
+        "NDTV",
+        "news18.com",
+        "NewsBytes",
+        "Social News XYZ",
+        "NDTV, top stories",
+        "The Times of India, top stories"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMi7AFBVV95cUxNRjhUakZXS1BVUFZ1YW01NWVQdGgtUjlpbC1CWjBGLWc5OUt3eTV2ekY5enNIUnhyNkZfU0Y5bTVBNDhQRDhabWp0d2dET1JkUlViSWpDMlM1THdrR0oxNlBzVUxuOXBMOVlpalJpQjVIWG9JZU42NU9heWhoN1pvY3BDbHJ6dkJ1LWFLTzlrWDFkYXN6azRma0NSeWZqZzJ2aHVDblBTWktfR1E3NEg4XzRSRDhnNXREYUZQZWFxRWdtTHRGYmo0a2EyanBrSGtnOEVtWG5UUG5zX29yNE5STHh4eU1SS2ZNc1g3WA?oc=5",
+        "https://www.ndtv.com/india-news/video-couple-on-bike-harassed-abused-by-group-of-men-in-bihars-gaya-12118209#publisher=newsstand",
+        "https://timesofindia.indiatimes.com/city/patna/another-bihar-shocker-after-jamui-samastipur-minors-abused-assaulted-near-gaya-hill/articleshow/134580926.cms"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "festive-crash-ahead-nifty-bulls-face-bearish",
+      "title": "Festive crash ahead? Nifty bulls face 4 bearish signs as October F&O series begins",
+      "region": "topic",
+      "section_hint": "ledger",
+      "n": 7,
+      "national": 2,
+      "outlets": [
+        "The Economic Times",
+        "Reuters",
+        "Moneycontrol.com",
+        "Business Standard",
+        "IndiaIPO",
+        "ET Markets",
+        "Business Standard, markets"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMi6wFBVV95cUxNZWgtaXFKOV9GaW1TMWxjU3NDSXdtV2QxRlB4cW9IX2JaOTV3Vk5oaFE0dERSRVkzZnE4dTU1QVNaZlVWdHhmM3luaGNCWXNFSVZPOS16bEpTVDRnS051Q3hKakJZMzFwQzdVSEZFVlAzUFhKeXh4UmRfMEROMGNNRTJxLVVqdjZvQWkyQ3NRQl82Q21leXJJWG9ycjRGZC1GSzR1czhNQTNBRTh0bW1Za0lOMk1hU2RHOXNUTXVqV2d1Umd1M3BQZHMxMV9uVlY4M1MyNXMwZDkzWnpDOThMMnhJdmYzTlZFV1Y4?oc=5",
+        "https://economictimes.indiatimes.com/markets/stocks/news/festive-crash-ahead-nifty-bulls-stare-at-4-bearish-signs-as-october-series-begins/articleshow/134583571.cms",
+        "https://www.business-standard.com/markets/news/nifty-50-logs-worst-september-performance-in-8-years-as-40-stocks-slide-126093000095_1.html"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "india-spinner-breaks-all-time-record-women",
+      "title": "India spinner breaks all-time record in women's T20I rankings, solidifies spot at the top of the ladder | Cricket",
+      "region": "topic",
+      "section_hint": "sidelines",
+      "n": 7,
+      "national": 2,
+      "outlets": [
+        "Hindustan Times",
+        "ICC",
+        "Cricinfo",
+        "Rediff",
+        "The Hindu",
+        "ESPNcricinfo",
+        "ESPNcricinfo, India"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMi-wFBVV95cUxQU3Jfb3NzdEdJdjg3elZUU2NEa1Q0NnN0VVp6RGM3bzk1RU9hWmFiS1p0MF95VWd2UEVNQjYxZkpQakhpOHlKMVRuUlFJeG50Q3dsVFFIY24yd3JnYlg5X3ktUk5wUTBlMk1SZVhDcjgwZU9FM1ctTzVPM1BCRHBmN1p5U05fZjlKR01zUmRMS0U2ZmFfNTlXbUNYZkRsTURxX3k0QXR1YVk1SHBXQlpCT29ib0dtLTk0YTBPTFRPQjhmcm05U1E0c2MwYUlQLU8xb29OWVJqMDhickpoaHB4M2JVYnR6Vk9DLUJJaDJGbjBLNUxVdXpnNFB0VdIBgAJBVV95cUxPWTJ2Wk5yaUpqZ1E0RXFwR0lBQmVpdVJYWmVIUG00bHUwdFM3YnF0djl0MVVCNThpdjVVOWtvUkl2SXZHbnhhaDZIblcwZDdoSWNOcGZIT0tCY05Dd1lsUFA3dm5FcGZNZHZwMHNCSC1rZ0hTdlo1T2RUS2NtMGlqQWVERlpfWElWLURaTXBBN3l6QXc4SlhCbU1VdV9EZ3UwLXhWLW5HRlBvbXVqeUtjWDJCWlRoc0FEa2ZFUlhfOWJFdXpxeTQ0UTY5TGhzYkk0cGZGYVZseVJqQnFJZTYybVhYX1lnaW5hbEJXbUdxbGZBSGRSeVQ1QWxHZEpfaU9y?oc=5",
+        "https://www.cricinfo.com/ci/content/story/1556100.html?ex_cid=OTC-RSS",
+        "https://www.cricinfo.com/ci/content/story/1556100.html?ex_cid=OTC-RSS"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "barcelona-star-anthony-gordon-rediscovers-scoring-touch",
+      "title": "Barcelona star Anthony Gordon rediscovers scoring touch for England in the Nations League",
+      "region": "topic",
+      "section_hint": "sidelines",
+      "n": 7,
+      "national": 0,
+      "outlets": [
+        "Barca Blaugranes",
+        "bbc.com",
+        "The Guardian",
+        "Sky Sports",
+        "Managing Madrid",
+        "BBC, football",
+        "BBC Sport"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMiywFBVV95cUxOUzBkQ2l6czZXby03NVN4ekdQNDd0Tm42VGNFQU1mUThqUGpHM3hrSVA4VGZlU3A4QnQ5dHl0a1otZXctVTkybl9RRWo4aUpRcXc3Zy1jODZfdjVTajJ5aW5rT3JMTWtTUzcxb3VfWUIzQ2V1YndHNFZhOGRRVmJPY3VrT2w5UlJOaU0wSC1rZExfUXh0ZTFMZHVjMFVXTS05aXpLdVpCUWdPVHZvQmpHSldOUXpPWUVabDhDdDNaTUZrZVlscnItN25iUQ?oc=5",
+        "https://www.managingmadrid.com/real-madrid-cf-data-analysis/113593/top-10-players-czechia-0-2-england",
+        "https://news.google.com/rss/articles/CBMiowFBVV95cUxOOGFRdGx6djM4b0ZDbHVMY3NKV3BvTWF6Q041bVg1QXpLOVZvWmpfZTdiOTRONFROZmxROHo1c1lDaS1vWXctUXlXX2IwbzhWTHRfOHV6eVBzQWVvdDZrYkZVLXhVQUprSmg5aWdTSG1lbGtSdXkwdnRYZjJoS2xPSmQwaVRKQUFXT2pIcWZOdzR0bTljeUE0QkJYd1FtWnd4T0JF?oc=5"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "jadeja-axar-india-make-utility-decision-ahead",
+      "title": "Jadeja or Axar? India to make 'utility' decision ahead of 2027 World Cup",
+      "region": "topic",
+      "section_hint": "sidelines",
+      "n": 7,
+      "national": 1,
+      "outlets": [
+        "Cricinfo",
+        "The Hindu",
+        "Rediff",
+        "ICC",
+        "Moneycontrol.com",
+        "ESPNcricinfo",
+        "ESPNcricinfo, India"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNc0NVdzBMWlpkamhBNElYMlpBU3J1ck5hTlJxQmwxdjN0VXlRVThFV3ZfWWRKTFJ2eWpLMXVyMWNTQ2VKZHhxWnJZem5uZEJwaDBKLU50RXQ5amtIQ19nXzNqS01BS3QwLVZkRG5wdVdCdl9rRVE0UHlOSnkwaEhvcXpqWFJmOUJqMWlfVzFHbEFJLXpoaWQtQlM5bHZGeEF1dkNITWdTM1VjQmFWN3ktbEk3ZG90UHp3M2JXb1hjZXp2MFBDVGhIbG9kWWo4SGRfVjBZ0gHkAUFVX3lxTFBBOERBSVFZTnptMk92amJtTkl5RG1PNmV2YUlycHdkOFBmSllzbFVNLUJUako5WjZLYk12ODViSTYtYm1saEZXaDQtR2FMUFJDakQ2VWFFdkxoYkRCc1BmY3ZrV2pZRXJ2MW1RRzl3VmlqaVNVVVY4bmFmZWxXRk1XZ25TZnNCd1h1eUwxUmhHUFo5aUdBMUtkeWJoSHliUTlnYUpNbXp3X1l2T3QwcVFOaGs2MWV0MHlOdVhXR2w4Sk9zWFVyNXBCakJhaExKRGhhWVJiOUpjdV81WUJQdWhYLS1zRA?oc=5",
+        "https://www.cricinfo.com/ci/content/story/1556124.html?ex_cid=OTC-RSS",
+        "https://www.cricinfo.com/ci/content/story/1556124.html?ex_cid=OTC-RSS"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "gyanesh-kumar-india-election-chief-centre-growing",
+      "title": "Gyanesh Kumar: India's election chief at the centre of a growing political storm",
+      "region": "india",
+      "section_hint": "dateline",
+      "n": 7,
+      "national": 4,
+      "outlets": [
+        "bbc.com",
+        "The Hindu",
+        "NDTV",
+        "The Times of India",
+        "Telegraph India",
+        "The Hindu, national",
+        "NDTV, top stories"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1JOVREUHpxcWdSSFJ2dFplWmFmbUdVUmI0ZHNBQVVQMzczSjhsLVh4RTliQ2tDRkpleHdyaEFwUnBRbDdDQmxnT2o5Rm9SaVczZnNSSGxsb0dUdWM?oc=5",
+        "https://www.thehindu.com/news/national/india-bloc-meeting-today-who-are-attending-rahul-mamata-kharge-full-list-of-leaders/article71526950.ece",
+        "https://www.ndtv.com/india-news/election-commission-gyanesh-kumar-we-must-go-back-to-ballot-votes-congress-chief-mallikarjun-kharge-at-key-india-bloc-meet-12118506#publisher=newsstand"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "india-look-solidify-2027-world-cup-plans",
+      "title": "India look to solidify 2027 World Cup plans, West Indies seek more bowling bite",
+      "region": "india",
+      "section_hint": "sidelines",
+      "n": 7,
+      "national": 3,
+      "outlets": [
+        "Cricinfo",
+        "The Times of India",
+        "Telegraph India",
+        "Rediff",
+        "The Hindu",
+        "ESPNcricinfo",
+        "ESPNcricinfo, India"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNb0tPT19NVG9jaV8yTGVTZ1FBMGhNTmhndWpEM0hKMXByQWEyNzFPWkNlNFRDb1JXYjBPem5FQml3MHNOeGVlcEdLcERCWGZ0aS1tVHEwUXRVQjlTX0pBcEdPZks4c1lWYjlzbTFGeDBVbXFQMGVKWi1BMzZ6a0NkTVNYbWEwNXVDT1ZDelhyVFpwQmZaM256TkdtMGYxTEtHdmZRdThIOG5DYmp2bzJqT1dyclo1Q0VNNTRR?oc=5",
+        "https://www.cricinfo.com/ci/content/story/1556106.html?ex_cid=OTC-RSS",
+        "https://www.cricinfo.com/ci/content/story/1556106.html?ex_cid=OTC-RSS"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "india-sri-lanka-asian-games-2026-cricket",
+      "title": "India vs Sri Lanka, Asian Games 2026 cricket semi-finals: Schedule and watch IND vs SL live streaming and telecast",
+      "region": "topic",
+      "section_hint": "sidelines",
+      "n": 7,
+      "national": 1,
+      "outlets": [
+        "olympics.com",
+        "Cricbuzz",
+        "ICC",
+        "Telegraph India",
+        "Cricinfo",
+        "ESPNcricinfo",
+        "ESPNcricinfo, India"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMisAFBVV95cUxNN0s3QWUwdGs4SGVvSkVlaGxMbUpQR0xmcGwxbUVHUnh5ekpKWlo1X0FjRnRBcWRKbUFhUVg4OUx4Qy1MLWdodUpzZVFxVEpjUUNXYmJtZ3JFSGdQeV9QYS15TjRJc09Qc01PazdLZEcyWVR6OC1kTWMtR2FQLVBiYVYwVlQtN3dFVTBzUkZYSzBvMzAyX2xSdTFZU2JGX1Y2QU5GcmlUSmhBb01lTVk5SA?oc=5",
+        "https://www.cricinfo.com/ci/content/story/1556538.html?ex_cid=OTC-RSS",
+        "https://www.cricinfo.com/ci/content/story/1556538.html?ex_cid=OTC-RSS"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "fed-officials-lean-hawkish-though-williams-sees",
+      "title": "Fed officials lean hawkish, though Williams sees no urgency for another hike",
+      "region": "topic",
+      "section_hint": "ledger",
+      "n": 7,
+      "national": 0,
+      "outlets": [
+        "investingLive",
+        "Reuters",
+        "WSJ",
+        "MarketWatch",
+        "Forex Factory",
+        "marketwatch.com",
+        "Bloomberg.com"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMitwFBVV95cUxPdmVod2xqdGltU184UjByRDVXOXBtN0JHcGRzeHhTMnljUzU4c1puNk5KdDRTN0JKNzFtVDNlLTR6RHZ1RllKNHNQRG8tbzlHZXB0N3c2RXhFbWlsdm5qa2ZyYlMzUFhJYVNpQjRBRW1rLV80Z3g4d1RyRkMtR0FxQ1FCaWotOVI4WnBwRnpIRnBPLVhvd0RBTHFfZGJBTXlWRDBWbXlrSzFaakFVVVdRREw3ZEF6TU0?oc=5"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "microsoft-releases-windows-11-version-26h2-calls",
+      "title": "Microsoft releases Windows 11 version 26H2, calls it a \"predictable and low-disruption update\" with no compatibility concerns",
+      "region": "topic",
+      "section_hint": "workshop",
+      "n": 7,
+      "national": 0,
+      "outlets": [
+        "Windows Central",
+        "blogs.windows.com",
+        "Neowin",
+        "MakeUseOf",
+        "TechPowerUp",
+        "windowscentral.com",
+        "Windows Blog"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMihAJBVV95cUxOZ3VCN3JtT0x3THpfQTRlWE9tZmZRZmM3SWVvNGJRQVRVYzFJWU5UOS1QMUJiNHNMMUVPcHBYcUlYY3BDQWRIa0VfOG1kc19VcVRhUWdfcGlvQzlnT2tpZUw4akJtd0hITGlZTzdKd0RPMnhVdWFrWHJkdS1HazVZSndEVEY0Mkw4bHBBa0VpZXBSal9WN2RuWmtaZHNxSWhGZUszNkV6MGY5RHdvdXNMQ0RjeUlZeVd4RTQ2cnJIQzd0VEpCS0c3WGFFWndBOGZBZXU3ZExwUU81bDFGVThwX0ZoMkUyazBHTmNtNjNFRDJsTDdHbzFSV3dsdXdRN3Q0ZXNhaA?oc=5"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "galaxy-s23-update-brings-september-2026-security",
+      "title": "New Galaxy S23 update brings September 2026 security patch",
+      "region": "topic",
+      "section_hint": "workshop",
+      "n": 7,
+      "national": 0,
+      "outlets": [
+        "SamMobile",
+        "GSMArena.com",
+        "Samsung Global Newsroom",
+        "Forbes",
+        "9to5Google",
+        "Engadget",
+        "PhoneArena"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMilAFBVV95cUxQX2JBcGkxRHA5NFZJcmN1cjAtbFJuWm9xZTBQUG9OZThPMV9SNzVCZXNONXpNZm1TaFE5US1vSlFXdE94TGxiR3Z3eGx2VWdCUDAwOUcyZWNhaHEyVEtJalZlNDlwb3lfMHpVR1lNSUtYaU9Ra09YVWFTaS1OQ1pMdVFQdnhIb2hOR2Y1OG9HNWlqTHBu?oc=5"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "henry-cavill-next-big-role-game-developer",
+      "title": "Henry Cavill’s next big role is game developer, and he’s doing it on a Googlebook",
+      "region": "topic",
+      "section_hint": "workshop",
+      "n": 7,
+      "national": 1,
+      "outlets": [
+        "Android Authority",
+        "blog.google",
+        "The Times of India",
+        "TechPowerUp",
+        "9to5Google",
+        "Ars Technica",
+        "Engadget"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMigwFBVV95cUxQMEJmUXc5bWtyLWZydHhxRmNDdHhiZkNhU1MyRV9lTUZjMlh5NmNyMGF6VFBDVnk3R0QwbENQT2l6OGpTbVVsd0tjYkpTY3M5M2hvM0diVDdCb1UtSm4wVmxBNVQyeVJZMVRFOXczTHo3XzhWMzQ2ejZqdS1lN1hadTEwNA?oc=5"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "eam-jaishankar-warns-major-food-crisis-coming",
+      "title": "EAM Jaishankar warns of ‘major food crisis’ in coming months",
+      "region": "topic",
+      "section_hint": "dateline",
+      "n": 6,
+      "national": 2,
+      "outlets": [
+        "The Hindu",
+        "UN Media",
+        "The Economic Times",
+        "News On AIR",
+        "Deccan Chronicle",
+        "The Hindu, national"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMitwFBVV95cUxPc254YmpkWFhWMkdQYXM0X2xqU3JndkVfUVdDX0J5bFZRbG1NZGthVGRoVmlMcDN6UUJvNklGVVYydEZlM29YTlhuQUlBMGtOd00tU2hFV0FZYW43M3VtLWdyMWwzYld2WDJfQm5nNTlVZTBrQld6VHVsZXpESHdkWkYxMGVrYjMxR29CVTZlNDFwUWZHeXRjV2l5Y3otMGpSc2dOZHAyTGd6U200SWhoRkVocG1fZmPSAb4BQVVfeXFMUDd1NUVNNnBhaUV5am1rRWhfVVlHNmFYa2cyZmxrc0FYTTFGZ3pCcGtfU2RraXEtR18tOTdjZzhlSElNMDVpc0FhUGhNNzRVSjlNRTVNWk82VjIyeDVyRmY3V2FsTjJqRnFOS1N1NTdOelhtNElPc2lhUjZxOUxEUENSMWJsR2tpTnZrMGdRbDdjWEJLU1o4elZaVkJXMXFXT3BkYkJFM1k2RmNlN1FkSi1oeEFWWXgzNkdPVGtQQQ?oc=5",
+        "https://www.thehindu.com/news/national/eam-jaishankar-warns-ofmajor-food-crisis-in-coming-months/article71526595.ece"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "000-crore-drugs-seized-iranian-boat-arabian",
+      "title": "₹3,000 crore drugs seized from Iranian boat in Arabian Sea; 5 Pakistan nationals detained",
+      "region": "topic",
+      "section_hint": "dateline",
+      "n": 6,
+      "national": 2,
+      "outlets": [
+        "The Hindu",
+        "Rediff",
+        "BusinessLine",
+        "The Times of India",
+        "Inshorts",
+        "The Hindu, national"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMi3gFBVV95cUxOZDAzWDlCazY2VF96Y2Vkb1lXODl2N0VwQmhPdmw1eUZnajJ1ajllRks3dWs1a2xWR1o0aVVKalNvMHdWeE1XTXlUcUFCZ28wRkxSQ0V4cDRQNHN5d2kxVTNvc3ZnQmpicjRTUU9ENy1Qc0ZLTTFYNXliTjRJbkNFdEdtcHZBWnRkM2F0WENlbUVNMURjS2JkLW1KcW1qT0dvamZvU2Z5ZlA5NFpmc2kwYllvVjlRU1p4TnAwUlg3eFV6eVZVSHpueEhBRXNMZE5MdVpOcUJudXJlalhzMXfSAeQBQVVfeXFMTVRmbnM3alI1WGZ4cmNOVWpSUXliYWdUZkpmV0p0eS1Ta1FkeVNnNDdYRDBVaW9TVVdnU1pmQ2hSWjJGRkw5MHctYnlnQlVyQkxtTEFrR3FTVndqOWxNUG5wdzZDdFpSeldHT0pxWGtONW9zLW82cHM1WDlaNGJka2FpblJ5VGs0WkN5WGNCUmV2RF9SVjlZei13b0VERzkyZGVYZ3NoNkU5RVB2TllXZWdJQ2dEdl9yZEI1NzVDbnVRM1E0ejkyckpXN0pEdVJNS19ZZm5yX3RWaVZjTnViamFlLXY1?oc=5",
+        "https://www.thehindu.com/news/national/3000-crore-drugs-seized-from-iranian-boat-in-arabian-sea/article71526673.ece"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "cisf-constable-guns-down-four-colleagues-kathua",
+      "title": "CISF constable guns down four colleagues in J&K’s Kathua",
+      "region": "india",
+      "section_hint": "dateline",
+      "n": 6,
+      "national": 5,
+      "outlets": [
+        "The Hindu",
+        "NDTV",
+        "The Times of India",
+        "Telegraph India",
+        "The Indian Express",
+        "The Indian Express, India"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMi4wFBVV95cUxPbXVrdTloMkhPdURmRmw5aWI5enR0NlBBVmVJUlgwVHE4aE03R2FpeV9YX21nVktkZWdRcVZlVE96cVpITzY4YVo3dXhHc0pJa2dIai13NHl3dHItNklwV09SQ2ZRZHpxRkkwamt3aTRyNXVPZUNDdUFtd3Z3b0U3QWhNblhaRHZ6QzdDU0t3UFIzTkpRLXAybDhfTF93YlNnRE5IbEhySXZDVENWWGtFZ0VhWWJCRThEWmRSdWRNOHZGWUFlbGNJUEZ0ZDM1UXkzRll5cHRMd0NBczJjLWs0RnNPa9IB6gFBVV95cUxNS3QzS29yZ1JkU2oyWnZJdUlMR3VlMmpRMVNuMlNhLXM3WWpjV3dYNmJHWUtQQVZlNHlUbDhucHlvemllTXlrUEJOS0czVDcwaFRRT19QY3NhYlNTU1JEMVJaMkhIVkNfaExwTjZvVHpjcnpnQWxiMlRDdnJBOHJoY2R6OWlEQkVNNVZGOU1kOUU2cldrVFZ4ZEs3N1hBMnpJNkx3X0xZVmg4OFpEVFhMancyM1loc0NwVVFFVnhMM3pqNmpLVFYyTGpZMWxGZmFBcVN4cS16SUU1NG9WTUxIVElDZl9fSUM1Wmc?oc=5",
+        "https://indianexpress.com/article/india/cisf-personnel-killed-firing-incident-sewa-project-in-jammu-kashmir-kathua-10899556/"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "shiv-sena-ubt-neta-pradeep-purnekar-shot",
+      "title": "Shiv Sena (UBT) neta Pradeep Purnekar shot dead outside party office in Thane",
+      "region": "india",
+      "section_hint": "dateline",
+      "n": 6,
+      "national": 4,
+      "outlets": [
+        "The Times of India",
+        "The Hindu",
+        "The Economic Times",
+        "The Indian Express",
+        "Rediff",
+        "The Times of India, top stories"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPejQ4dVFSUGdWSlByaVY2T0JSUlhnMDVNWkR4UTVJNVZjU1FqUk9hSkp6UkxiWGt3Yk4xZkQxbmMyeUJZOVViZDJLdTUwWU42YloyeUZMWE5RZzdjbF9fTk03c05weGNLRXhab1hQSjlJNTVrRmFjbFNFeUpLank2TkZXM2VWcU03cFZHcGhjOER1R1ZBWXpRRFU0c2lxN0R0YVkyR1M0czRjYmxKUWNtYmRaSHFvT3hpZnVTZmNWRkJtWmkwV0U4QjhKUmgwUmZOem9nV0VPLVZjS3dxbGpTUXpn?oc=5",
+        "https://timesofindia.indiatimes.com/city/thane/shiv-sena-ubt-neta-pradeep-purnekar-shot-dead-outside-party-office-in-thane/articleshow/134577005.cms"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "bihar-bureaucrat-couple-premises-searched-vigilance-uncovers",
+      "title": "Bihar bureaucrat couple’s premises searched, Vigilance uncovers Rs 80 lakh, 48 watches",
+      "region": "india",
+      "section_hint": "dateline",
+      "n": 6,
+      "national": 3,
+      "outlets": [
+        "The Indian Express",
+        "NDTV",
+        "The Times of India",
+        "Telangana Today",
+        "Inshorts",
+        "The Indian Express, India"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMimwFBVV95cUxPa2w3TVh3Y0xLMGFYcldfZXhuQ2xGTGM4VnZIQ3dGY2VURHRPWFVGUlJTZnE5QnRVeHNZUmFhbXN5WHRGZmRxbWE0ajVENTNRdnJET25SRzJoRnZ0SExEQVJ3aTc3R003U0M5ZTVHZzJQem9FZndGMEh5S1lndXZOSVd5eGxfY3hmc0xrMF9HOWlKNkJld0lVVHBDa9IBogFBVV95cUxQbnpNaGs5cjVqbmxqYUFPR2dzX3BEaThqZm5xSUhwYTFzWEk3T3oxc3Ziekd6OHY5MExua2o5R1RlNEh5QzRMSk9hZ1R2Y1FKelVjcHJjcWxHdmh2WWlWX3pOVkdPVE43NmF5V3ZtQkdoWmlvVnNTQVhWd1FOSk80clpMQjNSLXRiRHExQ0I0ekxxOWd3a3YtUkNuWFdrclo5VEE?oc=5",
+        "https://indianexpress.com/article/india/bihar-vigilance-bureau-bureaucrat-couple-raid-10899843/"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "noida-gang-rape-survivor-tried-escape-bus",
+      "title": "Noida Gang Rape Survivor Tried To Escape, Bus Conductor Locked Door: Cops",
+      "region": "india",
+      "section_hint": "dateline",
+      "n": 6,
+      "national": 4,
+      "outlets": [
+        "NDTV",
+        "The Times of India",
+        "Rediff",
+        "Hindustan Times",
+        "The Indian Express",
+        "Hindustan Times, India"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMisgFBVV95cUxPMjdKZmQ1NmUxZzl0bWp4alp4c1d3bDMzNFdTNEdHR0pxTGxJSEZ2eEhCQjlhTDVrVnM5c1FiZUNoelZpWks4akVPTGFfWUFWYXdUSTRwS2NFOUVhZ3JLZmN3MHlPTHNBZFctZzNzZkloaVFZdnZfaVVGakt0T1ZMdG1zdVUyUmRxR2NwSGpZT29pRk40Q1lZWlJnWnBVejlLTXMxVklncGExTmZlT0FjQzd30gG6AUFVX3lxTE43T0cwRDcwdC1KYWVpVGs0NzRsSDJrbk5pRFh5eVVuMTBYSnNsZ0tadjdpMGpsYnl5TXR4R2VjVzN4RGVIdzJjOEJWQ2ljWkwtZWFXT1R4MWdVTm90SWtHcjY0U3dlRndmMGdCaEtVNWhvTnpHUmxMMXJQQnlScHZqbktEejNFZmlFNnJzdHdHWFhRcFFpU0ZlQzdBOFJ1cWxwbGc4NUQ5NlZreVFFYWdZUEE1bHVkejhOUQ?oc=5",
+        "https://www.hindustantimes.com/india-news/delhi-bus-gang-rape-greater-noida-pari-chowk-charge-sheet-101790739840031.html"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "tennessee-set-execute-woman-first-time-two",
+      "title": "Tennessee set to execute a woman for the first time in two centuries",
+      "region": "world",
+      "section_hint": "dateline",
+      "n": 6,
+      "national": 1,
+      "outlets": [
+        "Reuters",
+        "NDTV",
+        "NBC News",
+        "USA Today",
+        "bbc.com",
+        "BBC, world"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMingFBVV95cUxQNmI4TktoRGotdXc1NHo1a0kxSktmREtuc0lVaWlpandHY3RuSnVnY0doMWZXS1RaUURKUlI0LUFUNmRnd21YN0lCcDZhU2luWDdBd19lVjRsVGFwS09Ram1rNU9oQW9MdnpDUmpKVEZ5dHFIOUg2RkE0RnBvRFN1US1xSF9pbmphd3JvUmdRb0pRRXR5a21hbGp6SEMyUQ?oc=5",
+        "https://www.bbc.co.uk/news/articles/cwe879654mj7o?at_medium=RSS&at_campaign=rss"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "jp-morgan-goldman-diverge-hormuz-oil-flow",
+      "title": "JP Morgan, Goldman Diverge on Hormuz Oil Flow Estimates",
+      "region": "world",
+      "section_hint": "dateline",
+      "n": 6,
+      "national": 0,
+      "outlets": [
+        "Crude Oil Prices Today | OilPrice.com",
+        "CNN",
+        "Bloomberg.com",
+        "The Economist",
+        "Gulf News",
+        "Mint, markets"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMirwFBVV95cUxPM3dCdm11d29uVFluUnNKYk9lY2t1Rkh5cUlGemhDM3huOGlHVm1wVW9WeUVFNE5WZ1U5Yk9aRGY4YTliRFplT3NvdzhUcjdQZ1BLeHNaMjdJREpCX3ZwTmVlbFlVUWFZelMyQk5BbVpIWnRfZjhkWE5nd1JiWW56LWhVMTRka0FTUEJsck5heGQ1bl9JYWxLS3NvNGphWXJZVlJKdVpQNFV4S1RFRFVz0gG0AUFVX3lxTE1YOURqVjc3LXlvVDNfNWZRRkMwZTAxSEFFeGFjUVZMamptcHk1bG52WkdySTZBclZLSzFFczRPWTAtS2lvd2xUc0k2NVVWRzFBbl90c09VVEdJNC1IZElVTUxZdGtBYzYtRDdvRDJrU0NVbDJTelM4RkhEYnVkNHB4UnktVXBveWdFcEdodHc4NWxkcHZOSXY0djRmTTJCbDJrRnF0NThQc2tHRUZ3b0J4eXJSUw?oc=5",
+        "https://www.livemint.com/market/mideast-crude-oil-flows-hit-98-of-pre-war-level-jpmorgan-says-11790732517376.html"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "how-russia-ballistic-missiles-jet-powered-drones",
+      "title": "How Russia's ballistic missiles, jet-powered drones have kept Ukraine under pressure",
+      "region": "world",
+      "section_hint": "dateline",
+      "n": 6,
+      "national": 3,
+      "outlets": [
+        "The Times of India",
+        "The Hindu",
+        "Reuters",
+        "Al Jazeera",
+        "ThePrint",
+        "AP News"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMi7gFBVV95cUxQN0RhV25EOEU3ZF9id0c2VU03UVV3aGkxcFBIamd4eW9qVHFpeVpLdWZsMTE2R3NmR091ZjZNcnQyTi1FOE1sTWE0NC1veW5ENUNvNGx4cU81YkRSOXF2Q3lYSzRxQ01QQ2lZeHRLTGhBVWhxbnc0c0R5NnRLdTZQRENiNzJWZGVsTXdMZEltaW1kaGJwTGc4OVZ1eWZoTVpYZlo3VWd2UDVCbXBRUHNxazBvWlo1MVBXM3h2SGNVc1FtbHBMc205UzRxVmhSTXdqaGpHTHZ4V0lLVHViMDNDQkd4ZW4zOUZ3Z3NNSlVB0gHzAUFVX3lxTE10SmVxY2ppUDU4Vl9VTGJfUE5yVk5Rdm1xcGdEdWpteC1ISTN0RGtLY3pyRXhpNDJ1dm92b0RFNUdVUUhnUU9XczVXMFRzcDVXSV9MeTZUYXVCZUpsS1ZLZjUyRWJkcUVCYklMUTd0M1Y0VDhIcW9BRUZjN2RXeThOZUF5N3FxOVRDVjRZa1BUU01hUmY0WlF4YVdUaUdzNkhJQ2dEcXFoaDVxZDVoRTJ6WUE5dENGVHFxZlEwVWtkRmZVQk9ycXZ2NTd1a1BNdFYxSXo0RjZ6OGw5eTRoaTV4WElmcXRIa3lrUHVEZkl2WHFkZw?oc=5",
+        "https://news.google.com/rss/articles/CBMitgFBVV95cUxOOUJYOFJjVEFrbW9LNnY1V0ZZOWxPVEhBRm9mcW16RnZIX0stUTRWMXpybThGUF9EMVZ1eTBQelpVbkM4NGtyRzlzVzJyZ21CX3UxR1lIVThTU1RUMEF3WFdheW1jTTNXWExLcHExUmJrTDVEQ3Q3SWdUckRicHEzajlnSFMxRTlReUl0LXU3TjdJRlp0S3ljc2ZUQ3FsRldiOFBsZEZ3Y2ZfeEhKY2hjajZrN1h6dw?oc=5",
+        "https://news.google.com/rss/articles/CBMirAFBVV95cUxQNlJtSFNPdktHSGhSU1FFZ1kxc0o5OHZXZ0hKM1hpa2p2QWhpMXNDV3JFMmtYODBDNFM4MC01ZVEtQVgyYXIwQzgzUkhQUUdoOWdpS3cxMHh4YS1TZFVDMTM0Ym9lTWN1aHpDaTZVcWZIRGhNR2VDUHl2ZEI3QU5KeVZrdVRQM2t2djc5cGphblpuOWd5WFhPV0dJOTZXQWdjSXhraHFUUVlUYUZz?oc=5"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "america-gov-gets-really-weird-when-ask",
+      "title": "America.gov gets really weird when you ask it about Minecraft, but it’s not a glitch",
+      "region": "world",
+      "section_hint": "dateline",
+      "n": 6,
+      "national": 1,
+      "outlets": [
+        "techcrunch.com",
+        "cnbc.com",
+        "blog.google",
+        "The Times of India",
+        "Forbes",
+        "TechCrunch"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOcmNNXzVpazFCREpxbFhmSGh6QWh0ekluQ2FaN056akowOXBlUjBJVjFXM2pjaWEwMGM3cXhGUDNzcE5vUmNEZ2ZSMlZZekFEM1ZRS2dCM2lJRlc0cHVuR05NN0tWdktvNGJIbVlMOUZOcnJGTWV2ajdtRDlpVFFOdGI5SnRfX1JSZlB2VGtBb05QNDdCTW5MaDUwbldxQzFIaC1xanRGTXpFNWU4dmRJRlFVYm5DOXM0?oc=5",
+        "https://techcrunch.com/2026/09/29/america-gov-gets-really-weird-when-you-ask-it-about-minecraft-but-its-not-a-glitch/"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "malaysia-gave-refuge-rohingya-now-wants-them",
+      "title": "Malaysia gave refuge to Rohingya; now it wants them to go",
+      "region": "world",
+      "section_hint": "dateline",
+      "n": 6,
+      "national": 1,
+      "outlets": [
+        "Al Jazeera",
+        "The Guardian",
+        "The New York Times",
+        "The Times of India",
+        "bbc.com",
+        "The Guardian, world"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMiowFBVV95cUxOemU5RzltQzNHY2VWQ2JmUUNKNTJ5OWRCZVdVaExaZUNVZ01kczZ5WHRwRWl5ZVYwWVJPcDl6VVd5TGM2OERQd01fMFB6LV8tY29WZlJCRHBsc24yN2p2Vjhsa1pldENGWEctMnNiQ0pUNFhLcHN4Y0doQ2JnZS1BMXZwck9GV21uMzJrY05UV0ZaZTdaY3Z4b0g0d1dGZ1Y1eW5R0gGoAUFVX3lxTE5FRW1HNXZNWmZ1b2ZhdVB3M19LTnNqd1VtQTBqNldVMVBzU3g1bFc4cmlmeEwyaTdBTlRxOXN1TkpKaGFaVlZSZjRhalhGUWdIT1V3VUxDMmt0ODYzWUVxN1l2UmR3UjN1T19GSEFiUnhoa0JMZEp5QzVwcG5aQzhrcUIwS3l2QmRxUWh1NW9RcTdvUkxlR2h6RnhmV0VzeXR4bUVmU2tEdQ?oc=5",
+        "https://www.theguardian.com/world/2026/sep/30/malaysia-begins-myanmar-repatriations-despite-warnings-from-un-and-rights-groups"
+      ],
+      "carried_by": null
+    },
+    {
+      "id": "cafe-iii-fuel-efficiency-norms-notified-cars",
+      "title": "CAFE III fuel efficiency norms notified for cars: 3x credit for battery EVs, no special benefit for small",
+      "region": "topic",
+      "section_hint": "ledger",
+      "n": 6,
+      "national": 2,
+      "outlets": [
+        "The Economic Times",
+        "The Hindu",
+        "Team-BHP",
+        "BusinessLine",
+        "Moneycontrol.com",
+        "The Hindu, national"
+      ],
+      "links": [
+        "https://news.google.com/rss/articles/CBMikgJBVV95cUxQRkRablJXNFpEQVNOalJCWENLOUJJeFhwNHk2TWo0NjBJeHdiTm1NdmtuTENWYW9XUWN4a1ktUXdWS01GM09hSmpqSjBUZWdxMlhraHA0WU9jdEdXakJxN3ZGQzZkdFNkMGFHZmZXanBuYWQ4cTRQYlJzT1dpRFd4RG5hZDZrWE1BSi1uWDZBT1l6dHlGLXhIUDhXVHNjTXI0OG1GVEtQeF9sZlRHdzU2SUQzMHJOM2kwQWJuRnZOTFo1WGRKdE45M1UxcDVWMFV3TEFraXlpTkxwRU5EdUpyME5jOXhyTXVrMDZTcE9RRUpFMndpdVhWclViU0FjTEFDZTh3UzJvOG44ZldKM2w4dVRR0gGXAkFVX3lxTE5HN1VMc2VPVlRVX0FGV3A2WGswX09fb05ZbXBHQ3NyOFZKV1dsZ2lSZzRGWUE2NzFEQnI0cGZQU19MMFg5dzZKTkVOQTdyVUlBOWNWdVBPNktFNlhJdTFSMTViWnNyQmhESkN1QjBkZlI2cjU0cFBLb1gwb3NBSDNaYnhsQ3o1OU90dzBncEs2WHgxQnMwVnF3MGFMNkEwMklDcExIbEFEdlZRQjNKaTc4NzV4ZGsxdGNpQUoxYmZtVVluMEhGS0lYQlNEZXB2TG9uZ1VnOC1nTjBlaE0tT0xZMXI3NWRVTWo0VzJFcVMzdXFRQjl2dV9LMHRLd21BeWwyVUZVOExYM2l5ZVlCdWhzN3RjVmExNA?oc=5",
+        "https://www.thehindu.com/business/government-notifies-new-cafe-3-norms-for-passenger-vehicles/article71527012.ece"
+      ],
+      "carried_by": null
+    }
+  ]
+}

@@ -1,12 +1,12 @@
 {
-  "date": "2026-09-29",
+  "date": "2026-09-30",
   "source": "Cricbuzz",
-  "checked_at": "2026-09-29T08:38:47.535Z",
+  "checked_at": "2026-09-30T08:38:03.143Z",
   "matches": [
     {
       "desc": "2nd ODI",
       "format": "ODI",
-      "series": "India v West Indies",
+      "series": "West Indies tour of India, 2026",
       "opponent": "West Indies",
       "start": "2026-09-30T08:30:00.000Z",
       "ist": "Wed 30 Sept, 14:00",
@@ -414,14 +414,19 @@
   ],
   "series": [
     {
-      "name": "India v West Indies",
+      "name": "West Indies tour of India, 2026",
       "opponent": "West Indies",
       "from": "2026-09-30",
       "parts": [
         {
           "format": "ODI",
-          "total": 2,
+          "total": 3,
           "played": 1
+        },
+        {
+          "format": "T20",
+          "total": 5,
+          "played": 0
         }
       ],
       "now": true
@@ -435,24 +440,6 @@
           "format": "T20",
           "total": null,
           "played": null
-        }
-      ],
-      "now": true
-    },
-    {
-      "name": "West Indies tour of India, 2026",
-      "opponent": "West Indies",
-      "from": "2026-10-03",
-      "parts": [
-        {
-          "format": "ODI",
-          "total": 3,
-          "played": 2
-        },
-        {
-          "format": "T20",
-          "total": 5,
-          "played": 0
         }
       ],
       "now": true

@@ -1,63 +1,63 @@
 {
-  "date": "2026-09-29",
-  "from": "2026-09-28",
+  "date": "2026-09-30",
+  "from": "2026-09-29",
   "carry": [
     {
-      "id": "pm:ballon-dor-winner-2026",
-      "title": "Ballon d'Or Winner 2026",
+      "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
+      "title": "UEFA Champions League: 2027 Champion",
       "since": "2026-09-25",
-      "reason": "#1 by 24h volume; Harry Kane moved 7.7 pts since printed"
+      "reason": "#2 by 24h volume"
     },
     {
       "id": "pm:brazil-presidential-election",
       "title": "Brazil Presidential Election",
       "since": "2026-09-25",
-      "reason": "#3 by 24h volume"
+      "reason": "#4 by 24h volume"
+    },
+    {
+      "id": "pm:ballon-dor-winner-2026",
+      "title": "Ballon d'Or Winner 2026",
+      "since": "2026-09-25",
+      "reason": "#5 by 24h volume"
     },
     {
       "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
       "title": "US announces end of Iranian blockade by...?",
       "since": "2026-09-25",
-      "reason": "#4 by 24h volume"
-    },
-    {
-      "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
-      "title": "UEFA Champions League: 2027 Champion",
-      "since": "2026-09-25",
-      "reason": "#6 by 24h volume"
+      "reason": "#9 by 24h volume"
     },
     {
       "id": "pm:us-iran-ceasefire-continues-throughptptpt",
       "title": "US-Iran ceasefire continues through...?",
       "since": "2026-09-25",
-      "reason": "#9 by 24h volume"
+      "reason": "#12 by 24h volume"
     },
     {
       "id": "pm:saudi-oil-pipeline-east-west-restarts-byptptpt",
       "title": "Saudi Oil Pipeline (East-West) restarts by...?",
       "since": "2026-09-28",
-      "reason": "#12 by 24h volume"
+      "reason": "By September 30 moved 15.3 pts since printed"
     }
   ],
   "dropped": [
     {
-      "id": "pm:epl-2027-champion-20260701200428749",
-      "title": "EPL: 2027 Champion",
-      "why": "cooled: #24 by volume, moved 0.0 pts"
+      "id": "pm:unl-cze-eng-2026-09-29",
+      "title": "Czechia vs. England",
+      "why": "cooled: outside the ranking by volume, moved 3.0 pts"
     },
     {
-      "id": "pm:nobel-peace-prize-winner-2026-139",
-      "title": "Nobel Peace Prize Winner 2026",
-      "why": "cooled: outside the ranking by volume, moved 0.5 pts"
+      "id": "pm:anthropic-ipo-by",
+      "title": "Anthropic IPO by __?",
+      "why": "cooled: #29 by volume, moved 0.0 pts"
     },
     {
-      "id": "pm:next-us-iran-senior-diplomatic-meeting-byptptpt",
-      "title": "Next US-Iran senior diplomatic meeting by...?",
-      "why": "carry cap of 6"
+      "id": "pm:which-company-has-the-best-ai-model-end-of-october",
+      "title": "Which company has the best AI model end of October?",
+      "why": "cooled: #26 by volume, moved 0.0 pts"
     },
     {
-      "id": "pm:unl-fra-bel-2026-10-05",
-      "title": "France vs. Belgium",
+      "id": "pm:unl-hrv-esp-2026-10-06",
+      "title": "Croatia vs. Spain",
       "why": "carry cap of 6"
     }
   ]

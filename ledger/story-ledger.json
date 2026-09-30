@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-09-29T08:44:04.722Z",
-  "last_edition": "2026-09-29",
+  "last_updated": "2026-09-30T08:46:54.695Z",
+  "last_edition": "2026-09-30",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -25,21 +25,23 @@
     },
     {
       "thread_id": "india-markets-daily",
-      "title": "Sensex and Nifty slide to six-month lows as foreign selling reaches ₹20,695 crore for September",
+      "title": "Shares steady after six-month lows as IT snaps an eight-day losing run",
       "entities": [],
       "facts": {
         "sensex_close": "73580.54",
         "nifty_close": "23063.10",
-        "date": "2026-09-29",
+        "date": "2026-09-30",
         "sensex_move": "down over 1,000 points intraday",
         "nifty": "below 22,850",
         "trigger": "Hormuz plan rejected, oil up",
         "level": "six-month low",
-        "fii_sept": "20695 crore"
+        "fii_sept": "20695 crore",
+        "fpi_sept": "-25662 crore",
+        "bofa": "100 bps hikes through H1 2027"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-29",
-      "last_change": "2026-09-29",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
       "status": "active",
       "votes": {
         "up": 0,
@@ -198,7 +200,7 @@
     },
     {
       "thread_id": "asian-games-2026-india",
-      "title": "Neeru Dhanda wins trap gold, India's first individual gold of the Games",
+      "title": "Compound archers win three golds in a day; Lovlina reaches the boxing final",
       "entities": [],
       "facts": {
         "hockey_men": "beat South Korea 8-2",
@@ -206,11 +208,14 @@
         "squash": "Anahat and Abhay silver",
         "badminton": "Sen out; Sindhu and Hooda last 16",
         "athletics": "Kushare and Sojan silver; Chaudhary NR bronze",
-        "shooting": "Neeru Dhanda trap gold; team silver"
+        "shooting": "Neeru Dhanda trap gold; team silver",
+        "golds": "10",
+        "archery": "compound hat-trick",
+        "boxing": "Lovlina in 75kg final"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-29",
-      "last_change": "2026-09-29",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
       "status": "active",
       "votes": {
         "up": 0,
@@ -517,18 +522,20 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Supreme Court to hear a plea to suspend the Chief Election Commissioner next week",
+      "title": "Election Commission drops the extra voter-form declaration two commissioners had objected to",
       "entities": [],
       "facts": {
         "objections": "14",
         "period": "Nov 2025 to Aug 2026",
         "ec_response": "decisions unanimous",
         "status": "SC to hear suspension plea next week",
-        "ec_meeting": "2026-09-26"
+        "ec_meeting": "2026-09-26",
+        "form6": "extra declaration withdrawn",
+        "opposition": "INDIA bloc seeks ballot papers"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-29",
-      "last_change": "2026-09-29",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
       "status": "active",
       "votes": {
         "up": 0,
@@ -538,17 +545,18 @@
     },
     {
       "thread_id": "man-city-115-charges",
-      "title": "City's chairman says the club will still prove its innocence",
+      "title": "City's ruling details £830m of disguised funding behind a £1.2bn spending era",
       "entities": [],
       "facts": {
         "verdict": "guilty on 114 of 115",
         "sanction": "not set",
         "appeal": "expected",
-        "club_response": "chairman confident of innocence"
+        "club_response": "chairman confident of innocence",
+        "inflated": "830m pounds disguised funding"
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1359,6 +1367,305 @@
       "first_printed": "2026-09-29",
       "last_printed": "2026-09-29",
       "last_change": "2026-09-29",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "apple-pay-india-2026",
+      "title": "Apple Pay arrives in India, starting with Axis Bank credit cards",
+      "entities": [],
+      "facts": {
+        "launch": "2026-09-30",
+        "bank": "Axis Bank credit cards",
+        "rupay": "not supported"
+      },
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "hospital-drug-markups-2026",
+      "title": "Supreme Court questions tenfold hospital markups on medicines; hospital shares fall",
+      "entities": [],
+      "facts": {
+        "next_hearing": "2026-10-12",
+        "margin_cap": "16% under DPCO 2013"
+      },
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "anthropic-ipo-2026",
+      "title": "Anthropic's prospectus shows revenue up twelvefold and an $8 billion operating loss",
+      "entities": [],
+      "facts": {
+        "revenue_2025": "$4.59bn",
+        "operating_loss_2025": "$8.06bn",
+        "q2_2026_revenue": "$11.5bn"
+      },
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "workshop"
+    },
+    {
+      "thread_id": "mrpl-blast-2026",
+      "title": "Blast at the Mangaluru refinery sends up thick smoke and shakes nearby homes",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "asencio-injury-2026",
+      "title": "Asencio close to surgery that would keep him out for about three months",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "ind-wi-odis-2026",
+      "title": "India bowl first in Guwahati and hand a J&K seamer his ODI debut",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "madrid-internationals-2026",
+      "title": "Vinícius scores and Endrick assists as Brazil beat Australia 4–2",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "nations-league-2026",
+      "title": "England win 2–0 in Czechia; Denmark host Portugal on Thursday",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "shree-charani-2026",
+      "title": "Shree Charani sets the highest rating in T20I bowling history",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "us-iran-war-2026",
+      "title": "Iran receives Washington's answer to its seven-day plan through Qatar",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "delhi-riots-case",
+      "title": "Delhi High Court denies bail to Umar Khalid and Sharjeel Imam in the 2020 riots case",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "dubai-tel-aviv-diversion",
+      "title": "A Dubai–Tel Aviv flight diverted to Saudi Arabia after a cockpit fight between its pilots",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "openai-devday-2026",
+      "title": "OpenAI launches GPT-6.1 Sol at a fifth of Astra's price, plus always-on Dots agents",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "workshop"
+    },
+    {
+      "thread_id": "us-ai-policy-2026",
+      "title": "Trump orders US agencies to say \"Super Intelligence\" instead of AI",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "workshop"
+    },
+    {
+      "thread_id": "apple-security-2026",
+      "title": "Apple fixes an image-file flaw used in targeted attacks on older iPhones",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "workshop"
+    },
+    {
+      "thread_id": "windows-11-26h2",
+      "title": "Windows 11's annual 26H2 update is rolling out as a small enablement package",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "workshop"
+    },
+    {
+      "thread_id": "cafe-3-norms-2026",
+      "title": "Fuel-efficiency rules for carmakers from 2027 give electric cars triple credit",
+      "entities": [],
+      "facts": {
+        "effective": "2027-04-01",
+        "ev_credit": "3x"
+      },
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "vande-bharat-goa-blr",
+      "title": "Goa–Mangaluru Vande Bharat to be extended to Bengaluru",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "lalbagh-garden-2026",
+      "title": "Lalbagh to get a 2.5-acre garden modelled on Singapore's Gardens by the Bay",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-09-30",
+      "last_printed": "2026-09-30",
+      "last_change": "2026-09-30",
       "status": "active",
       "votes": {
         "up": 0,
