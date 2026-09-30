@@ -40,7 +40,7 @@ try {
   const L = leads.filter(l => !l.carried_by);
   if (L.length) {
     console.log(`\nLeads (${L.length}) from paywalled feeds: tip-offs only. Print one only through an open outlet that reports it; never link the paywalled story.`);
-    for (const l of L) console.log(`  · ${l.title} (${l.lead_from})\n      ${l.elsewhere == null ? "not searched (time ran out): search for it yourself" : l.elsewhere.length ? l.elsewhere.map(e => `${e.outlet}: ${e.url}`).join("\n      ") : "no open outlet yet: leave it, or search once more before the cut"}`);
+    for (const l of L) console.log(`  · ${l.title} (${l.lead_from})\n      ${l.elsewhere == null ? "not searched (time ran out): search for it yourself" : l.elsewhere.length ? "open outlets (check it is the same story):\n      " + l.elsewhere.map(e => `${e.outlet}: ${e.title}\n        ${e.url}`).join("\n      ") : "no open outlet yet: leave it, or search once more before the cut"}`);
   }
 } catch (e) {
   out = { date: E.date, window: { from, to }, checked_at: new Date().toISOString(), error: String(e.message || e), candidates: [] };

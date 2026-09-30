@@ -1020,6 +1020,13 @@
         "max": 40
       },
       {
+        "id": "athletic-madrid",
+        "section": "madrid",
+        "name": "The Athletic, Real Madrid",
+        "url": "https://www.nytimes.com/athletic/rss/football/real-madrid/",
+        "kind": "lead"
+      },
+      {
         "id": "bbc-football",
         "section": "pitch",
         "name": "BBC, football",
@@ -1039,6 +1046,13 @@
         "name": "ESPN FC",
         "url": "https://www.espn.com/espn/rss/soccer/news",
         "kind": "news"
+      },
+      {
+        "id": "athletic-football",
+        "section": "pitch",
+        "name": "The Athletic, football",
+        "url": "https://www.nytimes.com/athletic/rss/football/",
+        "kind": "lead"
       },
       {
         "id": "f1-com",
@@ -1068,6 +1082,20 @@
         "name": "RaceFans",
         "url": "https://www.racefans.net/feed/",
         "kind": "news"
+      },
+      {
+        "id": "sbn-f1",
+        "section": "paddock",
+        "name": "SB Nation, Formula One",
+        "url": "https://www.sbnation.com/rss/formula-one/index.xml",
+        "kind": "news"
+      },
+      {
+        "id": "athletic-f1",
+        "section": "paddock",
+        "name": "The Athletic, F1",
+        "url": "https://www.nytimes.com/athletic/rss/formula-1/",
+        "kind": "lead"
       },
       {
         "id": "fia",
@@ -1111,6 +1139,28 @@
         "name": "BBC, tennis",
         "url": "https://feeds.bbci.co.uk/sport/tennis/rss.xml",
         "kind": "news"
+      },
+      {
+        "id": "athletic-tennis",
+        "section": "deuce",
+        "name": "The Athletic, tennis",
+        "url": "https://www.nytimes.com/athletic/rss/tennis/",
+        "kind": "lead"
+      },
+      {
+        "id": "gsom",
+        "section": "sidelines",
+        "name": "Golden State of Mind (SB Nation, Warriors)",
+        "url": "https://www.goldenstateofmind.com/rss/index.xml",
+        "kind": "news",
+        "max_age_h": 48
+      },
+      {
+        "id": "athletic-warriors",
+        "section": "sidelines",
+        "name": "The Athletic, Warriors",
+        "url": "https://www.nytimes.com/athletic/rss/nba/warriors/",
+        "kind": "lead"
       },
       {
         "id": "bbc-sport",
@@ -1423,7 +1473,7 @@
       "note": "Tier 1: official and primary sources. Tier 2: reputable outlets. Anything else is tier 3. Scored in the trial only, until Parth switches it on (then a validator warning, never a failure)."
     },
     "paywalled": {
-      "note": "Parth has no subscription to these (1 Oct 2026). Their feeds are leads (kind: lead): the wire finds where else each story is reported, and the paper reads and links an open outlet. A story whose only sources are these hosts fails validation.",
+      "note": "Parth has no subscription to these (1 Oct 2026). Their feeds (NYT Technology, Science, Well; The Athletic's football, Real Madrid, F1, tennis and Warriors) are leads (kind: lead): the wire finds where else each story is reported, and the paper reads and links an open outlet. A story whose only sources are these hosts fails validation.",
       "outlets": [
         "The New York Times",
         "New York Times",
@@ -1434,7 +1484,9 @@
         "The Washington Post",
         "Washington Post",
         "The Economist",
-        "Bloomberg"
+        "Bloomberg",
+        "The Athletic",
+        "The New York Times Athletic"
       ],
       "hosts": [
         "nytimes.com",
@@ -1442,7 +1494,8 @@
         "ft.com",
         "washingtonpost.com",
         "economist.com",
-        "bloomberg.com"
+        "bloomberg.com",
+        "theathletic.com"
       ]
     },
     "not_outlets": {
