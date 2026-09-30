@@ -1,0 +1,21 @@
+{
+  "date": "2026-09-30",
+  "made_by": "Codex",
+  "items": [
+    {
+      "story_id": "apple-pay-india-axis",
+      "file": "apple-pay-india-axis.webp",
+      "alt": "An Axis cardholder enters an Apple Pay doorway while customers with HDFC, ICICI and RuPay cards wait outside."
+    },
+    {
+      "story_id": "sc-hospital-drug-markups",
+      "file": "sc-hospital-drug-markups.webp",
+      "alt": "A hospital pharmacy inflates a medicine price tag from ₹2,700 to ₹27,000 as the Supreme Court scrutinizes it and a patient holds an empty wallet."
+    },
+    {
+      "story_id": "anthropic-prospectus",
+      "file": "anthropic-prospectus.webp",
+      "alt": "Dario Amodei balances a rising revenue arrow and a heavy stack of servers with a compute bill beside Anthropic’s prospectus."
+    }
+  ]
+}
