@@ -79,7 +79,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -415,8 +415,21 @@ function earsHTML() {
   return [L, R];
 }
 const marketDots = () => Object.keys(CFG.markets.hours || {}).map(ex => { const o = session(ex)?.openNow; return `<span><i class="${o ? "on" : ""}"></i>${esc(ex)} ${o ? "open" : "closed"}</span>`; }).join("");
+// Madridismo: fixtures and form, then the competitions (config follows.football_club.competitions) behind tabs,
+// each with its table (P W D L GD Pts, top five plus Madrid) and the top scorers, assisters and ratings, five and five more.
+const MX = { comp: store.get("h1400-comp"), open: new Set() };
+function madridComps() {
+  const C = LIVE.club_stats?.value?.comps?.filter(c => c.rows?.length || c.goals?.length || c.assists?.length || c.ratings?.length) || [];
+  if (C.length) return C;
+  // Older snapshots have only the La Liga table.
+  const T = LIVE.laliga_table?.value;
+  const liga = (CFG.follows.football_club.competitions || []).find(c => c.espn === CFG.follows.football_club.league);
+  return T?.rows?.length ? [{ key: liga?.key || "league", label: liga?.label || "La Liga", rows: T.rows }] : [];
+}
 function madridBlock() {
-  const F = LIVE.football?.value, T = LIVE.laliga_table?.value;
+  const F = LIVE.football?.value, club = CFG.follows.football_club;
+  const isUs = r => (r.id != null && String(r.id) === String(club.espn_id)) || r.team === club.name;
+  const ourPlayer = p => (p.team_id != null && String(p.team_id) === String(club.espn_id)) || p.team === club.name;
   let table = "";
   if (F?.next?.length) {
     table = `<div class="tbl"><table><thead><tr><th>Next</th><th>Competition</th><th class="r">IST</th></tr></thead><tbody>${F.next.slice(0, 4).map((e, i) => `<tr class="${i === 0 ? "on" : ""}"><td class="club">${crest(e.opponent_id, "")}${esc(e.opponent)} <small>${e.home ? "home" : "away"}</small></td><td>${esc(e.competition || "")}</td><td class="r tnum">${e.time_confirmed ? esc(istFull(e.date)) : esc(istDay(e.date)) + ", time TBC"}</td></tr>`).join("")}</tbody></table></div>`;
@@ -428,21 +441,54 @@ function madridBlock() {
     lines.push(`<p><b>Last:</b> ${res} ${esc(sc)} ${l.home ? "v" : "at"} ${esc(l.opponent)}, ${esc(istDay(l.date))}${l.competition ? ` · ${esc(l.competition)}` : ""}.</p>`);
   }
   if (F?.form?.length) lines.push(`<p><b>Form:</b> <span class="form">${F.form.map(r => `<i class="${r}">${r}</i>`).join("")}</span> <small class="asof">latest first</small></p>`);
-  const rm = T?.rows?.find(r => String(r.id) === String(CFG.follows.football_club.espn_id) || r.team === CFG.follows.football_club.name);
-  if (rm) {
-    const top = T.rows[0];
-    const gap = top && top !== rm ? `, ${top.points - rm.points} behind ${esc(top.team)}` : top === rm ? ", top of the table" : "";
-    lines.push(`<p><b>Table:</b> ${ordinal(rm.rank)} on ${rm.points} points${gap}.</p>`);
+  const comps = madridComps();
+  // Where Madrid stand in each competition, one line each.
+  for (const c of comps) {
+    const rm = c.rows?.find(isUs), top = c.rows?.[0];
+    if (!rm || !top) continue;
+    const gap = top === rm ? ", top of the table" : top.points > rm.points ? `, ${top.points - rm.points} behind ${esc(top.short || top.team)}` : ", level on points with the leaders";
+    lines.push(`<p><b>${esc(c.label)}:</b> ${ordinal(rm.rank)} of ${c.rows.length} on ${rm.points} point${rm.points === 1 ? "" : "s"}${gap}.</p>`);
   }
-  let mini = "";
-  if (T?.rows?.length) {
-    const isUs = r => String(r.id) === String(CFG.follows.football_club.espn_id) || r.team === CFG.follows.football_club.name;
-    const rows = T.rows.slice(0, 5); const us = T.rows.find(isUs); if (us && !rows.includes(us)) rows.push(us);
-    mini = `<table class="compact liga"><thead><tr><th>#</th><th>La Liga</th><th class="r">P</th><th class="r">GD</th><th class="r">Pts</th></tr></thead><tbody>${rows.map(r => `<tr class="${isUs(r) ? "on" : ""}"><td class="tnum">${r.rank}</td><td class="club">${crest(r.id, "")}${esc(r.team)}</td><td class="r tnum">${r.played ?? ""}</td><td class="r tnum">${r.gd > 0 ? "+" : ""}${r.gd ?? ""}</td><td class="r tnum">${r.points}</td></tr>`).join("")}</tbody></table>`;
+  const facts = lines.join("") + staleNote("football");
+  let panel = "";
+  if (comps.length) {
+    const cur = comps.find(c => c.key === MX.comp) ? MX.comp : comps[0].key;
+    const signed = n => n == null ? "" : n > 0 ? `+${n}` : n < 0 ? `−${-n}` : "0";
+    const tableOf = c => {
+      if (!c.rows?.length) return "";
+      const rows = c.rows.slice(0, 5), us = c.rows.find(isUs);
+      if (us && !rows.includes(us)) rows.push(us);
+      const cell = v => `<td class="r tnum">${v ?? ""}</td>`;
+      return `<table class="compact liga"><thead><tr><th class="rk">#</th><th>Club</th><th class="r" title="Played">P</th><th class="r" title="Won">W</th><th class="r" title="Drawn">D</th><th class="r" title="Lost">L</th><th class="r gd" title="Goal difference">GD</th><th class="r" title="Points">Pts</th></tr></thead><tbody>${rows.map((r, i) => `<tr class="${isUs(r) ? "on" : ""}${i === 5 ? " gap" : ""}"><td class="rk tnum">${r.rank}</td><td class="club">${crest(r.id, "")}<span class="lg">${esc(r.team)}</span><span class="sh">${esc(r.short || r.team)}</span></td>${cell(r.played)}${cell(r.wins)}${cell(r.draws)}${cell(r.losses)}<td class="r gd tnum">${signed(r.gd)}</td><td class="r tnum pts">${r.points ?? ""}</td></tr>`).join("")}</tbody></table>`;
+    };
+    const fmtV = (k, v) => k === "ratings" ? Number(v).toFixed(2) : v;
+    const listOf = (c, k, title, unit) => {
+      const L = c[k]; if (!L?.length) return "";
+      const id = `${c.key}-${k}`, open = MX.open.has(id), more = Math.max(0, L.length - 5);
+      return `<div class="ldr"><div class="ldh"><h4>${title}</h4><span>${unit}</span></div><ol>${L.map((p, i) => `<li class="${ourPlayer(p) ? "on" : ""}${i >= 5 ? " x" : ""}"${i >= 5 && !open ? " hidden" : ""}><span class="rk tnum">${p.rank ?? i + 1}</span><span class="pl"><b>${esc(p.name)}</b>${p.team ? `<small>${esc(p.team)}</small>` : ""}</span><span class="v tnum">${esc(fmtV(k, p.value))}</span></li>`).join("")}</ol>${more ? `<button class="lmore" data-lmore="${esc(id)}" aria-expanded="${open}">${open ? "Show fewer" : `${more} more`}</button>` : ""}</div>`;
+    };
+    const body = c => {
+      const lists = [listOf(c, "goals", "Top scorers", "Goals"), listOf(c, "assists", "Assists", "Assists"), listOf(c, "ratings", "Ratings", "Avg")].filter(Boolean);
+      return `<div class="cgrid">${tableOf(c) ? `<div class="ctab">${tableOf(c)}</div>` : ""}${lists.length ? `<div class="ldrs n${lists.length}">${lists.join("")}</div>` : ""}</div>`;
+    };
+    const tabs = comps.length > 1
+      ? `<div class="ctabs" role="tablist" aria-label="Competition">${comps.map(c => `<button role="tab" id="ctab-${esc(c.key)}" aria-controls="cpan-${esc(c.key)}" aria-selected="${c.key === cur}" tabindex="${c.key === cur ? 0 : -1}" data-comp="${esc(c.key)}">${esc(c.label)}</button>`).join("")}</div>`
+      : `<div class="ctabs one"><span>${esc(comps[0].label)}</span></div>`;
+    panel = `<div class="comps">${tabs}${comps.map(c => `<div class="cpan" role="tabpanel" id="cpan-${esc(c.key)}" aria-labelledby="ctab-${esc(c.key)}"${c.key === cur ? "" : " hidden"}>${body(c)}</div>`).join("")}${staleNote("club_stats")}</div>`;
   }
-  const facts = lines.filter(l => !l.startsWith("<p><b>Table:")).join("") + staleNote("football");
-  if (!table && !lines.length && !mini) return "";
-  return `<div class="cols2"><div>${table}</div><div class="facts">${facts}${mini}</div></div>`;
+  if (!table && !lines.length && !panel) return "";
+  return `${table || lines.length ? `<div class="cols2"><div>${table}</div><div class="facts">${facts}</div></div>` : ""}${panel}`;
+}
+function pickComp(key) {
+  MX.comp = key; store.set("h1400-comp", key);
+  $$(".comps [data-comp]").forEach(b => { const on = b.dataset.comp === key; b.setAttribute("aria-selected", on); b.tabIndex = on ? 0 : -1; });
+  $$(".comps .cpan").forEach(p => { p.hidden = p.id !== "cpan-" + key; });
+}
+function toggleLeaders(id, btn) {
+  const open = !MX.open.has(id); open ? MX.open.add(id) : MX.open.delete(id);
+  btn.closest(".ldr").querySelectorAll("li.x").forEach(li => { li.hidden = !open; });
+  btn.setAttribute("aria-expanded", open);
+  btn.textContent = open ? "Show fewer" : `${btn.closest(".ldr").querySelectorAll("li.x").length} more`;
 }
 const ordinal = n => n + (["th", "st", "nd", "rd"][(n % 100 - 20) % 10] || ["th", "st", "nd", "rd"][n % 100] || "th");
 
@@ -1373,6 +1419,8 @@ document.addEventListener("click", e => {
     themeLabel(); return;
   }
   if (t.dataset.go) { const el = document.getElementById("s-" + t.dataset.go) || document.getElementById(t.dataset.go); el && el.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+  if (t.dataset.comp) { pickComp(t.dataset.comp); return; }
+  if (t.dataset.lmore) { toggleLeaders(t.dataset.lmore, t); return; }
   if (t.dataset.more) { toggleMore(t.dataset.more); return; }
   if (t.dataset.head) { if (!toggleMore(t.dataset.head)) toast("Short story. The full text is already shown."); return; }
   if (t.dataset.clip) { clip(t.dataset.clip); return; }

@@ -247,15 +247,17 @@ section.sec{margin-top:56px;scroll-margin-top:64px}
 .panel .nm{font:700 11.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--f,var(--muted))}
 
 /* ---------- tables ---------- */
-.tbl{overflow-x:auto}
+.tbl{overflow-x:auto;padding-left:8px;margin-left:-8px} /* room for a highlighted row's left edge (tr.on) inside the scroller */
 table{width:100%;border-collapse:collapse;font:15px/1.4 var(--sans)}
 th{text-align:left;font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1.5px solid var(--ink);padding:8px 10px 8px 0}
 td{border-bottom:1px solid var(--rule);padding:10px 10px 10px 0;vertical-align:top}
 td.sub{color:var(--muted);font-size:14px}
 td.r,th.r{text-align:right}
 tr.on td{background:var(--fc,var(--surface));color:var(--fo,var(--ink));font-weight:600}
-tr.on td:first-child{border-radius:8px 0 0 8px;padding-left:8px}
-tr.on td:last-child{border-radius:0 8px 8px 0;padding-right:8px}
+/* The highlight reaches 8px left of the row, drawn by a shadow, so a highlighted row keeps the same padding and its
+   figures line up with every other row's (Parth, 30 Sep: Madrid's 4 sat to the right of 1, 2, 3 and 5). */
+tr.on td:first-child{border-radius:8px 0 0 8px;box-shadow:-8px 0 0 var(--fc,var(--surface))}
+tr.on td:last-child{border-radius:0 8px 8px 0}
 tr.done td{color:var(--muted)}
 td small,.tbl small{color:var(--muted);font-size:13px;font-weight:500}
 tr.on td small{color:inherit;opacity:.8}
@@ -266,7 +268,50 @@ table.compact td small{margin-left:4px}
 table.standings td:nth-child(2){position:relative;padding-bottom:11px}
 table.standings .mbar{position:absolute;left:0;bottom:3px;height:3px;background:var(--f,var(--india));opacity:.55;border-radius:2px}
 table.calendar .flag{margin-right:4px}
-table.liga{margin-top:12px}
+table.liga th.rk,table.liga td.rk{width:26px}
+table.liga td.r,table.liga th.r{width:34px;padding-right:0;padding-left:4px}
+table.liga td.gd,table.liga th.gd{width:44px}
+table.liga td:last-child,table.liga th:last-child{padding-right:8px;width:42px}
+table.liga td.pts{font-weight:700}
+table.liga tr.on td.pts{font-weight:800}
+table.liga tr.gap td{border-top:1.5px dotted var(--rule2)}
+table.liga td.club{overflow:hidden;text-overflow:ellipsis;max-width:0;width:auto}
+table.liga .sh{display:none}
+/* Madridismo's competitions: tabs in the table-header style, the table beside three leader lists. */
+.comps{margin-top:22px;border-top:1.5px solid var(--ink);padding-top:2px}
+.ctabs{display:flex;gap:22px;margin:0 0 6px}
+.ctabs button,.ctabs span{appearance:none;background:none;border:0;padding:10px 0 7px;font:700 12px var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);border-bottom:2.5px solid transparent;cursor:pointer}
+.ctabs span{cursor:default;color:var(--ink)}
+.ctabs button:hover{color:var(--ink)}
+.ctabs button[aria-selected="true"]{color:var(--f,var(--ink));border-bottom-color:var(--f,var(--acc))}
+.ctabs button:focus-visible{outline:2px solid var(--f,var(--acc));outline-offset:2px}
+.cgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:18px 40px}
+.ldrs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 28px}
+.ldrs.n2{grid-template-columns:repeat(2,minmax(0,1fr))}.ldrs.n1{grid-template-columns:minmax(0,1fr)}
+.ldh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid var(--ink);padding:6px 0 6px}
+.ldh h4{margin:0;font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.ldh span{padding-right:8px;font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ldr ol{list-style:none;margin:0;padding:0}
+.ldr li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:0 8px;align-items:center;padding:6px 8px 6px 0;border-bottom:1px solid var(--rule);font:14.5px/1.3 var(--sans)}
+.ldr li[hidden]{display:none}
+.ldr li .rk{color:var(--muted);font-size:13px}
+.ldr li .pl{min-width:0}
+.ldr li b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ldr li small{display:block;color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ldr li .v{font-weight:700}
+.ldr li.on{background:var(--fc,var(--surface));color:var(--fo,var(--ink));border-radius:8px;box-shadow:-8px 0 0 var(--fc,var(--surface));border-bottom-color:transparent}
+.ldr li.on small,.ldr li.on .rk{color:inherit;opacity:.8}
+.lmore{appearance:none;background:none;border:0;padding:8px 0 0;font:600 12.5px var(--sans);color:var(--f,var(--acc));cursor:pointer}
+.lmore::after{content:" ↓"}.lmore[aria-expanded="true"]::after{content:" ↑"}
+.lmore:hover{text-decoration:underline}
+@media (min-width:1180px){.cgrid{grid-template-columns:minmax(0,1.05fr) minmax(0,1.6fr)}}
+@media (max-width:720px){
+ .ldrs,.ldrs.n2{grid-template-columns:minmax(0,1fr)}
+ table.liga .lg{display:none}
+ table.liga .sh{display:inline}
+ table.liga td.r,table.liga th.r{width:28px}
+ table.liga td.gd,table.liga th.gd{width:38px}
+}
 table.kv th{text-transform:none;letter-spacing:0;font:600 14.5px var(--sans);color:var(--muted);width:92px;border-bottom:1px solid var(--rule);vertical-align:top;padding-top:11px}
 .up{color:var(--good)}.dn{color:var(--bad)}
 .spark{margin-top:10px}

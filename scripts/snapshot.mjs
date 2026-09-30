@@ -10,13 +10,19 @@ ensureProxy();
 
 const REMOTE = useRemote(process.argv.slice(2));
 
-const KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "nba", "tennis", "markets", "fx", "crypto", "gold_in", "trends", "betting", "movers", "signals", "intl_football", "tennis_players", "flows", "crease"];
+const KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "nba", "tennis", "markets", "fx", "crypto", "gold_in", "trends", "betting", "movers", "signals", "intl_football", "tennis_players", "flows", "crease", "club_stats"];
+
+// Local mode: every module the /api/live route serves, not only lib/live.js.
+async function localGetters() {
+  const [a, b, c, d] = await Promise.all(["live.js", "money.js", "crease-live.js", "football.js"].map(f => import(`../lib/${f}`)));
+  return { ...a.LIVE, ...b.MONEY, ...c.CREASE, ...d.FOOTBALL };
+}
 
 export async function snapshot() {
   const out = {};
   await Promise.all(KEYS.map(async k => {
     try {
-      const r = REMOTE ? await remoteLive(k) : await (await import("../lib/live.js")).LIVE[k](new URLSearchParams());
+      const r = REMOTE ? await remoteLive(k) : await (await localGetters())[k](new URLSearchParams());
       out[k] = r.ok ? { value: r.value, as_of: r.as_of, source: r.source } : { value: null, as_of: null, source: null, error: r.error || "failed" };
     } catch (e) { out[k] = { value: null, as_of: null, source: null, error: String(e?.message || e) }; }
   }));
