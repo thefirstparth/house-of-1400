@@ -1,9 +1,10 @@
 import { CACHE as PAPER_CACHE, LIVE as PAPER } from "../../lib/live.js";
 import { TRIAL, TRIAL_CACHE } from "../../lib/trial.js";
 import { MONEY, MONEY_CACHE } from "../../lib/money.js";
+import { CREASE, CREASE_CACHE } from "../../lib/crease-live.js";
 
 // The paper's keys, The Ledger's extra blocks (lib/money.js) and the trial's keys (lib/trial.js).
-const LIVE = { ...PAPER, ...MONEY, ...TRIAL }, CACHE = { ...PAPER_CACHE, ...MONEY_CACHE, ...TRIAL_CACHE };
+const LIVE = { ...PAPER, ...MONEY, ...CREASE, ...TRIAL }, CACHE = { ...PAPER_CACHE, ...MONEY_CACHE, ...CREASE_CACHE, ...TRIAL_CACHE };
 
 // GET /api/live/<key>. Returns {ok, value, source, as_of, stale}.
 export async function GET(request) {

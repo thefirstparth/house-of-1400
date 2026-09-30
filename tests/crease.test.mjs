@@ -40,3 +40,23 @@ test("validator: an After this row and 2 Coming soon titles are owed from 29 Sep
     assert.deepEqual(errs({ ...base }), [], "earlier editions are not held to it");
   } finally { writeFileSync(path, saved); }
 });
+
+test("the live Crease: next match, the series match by match with its score, the rest, the next tour", async () => {
+  const { creaseView } = await import("../lib/cricket.js");
+  const m = (id, series, format, desc, n, opp, start, state, status = null, won = null) => ({ id, series, format, desc, n, opponent: opp, start, time_announced: true, city: "X", ground: null, state, status, won });
+  const M = [
+    m(1, "West Indies tour of India, 2026", "ODI", "1st ODI", 1, "West Indies", "2026-09-27T08:30:00.000Z", "done", "India won by 8 wkts", true),
+    m(2, "West Indies tour of India, 2026", "ODI", "2nd ODI", 2, "West Indies", "2026-09-30T08:30:00.000Z", "next"),
+    m(3, "West Indies tour of India, 2026", "ODI", "3rd ODI", 3, "West Indies", "2026-10-03T08:30:00.000Z", "next"),
+    m(4, "West Indies tour of India, 2026", "T20", "1st T20I", 1, "West Indies", "2026-10-06T13:30:00.000Z", "next"),
+    m(5, "Asian Games 2026", "T20", "2nd Quarter-Final", null, "Afghanistan", "2026-09-28T04:30:00.000Z", "done", "Match abandoned due to rain (No toss)", null),
+    m(6, "Asian Games 2026", "T20", "2nd Semi-Final", null, "Sri Lanka", "2026-10-01T04:30:00.000Z", "next"),
+    m(7, "India tour of New Zealand 2026", "T20", "1st T20I", 1, "New Zealand", "2026-10-22T07:00:00.000Z", "next"),
+  ];
+  const v = creaseView(M, Date.parse("2026-09-30T00:30:00Z"));
+  assert.equal(v.next.id, 2);
+  assert.equal(v.main.name, "West Indies tour of India, 2026");
+  assert.deepEqual(v.main.formats.map(f => [f.label, f.total, f.score]), [["ODIs", 3, "India lead 1–0"], ["T20Is", 1, null]]);
+  assert.deepEqual(v.also.map(a => [a.name, a.formats[0].total, a.formats[0].score]), [["Asian Games 2026", null, null]], "a tournament has no series score or length");
+  assert.equal(v.after.name, "India tour of New Zealand 2026");
+});

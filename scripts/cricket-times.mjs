@@ -5,22 +5,12 @@
 // Usage: node scripts/cricket-times.mjs
 import { writeFileSync } from "node:fs";
 import { ensureProxy } from "./proxy.mjs";
-import { seriesOf } from "../lib/cricket.js";
+import { parseCricbuzz, seriesOf } from "../lib/cricket.js";
 ensureProxy();
 
 const TEAM = 2, BASE = "https://www.cricbuzz.com/cricket-team/india/2";
 const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
 
-export function parseCricbuzz(html) {
-  const flat = [...html.matchAll(/self\.__next_f\.push\(\[1,"((?:[^"\\]|\\.)*)"\]\)/g)].map(m => { try { return JSON.parse(`"${m[1]}"`); } catch { return ""; } }).join("");
-  const out = [], seen = new Set();
-  for (const m of flat.matchAll(/"matchInfo":\{/g)) {
-    let depth = 0, i = m.index + 12, j = i;
-    for (; j < flat.length; j++) { const ch = flat[j]; if (ch === "{") depth++; else if (ch === "}") { depth--; if (!depth) break; } else if (ch === '"') { for (j++; j < flat.length && flat[j] !== '"'; j++) if (flat[j] === "\\") j++; } }
-    try { const o = JSON.parse(flat.slice(i, j + 1)); if (o.matchId && !seen.has(o.matchId)) { seen.add(o.matchId); out.push(o); } } catch {}
-  }
-  return out;
-}
 
 let result;
 try {

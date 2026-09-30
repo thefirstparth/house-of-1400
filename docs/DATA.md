@@ -53,3 +53,5 @@ Run-only keys in `lib/trial.js`, called by `scripts/trial.mjs` after the edition
 `npm test` hits every live function and asserts shape, freshness and sane ranges (for example Sensex between 40,000 and 150,000; Bengaluru temperature between 5 and 45). The daily run executes it before publishing and records failures in the edition snapshot, not in the paper.
 
 Tennis next matches (`tennis_players`, lib/trial.js): ESPN's ATP scoreboard plus Tennis Explorer's player pages; used by the daily run (validated) and, from 30 Sep 2026, live on the page every five minutes (cache 5 min).
+
+The Crease (`crease`, lib/cricket.js + lib/crease-live.js, from 1 Oct 2026): Cricbuzz's India team schedule and results pages (the matchInfo objects in their page data), grouped into the next match, the series under way, anything else in the next ten days, and the next tour. Cache 10 minutes. Fails: the page shows the edition's rows.

@@ -948,3 +948,27 @@ table.sessions td.r{white-space:nowrap}
 .ear.r .er small{font-size:11px;color:var(--muted)}
 @media (max-width:720px){#earL{grid-column:1/-1}#earR{grid-column:1/-1;justify-self:stretch}.skyear{max-width:none}.ear.r{max-width:none;width:100%;box-sizing:border-box;margin:0;text-align:left;padding-top:10px;border-top:1px solid var(--rule)}.ear.r .ers{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}.ear.r .er{flex-direction:column;justify-content:flex-start;gap:0}.skyear .se-t{font-size:36px}.skyear .arc{max-width:420px}}
 @media (max-width:720px){.fl{grid-template-columns:minmax(0,1fr) auto;gap:2px 12px}.fl-n{grid-column:1/-1}.fl-t{grid-column:1}.fl-v{grid-column:2}}
+
+/* ---------- The Crease, live: the next match, the series match by match, what else, the next tour ---------- */
+.cz-next{padding-bottom:14px;border-bottom:2px solid var(--ink)}
+.cz-k{font:700 11px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--acc,var(--muted))}
+.cz-next h3{margin:4px 0 2px;font:700 clamp(24px,2.6vw,30px)/1.1 var(--hl);color:var(--ink)}
+.cz-next p{margin:2px 0;font:15.5px/1.45 var(--serif);color:var(--ink2)}
+.cz-when{font-weight:600!important;color:var(--ink)!important}
+.cz-series{margin-top:14px}
+.cz-series h4{margin:0 0 6px;font:800 13px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.cz-f h5{margin:10px 0 6px;font:600 13px var(--sans);color:var(--muted)}.cz-f h5 b{color:var(--ink)}
+.cz-strip{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px}
+.cz-strip li{min-width:0;display:flex;flex-direction:column;gap:1px;padding:8px 10px;border:1px solid var(--rule);border-radius:10px;font:12.5px/1.3 var(--sans);color:var(--muted);background:var(--sheet)}
+.cz-strip li b{font:700 14px var(--sans);color:var(--ink)}
+.cz-strip li em{font-style:normal;font-weight:600;color:var(--ink2)}
+.cz-strip li.won{border-color:color-mix(in srgb,var(--good) 45%,var(--rule))}.cz-strip li.won em{color:var(--good)}
+.cz-strip li.lost em{color:var(--bad)}
+.cz-strip li.is-next{border:2px solid var(--acc,var(--ink));background:var(--fc,var(--sheet))}
+.cz-strip li.is-next b,.cz-strip li.is-next span{color:var(--fo,var(--ink))}
+.cz-strip.small{grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
+.cz-strip.small li{padding:6px 8px;font-size:12px}.cz-strip.small li b{font-size:13px}
+.cz-live{display:inline-flex;align-items:center;gap:5px;color:var(--bad)!important;font-style:normal}
+.cz-live i{width:7px;height:7px;border-radius:50%;background:var(--bad)}
+.cz-line{margin:12px 0 0;font:15px/1.5 var(--serif);color:var(--ink2)}.cz-line b{font:700 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.cz-strip li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
