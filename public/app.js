@@ -52,7 +52,6 @@ const icon = (k, cls = "ic") => { const i = ICONS[k]; return i ? `<svg class="${
 const seal = (id, size = 44) => { const f = fam(id), i = ICONS["s:" + id] || ICONS["s:front"]; return `<svg class="seal" data-fam="${f}" width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path class="shape" d="${sealPath(f)}"/><svg class="gl" x="5.5" y="5.5" width="13" height="13" viewBox="${i[0]}">${i[1]}</svg></svg>`; };
 // Team marks are single-colour (Simple Icons), so they sit in the text colour like a printed logo. Clubs use ESPN's
 // crests in greyscale, the way a newspaper would print them.
-const teamMark = name => icon("t:" + String(name || "").toLowerCase(), "tm");
 const crest = (id, alt = "") => (id ? `<img class="crest" src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/${encodeURIComponent(id)}.png&h=40&w=40" width="18" height="18" alt="${esc(alt)}" loading="lazy" decoding="async">` : "");
 const words = s => (String(s || "").match(/\S+/g) || []).length;
 const store = {
@@ -544,31 +543,73 @@ function paddockBlock() {
       return `<tr class="${st === "on" ? "on" : st === "done" ? "done" : ""}"><td>${esc(s.name)}${st === "on" ? ` <span class="live"><i></i>On now, go watch</span> <button class="refresh" data-refresh="f1_next">Refresh</button>` : st === "done" ? ` <small>done</small>` : ""}</td>${tz ? `<td class="r tnum">${s.time_confirmed ? t(s.start, tz) : "TBC"}</td>` : ""}<td class="r tnum">${s.time_confirmed ? t(s.start) : "TBC"}</td></tr>`;
     }).join("")}</tbody></table></div>`;
   }
-  const bits = [];
-  const max = S?.drivers?.find(d => /Verstappen/.test(d.name)), lead = S?.drivers?.[0];
-  if (max) bits.push(`<p><b>${esc(CFG.follows.f1_driver.label)}.</b> ${ordinal(max.pos)} on ${max.points} points${max === lead ? ", leading the championship" : `, ${lead.points - max.points} behind ${esc(lead.name)}`}.${D.max_note ? " " + esc(D.max_note) : ""}</p>`);
-  if (Lr?.results?.length) {
-    const w = Lr.results[0], mx = Lr.results.find(r => /Verstappen/.test(r.name));
-    bits.push(`<p><b>Last race.</b> ${esc(Lr.flag)} ${esc(Lr.name)}: ${esc(w.name)} won${mx && mx !== w ? `, Verstappen ${ordinal(mx.pos)}` : ""}.</p>`);
-  }
+  const bits = [], who = CFG.follows.f1_driver.name, isMax = d => d?.name === who || d?.shown === who;
+  const done = !!N?.season_over, season = S?.season || N?.season || "";
+  const max = S?.drivers?.find(isMax), lead = S?.drivers?.[0];
+  if (max) bits.push(`<p><b>${esc(CFG.follows.f1_driver.label)}.</b> ${done || S.prior ? `Finished the ${season} season ${ordinal(max.pos)} on ${max.points} points` : `${ordinal(max.pos)} on ${max.points} points`}${max === lead ? (done || S.prior ? ", champion" : ", leading the championship") : `, ${lead.points - max.points} behind ${esc(f1Name(lead))}`}.${D.max_note ? " " + esc(D.max_note) : ""}</p>`);
+  // Once the season is decided: its champions, drivers' and constructors'.
+  if ((done || S?.prior) && lead) { const C = S.constructors?.[0]; bits.unshift(`<p><b>${esc(season)} champions.</b> ${esc(f1Name(lead))} won the drivers' title${lead.team ? ` for ${esc(lead.team)}` : ""}${C ? `; ${esc(C.name)} the constructors'` : ""}.</p>`); }
   for (const note of D.notes || []) bits.push(`<p><b>${esc(note.label)}.</b> ${esc(note.text)}</p>`);
-  let standings = "";
-  if (S?.drivers?.length) {
-    const rows = S.drivers.slice(0, 8);
-    if (max && !rows.includes(max)) rows.push(max);
-    const top = lead.points || 1;
-    standings = `<div class="tbl"><table class="compact standings"><thead><tr><th>#</th><th>Drivers</th><th class="r">Pts</th><th class="r">Gap</th></tr></thead><tbody>${rows.map(d => `<tr class="${d === max ? "on" : ""}"><td class="tnum">${d.pos}</td><td>${esc(d.name.replace(/^Andrea /, ""))} <small class="team">${teamMark(d.team)}${esc(d.team || "")}</small><span class="mbar" style="width:${(d.points / top * 100).toFixed(1)}%"></span></td><td class="r tnum">${d.points}</td><td class="r tnum">${d === lead ? "" : "−" + (lead.points - d.points)}</td></tr>`).join("")}</tbody></table>${S.round ? `<p class="asof">After round ${S.round}. Source: ${esc(LIVE.f1_standings.source)}.</p>` : ""}</div>`;
-  }
+  // The circuit as F1 draws it (OpenF1's map for the weekend), beside the sessions.
+  const T = N?.race?.track;
+  const track = T?.image ? `<figure class="f1-track"><img src="${esc(T.image)}" alt="${esc(`${T.circuit || N.race.locality || ""} circuit map, with corners, sectors and overtake zones`)}" loading="lazy" decoding="async" width="1252" height="704"><figcaption>${esc([N.next_season ? `${N.race.season} opener` : N.race.round ? `Round ${N.race.round}` : "", T.circuit || N.race.circuit].filter(Boolean).join(" · "))}</figcaption></figure>` : "";
+  const champ = f1Champ(S, isMax, done);
+  const last = f1LastRace(Lr, isMax);
   let calendar = "";
-  if (N?.race || N?.upcoming?.length) {
-    const cal = [...(N.race ? [{ round: N.race.round, flag: N.race.flag, name: N.race.name, date: N.race.sessions.at(-1).start, now: true }] : []), ...(N.upcoming || [])];
-    calendar = `<div class="tbl"><table class="compact calendar"><thead><tr><th>Rd</th><th>Grand Prix</th><th class="r">Race</th></tr></thead><tbody>${cal.map(r => `<tr class="${r.now ? "on" : ""}"><td class="tnum">${r.round ?? ""}</td><td><span class="flag" aria-hidden="true">${esc(r.flag)}</span> ${esc(r.name)}</td><td class="r tnum">${esc(sparkLabel(istDate(new Date(r.date))))}</td></tr>`).join("")}</tbody></table></div>`;
-  }
-  if (!sessions && !bits.length && !standings && !calendar) return "";
-  return `<div class="cols2"><div>${sessions}</div><div class="facts">${bits.join("")}${staleNote("f1_standings")}</div></div>${standings || calendar ? `<div class="cols2 gap-top"><div>${standings}</div><div>${calendar}</div></div>` : ""}`;
+  if (N?.upcoming?.length) calendar = `<div class="f1-next"><h5>${N.next_season ? `${esc(N.race.season)} season` : "Next races"}</h5><ol>${N.upcoming.map(r => `<li><span class="flag" aria-hidden="true">${esc(r.flag)}</span><b>${esc(r.name.replace(/ Grand Prix$/, ""))}</b><small class="tnum">${r.round ? `R${r.round} · ` : ""}${esc(sparkLabel(istDate(new Date(r.date))))}</small></li>`).join("")}</ol></div>`;
+  if (!sessions && !bits.length && !champ && !last && !track) return "";
+  const facts = `<div class="facts"${sessions ? ' style="margin-top:14px"' : ""}>${bits.join("")}${staleNote("f1_standings")}</div>`;
+  return (sessions || track ? `<div class="cols2"><div>${sessions}${facts}</div><div>${track}</div></div>` : facts) +
+    (champ || last ? `<div class="cols2 gap-top f1">${champ ? `<div>${champ}</div>` : "<div></div>"}${last ? `<div>${last}</div>` : "<div></div>"}</div>` : "") + calendar;
 }
 
-
+// ---------------------------------------------------------------- Paddock Notes, in F1's own look (Parth, 1 Oct)
+// Team colours come from F1's data (OpenF1), never from the code; no team logos. Top five and the followed driver,
+// the rest one tap away, as on F1's own standings; drivers or constructors from the same place.
+const f1Name = d => d?.shown || d?.name || "";
+const f1Short = d => { const n = f1Name(d).split(" "); return n.length > 1 ? `${n[0][0]}. ${n.slice(1).join(" ")}` : n[0]; };
+// Text on a team-colour block: dark on light colours, white on dark ones.
+const onColour = hex => { const h = String(hex || "").replace("#", ""); if (h.length !== 6) return "var(--ink)"; const [r, g, b] = [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(c => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)); return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.35 ? "#15140f" : "#ffffff"; };
+const F1 = { board: store.get("h1400-f1board") || "drivers", open: new Set() };
+const F1TOP = 5;
+function f1Champ(S, isMax, done) {
+  if (!S?.drivers?.length) return "";
+  const cur = S.constructors?.length && F1.board === "constructors" ? "constructors" : "drivers";
+  const title = S.prior || done ? `${esc(S.season)} final standings` : `After round ${S.round}`;
+  const list = (kind, rows, name, code) => {
+    const top = rows[0]?.points || 1, id = `f1-${kind}`, open = F1.open.has(id);
+    const more = rows.length - F1TOP - (rows.slice(F1TOP).some(isMax) ? 1 : 0);
+    return `<div class="f1-pan" id="f1p-${kind}"${kind === cur ? "" : " hidden"}><ol class="f1s">${rows.map((d, i) => {
+      const x = i >= F1TOP && !(kind === "drivers" && isMax(d)), pin = i > F1TOP && kind === "drivers" && isMax(d);
+      return `<li class="${kind === "drivers" && isMax(d) ? "on" : ""}${x ? " x" : ""}${pin ? " pin" : ""}"${x && !open ? " hidden" : ""} style="--tc:${esc(d.colour || "var(--muted)")}"><span class="p tnum">${d.pos}</span><span class="n">${esc(name(d))}${code(d) ? ` <i>${esc(code(d))}</i>` : ""}</span><b class="pts tnum">${d.points}</b><span class="bar" aria-hidden="true"><i style="width:${Math.max(1.5, d.points / top * 100).toFixed(1)}%"></i></span></li>`;
+    }).join("")}</ol>${more > 0 ? `<button class="lmore" data-f1more="${id}" data-n="${rows.length}" data-what="${kind === "drivers" ? "drivers" : "teams"}" aria-expanded="${open}">${open ? `Top ${F1TOP} only` : `Show all ${rows.length} ${kind === "drivers" ? "drivers" : "teams"}`}</button>` : ""}</div>`;
+  };
+  const tabs = S.constructors?.length ? `<div class="ctabs" role="tablist" aria-label="Championship">${[["drivers", "Drivers"], ["constructors", "Constructors"]].map(([k, l]) => `<button role="tab" data-f1board="${k}" aria-selected="${k === cur}">${l}</button>`).join("")}</div>` : `<div class="ctabs one"><span>Drivers</span></div>`;
+  return `<div class="f1-box"><div class="f1k">Championship <span>${title}</span></div>${tabs}${list("drivers", S.drivers, f1Name, d => d.code)}${S.constructors?.length ? list("constructors", S.constructors, d => d.name, () => "") : ""}</div>`;
+}
+function f1LastRace(L, isMax) {
+  if (!L?.results?.length) return "";
+  // A driver's line as F1 prints it: the winner's time, the gap, "+1 lap", or DNF / DSQ.
+  const gap = r => { const st = r.status || "", lap = /^\+(\d+) Laps?$/i.exec(st);
+    return r.time || (lap ? `+${lap[1]} lap${lap[1] === "1" ? "" : "s"}` : /^Lapped$/i.test(st) ? "+1 lap" : /disqualif/i.test(st) ? "DSQ" : st === "Finished" ? "" : st ? "DNF" : ""); };
+  const R = L.results;
+  const step = (r, h) => r ? `<div class="pd p${r.pos}"><b>${esc(f1Short(r))}</b><small>${esc(r.team || "")}</small><span class="tnum">${esc(gap(r))}</span><i style="--tc:${esc(r.colour || "var(--muted)")};--to:${onColour(r.colour)};height:${h}px">${r.pos}</i></div>` : "";
+  const id = "f1-last", open = F1.open.has(id), rest = R.slice(3);
+  return `<div class="f1-box"><div class="f1k">Last race <span>${L.season && L.season !== String(new Date().getFullYear()) ? esc(L.season) + " · " : ""}Round ${L.round}</span></div><h4 class="f1-h">${esc(L.flag)} ${esc(L.name)}</h4>
+<div class="podium">${step(R[1], 72)}${step(R[0], 104)}${step(R[2], 52)}</div>
+<ol class="f1r">${rest.map((r, i) => `<li class="${isMax(r) ? "on" : ""}${i >= 4 ? " x" : ""}"${i >= 4 && !open ? " hidden" : ""} style="--tc:${esc(r.colour || "var(--muted)")}"><span class="p tnum">${r.pos}</span><span class="n">${esc(f1Short(r))}</span><small>${esc(r.team || "")}</small><span class="g tnum">${esc(gap(r))}</span></li>`).join("")}</ol>${rest.length > 4 ? `<button class="lmore" data-f1more="${id}" data-n="${R.length}" data-what="drivers" aria-expanded="${open}">${open ? "Fewer" : `Show all ${R.length} drivers`}</button>` : ""}</div>`;
+}
+function f1Toggle(id, btn) {
+  const open = !F1.open.has(id); open ? F1.open.add(id) : F1.open.delete(id);
+  btn.parentElement.querySelectorAll("li.x").forEach(li => { li.hidden = !open; });
+  btn.setAttribute("aria-expanded", open);
+  btn.textContent = open ? (id === "f1-last" ? "Fewer" : `Top ${F1TOP} only`) : `Show all ${btn.dataset.n} ${btn.dataset.what}`;
+}
+function f1Board(k) {
+  F1.board = k; store.set("h1400-f1board", k);
+  $$("[data-f1board]").forEach(b => b.setAttribute("aria-selected", b.dataset.f1board === k));
+  $$(".f1-pan").forEach(p => { p.hidden = p.id !== "f1p-" + k; });
+}
 
 function warriorsBlock() {
   const B = LIVE.nba?.value;
@@ -1479,6 +1520,8 @@ document.addEventListener("click", e => {
   if (t.dataset.comp) { pickComp(t.dataset.comp); return; }
   if (t.dataset.lmore) { toggleLeaders(t.dataset.lmore, t); return; }
   if (t.dataset.tmore) { toggleTable(t.dataset.tmore, t); return; }
+  if (t.dataset.f1more) { f1Toggle(t.dataset.f1more, t); return; }
+  if (t.dataset.f1board) { f1Board(t.dataset.f1board); return; }
   if (t.dataset.more) { toggleMore(t.dataset.more); return; }
   if (t.dataset.head) { if (!toggleMore(t.dataset.head)) toast("Short story. The full text is already shown."); return; }
   if (t.dataset.clip) { clip(t.dataset.clip); return; }
