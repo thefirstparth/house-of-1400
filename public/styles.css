@@ -914,3 +914,6 @@ table.sessions td.r{white-space:nowrap}
 .br-line{margin:0 0 10px;font:15px/1.5 var(--sans);color:var(--ink2)}
 .br-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px 18px;font:13.5px/1.6 var(--sans);color:var(--ink2)}
 .br-grid span{display:block;font:700 10.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+
+/* A tennis match whose time has passed but play has not started (ESPN): the court is running late */
+.due{font:600 12px var(--sans);color:var(--warn);margin-left:6px}
