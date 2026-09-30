@@ -10,7 +10,7 @@ ensureProxy();
 
 const REMOTE = useRemote(process.argv.slice(2));
 
-const KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "nba", "tennis", "markets", "fx", "crypto", "gold_in", "trends", "betting", "movers", "signals", "intl_football", "tennis_players"];
+const KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "nba", "tennis", "markets", "fx", "crypto", "gold_in", "trends", "betting", "movers", "signals", "intl_football", "tennis_players", "traders", "flows"];
 
 export async function snapshot() {
   const out = {};

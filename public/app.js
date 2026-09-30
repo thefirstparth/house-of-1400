@@ -79,7 +79,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "traders", "flows", "movers"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -545,6 +545,57 @@ function moodCard(m) {
 const moodTone = m => { const w = m.word || moodWord(m.score); return /fear|cautious/i.test(w) ? "var(--bad)" : /greed|confident|exuberant/i.test(w) ? "var(--good)" : "var(--muted)"; };
 const moodWord = s => (s < 25 ? "Fearful" : s < 45 ? "Cautious" : s <= 55 ? "Neutral" : s < 75 ? "Confident" : "Exuberant");
 
+// The Ledger's extra live blocks (Parth, 30 Sep): what traders expect, institutional money flows and breadth. Each
+// shows only when its source answered (live, or the edition's snapshot), and never on its own a wrong figure.
+const pctS = p => `${Math.round(p * 100)}%`;
+const crore = v => `₹${inr(Math.round(Math.abs(v)))} cr`;
+function tradersBlock() {
+  const T = LIVE.traders?.value?.topics || [];
+  if (!T.length) return "";
+  const card = t => {
+    const ends = fmt(t.ends, { day: "numeric", month: "short" });
+    if (t.kind === "levels") {
+      const L = t.levels || []; if (!L.length) return "";
+      return `<div class="tx"><div class="tx-k">${esc(t.label)} · by ${esc(ends)}</div><a class="tx-q" href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.question)}</a>
+<div class="tx-lv">${L.map(l => `<div><b class="tnum">${pctS(l.p)}</b><i style="--w:${Math.round(l.p * 100)}%"></i><span>${esc(l.label)}</span></div>`).join("")}</div></div>`;
+    }
+    const O = t.outcomes || []; if (!O.length) return "";
+    const top = O[0], mv = Number.isFinite(top.chg) && Math.abs(top.chg) >= 0.02 ? `<div class="tx-mv ${top.chg > 0 ? "up" : "dn"}">${top.chg > 0 ? "▲" : "▼"} ${Math.round(Math.abs(top.chg) * 100)} pts in a day</div>` : "";
+    const K = t.kalshi?.outcomes?.length ? `<div class="tx-2">Kalshi: ${t.kalshi.outcomes.slice(0, 3).map(o => `${esc(o.label)} ${pctS(o.p)}`).join(" · ")}</div>` : "";
+    return `<div class="tx"><div class="tx-k">${esc(t.label)} · ${esc(ends)}</div><a class="tx-q" href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.question)}</a>
+<div class="tx-top"><b class="tnum">${pctS(top.p)}</b> ${esc(top.label)}</div>
+<div class="tx-bar">${O.map((o, i) => `<i class="${i ? "" : "lead"}" style="--w:${Math.max(1, Math.round(o.p * 100))}%" title="${esc(o.label)} ${pctS(o.p)}"></i>`).join("")}</div>
+<div class="tx-rest">${O.slice(1, 4).map(o => `${esc(o.label)} <b>${pctS(o.p)}</b>`).join(" · ")}</div>${mv}${K}</div>`;
+  };
+  const body = T.map(card).join("");
+  if (!body) return "";
+  return `<div class="ledx"><h4>What traders expect</h4><div class="tx-grid">${body}</div><p class="asof">Prices on Polymarket${T.some(t => t.kalshi?.outcomes) ? " and Kalshi" : ""}, read as the chance of each outcome. A level counts as reached if it trades there at any time before the date.${staleNote("traders")}</p></div>`;
+}
+function flowsBlock() {
+  const F = LIVE.flows?.value; if (!F || (!F.day && !F.fpi_month)) return "";
+  const who = v => (v >= 0 ? "bought" : "sold");
+  let rows = "";
+  if (F.day) rows += `<tr><td>Foreign (FII/FPI)</td><td class="r tnum ${F.day.fii >= 0 ? "up" : "dn"}">${who(F.day.fii)} ${crore(F.day.fii)}</td></tr><tr><td>Domestic institutions (DII)</td><td class="r tnum ${F.day.dii >= 0 ? "up" : "dn"}">${who(F.day.dii)} ${crore(F.day.dii)}</td></tr>`;
+  const M = F.fpi_month;
+  if (M) rows += `<tr><td>Foreign, ${esc(new Date(M.month + "-15T12:00:00Z").toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" }))} so far</td><td class="r tnum ${M.net >= 0 ? "up" : "dn"}">${who(M.net)} ${crore(M.net)}</td></tr>`;
+  const src = [F.day && `${fmt(F.day.date + "T12:00:00Z", { day: "numeric", month: "short" })}: NSE provisional, cash market (${esc(F.day.scope)})`, M && `month: NSDL, foreign investment in equity over ${M.days} session${M.days === 1 ? "" : "s"}`].filter(Boolean).join("; ");
+  return `<div class="ledx"><h4>Who bought and sold</h4><div class="tbl"><table class="compact"><tbody>${rows}</tbody></table></div><p class="asof">${src}.${staleNote("flows")}</p></div>`;
+}
+function breadthBlock() {
+  const B = LIVE.movers?.value?.breadth; if (!B || !(B.up + B.down)) return "";
+  const n = B.up + B.down + (B.flat || 0), st = x => `${esc(x.name.replace(/ Ltd\.?$/, ""))} <b class="tnum ${x.pct >= 0 ? "up" : "dn"}">${x.pct >= 0 ? "+" : ""}${x.pct.toFixed(1)}%</b>`;
+  const ind = x => `${esc(x.industry)} <b class="tnum ${x.pct >= 0 ? "up" : "dn"}">${x.pct >= 0 ? "+" : ""}${x.pct.toFixed(1)}%</b>`;
+  return `<div class="ledx"><h4>Breadth</h4><p class="br-line"><b class="tnum up">${B.up} up</b>, <b class="tnum dn">${B.down} down</b> of ${n} Nifty 500 stocks ${B.day === istDate() && fmt(new Date().toISOString(), { hour: "2-digit", minute: "2-digit" }) < "15:40" ? "so far today" : `on ${esc(fmt(B.day + "T12:00:00Z", { day: "numeric", month: "short" }))}`}.</p>
+<div class="br-grid"><div><span>Rose most</span>${B.gainers.map(st).join("<br>")}</div><div><span>Fell most</span>${B.losers.map(st).join("<br>")}</div><div><span>Industries up most</span>${B.best.map(ind).join("<br>")}</div><div><span>Industries down most</span>${B.worst.map(ind).join("<br>")}</div></div>
+<p class="asof">Closing prices from Yahoo Finance for NSE's Nifty 500 list; an industry is the median of its stocks.${staleNote("movers")}</p></div>`;
+}
+function ledgerExtras() {
+  const h = tradersBlock() + flowsBlock() + breadthBlock();
+  if (!h) return "";
+  const prof = CFG.day_profiles[E.weekday] || {};
+  return prof.markets === "light_unless_important" && !(E.sections?.ledger?.stories?.length) ? `<details><summary class="asof" style="cursor:pointer;padding:6px 0">Traders, flows and breadth. Tap to open.</summary>${h}</details>` : h;
+}
+
 function ledgerBlock() {
   const M = LIVE.markets?.value, G = LIVE.gold_in?.value, D = E.sections?.ledger?.data || {};
   const prof = CFG.day_profiles[E.weekday] || {};
@@ -1001,7 +1052,7 @@ function render() {
   S.dateline = secWrap("dateline", storiesBlock("dateline"), "World & India");
   S.workshop = secWrap("workshop", storiesBlock("workshop"), "Tech · AI · wearables");
   S.pipeline = secWrap("pipeline", storiesBlock("pipeline"), "SDR · outbound · GTM");
-  S.ledger = secWrap("ledger", `<div data-live="ledger">${ledgerBlock()}</div>` + storiesBlock("ledger"), "Markets · money · cards");
+  S.ledger = secWrap("ledger", `<div data-live="ledger">${ledgerBlock()}</div><div data-live="ledgerx">${ledgerExtras()}</div>` + storiesBlock("ledger"), "Markets · money · cards");
   S.sky = secWrap("sky", `<div data-live="sky">${skyBlock()}</div>` + storiesBlock("sky"), [CFG.paper.home_city, ...(CFG.weather.family || []).map(c => c.name)].join(", ").replace(/, ([^,]*)$/, " and $1") + " · the week ahead");
   S.namma = secWrap("namma", storiesBlock("namma"), `${CFG.paper.home_city} · fuller on Fri, Sat, Sun`);
   S.screen = secWrap("screen", screenBlock(), "English and Hindi · theatre and OTT");
@@ -1037,7 +1088,7 @@ function paintLive() {
   const rail = railHTML(); if ($("#rail").dataset.html !== rail) { $("#rail").innerHTML = rail; $("#rail").dataset.html = rail; }
   const [eL, eR] = earsHTML(); $("#earL").innerHTML = eL; $("#earR").innerHTML = eR;
   $("#mkts").innerHTML = marketDots();
-  const map = { intl: intlBlock, talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
+  const map = { intl: intlBlock, ledgerx: ledgerExtras, talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
   for (const [k, fn] of Object.entries(map)) {
     const el = document.querySelector(`[data-live="${k}"]`);
     if (!el) continue;

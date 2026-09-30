@@ -471,7 +471,58 @@
       },
       "method": "Published readings, never our own calculation. India: Tickertape's Market Mood Index, from foreign investors' flows, volatility (India VIX), momentum, market breadth, price strength and demand for gold, updated through the trading day. US: CNN's Fear & Greed Index, from seven readings (stock momentum and strength, breadth, put and call options, junk-bond demand, volatility and safe-haven demand), updated through the US trading day. Each gauge uses its publisher's own bands and words. If a publisher cannot be reached, the gauge keeps its last reading with that reading's time."
     },
-    "returns_note": "7D and 1M are Moneycontrol's published figures where it publishes them (its Indian figures agree with NSE's own). Where no reliable source publishes them (Nasdaq-100, Brent, the rupee, gold and Bitcoin today), they are worked out from official daily closes and marked as calculated."
+    "returns_note": "7D and 1M are Moneycontrol's published figures where it publishes them (its Indian figures agree with NSE's own). Where no reliable source publishes them (Nasdaq-100, Brent, the rupee, gold and Bitcoin today), they are worked out from official daily closes and marked as calculated.",
+    "traders": {
+      "note": "What traders expect (The Ledger): topics only. For each, the page shows the open Polymarket event with this tag whose title matches, that has traded at least min_volume dollars and resolves soonest while still at least min_days away. Kalshi's market on the same decision is shown beside it when kalshi names its series. Nothing else is chosen by hand.",
+      "topics": [
+        {
+          "id": "fed",
+          "label": "The Fed",
+          "tag": "fed-rates",
+          "match": "^Fed Decision in ",
+          "kind": "decision",
+          "kalshi": "KXFEDDECISION",
+          "min_days": 0.5,
+          "min_volume": 50000
+        },
+        {
+          "id": "rbi",
+          "label": "The RBI",
+          "tag": "rbi",
+          "match": "Reserve Bank of India decision",
+          "kind": "decision",
+          "min_days": 0.5,
+          "min_volume": 5000
+        },
+        {
+          "id": "oil",
+          "label": "Oil (WTI)",
+          "tag": "commodities",
+          "match": "^What will WTI Crude Oil \\(WTI\\) hit in [A-Z][a-z]+ \\d{4}\\?$",
+          "kind": "levels",
+          "min_days": 5,
+          "min_volume": 10000
+        },
+        {
+          "id": "gold",
+          "label": "Gold",
+          "tag": "commodities",
+          "match": "^What will Gold \\(XAUUSD\\) hit in [A-Z][a-z]+ \\d{4}\\?$",
+          "kind": "levels",
+          "min_days": 5,
+          "min_volume": 5000
+        },
+        {
+          "id": "bitcoin",
+          "label": "Bitcoin",
+          "tag": "crypto-prices",
+          "match": "^What price will Bitcoin hit in [A-Z][a-z]+\\?$",
+          "kind": "levels",
+          "min_days": 5,
+          "min_volume": 20000
+        }
+      ]
+    }
   },
   "weather": {
     "always": [
