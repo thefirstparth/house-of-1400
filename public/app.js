@@ -955,7 +955,8 @@ function fixturesBlock() {
   const byDay = new Map();
   for (const f of rows) {
     const start = Date.parse(f.when_utc);
-    const key = start < n ? istDate() : istDate(new Date(start));
+    // A match still running (or a tournament's span) sits under Today; a finished one under its own day.
+    const key = start < n && fixState(f, n) !== "done" ? istDate() : istDate(new Date(start));
     if (!byDay.has(key)) byDay.set(key, []);
     byDay.get(key).push(f);
   }
