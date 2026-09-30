@@ -1119,7 +1119,7 @@ function talkBlock() {
 // Readable over dense: title on its own line, one row per outcome with its own bar. Up to ten markets.
 const MONTHS = { january: "Jan", february: "Feb", march: "Mar", april: "Apr", may: "May", june: "Jun", july: "Jul", august: "Aug", september: "Sep", october: "Oct", november: "Nov", december: "Dec" };
 const vsV = t => String(t || "").replace(/ vs\.? /g, " v ");
-const outcomeLabel = n => String(n).replace(/^(By|Through) (January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2})(, \d{4})?$/i, (_, w, m, d, y) => `${w} ${d} ${MONTHS[m.toLowerCase()]}${y || ""}`);
+const outcomeLabel = n => String(n).replace(/^(By|Through) (January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2})(, \d{4})?$/i, (_, w, m, d, y) => `${w} ${d} ${MONTHS[m.toLowerCase()]}${y && !y.includes(String(E?.date || "").slice(0, 4)) ? y : ""}`);
 
 // The market's view, one line in a section: what Polymarket traders make of the next race or match. Kept small and
 // set apart, so the section stays a newspaper.

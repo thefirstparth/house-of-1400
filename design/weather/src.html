@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sky & Streets, three ways</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..800;1,8..60,300..700&family=Roboto+Serif:wdth,wght@85..100,600..800&family=Roboto+Flex:wdth,wght@62..100,400..800&display=swap">
+<style>
+:root{color-scheme:light;
+ --paper:#f3f1ea;--sheet:#fbfaf6;--surface:#e9e6dc;--ink:#15140f;--ink2:#3a3830;--muted:#625d52;--rule:#d5d0c3;--rule2:#e4e0d5;
+ --sky:#0a72a8;--sky-c:#d2ecfa;--sky-on:#003550;--sun:#d9861a;--warm:#c0561d;--bad:#c0261d;--warn:#8a5a00;--good:#0b7a43;
+ --serif:"Source Serif 4",Georgia,serif;--hl:"Roboto Serif","Source Serif 4",Georgia,serif;--sans:"Roboto Flex",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
+ --paper:#131210;--sheet:#1b1a17;--surface:#22201c;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;
+ --sky:#7ccbf2;--sky-c:#0a3550;--sky-on:#d2ecfa;--sun:#f2b552;--warm:#ff9c6b;--bad:#ff8a7e;--warn:#e7b964;--good:#5fd08f}}
+:root[data-theme="dark"]{color-scheme:dark;
+ --paper:#131210;--sheet:#1b1a17;--surface:#22201c;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;
+ --sky:#7ccbf2;--sky-c:#0a3550;--sky-on:#d2ecfa;--sun:#f2b552;--warm:#ff9c6b;--bad:#ff8a7e;--warn:#e7b964;--good:#5fd08f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.5 var(--serif);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(16px,3vw,40px) 80px}
+.tnum{font-variant-numeric:lining-nums tabular-nums}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--rule);font:600 13px var(--sans);color:var(--muted)}
+.bar button{font:700 13px var(--sans);border:0;border-radius:99px;padding:8px 14px;background:var(--ink);color:var(--paper);cursor:pointer}
+.intro{max-width:70ch;margin:28px 0 8px;font-size:17px;color:var(--ink2)}
+.vlabel{margin:64px 0 14px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;border-top:8px solid var(--ink);padding-top:12px}
+.vlabel b{font:900 13px var(--sans);letter-spacing:.14em;text-transform:uppercase}
+.vlabel span{font:italic 17px var(--serif);color:var(--muted)}
+.sechead{display:flex;align-items:center;gap:14px;background:var(--sky-c);color:var(--sky-on);border-radius:26px;padding:11px 22px;margin-bottom:22px}
+.sechead h2{margin:0;font:800 33px/1 var(--sans);font-variation-settings:"wdth" 80;letter-spacing:.015em;text-transform:uppercase}
+.sechead span{font:italic 15.5px var(--serif);display:block;margin-top:3px}
+.k{font:700 11.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--sky)}
+.sub{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-top:1.5px solid var(--ink);padding-top:8px;margin:28px 0 12px}
+.sub b{font:800 12.5px var(--sans);letter-spacing:.12em;text-transform:uppercase}
+.sub em{font:italic 14px var(--serif);color:var(--muted)}
+.note{font:13px/1.45 var(--sans);color:var(--muted);margin:8px 0 0;max-width:72ch}
+svg text{font-family:var(--sans)}
+.lede{font:700 clamp(28px,3.4vw,40px)/1.1 var(--hl);margin:0 0 10px;letter-spacing:-.01em}
+.dek{font:19px/1.5 var(--serif);margin:0 0 6px;max-width:62ch;color:var(--ink2)}
+.pts{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:0}
+.pts li{display:grid;grid-template-columns:44px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--rule2);font:16.5px/1.45 var(--serif)}
+.pts li i{font-style:normal;font:800 10.5px var(--sans);letter-spacing:.08em;color:var(--sky);padding-top:3px}
+.pts li b{font-weight:700}
+.cols{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:40px;align-items:start}
+.fam{display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
+.fam>div{border-top:1.5px solid var(--ink);padding-top:10px}
+.fam h3{margin:0;font:800 20px var(--sans);font-variation-settings:"wdth" 80;text-transform:uppercase;letter-spacing:.02em;display:flex;justify-content:space-between;align-items:baseline}
+.fam h3 small{font:500 14px var(--sans);text-transform:none;letter-spacing:0;color:var(--muted)}
+.fam p.l{font:600 18px/1.35 var(--hl);margin:6px 0 4px}
+.fam p.s{font:15.5px/1.45 var(--serif);color:var(--ink2);margin:0 0 8px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--rule2);margin-top:6px}
+.trio div{padding:8px 0 2px}
+.trio div+div{padding-left:12px;border-left:1px solid var(--rule2)}
+.trio b{display:block;font:800 22px/1.1 var(--sans);font-variation-settings:"wdth" 75}
+.trio span{font:600 11px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+/* variant 2 */
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cal .h{font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:center;padding-bottom:2px}
+.cal .d{border-radius:10px;min-height:74px;padding:7px 8px;display:flex;flex-direction:column;justify-content:space-between;position:relative;color:var(--ink)}
+.cal .d .dt{font:600 12px var(--sans);color:inherit;opacity:.75}
+.cal .d .t{font:800 17px var(--sans);font-variation-settings:"wdth" 80}
+.cal .d .p{font:700 12px var(--sans)}
+.cal .d.today{outline:2px solid var(--ink);outline-offset:1px}
+.cal .d.past{opacity:.35}
+.cal .wk{grid-column:1/-1;border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;gap:10px;align-items:center;background-image:repeating-linear-gradient(135deg,transparent 0 7px,color-mix(in srgb,var(--sky) 10%,transparent) 7px 8px)}
+.cal .wk b{font:800 14px var(--sans)}
+.cal .wk span{font:14px var(--serif)}
+.calrow{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:18px;align-items:start}
+.margin{font:15px/1.45 var(--serif);color:var(--ink2)}
+.margin p{margin:0 0 12px;padding-left:10px;border-left:3px solid var(--sky)}
+.margin b{font:700 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;display:block;color:var(--sky)}
+.todaybig{display:flex;gap:26px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.todaybig .n{font:800 72px/0.9 var(--sans);font-variation-settings:"wdth" 70;color:var(--sky)}
+.todaybig .n small{font-size:32px}
+.todaybig p{margin:0;font:18px/1.4 var(--serif);max-width:44ch}
+.minical{display:grid;grid-template-columns:repeat(13,1fr);gap:3px;margin:8px 0 4px}
+.minical i{height:26px;border-radius:5px;display:block}
+.minical+.mlab{display:flex;justify-content:space-between;font:600 11px var(--sans);color:var(--muted)}
+/* variant 3 */
+.hz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+.hz>section{padding:0 22px}
+.hz>section:first-child{padding-left:0}
+.hz>section+section{border-left:1px solid var(--rule)}
+.hz h3{margin:0 0 2px;font:800 13px var(--sans);letter-spacing:.14em;text-transform:uppercase}
+.hz .v{font:700 22px/1.2 var(--hl);margin:4px 0 8px}
+.hz .w{font:15px/1.45 var(--serif);color:var(--ink2);margin:8px 0 0}
+.pill{display:inline-block;font:800 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:99px;background:var(--sky-c);color:var(--sky-on)}
+.ftab{width:100%;border-collapse:collapse;margin-top:6px}
+.ftab th{font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px 10px 6px 0;border-bottom:1.5px solid var(--ink)}
+.ftab td{padding:12px 10px 12px 0;border-bottom:1px solid var(--rule);vertical-align:top;font:15.5px/1.4 var(--serif)}
+.ftab td:first-child{font:800 16px var(--sans);text-transform:uppercase;letter-spacing:.02em;white-space:nowrap}
+.ftab td b{font:800 20px var(--sans);font-variation-settings:"wdth" 78;display:block}
+.ftab td small{font:13px var(--sans);color:var(--muted)}
+@media (max-width:900px){.cols,.calrow{grid-template-columns:1fr;gap:18px}.hz{grid-template-columns:1fr}.hz>section{padding:18px 0 0!important;border-left:0!important;border-top:1px solid var(--rule);margin-top:18px}.hz>section:first-child{border-top:0;margin-top:0;padding-top:0!important}}
+@media (max-width:720px){.fam{grid-template-columns:1fr;gap:22px}.sechead h2{font-size:26px}.cal .d{min-height:62px;padding:5px 5px;border-radius:8px}.cal .d .t{font-size:15px}.cal .d .dt,.cal .d .p{font-size:11px}.todaybig .n{font-size:60px}
+ .ftab thead{display:none}.ftab tr{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;border-bottom:1px solid var(--rule);padding:10px 0}.ftab td{border:0;padding:0}.ftab td:first-child{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="bar"><span>Sky & Streets · three ways · mock from real forecasts of Thu 1 Oct, 02:15 IST · not the live paper</span><button id="th" type="button">Night</button></div>
+<p class="intro">Same data behind all three: the forecast the paper already reads (7 days, hourly for today), ECMWF's 51-run ensemble for the next 13 days, NOAA's GFS ensemble for weeks 3 to 5, ECMWF's seasonal forecast for the months, and 30-year averages for "usual". Every sentence below is written by rules from those numbers, not by hand.</p>
+
+<div class="vlabel"><b>A · The forecast story</b><span>One headline, one picture of the fortnight, then the month. Reads like a weather column.</span></div>
+<div id="A"></div>
+
+<div class="vlabel"><b>B · The calendar</b><span>Five weeks on a wall calendar, shaded by rain. The nearer the day, the more it says.</span></div>
+<div id="B"></div>
+
+<div class="vlabel"><b>C · Three horizons</b><span>Today, this week, the month: one answer and one chart each. Fastest to scan.</span></div>
+<div id="C"></div>
+</div>
+
+<script>
+const D = __DATA__;
+const $ = (s, r = document) => r.querySelector(s);
+const NOW = new Date(D.as_of);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const wd = d => new Date(d + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", timeZone: "UTC" });
+const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const dm = d => `${+d.slice(8, 10)} ${MON[+d.slice(5, 7) - 1]}`;
+const long = d => `${wd(d)} ${dm(d)}`;
+const R = Math.round;
+// A day named the way you'd say it: today, tomorrow, the weekday within the week, the date after that.
+const ahead = d => R((Date.parse(d + "T12:00:00Z") - Date.parse(D.as_of.slice(0, 10) + "T12:00:00Z")) / 864e5);
+const say = d => { const n = ahead(d); return n === 0 ? "today" : n === 1 ? "tomorrow" : n < 7 ? wd(d) : long(d); };
+const NUM = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+const Cap = s => s[0].toUpperCase() + s.slice(1);
+const wet = c => c >= 50, dry = c => c < 20;
+
+// ------------------------------------------------------------ the rules that write the words
+function spells(E) {
+  const cls = c => (wet(c) ? "wet" : dry(c) ? "dry" : "mixed");
+  const out = [];
+  E.forEach((e, i) => { const k = cls(e.chance); if (out.length && out.at(-1).k === k) out.at(-1).days.push(e); else out.push({ k, days: [e] }); });
+  return out;
+}
+function headline(c) {
+  const S = spells(c.ens.slice(1)), E = c.ens.slice(1); // from tomorrow
+  const dryW = m => (m === 1 ? "A dry day" : m <= 3 ? `${Cap(NUM[m])} dry days` : m <= 5 ? "A few dry days" : "A dry week");
+  const wetW = m => (m === 1 ? "a wet day" : m <= 3 ? `${NUM[m]} wet days` : m <= 5 ? "a few wet days" : "a wet week");
+  const firstWet = S.find(s => s.k === "wet"), showers = E.filter(e => e.chance >= 30);
+  if (S[0].k === "dry" && firstWet) return `${dryW(S[0].days.length)}, then ${wetW(firstWet.days.length)}`;
+  if (S[0].k === "wet") return `Rain likely for ${wetW(S[0].days.length).replace(/^a /, "a ")} ahead`.replace("for a wet week ahead", "most of the week");
+  if (showers.length === 1) return `Dry, apart from a chance of a shower ${ahead(showers[0].date) < 2 ? say(showers[0].date) : "on " + say(showers[0].date)}`;
+  if (showers.length) return `Dry until ${say(showers[0].date)}, then showers possible`;
+  return "Dry for the next two weeks";
+}
+function todayLine(c) {
+  const d = c.daily[0], H = c.hourly.filter(h => h.t.startsWith(d.date) && +h.t.slice(11, 13) >= 6);
+  const peak = H.reduce((a, h) => (h.p > a.p ? h : a), { p: -1 });
+  const win = H.filter(h => h.p >= Math.max(20, peak.p - 8));
+  const hr = t => { const h = +t.slice(11, 13); return h === 0 ? "midnight" : h === 12 ? "noon" : h > 12 ? `${h - 12} pm` : `${h} am`; };
+  const when = peak.p >= 20 && win.length ? `, most likely between ${hr(win[0].t)} and ${hr(win.at(-1).t.replace(/T(\d\d)/, (m, x) => "T" + String(+x + 1).padStart(2, "0")))}` : "";
+  return { p: d.rain_prob, when, text: `${d.rain_prob}% chance of rain today${when}.` };
+}
+function tempLine(c) {
+  const a = c.ens.slice(0, 3), b = c.ens.slice(7, 13);
+  const av = x => x.reduce((s, e) => s + e.max, 0) / x.length;
+  const d = av(b) - av(a), past = c.past.reduce((s, e) => s + e.max, 0) / c.past.length, now = av(a);
+  const by = `${R(Math.min(...c.ens.map(e => e.max)))} to ${R(Math.max(...c.ens.map(e => e.max)))}° by day`;
+  const trend = Math.abs(d) < 0.7 ? "steady" : d < 0 ? `about ${R(-d)}° cooler by next week` : `about ${R(d)}° warmer by next week`;
+  const vsPast = now - past >= 1.5 ? `, warmer than last week` : past - now >= 1.5 ? `, cooler than last week` : "";
+  return `${Cap(trend)}${vsPast}: ${by}, feeling like ${R(c.daily[0].feels)}° this afternoon.`;
+}
+function nextRain(c) { const e = c.ens.slice(1).find(e => e.chance >= 30); return e ? { d: e.date, c: e.chance } : null; }
+function monthVerdict(c) {
+  const m = c.months[0], r = m.p50 / m.normal;
+  const w = r < 0.6 ? "much drier than usual" : r < 0.9 ? "a little drier than usual" : r <= 1.1 ? "about usual" : r < 1.4 ? "a little wetter than usual" : "much wetter than usual";
+  const odds = m.wetter <= 10 ? "and very unlikely to end up wetter" : m.wetter <= 40 ? `with about a 1 in ${R(100 / m.wetter)} chance of ending up wetter` : m.wetter < 60 ? "though it could go either way" : "and likely to end up wetter";
+  return { w, text: `October looks ${w}: about ${m.p50} mm of rain expected against a usual ${m.normal} mm, ${odds}.`, m };
+}
+function airLine(c) {
+  const hi = c.air.daily.reduce((a, x) => (x.aqi > a.aqi ? x : a), { aqi: 0 });
+  if (hi.aqi <= 100) return "";
+  return `Air is ${hi.aqi > 150 ? "unhealthy" : "poor for sensitive lungs"} this week, worst ${say(hi.date)} (AQI ${hi.aqi}).`;
+}
+function spellNotes(c) {
+  const S = spells(c.ens.slice(1));
+  return S.filter(s => s.k !== "mixed" || s.days.length >= 2).slice(0, 3).map(s => {
+    const a = s.days[0].date, b = s.days.at(-1).date, span = a === b ? long(a) : `${long(a)} to ${long(b)}`;
+    const top = s.days.reduce((x, e) => (e.chance > x.chance ? e : x));
+    return s.k === "dry" ? `<b>Dry</b> ${span}.` : s.k === "wet" ? `<b>Rain likely</b> ${span}, most of all ${say(top.date)} (${top.chance}%).` : `<b>Showers possible</b> ${span}.`;
+  });
+}
+
+// ------------------------------------------------------------ pictures
+const col = c => `color-mix(in srgb,var(--sky) ${Math.max(6, c)}%,var(--sheet))`;
+function ribbon(c, { w = 760, h = 200, mini = false } = {}) {
+  const E = c.ens, n = E.length, pad = mini ? 4 : 30, top = mini ? 4 : 92, bot = mini ? 18 : 40, bw = (w - pad * 2) / n;
+  if (!mini) h = 260;
+  const tmin = Math.min(...E.map(e => e.max10)) - 1, tmax = Math.max(...E.map(e => e.max90)) + 1;
+  const ty = t => 16 + (1 - (t - tmin) / (tmax - tmin)) * 44;
+  const ry = p => h - bot - (p / 100) * (h - top - bot);
+  let s = `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="Chance of rain and daytime temperature, next ${n} days">`;
+  if (!mini) for (const g of [50, 100]) s += `<line x1="${pad}" x2="${w - pad}" y1="${ry(g)}" y2="${ry(g)}" stroke="var(--rule2)" stroke-dasharray="${g === 50 ? "3 4" : ""}"/><text x="${w - pad + 4}" y="${ry(g) + 4}" font-size="11" fill="var(--muted)">${g}%</text>`;
+  E.forEach((e, i) => {
+    const x = pad + i * bw + 3, bh = Math.max(2, (e.chance / 100) * (h - top - bot));
+    s += `<rect x="${x}" y="${h - bot - bh}" width="${bw - 6}" height="${bh}" rx="${mini ? 2 : 4}" fill="${col(e.chance)}" stroke="${e.chance >= 50 ? "var(--sky)" : "none"}" stroke-width="${e.chance >= 50 ? 1 : 0}"/>`;
+    if (!mini) s += `<text x="${x + (bw - 6) / 2}" y="${h - bot - bh - 6}" text-anchor="middle" font-size="${bw < 32 ? 9.5 : 11.5}" font-weight="700" fill="${e.chance >= 50 ? "var(--sky)" : "var(--muted)"}">${e.chance >= 20 ? e.chance + "%" : "dry"}</text>`;
+    s += `<text x="${x + (bw - 6) / 2}" y="${h - bot + (mini ? 13 : 16)}" text-anchor="middle" font-size="${mini ? 10 : bw < 32 ? 10 : 12}" font-weight="${i === 0 ? 800 : 600}" fill="${i === 0 ? "var(--ink)" : "var(--muted)"}">${i === 0 ? (mini || bw < 32 ? "Tdy" : "Today").replace(/^Tdy$/, mini ? "T" : "Tdy") : mini ? wd(e.date)[0] : bw < 32 ? wd(e.date).slice(0, 2) : wd(e.date)}</text>`;
+    if (!mini) s += `<text x="${x + (bw - 6) / 2}" y="${h - bot + 31}" text-anchor="middle" font-size="10.5" fill="var(--muted)">${dm(e.date).split(" ")[0]}</text>`;
+  });
+  if (!mini) {
+    // temperature: the 10 to 90% band of daytime highs, and the middle line
+    const X = i => pad + i * bw + bw / 2;
+    s += `<path d="M${E.map((e, i) => `${X(i)},${ty(e.max90)}`).join(" L")} L${[...E].reverse().map((e, j) => `${X(n - 1 - j)},${ty(e.max10)}`).join(" L")}Z" fill="color-mix(in srgb,var(--warm) 14%,transparent)"/>`;
+    s += `<polyline points="${E.map((e, i) => `${X(i)},${ty(e.max)}`).join(" ")}" fill="none" stroke="var(--warm)" stroke-width="2"/>`;
+    E.forEach((e, i) => { if (i % 2 === 0 || i === n - 1) s += `<text x="${X(i)}" y="${ty(e.max) - 7}" text-anchor="middle" font-size="11" font-weight="800" fill="var(--warm)">${R(e.max)}°</text>`; });
+    s += `<text x="${pad}" y="12" font-size="10.5" font-weight="700" letter-spacing=".08em" fill="var(--muted)">DAYTIME HIGH</text><text x="${pad}" y="${top - 6}" font-size="10.5" font-weight="700" letter-spacing=".08em" fill="var(--muted)">CHANCE OF A RAINY DAY</text>`;
+  }
+  return s + "</svg>";
+}
+function hours(c, { w = 420, h = 110 } = {}) {
+  const d = c.daily[0].date, H = c.hourly.filter(x => x.t.startsWith(d) && +x.t.slice(11, 13) >= 6);
+  const n = H.length, pad = 6, bot = 20, bw = (w - pad * 2) / n, mx = 100;
+  let s = `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="Chance of rain by hour today">`;
+  H.forEach((x, i) => { const bh = Math.max(1.5, (x.p / mx) * (h - bot - 14)); s += `<rect x="${pad + i * bw + 1}" y="${h - bot - bh}" width="${bw - 2}" height="${bh}" rx="2" fill="${col(x.p * 1.4)}"/>`;
+    const hh = +x.t.slice(11, 13); if (hh % 3 === 0) s += `<text x="${pad + i * bw + bw / 2}" y="${h - 5}" text-anchor="middle" font-size="10.5" fill="var(--muted)">${hh === 0 ? "12a" : hh === 12 ? "12p" : hh > 12 ? hh - 12 + "p" : hh + "a"}</text>`; });
+  const pk = H.reduce((a, x) => (x.p > a.p ? x : a));
+  const i = H.indexOf(pk); s += `<text x="${pad + i * bw + bw / 2}" y="${h - bot - (pk.p / mx) * (h - bot - 14) - 4}" text-anchor="middle" font-size="11" font-weight="800" fill="var(--sky)">${pk.p}%</text>`;
+  return s + "</svg>";
+}
+function monthGauge(c, { w = 420 } = {}) {
+  const m = c.months[0], top = Math.max(m.p90, m.normal) * 1.15, x = v => 8 + (v / top) * (w - 16), h = 64;
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="October rain: expected against usual">
+<rect x="${x(0)}" y="18" width="${x(top) - x(0)}" height="14" rx="7" fill="var(--rule2)"/>
+<rect x="${x(m.p10)}" y="18" width="${x(m.p90) - x(m.p10)}" height="14" rx="7" fill="color-mix(in srgb,var(--sky) 30%,var(--sheet))"/>
+<circle cx="${x(m.p50)}" cy="25" r="8" fill="var(--sky)"/>
+<line x1="${x(m.normal)}" x2="${x(m.normal)}" y1="10" y2="40" stroke="var(--ink)" stroke-width="2"/>
+<text x="${x(m.normal)}" y="54" text-anchor="middle" font-size="11" font-weight="700" fill="var(--ink)">usual ${m.normal} mm</text>
+<text x="${x(m.p50)}" y="9" text-anchor="middle" font-size="11" font-weight="800" fill="var(--sky)">likely ${m.p50} mm</text>
+</svg>`;
+}
+function weeksChart(c, { w = 420, h = 150 } = {}) {
+  const W = c.weeks, norm = (c.months[0].normal / c.months[0].days) * 7, top = Math.max(...W.map(x => x.p90), norm) * 1.15, pad = 8, bot = 30, bw = (w - pad * 2) / W.length;
+  const y = v => h - bot - (v / top) * (h - bot - 22);
+  let s = `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="Rain by week against a usual week">`;
+  W.forEach((k, i) => { const x = pad + i * bw + 8, sure = i < 2;
+    s += `<rect x="${x}" y="${y(k.p90)}" width="${bw - 16}" height="${y(k.p10) - y(k.p90)}" rx="4" fill="color-mix(in srgb,var(--sky) ${sure ? 22 : 12}%,transparent)" ${sure ? "" : `stroke="var(--sky)" stroke-dasharray="3 3" stroke-opacity=".5"`}/>`;
+    s += `<rect x="${x}" y="${y(k.p50) - 2}" width="${bw - 16}" height="4" rx="2" fill="var(--sky)" opacity="${sure ? 1 : 0.6}"/>`;
+    s += `<text x="${x + (bw - 16) / 2}" y="${h - 14}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--muted)">${i === 0 ? "This wk" : i === 1 ? "Next wk" : `Wk ${i + 1}`}</text>`;
+    s += `<text x="${x + (bw - 16) / 2}" y="${h - 2}" text-anchor="middle" font-size="10" fill="var(--muted)">${dm(k.from)}</text>`; });
+  s += `<line x1="${pad}" x2="${w - pad}" y1="${y(norm)}" y2="${y(norm)}" stroke="var(--ink)" stroke-dasharray="5 4"/><text x="${pad}" y="10" font-size="11" font-weight="700" fill="var(--ink)">- - - a usual week, ${R(norm)} mm · bars: likely range, line: middle</text>`;
+  return s + "</svg>";
+}
+function weeksWords(c) {
+  const norm = (c.months[0].normal / c.months[0].days) * 7, later = c.weeks.slice(2), r = later.reduce((s, k) => s + k.p50, 0) / later.length / norm;
+  return r < 0.5 ? "After mid-October the models lean drier than a usual week, though this far out they often miss." : r > 1.3 ? "After mid-October the models lean wetter than usual, though this far out they often miss." : "After mid-October, close to a usual week; this far out the models often miss.";
+}
+
+const secHead = `<div class="sechead"><div><h2>Sky & Streets</h2><span>Bengaluru, then Ranchi and Prayagraj · the weeks ahead</span></div></div>`;
+const B = D.cities[0], F = D.cities.filter(c => c.family);
+// Charts are drawn at the width they get, so their text stays at its real size on a phone.
+const CW = () => document.querySelector(".wrap").clientWidth - 2 * parseFloat(getComputedStyle(document.querySelector(".wrap")).paddingLeft), phone = () => CW() < 700;
+
+// ------------------------------------------------------------ A: the forecast story
+function A() {
+  const t = todayLine(B), mv = monthVerdict(B), nr = nextRain(B);
+  let h = secHead + `<div class="cols"><div>
+<p class="k">Bengaluru · the fortnight</p><h3 class="lede">${esc(headline(B))}</h3>
+<p class="dek">${spellNotes(B).map(x => x.replace(/<\/?b>/g, "")).join(" ")}</p>
+${ribbon(B, { w: phone() ? CW() : 760 })}
+<p class="note">Bars: the chance of a proper rainy day (2.5 mm or more), from 51 runs of the European model. Line: the daytime high, with the range most runs agree on.</p>
+</div><div>
+<div class="sub" style="margin-top:0"><b>Today</b><em>${esc(long(B.daily[0].date))}</em></div>
+<p style="margin:0 0 4px;font:600 19px/1.35 var(--hl)">${esc(t.text)}</p>
+${hours(B, { w: phone() ? CW() : 420 })}
+<ul class="pts">
+<li><i>TEMP</i><span>${esc(tempLine(B))}</span></li>
+${airLine(B) ? `<li><i>AIR</i><span>${esc(airLine(B))}</span></li>` : ""}
+</ul>
+<div class="sub"><b>The month</b><em>October</em></div>
+<p style="margin:0;font:16.5px/1.45 var(--serif)">${esc(mv.text)}</p>
+${monthGauge(B, { w: phone() ? CW() : 420 })}
+<p class="note">${esc(weeksWords(B))}</p>
+</div></div>
+<div class="sub" style="margin-top:36px"><b>Ranchi and Prayagraj</b><em>where the family is</em></div>
+<div class="fam">${F.map(c => { const n = nextRain(c), m = monthVerdict(c);
+  return `<div><h3>${esc(c.name)}<small>${R(c.current.temp)}° now</small></h3><p class="l">${esc(headline(c))}</p><p class="s">${esc(tempLine(c))} ${esc(airLine(c))}</p>${ribbon(c, { w: phone() ? CW() : 520, h: 64, mini: true })}
+<div class="trio"><div><span>Feels like</span><b>${R(c.daily[0].feels)}°</b></div><div><span>Next rain</span><b>${n ? say(n.d).replace(/ \d+ \w+$/, "") + " " + n.c + "%" : "None due"}</b></div><div><span>October</span><b>${m.w.replace(" than usual", "").replace(/^a little /, "a bit ")}</b></div></div></div>`; }).join("")}</div>`;
+  $("#A").innerHTML = h;
+}
+
+// ------------------------------------------------------------ B: the calendar
+function calendar(c, weeks = 5) {
+  const first = new Date(c.ens[0].date + "T12:00:00Z"), dow = (first.getUTCDay() + 6) % 7; // Monday first
+  const start = new Date(first - dow * 864e5);
+  let s = `<div class="cal">${["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(d => `<div class="h">${d}</div>`).join("")}`;
+  let row = 0;
+  for (let i = 0; i < 14 + dow; i++) {
+    const d = new Date(+start + i * 864e5).toISOString().slice(0, 10), e = c.ens.find(x => x.date === d);
+    if (d < c.ens[0].date) { const p = c.past.find(x => x.date === d); s += `<div class="d past" style="background:${col(p && p.rain_mm >= 2.5 ? 60 : 8)}"><span class="dt">${dm(d)}</span><span class="t">${p ? R(p.max) + "°" : ""}</span><span class="p">${p ? (p.rain_mm >= 2.5 ? R(p.rain_mm) + " mm" : "dry") : ""}</span></div>`; continue; }
+    if (!e) { s += `<div class="d" style="background:var(--surface)"><span class="dt">${dm(d)}</span></div>`; continue; }
+    const hot = e.chance >= 50;
+    s += `<div class="d${d === c.ens[0].date ? " today" : ""}" style="background:${col(e.chance)};${e.chance >= 60 ? "color:var(--sky-on)" : ""}"><span class="dt">${d === c.ens[0].date ? "Today" : dm(d)}</span><span class="t">${R(e.max)}°</span><span class="p">${e.chance >= 20 ? "☂ " + e.chance + "%" : "dry"}</span></div>`;
+  }
+  const norm = (c.months[0].normal / c.months[0].days) * 7;
+  for (const k of c.weeks.slice(2)) { const r = k.p50 / norm, word = r < 0.5 ? "Leaning dry" : r > 1.3 ? "Leaning wet" : "About usual";
+    s += `<div class="wk" style="background-color:${col(Math.min(70, r * 30))}"><b>${dm(k.from)} to ${dm(k.to)}</b><span>${word} · likely ${k.p50} mm, usual ${R(norm)} mm</span></div>`; }
+  return s + "</div>";
+}
+function Bv() {
+  const t = todayLine(B), mv = monthVerdict(B);
+  let h = secHead + `<div class="todaybig"><div class="n tnum">${t.p}<small>%</small></div><p><b>Chance of rain today</b>${esc(t.when)}. ${esc(tempLine(B))}</p></div>
+<div class="calrow"><div>${calendar(B)}<p class="note">Days: the chance of a proper rainy day (2.5 mm or more), darker is likelier, with the daytime high. Last week, faded, shows what fell. Striped rows are weeks 3 to 5: the models only say which way they lean.</p></div>
+<div class="margin">${spellNotes(B).map(x => `<p>${x.replace("<b>", "<b>").replace("</b>", "</b>")}</p>`).join("")}<p><b>October</b>${esc(mv.text.replace(/^October looks /, "Looks "))}</p>${airLine(B) ? `<p><b>Air</b>${esc(airLine(B))}</p>` : ""}</div></div>
+<div class="sub" style="margin-top:36px"><b>Ranchi and Prayagraj</b><em>the next two weeks</em></div>
+<div class="fam">${F.map(c => `<div><h3>${esc(c.name)}<small>${R(c.current.temp)}° now · feels ${R(c.daily[0].feels)}° by day</small></h3><p class="l">${esc(headline(c))}</p>
+<div class="minical">${c.ens.map(e => `<i title="${long(e.date)}: ${e.chance}%" style="background:${col(e.chance)};${e.chance >= 50 ? "outline:1px solid var(--sky)" : ""}"></i>`).join("")}</div><div class="mlab"><span>Today</span><span>${dm(c.ens.at(-1).date)}</span></div>
+<p class="s" style="margin-top:8px">${esc(monthVerdict(c).text)} ${esc(airLine(c))}</p></div>`).join("")}</div>`;
+  $("#B").innerHTML = h;
+}
+
+// ------------------------------------------------------------ C: three horizons
+function ring(p, r = 44) {
+  const C = 2 * Math.PI * r;
+  return `<svg viewBox="0 0 110 110" width="110" height="110" aria-hidden="true"><circle cx="55" cy="55" r="${r}" fill="none" stroke="var(--rule2)" stroke-width="10"/><circle cx="55" cy="55" r="${r}" fill="none" stroke="var(--sky)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${(C * p) / 100} ${C}" transform="rotate(-90 55 55)"/><text x="55" y="62" text-anchor="middle" font-size="26" font-weight="800" fill="var(--ink)">${p}%</text></svg>`;
+}
+function week7(c, { w = 380, h = 150 } = {}) {
+  const E = c.ens.slice(0, 7), pad = 6, bot = 22, bw = (w - pad * 2) / 7;
+  const tmin = Math.min(...E.map(e => e.max)) - 2, tmax = Math.max(...E.map(e => e.max)) + 1, ty = t => 14 + (1 - (t - tmin) / (tmax - tmin)) * 40;
+  let s = `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="This week">`;
+  E.forEach((e, i) => { const x = pad + i * bw + 5, bh = Math.max(2, (e.chance / 100) * (h - bot - 64)); s += `<rect x="${x}" y="${h - bot - bh}" width="${bw - 10}" height="${bh}" rx="4" fill="${col(e.chance)}" stroke="${e.chance >= 50 ? "var(--sky)" : "none"}"/><text x="${x + (bw - 10) / 2}" y="${h - bot - bh - 4}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--muted)">${e.chance ? e.chance + "%" : "dry"}</text><text x="${x + (bw - 10) / 2}" y="${h - 6}" text-anchor="middle" font-size="11" font-weight="${i ? 600 : 800}" fill="var(--${i ? "muted" : "ink"})">${i ? wd(e.date)[0] + wd(e.date)[1] : "Tdy"}</text><text x="${x + (bw - 10) / 2}" y="${ty(e.max) - 6}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--warm)">${R(e.max)}°</text>`; });
+  s += `<polyline points="${E.map((e, i) => `${pad + i * bw + bw / 2},${ty(e.max)}`).join(" ")}" fill="none" stroke="var(--warm)" stroke-width="2"/>`;
+  return s + "</svg>";
+}
+function weekWords(c) { const E = c.ens.slice(1, 7), n = E.filter(e => wet(e.chance)).length, d = E.filter(e => dry(e.chance)).length;
+  return n >= 4 ? `Rain likely on ${NUM[n]} of the next six days.` : n ? `Rain likely on ${NUM[n]} of the next six days; ${NUM[d]} look dry.` : d === 6 ? "Dry all week." : `Mostly dry; showers possible on ${NUM[6 - d]} days.`; }
+function Cv() {
+  const t = todayLine(B), mv = monthVerdict(B);
+  let h = secHead + `<div class="hz">
+<section><h3>Today</h3><div style="display:flex;gap:14px;align-items:center">${ring(t.p)}<p class="v" style="margin:0">Rain ${t.p >= 50 ? "likely" : t.p >= 20 ? "possible" : "unlikely"}${esc(t.when.replace(", most likely", ","))}</p></div>${hours(B, { w: phone() ? CW() : 380, h: 80 })}<p class="w">Feels like ${R(B.daily[0].feels)}° this afternoon, ${R(B.daily[0].min)}° tonight. ${esc(airLine(B))}</p></section>
+<section><h3>This week</h3><p class="v">${esc(weekWords(B))}</p>${week7(B, { w: phone() ? CW() : 380 })}<p class="w">${esc(tempLine(B).split(":")[0])}.</p></section>
+<section><h3>The month</h3><p class="v"><span class="pill">${esc(Cap(mv.w))}</span></p>${weeksChart(B, { w: phone() ? CW() : 420 })}<p class="w">About ${mv.m.p50} mm expected in October against a usual ${mv.m.normal} mm. ${esc(weeksWords(B).replace("After mid-October the models lean", "Later weeks lean"))}</p></section>
+</div>
+<div class="sub" style="margin-top:36px"><b>Ranchi and Prayagraj</b><em>one line each</em></div>
+<table class="ftab"><thead><tr><th>City</th><th>Today</th><th>This week</th><th>October</th></tr></thead><tbody>${F.map(c => { const n = nextRain(c), m = monthVerdict(c);
+  return `<tr><td>${esc(c.name)}</td><td><b>${R(c.daily[0].max)}°</b><small>feels ${R(c.daily[0].feels)}° · ${c.daily[0].rain_prob < 20 ? "dry" : c.daily[0].rain_prob + "% rain"}</small></td><td><b>${n ? `Rain ${say(n.d)}` : "Dry"}</b><small>${n ? `${n.c}% chance of a rainy day` : "no rain due"}</small></td><td><b>${esc(Cap(m.w.replace(" than usual", "")))}</b><small>${m.m.p50} mm likely, usual ${m.m.normal}</small></td></tr>`; }).join("")}</tbody></table>`;
+  $("#C").innerHTML = h;
+}
+A(); Bv(); Cv();
+let rw = innerWidth; addEventListener("resize", () => { if (innerWidth !== rw) { rw = innerWidth; A(); Bv(); Cv(); } });
+$("#th").onclick = () => { const r = document.documentElement, dk = r.dataset.theme === "dark" || (!r.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches); r.dataset.theme = dk ? "light" : "dark"; };
+</script>
+</body>
+</html>
