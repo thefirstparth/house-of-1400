@@ -9,6 +9,7 @@
   color-scheme:light;
   --paper:#f3f1ea;--sheet:#fbfaf6;--surface:#e9e6dc;--surface2:#dedace;--ink:#15140f;--ink2:#3a3830;--muted:#625d52;--rule:#d5d0c3;--rule2:#e4e0d5;
   --good:#0b7a43;--bad:#c0261d;--warn:#8a5a00;
+  --sun:#d9861a;--sun-halo:#f6d9a8;--moon:#5b57d9;--moon-halo:#dcdbf7;--moon-dark:#d6d4e6;
   --inverse:#1c1b17;--on-inverse:#f3f1ea;
   /* section palettes (primary / container / on-container), each from its subject: see config sections[].palette */
   --ink:#1c1b17;--ink-c:#e6e2d7;--ink-on:#1c1b17;--slate:#3b4a5e;--slate-c:#dde3ec;--slate-on:#16202e;--dispatch:#1f3f73;--dispatch-c:#dbe4f4;--dispatch-on:#0c1d3b;--money:#00704a;--money-c:#c4eed6;--money-on:#00391f;--odds:#8a6200;--odds-c:#f6e4ae;--odds-on:#3c2a00;--madrid:#4f2f9e;--madrid-c:#e6deff;--madrid-on:#22105e;--pitch:#2e7d32;--pitch-c:#d3f0cf;--pitch-on:#0f3a12;--f1:#d0021b;--f1-c:#ffdad6;--f1-on:#5c0008;--india:#1440a8;--india-c:#d8e2ff;--india-on:#081d5c;--tennis:#566f00;--tennis-c:#e6f59c;--tennis-on:#222e00;--track:#ad4a1c;--track-c:#ffdccb;--track-on:#4a1500;--tech:#00697a;--tech-c:#bdebf2;--tech-on:#00363f;--sky:#0a72a8;--sky-c:#d2ecfa;--sky-on:#003550;--namma:#946000;--namma-c:#ffe3a3;--namma-on:#3f2600;--screen:#ae2168;--screen-c:#ffd8e7;--screen-on:#5a0032;
@@ -28,11 +29,13 @@
   color-scheme:dark;
   --paper:#131210;--sheet:#1b1a17;--surface:#22201c;--surface2:#2c2a25;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;
   --good:#5fd08f;--bad:#ff8a7e;--warn:#e7b964;--inverse:#eeeae0;--on-inverse:#161511;
+  --sun:#f2b552;--sun-halo:#4a3718;--moon:#aaa8ff;--moon-halo:#2c2b4f;--moon-dark:#34334a;
   --ink:#eeeae0;--ink-c:#2e2c27;--ink-on:#eeeae0;--slate:#aebdd2;--slate-c:#26303d;--slate-on:#dde3ec;--dispatch:#a5bfeb;--dispatch-c:#1b2c4a;--dispatch-on:#dbe4f4;--money:#5fd9a0;--money-c:#0b3d28;--money-on:#c4eed6;--odds:#f0c860;--odds-c:#3f2f00;--odds-on:#f6e4ae;--madrid:#c3b0ff;--madrid-c:#352075;--madrid-on:#e6deff;--pitch:#8fd694;--pitch-c:#173d1a;--pitch-on:#d3f0cf;--f1:#ff8a80;--f1-c:#5a1210;--f1-on:#ffdad6;--india:#a3bcff;--india-c:#16296b;--india-on:#d8e2ff;--tennis:#c9e86a;--tennis-c:#2e3a00;--tennis-on:#e6f59c;--track:#ffb08a;--track-c:#4e1c05;--track-on:#ffdccb;--tech:#6ed6e8;--tech-c:#0a3d46;--tech-on:#bdebf2;--sky:#7ccbf2;--sky-c:#0a3550;--sky-on:#d2ecfa;--namma:#ffc05c;--namma-c:#4a3000;--namma-on:#ffe3a3;--screen:#ff9cc6;--screen-c:#5c0f37;--screen-on:#ffd8e7;--india-2:#ffab5e;--shadow:0 10px 30px rgba(0,0,0,.5)}}
 :root[data-theme="dark"]{
   color-scheme:dark;
   --paper:#131210;--sheet:#1b1a17;--surface:#22201c;--surface2:#2c2a25;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;
   --good:#5fd08f;--bad:#ff8a7e;--warn:#e7b964;--inverse:#eeeae0;--on-inverse:#161511;
+  --sun:#f2b552;--sun-halo:#4a3718;--moon:#aaa8ff;--moon-halo:#2c2b4f;--moon-dark:#34334a;
   --ink:#eeeae0;--ink-c:#2e2c27;--ink-on:#eeeae0;--slate:#aebdd2;--slate-c:#26303d;--slate-on:#dde3ec;--dispatch:#a5bfeb;--dispatch-c:#1b2c4a;--dispatch-on:#dbe4f4;--money:#5fd9a0;--money-c:#0b3d28;--money-on:#c4eed6;--odds:#f0c860;--odds-c:#3f2f00;--odds-on:#f6e4ae;--madrid:#c3b0ff;--madrid-c:#352075;--madrid-on:#e6deff;--pitch:#8fd694;--pitch-c:#173d1a;--pitch-on:#d3f0cf;--f1:#ff8a80;--f1-c:#5a1210;--f1-on:#ffdad6;--india:#a3bcff;--india-c:#16296b;--india-on:#d8e2ff;--tennis:#c9e86a;--tennis-c:#2e3a00;--tennis-on:#e6f59c;--track:#ffb08a;--track-c:#4e1c05;--track-on:#ffdccb;--tech:#6ed6e8;--tech-c:#0a3d46;--tech-on:#bdebf2;--sky:#7ccbf2;--sky-c:#0a3550;--sky-on:#d2ecfa;--namma:#ffc05c;--namma-c:#4a3000;--namma-on:#ffe3a3;--screen:#ff9cc6;--screen-c:#5c0f37;--screen-on:#ffd8e7;--india-2:#ffab5e;--shadow:0 10px 30px rgba(0,0,0,.5)}
 
 [data-fam=ink]{--f:var(--ink);--fc:var(--ink-c);--fo:var(--ink-on)}
@@ -892,28 +895,56 @@ nav.idx .dk:first-child{padding-left:2px}
 /* Paddock Notes: a session's day, date and time stay on one line */
 table.sessions td.r{white-space:nowrap}
 
-/* ---------- The Ledger: what traders expect, who bought and sold, breadth ---------- */
-.ledx{margin-top:26px}
-.ledx h4{margin:0 0 10px;font:700 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--acc,var(--ink))}
-.ledx .up{color:var(--good)}.ledx .dn{color:var(--bad)}
-.tx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px}
-.tx{background:var(--sheet);border:1px solid var(--rule2);border-radius:var(--radius);padding:12px 14px}
-.tx-k{font:700 10.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.tx-q{display:block;margin:3px 0 8px;font:600 16px/1.3 var(--serif);color:var(--ink);text-decoration:none}
-.tx-q:hover{text-decoration:underline}
-.tx-top{font:14px var(--sans);color:var(--ink2)}.tx-top b{font:700 26px/1 var(--sans);color:var(--ink);margin-right:4px}
-.tx-bar{display:flex;gap:2px;height:8px;margin:8px 0 6px;border-radius:4px;overflow:hidden}
-.tx-bar i{display:block;width:var(--w);background:color-mix(in srgb,var(--acc,var(--ink)) 45%,transparent)}.tx-bar i.lead{background:var(--acc,var(--ink))}
-.tx-rest,.tx-2{font:12.5px/1.45 var(--sans);color:var(--muted)}.tx-rest b{color:var(--ink2)}
-.tx-2{margin-top:4px}
-.tx-mv{font:600 12px var(--sans);margin-top:3px}.tx-mv.up{color:var(--good)}.tx-mv.dn{color:var(--bad)}
-.tx-lv{display:grid;gap:6px}
-.tx-lv div{display:grid;grid-template-columns:42px 1fr;grid-template-rows:auto auto;column-gap:8px;align-items:center;font:12.5px var(--sans);color:var(--muted)}
-.tx-lv b{grid-row:1/3;font:700 16px var(--sans);color:var(--ink)}
-.tx-lv i{display:block;height:6px;width:var(--w);border-radius:3px;background:var(--acc,var(--ink))}
-.br-line{margin:0 0 10px;font:15px/1.5 var(--sans);color:var(--ink2)}
-.br-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px 18px;font:13.5px/1.6 var(--sans);color:var(--ink2)}
-.br-grid span{display:block;font:700 10.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
-
 /* A tennis match whose time has passed but play has not started (ESPN): the court is running late */
 .due{font:600 12px var(--sans);color:var(--warn);margin-left:6px}
+
+/* ---------- The Ledger: who bought and sold, breadth (newspaper tables, the paper's own inks) ---------- */
+.ledx{margin-top:30px;padding-top:12px;border-top:2px solid var(--ink)}
+.ledx h4{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0 0 12px;font:800 13px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink)}
+.ledx h4 span{font:italic 400 14.5px var(--serif);letter-spacing:0;text-transform:none;color:var(--muted)}
+.ledx .up{color:var(--good)}.ledx .dn{color:var(--bad)}
+.flows{display:grid;gap:10px;max-width:760px}
+.fl{display:grid;grid-template-columns:minmax(120px,1fr) minmax(90px,1.4fr) auto;align-items:center;gap:12px;font:15px var(--serif);color:var(--ink)}
+.fl-n small{font:600 11px var(--sans);letter-spacing:.06em;color:var(--muted)}
+.fl-t{position:relative;height:14px;border-left:0;background:linear-gradient(var(--rule),var(--rule)) center/1px 100% no-repeat}
+.fl-t i{position:absolute;top:2px;bottom:2px;width:var(--w);border-radius:2px}
+.fl-t i.dn{right:50%;background:var(--bad)}.fl-t i.up{left:50%;background:var(--good)}
+.fl-v{font:600 14px var(--sans);text-align:right;white-space:nowrap}
+.fl-m{margin:12px 0 0;font:15.5px/1.5 var(--serif);color:var(--ink2)}
+.adv-n{display:flex;justify-content:space-between;font:700 14px var(--sans);margin-bottom:5px}
+.adv-bar{display:flex;height:10px;border-radius:2px;overflow:hidden;background:var(--bad)}
+.adv-bar i{display:block;height:100%}.adv-bar i.up{background:var(--good)}.adv-bar i.dn{flex:1;background:var(--bad)}
+.adv-s{margin-top:4px;font:12.5px var(--sans);color:var(--muted);text-align:center}
+.br-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:4px 26px;margin-top:16px}
+.br-l h5{margin:10px 0 2px;font:700 10.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.br-l ol{list-style:none;margin:0;padding:0}
+.br-l li{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid var(--rule2);font:15px/1.3 var(--serif);color:var(--ink)}
+.br-l li b{font:600 14px var(--sans);white-space:nowrap}
+
+/* ---------- masthead: the sky over the home city (left ear) and markets (right ear) ---------- */
+.skyear{max-width:290px}
+.skyear .se-top{display:flex;align-items:center;gap:8px;margin:2px 0 4px}
+.skyear .se-t{display:inline;font:700 40px/1 var(--hl);color:var(--ink);margin:0}
+.skyear .se-top .wxi{width:30px;height:30px;flex:none}
+.skyear .se-c{display:flex;flex-direction:column;font:13px/1.35 var(--sans);color:var(--ink2);min-width:0}
+.skyear .se-sky{font:600 15px/1.25 var(--serif);color:var(--ink)}
+.skyear .arc{display:block;width:100%;height:auto;margin-top:6px;overflow:visible}
+.arc .track{fill:none;stroke:var(--rule);stroke-width:1.4;stroke-dasharray:2 3}
+.arc .hz{stroke:var(--rule);stroke-width:1}
+.arc.day .done{fill:none;stroke:var(--sun);stroke-width:2.4;stroke-linecap:round}
+.arc.night .done{fill:none;stroke:var(--moon);stroke-width:2.4;stroke-linecap:round}
+.arc .sun{fill:var(--sun)}.arc.day .halo{fill:var(--sun-halo);opacity:.9}
+.arc .moon{fill:var(--moon)}.arc .moon-dark{fill:var(--moon-dark)}.arc.night .halo{fill:var(--moon-halo);opacity:.9}
+.arc .star{fill:var(--muted);opacity:.55}
+.skyear .se-times{display:flex;justify-content:space-between;gap:6px;font:500 11.5px var(--sans);color:var(--muted);margin-top:2px}
+.skyear .se-mid{text-align:center;flex:1}
+.skyear .se-st{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px;padding-top:7px;border-top:1px solid var(--rule)}
+.skyear .se-st span{display:flex;flex-direction:column;font:12px/1.25 var(--sans);color:var(--muted)}
+.skyear .se-st small{font:700 9.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.skyear .se-st b{display:block;margin:1px 0 0;font:700 18px/1.15 var(--hl);color:var(--ink)}
+.skyear.is-day .se-st b{color:var(--ink)}
+.ear.r .ers{display:grid;gap:1px;margin-top:4px}
+.ear.r .er{display:flex;justify-content:flex-end;gap:8px}
+.ear.r .er small{font-size:11px;color:var(--muted)}
+@media (max-width:720px){#earL{grid-column:1/-1}#earR{grid-column:1/-1;justify-self:stretch}.skyear{max-width:none}.ear.r{max-width:none;width:100%;box-sizing:border-box;margin:0;text-align:left;padding-top:10px;border-top:1px solid var(--rule)}.ear.r .ers{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}.ear.r .er{flex-direction:column;justify-content:flex-start;gap:0}.skyear .se-t{font-size:36px}.skyear .arc{max-width:420px}}
+@media (max-width:720px){.fl{grid-template-columns:minmax(0,1fr) auto;gap:2px 12px}.fl-n{grid-column:1/-1}.fl-t{grid-column:1}.fl-v{grid-column:2}}

@@ -12,3 +12,8 @@ const n = parseNifty500(csv).length;
 if (n < 450) { console.error(`nifty500: only ${n} rows; kept the old copy`); process.exit(1); }
 writeFileSync("config/nifty500.csv", csv.endsWith("\n") ? csv : csv + "\n");
 console.log(`nifty500: ${n} constituents saved`);
+
+// The Nifty 100 list too (breadth's biggest movers come from it), kept in config/nifty100.csv.
+const r100 = await fetch("https://nsearchives.nseindia.com/content/indices/ind_nifty100list.csv", { headers: { "user-agent": "Mozilla/5.0" } });
+if (r100.ok) { const t = await r100.text(), k = parseNifty500(t).length; if (k >= 95) { writeFileSync("config/nifty100.csv", t.endsWith("\n") ? t : t + "\n"); console.log(`nifty100: ${k} constituents saved`); } else console.error(`nifty100: only ${k} rows; kept the old copy`); }
+else console.error(`nifty100: NSE answered ${r100.status}; kept the old copy`);

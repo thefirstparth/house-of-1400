@@ -79,7 +79,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "traders", "flows", "movers", "tennis_players"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -329,17 +329,73 @@ function railHTML() {
   return out.slice(0, 4).join("");
 }
 // The ears: Bengaluru's weather on the left of the nameplate, the first index of each market on the right.
+// The masthead's left ear: the sky over the home city. Now (temperature, sky, feels like, the day's range), then an
+// arc from sunrise to sunset with the sun where it is, or by night from sunset to sunrise with the moon in its phase,
+// the time to the next sunrise or sunset, and three readings: humidity (with a word), air and, by night, how much of
+// the moon is lit (by day, the chance of rain). The moon is worked out from the date; the rest is Open-Meteo.
+const SYNODIC = 29.530588853, NEW_MOON = Date.UTC(2000, 0, 6, 18, 14);
+function moonNow(t = Date.now()) {
+  const age = (((t - NEW_MOON) / 864e5) % SYNODIC + SYNODIC) % SYNODIC, lit = (1 - Math.cos(2 * Math.PI * age / SYNODIC)) / 2;
+  const names = ["New moon", "Waxing crescent", "First quarter", "Waxing gibbous", "Full moon", "Waning gibbous", "Last quarter", "Waning crescent"];
+  return { age, lit, waxing: age < SYNODIC / 2, name: names[Math.floor((age / SYNODIC) * 8 + 0.5) % 8] };
+}
+const humidWord = (h, t) => (h == null ? "" : h < 30 ? "dry" : h < 60 ? "comfortable" : h < 80 ? "humid" : t >= 24 ? "muggy" : "damp");
+const airWord = v => ({ good: "good", mod: "moderate", usg: "poor for some", bad: "unhealthy", vbad: "very unhealthy", haz: "hazardous" })[aqiCat(v)[2]];
+const localMs = (s, off) => (s ? Date.parse(`${s}:00Z`) - (off ?? 19800) * 1000 : NaN);
+const hm = ms => { const m = Math.max(0, Math.round(ms / 6e4)); return m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m}m`; };
+function skyArc(c, n = Date.now()) {
+  const off = c.utc_offset_seconds ?? 19800, days = [...(c.past || []), ...(c.daily || [])];
+  const rise = days.map(d => localMs(d.sunrise, off)).filter(Number.isFinite), set = days.map(d => localMs(d.sunset, off)).filter(Number.isFinite);
+  if (!rise.length || !set.length) return null;
+  const lastRise = Math.max(...rise.filter(x => x <= n), -Infinity), lastSet = Math.max(...set.filter(x => x <= n), -Infinity);
+  const nextRise = Math.min(...rise.filter(x => x > n), Infinity), nextSet = Math.min(...set.filter(x => x > n), Infinity);
+  const day = lastRise > lastSet;
+  const from = day ? lastRise : lastSet, to = day ? nextSet : nextRise;
+  if (!Number.isFinite(from) || !Number.isFinite(to)) return null;
+  return { day, from, to, f: Math.min(1, Math.max(0, (n - from) / (to - from))) };
+}
+function arcSVG(a, m) {
+  const X = f => 100 - 88 * Math.cos(Math.PI * f), Y = f => 56 - 46 * Math.sin(Math.PI * f), x = X(a.f), y = Y(a.f);
+  const done = `M12 56 A88 46 0 0 1 ${x.toFixed(1)} ${y.toFixed(1)}`;
+  let body;
+  if (a.day) body = `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="10" class="halo"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6" class="sun"/>`;
+  else {
+    // The moon in its phase: a dark disk, then the lit part bounded by the terminator (an ellipse of width |1-2k|).
+    const r = 7, k = m.lit, rx = (r * Math.abs(1 - 2 * k)).toFixed(2), sweep = k > 0.5 ? 1 : 0;
+    const lit = `M0 ${-r} A${r} ${r} 0 0 1 0 ${r} A${rx} ${r} 0 0 ${sweep} 0 ${-r}Z`;
+    body = `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="11" class="halo"/><g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})${m.waxing ? "" : " scale(-1 1)"}"><circle r="${r}" class="moon-dark"/><path d="${lit}" class="moon"/></g>`;
+  }
+  const stars = a.day ? "" : [[34, 20], [58, 10], [92, 14], [128, 8], [160, 18], [176, 34], [74, 30], [140, 32]].map(([sx, sy]) => `<circle cx="${sx}" cy="${sy}" r="0.9" class="star"/>`).join("");
+  return `<svg class="arc ${a.day ? "day" : "night"}" viewBox="0 0 200 60" aria-hidden="true">${stars}<path d="M12 56 A88 46 0 0 1 188 56" class="track"/><path d="${done}" class="done"/><line x1="4" y1="56.5" x2="196" y2="56.5" class="hz"/>${body}</svg>`;
+}
+function skyEar(w) {
+  const d = w.daily[0], n = Date.now(), a = skyArc(w, n), m = moonNow(n), A = w.air;
+  const night = a ? !a.day : isNight(Number(fmt(new Date().toISOString(), { hour: "2-digit" })));
+  const t = Math.round(w.current.temp), feels = w.current.feels != null ? Math.round(w.current.feels) : null;
+  const top = `<div class="se-top"><b class="se-t tnum">${t}°</b>${wxIcon(w.current.code, night)}<div class="se-c"><span class="se-sky">${esc(wx(w.current.code)[1])}</span><span>${feels != null && feels !== t ? `Feels like ${feels}° · ` : ""}${Math.round(d.max)}° / ${Math.round(d.min)}°</span></div></div>`;
+  const tm = ms => esc(fmt(new Date(ms).toISOString(), { hour: "2-digit", minute: "2-digit" }));
+  const arc = a ? `${arcSVG(a, m)}<div class="se-times"><span>${a.day ? "↑" : "↓"} ${tm(a.from)}</span><span class="se-mid">${hm(a.to - n)} to ${a.day ? "sunset" : "sunrise"}</span><span>${tm(a.to)} ${a.day ? "↓" : "↑"}</span></div>` : "";
+  const st = [];
+  if (w.current.humidity != null) st.push(`<span><small>Humidity</small><b class="tnum">${Math.round(w.current.humidity)}%</b>${esc(humidWord(w.current.humidity, w.current.temp))}</span>`);
+  if (A?.now != null) st.push(`<span><small>Air</small><b class="tnum">${Math.round(A.now)}</b>${esc(airWord(A.now))}</span>`);
+  if (night) st.push(`<span><small>Moon</small><b class="tnum">${Math.round(m.lit * 100)}% lit</b>${esc(m.name.toLowerCase())}</span>`);
+  else if (d.rain_prob != null) st.push(`<span><small>Rain</small><b class="tnum">${d.rain_prob}%</b>chance</span>`);
+  return `<a class="ear skyear ${night ? "is-night" : "is-day"}" href="#sky"><small>${esc(w.name)} · ${night ? "tonight" : "now"}</small>${top}${arc}<div class="se-st">${st.join("")}</div></a>`;
+}
+
 function earsHTML() {
   const w = LIVE.weather?.value?.cities?.[0], M = LIVE.markets?.value;
   let L = "", R = "";
-  if (w) {
-    const d = w.daily[0], hr = Number(fmt(new Date().toISOString(), { hour: "2-digit" }));
-    L = `<a class="ear" href="#sky"><small>${esc(w.name)}</small><b>${Math.round(w.current.temp)}° ${wxIcon(w.current.code, isNight(hr))}</b>${esc(wx(w.current.code)[1])} · ${Math.round(d.max)}° / ${Math.round(d.min)}°${d.rain_prob != null ? ` · ${d.rain_prob}% rain` : ""}</a>`;
-  }
+  if (w) L = skyEar(w);
   if (M?.indices?.length) {
     const firsts = [...new Set(CFG.markets.indices.map(i => i.exchange))].map(ex => M.indices.find(q => CFG.markets.indices.find(i => i.name === q.name)?.exchange === ex)).filter(Boolean);
     const [a, ...rest] = firsts;
-    R = `<a class="ear r" href="#ledger"><small>${esc(a.name)} · ${a.live ? "live" : "at close"}</small><b>${inr(a.price, 0)}</b><span class="${dir(a.change_pct)}">${pts(a, "", 0)} · ${pct(a.change_pct)}</span>${rest.map(q => `<br>${esc(q.name)} <span class="${dir(q.change_pct)}">${pct(q.change_pct)}</span>`).join("")}</a>`;
+    // Below the index: the other market's index, then oil and gold, each with the day's move.
+    const brent = (M.cross || []).find(q => /brent/i.test(q.name)), G = LIVE.gold_in?.value;
+    const more = [...rest.map(q => `<span class="er"><span>${esc(q.name)}</span><span class="${dir(q.change_pct)}">${pct(q.change_pct)}</span></span>`),
+      brent ? `<span class="er"><span>Brent $${esc(brent.price.toFixed(2))}</span><span class="${dir(brent.change_pct)}">${pct(brent.change_pct)}</span></span>` : "",
+      G?.per_10g_24k ? `<span class="er"><span>Gold ₹${inr(G.per_10g_24k)}</span>${G.change_pct != null ? `<span class="${dir(G.change_pct)}">${pct(G.change_pct)}</span>` : ""}</span>` : ""].join("");
+    R = `<a class="ear r" href="#ledger"><small>${esc(a.name)} · ${a.live ? "live" : "at close"}</small><b>${inr(a.price, 0)}</b><span class="${dir(a.change_pct)}">${pts(a, "", 0)} · ${pct(a.change_pct)}</span><span class="ers">${more}</span></a>`;
   }
   return [L, R];
 }
@@ -573,55 +629,42 @@ function moodCard(m) {
 const moodTone = m => { const w = m.word || moodWord(m.score); return /fear|cautious/i.test(w) ? "var(--bad)" : /greed|confident|exuberant/i.test(w) ? "var(--good)" : "var(--muted)"; };
 const moodWord = s => (s < 25 ? "Fearful" : s < 45 ? "Cautious" : s <= 55 ? "Neutral" : s < 75 ? "Confident" : "Exuberant");
 
-// The Ledger's extra live blocks (Parth, 30 Sep): what traders expect, institutional money flows and breadth. Each
+// The Ledger's extra live blocks (Parth, 30 Sep): institutional money flows and breadth. Each
 // shows only when its source answered (live, or the edition's snapshot), and never on its own a wrong figure.
-const pctS = p => `${Math.round(p * 100)}%`;
 const crore = v => `₹${inr(Math.round(Math.abs(v)))} cr`;
-function tradersBlock() {
-  const T = LIVE.traders?.value?.topics || [];
-  if (!T.length) return "";
-  const card = t => {
-    const ends = fmt(t.ends, { day: "numeric", month: "short" });
-    if (t.kind === "levels") {
-      const L = t.levels || []; if (!L.length) return "";
-      return `<div class="tx"><div class="tx-k">${esc(t.label)} · by ${esc(ends)}</div><a class="tx-q" href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.question)}</a>
-<div class="tx-lv">${L.map(l => `<div><b class="tnum">${pctS(l.p)}</b><i style="--w:${Math.round(l.p * 100)}%"></i><span>${esc(l.label)}</span></div>`).join("")}</div></div>`;
-    }
-    const O = t.outcomes || []; if (!O.length) return "";
-    const top = O[0], mv = Number.isFinite(top.chg) && Math.abs(top.chg) >= 0.02 ? `<div class="tx-mv ${top.chg > 0 ? "up" : "dn"}">${top.chg > 0 ? "▲" : "▼"} ${Math.round(Math.abs(top.chg) * 100)} pts in a day</div>` : "";
-    const K = t.kalshi?.outcomes?.length ? `<div class="tx-2">Kalshi: ${t.kalshi.outcomes.slice(0, 3).map(o => `${esc(o.label)} ${pctS(o.p)}`).join(" · ")}</div>` : "";
-    return `<div class="tx"><div class="tx-k">${esc(t.label)} · ${esc(ends)}</div><a class="tx-q" href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.question)}</a>
-<div class="tx-top"><b class="tnum">${pctS(top.p)}</b> ${esc(top.label)}</div>
-<div class="tx-bar">${O.map((o, i) => `<i class="${i ? "" : "lead"}" style="--w:${Math.max(1, Math.round(o.p * 100))}%" title="${esc(o.label)} ${pctS(o.p)}"></i>`).join("")}</div>
-<div class="tx-rest">${O.slice(1, 4).map(o => `${esc(o.label)} <b>${pctS(o.p)}</b>`).join(" · ")}</div>${mv}${K}</div>`;
-  };
-  const body = T.map(card).join("");
-  if (!body) return "";
-  return `<div class="ledx"><h4>What traders expect</h4><div class="tx-grid">${body}</div><p class="asof">Prices on Polymarket${T.some(t => t.kalshi?.outcomes) ? " and Kalshi" : ""}, read as the chance of each outcome. A level counts as reached if it trades there at any time before the date.${staleNote("traders")}</p></div>`;
-}
+// Who bought and sold: the day's net buying of foreign and domestic institutions as bars either side of a centre line
+// (sold to the left, bought to the right), then the month so far for foreign investors.
 function flowsBlock() {
   const F = LIVE.flows?.value; if (!F || (!F.day && !F.fpi_month)) return "";
-  const who = v => (v >= 0 ? "bought" : "sold");
-  let rows = "";
-  if (F.day) rows += `<tr><td>Foreign (FII/FPI)</td><td class="r tnum ${F.day.fii >= 0 ? "up" : "dn"}">${who(F.day.fii)} ${crore(F.day.fii)}</td></tr><tr><td>Domestic institutions (DII)</td><td class="r tnum ${F.day.dii >= 0 ? "up" : "dn"}">${who(F.day.dii)} ${crore(F.day.dii)}</td></tr>`;
-  const M = F.fpi_month;
-  if (M) rows += `<tr><td>Foreign, ${esc(new Date(M.month + "-15T12:00:00Z").toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" }))} so far</td><td class="r tnum ${M.net >= 0 ? "up" : "dn"}">${who(M.net)} ${crore(M.net)}</td></tr>`;
-  const src = [F.day && `${fmt(F.day.date + "T12:00:00Z", { day: "numeric", month: "short" })}: NSE provisional, cash market (${esc(F.day.scope)})`, M && `month: NSDL, foreign investment in equity over ${M.days} session${M.days === 1 ? "" : "s"}`].filter(Boolean).join("; ");
-  return `<div class="ledx"><h4>Who bought and sold</h4><div class="tbl"><table class="compact"><tbody>${rows}</tbody></table></div><p class="asof">${src}.${staleNote("flows")}</p></div>`;
+  const who = v => (v >= 0 ? "bought" : "sold"), M = F.fpi_month;
+  let h = "";
+  if (F.day) {
+    const rows = [["Foreign investors", "FII/FPI", F.day.fii], ["Domestic institutions", "DII", F.day.dii]], max = Math.max(...rows.map(r => Math.abs(r[2]))) || 1;
+    h += `<div class="flows">${rows.map(([label, short, v]) => `<div class="fl"><span class="fl-n">${esc(label)} <small>${esc(short)}</small></span><span class="fl-t" aria-hidden="true"><i class="${v >= 0 ? "up" : "dn"}" style="--w:${Math.max(2, Math.round(Math.abs(v) / max * 50))}%"></i></span><span class="fl-v tnum ${v >= 0 ? "up" : "dn"}">${who(v)} ${crore(v)}</span></div>`).join("")}</div>`;
+  }
+  if (M) h += `<p class="fl-m">Foreign investors have ${M.net >= 0 ? "put in" : "taken out"} <b class="tnum ${M.net >= 0 ? "up" : "dn"}">${crore(M.net)}</b> in ${esc(new Date(M.month + "-15T12:00:00Z").toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" }))} so far.</p>`;
+  const src = [F.day && `${fmt(F.day.date + "T12:00:00Z", { day: "numeric", month: "short" })}: NSE provisional figures for the cash market (${esc(F.day.scope)})`, M && `month: NSDL, foreign investment in equity over ${M.days} session${M.days === 1 ? "" : "s"}`].filter(Boolean).join("; ");
+  return `<div class="ledx"><h4>Who bought and sold${F.day ? ` <span>${esc(fmt(F.day.date + "T12:00:00Z", { weekday: "short", day: "numeric", month: "short" }).replace(/,/g, ""))}</span>` : ""}</h4>${h}<p class="asof">${src}.${staleNote("flows")}</p></div>`;
 }
+// Breadth: how many of the Nifty 500 rose and fell (one split bar), the large companies that moved most, and the
+// industries that moved most, as ruled lists like a newspaper's stock tables.
 function breadthBlock() {
   const B = LIVE.movers?.value?.breadth; if (!B || !(B.up + B.down)) return "";
-  const n = B.up + B.down + (B.flat || 0), st = x => `${esc(x.name.replace(/ Ltd\.?$/, ""))} <b class="tnum ${x.pct >= 0 ? "up" : "dn"}">${x.pct >= 0 ? "+" : ""}${x.pct.toFixed(1)}%</b>`;
-  const ind = x => `${esc(x.industry)} <b class="tnum ${x.pct >= 0 ? "up" : "dn"}">${x.pct >= 0 ? "+" : ""}${x.pct.toFixed(1)}%</b>`;
-  return `<div class="ledx"><h4>Breadth</h4><p class="br-line"><b class="tnum up">${B.up} up</b>, <b class="tnum dn">${B.down} down</b> ${n >= 500 ? "in the Nifty 500" : `of ${n} Nifty 500 stocks`} ${B.day === istDate() && fmt(new Date().toISOString(), { hour: "2-digit", minute: "2-digit" }) < "15:40" ? "so far today" : `on ${esc(fmt(B.day + "T12:00:00Z", { day: "numeric", month: "short" }))}`}.</p>
-<div class="br-grid"><div><span>Rose most</span>${B.gainers.map(st).join("<br>")}</div><div><span>Fell most</span>${B.losers.map(st).join("<br>")}</div><div><span>Industries up most</span>${B.best.map(ind).join("<br>")}</div><div><span>Industries down most</span>${B.worst.map(ind).join("<br>")}</div></div>
-<p class="asof">Closing prices from Yahoo Finance for NSE's Nifty 500 list; an industry is the median of its stocks.${staleNote("movers")}</p></div>`;
+  const n = B.up + B.down + (B.flat || 0), up = Math.round(B.up / n * 100);
+  const sg = v => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}%`;
+  const list = (title, rows, name) => rows?.length ? `<div class="br-l"><h5>${esc(title)}</h5><ol>${rows.map(x => `<li><span>${esc(name(x))}</span><b class="tnum ${x.pct >= 0 ? "up" : "dn"}">${sg(x.pct)}</b></li>`).join("")}</ol></div>` : "";
+  const co = x => x.name.replace(/ (Ltd|Limited)\.?$/, ""), from = B.movers_from || "Nifty 500";
+  const when = B.day === istDate() && fmt(new Date().toISOString(), { hour: "2-digit", minute: "2-digit" }) < "15:40" ? "so far today" : esc(fmt(B.day + "T12:00:00Z", { weekday: "short", day: "numeric", month: "short" }).replace(/,/g, ""));
+  return `<div class="ledx"><h4>Breadth <span>${when}</span></h4>
+<div class="adv"><div class="adv-n"><b class="tnum up">${B.up} rose</b><b class="tnum dn">${B.down} fell</b></div><div class="adv-bar" role="img" aria-label="${B.up} of ${n} Nifty 500 stocks rose, ${B.down} fell"><i class="up" style="width:${up}%"></i><i class="dn"></i></div><div class="adv-s">${n >= 500 ? "Nifty 500" : `${n} of the Nifty 500`}${B.flat ? ` · ${B.flat} unchanged` : ""}</div></div>
+<div class="br-g">${list(`Rose most · ${from}`, B.gainers, co)}${list(`Fell most · ${from}`, B.losers, co)}${list("Industries up most", B.best, x => x.industry)}${list("Industries down most", B.worst, x => x.industry)}</div>
+<p class="asof">Closing prices from Yahoo Finance for NSE's index lists; an industry's move is the median of its Nifty 500 stocks.${staleNote("movers")}</p></div>`;
 }
 function ledgerExtras() {
-  const h = tradersBlock() + flowsBlock() + breadthBlock();
+  const h = flowsBlock() + breadthBlock();
   if (!h) return "";
   const prof = CFG.day_profiles[E.weekday] || {};
-  return prof.markets === "light_unless_important" && !(E.sections?.ledger?.stories?.length) ? `<details><summary class="asof" style="cursor:pointer;padding:6px 0">Traders, flows and breadth. Tap to open.</summary>${h}</details>` : h;
+  return prof.markets === "light_unless_important" && !(E.sections?.ledger?.stories?.length) ? `<details><summary class="asof" style="cursor:pointer;padding:6px 0">Flows and breadth. Tap to open.</summary>${h}</details>` : h;
 }
 
 function ledgerBlock() {

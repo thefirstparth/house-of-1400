@@ -30,7 +30,7 @@ Match `design/reference.html` (approved: "Design A with C").
 IDs are stable. Names come from `config/house.json`.
 
 **Desks (from 30 Sep 2026):** on the page the sections below are grouped under six desks, in the order and membership of config `desks`: Front Page (the front, The Week Ahead; no heading), News (Dateline, Namma Beat), Money (The Ledger), Sport (The Fixture List, Madridismo, The Wider Pitch, Paddock Notes, The Crease, Deuce, The Sidelines), Tech & AI (The Workshop, The Pipeline), Life (Screen & Stage, Sky & Streets, Talk of the Day, The Betting Window, Before You Go). Your Desk, Letters and the House Note follow, as before. A desk's heading shows only while one of its sections does; the section index lists sections in page order under each desk's name. Grouping is presentation only: ids, data, rules and checks are unchanged. The list below describes each section; its order is the pre-desk order.
-1. Masthead with ears (weather left, next-up countdown right), folio with day profile line
+1. Masthead with ears (left: the sky over the home city, with feels like, a sunrise-to-sunset or sunset-to-sunrise arc with the sun or the moon in its phase, humidity with a word, air quality and moonlight or rain; right: Sensex, S&P 500, Brent and gold), folio with day profile line
 2. Front Page: 1 lead, up to 4 second stories, 3 briefs. Lead chosen by ranking, never by section.
 3. The Fixture List: everything coming up, IST, sorted by time. "Where" only when reliably confirmed.
 4. Madridismo: next 3 to 4 fixtures, last result, table position, then 0 to 3 stories (Managing Madrid first, other sources welcome)
@@ -43,7 +43,7 @@ IDs are stable. Names come from `config/house.json`.
 11. Dateline: world and India. Must-know floor applies.
 12. The Workshop: tech, AI, wearables, phones. Try / Wait / Ignore when supported.
 13. The Pipeline: SDR, outbound, GTM, SaaS. Only when useful.
-14. The Ledger: Sensex, Nifty 50, Nasdaq-100 panels with sparklines; cross-asset table; then, live (from 30 Sep 2026): What traders expect (Polymarket and Kalshi on the Fed, the RBI, oil, gold, Bitcoin), Who bought and sold (NSE and NSDL institutional flows) and Breadth (Nifty 500 up and down, three each way, industries); Cards & Points (India credit cards, top secondary beat)
+14. The Ledger: Sensex, Nifty 50, Nasdaq-100 panels with sparklines; cross-asset table; then, live (from 30 Sep 2026): Who bought and sold (NSE and NSDL institutional flows) and Breadth (Nifty 500 up and down; the Nifty 100's five biggest risers and fallers; the five strongest and weakest industries); Cards & Points (India credit cards, top secondary beat)
 15. Sky & Streets: Bengaluru 7-day weather with humidity and air quality and what changed since last week; Ranchi and Prayagraj every day (config `weather.family`); reader's location if allowed
 16. Namma Beat: Bengaluru city (stand-up shows, food, metro, roads, airport). Weekdays only when important; fuller Fri to Sun.
 17. Screen & Stage: new releases this week (English and Hindi, theatre and OTT, no regional) with verdicts; coming soon
