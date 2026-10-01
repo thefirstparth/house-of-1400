@@ -1,0 +1,117 @@
+/* ================================================================ DESK PAGE MOCK (design/sport, not production)
+   The 1 Oct system over the live stylesheet: Newsreader headlines, Source Serif 4 text, Libre Franklin labels and
+   figures; six desk colours carried by a rule and the name, never by a filled band; radii 4px (the build turns the
+   live sheet's radii down); the warm paper and double rules stay. */
+:root{
+  --serif:"Source Serif 4",Georgia,serif;--hl:"Newsreader","Source Serif 4",Georgia,serif;--head:"Playfair Display",Georgia,serif;
+  --sans:"Libre Franklin",system-ui,-apple-system,"Segoe UI",sans-serif;--black:"UnifrakturMaguntia","Old English Text MT",serif;
+  --f1font:"Titillium Web","Libre Franklin",system-ui,sans-serif;
+  --radius:4px;--r-l:4px;
+  --d-one:#15140f;--d-news:#1f3f73;--d-home:#0a72a8;--d-sport:#b8460e;--d-tech:#6a3fb5;--d-money:#0b7a43;--d-off:#a87a00;
+  --d:var(--d-sport);--dc:color-mix(in srgb,var(--d) 9%,var(--paper));--dc2:color-mix(in srgb,var(--d) 16%,var(--paper));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--d-one:#eeeae0;--d-news:#a5bfeb;--d-home:#7ccbf2;--d-sport:#f29a62;--d-tech:#bba4f2;--d-money:#5fd9a0;--d-off:#e7c35a;--dc:color-mix(in srgb,var(--d) 13%,var(--paper));--dc2:color-mix(in srgb,var(--d) 22%,var(--paper))}}
+:root[data-theme="dark"]{--d-one:#eeeae0;--d-news:#a5bfeb;--d-home:#7ccbf2;--d-sport:#f29a62;--d-tech:#bba4f2;--d-money:#5fd9a0;--d-off:#e7c35a;--dc:color-mix(in srgb,var(--d) 13%,var(--paper));--dc2:color-mix(in srgb,var(--d) 22%,var(--paper))}
+body{font-size:17.5px}
+#top,nav.idx,#pmenu{display:none!important}
+.layout{padding-top:0}
+.sheet{max-width:1240px}
+@media (min-width:1500px){.sheet{max-width:1320px}}
+@media (min-width:1900px){.sheet{max-width:1520px}}
+
+/* one colour per desk: every section, story, table highlight and pill on this page takes the desk's */
+#main,#main [data-fam]{--f:var(--d);--fc:var(--dc);--fo:var(--ink)}
+
+/* ---------- run line and the one-line masthead ---------- */
+.dwrap{max-width:1240px;margin:0 auto;padding-inline:clamp(16px,3vw,40px)}
+@media (min-width:1500px){.dwrap{max-width:1320px}}
+@media (min-width:1900px){.dwrap{max-width:1520px}}
+.drun{display:flex;justify-content:space-between;gap:4px 18px;flex-wrap:wrap;padding:8px 0 6px;font:500 12.5px var(--sans);color:var(--muted)}
+.drun span+span{margin-left:14px}
+.drun a{color:inherit}
+.dbar{display:flex;justify-content:space-between;align-items:center;gap:10px 24px;flex-wrap:wrap;padding:6px 0 10px}
+.np{display:inline-flex;align-items:baseline;gap:8px;color:var(--ink);text-decoration:none;white-space:nowrap}
+.np .the{font:400 25px/1 var(--black)}
+.np .hof{font:600 10px var(--sans);letter-spacing:.42em;text-transform:uppercase;transform:translateY(-4px)}
+.np .n{font:900 28px/1 var(--head);font-variant-numeric:lining-nums}
+.now{display:flex;gap:6px 22px;flex-wrap:wrap;font:500 13.5px var(--sans);color:var(--ink2)}
+.now a{text-decoration:none;color:inherit;white-space:nowrap}
+.now .k{font:700 10.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.now b{font-weight:700;color:var(--ink)}
+
+/* ---------- the desk tabs: one row, pinned, each a rule in its desk's colour ---------- */
+nav.dtabs{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:1px solid var(--rule)}
+nav.dtabs ol{list-style:none;margin:0 auto;padding:0 clamp(16px,3vw,40px);max-width:1240px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+@media (min-width:1500px){nav.dtabs ol{max-width:1320px}}
+@media (min-width:1900px){nav.dtabs ol{max-width:1520px}}
+nav.dtabs a{display:block;text-align:center;border-top:4px solid var(--c);padding:7px 4px 9px;font:700 11.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--c);white-space:nowrap;text-decoration:none}
+nav.dtabs a:hover{background:color-mix(in srgb,var(--c) 6%,transparent)}
+nav.dtabs a[aria-current]{background:color-mix(in srgb,var(--c) 11%,transparent);color:var(--ink)}
+@media (max-width:860px){
+ nav.dtabs ol{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity}
+ nav.dtabs ol::-webkit-scrollbar{display:none}
+ nav.dtabs li{flex:none;scroll-snap-align:center}
+ nav.dtabs a{padding:7px 12px 9px}
+}
+
+/* ---------- the desk's opener: its name, then the jump list ---------- */
+.dopen{padding:26px 0 4px}
+.dopen h1{margin:0;font:600 clamp(40px,5vw,58px)/1 var(--hl);font-variation-settings:"opsz" 72;letter-spacing:-.015em;color:var(--d)}
+.jump{display:flex;flex-wrap:wrap;gap:4px 0;margin-top:12px;font:600 13.5px var(--sans)}
+.jump a{color:var(--ink2);text-decoration:none;white-space:nowrap}
+.jump a:not(:last-child)::after{content:"·";color:var(--muted);margin:0 10px;font-weight:400;display:inline-block}
+.jump a:hover{color:var(--d);text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- section heads: a rule in the desk's colour, the name, the line under it ---------- */
+section.sec{margin-top:46px;scroll-margin-top:52px}
+section.sec:first-of-type{margin-top:26px}
+.sechead{display:block;background:none;color:var(--ink);border-radius:0;border-top:2px solid var(--d);padding:9px 0 0;margin-bottom:20px}
+.sechead h2{font:600 clamp(26px,2.6vw,32px)/1.08 var(--hl);font-variation-settings:"opsz" 48;text-transform:none;letter-spacing:-.005em;color:var(--d)}
+.sechead span{font:italic 400 15.5px/1.35 var(--serif);color:var(--muted);opacity:1;margin-top:3px}
+
+/* ---------- stories in the new faces ---------- */
+.lead-story h2,.story h3{font-family:var(--hl);font-variation-settings:"opsz" 36}
+.story h3{font-size:26px;line-height:1.15;font-weight:600;letter-spacing:-.006em}
+.lead-story h2{font-weight:600;font-variation-settings:"opsz" 72}
+.kick,.item .tag{font-size:11.5px;letter-spacing:.09em}
+.lead-story p.first::first-letter,.sec .story:first-of-type>.body>p:first-child::first-letter{font:600 3.4em/.8 var(--hl);color:var(--ink)}
+.why{border-radius:4px}
+.by{font-family:var(--serif)}
+
+/* ---------- quieter live furniture: no tonal cards ---------- */
+.signal{background:none;border:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);border-radius:0;padding:10px 0;margin:-6px 0 22px}
+.signal .sg-bar{height:4px}
+.agenda li.on{background:var(--dc);border-radius:4px}
+.f1-next li{background:none}
+
+/* ---------- the next desk, and the foot ---------- */
+.nextdesk{margin:56px 0 0;border-top:3px double var(--ink);padding-top:16px;display:flex;justify-content:flex-end}
+.nextdesk a{display:inline-flex;align-items:baseline;gap:8px;font:600 15px var(--sans);color:var(--ink);text-decoration:none;border-top:4px solid var(--c);padding:10px 2px 2px}
+.nextdesk a b{font:600 24px/1 var(--hl);color:var(--c)}
+.nextdesk a:hover b{text-decoration:underline;text-underline-offset:4px}
+.dfoot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 24px;margin:26px 0 40px;padding-top:12px;border-top:1px solid var(--rule);font:500 13.5px var(--sans);color:var(--muted)}
+.dfoot nav{display:flex;gap:6px 22px;flex-wrap:wrap}
+.dfoot a{color:var(--ink2);text-decoration:none}
+.dfoot a:hover{text-decoration:underline}
+@media (max-width:720px){
+ .drun .tag{display:none}
+ .dbar{padding-bottom:8px}
+ .np .the{font-size:21px}.np .n{font-size:24px}.np .hof{font-size:9px;letter-spacing:.36em}
+ .now{font-size:13px;gap:4px 16px}
+ .dopen{padding-top:18px}
+ .sechead h2{font-size:26px}
+ .story h3{font-size:23px}
+}
+.after-data{margin-top:30px}
+#main section.sec,#main [data-fam]{--acc:var(--d)!important}
+/* a section's stories never sit tight against its live data */
+.sec [data-live]:not(:empty)+:is(.solo,.cols2,.cols3,.stack,.alsoin){margin-top:30px}
+/* phones: a table never pushes past its column (today's paper clips Madrid's next matches by 47px at 390px) */
+.cols2>*,.split>*{min-width:0}
+@media (max-width:720px){
+ #madrid .tbl table{font-size:14px}
+ #madrid .tbl td,#madrid .tbl th{padding-right:6px}
+ #madrid .tbl td:last-child{white-space:normal;min-width:84px}
+}
+@media (max-width:720px){#deuce .tbl td:last-child,#deuce .tbl th:last-child{white-space:normal}#deuce .tbl table{font-size:14px}}
+.cz-ko td:first-child{white-space:nowrap}
