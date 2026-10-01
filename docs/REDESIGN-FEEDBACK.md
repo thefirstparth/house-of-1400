@@ -49,3 +49,9 @@ on its own line, the editor's note under the lead on big days only, no illustrat
 ### Check before every hand-back
 `scripts/qa/freeze.mjs`, then `scripts/qa/shoot.mjs <tag>` (laptop and phone, light and dark, page errors, sideways
 scroll, overlapping text), plus 1920 and 2560 wide for layout changes. Look at the images, not only the report.
+
+## 1 Oct 2026: Illustrations change (news logic, not design)
+From the 2 Oct edition the code picks 5 to 9 drawings a day spread across news, sport and the rest (EDITORIAL.md, Art
+orders), up from 2 to 3. The lead's 16:9 drawing is skipped when the lead is in poor taste. Every desk page must look
+right with a drawing on any story or on none, and with no lead drawing; use `balanceStories` behaviour (a drawn story
+takes the whole row with the drawing beside the text).
