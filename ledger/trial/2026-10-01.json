@@ -1,0 +1,1183 @@
+{
+ "date": "2026-10-01",
+ "window": {
+  "from": "2026-09-30T08:30:00.000Z",
+  "to": "2026-10-01T08:30:00.000Z"
+ },
+ "generated_at": "2026-10-01T08:45:06.313Z",
+ "sources": {
+  "wire": {
+   "ok": true,
+   "ms": 7472
+  },
+  "tennis_players": {
+   "ok": true,
+   "ms": 1230
+  },
+  "screen": {
+   "ok": true,
+   "ms": 4413
+  },
+  "nse": {
+   "ok": false,
+   "ms": 12903,
+   "error": "The operation was aborted due to timeout"
+  },
+  "alerts": {
+   "ok": true,
+   "ms": 2392
+  },
+  "cricket_where": {
+   "ok": true,
+   "ms": 993
+  },
+  "intl_football": {
+   "ok": true,
+   "ms": 1369
+  },
+  "calendar": {
+   "ok": true,
+   "ms": 1061
+  }
+ },
+ "coverage": {
+  "items": [
+   {
+    "section": "dateline",
+    "kind": "story",
+    "id": "flydubai-indian-captain",
+    "headline": "Indian captain, stabbed by his co-pilot, lands the Tel Aviv flight with 174 on board",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "‘Gravely injured’ but safe: Captain Smit Machchhar being treated in Saudi Arabia",
+     "outlet": "The Indian Express, India"
+    }
+   },
+   {
+    "section": "crease",
+    "kind": "story",
+    "id": "asiad-cricket-final-pakistan",
+    "headline": "India bowl Sri Lanka out for 45 and meet Pakistan for gold on Saturday",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "India bring in Sooryavanshi; Sri Lanka hand three debuts and field",
+     "outlet": "ESPNcricinfo"
+    }
+   },
+   {
+    "section": "crease",
+    "kind": "story",
+    "id": "gill-223-record-chase",
+    "headline": "Gill's unbeaten 223 carries India to their highest ODI chase, 406 in 43.3 overs",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "Gill 223* sets up record chase for India",
+     "outlet": "ESPNcricinfo"
+    }
+   },
+   {
+    "section": "ledger",
+    "kind": "story",
+    "id": "markets-eighth-week",
+    "headline": "Sensex falls 1,000 points to its 2026 low; eight losing weeks, the longest run in 25 years",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "8 weeks, 2,000 points gone: Nifty’s longest losing streak in 25 years raises bear market fears",
+     "outlet": "ET Markets"
+    }
+   },
+   {
+    "section": "ledger",
+    "kind": "story",
+    "id": "oct1-small-savings-lpg",
+    "headline": "PPF stays at 7.1% for a tenth straight quarter; commercial LPG costs ₹67 more in Bengaluru",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "Commercial LPG rates hiked as festive season starts, domestic cylinder costs unchanged",
+     "outlet": "The Indian Express, India"
+    }
+   },
+   {
+    "section": "dateline",
+    "kind": "brief",
+    "id": "modi-trump-call",
+    "headline": "Modi rings Trump as a US law threatens tariffs on buyers of Russian oil",
+    "found": true,
+    "match": {
+     "how": "headline",
+     "title": "Modi Initiates Phone Call With Trump as New US Energy Tariffs Loom",
+     "outlet": "TheWire.in",
+     "score": 0.67
+    }
+   },
+   {
+    "section": "workshop",
+    "kind": "brief",
+    "id": "gemini-4-argon",
+    "headline": "Google's Gemini 4 Argon goes first to vetted security teams, not the public",
+    "found": true,
+    "match": {
+     "how": "headline",
+     "title": "Google’s new frontier AI model Gemini 4 Argon goes to cybersecurity defenders first",
+     "outlet": "SiliconANGLE",
+     "score": 0.7
+    }
+   },
+   {
+    "section": "madrid",
+    "kind": "brief",
+    "id": "asencio-surgery-confirmed",
+    "headline": "Madrid confirm Asencio's surgery; Güler named September's player of the month",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "OFFICIAL: Arda Güler is Real Madrid’s player of the month for September",
+     "outlet": "Managing Madrid"
+    }
+   },
+   {
+    "section": "sidelines",
+    "kind": "brief",
+    "id": "nitesh-greco-final",
+    "headline": "Nitesh Kumar is India's first Greco-Roman finalist at the Games since 1962",
+    "found": true,
+    "match": {
+     "how": "headline",
+     "title": "Samson unfazed by conditions before Asian Games semi-final",
+     "outlet": "ICC",
+     "score": 0.43
+    }
+   },
+   {
+    "section": "sidelines",
+    "kind": "brief",
+    "id": "asiad-day12-medals",
+    "headline": "Sailing silver and squash bronze; sepaktakraw men assured of a medal",
+    "found": true,
+    "match": {
+     "how": "headline",
+     "title": "Asian Games: Ganesh wins bronze in men's individual compound archery",
+     "outlet": "The Hindu",
+     "score": 0.67
+    }
+   },
+   {
+    "section": "dateline",
+    "kind": "brief",
+    "id": "eci-sir-extensions",
+    "headline": "Election Commission meets again and extends roll revisions in Andhra Pradesh and Meghalaya",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "EC reverts to allowing Form 6 submission without attached declaration in non-SIR States",
+     "outlet": "The Hindu, national"
+    }
+   },
+   {
+    "section": "dateline",
+    "kind": "brief",
+    "id": "sc-traffic-fines",
+    "headline": "Supreme Court floats blocking licence and RC renewals until traffic fines are paid",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "Block vehicle licence renewals, registration & pollution certificates over unpaid traffic fines: Supreme Court",
+     "outlet": "Hindustan Times, India"
+    }
+   },
+   {
+    "section": "dateline",
+    "kind": "line",
+    "id": "rabi-msp-2027",
+    "headline": "Wheat's support price gets its smallest rise in 17 years in the new rabi MSPs",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "Centre approves MSPs for rabi crops, wheat sees 17-year-low hike",
+     "outlet": "The Indian Express, India"
+    }
+   },
+   {
+    "section": "ledger",
+    "kind": "brief",
+    "id": "auto-sales-september",
+    "headline": "Auto shares slide on September sales; Bajaj Auto down about 8%",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "Bajaj Auto shares crash 9%, M&M hits 52-week low after September auto sales data. What went wrong?",
+     "outlet": "ET Markets"
+    }
+   },
+   {
+    "section": "ledger",
+    "kind": "line",
+    "id": "kotak-new-ceo",
+    "headline": "Kotak Mahindra Bank names insider Anup Kumar Saha as its next managing director and CEO",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "Kotak Mahindra Bank shares jump 4% to 8-month high after Anup Kumar Saha named CEO. What Nomura, Jefferies expect",
+     "outlet": "ET Markets"
+    }
+   },
+   {
+    "section": "namma",
+    "kind": "brief",
+    "id": "blr-rain-control-rooms",
+    "headline": "Rain floods roads and underpasses; 24-hour control rooms ordered for the next few days",
+    "found": true,
+    "match": {
+     "how": "same page",
+     "title": "Rain paralyses traffic across Bengaluru; GBA readies response teams",
+     "outlet": "The Hindu, Bengaluru"
+    }
+   }
+  ],
+  "by_section": {
+   "dateline": {
+    "printed": 5,
+    "found": 5
+   },
+   "crease": {
+    "printed": 2,
+    "found": 2
+   },
+   "ledger": {
+    "printed": 4,
+    "found": 4
+   },
+   "workshop": {
+    "printed": 1,
+    "found": 1
+   },
+   "madrid": {
+    "printed": 1,
+    "found": 1
+   },
+   "sidelines": {
+    "printed": 2,
+    "found": 2
+   },
+   "namma": {
+    "printed": 1,
+    "found": 1
+   }
+  },
+  "printed": 16,
+  "found": 16
+ },
+ "missed": {
+  "india": {
+   "total": 37,
+   "covered": 4,
+   "not_covered": [
+    {
+     "title": "East Bengaluru road projects fast-tracked, junction promised within 15-20 days",
+     "outlets": [
+      "Deccan Herald",
+      "The Hindu",
+      "ThePrint",
+      "The New Indian Express",
+      "The Times of India",
+      "The Hindu, Bengaluru"
+     ],
+     "n": 6,
+     "national": 5,
+     "covered_by": null
+    },
+    {
+     "title": "Akhilesh springs a surprise with Rajya Sabha pick. Who is Reliance executive Dhanraj Nathwani",
+     "outlets": [
+      "ThePrint",
+      "The Hindu",
+      "The Economic Times",
+      "Telegraph India",
+      "The Indian Express"
+     ],
+     "n": 5,
+     "national": 5,
+     "covered_by": null
+    },
+    {
+     "title": "Police seek scrapping of Nandigram candidate's bail, SC retorts: 'Will dismiss it surely'",
+     "outlets": [
+      "Telegraph India",
+      "The Hindu",
+      "The Times of India",
+      "ThePrint",
+      "Deccan Herald"
+     ],
+     "n": 5,
+     "national": 5,
+     "covered_by": null
+    },
+    {
+     "title": "NCERT textbook revives debatable theory on Sengol handed to Nehru",
+     "outlets": [
+      "The Hindu",
+      "The Indian Express",
+      "The Times of India",
+      "ThePrint",
+      "Telegraph India"
+     ],
+     "n": 5,
+     "national": 5,
+     "covered_by": null
+    },
+    {
+     "title": "Bengaluru rains trigger waterlogging, traffic snarls; Krishna Byre Gowda orders 24x7 control rooms",
+     "outlets": [
+      "Moneycontrol.com",
+      "The Hindu",
+      "Deccan Herald",
+      "The Times of India",
+      "Hindustan Times",
+      "The Hindu, Bengaluru",
+      "The Times of India, Bengaluru",
+      "Hindustan Times, Bengaluru"
+     ],
+     "n": 8,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "Piyush Goyal gets a ‘trade minister for life’ tag from US trade chief at G20",
+     "outlets": [
+      "The Times of India",
+      "The Hindu",
+      "Deccan Herald",
+      "Telangana Today",
+      "The Economic Times",
+      "The Hindu, national",
+      "The Times of India, top stories"
+     ],
+     "n": 7,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "‘We want justice’: series of rapes trigger mass protests at Indian universities",
+     "outlets": [
+      "The Guardian",
+      "The New Indian Express",
+      "The Indian Express",
+      "Telegraph India",
+      "The Times of India",
+      "The Guardian, world"
+     ],
+     "n": 6,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "CM Vijay positions TVK as organic successor to AIADMK, justifies Dharapuram candidate’s party switchover",
+     "outlets": [
+      "The Hindu",
+      "ndtv.com",
+      "The Times of India",
+      "ThePrint",
+      "The New Indian Express",
+      "The Hindu, national"
+     ],
+     "n": 6,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "How Sachin Pilot's Report Led To Amarinder Warring's Exit As Punjab Congress Chief",
+     "outlets": [
+      "ndtv.com",
+      "The Hindu",
+      "The New Indian Express",
+      "The Times of India",
+      "The Indian Express",
+      "The Hindu, national"
+     ],
+     "n": 6,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "5 Pakistanis, Iranian dhow and 526kg drugs: How Rs 3,000 crore haul was busted off Lakshadweep",
+     "outlets": [
+      "The Times of India",
+      "Telegraph India",
+      "The Indian Express",
+      "ThePrint",
+      "aninews.in"
+     ],
+     "n": 5,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "SIR: Filled Form-7 targeting Muslim voters surface in Belagavi",
+     "outlets": [
+      "The Hindu",
+      "Telegraph India",
+      "The New Indian Express",
+      "The Times of India",
+      "TheWire.in"
+     ],
+     "n": 5,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "Amit Shahs Punjab visit: Give one chance to BJP, will make Punjab chitta-free by 2029-end, vows Home Minister",
+     "outlets": [
+      "The Tribune",
+      "The Hindu",
+      "ThePrint",
+      "The Times of India",
+      "ndtv.com"
+     ],
+     "n": 5,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "One killed, nine injured after explosion at MRPL refinery in Mangaluru; fire under control",
+     "outlets": [
+      "The New Indian Express",
+      "The Hindu",
+      "ndtv.com",
+      "Telegraph India",
+      "The Times of India"
+     ],
+     "n": 5,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "Throat slit, caretaker missing: Ex-IAS officer found dead in Bhopal home",
+     "outlets": [
+      "The Indian Express",
+      "The Hindu",
+      "The Times of India",
+      "Telegraph India",
+      "ndtv.com"
+     ],
+     "n": 5,
+     "national": 4,
+     "covered_by": null
+    },
+    {
+     "title": "In Meerut Blue Drum Murder Case, Wife And Her Lover Convicted",
+     "outlets": [
+      "ndtv.com",
+      "The Hindu",
+      "The Times of India",
+      "ThePrint",
+      "Deccan Herald"
+     ],
+     "n": 5,
+     "national": 4,
+     "covered_by": null
+    }
+   ]
+  },
+  "world": {
+   "total": 16,
+   "covered": 1,
+   "not_covered": [
+    {
+     "title": "Rape case rocks Cornell: New transcript reveals victim informed police; fresh spotlight on DA’s decision",
+     "outlets": [
+      "The Times of India",
+      "Cornell University statements",
+      "CBS News",
+      "The New York Times",
+      "WSJ",
+      "Axios",
+      "CNN",
+      "NBC News"
+     ],
+     "n": 9,
+     "national": 1,
+     "covered_by": null
+    },
+    {
+     "title": "Vivo X Fold6 foldable debuts with OriginOS 7 Fold, Jovi AI agent and Dimensity 9500 chip",
+     "outlets": [
+      "t2ONLINE",
+      "gsmarena.com",
+      "FoneArena.com",
+      "The Verge",
+      "indiatoday.in",
+      "GSMArena.com",
+      "TechRadar",
+      "Root-Nation.com"
+     ],
+     "n": 9,
+     "national": 1,
+     "covered_by": null
+    },
+    {
+     "title": "UK says Iran may be linked to alleged airbase plot, drawing angry denial",
+     "outlets": [
+      "Al Jazeera",
+      "BBC",
+      "The Hindu",
+      "The Times",
+      "Fox News",
+      "NBC News",
+      "WSJ",
+      "The New York Times"
+     ],
+     "n": 8,
+     "national": 1,
+     "covered_by": null
+    },
+    {
+     "title": "This is when Apple is rumored to be launching the HomePad - GSMArena.com news",
+     "outlets": [
+      "gsmarena.com",
+      "Bloomberg.com",
+      "The Economic Times",
+      "Reuters",
+      "The Times of India",
+      "9to5Mac",
+      "Forbes",
+      "Yahoo Finance"
+     ],
+     "n": 8,
+     "national": 2,
+     "covered_by": null
+    },
+    {
+     "title": "Swiss glaciers suffer another year of record ice loss",
+     "outlets": [
+      "NPR",
+      "BBC",
+      "Reuters",
+      "The Washington Post",
+      "The Guardian",
+      "BBC, world",
+      "The Guardian, world"
+     ],
+     "n": 7,
+     "national": 0,
+     "covered_by": null
+    },
+    {
+     "title": "'For 21st century & beyond': US launches 'Project Meridian' to prepare for future wars",
+     "outlets": [
+      "The Times of India",
+      "Reuters",
+      "The Guardian",
+      "news.cgtn.com",
+      "cnbc.com",
+      "Fox News",
+      "WSJ"
+     ],
+     "n": 7,
+     "national": 1,
+     "covered_by": null
+    },
+    {
+     "title": "RAM supply set to worsen, says Micron, as CEO celebrates ‘much higher’ prices",
+     "outlets": [
+      "The Register",
+      "Bloomberg.com",
+      "Investing.com",
+      "Reuters",
+      "qz.com",
+      "cnbc.com",
+      "Yahoo Finance"
+     ],
+     "n": 7,
+     "national": 0,
+     "covered_by": null
+    },
+    {
+     "title": "F-16s grounded, missiles running short: The Ukraine lesson behind India’s push for Astra",
+     "outlets": [
+      "The Times of India",
+      "Bloomberg.com",
+      "WSJ",
+      "Мілітарний",
+      "babel.ua",
+      "The Times of India, top stories"
+     ],
+     "n": 6,
+     "national": 1,
+     "covered_by": null
+    },
+    {
+     "title": "Singapore Launches Dating App For Public Servants To Boost Dwindling Birth Rates",
+     "outlets": [
+      "ndtv.com",
+      "BBC",
+      "The Times of India",
+      "The Economic Times",
+      "Financial Times",
+      "BBC, world"
+     ],
+     "n": 6,
+     "national": 2,
+     "covered_by": null
+    },
+    {
+     "title": "Tennessee governor halts executions after Christa Gail Pike survives lethal injection",
+     "outlets": [
+      "NPR",
+      "The New York Times",
+      "NBC News",
+      "NewsNation",
+      "Yahoo",
+      "AP News"
+     ],
+     "n": 6,
+     "national": 0,
+     "covered_by": null
+    }
+   ]
+  }
+ },
+ "feeds": {
+  "total": 92,
+  "failed": [],
+  "empty": [
+   "pib",
+   "rbi-speeches",
+   "bs-pf"
+  ],
+  "items": 1834,
+  "stories": 316
+ },
+ "sources_quality": {
+  "links_by_tier": {
+   "1": 3,
+   "2": 20,
+   "3": 8
+  },
+  "tier3_only": [
+   {
+    "section": "crease",
+    "headline": "India bowl Sri Lanka out for 45 and meet Pakistan for gold on Saturday",
+    "domains": [
+     "cricinfo.com",
+     "cricinfo.com"
+    ]
+   },
+   {
+    "section": "dateline",
+    "headline": "Modi rings Trump as a US law threatens tariffs on buyers of Russian oil",
+    "domains": [
+     "theweek.in"
+    ]
+   }
+  ],
+  "tier3_domains": {
+   "cricinfo.com": 2,
+   "theweek.in": 1
+  }
+ },
+ "talk": {
+  "rows": [
+   {
+    "term": "Abhishek Sharma",
+    "printed": "marathi.abplive.com",
+    "printed_tier": 3,
+    "attached": 3,
+    "printed_is_attached": true,
+    "best_attached": {
+     "outlet": "ABP Majha",
+     "url": "https://marathi.abplive.com/sports/cricket/abhishek-sharma-5-balls-3-wickets-as-sri-lanka-all-out-for-45-in-semifinal-asian-games-india-vs-pakistan-final-marathi-news-1440861",
+     "tier": 3
+    },
+    "attached_as_good": true
+   },
+   {
+    "term": "Kotak Mahindra Bank CEO",
+    "printed": "reuters.com",
+    "printed_tier": 2,
+    "attached": 3,
+    "printed_is_attached": true,
+    "best_attached": {
+     "outlet": "Reuters",
+     "url": "https://www.reuters.com/world/india/indias-kotak-mahindra-bank-appoints-anup-kumar-saha-ceo-2026-10-01/",
+     "tier": 2
+    },
+    "attached_as_good": true
+   },
+   {
+    "term": "Verity",
+    "printed": "theguardian.com",
+    "printed_tier": 2,
+    "attached": 0,
+    "printed_is_attached": false,
+    "best_attached": null,
+    "attached_as_good": false
+   },
+   {
+    "term": "Carlos Alcaraz",
+    "printed": "reutersconnect.com",
+    "printed_tier": 3,
+    "attached": 3,
+    "printed_is_attached": false,
+    "best_attached": {
+     "outlet": "Diario AS",
+     "url": "https://as.com/tenis/mas_tenis/alcaraz-michelsen-en-directo-ultima-hora-del-torneo-de-tokio-hoy-en-vivo-f202610-d/",
+     "tier": 2
+    },
+    "attached_as_good": true
+   },
+   {
+    "term": "Rakesh Sachan",
+    "printed": "aajtak.in",
+    "printed_tier": 3,
+    "attached": 0,
+    "printed_is_attached": false,
+    "best_attached": null,
+    "attached_as_good": false
+   },
+   {
+    "term": "Glastonbury tickets",
+    "printed": "bbc.co.uk",
+    "printed_tier": 2,
+    "attached": 3,
+    "printed_is_attached": true,
+    "best_attached": {
+     "outlet": "BBC",
+     "url": "https://www.bbc.co.uk/news/articles/cv62kp9enz08o",
+     "tier": 2
+    },
+    "attached_as_good": true
+   },
+   {
+    "term": "Starbucks closures",
+    "printed": "usatoday.com",
+    "printed_tier": 3,
+    "attached": 0,
+    "printed_is_attached": false,
+    "best_attached": null,
+    "attached_as_good": false
+   },
+   {
+    "term": "Saturn opposition",
+    "printed": "skyandtelescope.org",
+    "printed_tier": 3,
+    "attached": 0,
+    "printed_is_attached": false,
+    "best_attached": null,
+    "attached_as_good": false
+   },
+   {
+    "term": "Spain traffic rules",
+    "printed": "dgt.es",
+    "printed_tier": 3,
+    "attached": 0,
+    "printed_is_attached": false,
+    "best_attached": null,
+    "attached_as_good": false
+   },
+   {
+    "term": "BBC funding",
+    "printed": "bbc.co.uk",
+    "printed_tier": 2,
+    "attached": 0,
+    "printed_is_attached": false,
+    "best_attached": null,
+    "attached_as_good": false
+   }
+  ],
+  "as_good": 4,
+  "total": 10
+ },
+ "tennis": [
+  {
+   "player": "Carlos Alcaraz",
+   "espn": {
+    "event": "Kinoshita Group Japan Open Tennis Championships",
+    "round": "Round 1",
+    "when_utc": "2026-10-01T07:40Z",
+    "opponent": "Alex Michelsen",
+    "live": true,
+    "court": "Colosseum",
+    "held": null
+   },
+   "paper": {
+    "text": "First round v Alex Michelsen, Japan Open, under way at the cut.",
+    "when_utc": "2026-10-01T07:40:00Z"
+   },
+   "paper_event": null,
+   "verdict": "agree"
+  },
+  {
+   "player": "Novak Djokovic",
+   "espn": {
+    "event": "China Open",
+    "round": "Round 2",
+    "when_utc": "2026-10-02T12:30Z",
+    "opponent": "Bu Yunchaokete",
+    "live": false,
+    "court": "Capital Group Diamond",
+    "held": null,
+    "court_now": {
+     "players": [
+      "Cameron Norrie",
+      "Alexander Zverev"
+     ],
+     "score": "3–3"
+    },
+    "ahead_on_court": 6
+   },
+   "paper": {
+    "text": "Second round v Bu Yunchaokete, China Open, Fri 2 Oct, 18:00 IST.",
+    "when_utc": "2026-10-02T12:30:00Z"
+   },
+   "paper_event": null,
+   "verdict": "agree"
+  }
+ ],
+ "screen": {
+  "titles": [
+   {
+    "title": "The Love Hypothesis",
+    "verdict": "call",
+    "where": "Prime Video",
+    "imdb": null,
+    "rotten_tomatoes": null,
+    "metacritic": "67/100",
+    "omdb_error": null,
+    "tmdb_stream_in": [
+     "Amazon Prime Video",
+     "Amazon Prime Video with Ads"
+    ],
+    "tmdb_error": null
+   },
+   {
+    "title": "Heart of the Beast",
+    "verdict": "must",
+    "where": "Theatres",
+    "imdb": "7.5",
+    "rotten_tomatoes": null,
+    "metacritic": null,
+    "omdb_error": null,
+    "tmdb_stream_in": [],
+    "tmdb_error": null
+   },
+   {
+    "title": "Shaque: Trust No One",
+    "verdict": "call",
+    "where": "Netflix",
+    "imdb": null,
+    "rotten_tomatoes": null,
+    "metacritic": null,
+    "omdb_error": "OMDb: Movie not found!",
+    "tmdb_stream_in": [
+     "Netflix"
+    ],
+    "tmdb_error": null
+   },
+   {
+    "title": "Dupahiya",
+    "verdict": "call",
+    "where": "Prime Video",
+    "imdb": "7.4",
+    "rotten_tomatoes": null,
+    "metacritic": null,
+    "omdb_error": null,
+    "tmdb_stream_in": [
+     "Amazon Prime Video",
+     "Amazon Prime Video with Ads"
+    ],
+    "tmdb_error": null
+   },
+   {
+    "title": "Drishyam: The Conclusion",
+    "verdict": "early",
+    "where": "Theatres",
+    "imdb": null,
+    "rotten_tomatoes": null,
+    "metacritic": null,
+    "omdb_error": null,
+    "tmdb_stream_in": [
+     "Amazon Prime Video",
+     "Amazon Prime Video with Ads"
+    ],
+    "tmdb_error": null
+   },
+   {
+    "title": "Digger",
+    "verdict": "early",
+    "where": "Theatres",
+    "imdb": "7.4",
+    "rotten_tomatoes": "70%",
+    "metacritic": "64/100",
+    "omdb_error": null,
+    "tmdb_stream_in": [],
+    "tmdb_error": null
+   }
+  ],
+  "keys": {
+   "omdb": true,
+   "tmdb": true
+  },
+  "chart_not_printed": [
+   "film #2 365 dni (2020)",
+   "film #3 Plank Face (2016)",
+   "film #4 Vishwanath & Sons (2026)",
+   "film #5 Irumudi (2026)",
+   "film #6 Jana Nayagan (2026)",
+   "film #7 Modha Rathri (2026)",
+   "film #8 Skin. Like. Sun. (2009)",
+   "film #9 How to Have Sex (2023)",
+   "film #10 Nude (2017)",
+   "series #1 Bigg Boss (2006)",
+   "series #3 Mastram (2020)",
+   "series #4 Hunkkaar: The Roar (2026)",
+   "series #5 Mirzapur (2018)",
+   "series #6 India's Got Latent (2024)",
+   "series #7 Waiting Hai (2026)",
+   "series #8 The Mentalist (2008)",
+   "series #9 Erotic Stories (2023)",
+   "series #10 Lanterns (2026)"
+  ],
+  "chart_printed": [
+   "The Love Hypothesis",
+   "Shaque: Trust No One"
+  ],
+  "box_office_tracked": [
+   "Anbil Avan (2026)",
+   "Anakapalli (2026)",
+   "Sigma (2026)",
+   "Prem Keetanu (2026)",
+   "Yezhu Kadal Yezhu Malai (2026)",
+   "Baththa (2026)",
+   "Verity (2026)",
+   "Dont Trouble The Trouble (2026)",
+   "Premada Oorali (2026)",
+   "drishyam 3 hindi (2026)",
+   "Mahakavya Shri Ramayan Katha (2026)",
+   "Dhoomakethu (2026)"
+  ]
+ },
+ "movers": {
+  "flagged": [
+   "IRCON",
+   "SUNTV",
+   "RITES",
+   "CUPID"
+  ]
+ },
+ "cricket_where": [
+  {
+   "match": "India v Sri Lanka · T20",
+   "when_utc": "2026-10-01T04:30:00.000Z",
+   "tv": "Sony Sports 1 · Sony Sports 5",
+   "ott": "SonyLIV",
+   "paper_fixture": null,
+   "paper_where": null
+  },
+  {
+   "match": "India v Pakistan · T20",
+   "when_utc": "2026-10-03T04:30:00.000Z",
+   "tv": "Sony Sports 1 · Sony Sports 5",
+   "ott": "SonyLIV",
+   "paper_fixture": "Asian Games cricket · India v Pakistan · gold-medal match",
+   "paper_where": null
+  },
+  {
+   "match": "India v West Indies · ODI",
+   "when_utc": "2026-10-03T08:30:00.000Z",
+   "tv": "Star Sports Network",
+   "ott": "JioHotstar",
+   "paper_fixture": null,
+   "paper_where": null
+  },
+  {
+   "match": "India v West Indies · T20",
+   "when_utc": "2026-10-06T13:30:00.000Z",
+   "tv": "Star Sports Network",
+   "ott": "JioHotstar",
+   "paper_fixture": "India v West Indies · 1st T20I · Lucknow",
+   "paper_where": null
+  },
+  {
+   "match": "India v West Indies · T20",
+   "when_utc": "2026-10-09T13:30:00.000Z",
+   "tv": "Star Sports Network",
+   "ott": "JioHotstar",
+   "paper_fixture": null,
+   "paper_where": null
+  },
+  {
+   "match": "India v West Indies · T20",
+   "when_utc": "2026-10-11T13:30:00.000Z",
+   "tv": "Star Sports Network",
+   "ott": "JioHotstar",
+   "paper_fixture": null,
+   "paper_where": null
+  },
+  {
+   "match": "India v West Indies · T20",
+   "when_utc": "2026-10-14T13:30:00.000Z",
+   "tv": "Star Sports Network",
+   "ott": "JioHotstar",
+   "paper_fixture": null,
+   "paper_where": null
+  }
+ ],
+ "alerts": [],
+ "internationals": {
+  "matches": 94,
+  "upcoming": [
+   {
+    "league": "fifa.friendly",
+    "when_utc": "2026-10-01T14:00Z",
+    "home": "Maldives",
+    "away": "Lebanon",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "fifa.friendly",
+    "when_utc": "2026-10-01T14:00Z",
+    "home": "Uzbekistan",
+    "away": "Syria",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-10-01T16:00Z",
+    "home": "Azerbaijan",
+    "away": "Liechtenstein",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-10-01T18:45Z",
+    "home": "Denmark",
+    "away": "Portugal",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-10-01T18:45Z",
+    "home": "Germany",
+    "away": "Serbia",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-10-01T18:45Z",
+    "home": "Greece",
+    "away": "Netherlands",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-10-01T18:45Z",
+    "home": "Israel",
+    "away": "Kosovo",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-10-01T18:45Z",
+    "home": "Malta",
+    "away": "Gibraltar",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-10-01T18:45Z",
+    "home": "Republic of Ireland",
+    "away": "Austria",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "uefa.nations",
+    "when_utc": "2026-10-01T18:45Z",
+    "home": "Wales",
+    "away": "Norway",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "fifa.friendly",
+    "when_utc": "2026-10-02T11:00Z",
+    "home": "Congo DR",
+    "away": "Uganda",
+    "state": "pre",
+    "score": null
+   },
+   {
+    "league": "fifa.friendly",
+    "when_utc": "2026-10-02T11:00Z",
+    "home": "South Korea",
+    "away": "Venezuela",
+    "state": "pre",
+    "score": null
+   }
+  ]
+ },
+ "calendar": {
+  "fomc": [
+   {
+    "what": "US Federal Reserve (FOMC) decision",
+    "date": "2026-10-28",
+    "days": "October 27-28"
+   }
+  ],
+  "india_holidays": [
+   {
+    "what": "Mahatma Gandhi Jayanti",
+    "date": "2026-10-02"
+   },
+   {
+    "what": "First Day of Sharad Navratri",
+    "date": "2026-10-11"
+   },
+   {
+    "what": "First Day of Durga Puja Festivities",
+    "date": "2026-10-17"
+   },
+   {
+    "what": "Maha Saptami",
+    "date": "2026-10-18"
+   },
+   {
+    "what": "Maha Ashtami",
+    "date": "2026-10-19"
+   },
+   {
+    "what": "Dussehra",
+    "date": "2026-10-20"
+   },
+   {
+    "what": "Maharishi Valmiki Jayanti",
+    "date": "2026-10-26"
+   },
+   {
+    "what": "Karaka Chaturthi",
+    "date": "2026-10-29"
+   }
+  ]
+ },
+ "summary": {
+  "coverage_pct": 100,
+  "india_missed": 15,
+  "world_missed": 10,
+  "tier3_only": 2,
+  "tennis_disagreements": 0,
+  "sources_failed": 1
+ }
+}
