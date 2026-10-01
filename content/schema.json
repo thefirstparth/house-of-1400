@@ -1169,6 +1169,29 @@
           }
         }
       }
+    },
+    "big_day": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "why"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string"
+            },
+            "why": {
+              "$ref": "#/definitions/text"
+            }
+          }
+        }
+      ]
     }
   }
 }

@@ -155,6 +155,12 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   }
   for (const f of E.fixtures || []) if (Number.isNaN(Date.parse(f.when_utc))) errors.push(`fixtures: bad time ${f.when_utc}`);
 
+  // The editor's note runs only on a big day, named from config paper.editor.big_days.kinds (Parth, 1 Oct)
+  if (E.editor_note) {
+    let K = {}; try { K = read("config/house.json").paper?.editor?.big_days?.kinds || {}; } catch {}
+    if (!E.big_day) errors.push("editor_note: only on a big day; set big_day {kind, why} or drop the note");
+    else if (!K[E.big_day.kind]) errors.push(`editor_note: big_day.kind "${E.big_day.kind}" is not one of ${Object.keys(K).join(", ")}`);
+  }
   // Glance targets must exist
   const targets = new Set([...items.map(s => s.id), ...Object.keys(E.sections || {}), "front", "week", "fixtures", "madrid", "paddock", "tables", "ledger", "sky", "screen", "talk", "betting", "house", "deuce", "crease"]);
   for (const g of E.glance || []) if (!targets.has(g.target)) errors.push(`glance: target ${g.target} does not exist`);

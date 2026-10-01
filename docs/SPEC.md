@@ -51,7 +51,7 @@ IDs are stable. Names come from `config/house.json`.
 19. The Betting Window: world trends from prediction markets, filtered (see EDITORIAL)
 20. Before You Go: Watch and Do lines only
 21. Your Desk: folded by default. Birthdays, upcoming bookings, travel, important alerts. Only if Gmail/Calendar are available to the run.
-22. Editor's note (signed "T. A. Bhide, Editor") on big days only
+22. Editor's note (signed "T. A. Bhide, Editor") on big days only, as defined in config `paper.editor.big_days` and named in the edition's hidden `big_day`
 23. House Note, then footer
 
 Empty sections are omitted, never padded.

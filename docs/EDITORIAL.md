@@ -121,6 +121,9 @@ Every section keeps its named sources and topics as must-checks. Each also has a
 - **Before You Go:** Watch and Do lines only. No restating.
 - **House Note:** one to three short lines. A true, surprising or funny fact with a light, dry turn at the end. Gentle personification is allowed occasionally. Model it on: "The Alcaraz–Shelton quarter-final finished at 03:33 in New York; even the official record book had to stay up late." Never a motivational line, never a fake quote.
 
+## The editor's note (big days only)
+Write one when, and only when, today is a big day for Parth: by his relevance, not by sport alone. The kinds are in config `paper.editor.big_days.kinds` (an important Real Madrid match, an important India men's cricket match, a title-deciding F1 weekend, a followed player in a Grand Slam semi or final, Budget or RBI day or a market shock, election results or a story leading every national front page or big news at home, big news for his work, the paper's own milestones). Name it in `big_day` {kind, why}; the validator refuses a note without one. When the day qualifies, write the note: two or three sentences, in Bhide's voice (see Voice), tied to that day. On Page One it sits under the lead.
+
 ## The day in a minute (`glance`)
 Five to ten lines, ranked, the lead first; the validator refuses fewer or more. Pick by the day's news, not to fill a number: a quiet day gets five. Each line is the paper's own short headline (at most about 60 characters), and the tag and the line together must say who it is about: a line about India at a multi-nation event puts India in the tag ("India · Asian Games" over "Compound archers win three golds in a day"), never a line a reader could take for another country's. Spread the lines across desks; Sport has its own panel on Page One, so give it a line only for news, not for fixtures.
 

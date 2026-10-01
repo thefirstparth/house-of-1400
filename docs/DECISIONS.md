@@ -523,3 +523,8 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 - Page One fills one screen on any laptop or monitor: lines first, then the whole page scales to the height (within the width). No illustrations on Page One.
 - The House Note gets its own line across Page One above the foot; the editor's note (big days only) sits under the lead. Fonts are self-hosted so the nameplate never falls back.
 - Not live yet: the redesign (desks, fonts, colours, Page One) is implemented later, in one go, after the desk pages are designed.
+
+## 1 Oct 2026: What counts as a big day for the editor's note (Parth)
+- The note had run once in six editions because "big day" was never defined. It is now: by Parth's relevance, not sport alone. An important Real Madrid match, an important India men's cricket match, a title-deciding F1 weekend, a followed tennis player in a Grand Slam semi or final, Budget, RBI or a market shock, election results, a story leading every national front page or big news in Bengaluru, Ranchi or Prayagraj, big news for his work, and the paper's own milestones. The list lives in config `paper.editor.big_days.kinds`.
+- Every big day gets a note and only big days do: the edition names it in hidden `big_day` {kind, why}, and the validator refuses a note without one.
+- **The redesign is final and parked:** Page One B (spec in `design/page-one/README.md`), the six desks, Newsreader, Source Serif 4 and Libre Franklin, six desk colours. Next when it resumes: the desk pages (Sport first), then build it all in one go.

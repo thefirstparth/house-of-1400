@@ -4,7 +4,20 @@
     "motto": "An afternoon newspaper for one reader",
     "editor": {
       "full_name": "Tukaram Atmaram Bhide",
-      "signature": "T. A. Bhide, Editor"
+      "signature": "T. A. Bhide, Editor",
+      "big_days": {
+        "rule": "The signed editor's note runs only on a big day for Parth, judged by his relevance, not by sport alone. Name the kind in edition big_day.",
+        "kinds": {
+          "club_match": "An important match for the followed football club (follows.football_club): a final, a knockout tie, a Clasico, a title or relegation decider, a top-of-the-table clash.",
+          "cricket_match": "An important match for the followed cricket team (follows.cricket_team): a final, semi-final or quarter-final, a series decider, India v Pakistan, a World Cup or Champions Trophy game.",
+          "f1_decider": "A race weekend where the followed driver (follows.f1_driver) can win or lose the title, or a season opener or finale.",
+          "tennis_final": "A followed tennis player (follows.tennis_players) in a Grand Slam semi-final or final.",
+          "money_day": "A day that moves his money or prices: Union Budget, an RBI rate decision, a market crash or record, a tax or rule change taking effect.",
+          "national_moment": "National election results, a story that leads every national front page, or a major event in Bengaluru, Ranchi or Prayagraj.",
+          "work_day": "Big news for his work: US wholesale or retail, B2B SaaS, or the AI tools he uses.",
+          "paper_day": "The paper's own milestones: launch, the 100th edition, a new section."
+        }
+      }
     },
     "timezone": "Asia/Kolkata",
     "home_city": "Bengaluru",
