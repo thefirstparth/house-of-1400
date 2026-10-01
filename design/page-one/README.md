@@ -31,3 +31,9 @@ Page One fits one screen on a laptop (1280 x 760 and up); on a phone it stacks i
 - **C · Calm grid:** the day's news across the top in three columns; four equal panels below.
 
 All three use the specimen nameplate with the desk strip as navigation and the cleaner sun arc. The lead has no deck. The page prints as many day-in-a-minute lines as fit one laptop screen, at least six (on a phone, the top eight). Fill lines prefer desks that have no panel of their own on Page One.
+
+## Round 3 (1 Oct): Parth picked B
+- The day in a minute is the editor's own glance (5 to 10 lines with the lead), never lines cut from other headlines.
+- **Fill the screen, any screen** (`fit()` in `src2.html`): print as many of the editor's lines as fit (never fewer than five with the lead), then scale the whole page (CSS `zoom`) until it fills the height, limited by the width (0.85 to 2). A 1280×720 laptop shrinks slightly instead of scrolling; a 1920×1080 or 2560×1440 monitor scales up 1.45 to 1.94 times instead of leaving half the screen empty. Phones are untouched (normal scroll).
+- B's columns are top-aligned and the evening pick goes to the shortest column.
+- Screenshots `big-B-<w>x<h>.png` from `shot3.mjs`.
