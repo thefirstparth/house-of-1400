@@ -131,11 +131,11 @@ Five to ten lines, ranked, the lead first; the validator refuses fewer or more. 
 Each section may end with up to six **Also in** lines (`sections.<id>.lines`): stories worth knowing that do not need an article. One headline in the paper's words (at most 140 characters, a fact, not a tease), the publisher's own link (never a Google News link), the outlet, and when it was published (`time_ist` today, or `date`). Optional `kicker` for a short tag ("NBA", "Golf"). Use them for the good stories that would otherwise be dropped: the wire check's candidates, the second tier of a busy section, a useful update. A line has its own `thread_id` and follows the same one-home rule as stories. A section may carry lines alone on a quiet day, but lines never count toward a section floor.
 
 ## Art orders
-From 2 Oct 2026 (Parth, 1 Oct), list in `art_orders` as `{story_id}`:
-- **The lead, always.** It is drawn 16:9 at the top of the Front Page.
-- **The top story of every desk that printed a story** (config `desks`: News, Money, Sport, Tech & AI, Life): its first printed story, a Front Page second counting for its own desk. Drawn 4:3 inside the story. If the top story would make a poor or tasteless picture (death, disaster, violence, crime, private individuals, a story that is only numbers), order the desk's next story instead and say why in `why`.
-- **One or two more on a big day**, where a drawing adds most: a scene, a person, a contrast. At most eight in all.
-The validator refuses an edition that leaves out the lead or a desk with stories, or orders more than eight. Bunty decides the idea and the style of each; the shapes and the brief are unchanged. Images load only as the reader reaches them, so more drawings do not slow the page.
+From 2 Oct 2026 (Parth, 1 Oct), list in `art_orders` as `{story_id}`, by the day's news, not a quota:
+- **The lead, always**, drawn 16:9 at the top of the Front Page. The Front Page carries 1 to 3 in all (1 Oct, with two, was right).
+- **Each desk 0 to 2** (config `desks`: News, Money, Sport, Tech & AI, Life): none when nothing in it is worth a picture, two when it has more than one strong one. Sport, with the most stories, most often has one or two; the drawing goes to the section where the picture is (1 Oct: The Wider Pitch's Ronaldo story, not Madridismo's routine news), not to a section by turn.
+- **Weight to Parth:** between two stories that would draw equally well, choose the one that matters more to him (his teams and players, his money, his city, the stories marked "for you").
+- **2 to 8 a day in all**; at most eight. The validator refuses only a missing lead or more than eight, and warns outside the ranges. Bunty decides the idea and the style of each; the shapes and the brief are unchanged. Images load only as the reader reaches them.
 - A story earns its picture when there is a moment to draw: a photo finish, a trophy lifted, a launch, a comeback, a quirky city story, a market day with a clear shape. Good news and light news first; bad news only when it can be drawn without mocking anyone who is hurt.
 - Never ask for a drawing where it would be in poor taste or could mislead. This is your judgment; nothing downstream filters for it, and the images are shown without review.
 

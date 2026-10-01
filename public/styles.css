@@ -1148,6 +1148,13 @@ th .watch{font-size:11px;letter-spacing:.04em}
 
 /* Paddock: the race ahead, printed with the edition (1 Oct 2026) */
 .f1p{margin-top:22px;font-family:var(--f1font)}
+@media (min-width:900px){
+ .f1p{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 40px}
+ .f1p>.f1k{grid-column:1/-1}
+ .f1p.solo>div:last-child{grid-column:1/-1;columns:2 320px;column-gap:40px}
+ .f1p-picks li:first-child{border-top:0;padding-top:0}
+ .f1top>div:last-child{align-self:center}
+}
 .f1p .f1k{margin-bottom:8px}
 .f1p-t{margin:0 0 10px;font:16.5px/1.55 var(--serif);color:var(--ink)}
 .f1p-mk{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0 0 8px;font:600 14px var(--f1font);color:var(--ink2)}

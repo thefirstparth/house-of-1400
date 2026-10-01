@@ -58,29 +58,39 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   if (!v(E)) for (const e of v.errors) errors.push(`schema: ${e.instancePath || "/"} ${e.message}${e.params?.additionalProperty ? ` (${e.params.additionalProperty})` : ""}`);
   if (!E || typeof E !== "object" || !E.date) return { errors, warnings };
 
-  // Art orders (lib/art.js): printed stories only. From 2 Oct 2026 (Parth, 1 Oct): the lead always, and every desk
-  // (config desks) that printed a story gets at least one drawing, on its top story; one or two more on a big day; at
-  // most eight. Lazy loading keeps the page light. Errors, because the orders are only a list in the edition: missing
-  // or late images never hold up the paper.
+  // Art orders (lib/art.js): printed stories only. From 2 Oct 2026 (Parth, 1 Oct, revised the same day): the lead
+  // always; then by the day's news, not a quota: 0 to 2 per desk (none when nothing in it is worth a picture), 1 to 3
+  // on the Front Page with the lead, 2 to 8 in all, weighted to what matters to Parth. Only the lead and the cap of
+  // eight are errors; the rest are warnings, since the right number is a judgment.
   {
     const ids = new Set(allItems(E).filter(i => i._kind === "story").map(i => i.id));
     for (const o of E.art_orders || []) if (!ids.has(o.story_id)) warnings.push(`art_orders: ${o.story_id} is not a printed story (briefs get no art)`);
     const got = new Set((E.art_orders || []).map(o => o.story_id).filter(id => ids.has(id)));
     if (E.date > "2026-10-01") {
       let DESKS = []; try { DESKS = read("config/house.json").desks || []; } catch {}
-      const deskOf = sec => DESKS.find(d => d.id !== "front" && d.sections.includes(sec))?.id;
+      const deskOf = sec => DESKS.find(d => d.id !== "front" && d.sections.includes(sec))?.name;
       if (E.front?.lead && !got.has(E.front.lead.id)) errors.push(`art_orders: order the lead (${E.front.lead.id}); it is drawn 16:9 on the Front Page`);
-      // each desk's stories in the order they are printed: Front Page seconds first, then the sections in desk order
-      const order = [...(E.front?.seconds || []), ...DESKS.flatMap(d => d.sections.flatMap(sec => E.sections?.[sec]?.stories || []))];
-      for (const d of DESKS.filter(d => d.id !== "front")) {
-        const mine = order.filter(st => deskOf(st.section) === d.id);
-        if (mine.length && !mine.some(st => got.has(st.id))) errors.push(`art_orders: ${d.name} printed ${mine.length} ${mine.length > 1 ? "stories" : "story"} and has no drawing; order its top story (${mine[0].id})`);
-      }
       if (got.size > MAX_ORDERS) errors.push(`art_orders: ${got.size} ordered; at most ${MAX_ORDERS}`);
+      if (got.size < Math.min(2, ids.size)) warnings.push(`art_orders: ${got.size} ordered; most days want 2 to ${MAX_ORDERS}`);
+      const front = new Set([E.front?.lead?.id, ...(E.front?.seconds || []).map(x => x.id)]);
+      const onFront = [...got].filter(id => front.has(id)).length;
+      if (onFront > 3) warnings.push(`art_orders: ${onFront} drawings on the Front Page; 1 to 3 is the range, give the rest to the sections' own stories`);
+      const per = {};
+      for (const it of allItems(E)) if (got.has(it.id) && it.id !== E.front?.lead?.id) { const d = deskOf(it.section); if (d) per[d] = (per[d] || 0) + 1; }
+      for (const [d, n] of Object.entries(per)) if (n > 2) warnings.push(`art_orders: ${n} drawings in ${d}; at most 2 a desk`);
     } else if (E.date > "2026-09-29") {
       if (got.size < Math.min(2, ids.size)) warnings.push(`art_orders: ${got.size} ordered; order 2 to 5 printed stories`);
       if (got.size > 5) warnings.push(`art_orders: ${got.size} ordered; at most 5 are drawn`);
     }
+  }
+
+  // The Fixture List carries every Real Madrid match and every F1 qualifying and race in the next seven days, from the
+  // edition's own snapshot (from 2 Oct 2026, after India's 3rd ODI went missing on 1 Oct).
+  if (E.date > "2026-10-01" && E.snapshot) {
+    const cut = Date.parse(`${E.date}T${E.cut_ist || "14:00"}:00+05:30`), week = t => t > cut && t - cut < 7 * 864e5;
+    const has = (ent, t) => (E.fixtures || []).some(f => f.entity === ent && Math.abs(Date.parse(f.when_utc) - t) <= 30 * 6e4);
+    for (const m of E.snapshot.football?.value?.next || []) { const t = Date.parse(m.date); if (week(t) && !has("madrid", t)) errors.push(`fixtures: Real Madrid ${m.home ? "v" : "at"} ${m.opponent} (${m.competition}) at ${m.date} is in the next seven days but not in The Fixture List`); }
+    for (const x of E.snapshot.f1_next?.value?.race?.sessions || []) { const t = Date.parse(x.start); if (/^(qualifying|race|sprint)$/i.test(x.name) && week(t) && !has("f1", t)) errors.push(`fixtures: F1 ${x.name} at ${x.start} is in the next seven days but not in The Fixture List`); }
   }
 
   // Date and weekday
@@ -273,9 +283,18 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
         }
         for (const f of E.fixtures || []) {
           if (f.entity !== "india_cricket") continue;
-          const m = ahead.find(x => Math.abs(Date.parse(x.start) - Date.parse(f.when_utc)) < 18 * 36e5);
+          // the closest of India's matches, not the first within 18 hours: two on one day (1 Oct: Asian Games final at
+          // 10:00, 3rd ODI at 14:00) made the ODI look four hours wrong, and the run dropped it
+          const near = ahead.filter(x => Math.abs(Date.parse(x.start) - Date.parse(f.when_utc)) < 18 * 36e5).sort((a, b) => Math.abs(Date.parse(a.start) - Date.parse(f.when_utc)) - Math.abs(Date.parse(b.start) - Date.parse(f.when_utc)));
+          const m = near[0];
           if (m?.time_announced && f.time_tbc) errors.push(`fixtures: "${f.label}" is marked time TBC, but Cricbuzz has it at ${m.ist} IST`);
           else if (m?.time_announced && Math.abs(Date.parse(m.start) - Date.parse(f.when_utc)) > 30 * 6e4) errors.push(`fixtures: "${f.label}" is at ${f.when_utc}, Cricbuzz has ${m.start}`);
+        }
+        // From 2 Oct 2026 (Parth, 1 Oct: the 3rd ODI was left out because the Asian Games final fell the same morning):
+        // every India match in the next seven days is in The Fixture List, not only the next one.
+        if (E.date > "2026-10-01") for (const m of ahead.filter(x => Date.parse(x.start) - cut < 7 * 864e5)) {
+          if (!(E.fixtures || []).some(f => f.entity === "india_cricket" && Math.abs(Date.parse(f.when_utc) - Date.parse(m.start)) <= 30 * 6e4))
+            errors.push(`fixtures: India's ${m.desc} v ${m.opponent} (${m.series}) at ${m.ist} IST is in the next seven days but not in The Fixture List`);
         }
         // From 29 Sep 2026 (Parth, 28 Sep): The Crease says how many matches each series under way has, and always
         // carries an "After this" row with India's next series.

@@ -652,6 +652,14 @@
       "source": "Formula 1"
     },
     {
+      "when_utc": "2026-10-03T08:30:00Z",
+      "label": "India v West Indies · 3rd ODI · New Chandigarh",
+      "entity": "india_cricket",
+      "where": null,
+      "source": "Cricbuzz",
+      "minutes": 480
+    },
+    {
       "when_utc": "2026-10-04T07:00:00Z",
       "minutes": 120,
       "label": "F1 · Bahrain Grand Prix at Sepang",

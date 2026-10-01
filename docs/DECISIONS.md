@@ -553,3 +553,12 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 - `node scripts/prep.mjs` runs letters, cricket times, betting candidates and the live snapshot in one step, and prints the last seven editions in brief (every headline with its thread) in place of reading the last three editions whole (about 300 KB each). Each helper prints and writes exactly what it did before; the validator is unchanged. Every step a run saves is one less re-read of its whole conversation.
 - Not done (Parth, 1 Oct): a fresh conversation for each run; the runs keep their history.
 - Illustrations from 2 Oct: a drawn story in a two-column section takes the whole row with its drawing beside the text, and an odd undrawn story takes a row too, so rows stay even (balanceStories in app.js). Checked with a drawing on every section's first story and on every story, phone and laptop, light and dark.
+
+## 1 Oct 2026 (later): Illustrations by the news, not one per desk (Parth)
+- Revises the rule above the same day: forcing a drawing on every desk was too strict (1 Oct: Madridismo had nothing worth drawing; The Wider Pitch did). Now the lead always; 0 to 2 per desk by the news; 1 to 3 on the Front Page; 2 to 8 in all; between equal pictures, the one that matters more to Parth. Only a missing lead or more than eight is refused; the ranges warn. Layout (even rows around drawings) unchanged.
+
+## 1 Oct 2026: The Fixture List missed India's 3rd ODI (Parth)
+- Two India matches on Saturday (Asian Games final 10:00, 3rd ODI 14:00). The validator matched each listed India fixture to the first Cricbuzz match within 18 hours, so a correct 14:00 ODI read as four hours wrong, and the run dropped it; nothing checked that every match was listed. Now it matches the closest, and every India match, Real Madrid match and F1 qualifying and race in the next seven days must be in The Fixture List (from the 2 Oct edition). Added to the 1 Oct paper by hand.
+
+## 1 Oct 2026: Paddock Notes without the empty column (Parth)
+- The race preview sat under the sessions in the left column, so the circuit map's column ran empty below it. Now the sessions sit beside the map (Max Watch and the notes under the sessions); with no map (a new circuit, or the map source slow), the sessions sit beside Max Watch and the notes. "The race ahead" runs across the section below: the read and the market on the left, the F1 press on the right.
