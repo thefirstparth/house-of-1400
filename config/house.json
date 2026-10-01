@@ -259,16 +259,10 @@
         "Managing Madrid"
       ],
       "knockouts": {
-        "note": "Cups whose knockout rounds The Wider Pitch draws when Madrid are in them (1 Oct 2026, Parth): every tie of the round, Madrid's marked. ESPN league slugs.",
-        "cups": [
-          {
-            "label": "Champions League",
-            "espn": "uefa.champions"
-          },
-          {
-            "label": "Copa del Rey",
-            "espn": "esp.copa_del_rey"
-          }
+        "note": "Any cup Madrid are in a knockout round of is drawn in The Wider Pitch, found from Madrid's own ESPN schedule across all competitions (Parth, 1 Oct: not a fixed list). Leagues and friendlies are not cups.",
+        "not_cups": [
+          "esp.1",
+          "club.friendly"
         ]
       }
     },
