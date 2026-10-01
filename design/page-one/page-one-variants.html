@@ -125,6 +125,9 @@ ol.bets .bar i{display:block;height:100%;background:var(--c)}
 
 /* ===== A · The broadsheet: weather and money as the nameplate's ears; three columns under the desks */
 .vA .top{display:grid;grid-template-columns:1fr auto 1fr;gap:28px;align-items:end;padding:6px 0 10px}
+/* in A the nameplate sits between two tall ears: larger, and centred on them */
+.vA .top>.plate{align-self:center;--np:112px}.vA .plate .the{font-size:46px}.vA .plate .hof{font-size:13px;margin:6px 0 4px}
+@media (max-width:760px){.vA .top>.plate{--np:76px}.vA .plate .the{font-size:32px}.vA .plate .hof{font-size:11px}}
 .vA .top>.wxb{max-width:300px}
 .vA .top>.mny{justify-self:end;width:300px}
 .vA .body{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr) minmax(0,1fr);gap:0 34px;padding:14px 0 6px}
@@ -319,7 +322,7 @@ async function mountWordmark(el, { items, font, caption, size }) {
   return () => { alive = false; cancelAnimationFrame(raf); clearTimeout(settle); mo.disconnect(); mq.removeEventListener?.("change", onScheme); };
 }
 
-const V = (new URLSearchParams(location.search).get("v") || "A").toUpperCase();
+const V = (new URLSearchParams(location.search).get("v") || "B").toUpperCase(); // B is the approved Page One
 document.querySelectorAll(".switch a").forEach(a => { if (a.getAttribute("href") === "?v=" + V) a.setAttribute("aria-current", "page"); });
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const R = Math.round, NOW = new URLSearchParams(location.search).get("at") ? Date.parse(D.weather.today.sunset.slice(0, 11) + new URLSearchParams(location.search).get("at") + ":00+05:30") : Date.parse(D.weather.now.time + ":00+05:30"), TZ = "Asia/Kolkata";
