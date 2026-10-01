@@ -841,7 +841,7 @@ const moodWord = s => (s < 25 ? "Fearful" : s < 45 ? "Cautious" : s <= 55 ? "Neu
 // shows only when its source answered (live, or the edition's snapshot), and never on its own a wrong figure.
 const crore = v => `₹${inr(Math.round(Math.abs(v)))} cr`;
 // Who bought and sold: the day's net buying of foreign and domestic institutions as bars either side of a centre line
-// (sold to the left, bought to the right), then the month so far for foreign investors.
+// (sold to the left, bought to the right), then the month for foreign investors ("so far" only while it is this month).
 function flowsBlock() {
   const F = LIVE.flows?.value; if (!F || (!F.day && !F.fpi_month)) return "";
   const who = v => (v >= 0 ? "bought" : "sold"), M = F.fpi_month;
@@ -850,7 +850,7 @@ function flowsBlock() {
     const rows = [["Foreign investors", "FII/FPI", F.day.fii], ["Domestic institutions", "DII", F.day.dii]], max = Math.max(...rows.map(r => Math.abs(r[2]))) || 1;
     h += `<div class="flows">${rows.map(([label, short, v]) => `<div class="fl"><span class="fl-n">${esc(label)} <small>${esc(short)}</small></span><span class="fl-t" aria-hidden="true"><i class="${v >= 0 ? "up" : "dn"}" style="--w:${Math.max(2, Math.round(Math.abs(v) / max * 50))}%"></i></span><span class="fl-v tnum ${v >= 0 ? "up" : "dn"}">${who(v)} ${crore(v)}</span></div>`).join("")}</div>`;
   }
-  if (M) h += `<p class="fl-m">Foreign investors have ${M.net >= 0 ? "put in" : "taken out"} <b class="tnum ${M.net >= 0 ? "up" : "dn"}">${crore(M.net)}</b> in ${esc(new Date(M.month + "-15T12:00:00Z").toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" }))} so far.</p>`;
+  if (M) h += `<p class="fl-m">Foreign investors have ${M.net >= 0 ? "put in" : "taken out"} <b class="tnum ${M.net >= 0 ? "up" : "dn"}">${crore(M.net)}</b> in ${esc(new Date(M.month + "-15T12:00:00Z").toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" }))}${M.month === istDate().slice(0, 7) ? " so far" : ""}.</p>`;
   const src = [F.day && `${fmt(F.day.date + "T12:00:00Z", { day: "numeric", month: "short" })}: NSE provisional figures for the cash market (${esc(F.day.scope)})`, M && `month: NSDL, foreign investment in equity over ${M.days} session${M.days === 1 ? "" : "s"}`].filter(Boolean).join("; ");
   return `<div class="ledx"><h4 class="subhd">Who bought and sold${F.day ? ` <span>${esc(istDay(F.day.date + "T12:00:00Z"))}</span>` : ""}</h4>${h}${aboutFig(src + ".")}${staleNote("flows")}</div>`;
 }
