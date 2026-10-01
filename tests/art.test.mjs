@@ -63,3 +63,27 @@ test("check: only images that fit their order are shown, with reasons for the re
   assert.equal(checkArt(E, { items: [manifest.items[0]] }, f => files[f] || null, "Illustration by Bunty Brushwala").items[0].credit, "Illustration by Bunty Brushwala");
   assert.equal(brief(E, { art: { illustrator: { name: "Bunty Brushwala" } } }).manifest.format.made_by, "Bunty Brushwala");
 });
+
+// 1 Oct: Bhide scores, the code picks (lib/art.js pickArt).
+import { pickArt } from "../lib/art.js";
+test("pickArt: lead first unless in poor taste, every group, caps, thin days, overrides", () => {
+  const cfg = { desks: [{ id: "front", sections: ["week"] }, { id: "news", sections: ["dateline", "namma"] }, { id: "money", sections: ["ledger"] }, { id: "sport", sections: ["madrid", "pitch", "paddock", "crease", "sidelines"] }, { id: "tech", sections: ["workshop"] }, { id: "life", sections: ["screen", "sky"] }],
+    art: { selection: { min: 5, max: 9, candidate_drawable: 2, groups: { news: ["news", "money", "tech"], sport: ["sport"], other: ["life"] }, never_sections: ["sky"], max_group_share: 0.5, max_per_desk: 2 } } };
+  const st = (id, section) => ({ id, section, headline: id, short: "x" });
+  const E = { front: { lead: st("lead", "dateline"), seconds: [st("s1", "crease"), st("s2", "ledger")] },
+    sections: { pitch: { stories: [st("p1", "pitch")] }, paddock: { stories: [st("f1", "paddock")] }, madrid: { stories: [st("m1", "madrid")] }, workshop: { stories: [st("w1", "workshop")] }, screen: { stories: [st("sc1", "screen")] }, dateline: { stories: [st("d1", "dateline")] } } };
+  const sc = (id, i, r, d) => ({ story_id: id, importance: i, relevance: r, drawable: d });
+  E.art_scores = [sc("lead", 3, 1, 3), sc("s1", 3, 2, 3), sc("s2", 2, 1, 1), sc("p1", 2, 2, 3), sc("f1", 2, 1, 3), sc("m1", 1, 2, 2), sc("w1", 2, 2, 2), sc("sc1", 1, 1, 2), sc("d1", 1, 0, 2)];
+  let o = pickArt(E, cfg);
+  assert.equal(o[0], "lead");
+  assert.ok(o.length >= 5 && o.length <= 9);
+  assert.ok(o.includes("sc1"), "the Off Duty group gets one");
+  assert.ok(!o.includes("s2"), "drawable 1 is not a candidate");
+  assert.ok(["s1", "p1", "f1", "m1"].filter(x => o.includes(x)).length <= 4);
+  E.art_scores[0] = sc("lead", 3, 1, 0);                      // the lead in poor taste: no 16:9
+  o = pickArt(E, cfg); assert.ok(!o.includes("lead"));
+  E.art_scores = [sc("lead", 3, 0, 0), sc("s1", 2, 2, 3)];   // a thin day: one drawing, not padded
+  assert.deepEqual(pickArt(E, cfg), ["s1"]);
+  E.art_overrides = [{ story_id: "s1", action: "remove", why: "testing a removal" }, { story_id: "d1", action: "add", why: "testing an addition" }];
+  assert.deepEqual(pickArt(E, cfg), ["d1"]);
+});

@@ -58,29 +58,17 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   if (!v(E)) for (const e of v.errors) errors.push(`schema: ${e.instancePath || "/"} ${e.message}${e.params?.additionalProperty ? ` (${e.params.additionalProperty})` : ""}`);
   if (!E || typeof E !== "object" || !E.date) return { errors, warnings };
 
-  // Art orders (lib/art.js): printed stories only. From 2 Oct 2026 (Parth, 1 Oct, revised the same day): the lead
-  // always; then by the day's news, not a quota: 0 to 2 per desk (none when nothing in it is worth a picture), 1 to 3
-  // on the Front Page with the lead, 2 to 8 in all, weighted to what matters to Parth. Only the lead and the cap of
-  // eight are errors; the rest are warnings, since the right number is a judgment.
+  // Art (lib/art.js; Parth, 1 Oct 2026): Bhide scores every printed story (art_scores) and publish.mjs picks the orders.
+  // Never an error: nothing about art stops the paper from printing. Warnings say what is missing.
   {
-    const ids = new Set(allItems(E).filter(i => i._kind === "story").map(i => i.id));
+    const stories = allItems(E).filter(i => i._kind === "story"), ids = new Set(stories.map(i => i.id));
     for (const o of E.art_orders || []) if (!ids.has(o.story_id)) warnings.push(`art_orders: ${o.story_id} is not a printed story (briefs get no art)`);
-    const got = new Set((E.art_orders || []).map(o => o.story_id).filter(id => ids.has(id)));
     if (E.date > "2026-10-01") {
-      let DESKS = []; try { DESKS = read("config/house.json").desks || []; } catch {}
-      const deskOf = sec => DESKS.find(d => d.id !== "front" && d.sections.includes(sec))?.name;
-      if (E.front?.lead && !got.has(E.front.lead.id)) errors.push(`art_orders: order the lead (${E.front.lead.id}); it is drawn 16:9 on the Front Page`);
-      if (got.size > MAX_ORDERS) errors.push(`art_orders: ${got.size} ordered; at most ${MAX_ORDERS}`);
-      if (got.size < Math.min(2, ids.size)) warnings.push(`art_orders: ${got.size} ordered; most days want 2 to ${MAX_ORDERS}`);
-      const front = new Set([E.front?.lead?.id, ...(E.front?.seconds || []).map(x => x.id)]);
-      const onFront = [...got].filter(id => front.has(id)).length;
-      if (onFront > 3) warnings.push(`art_orders: ${onFront} drawings on the Front Page; 1 to 3 is the range, give the rest to the sections' own stories`);
-      const per = {};
-      for (const it of allItems(E)) if (got.has(it.id) && it.id !== E.front?.lead?.id) { const d = deskOf(it.section); if (d) per[d] = (per[d] || 0) + 1; }
-      for (const [d, n] of Object.entries(per)) if (n > 2) warnings.push(`art_orders: ${n} drawings in ${d}; at most 2 a desk`);
-    } else if (E.date > "2026-09-29") {
-      if (got.size < Math.min(2, ids.size)) warnings.push(`art_orders: ${got.size} ordered; order 2 to 5 printed stories`);
-      if (got.size > 5) warnings.push(`art_orders: ${got.size} ordered; at most 5 are drawn`);
+      const scored = new Set((E.art_scores || []).map(x => x.story_id));
+      const unscored = stories.filter(st => !scored.has(st.id) && st.section !== "sky");
+      if (!E.art_scores?.length) warnings.push("art_scores: score every printed story (importance, relevance, drawable) so the art orders can be picked (EDITORIAL.md, Art orders)");
+      else if (unscored.length) warnings.push(`art_scores: ${unscored.length} printed ${unscored.length > 1 ? "stories are" : "story is"} not scored (${unscored.slice(0, 4).map(x => x.id).join(", ")})`);
+      for (const x of E.art_scores || []) if (!ids.has(x.story_id)) warnings.push(`art_scores: ${x.story_id} is not a printed story`);
     }
   }
 
