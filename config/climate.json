@@ -1,0 +1,272 @@
+{
+  "note": "What a usual month looks like in each city, for Sky & Streets (1 Oct 2026). Temperature and rain: the city's weather station, daily records 1991 to 2020 (Meteostat, bulk.meteostat.net); rain is the average monthly total over the years with records. Air: Copernicus (CAMS, via Open-Meteo), the mean of hourly US AQI by calendar month over the years available (2022 to 2025). Worked out once by a build session; do not edit by hand.",
+  "cities": {
+    "Bengaluru": {
+      "station": "Bengaluru HAL (WMO 43295)",
+      "months": {
+        "1": {
+          "hi": 28.7,
+          "lo": 16,
+          "rain": 2,
+          "aqi": 92,
+          "days": 926
+        },
+        "2": {
+          "hi": 31.1,
+          "lo": 17.6,
+          "rain": 7,
+          "aqi": 87,
+          "days": 847
+        },
+        "3": {
+          "hi": 33.5,
+          "lo": 20.2,
+          "rain": 21,
+          "aqi": 90,
+          "days": 919
+        },
+        "4": {
+          "hi": 34.2,
+          "lo": 22.2,
+          "rain": 61,
+          "aqi": 93,
+          "days": 898
+        },
+        "5": {
+          "hi": 33.3,
+          "lo": 21.7,
+          "rain": 108,
+          "aqi": 83,
+          "days": 922
+        },
+        "6": {
+          "hi": 29.8,
+          "lo": 20.6,
+          "rain": 81,
+          "aqi": 48,
+          "days": 889
+        },
+        "7": {
+          "hi": 28.5,
+          "lo": 20.1,
+          "rain": 111,
+          "aqi": 30,
+          "days": 930
+        },
+        "8": {
+          "hi": 28.2,
+          "lo": 20,
+          "rain": 144,
+          "aqi": 49,
+          "days": 924
+        },
+        "9": {
+          "hi": 28.8,
+          "lo": 20,
+          "rain": 182,
+          "aqi": 48,
+          "days": 900
+        },
+        "10": {
+          "hi": 28.6,
+          "lo": 19.7,
+          "rain": 166,
+          "aqi": 78,
+          "days": 921
+        },
+        "11": {
+          "hi": 27.7,
+          "lo": 18.2,
+          "rain": 57,
+          "aqi": 83,
+          "days": 898
+        },
+        "12": {
+          "hi": 27.3,
+          "lo": 16.3,
+          "rain": 19,
+          "aqi": 84,
+          "days": 923
+        }
+      }
+    },
+    "Ranchi": {
+      "station": "Ranchi (WMO 42701)",
+      "months": {
+        "1": {
+          "hi": 23.9,
+          "lo": 9.3,
+          "rain": 20,
+          "aqi": 146,
+          "days": 858
+        },
+        "2": {
+          "hi": 27.1,
+          "lo": 12.6,
+          "rain": 15,
+          "aqi": 103,
+          "days": 779
+        },
+        "3": {
+          "hi": 31.6,
+          "lo": 16.8,
+          "rain": 23,
+          "aqi": 103,
+          "days": 871
+        },
+        "4": {
+          "hi": 36.1,
+          "lo": 21.1,
+          "rain": 16,
+          "aqi": 102,
+          "days": 818
+        },
+        "5": {
+          "hi": 37.2,
+          "lo": 23.4,
+          "rain": 30,
+          "aqi": 110,
+          "days": 868
+        },
+        "6": {
+          "hi": 33.8,
+          "lo": 23.6,
+          "rain": 165,
+          "aqi": 97,
+          "days": 823
+        },
+        "7": {
+          "hi": 30,
+          "lo": 22.8,
+          "rain": 253,
+          "aqi": 66,
+          "days": 843
+        },
+        "8": {
+          "hi": 29.7,
+          "lo": 22.6,
+          "rain": 254,
+          "aqi": 69,
+          "days": 858
+        },
+        "9": {
+          "hi": 29.9,
+          "lo": 21.9,
+          "rain": 187,
+          "aqi": 71,
+          "days": 820
+        },
+        "10": {
+          "hi": 29.3,
+          "lo": 18.7,
+          "rain": 72,
+          "aqi": 103,
+          "days": 906
+        },
+        "11": {
+          "hi": 27,
+          "lo": 13.8,
+          "rain": 19,
+          "aqi": 142,
+          "days": 864
+        },
+        "12": {
+          "hi": 24.2,
+          "lo": 9.9,
+          "rain": 13,
+          "aqi": 140,
+          "days": 885
+        }
+      }
+    },
+    "Prayagraj": {
+      "station": "Allahabad (Bamrauli) (WMO 42475)",
+      "months": {
+        "1": {
+          "hi": 23,
+          "lo": 9.2,
+          "rain": 23,
+          "aqi": 188,
+          "days": 648
+        },
+        "2": {
+          "hi": 27.7,
+          "lo": 12.7,
+          "rain": 17,
+          "aqi": 145,
+          "days": 634
+        },
+        "3": {
+          "hi": 34.1,
+          "lo": 17.5,
+          "rain": 7,
+          "aqi": 130,
+          "days": 665
+        },
+        "4": {
+          "hi": 39.8,
+          "lo": 22.7,
+          "rain": 5,
+          "aqi": 112,
+          "days": 520
+        },
+        "5": {
+          "hi": 41.9,
+          "lo": 26.8,
+          "rain": 10,
+          "aqi": 133,
+          "days": 576
+        },
+        "6": {
+          "hi": 39.6,
+          "lo": 27.7,
+          "rain": 73,
+          "aqi": 110,
+          "days": 546
+        },
+        "7": {
+          "hi": 35,
+          "lo": 26.9,
+          "rain": 195,
+          "aqi": 93,
+          "days": 617
+        },
+        "8": {
+          "hi": 34,
+          "lo": 26.7,
+          "rain": 152,
+          "aqi": 88,
+          "days": 636
+        },
+        "9": {
+          "hi": 34,
+          "lo": 25.8,
+          "rain": 102,
+          "aqi": 101,
+          "days": 600
+        },
+        "10": {
+          "hi": 33.8,
+          "lo": 21.5,
+          "rain": 36,
+          "aqi": 134,
+          "days": 707
+        },
+        "11": {
+          "hi": 30.3,
+          "lo": 15.4,
+          "rain": 3,
+          "aqi": 179,
+          "days": 643
+        },
+        "12": {
+          "hi": 25.2,
+          "lo": 10.7,
+          "rain": 4,
+          "aqi": 181,
+          "days": 647
+        }
+      }
+    }
+  }
+}

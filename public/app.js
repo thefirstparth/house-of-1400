@@ -80,7 +80,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where", "outlook"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -376,7 +376,12 @@ function railHTML() {
   const M = LIVE.markets?.value, ix = M?.indices?.[0];
   if (ix) {
     const moods = Object.keys(CFG.markets.mood || {}).map(k => M.mood?.[k]).filter(Boolean);
-    out.push(box("ledger", `${esc(ix.name)} ${inr(Math.round(ix.price))} <em class="${dir(ix.change_pct)}" style="font-style:normal">${pct(ix.change_pct)}</em>`, moods.length ? moods.map(m => `${esc(m.region)} ${esc((m.word || moodWord(m.score)).toLowerCase())} ${m.score}`).join(" · ") : esc(hoursLine(ix))));
+    // The index itself is in the masthead's right ear, so this card carries what the ear does not (Parth, 1 Oct: the
+    // Sensex twice): the market mood first, then the rupee.
+    const fx = (M.cross || []).find(q => q.symbol === "INR=X"), word = m => esc((m.word || moodWord(m.score)).toLowerCase());
+    const rupee = fx?.price ? `₹${fx.price.toFixed(2)} to the dollar` : "";
+    if (moods.length) out.push(box("ledger", `Market mood · ${esc(moods[0].region)} ${word(moods[0])} ${moods[0].score}`, [...moods.slice(1).map(m => `${esc(m.region)} ${word(m)} ${m.score}`), rupee].filter(Boolean).join(" · ")));
+    else if (fx?.price) out.push(box("ledger", `Rupee ${esc(rupee)} <em class="${dir(-(fx.change_pct || 0))}" style="font-style:normal">${pct(fx.change_pct)}</em>`, esc(hoursLine(ix))));
   }
   const r = LIVE.f1_next?.value?.race, race = r?.sessions?.at(-1);
   if (race?.time_confirmed && Date.parse(race.start) - Date.now() < 7 * 864e5 && Date.parse(race.start) + race.minutes * 6e4 > Date.now() && Math.abs((nx?.start || 0) - Date.parse(race.start)) > 5 * 6e4)
@@ -983,7 +988,124 @@ function familyCity(c, hr) {
 ${familyInsight(c)}</div>`;
 }
 
+// ---------------------------------------------------------------- Sky & Streets: the trend (approved 1 Oct 2026)
+// Words for this month and next (the month after only when it is a real change); one picture of day and night
+// temperatures and the air, week to week and month to month, against a usual month; the figures the picture does not
+// carry (feels like, humidity, rainy days, rain against usual, daylight; sunset for Bengaluru only) folded. Ranchi and
+// Prayagraj show their words, with picture and figures folded. Every sentence is written by these rules from the
+// numbers. Without the outlook the section falls back to the week ahead (skyWeek).
+const MONL = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const wdShort = d => new Date(d + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", timeZone: "UTC" });
+const dmShort = d => `${+d.slice(8, 10)} ${MONL[+d.slice(5, 7) - 1].slice(0, 3)}`;
+const aheadDays = d => Math.round((Date.parse(d + "T12:00:00Z") - Date.parse(istDate() + "T12:00:00Z")) / 864e5);
+const sayDay = d => { const n = aheadDays(d); return n === 0 ? "today" : n === 1 ? "tomorrow" : n < 7 ? wdShort(d) : `${wdShort(d)} ${dmShort(d)}`; };
+const spanDays = (a, b) => (a.slice(5, 7) === b.slice(5, 7) ? `${wdShort(a)} ${+a.slice(8)} to ${wdShort(b)} ${dmShort(b)}` : `${wdShort(a)} ${dmShort(a)} to ${wdShort(b)} ${dmShort(b)}`);
+// Sunrise and sunset from the calendar (NOAA's method), in IST.
+function sunTimes(lat, lon, ymd) {
+  const rad = Math.PI / 180, J = Date.parse(ymd + "T12:00:00Z") / 864e5 + 2440587.5, n = Math.round(J - 2451545.0008), Js = n - lon / 360;
+  const M = (357.5291 + 0.98560028 * Js) % 360, C = 1.9148 * Math.sin(M * rad) + 0.02 * Math.sin(2 * M * rad) + 0.0003 * Math.sin(3 * M * rad);
+  const L = (M + C + 180 + 102.9372) % 360, Jt = 2451545 + Js + 0.0053 * Math.sin(M * rad) - 0.0069 * Math.sin(2 * L * rad);
+  const dec = Math.asin(Math.sin(L * rad) * Math.sin(23.44 * rad)), w = Math.acos((Math.sin(-0.833 * rad) - Math.sin(lat * rad) * Math.sin(dec)) / (Math.cos(lat * rad) * Math.cos(dec))) / rad;
+  const t = j => new Date((j - 2440587.5) * 864e5 + 5.5 * 36e5).toISOString().slice(11, 16);
+  return { rise: t(Jt - w / 360), set: t(Jt + w / 360), mins: Math.round((2 * w / 360) * 1440) };
+}
+const hmins = m => `${Math.floor(m / 60)}h ${m % 60}m`;
+const aqWord = a => (a <= 50 ? [1, "good"] : a <= 100 ? [2, "moderate"] : a <= 150 ? [3, "poor for sensitive lungs"] : a <= 200 ? [4, "unhealthy"] : [4, "very unhealthy"]);
+const trendArrow = (a, b, t = 0.6) => (a == null || b == null ? "" : b - a > t ? `<span class="ar up" title="up">▲</span>` : a - b > t ? `<span class="ar dn" title="down">▼</span>` : `<span class="ar eq">▬</span>`);
+function rainWords(o) {
+  const E2 = (o.days || []).slice(1), wet = E2.filter(e => e.rain_prob >= 60), sh = E2.filter(e => e.rain_prob >= 30);
+  if (wet.length >= 3) return `rain likely most days, ${spanDays(wet[0].date, wet.at(-1).date)}`;
+  if (wet.length) return `rain likely ${wet.slice(0, 3).map(e => sayDay(e.date)).join(" and ")}`;
+  if (sh.length) return `dry, with a chance of a shower ${sh.length === 1 ? "on " + sayDay(sh[0].date) : "from " + sayDay(sh[0].date)}`;
+  return "dry for the next two weeks";
+}
+function skyHeadline(o) {
+  const w = o.weeks, m = o.months; if (!w?.[1] || m.length < 2) return "";
+  const next = Math.round(w[1].lo - m[1].lo), after = m[2] ? Math.round(w[1].lo - m[2].lo) : 0, Nm = MONL[+m[1].month.slice(5) - 1];
+  let temp = next >= 3 ? `Nights cool from ${Math.round(w[1].lo)}° to about ${Math.round(m[1].lo)}° in ${Nm}` : next >= 1 ? `Mild into ${Nm}, nights a little cooler` : `Mild into ${Nm}`;
+  if (next < 3 && after >= 6 && m[2]) temp += `, then a cold ${MONL[+m[2].month.slice(5) - 1]}`;
+  const ua = m[1].usual_aqi, now = w[1].aqi ?? w[0].aqi, first = m[0].usual_aqi;
+  const air = ua != null && aqWord(ua)[0] >= 4 && (now == null || aqWord(now)[0] < 4) ? `the air usually turns unhealthy in ${Nm}` : ua != null && first != null && ua - Math.min(first, now ?? first) >= 30 ? "the air usually worsens after the rains" : "";
+  return air ? `${temp}; ${air}` : temp;
+}
+function skyDek(o, today, short = false) {
+  const w = o.weeks, m = o.months, out = [];
+  out.push(`${(r => r[0].toUpperCase() + r.slice(1))(rainWords(o))}${short || today?.rain_prob == null ? "" : `; ${today.rain_prob}% chance of rain today`}.`.replace(/^Rain likely most days, /, "Rain is likely most days, "));
+  const dT = w[1].hi - w[0].hi;
+  out.push(`Days ${Math.abs(dT) < 0.7 ? "hold at" : dT > 0 ? "warm to" : "cool to"} about ${Math.round(w[1].hi)}° this week, feeling like ${Math.round(w[1].feels)}° in the afternoon; nights ${Math.round(w[1].lo)}°.`);
+  if (!short && w[1].aqi != null) out.push(`The air is ${aqWord(w[1].aqi)[1]} this week (AQI about ${w[1].aqi}${w[0].aqi != null ? `, ${w[1].aqi > w[0].aqi + 10 ? "up" : w[1].aqi < w[0].aqi - 10 ? "down" : "about level"} from ${w[0].aqi} last week` : ""}).`);
+  if (m[0] && m[1]) {
+    const oR = m[0].usual_rain ? m[0].rain / m[0].usual_rain : 1, oT = m[0].usual_hi != null ? m[0].hi - m[0].usual_hi : 0, Tm = MONL[+m[0].month.slice(5) - 1], Nm = MONL[+m[1].month.slice(5) - 1];
+    const lean = [oR < 0.6 ? "much drier" : oR < 0.9 ? "a little drier" : oR > 1.4 ? "much wetter" : oR > 1.1 ? "a little wetter" : "", oT <= -1 ? "cooler" : oT >= 1 ? "warmer" : ""].filter(Boolean);
+    const nT = m[1].usual_hi != null ? m[1].hi - m[1].usual_hi : 0;
+    out.push(`${lean.length ? `${Tm} looks ${lean.join(" and ")} than usual. ` : ""}${m[1].usual_hi != null ? `${Nm} usually brings days of ${Math.round(m[1].usual_hi)}° and nights of ${Math.round(m[1].usual_lo)}°${Math.abs(nT) >= 1 ? `; this year leans ${nT > 0 ? "warmer" : "cooler"}` : ""}.` : ""}`);
+  }
+  return out.filter(Boolean).join(" ");
+}
+function skyChart(o, { w = 640, compact = false } = {}) {
+  const wk = o.weeks, m = o.months;
+  const W = wk.map((x, i) => ({ l: ["Last week", "This week", "Next week"][i], s: i ? `from ${dmShort(x.from)}` : "measured", hi: x.hi, lo: x.lo, aq: x.aqi, now: i === 1 }));
+  const M = m.map(x => ({ l: MONL[+x.month.slice(5) - 1], s: "", hi: x.hi, lo: x.lo, uhi: x.usual_hi, ulo: x.usual_lo, aq: x.usual_aqi, au: 1 }));
+  const P = [...W, ...M], all = P.flatMap(p => [p.hi, p.lo, p.uhi, p.ulo]).filter(x => x != null);
+  if (!all.length) return "";
+  const t0 = Math.floor(Math.min(...all) - 1), t1 = Math.ceil(Math.max(...all) + 1), nW = W.length;
+  const h = compact ? 214 : 262, top = 40, bot = compact ? 70 : 76, ax = 30, gap = 26, colw = (w - ax - gap) / P.length, y = t => top + (1 - (t - t0) / (t1 - t0)) * (h - top - bot);
+  const X = i => ax + (i < nW ? 0 : gap) + i * colw + colw / 2, cap = compact ? 16 : 20, id = `sg-${o.name.replace(/\W/g, "")}`;
+  let s = `<svg class="sky-chart" viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="${esc(o.name)}: day and night temperatures and the air, week to week and month to month">`;
+  s += `<text x="${ax}" y="13" font-size="10.5" font-weight="700" letter-spacing=".08em" fill="var(--muted)">WEEK TO WEEK</text>${M.length ? `<text x="${ax + gap + nW * colw}" y="13" font-size="10.5" font-weight="700" letter-spacing=".08em" fill="var(--muted)">MONTH TO MONTH</text>` : ""}`;
+  if (w >= 500 && M.length) s += `<rect x="${w - 112}" y="4" width="10" height="12" rx="4" fill="none" stroke="var(--muted)" stroke-dasharray="2 2"/><text x="${w - 97}" y="14" font-size="10.5" fill="var(--muted)">a usual month</text>`;
+  for (let t = Math.ceil(t0 / 5) * 5; t <= t1; t += 5) s += `<line x1="${ax}" x2="${w}" y1="${y(t)}" y2="${y(t)}" stroke="var(--rule2)"/><text x="${ax - 6}" y="${y(t) + 4}" text-anchor="end" font-size="10.5" fill="var(--muted)">${t}°</text>`;
+  if (M.length) s += `<line x1="${ax + nW * colw + gap / 2}" x2="${ax + nW * colw + gap / 2}" y1="${top - 14}" y2="${h - bot + 50}" stroke="var(--rule)"/>`;
+  P.forEach((p, i) => {
+    if (p.hi == null || p.lo == null) return;
+    const cx = X(i);
+    if (p.uhi != null) s += `<rect x="${cx - cap / 2 - 5}" y="${y(p.uhi)}" width="${cap + 10}" height="${y(p.ulo) - y(p.uhi)}" rx="${(cap + 10) / 2}" fill="none" stroke="var(--muted)" stroke-dasharray="2.5 2.5"><title>A usual ${esc(p.l)}: ${Math.round(p.uhi)}° by day, ${Math.round(p.ulo)}° at night</title></rect>`;
+    s += `<rect x="${cx - cap / 2}" y="${y(p.hi)}" width="${cap}" height="${Math.max(cap, y(p.lo) - y(p.hi))}" rx="${cap / 2}" fill="url(#${id})"${p.now ? ` stroke="var(--ink)" stroke-width="1.5"` : ""}><title>${esc(p.l)}: ${Math.round(p.hi)}° by day, ${Math.round(p.lo)}° at night</title></rect>`;
+    s += `<text x="${cx}" y="${y(p.hi) - 7}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--warm)">${Math.round(p.hi)}°</text><text x="${cx}" y="${y(p.lo) + 16}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--cool)">${Math.round(p.lo)}°</text>`;
+    s += `<text x="${cx}" y="${h - bot + 20}" text-anchor="middle" font-size="${colw < 70 ? 10.5 : 12}" font-weight="${p.now ? 800 : 700}" fill="var(--ink)">${colw < 70 ? p.l.replace(" week", " wk").replace(/^(\w{3})\w+$/, "$1") : p.l}</text>${p.s ? `<text x="${cx}" y="${h - bot + 33}" text-anchor="middle" font-size="10" fill="var(--muted)">${p.s}</text>` : ""}`;
+    if (p.aq != null) { const [k, word] = aqWord(p.aq); s += `<rect x="${cx - 21}" y="${h - bot + 40}" width="42" height="17" rx="8.5" fill="var(--aq${k}c)"><title>Air ${p.aq}, ${word}${p.au ? " (a usual month)" : ""}</title></rect><text x="${cx}" y="${h - bot + 52.5}" text-anchor="middle" font-size="11" font-weight="800" fill="var(--aq${k})">${p.aq}</text>`; }
+  });
+  s += `<text x="${ax - 6}" y="${h - bot + 52.5}" text-anchor="end" font-size="10" font-weight="700" fill="var(--muted)">AIR</text>`;
+  return s + `<defs><linearGradient id="${id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--warm)"/><stop offset="1" stop-color="var(--cool)"/></linearGradient></defs></svg>`;
+}
+function skyFigures(o, { sunset = false } = {}) {
+  const wk = o.weeks, m = o.months, sd = [wk[0].to, istDate(), wk[2]?.from].filter(Boolean), md = m.map(x => `${x.month}-15`);
+  const td = (v, ar = "") => `<td>${v == null ? "–" : v}${ar}</td>`;
+  const weeks = `<table class="tr"><thead><tr><th></th>${wk.map((x, i) => `<th>${["Last week", "This week", "Next week"][i]}${i ? "" : "<small>as measured</small>"}</th>`).join("")}</tr></thead><tbody>
+<tr><td>Feels like</td>${wk.map((x, i) => td(x.feels == null ? null : Math.round(x.feels) + "°", i ? trendArrow(wk[i - 1].feels, x.feels) : "")).join("")}</tr>
+<tr><td>Humidity</td>${wk.map((x, i) => td(x.humidity == null ? null : x.humidity + "%", i ? trendArrow(wk[i - 1].humidity, x.humidity, 3) : "")).join("")}</tr>
+<tr><td>Rainy days</td>${wk.map((x, i) => td(x.rainy == null ? null : `${x.rainy} of 7${i ? " likely" : ""}`)).join("")}</tr>
+${sunset ? `<tr><td>Sunset</td>${sd.map(d => td(sunTimes(o.lat, o.lon, d).set)).join("")}</tr>` : ""}</tbody></table>`;
+  const months = m.length ? `<table class="tr"><thead><tr><th></th>${m.map(x => `<th>${MONL[+x.month.slice(5) - 1]}</th>`).join("")}</tr></thead><tbody>
+<tr><td>Rain</td>${m.map(x => td(`${x.rain} mm${x.usual_rain != null ? `<small>usual ${x.usual_rain}</small>` : ""}`)).join("")}</tr>
+<tr><td>Daylight</td>${md.map((d, i) => td(hmins(sunTimes(o.lat, o.lon, d).mins), i ? trendArrow(sunTimes(o.lat, o.lon, md[i - 1]).mins, sunTimes(o.lat, o.lon, d).mins, 1) : "")).join("")}</tr>
+${sunset ? `<tr><td>Sunset</td>${md.map(d => td(sunTimes(o.lat, o.lon, d).set)).join("")}</tr>` : ""}</tbody></table>` : "";
+  return `<div class="sky-figs"><div><h4 class="subhd">Week to week <span>feels like, humidity, rain</span></h4>${weeks}</div>${months ? `<div><h4 class="subhd">Month to month <span>rain likely against usual, daylight mid-month</span></h4>${months}</div>` : ""}</div>`;
+}
+function skyOutlook() {
+  const O = LIVE.outlook?.value?.cities, Wx = LIVE.weather?.value?.cities || [];
+  if (!O?.length || !O[0].weeks?.[1] || (O[0].weeks[1].from || "") > istDate()) return "";
+  const today = n => Wx.find(c => c.name === n)?.daily?.find(d => d.date === istDate()), cur = n => Wx.find(c => c.name === n)?.current;
+  const [B, ...rest] = O, F = rest.filter(c => c.family), head = skyHeadline(B);
+  const phone = innerWidth < 720, cw = Math.min(640, innerWidth - 32);
+  let h = `<div class="sky-top"><div><p class="kick">${esc(B.name)}</p>${head ? `<h3 class="sky-h">${esc(head)}</h3>` : ""}<p class="sky-dek">${esc(skyDek(B, today(B.name)))}</p></div>
+<figure class="sky-fig">${skyChart(B, { w: phone ? cw : 640 })}<figcaption>Bars run from the night's low to the day's high. Months: this year's outlook against a usual month (dashed). Air: US AQI; months as a usual month.</figcaption></figure></div>
+<details class="more sky-more"><summary>Week to week and month to month, in figures</summary>${skyFigures(B, { sunset: true })}</details>`;
+  if (F.length) h += `<h3 class="subhd famhead">${esc(F.map(x => x.name).join(" and "))} <span>where the family is</span></h3><div class="sky-fam">${F.map(c => { const t = today(c.name), k = cur(c.name);
+    return `<div><h4>${esc(c.name)}${k ? `<small>${Math.round(k.temp)}° now${t?.feels_max != null ? ` · feels ${Math.round(t.feels_max)}° by day` : ""}</small>` : ""}</h4>${skyHeadline(c) ? `<p class="l">${esc(skyHeadline(c))}</p>` : ""}<p class="s">${esc(skyDek(c, t, true))}</p>
+<details class="more"><summary>Chart and figures</summary><figure class="sky-fig">${skyChart(c, { w: phone ? cw : 560, compact: true })}</figure>${skyFigures(c)}</details></div>`; }).join("")}</div>`;
+  return h + aboutFig(`Forecasts from Open-Meteo; the months from ECMWF's seasonal forecast (51 runs), corrected by how far it was off last month. A usual month: each city's weather station, 1991 to 2020 (${O.map(c => c.station).filter(Boolean).map(esc).join("; ")}); usual air from Copernicus, 2022 to 2025. Rainy days: 2.5 mm or more, or a 60% chance.`) + staleNote("outlook");
+}
 function skyBlock() {
+  const o = skyOutlook();
+  if (!o) return skyWeek();
+  let h = o + `<div id="myloc"></div>`;
+  if (ROUTE.kind !== "edition" && navigator.geolocation && !store.get("h1400-loc")) h += `<p class="note"><button class="linkish" id="locBtn">Add the weather where you are</button></p>`;
+  const note = E.sections?.sky?.data?.note;
+  return note ? h + `<p class="note">${esc(note)}</p>` : h;
+}
+// The week ahead: the section before 1 Oct 2026, kept for when the outlook is unavailable.
+function skyWeek() {
   const W = LIVE.weather?.value; if (!W?.cities?.length) return "";
   // An older snapshot may start yesterday: show today onwards.
   const t = istDate(), cities = W.cities.map(c => ({ ...c, daily: c.daily.filter(d => d.date >= t) })).filter(c => c.daily.length);
@@ -1391,7 +1513,7 @@ function render() {
   S.workshop = secWrap("workshop", storiesBlock("workshop"), "Tech · AI · wearables");
   S.pipeline = secWrap("pipeline", storiesBlock("pipeline"), "SDR · outbound · GTM");
   S.ledger = secWrap("ledger", `<div data-live="ledger">${ledgerBlock()}</div><div data-live="ledgerx">${ledgerExtras()}</div>` + storiesBlock("ledger"), "Markets · money · cards");
-  S.sky = secWrap("sky", `<div data-live="sky">${skyBlock()}</div>` + storiesBlock("sky"), [CFG.paper.home_city, ...(CFG.weather.family || []).map(c => c.name)].join(", ").replace(/, ([^,]*)$/, " and $1") + " · the week ahead");
+  S.sky = secWrap("sky", `<div data-live="sky">${skyBlock()}</div>` + storiesBlock("sky"), [CFG.paper.home_city, ...(CFG.weather.family || []).map(c => c.name)].join(", ").replace(/, ([^,]*)$/, " and $1") + " · the weeks and months ahead");
   S.namma = secWrap("namma", storiesBlock("namma"), `${CFG.paper.home_city} · fuller on Fri, Sat, Sun`);
   S.screen = secWrap("screen", screenBlock(), "English and Hindi · theatre and OTT");
   S.talk = secWrap("talk", `<div data-live="talk">${talkBlock()}</div>`, "What people are searching for");

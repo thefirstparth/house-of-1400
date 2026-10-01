@@ -14,6 +14,7 @@
   /* section palettes (primary / container / on-container), each from its subject: see config sections[].palette */
   --ink:#1c1b17;--ink-c:#e6e2d7;--ink-on:#1c1b17;--slate:#3b4a5e;--slate-c:#dde3ec;--slate-on:#16202e;--dispatch:#1f3f73;--dispatch-c:#dbe4f4;--dispatch-on:#0c1d3b;--money:#00704a;--money-c:#c4eed6;--money-on:#00391f;--odds:#8a6200;--odds-c:#f6e4ae;--odds-on:#3c2a00;--madrid:#4f2f9e;--madrid-c:#e6deff;--madrid-on:#22105e;--pitch:#2e7d32;--pitch-c:#d3f0cf;--pitch-on:#0f3a12;--f1:#d0021b;--f1-c:#ffdad6;--f1-on:#5c0008;--india:#1440a8;--india-c:#d8e2ff;--india-on:#081d5c;--tennis:#566f00;--tennis-c:#e6f59c;--tennis-on:#222e00;--track:#ad4a1c;--track-c:#ffdccb;--track-on:#4a1500;--tech:#00697a;--tech-c:#bdebf2;--tech-on:#00363f;--sky:#0a72a8;--sky-c:#d2ecfa;--sky-on:#003550;--namma:#946000;--namma-c:#ffe3a3;--namma-on:#3f2600;--screen:#ae2168;--screen-c:#ffd8e7;--screen-on:#5a0032;
   --india-2:#e8741b;
+  --warm:#c0561d;--cool:#2f5fa8;--aq1:#0b7a43;--aq2:#8a6a00;--aq3:#c0561d;--aq4:#c0261d;--aq1c:#d8efe0;--aq2c:#f3e7bf;--aq3c:#f8dccb;--aq4c:#f6d2cf;
   /* old accent names, still used by the edition's At-a-Glance colours */
   --acc-wd:var(--dispatch);--acc-mk:var(--money);--acc-sp:var(--pitch);--acc-f1:var(--f1);--acc-rm:var(--madrid);--acc-tc:var(--tech);--acc-wx:var(--sky);--acc-ct:var(--namma);--acc-en:var(--screen);
   --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
@@ -29,13 +30,13 @@
   color-scheme:dark;
   --paper:#131210;--sheet:#1b1a17;--surface:#22201c;--surface2:#2c2a25;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;
   --good:#5fd08f;--bad:#ff8a7e;--warn:#e7b964;--inverse:#eeeae0;--on-inverse:#161511;
-  --sun:#f2b552;--sun-halo:#4a3718;--moon:#aaa8ff;--moon-halo:#2c2b4f;--moon-dark:#34334a;
+  --warm:#ff9c6b;--cool:#8fb4f0;--aq1:#5fd08f;--aq2:#e7c35a;--aq3:#ff9c6b;--aq4:#ff8a7e;--aq1c:#123a24;--aq2c:#3a3010;--aq3c:#43240f;--aq4c:#4a1714;--sun:#f2b552;--sun-halo:#4a3718;--moon:#aaa8ff;--moon-halo:#2c2b4f;--moon-dark:#34334a;
   --ink:#eeeae0;--ink-c:#2e2c27;--ink-on:#eeeae0;--slate:#aebdd2;--slate-c:#26303d;--slate-on:#dde3ec;--dispatch:#a5bfeb;--dispatch-c:#1b2c4a;--dispatch-on:#dbe4f4;--money:#5fd9a0;--money-c:#0b3d28;--money-on:#c4eed6;--odds:#f0c860;--odds-c:#3f2f00;--odds-on:#f6e4ae;--madrid:#c3b0ff;--madrid-c:#352075;--madrid-on:#e6deff;--pitch:#8fd694;--pitch-c:#173d1a;--pitch-on:#d3f0cf;--f1:#ff8a80;--f1-c:#5a1210;--f1-on:#ffdad6;--india:#a3bcff;--india-c:#16296b;--india-on:#d8e2ff;--tennis:#c9e86a;--tennis-c:#2e3a00;--tennis-on:#e6f59c;--track:#ffb08a;--track-c:#4e1c05;--track-on:#ffdccb;--tech:#6ed6e8;--tech-c:#0a3d46;--tech-on:#bdebf2;--sky:#7ccbf2;--sky-c:#0a3550;--sky-on:#d2ecfa;--namma:#ffc05c;--namma-c:#4a3000;--namma-on:#ffe3a3;--screen:#ff9cc6;--screen-c:#5c0f37;--screen-on:#ffd8e7;--india-2:#ffab5e;--shadow:0 10px 30px rgba(0,0,0,.5)}}
 :root[data-theme="dark"]{
   color-scheme:dark;
   --paper:#131210;--sheet:#1b1a17;--surface:#22201c;--surface2:#2c2a25;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;
   --good:#5fd08f;--bad:#ff8a7e;--warn:#e7b964;--inverse:#eeeae0;--on-inverse:#161511;
-  --sun:#f2b552;--sun-halo:#4a3718;--moon:#aaa8ff;--moon-halo:#2c2b4f;--moon-dark:#34334a;
+  --warm:#ff9c6b;--cool:#8fb4f0;--aq1:#5fd08f;--aq2:#e7c35a;--aq3:#ff9c6b;--aq4:#ff8a7e;--aq1c:#123a24;--aq2c:#3a3010;--aq3c:#43240f;--aq4c:#4a1714;--sun:#f2b552;--sun-halo:#4a3718;--moon:#aaa8ff;--moon-halo:#2c2b4f;--moon-dark:#34334a;
   --ink:#eeeae0;--ink-c:#2e2c27;--ink-on:#eeeae0;--slate:#aebdd2;--slate-c:#26303d;--slate-on:#dde3ec;--dispatch:#a5bfeb;--dispatch-c:#1b2c4a;--dispatch-on:#dbe4f4;--money:#5fd9a0;--money-c:#0b3d28;--money-on:#c4eed6;--odds:#f0c860;--odds-c:#3f2f00;--odds-on:#f6e4ae;--madrid:#c3b0ff;--madrid-c:#352075;--madrid-on:#e6deff;--pitch:#8fd694;--pitch-c:#173d1a;--pitch-on:#d3f0cf;--f1:#ff8a80;--f1-c:#5a1210;--f1-on:#ffdad6;--india:#a3bcff;--india-c:#16296b;--india-on:#d8e2ff;--tennis:#c9e86a;--tennis-c:#2e3a00;--tennis-on:#e6f59c;--track:#ffb08a;--track-c:#4e1c05;--track-on:#ffdccb;--tech:#6ed6e8;--tech-c:#0a3d46;--tech-on:#bdebf2;--sky:#7ccbf2;--sky-c:#0a3550;--sky-on:#d2ecfa;--namma:#ffc05c;--namma-c:#4a3000;--namma-on:#ffe3a3;--screen:#ff9cc6;--screen-c:#5c0f37;--screen-on:#ffd8e7;--india-2:#ffab5e;--shadow:0 10px 30px rgba(0,0,0,.5)}
 
 [data-fam=ink]{--f:var(--ink);--fc:var(--ink-c);--fo:var(--ink-on)}
@@ -1132,3 +1133,35 @@ th .watch{font-size:11px;letter-spacing:.04em}
 .f1p-picks li{padding:6px 0;border-top:1px solid var(--rule2)}
 .f1p-picks a{font:700 13px var(--f1font);color:var(--ink);text-decoration:none;margin-right:4px}
 .f1p-picks a:hover{text-decoration:underline}
+
+/* Sky & Streets, the trend (approved 1 Oct 2026): words and one picture, the figures folded */
+.sky-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:36px;align-items:start}
+.sky-h{font:700 clamp(24px,2.6vw,34px)/1.14 var(--hl);margin:2px 0 8px;letter-spacing:-.01em;text-wrap:balance}
+.sky-dek{font:17.5px/1.55 var(--serif);margin:0;color:var(--ink2);max-width:62ch}
+.sky-fig{margin:0}
+.sky-fig figcaption{font:12.5px/1.45 var(--sans);color:var(--muted);margin-top:4px}
+.sky-chart text{font-family:var(--sans)}
+details.more{margin-top:14px;border-top:1px solid var(--rule)}
+details.more>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;padding:10px 0;font:700 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--f)}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::after{content:"↓"}
+details.more[open]>summary::after{content:"↑"}
+.sky-figs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px}
+.sky-figs .subhd{margin-top:8px}
+table.tr{width:100%;border-collapse:collapse}
+table.tr th{font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:right;padding:6px 8px;border-bottom:1.5px solid var(--ink);vertical-align:bottom}
+table.tr th small{display:block;font:500 11px var(--sans);letter-spacing:0;text-transform:none}
+table.tr th:first-child,table.tr td:first-child{text-align:left;padding-left:0}
+table.tr td{padding:9px 8px;border-bottom:1px solid var(--rule2);text-align:right;font:600 15px var(--sans);white-space:nowrap}
+table.tr td:first-child{font:600 14px var(--sans);color:var(--ink2)}
+table.tr td small{display:block;font:500 11px var(--sans);color:var(--muted)}
+.ar{font:800 11px var(--sans);margin-left:3px}.ar.up{color:var(--warm)}.ar.dn{color:var(--cool)}.ar.eq{color:var(--muted)}
+.sky-fam{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 36px}
+.sky-fam>div{border-top:1.5px solid var(--ink);padding-top:10px}
+.sky-fam>div>h4{margin:0 0 2px;font:800 20px var(--sans);font-variation-settings:"wdth" 80;text-transform:uppercase;letter-spacing:.02em;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.sky-fam>div>h4 small{font:500 13.5px var(--sans);text-transform:none;letter-spacing:0;color:var(--muted)}
+.sky-fam .l{font:700 18px/1.3 var(--hl);margin:4px 0 6px}
+.sky-fam .s{font:16px/1.5 var(--serif);color:var(--ink2);margin:0}
+.sky-fam .sky-figs{grid-template-columns:1fr}
+@media (max-width:900px){.sky-top{grid-template-columns:1fr;gap:14px}}
+@media (max-width:720px){.sky-figs,.sky-fam{grid-template-columns:1fr;gap:20px}table.tr td,table.tr th{padding-left:5px;padding-right:5px}table.tr td{font-size:14px}}
