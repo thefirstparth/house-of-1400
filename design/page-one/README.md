@@ -49,11 +49,13 @@ Mock: `page-one-variants.html?v=B` (add `&note=1` for a big-day editor's note, `
    - **The day in a minute:** the lead headline (no deck), the editor's note under it on big days only, then the editor's glance lines (5 to 10 with the lead, each tagged, each a link to its desk). The evening pick ("Must watch" from Screen & Stage) when there is one.
    - **Weather** (Bengaluru: temperature, the month headline, feels like and high/low, the sun arc by day or the moon arc in its phase by night, rain or moon lit, air, humidity, one family line) then **Sport this week** (cricket, Madrid, F1, tennis; where to watch on each).
    - **Money** (Sensex big; S&P 500, Brent, Gold 24K with 1D; India and US mood) then **The market expects** (top 3 by the likeliest outcome).
-5. Foot line: Your Desk, Letters, The editor, Archive; the House Note (every day); "Start reading: News".
+5. House Note (every day): its own line across the page under a double rule, label left, one sentence.
+6. Foot line: Your Desk, Letters, The editor, Archive; "Start reading: News".
 
 **Behaviour**
 - One screen, any screen: as many glance lines as fit (never fewer than five with the lead), then the whole page scales (0.85 to 2) to fill the height within the width. Phones scroll normally.
 - The evening pick goes to the shortest column.
 - No illustrations on Page One.
+- Self-host the fonts (Newsreader, Source Serif 4, Libre Franklin, Playfair Display, UnifrakturMaguntia) so the nameplate never falls back to a plain serif if Google Fonts is slow or blocked.
 
 **When implementing, carry over the live paper's rules:** every live figure keeps primary, backup, last-known-good with its "as of", else it is hidden; a panel with nothing to say is left out and the columns rebalance (no filler); market-closed and stale states show their time; the arc and figures refresh in the browser as today.

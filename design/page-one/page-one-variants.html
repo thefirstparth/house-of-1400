@@ -98,7 +98,8 @@ ol.bets .bar i{display:block;height:100%;background:var(--c)}
 .pick b{font:650 16px/1.25 var(--head)}
 .pick p{margin:3px 0 0;font:13px/1.4 var(--serif);color:var(--ink2)}
 .foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--rule);padding:9px 0 12px;font:500 12.5px var(--sans);color:var(--muted)}
-.foot .hn{flex:1 1 320px;margin:0;font:italic 13px/1.4 var(--serif);color:var(--ink2);text-align:center}.foot .hn b{font:700 9.5px var(--sans);font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:8px}
+.hn{display:flex;align-items:baseline;gap:14px;margin:0;padding:9px 0;border-top:3px double var(--rule);font:15px/1.45 var(--serif);color:var(--ink)}.hn b{flex:none;font:700 10.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:760px){.hn{display:block}.hn b{display:block;margin-bottom:2px}}
 .ednote{margin:8px 0 4px;padding:8px 0 8px 12px;border-left:3px solid var(--ink);font:italic 14px/1.45 var(--serif);color:var(--ink2)}.ednote b{display:block;font:700 9.5px var(--sans);font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}.ednote i{display:block;font:600 12px var(--sans);font-style:normal;color:var(--ink);margin-top:3px}
 .foot nav a{margin-right:16px;white-space:nowrap}.foot a.next{white-space:nowrap}.foot nav a:hover{color:var(--ink)}
 .foot a.next{font:700 13px var(--sans);color:var(--ink);border:1px solid var(--ink);border-radius:99px;padding:6px 14px}
@@ -223,8 +224,8 @@ function evening() {
   return `<a class="pick" href="#off" style="--c:${dc("off")}"><span class="v">Must watch</span><b>${esc(s.title)}</b><p>${esc(s.where)} · ${esc(s.release.toLowerCase())}. ${esc(s.reason.split(". ")[0])}.</p></a>`;
 }
 const blk = (id, title, link, body, label) => `<section class="blk" style="--c:${dc(id)}"><div class="bh"><h2>${title}</h2><a href="#${id}">${link} →</a></div>${body}</section>`;
-// The House Note, every day, sits in the foot line: small, last, a smile on the way out.
-const foot = () => `<div class="foot"><nav><a href="#">Your Desk</a><a href="#">Letters</a><a href="#">The editor</a><a href="#">Archive</a></nav>${D.edition.house_note ? `<p class="hn"><b>House Note</b>${esc(D.edition.house_note)}</p>` : ""}<a class="next" href="#news">Start reading: News →</a></div>`;
+// The House Note, every day, gets its own line across the page above the foot: last thing read, a smile on the way out.
+const foot = () => `${D.edition.house_note ? `<p class="hn"><b>House Note</b><span>${esc(D.edition.house_note)}</span></p>` : ""}<div class="foot"><nav><a href="#">Your Desk</a><a href="#">Letters</a><a href="#">The editor</a><a href="#">Archive</a></nav><a class="next" href="#news">Start reading: News →</a></div>`;
 // The editor's note runs only on big days (?note=1 shows one from 25 Sep); it sits under the lead and the fit drops lines to make room.
 const NOTE = D.edition.editor_note || (new URLSearchParams(location.search).get("note") ? D.page.sample_editor_note : "");
 const edNote = () => NOTE ? `<div class="ednote"><b>From the editor</b>${esc(NOTE)}<i>T. A. Bhide</i></div>` : "";

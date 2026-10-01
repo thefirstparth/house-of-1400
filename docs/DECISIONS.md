@@ -521,5 +521,5 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 ## 1 Oct 2026: Page One design approved (B, "Front page"); parked for implementation (Parth)
 - Chosen over A (broadsheet ears, too cluttered) and C (calm grid). Spec in `design/page-one/README.md` (FINAL), mock `design/page-one/page-one-variants.html?v=B`.
 - Page One fills one screen on any laptop or monitor: lines first, then the whole page scales to the height (within the width). No illustrations on Page One.
-- The House Note moves to Page One's foot line; the editor's note (big days only) sits under the lead.
+- The House Note gets its own line across Page One above the foot; the editor's note (big days only) sits under the lead. Fonts are self-hosted so the nameplate never falls back.
 - Not live yet: the redesign (desks, fonts, colours, Page One) is implemented later, in one go, after the desk pages are designed.
