@@ -594,6 +594,7 @@ function racePreview(P, race) {
   // Across the section, below the weekend: the read and the market on the left, what the F1 press says on the right.
   return `<div class="f1p${picks.length ? "" : " solo"}"><div class="f1k">The race ahead${P.favours ? ` <span>suits ${esc(P.favours)}</span>` : ""}</div><div><p class="f1p-t">${esc(P.text)}</p>${market}</div>${picks.length ? `<ul class="f1p-picks">${picks.map(x => `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.outlet)}</a> ${esc(x.says)}</li>`).join("")}</ul>` : ""}</div>`;
 }
+// The section's own stories run after the race ahead and before the tables: news before standings (Parth, 1 Oct).
 function paddockBlock() {
   const N = LIVE.f1_next?.value, S = LIVE.f1_standings?.value, Lr = LIVE.f1_last?.value, D = E.sections?.paddock?.data || {};
   const n = Date.now();
@@ -624,14 +625,15 @@ function paddockBlock() {
   const last = f1LastRace(Lr, isMax);
   let calendar = "";
   if (N?.upcoming?.length) calendar = `<div class="f1-next"><h5>${N.next_season ? `${esc(N.race.season)} season` : "Next races"}</h5><ol>${N.upcoming.map(r => `<li><span class="flag" aria-hidden="true">${esc(r.flag)}</span><b>${esc(r.name.replace(/ Grand Prix$/, ""))}</b><small class="tnum">${r.round ? `R${r.round} · ` : ""}${esc(sparkLabel(istDate(new Date(r.date))))}</small></li>`).join("")}</ol></div>`;
-  if (!sessions && !bits.length && !champ && !last && !track) return "";
+  if (!sessions && !bits.length && !champ && !last && !track) return storiesBlock("paddock");
   // The weekend's sessions beside the circuit map; with no map yet (a new circuit, or OpenF1 slow), beside Max Watch and
   // the notes instead, so neither column is left empty (Parth, 1 Oct). The race ahead runs across the section below.
   const facts = `<div class="facts">${bits.join("")}${staleNote("f1_standings")}</div>`, preview = racePreview(D.preview, N?.race);
   const top = sessions && track ? `<div class="cols2 f1top"><div>${sessions}${bits.length ? `<div style="margin-top:14px">${facts}</div>` : ""}</div><div>${track}</div></div>`
     : sessions ? `<div class="cols2 f1top"><div>${sessions}</div><div>${facts}</div></div>`
     : track ? `<div class="cols2 f1top"><div>${facts}</div><div>${track}</div></div>` : facts;
-  return top + preview +
+  const stories = storiesBlock("paddock");
+  return top + preview + (stories ? `<div class="f1-stories">${stories}</div>` : "") +
     (champ || last ? `<div class="cols2 gap-top f1">${champ ? `<div>${champ}</div>` : "<div></div>"}${last ? `<div>${last}</div>` : "<div></div>"}</div>` : "") + calendar;
 }
 
@@ -1555,7 +1557,7 @@ function render() {
   S.madrid = secWrap("madrid", `<div data-live="madrid">${madridBlock()}</div>` + storiesBlock("madrid"));
   S.pitch = secWrap("pitch", `<div data-live="intl">${clubKnockouts()}${intlBlock()}</div>` + storiesBlock("pitch"), "Football beyond Madrid");
   const race = LIVE.f1_next?.value?.race;
-  S.paddock = secWrap("paddock", `<div data-live="paddock">${paddockBlock()}</div>` + storiesBlock("paddock"), race ? `${race.flag} Round ${race.round ?? ""} · ${race.name}${race.locality ? " · " + race.locality : ""}` : undefined);
+  S.paddock = secWrap("paddock", `<div data-live="paddock">${paddockBlock()}</div>`, race ? `${race.flag} Round ${race.round ?? ""} · ${race.name}${race.locality ? " · " + race.locality : ""}` : undefined);
   S.crease = secWrap("crease", creaseBlock(), "India men · senior team");
   S.deuce = secWrap("deuce", deuceBlock(), "Tennis · big events first, then Alcaraz and Djokovic");
   S.sidelines = secWrap("sidelines", `<div data-live="warriors">${warriorsBlock()}</div>` + storiesBlock("sidelines"), "Every other sport, when it matters");
