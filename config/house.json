@@ -1597,7 +1597,7 @@
   "trial": {
     "from": "2026-09-29",
     "until": "2026-10-01",
-    "note": "Source trial, stopped early by Parth on 1 Oct to save run time and tokens (three editions scored: 29 Sep to 1 Oct; ledger/trial/, the /trial page). The parts already switched on stay on: Screen & Stage from /api/live/screen, the wire check from /api/live/wire, tennis from ESPN. The daily run makes the paper exactly as before; after it is live, scripts/trial.mjs collects what the new sources would have given it and scores that against the printed edition (ledger/trial/, the /trial page). Nothing reaches the paper until Parth switches a section on.",
+    "note": "Source trial (from 28 Sep), stopped early by Parth on 1 Oct to save run time and tokens: three editions scored, 29 Sep to 1 Oct (ledger/trial/, the /trial page). The daily run no longer runs scripts/trial.mjs. The parts already switched on stay on: Screen & Stage from /api/live/screen, the wire check from /api/live/wire, tennis from ESPN.",
     "intl_football": [
       "uefa.nations",
       "fifa.friendly",
