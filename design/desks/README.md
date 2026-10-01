@@ -34,6 +34,6 @@ The desk pages of the redesign (docs/HANDOVER.md 7.3, step 1) in Page One B's st
 - Today Videsh has only one "Also in" line, because the day's world stories are the lead and nothing else. That is the news, not the layout.
 
 ## Open, for Parth
-1. The Fixture List first in Sport (the agreed list started with Madridismo).
+1. Settled (Parth, 1 Oct): the Fixture List stays first in Sport.
 2. Desh and Videsh: file by section (schema change, recommended) or split by kicker.
 3. A one-line desk lede from Bhide under each desk name: it needs a new edition field, so only if Parth asks.
