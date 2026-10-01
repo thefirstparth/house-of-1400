@@ -43,7 +43,7 @@ Mock: `page-one-variants.html?v=B` (add `&note=1` for a big-day editor's note, `
 
 **Layout, top to bottom**
 1. Run line: date, edition number, "Printed HH:MM IST"; tagline right.
-2. Nameplate: blackletter "The", spaced "HOUSE OF", Playfair "1400".
+2. Nameplate: blackletter "The", spaced "HOUSE OF", Playfair "1400" printed as the halftone wordmark (below).
 3. Desk strip = navigation: Page One, News, Close to Home, Sport, Tech & AI, Money, Off Duty, each a rule in its desk colour.
 4. Three columns:
    - **The day in a minute:** the lead headline (no deck), the editor's note under it on big days only, then the editor's glance lines (5 to 10 with the lead, each tagged, each a link to its desk). The evening pick ("Must watch" from Screen & Stage) when there is one.
@@ -59,3 +59,13 @@ Mock: `page-one-variants.html?v=B` (add `&note=1` for a big-day editor's note, `
 - Self-host the fonts (Newsreader, Source Serif 4, Libre Franklin, Playfair Display, UnifrakturMaguntia) so the nameplate never falls back to a plain serif if Google Fonts is slow or blocked.
 
 **When implementing, carry over the live paper's rules:** every live figure keeps primary, backup, last-known-good with its "as of", else it is hidden; a panel with nothing to say is left out and the columns rebalance (no filler); market-closed and stale states show their time; the arc and figures refresh in the browser as today.
+
+## The wordmark (FINAL, Parth, 1 Oct: "go with 1 + 4, put it on Page One")
+Options 1 (halftone) and 4 (the day in dots) of `design/nameplate/`, combined, in `wordmark.js` (mock: `page-one-variants.html?v=B`; shots in `final/`).
+- **At rest:** "1400" printed as a 45° newsprint halftone in ink, every dot sized by how much of its cell the Playfair figure covers. It is still: nothing moves until the reader touches it.
+- **The day in the figure:** every dot belongs to one of the day's stories, shared out desk by desk in reading order from left to right (News, Close to Home, Sport, Tech & AI, Money, Off Duty).
+- **Pointer (laptop):** a soft tone of ink rises around the pointer, the dots under it show their story's desk colour, and the story under the pointer is named and linked to its desk in the run line's right side, in place of the tagline while it shows. This costs Page One no height.
+- **Tap or click:** a ring of ink spreads from the finger and every dot it passes takes its desk colour, so the whole figure shows the day's mix for about four seconds, then settles back to ink. The tapped story is named; on a phone the line sits under the figures.
+- **Motion off:** the same, without movement. Light and dark follow the page.
+- **Size:** 78px figures (76px on a phone), up from 52px, so the screen reads; "The" 33px. At 1280 x 720 Page One still fits one screen with five lines (lead and four), as before; 1440 x 900 to 2560 x 1440 print six.
+- **In production:** `wordmark.js` moves to `public/` unchanged. Its stories come from the edition (lead, seconds, briefs and every section's stories and briefs) and their desks from config `desks`, and each links to its story on its desk page. Lining figures come from drawing the text through an SVG image, which works in every browser. The fonts are self-hosted: this mock already embeds them all and no longer loads Google Fonts.

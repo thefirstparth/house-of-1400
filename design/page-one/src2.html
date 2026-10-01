@@ -4,9 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Page One, three ways</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..600&family=Libre+Franklin:wght@400..800&family=UnifrakturMaguntia&display=swap">
 <style>
+__FONTS__
 :root{color-scheme:light;
  --paper:#f3f1ea;--sheet:#fbfaf6;--surface:#ebe8df;--ink:#15140f;--ink2:#3a3830;--muted:#6b665b;--rule:#d5d0c3;--rule2:#e4e0d5;--good:#0b7a43;--bad:#c0261d;--sun:#d9861a;--halo:#f6d9a8;--moon:#e9e4d2;--mdark:#4a5568;--mhalo:#dfe3ea;--night:#5b6b8c;
  --d-one:#15140f;--d-news:#1f3f73;--d-home:#0a72a8;--d-sport:#b8460e;--d-tech:#6a3fb5;--d-money:#0b7a43;--d-off:#a87a00;
@@ -33,9 +32,18 @@ a{color:inherit;text-decoration:none}
 .run span+span{margin-left:14px}
 /* the nameplate Parth liked: The / HOUSE OF / 1400, then the six desks as a coloured strip that is also the navigation */
 .plate{text-align:center;padding:4px 0 0}
-.plate .the{font:400 28px/1 "UnifrakturMaguntia",serif}
-.plate .hof{font:600 10.5px var(--sans);letter-spacing:.55em;margin:3px -.55em 2px 0}
-.plate .n{font:900 52px/.92 "Playfair Display",serif;margin-top:-.12em}
+.plate{--np:78px}
+.plate .the{font:400 33px/1 "UnifrakturMaguntia",serif}
+.plate .hof{font:600 11px var(--sans);letter-spacing:.55em;padding-left:.55em;margin:4px 0 3px}
+.plate .n{display:flex;justify-content:center;align-items:center;height:calc(var(--np) * 1.02);font:900 var(--np)/1 "Playfair Display",serif;font-variant-numeric:lining-nums;margin-top:-.04em}
+.plate .wmcap{height:16px;margin-top:1px;font:600 11.5px/16px var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);opacity:0;transition:opacity .25s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plate .wmcap a{color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--rule)}
+/* on a laptop and up the story line takes the run line's right side (no extra height on a one-screen page); a phone,
+   which scrolls, keeps it under the figures */
+@media (min-width:761px){.plate .wmcap{display:none}}
+.run .wmrun{font:600 11.5px var(--sans);letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw}
+.run .wmrun a{color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--rule)}
+@media (max-width:760px){.plate{--np:76px}.plate .the{font-size:32px}.plate .wmcap{font-size:11px;letter-spacing:.03em}}
 nav.desks{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--rule)}
 nav.desks ol{list-style:none;margin:0 auto;padding:0 clamp(16px,2.6vw,40px);max-width:1320px;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;overflow-x:auto;scrollbar-width:none}
 nav.desks a{display:block;text-align:center;border-top:4px solid var(--c);padding:6px 4px 8px;font:700 11.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--c);white-space:nowrap}
@@ -138,6 +146,8 @@ ol.bets .bar i{display:block;height:100%;background:var(--c)}
 <div id="page"></div>
 <script>
 const D = __DATA__;
+const PLAYFAIR = "__PLAYFAIR__";
+__WORDMARK__
 const V = (new URLSearchParams(location.search).get("v") || "A").toUpperCase();
 document.querySelectorAll(".switch a").forEach(a => { if (a.getAttribute("href") === "?v=" + V) a.setAttribute("aria-current", "page"); });
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -155,7 +165,7 @@ const SEC2DESK = { Money: "money", Markets: "money", Health: "money", AI: "tech"
 
 // ---------------------------------------------------------------- shared pieces
 function nameplate() {
-  return `<div class="plate"><div class="the">The</div><div class="hof">HOUSE OF</div><div class="n">1400</div></div>`;
+  return `<div class="plate"><div class="the">The</div><div class="hof">HOUSE OF</div><div class="n" aria-label="1400">1400</div><div class="wmcap" aria-live="polite"></div></div>`;
 }
 function desks() {
   return `<nav class="desks" aria-label="Desks"><ol>${DESKS.map(([id, n], i) => `<li><a href="#${id}" style="--c:${dc(id)}"${i === 0 ? ' aria-current="page"' : ""}>${esc(n)}</a></li>`).join("")}</ol></nav>`;
@@ -264,13 +274,30 @@ function balance() {
 // then, on a bigger screen, the whole page scales up until it fills the height, as far as the width allows.
 function fit() {
   page.style.zoom = 1; let n = MAX; page.innerHTML = make(n); balance();
-  if (innerWidth < 1000) return;
+  if (innerWidth < 1000) return mountPlate();
   const tall = () => document.documentElement.scrollHeight > innerHeight;
   while (n > 4 && tall()) { page.innerHTML = make(--n); balance(); }
   // a short laptop screen may shrink the page a little (to 0.85) rather than scroll
   let lo = 0.85, hi = Math.max(1, Math.min(innerWidth / 1320, 2));
   for (let k = 0; k < 12; k++) { const z = (lo + hi) / 2; page.style.zoom = z; if (tall()) hi = z; else lo = z; }
   page.style.zoom = lo;
+  mountPlate();
+}
+// ---------------------------------------------------------------- the wordmark (design/page-one/wordmark.js)
+// Every dot of the halftone 1400 belongs to one of today's stories, desk by desk in reading order.
+const ORDER = ["news", "home", "sport", "tech", "money", "off"], NAMES = Object.fromEntries(DESKS);
+const STORIES = (() => { const seen = new Set(), out = [];
+  for (const x of [D.edition.lead, ...D.edition.seconds, ...Object.values(D.edition.sections).flat()]) if (x && !seen.has(x.id) && where[x.id]) { seen.add(x.id); out.push({ headline: esc(x.headline), desk: where[x.id], deskName: NAMES[where[x.id]], href: "#" + where[x.id] }); }
+  return out.sort((a, b) => ORDER.indexOf(a.desk) - ORDER.indexOf(b.desk)); })();
+let unmount = () => {};
+function mountPlate() {
+  const n = page.querySelector(".plate .n"); if (!n) return;
+  unmount(); unmount = () => {};
+  const size = parseFloat(getComputedStyle(page.querySelector(".plate")).getPropertyValue("--np"));
+  const below = page.querySelector(".plate .wmcap"), tag = page.querySelector(".run > div:last-child"), was = tag?.innerHTML;
+  const caption = innerWidth <= 760 || !tag ? { show: h => { below.innerHTML = h; below.style.opacity = 1; }, hide: () => { below.style.opacity = 0; } }
+    : { show: h => { tag.innerHTML = `<span class="wmrun">${h}</span>`; }, hide: () => { tag.innerHTML = was; } };
+  mountWordmark(n, { items: STORIES, font: PLAYFAIR, caption, size }).then(u => { unmount = u; }).catch(() => {});
 }
 fit(); document.fonts?.ready.then(fit); addEventListener("resize", fit);
 document.getElementById("th").onclick = () => { const r = document.documentElement, dk = r.dataset.theme === "dark" || (!r.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches); r.dataset.theme = dk ? "light" : "dark"; };

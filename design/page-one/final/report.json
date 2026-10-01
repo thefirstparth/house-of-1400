@@ -1,0 +1,65 @@
+{
+ "1280x720-light": {
+  "errs": [],
+  "sideways": 0,
+  "oneScreen": true,
+  "lines": 4,
+  "zoom": "0.851538",
+  "canvas": "195px x 80px, backing 166x68",
+  "caption": ""
+ },
+ "1440x900-light": {
+  "errs": [],
+  "sideways": 0,
+  "oneScreen": true,
+  "lines": 6,
+  "zoom": "1.07497",
+  "canvas": "195px x 80px, backing 210x86",
+  "caption": ""
+ },
+ "1440x900-dark": {
+  "errs": [],
+  "sideways": 0,
+  "oneScreen": true,
+  "lines": 6,
+  "zoom": "1.07497",
+  "canvas": "195px x 80px, backing 210x86",
+  "caption": ""
+ },
+ "1920x1080-light": {
+  "errs": [],
+  "sideways": 0,
+  "oneScreen": true,
+  "lines": 6,
+  "zoom": "1.29898",
+  "canvas": "195px x 80px, backing 253x104",
+  "caption": ""
+ },
+ "2560x1440-light": {
+  "errs": [],
+  "sideways": 0,
+  "oneScreen": true,
+  "lines": 6,
+  "zoom": "1.74923",
+  "canvas": "195px x 80px, backing 341x140",
+  "caption": ""
+ },
+ "390x844-light": {
+  "errs": [],
+  "sideways": 0,
+  "oneScreen": "phone scrolls",
+  "lines": 6,
+  "zoom": "1",
+  "canvas": "190px x 78px, backing 380x156",
+  "caption": "NEWS · DELHI HIGH COURT DENIES BAIL TO UMAR KHALID AND SHARJEEL IMAM IN THE 2020 RIOTS CASE →"
+ },
+ "390x844-dark": {
+  "errs": [],
+  "sideways": 0,
+  "oneScreen": "phone scrolls",
+  "lines": 6,
+  "zoom": "1",
+  "canvas": "190px x 78px, backing 380x156",
+  "caption": "NEWS · DELHI HIGH COURT DENIES BAIL TO UMAR KHALID AND SHARJEEL IMAM IN THE 2020 RIOTS CASE →"
+ }
+}
