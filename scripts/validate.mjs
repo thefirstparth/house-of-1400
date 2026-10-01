@@ -226,7 +226,13 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   const over = (key, n, max, what) => { if (max && n > max) warnings.push(`long: ${RG[key]?.label || key} has ${n} ${what}; its usual range tops out at ${max}. Keep the strongest and move the rest to briefs, or keep it if the news is that big.`); };
   over("front", 1 + (E.front?.seconds?.length || 0) + (E.front?.briefs?.length || 0), RG.front?.max_items, "items");
   for (const k of ["madrid", "pitch", "sidelines"]) over(k, count(k), RG[k]?.max_items, "items");
-  over("dateline", E.sections?.dateline?.stories?.length || 0, RG.dateline?.max_stories, "full stories");
+  for (const k of ["dateline", "desh", "videsh"]) over(k, E.sections?.[k]?.stories?.length || 0, RG[k]?.max_stories, "full stories");
+  // From the 2 Oct 2026 edition Dateline is two sections and Bhide files each story himself (Parth, 1 Oct): Desh for
+  // India, Videsh for the world (EDITORIAL.md, Section briefs). Dateline stays readable in older editions only.
+  if (E.date >= "2026-10-02") {
+    const filed = [...items.filter(x => x.section === "dateline"), ...(E.sections?.dateline?.lines || [])];
+    if (filed.length || Object.keys(E.sections?.dateline || {}).length) errors.push(`sections: Dateline is retired from 2 Oct 2026; file each story in desh (India) or videsh (the world)${filed.length ? ` (${filed.map(x => x.id).join(", ")})` : ""}`);
+  }
   over("screen", (E.screen || []).filter(x => !x.coming_soon).length, weekend ? RG.screen?.max_weekend : RG.screen?.max_weekday, "current titles");
   over("screen", (E.screen || []).filter(x => x.coming_soon).length, RG.screen?.max_coming_soon, "Coming soon titles");
   for (const g of ["india", "world"]) over("talk", E.trends?.[g]?.length || 0, RG.talk?.max_each, `${g} trends`);

@@ -102,6 +102,20 @@
       "palette": "dispatch"
     },
     {
+      "id": "desh",
+      "name": "Desh",
+      "short": "Desh",
+      "accent": "--acc-wd",
+      "palette": "dispatch"
+    },
+    {
+      "id": "videsh",
+      "name": "Videsh",
+      "short": "Videsh",
+      "accent": "--acc-wd",
+      "palette": "dispatch"
+    },
+    {
       "id": "workshop",
       "name": "The Workshop",
       "short": "Workshop",
@@ -199,6 +213,8 @@
       "id": "news",
       "name": "News",
       "sections": [
+        "desh",
+        "videsh",
         "dateline",
         "namma"
       ]
@@ -1800,7 +1816,15 @@
     },
     "dateline": {
       "max_stories": 5,
-      "label": "Dateline (full stories)"
+      "label": "Dateline (full stories; editions to 1 Oct 2026)"
+    },
+    "desh": {
+      "max_stories": 4,
+      "label": "Desh (full stories)"
+    },
+    "videsh": {
+      "max_stories": 4,
+      "label": "Videsh (full stories)"
     },
     "screen": {
       "max_weekday": 5,

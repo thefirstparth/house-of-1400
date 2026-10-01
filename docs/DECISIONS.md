@@ -578,3 +578,8 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 1 Oct 2026: The Fixture List opens the Sport desk (Parth: "Fixture list - top")
 - On the Sport desk page the Fixture List comes first, then Madridismo, Paddock Notes, The Crease, Deuce, The Wider Pitch and The Sidelines. It is the week at a glance before the club and driver sections. Already so in `design/desks/sport-desk.html`; config `desks` takes this order when the redesign is built.
+
+## 1 Oct 2026: Desh and Videsh, filed by Bhide (Parth: "Yes, I agree. Let Bhide decide for Desh and Videsh.")
+- From the 2 Oct edition Dateline is two sections, `desh` (India) and `videsh` (the world), and the editor files each story; the page no longer has to guess from the kicker. The rule for a story that touches both: file it where the decision or the event is (EDITORIAL.md, Section briefs).
+- Changed: the edition schema (two new section ids; `dateline` stays valid for older editions), config `sections` (Desh, Videsh) and `desks` (News: Desh, Videsh, then Dateline for older editions, Namma Beat), `section_ranges` (up to 4 full stories each, a warning only), the validator (refuses a story filed to `dateline` from 2 Oct), the live page (renders both, in Dateline's colour and mark), EDITORIAL.md and SPEC.md. The wire check's section hints are unchanged: an item hinted `dateline` goes to one of the two by the rule.
+- The Tech & AI split (The Workshop and The Pipeline into three sections) waits for names Parth finds clear.

@@ -56,9 +56,8 @@ js = js.replace(/\n  h \+= `<div class="foot">[^\n]*/, "\n  h += deskFoot();");
 if (!js.includes("h += deskFoot();")) throw new Error("foot anchor missing");
 rep("  const [eL, eR] = earsHTML();", "  paintShell(); const [eL, eR] = earsHTML();");
 rep("    observeIndex(present);", "    observeIndex(present); paintJump();");
-// News (mock only): Dateline printed as Desh (India) and Videsh (the world), split by the story's kicker. In production
-// Bhide would file each story to its section; that is a schema and editorial change for Parth to agree.
-rep('  S.dateline = secWrap("dateline", storiesBlock("dateline"), "World & India");', '  S.dateline = secWrap("dateline", storiesBlock("dateline"), "World & India");\n  S.desh = secWrap("desh", storiesBlock("desh"), "India: the country, its courts, its institutions");\n  S.videsh = secWrap("videsh", storiesBlock("videsh"), "The world, as it touches India");');
+// News: Desh and Videsh are the paper's own sections from 2 Oct 2026 (public/app.js); for older editions the mock
+// layer splits Dateline by kicker (proto.js, splitDateline).
 // Big monitors: the masthead and the tabs scale with the page, so all three share one width.
 rep('for (const id of ["top", "idx", "layout", "late", "pastbar"])', 'for (const id of ["top", "idx", "layout", "late", "pastbar", "dtop", "dtabs"])');
 // The Crease's next tour breaks only between its parts, never inside one ("2 / Tests").

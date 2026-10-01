@@ -28,12 +28,12 @@ The desk pages of the redesign (docs/HANDOVER.md 7.3, step 1) in Page One B's st
 - **Colour weight** as above: Fixture List times, "Show more" and the story links are now ink.
 
 ## News, round 1
-- **Desh and Videsh:** today's Dateline split by each story's own kicker ("India · Courts" goes to Desh, "World · Aviation" to Videsh). In production the editor would file each story to Desh or Videsh, which is a schema and editorial change for Parth to agree. The kicker split is the presentation-only stand-in and is less reliable.
+- **Desh and Videsh:** today's Dateline split by each story's own kicker ("India · Courts" goes to Desh, "World · Aviation" to Videsh). From the 2 Oct edition Bhide files each story to Desh or Videsh himself (Parth agreed, 1 Oct; DECISIONS.md), so the kicker split only serves editions up to 1 Oct.
 - **The lead** (the Flydubai captain, World · Aviation) runs at the top of News with Bunty's 16:9 drawing beside it.
 - **Talk of the Day** and **The Betting Window** moved here from Life, unchanged inside, in the News navy.
 - Today Videsh has only one "Also in" line, because the day's world stories are the lead and nothing else. That is the news, not the layout.
 
 ## Open, for Parth
 1. Settled (Parth, 1 Oct): the Fixture List stays first in Sport.
-2. Desh and Videsh: file by section (schema change, recommended) or split by kicker.
+2. Settled (Parth, 1 Oct): Bhide files Desh and Videsh from 2 Oct.
 3. A one-line desk lede from Bhide under each desk name: it needs a new edition field, so only if Parth asks.
