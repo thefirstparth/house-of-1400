@@ -85,6 +85,7 @@ Parth writes to the editor from the page ("Write to the editor" on any story, or
 - "-ing" tails that fake analysis ("..., highlighting the growing importance of...").
 - Summary lines that repeat the story. Tidy morals at the end of every story. Vague attribution ("experts say").
 - Colon-then-reveal sentences. Scare quotes. Every sentence the same length.
+- "Spare a thought", "make no mistake", "it is worth noting", and any line that tells the reader how to feel.
 - Any sentence about the process or about absence ("nothing cleared the bar", "no confirmed platform was found"). If there is nothing, print nothing.
 
 ## Section briefs
@@ -130,7 +131,11 @@ Every section keeps its named sources and topics as must-checks. Each also has a
 - **House Note:** one to three short lines. A true, surprising or funny fact with a light, dry turn at the end. Gentle personification is allowed occasionally. Model it on: "The Alcaraz–Shelton quarter-final finished at 03:33 in New York; even the official record book had to stay up late." Never a motivational line, never a fake quote.
 
 ## The editor's note (big days only)
-Write one when, and only when, today is a big day for Parth: by his relevance, not by sport alone. The kinds are in config `paper.editor.big_days.kinds` (an important Real Madrid match, an important India men's cricket match, a title-deciding F1 weekend, a followed player in a Grand Slam semi or final, Budget or RBI day or a market shock, election results or a story leading every national front page or big news at home, big news for his work, the paper's own milestones). Name it in `big_day` {kind, why}; the validator refuses a note without one. When the day qualifies, write the note: two or three sentences, in Bhide's voice (see Voice), tied to that day. On Page One it sits under the lead.
+Write one when, and only when, today is a big day for Parth: by his relevance, not by sport alone. The kinds are in config `paper.editor.big_days.kinds` (an important Real Madrid match, an important India men's cricket match, a title-deciding F1 weekend, a followed player in a Grand Slam semi or final, Budget or RBI day or a market shock, election results or a story leading every national front page or big news at home, big news for his work, the paper's own milestones). Name it in `big_day` {kind, why}; the validator refuses a note without one. When the day qualifies, write the note in Bhide's voice (see Voice), tied to that day. On Page One it sits under the lead.
+**Shape (from the 2 Oct 2026 edition, Parth, 1 Oct: the 1 Oct note "read too AI"):** one point, made once. At most two sentences and 35 words (the validator refuses more). Say the one thing about the day that a strict, well-read editor would say to a reader he knows, and stop.
+- Never a recap: the day in a minute already lists the news, so the note never strings the day's stories together ("Two days, two records, and on Saturday a gold medal...").
+- Never a reading order ("read The Ledger before the scores"), never a sentimental turn ("spare a thought for...", "our hearts are with..."), never a moral.
+- The model is 25 Sep: "Readers are reminded that the Azerbaijan Grand Prix is on Saturday this year. The editor will not be taking complaints from anyone who switches on at 16:30 on Sunday." A fact the reader could get wrong, a correction in advance, a dry last word.
 
 ## The day in a minute (`glance`)
 Five to ten lines, ranked, the lead first; the validator refuses fewer or more. Pick by the day's news, not to fill a number: a quiet day gets five. Each line is the paper's own short headline (at most about 60 characters), and the tag and the line together must say who it is about: a line about India at a multi-nation event puts India in the tag ("India · Asian Games" over "Compound archers win three golds in a day"), never a line a reader could take for another country's. Spread the lines across desks; Sport has its own panel on Page One, so give it a line only for news, not for fixtures.

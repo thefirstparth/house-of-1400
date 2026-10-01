@@ -191,6 +191,12 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     let K = {}; try { K = read("config/house.json").paper?.editor?.big_days?.kinds || {}; } catch {}
     if (!E.big_day) errors.push("editor_note: only on a big day; set big_day {kind, why} or drop the note");
     else if (!K[E.big_day.kind]) errors.push(`editor_note: big_day.kind "${E.big_day.kind}" is not one of ${Object.keys(K).join(", ")}`);
+    // One point, made once (from 2 Oct 2026, Parth: the 1 Oct note "read too AI"): two sentences and 35 words at most.
+    if (E.date >= "2026-10-02") {
+      const n = String(E.editor_note).trim().split(/\s+/).length, s = String(E.editor_note).split(/[.!?](?:\s|$)/).filter(x => x.trim()).length;
+      if (n > 35 || s > 2) errors.push(`editor_note: ${n} words in ${s} sentences; the note is one point in two sentences and 35 words at most (EDITORIAL.md, The editor's note)`);
+      if (/spare a thought|our (hearts|thoughts)|read [A-Z][\w ]+ (before|first)/i.test(E.editor_note)) errors.push("editor_note: no sentimental turn and no reading order (EDITORIAL.md, The editor's note)");
+    }
   }
   // Glance targets must exist
   const targets = new Set([...items.map(s => s.id), ...Object.keys(E.sections || {}), "front", "week", "fixtures", "madrid", "paddock", "tables", "ledger", "sky", "screen", "talk", "betting", "house", "deuce", "crease"]);

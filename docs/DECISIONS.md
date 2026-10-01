@@ -600,3 +600,6 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 ## 1 Oct 2026: Back Home, Ranchi and Prayagraj (Parth: "I had already added it to the newspaper logic earlier, can you check? if not, add.")
 - It was not in the repo (no section, feed or brief; only the family weather and the SOURCES-AUDIT note on TOI Ranchi), so it is added now: section `back` ("Back Home"), on the News desk after Namma Beat (in the new design, on Close to Home), from the 2 Oct edition. Brief in EDITORIAL.md: civic, safety, weather alerts and big local events, briefs normally, two full stories at most, hidden on a quiet day.
 - Reading list: two Google News searches (`gn-ranchi`, `gn-prayagraj`), plus the Hindi city pages named in the brief. A feed may now set its own `top` for the desk check; these two are read 3 deep, not 5, so home adds six checks a day, not ten.
+
+## 1 Oct 2026: the editor's note is one point in two sentences (Parth on the 1 Oct note: "Read too AI. Either fix or remove." He chose to fix the voice and keep it)
+- From the 2 Oct edition the note makes one point, in at most two sentences and 35 words; never a recap of the day's stories, a reading order or a sentimental turn. The validator refuses a longer note, "spare a thought" and "read X before/first". The 25 Sep note is the model (EDITORIAL.md, The editor's note).
