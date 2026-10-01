@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nameplate samples · The House of 1400</title>
+<style>
+__FONTS__
+:root{color-scheme:light;
+ --paper:#f3f1ea;--sheet:#fbfaf6;--ink:#15140f;--ink2:#3a3830;--muted:#6b665b;--rule:#d5d0c3;--rule2:#e4e0d5;
+ --d-one:#15140f;--d-news:#1f3f73;--d-home:#0a72a8;--d-sport:#b8460e;--d-tech:#6a3fb5;--d-money:#0b7a43;--d-off:#a87a00;
+ --head:"Newsreader",Georgia,serif;--serif:"Source Serif 4",Georgia,serif;--sans:"Libre Franklin",system-ui,sans-serif;
+ --S:120px}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--paper:#131210;--sheet:#1b1a17;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;
+ --d-one:#eeeae0;--d-news:#a5bfeb;--d-home:#7ccbf2;--d-sport:#f29a62;--d-tech:#bba4f2;--d-money:#5fd9a0;--d-off:#e7c35a}}
+:root[data-theme=dark]{color-scheme:dark;--paper:#131210;--sheet:#1b1a17;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;
+ --d-one:#eeeae0;--d-news:#a5bfeb;--d-home:#7ccbf2;--d-sport:#f29a62;--d-tech:#bba4f2;--d-money:#5fd9a0;--d-off:#e7c35a}
+:root.small{--S:52px}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink)}
+body{font:16px/1.5 var(--serif);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1320px;margin:0 auto;padding:0 clamp(16px,2.6vw,40px)}
+
+/* the sample switcher (mock only) */
+.bar{background:#15140f;color:#f3f1ea;font:600 12.5px/1.3 var(--sans);padding:8px 0}
+.bar .wrap{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center}
+.bar b{font-weight:700;margin-right:4px}
+.bar button{font:600 12.5px var(--sans);background:none;color:inherit;border:1px solid #6b665b;border-radius:3px;padding:5px 9px;cursor:pointer}
+.bar button[aria-pressed=true]{background:#f3f1ea;color:#15140f;border-color:#f3f1ea}
+.bar .sp{flex:1}
+.bar .grp{display:flex;gap:6px;flex-wrap:wrap}
+
+/* Page One B's top: run line, nameplate, desk strip */
+.run{display:flex;justify-content:space-between;gap:12px;padding:8px 0;font:500 12.5px var(--sans);color:var(--muted)}
+.run span+span{margin-left:14px}
+.plate{text-align:center;padding:6px 0 4px;user-select:none;-webkit-user-select:none}
+.plate .the{display:block;font:400 calc(var(--S) * .54)/1 "UnifrakturMaguntia",serif}
+.plate .hof{display:block;font:600 max(10px,calc(var(--S) * .2)) var(--sans);letter-spacing:.55em;padding-left:.55em;margin:calc(var(--S) * .06) 0 calc(var(--S) * .04);text-transform:uppercase}
+.plate .num{position:relative;display:flex;justify-content:center;align-items:center;height:calc(var(--S) * 1.02);margin-top:calc(var(--S) * -.05)}
+.n1400{font:900 var(--S)/1 "Playfair Display",serif;font-variant-numeric:lining-nums;letter-spacing:0}
+.cap{min-height:22px;margin:2px 0 6px;font:600 12.5px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:center;transition:opacity .3s}
+.cap a{color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--rule)}
+nav.desks{border-bottom:1px solid var(--rule)}
+nav.desks ol{list-style:none;margin:0 auto;padding:0 clamp(16px,2.6vw,40px);max-width:1320px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+nav.desks a{display:block;text-align:center;border-top:4px solid var(--c);padding:6px 4px 8px;font:700 11.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--c);white-space:nowrap;text-decoration:none}
+nav.desks a[aria-current]{background:color-mix(in srgb,var(--c) 9%,transparent);color:var(--ink)}
+@media (max-width:860px){nav.desks ol{display:flex;overflow-x:auto;scrollbar-width:none}nav.desks li{flex:none}nav.desks a{padding:6px 12px 8px}}
+
+/* the note under the page: what this option is and how to try it */
+.note{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px 40px;padding:22px 0 10px}
+.note h2{margin:0 0 6px;font:600 26px/1.15 var(--head);font-variation-settings:"opsz" 36}
+.note p{margin:0 0 10px;max-width:62ch}
+.note .try{font:500 14.5px/1.5 var(--sans);color:var(--ink2);border-top:2px solid var(--ink);padding-top:10px}
+.note .try b{display:block;font:700 11.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.ctx{border-top:3px double var(--ink);margin-top:18px;padding-top:14px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:28px;opacity:.55}
+.ctx h3{margin:0 0 8px;font:650 22px/1.2 var(--head)}
+.ctx li{list-style:none;padding:6px 0;border-top:1px solid var(--rule2);font:500 15px/1.35 var(--head)}
+.ctx ol{margin:0;padding:0}
+.ctx .k{display:block;font:700 10px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ctx .ph{height:12px;background:var(--rule2);border-radius:2px;margin:10px 0}
+@media (max-width:760px){.note{grid-template-columns:1fr}.ctx{grid-template-columns:1fr}.ctx>div+div{display:none}.run .tag{display:none}}
+
+/* ---------- canvases (options 1, 4 and 1 + 2) ---------- */
+canvas.np{display:block;touch-action:pan-y;cursor:crosshair}
+
+/* ---------- option 2: re-set the type ---------- */
+.reset{display:inline-flex;align-items:baseline;justify-content:center;cursor:pointer;transition:width .45s cubic-bezier(.2,.8,.2,1);white-space:nowrap;overflow:visible}
+.reset span{display:inline-block;will-change:transform,opacity}
+
+/* ---------- option 3: off-register ---------- */
+.reg{position:relative;display:inline-block;cursor:pointer;touch-action:pan-y}
+.reg .ly{position:absolute;inset:0;mix-blend-mode:multiply;will-change:transform}
+.reg .ink{position:relative}
+:root[data-theme=dark] .reg .ly{mix-blend-mode:screen}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .reg .ly{mix-blend-mode:screen}}
+
+/* ---------- option 5: the 14:00 clock (split flaps, seen only while they turn) ---------- */
+.clock{display:inline-flex;gap:.04em;cursor:pointer;perspective:4em;font-size:calc(var(--S) * .86)}
+.flap{position:relative;display:inline-block;width:.66em;height:.96em;line-height:.96em;text-align:center}
+.flap .h{position:absolute;left:0;right:0;height:50%;overflow:hidden;backface-visibility:hidden;border-radius:4px;background:transparent;transition:background .4s,box-shadow .4s}
+.flap .h i{position:absolute;left:0;right:0;height:.96em;font-style:normal}
+.flap .t{top:0}.flap .t i{top:0}
+.flap .b{bottom:0}.flap .b i{bottom:0}
+.flap .lt{transform-origin:50% 100%;z-index:2}
+.flap .lb{transform-origin:50% 0;z-index:2}
+.clock.turning .flap .h{background:var(--sheet);box-shadow:0 0 0 1px var(--rule) inset}
+.clock.turning .flap::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--rule);z-index:3}
+</style>
+</head>
+<body>
+<div class="bar"><div class="wrap">
+ <b>Nameplate samples</b>
+ <span class="grp" id="opts"></span>
+ <span class="sp"></span>
+ <span class="grp"><button id="size" aria-pressed="false">Page One size</button><button id="motion" aria-pressed="false">Motion off</button><button id="theme">Night</button></span>
+</div></div>
+<div class="wrap"><div class="run"><span><span id="r-date"></span><span id="r-no"></span><span id="r-print"></span></span><span class="tag">An afternoon newspaper for one reader · edited by T. A. Bhide</span></div></div>
+<header class="plate" aria-label="The House of 1400"><span class="the">The</span><span class="hof">House of</span><div class="num" id="num"></div><div class="cap" id="cap"></div></header>
+<nav class="desks"><ol id="desks"></ol></nav>
+<div class="wrap">
+ <div class="note"><div><h2 id="n-title"></h2><p id="n-what"></p></div><div class="try"><b>Try it</b><span id="n-try"></span></div></div>
+ <div class="ctx" aria-hidden="true"><div><h3 id="c-lead"></h3><ol id="c-glance"></ol></div><div><div class="ph"></div><div class="ph" style="width:70%"></div><div class="ph"></div></div><div><div class="ph"></div><div class="ph" style="width:60%"></div><div class="ph"></div></div></div>
+</div>
+<script>
+const D = __DATA__;
+const PF64 = "__PLAYFAIR__";
+// ------------------------------------------------------------------ shared
+const $ = s => document.querySelector(s);
+const root = document.documentElement;
+const css = n => getComputedStyle(root).getPropertyValue(n).trim();
+let motionOff = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const DESKS = [["one", "Page One"], ["news", "News"], ["home", "Close to Home"], ["sport", "Sport"], ["tech", "Tech & AI"], ["money", "Money"], ["off", "Off Duty"]];
+$("#desks").innerHTML = DESKS.map(([id, n], i) => `<li><a href="#" style="--c:var(--d-${id})"${i ? "" : ' aria-current="page"'}>${n}</a></li>`).join("");
+$("#r-date").textContent = D.date_long; $("#r-no").textContent = `No. ${D.no}`; $("#r-print").textContent = `Printed ${D.printed} IST`;
+$("#c-lead").textContent = D.lead;
+$("#c-glance").innerHTML = D.glance.slice(0, 4).map(g => `<li><span class="k">${g.tag}</span>${g.line}</li>`).join("");
+const S = () => parseFloat(css("--S"));
+const cap = (html = "") => { const c = $("#cap"); c.style.opacity = html ? 1 : 0; if (html) c.innerHTML = html; };
+// The facts a tap can set in place of 1400, each with the line that says what it is.
+const FACTS = [
+  { text: `No. ${D.no}`, cap: `Edition No. ${D.no} · ${D.date_short}` },
+  { text: D.printed, cap: `Printed ${D.printed} IST` },
+  { text: `${D.temp}°`, cap: `<a href="#">Bengaluru now, ${D.sky} →</a>` },
+  { text: "1400", cap: "" },
+];
+// Lining figures in a canvas: the text is drawn through an SVG image (Playfair's default figures are oldstyle, and a
+// canvas cannot switch them; this works in every browser). Returns the alpha of each CSS pixel.
+async function mask(text, size, W, H) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><style>@font-face{font-family:P;src:url(data:font/woff2;base64,${PF64})}text{font:900 ${size}px P;font-variant-numeric:lining-nums}</style><text x="${W / 2}" y="${H / 2 + size * 0.36}" text-anchor="middle">${text.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</text></svg>`;
+  const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg); await img.decode();
+  const c = document.createElement("canvas"); c.width = W; c.height = H;
+  const x = c.getContext("2d", { willReadFrequently: true }); x.drawImage(img, 0, 0);
+  const d = x.getImageData(0, 0, W, H).data, a = new Float32Array(W * H);
+  for (let i = 0; i < a.length; i++) a[i] = d[i * 4 + 3] / 255;
+  return a;
+}
+// Average alpha over a box, from an integral image.
+function integral(a, W, H) { const I = new Float32Array((W + 1) * (H + 1)); for (let y = 0; y < H; y++) { let r = 0; for (let x = 0; x < W; x++) { r += a[y * W + x]; I[(y + 1) * (W + 1) + x + 1] = I[y * (W + 1) + x + 1] + r; } } return I; }
+function boxAvg(I, W, H, cx, cy, h) {
+  const x0 = Math.max(0, Math.floor(cx - h)), x1 = Math.min(W, Math.ceil(cx + h)), y0 = Math.max(0, Math.floor(cy - h)), y1 = Math.min(H, Math.ceil(cy + h));
+  if (x1 <= x0 || y1 <= y0) return 0; const W1 = W + 1;
+  return (I[y1 * W1 + x1] - I[y0 * W1 + x1] - I[y1 * W1 + x0] + I[y0 * W1 + x0]) / ((x1 - x0) * (y1 - y0));
+}
+// The width "1400" takes in Playfair, so every option fills the same slot.
+function width1400(size) { const s = document.createElement("span"); s.className = "n1400"; s.style.fontSize = size + "px"; s.textContent = "1400"; s.style.position = "absolute"; s.style.visibility = "hidden"; document.body.append(s); const w = s.getBoundingClientRect().width; s.remove(); return w; }
+function fitSize(text, size) { const s = document.createElement("span"); s.className = "n1400"; s.style.fontSize = size + "px"; s.textContent = text; s.style.position = "absolute"; s.style.visibility = "hidden"; document.body.append(s); const w = s.getBoundingClientRect().width; s.remove(); const max = width1400(size) * 1.08; return w > max ? size * max / w : size; }
+function makeCanvas(W, H) { const c = document.createElement("canvas"); c.className = "np"; const r = Math.min(devicePixelRatio || 1, 2); c.width = W * r; c.height = H * r; c.style.width = W + "px"; c.style.height = H + "px"; const x = c.getContext("2d"); x.setTransform(r, 0, 0, r, 0, 0); c.setAttribute("aria-hidden", "true"); return [c, x]; }
+const local = (c, e) => { const r = c.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+let stopCurrent = () => {};
+
+// ------------------------------------------------------------------ 1 · halftone (and 1 + 2: halftone that re-sets)
+// A newsprint screen at 45°. Each dot's size is how much of its cell the letter covers, so the figures read solid at a
+// glance and as a printed screen up close. The pointer raises a soft tone around itself, like ink on a roller; a tap
+// sends a ring of ink outwards. With re-set on, the ring carries the next fact: each dot takes its new size as the
+// ring passes it.
+async function halftone(el, { reset = false } = {}) {
+  const size = S(), w = width1400(size), W = Math.ceil(w + size * 0.8), H = Math.ceil(size * 1.02);
+  const [c, x] = makeCanvas(W, H); el.replaceChildren(c);
+  const g = Math.max(3, size / 21), R = g * 0.6, ang = Math.PI / 4, ca = Math.cos(ang), sa = Math.sin(ang);
+  const dots = [];
+  const span = Math.hypot(W, H);
+  for (let j = -span / g; j < span / g; j++) for (let i = -span / g; i < span / g; i++) {
+    const u = i * g, v = j * g, px = W / 2 + u * ca - v * sa, py = H / 2 + u * sa + v * ca;
+    if (px < -g || py < -g || px > W + g || py > H + g) continue;
+    dots.push({ x: px, y: py, a: 0, b: 0, r: 0, t: 0, lit: 0 });
+  }
+  const cover = async (text) => { const sz = fitSize(text, size), A = await mask(text, sz, W, H), I = integral(A, W, H); return dots.map(d => Math.sqrt(boxAvg(I, W, H, d.x, d.y, g / 2))); };
+  const base = await cover("1400"); dots.forEach((d, k) => { d.a = d.b = d.r = base[k]; });
+  const cache = { "1400": base };
+  let pointer = null, ripples = [], raf = 0, fact = -1, back = 0, colourAt = 0;
+  const COL = ["--d-news", "--d-sport", "--d-home", "--d-tech", "--d-money", "--d-off"];
+  function frame(now) {
+    raf = 0; const ink = css("--ink"); x.clearRect(0, 0, W, H);
+    let busy = false;
+    for (const rp of ripples) rp.r = (now - rp.t0) * rp.v;
+    ripples = ripples.filter(rp => rp.r < span + 40);
+    const lit = [];
+    x.fillStyle = ink; x.beginPath();
+    for (let k = 0; k < dots.length; k++) {
+      const d = dots[k];
+      // the fact this dot belongs to: switches when the newest re-set ring passes it
+      for (const rp of ripples) if (rp.next && d.t < rp.t0 && Math.hypot(d.x - rp.x, d.y - rp.y) <= rp.r) { d.a = d.b; d.b = rp.next[k]; d.t = rp.t0; }
+      let target = d.b;
+      if (pointer) { const dd = Math.hypot(d.x - pointer[0], d.y - pointer[1]), f = Math.max(0, 1 - dd / (size * 0.75)); target = Math.max(target, 0.42 * f * f); }
+      let ring = 0;
+      for (const rp of ripples) { const k = Math.max(0, 1 - Math.abs(Math.hypot(d.x - rp.x, d.y - rp.y) - rp.r) / (g * 3.2)); ring = Math.max(ring, k * Math.max(0, 1 - rp.r / span)); }
+      target = Math.max(target, d.b > 0.05 ? Math.min(1.2, d.b + ring * 0.5) : ring * 0.55);
+      d.r += (target - d.r) * (motionOff ? 1 : 0.22);
+      if (Math.abs(target - d.r) > 0.004) busy = true;
+      if (d.r < 0.03) continue;
+      if (ring > 0.25) { lit.push(d); continue; }
+      x.moveTo(d.x + d.r * R, d.y); x.arc(d.x, d.y, d.r * R, 0, Math.PI * 2);
+    }
+    x.fill();
+    if (lit.length) { x.fillStyle = css(COL[colourAt % COL.length]); x.beginPath(); for (const d of lit) { x.moveTo(d.x + d.r * R, d.y); x.arc(d.x, d.y, d.r * R, 0, Math.PI * 2); } x.fill(); }
+    if (busy || ripples.length || pointer) wake();
+  }
+  const wake = () => { if (!raf) raf = requestAnimationFrame(frame); };
+  async function tap(px, py) {
+    colourAt++;
+    if (!reset) { ripples.push({ x: px, y: py, t0: performance.now(), v: 0.55 }); return wake(); }
+    fact = (fact + 1) % FACTS.length; const F = FACTS[fact];
+    const next = cache[F.text] || (cache[F.text] = await cover(F.text));
+    if (motionOff) { dots.forEach((d, k) => { d.b = d.r = next[k]; }); cap(F.cap); return wake(); }
+    ripples.push({ x: px, y: py, t0: performance.now(), v: 0.75, next }); cap(F.cap);
+    clearTimeout(back); if (F.text !== "1400") back = setTimeout(() => { fact = FACTS.length - 2; tap(W / 2, H / 2); }, 6000);
+    wake();
+  }
+  c.addEventListener("pointermove", e => { if (motionOff) return; pointer = local(c, e); wake(); });
+  c.addEventListener("pointerleave", () => { pointer = null; wake(); });
+  c.addEventListener("pointercancel", () => { pointer = null; wake(); });
+  c.addEventListener("pointerup", e => { if (e.pointerType !== "mouse") pointer = null; wake(); });
+  c.addEventListener("click", e => { const [px, py] = local(c, e); tap(px, py); });
+  frame(performance.now());
+  return () => { cancelAnimationFrame(raf); clearTimeout(back); };
+}
+
+// ------------------------------------------------------------------ 2 · re-set the type
+// A tap lifts the figures out like sorts from a stick and sets the next fact in their place, letter by letter; it
+// goes back to 1400 by itself.
+function resetType(el) {
+  const s = document.createElement("span"); s.className = "reset n1400"; el.replaceChildren(s);
+  let fact = -1, back = 0, busy = false;
+  const set = (text, animate) => {
+    const sz = fitSize(text, S()); s.style.fontSize = sz + "px";
+    const old = [...s.children];
+    const make = () => { s.replaceChildren(...[...text].map(ch => { const k = document.createElement("span"); k.textContent = ch === " " ? " " : ch; return k; })); };
+    if (!animate || motionOff) { make(); return Promise.resolve(); }
+    busy = true;
+    const outs = old.map((k, i) => k.animate([{ transform: "translateY(0)", opacity: 1 }, { transform: "translateY(-.45em) rotate(-4deg)", opacity: 0 }], { duration: 220, delay: i * 45, easing: "cubic-bezier(.5,0,.75,0)", fill: "forwards" }).finished);
+    return Promise.all(outs).then(() => {
+      make();
+      const ins = [...s.children].map((k, i) => k.animate([{ transform: "translateY(.55em)", opacity: 0 }, { transform: "translateY(-.04em)", opacity: 1, offset: .75 }, { transform: "translateY(0)", opacity: 1 }], { duration: 360, delay: i * 55, easing: "cubic-bezier(.2,.8,.2,1)", fill: "backwards" }).finished);
+      return Promise.all(ins);
+    }).then(() => { busy = false; });
+  };
+  set("1400", false);
+  const next = () => { if (busy) return; fact = (fact + 1) % FACTS.length; const F = FACTS[fact]; set(F.text, true); cap(F.cap); clearTimeout(back); if (F.text !== "1400") back = setTimeout(() => { fact = FACTS.length - 2; next(); }, 6000); };
+  s.addEventListener("click", next);
+  return () => clearTimeout(back);
+}
+
+// ------------------------------------------------------------------ 3 · off-register
+// Three desk inks sit under the black. Move over the nameplate and they slip out of register towards the pointer, like
+// a press running fast; scroll and they slip with the page; tap and they jolt and settle. At rest it is plain ink.
+function offRegister(el) {
+  const w = document.createElement("span"); w.className = "reg n1400";
+  const inks = ["--d-home", "--d-sport", "--d-off"];
+  w.innerHTML = inks.map(v => `<span class="ly" aria-hidden="true" style="color:var(${v})">1400</span>`).join("") + `<span class="ink">1400</span>`;
+  el.replaceChildren(w);
+  const ly = [...w.querySelectorAll(".ly")], K = [[1, -.6], [-.8, -.2], [.2, .9]];
+  let tx = 0, ty = 0, vx = 0, vy = 0, ox = 0, oy = 0, raf = 0, lastY = scrollY;
+  const plate = $(".plate");
+  function frame() {
+    raf = 0;
+    vx += (tx - ox) * 0.12; vy += (ty - oy) * 0.12; vx *= 0.72; vy *= 0.72; ox += vx; oy += vy;
+    const em = S() / 100;
+    ly.forEach((l, i) => { l.style.transform = `translate(${(ox * K[i][0] + oy * K[i][1] * .3) * em}px, ${(oy * K[i][1] + ox * K[i][0] * .3) * em}px)`; });
+    if (Math.abs(tx - ox) + Math.abs(ty - oy) + Math.abs(vx) + Math.abs(vy) > 0.02) raf = requestAnimationFrame(frame);
+  }
+  const wake = () => { if (!raf && !motionOff) raf = requestAnimationFrame(frame); };
+  const move = e => { if (motionOff) return; const r = w.getBoundingClientRect(); tx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / r.width)) * 9; ty = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / r.height)) * 7; wake(); };
+  const leave = () => { tx = ty = 0; wake(); };
+  const tap = () => { if (motionOff) return; vx += (Math.random() - .5) * 9; vy += (Math.random() - .5) * 7; wake(); };
+  const scroll = () => { const d = scrollY - lastY; lastY = scrollY; if (motionOff) return; vy += Math.max(-6, Math.min(6, d * 0.12)); wake(); };
+  plate.addEventListener("pointermove", move); plate.addEventListener("pointerleave", leave); w.addEventListener("click", tap); addEventListener("scroll", scroll, { passive: true });
+  return () => { plate.removeEventListener("pointermove", move); plate.removeEventListener("pointerleave", leave); removeEventListener("scroll", scroll); cancelAnimationFrame(raf); };
+}
+
+// ------------------------------------------------------------------ 4 · the day in dots
+// 1400 drawn in one dot field, shared out among today's stories in reading order, each story's dots in its desk's
+// colour, so the day's mix is the masthead. Point at a colour (on a phone: tap it) to see that story.
+async function dayDots(el) {
+  const size = S(), w = width1400(size), W = Math.ceil(w + size * 0.3), H = Math.ceil(size * 1.02);
+  const [c, x] = makeCanvas(W, H); el.replaceChildren(c);
+  const g = Math.max(2.6, size / 21), A = await mask("1400", size, W, H), I = integral(A, W, H);
+  const dots = [];
+  for (let y = g / 2; y < H; y += g) for (let xx = g / 2; xx < W; xx += g) if (boxAvg(I, W, H, xx, y, g * 0.5) > 0.38) dots.push({ x: xx, y, item: 0, s: 0 });
+  dots.sort((a, b) => a.x - b.x || a.y - b.y);
+  const items = D.items, per = dots.length / items.length;
+  dots.forEach((d, k) => { d.item = Math.min(items.length - 1, Math.floor(k / per)); d.delay = k * (900 / dots.length); });
+  let hot = -1, raf = 0; const t0 = performance.now();
+  function frame(now) {
+    raf = 0; x.clearRect(0, 0, W, H); let busy = false;
+    for (const d of dots) {
+      const on = motionOff || now - t0 > d.delay, target = !on ? 0 : hot < 0 ? 1 : d.item === hot ? 1.3 : 0.75;
+      d.s += (target - d.s) * (motionOff ? 1 : 0.2); if (Math.abs(target - d.s) > 0.01) busy = true;
+      if (d.s < 0.02) continue;
+      x.globalAlpha = hot < 0 || d.item === hot ? 1 : 0.28;
+      x.fillStyle = css(`--d-${items[d.item].desk}`);
+      x.beginPath(); x.arc(d.x, d.y, g * 0.42 * d.s, 0, Math.PI * 2); x.fill();
+    }
+    x.globalAlpha = 1;
+    if (busy || (!motionOff && now - t0 < 1000)) raf = requestAnimationFrame(frame); // keep going until every dot has appeared
+  }
+  const wake = () => { if (!raf) raf = requestAnimationFrame(frame); };
+  const pick = e => { const [px, py] = local(c, e); let best = -1, bd = g * 1.6; for (const d of dots) { const dd = Math.hypot(d.x - px, d.y - py); if (dd < bd) { bd = dd; best = d.item; } } return best; };
+  const show = i => { if (i === hot) return; hot = i; const it = items[i]; cap(i < 0 ? "" : `<span style="color:var(--d-${it.desk})">${it.deskName}</span> · <a href="#">${it.headline} →</a>`); wake(); };
+  c.addEventListener("pointermove", e => { if (e.pointerType === "mouse") show(pick(e)); });
+  c.addEventListener("pointerleave", e => { if (e.pointerType === "mouse") show(-1); });
+  c.addEventListener("click", e => show(pick(e)));
+  cap(""); frame(performance.now());
+  return () => cancelAnimationFrame(raf);
+}
+
+// ------------------------------------------------------------------ 5 · the 14:00 clock
+// The four figures are split flaps, invisible at rest. On arrival they roll to the time in India now and back to
+// 1400; a tap shows when the paper was printed.
+function flapClock(el) {
+  const wrap = document.createElement("span"); wrap.className = "clock n1400";
+  const cells = [..."1400"].map(ch => { const f = document.createElement("span"); f.className = "flap"; f.innerHTML = `<span class="h t"><i>${ch}</i></span><span class="h b"><i>${ch}</i></span>`; f.v = ch; wrap.append(f); return f; });
+  el.replaceChildren(wrap);
+  let busy = false, back = 0, alive = true;
+  const turn = (f, to) => new Promise(res => {
+    const from = f.v; if (from === to) return res();
+    const top = f.querySelector(".t i"), bot = f.querySelector(".b i");
+    if (motionOff) { top.textContent = bot.textContent = f.v = to; return res(); }
+    const lt = document.createElement("span"); lt.className = "h t lt"; lt.innerHTML = `<i>${from}</i>`;
+    const lb = document.createElement("span"); lb.className = "h b lb"; lb.innerHTML = `<i>${to}</i>`; lb.style.transform = "rotateX(90deg)";
+    top.textContent = to; f.append(lt, lb);
+    lt.animate([{ transform: "rotateX(0)" }, { transform: "rotateX(-90deg)" }], { duration: 55, easing: "ease-in", fill: "forwards" }).finished.then(() =>
+      lb.animate([{ transform: "rotateX(90deg)" }, { transform: "rotateX(0)" }], { duration: 55, easing: "ease-out", fill: "forwards" }).finished).then(() => { bot.textContent = to; lt.remove(); lb.remove(); f.v = to; res(); });
+  });
+  // each flap steps through the figures in between, as a real board does
+  const roll = async (target, caption) => {
+    if (busy || !alive) return; busy = true; wrap.classList.add("turning"); cap(caption);
+    await Promise.all(cells.map(async (f, i) => { await new Promise(r => setTimeout(r, i * 70)); while (f.v !== target[i] && alive) await turn(f, String((Number(f.v) + 1) % 10)); }));
+    wrap.classList.remove("turning"); busy = false;
+  };
+  const ist = () => new Date().toLocaleTimeString("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hour12: false });
+  const visit = async (t, caption) => { clearTimeout(back); await roll(t.replace(":", ""), caption); back = setTimeout(() => roll("1400", ""), 4500); };
+  wrap.addEventListener("click", () => { if (busy) return; const showing = cells.map(f => f.v).join(""); if (showing === D.printed.replace(":", "")) visit(ist(), `${ist()} IST now`); else visit(D.printed, `Printed ${D.printed} IST`); });
+  back = setTimeout(() => visit(ist(), `${ist()} IST now`), 900);
+  return () => { alive = false; clearTimeout(back); };
+}
+
+// ------------------------------------------------------------------ the page
+const OPTIONS = [
+  { key: "1", label: "1 · Halftone", run: el => halftone(el), title: "1 · Halftone 1400",
+    what: "The figures printed as a newsprint screen: round ink dots at 45°, as a photograph is printed in a paper. From across the room it is the solid 1400; up close you see the screen. Your pointer raises a soft tone of ink around it, as a roller would; a tap sends a ring of ink across the figures in a desk colour. Nothing moves until you touch it.",
+    try: "Move over 1400. Click or tap it a few times (each ring takes the next desk's colour). On a phone, touch and drag along it; the page still scrolls." },
+  { key: "2", label: "2 · Re-set the type", run: el => resetType(el), title: "2 · Re-set the type",
+    what: "A tap lifts the figures out like metal sorts from a composing stick and sets one of today's facts in their place: the edition number, the time the paper was printed, Bengaluru now. The line under it says what you are looking at (the weather one links to Sky & Streets). It returns to 1400 on its own after six seconds.",
+    try: "Click or tap 1400, then again to step through the facts." },
+  { key: "3", label: "3 · Off-register", run: el => offRegister(el), title: "3 · Off-register",
+    what: "Three desk inks sit under the black 1400. Move over the nameplate and they slip out of register towards your pointer, as on a page printed slightly out of line; scroll and they slip with the page; tap and they jolt and settle. At rest it is plain black, exactly today's nameplate.",
+    try: "Move across the nameplate slowly. Tap 1400. Scroll the page up and down (this is the phone's version)." },
+  { key: "4", label: "4 · The day in dots", run: el => dayDots(el), title: "4 · The day in dots",
+    what: `1400 drawn in one field of dots, shared out among today's ${D.items.length} stories in reading order, each story's dots in its desk's colour. A heavy sport day makes a more orange masthead. Point at a colour to see that story; on a phone, tap it.`,
+    try: "Move along 1400 and read the line underneath change. Tap a colour." },
+  { key: "5", label: "5 · The 14:00 clock", run: el => flapClock(el), title: "5 · The 14:00 clock",
+    what: "The four figures are split flaps, like a station board, invisible at rest. When the page opens they roll to the time in India now and back to 1400; a tap shows when the paper was printed, and the next tap the time now.",
+    try: "Reload to see it roll on arrival. Tap 1400; tap again." },
+  { key: "12", label: "1 + 2 · Recommended", run: el => halftone(el, { reset: true }), title: "1 + 2 · Halftone that re-sets",
+    what: "The halftone, and a tap sets today's facts in it: the ring of ink spreads from your finger and every dot it passes takes its place in the new figure (No. 7, Printed 14:14, 29°, then 1400 again). The line under it says what the figure is. My recommendation: print-like, quiet at rest, and the tap gives you something true.",
+    try: "Move over 1400, then tap it, and tap again. Tap at one end and watch the change travel across." },
+];
+let current = new URLSearchParams(location.search).get("v") || "12";
+$("#opts").innerHTML = OPTIONS.map(o => `<button data-v="${o.key}">${o.label}</button>`).join("");
+async function show(key) {
+  const o = OPTIONS.find(x => x.key === key) || OPTIONS.at(-1); current = o.key;
+  stopCurrent(); cap("");
+  document.querySelectorAll("#opts button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === o.key));
+  $("#n-title").textContent = o.title; $("#n-what").textContent = o.what; $("#n-try").textContent = o.try + (motionOff ? " (Motion is off: you see what a reader who turns motion off sees.)" : "");
+  const r = await o.run($("#num")); stopCurrent = typeof r === "function" ? r : () => {};
+  const u = new URL(location.href); u.searchParams.set("v", o.key); history.replaceState(null, "", u);
+}
+$("#opts").addEventListener("click", e => { const b = e.target.closest("button"); if (b) show(b.dataset.v); });
+$("#size").addEventListener("click", e => { const on = root.classList.toggle("small"); e.target.setAttribute("aria-pressed", on); show(current); });
+$("#motion").addEventListener("click", e => { motionOff = !motionOff; e.target.setAttribute("aria-pressed", motionOff); show(current); });
+const dark = () => root.dataset.theme === "dark" || (!root.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
+const themeLabel = () => ($("#theme").textContent = dark() ? "Day" : "Night");
+$("#theme").addEventListener("click", () => { root.dataset.theme = dark() ? "light" : "dark"; themeLabel(); show(current); });
+themeLabel();
+// redraw when the width changes (a phone's address bar hiding changes only the height)
+let rz, lastW = innerWidth; addEventListener("resize", () => { if (innerWidth === lastW) return; lastW = innerWidth; clearTimeout(rz); rz = setTimeout(() => show(current), 200); });
+document.fonts.ready.then(() => show(current));
+</script>
+</body>
+</html>

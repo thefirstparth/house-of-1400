@@ -1,0 +1,101 @@
+{
+ "1300-light-1": {
+  "frame_ms": 16.5,
+  "sideways": 0,
+  "cap": ""
+ },
+ "1300-light-2": {
+  "frame_ms": 16.5,
+  "sideways": 0,
+  "cap": "EDITION NO. 7 · THU 1 OCT"
+ },
+ "1300-light-3": {
+  "frame_ms": 16.5,
+  "sideways": 0,
+  "cap": ""
+ },
+ "1300-light-4": {
+  "frame_ms": 16.5,
+  "sideways": 0,
+  "cap": "NEWS · ELECTION COMMISSION MEETS AGAIN AND EXTENDS ROLL REVISIONS IN ANDHRA PRADESH AND MEGHALAYA →"
+ },
+ "1300-light-5": {
+  "frame_ms": 16.5,
+  "sideways": 0,
+  "cap": "PRINTED 14:14 IST"
+ },
+ "1300-light-12": {
+  "frame_ms": 16.6,
+  "sideways": 0,
+  "cap": "EDITION NO. 7 · THU 1 OCT"
+ },
+ "1300-light": {
+  "errs": []
+ },
+ "390-light-1": {
+  "frame_ms": 16.5,
+  "sideways": 0,
+  "cap": ""
+ },
+ "390-light-2": {
+  "frame_ms": 16.6,
+  "sideways": 0,
+  "cap": "EDITION NO. 7 · THU 1 OCT"
+ },
+ "390-light-3": {
+  "frame_ms": 16.3,
+  "sideways": 0,
+  "cap": ""
+ },
+ "390-light-4": {
+  "frame_ms": 16.5,
+  "sideways": 0,
+  "cap": ""
+ },
+ "390-light-5": {
+  "frame_ms": 16.6,
+  "sideways": 0,
+  "cap": "PRINTED 14:14 IST"
+ },
+ "390-light-12": {
+  "frame_ms": 16.6,
+  "sideways": 0,
+  "cap": "EDITION NO. 7 · THU 1 OCT"
+ },
+ "390-light": {
+  "errs": []
+ },
+ "1300-dark-1": {
+  "frame_ms": 16.6,
+  "sideways": 0,
+  "cap": ""
+ },
+ "1300-dark-2": {
+  "frame_ms": 16.7,
+  "sideways": 0,
+  "cap": "EDITION NO. 7 · THU 1 OCT"
+ },
+ "1300-dark-3": {
+  "frame_ms": 16.5,
+  "sideways": 0,
+  "cap": ""
+ },
+ "1300-dark-4": {
+  "frame_ms": 16.5,
+  "sideways": 0,
+  "cap": "NEWS · ELECTION COMMISSION MEETS AGAIN AND EXTENDS ROLL REVISIONS IN ANDHRA PRADESH AND MEGHALAYA →"
+ },
+ "1300-dark-5": {
+  "frame_ms": 16.6,
+  "sideways": 0,
+  "cap": "PRINTED 14:14 IST"
+ },
+ "1300-dark-12": {
+  "frame_ms": 16.5,
+  "sideways": 0,
+  "cap": "EDITION NO. 7 · THU 1 OCT"
+ },
+ "1300-dark": {
+  "errs": []
+ }
+}
