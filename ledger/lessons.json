@@ -85,6 +85,22 @@
         "what": "India's proposed air route over Xinjiang around Pakistan's airspace ban: why, and what stands in the way",
         "until": "2026-10-03"
       }
+    },
+    {
+      "id": "2026-10-01-ronaldo-portugal-camp",
+      "reported": "2026-10-01",
+      "missed": "Cristiano Ronaldo left Portugal's camp after being left out against Norway and told he would not start against Denmark; coach Jorge Jesus denied a rift; Ronaldo promised to 'tell the truth'. The biggest story in world football that day, about a team Parth follows (Portugal).",
+      "url": "https://www.aljazeera.com/sports/2026/9/30/cristiano-ronaldo-misses-portugal-training-as-coach-jorge-jesus-denies-rift",
+      "sources": [
+        "https://www.espn.in/football/story/_/id/50069045/cristiano-ronaldo-portugal-coach-leave-camp-jorge-jesus-bench-denmark",
+        "https://www.indiatoday.in/sports/football/story/cristiano-ronaldo-reaction-portugal-camp-exit-truth-jorge-jesus-3007029-2026-10-01"
+      ],
+      "why": "Seven reading-list feeds ran it (BBC football, BBC Sport, the Guardian, Al Jazeera via Google, Sportstar twice, NDTV) but in different words, and the wire grouped an outlet's own headline only when it was near-identical, so the story counted 4 outlets and never reached the must-answer list (6). The Athletic's lead on it, with three open outlets, was listed but leads needed no answer. Nothing tied stories about followed national teams to the check.",
+      "fix": "The wire groups the same story told in different words (shared rare words, weighted), and outlets' own stories count even without a Google signal; a story naming anyone Parth follows (club, national teams on sports feeds, driver, players, team) needs an answer from three outlets; each desk's three widest stories always make the list; every lead with an open outlet must be printed or answered. Regression test on the day's real reading list (tests/trial.test.mjs).",
+      "owed": {
+        "what": "Ronaldo and Portugal: why he left the camp, what Jorge Jesus and Ronaldo said, the Denmark result, and whether his international career is over",
+        "until": "2026-10-03"
+      }
     }
   ]
 }

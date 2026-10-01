@@ -531,3 +531,9 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 1 Oct 2026: The Fixture List runs in date order, never wrapping (Parth)
 - On a screen 900px or wider the days sit in one row, one column per day (as many as there are), so a later date never wraps under an earlier one. A narrow day column puts the time above the match and steps the type down a size. Below 900px the days stack in one column, in date order.
+
+## 1 Oct 2026: The Ronaldo miss, and the wire check that would have caught it (Parth)
+- **Missed:** Cristiano Ronaldo leaving Portugal's camp (30 Sep), the biggest football story of the day, about a team Parth follows. Seven reading-list feeds ran it in different words; the wire only grouped near-identical headlines, so it counted 4 outlets (6 needed) and never reached the must-answer list. The Athletic's lead on it had three open outlets but leads needed no answer.
+- **Fixed in the wire (lib/trial.js):** the same story in different words is grouped (shared rare words, weighted by rarity; measured on the day: Ronaldo 4 to 8 outlets, few wrong merges); outlets' own stories count without a Google signal; a story naming anyone in config `follows` needs an answer from three outlets (national teams only on sports feeds); each desk's three widest stories always make the list.
+- **Fixed in the validator:** every paywalled lead with an open outlet must be printed or answered (`checks.wire`, `lead-` ids).
+- **Editorial:** The Wider Pitch reads the top five of BBC football, the Guardian and ESPN FC each run; a global star's crisis or a big manager sacking is never left out. Lesson and owed story in `ledger/lessons.json` (until 3 Oct). Regression test on the day's real reading list.

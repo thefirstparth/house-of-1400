@@ -7,7 +7,8 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { ensureProxy } from "./proxy.mjs";
 import { remoteLive, useRemote } from "./remote.mjs";
-import { matchItem, wireCandidates } from "../lib/trial.js";
+import { matchItem, tokens, wireCandidates } from "../lib/trial.js";
+const leadId = t => tokens(t).slice(0, 7).join("-").slice(0, 70);
 import { allItems } from "./validate.mjs";
 ensureProxy();
 
@@ -32,7 +33,7 @@ try {
     return { ...c, carried_by: hit?.id || null };
   });
   // Leads from paywalled feeds (config sources.paywalled): read the open outlets listed, never the paywalled story.
-  const leads = (r.value.leads || []).map(l => ({ ...l, carried_by: printed.find(it => matchItem(it, [{ title: l.title }, ...(l.elsewhere || [])]))?.id || null }));
+  const leads = (r.value.leads || []).map(l => ({ id: "lead-" + leadId(l.title), ...l, carried_by: printed.find(it => matchItem(it, [{ title: l.title }, ...(l.elsewhere || [])]))?.id || null }));
   out = { date: E.date, window: { from, to }, checked_at: new Date().toISOString(), candidates: cands, leads };
   const open = cands.filter(c => !c.carried_by);
   console.log(`wire check: ${cands.length} widely covered stories since ${from}; ${cands.length - open.length} already carried, ${open.length} to answer.\n`);
@@ -40,7 +41,7 @@ try {
   const L = leads.filter(l => !l.carried_by);
   if (L.length) {
     console.log(`\nLeads (${L.length}) from paywalled feeds: tip-offs only. Print one only through an open outlet that reports it; never link the paywalled story.`);
-    for (const l of L) console.log(`  · ${l.title} (${l.lead_from})\n      ${l.elsewhere == null ? "not searched (time ran out): search for it yourself" : l.elsewhere.length ? "open outlets (check it is the same story):\n      " + l.elsewhere.map(e => `${e.outlet}: ${e.title}\n        ${e.url}`).join("\n      ") : "no open outlet yet: leave it, or search once more before the cut"}`);
+    for (const l of L) console.log(`  · [${l.id}] ${l.title} (${l.lead_from})\n      ${l.elsewhere == null ? "not searched (time ran out): search for it yourself" : l.elsewhere.length ? "open outlets (check it is the same story):\n      " + l.elsewhere.map(e => `${e.outlet}: ${e.title}\n        ${e.url}`).join("\n      ") : "no open outlet yet: leave it, or search once more before the cut"}`);
   }
 } catch (e) {
   out = { date: E.date, window: { from, to }, checked_at: new Date().toISOString(), error: String(e.message || e), candidates: [] };

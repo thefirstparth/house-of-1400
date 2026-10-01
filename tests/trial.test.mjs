@@ -1,8 +1,9 @@
+import { readFileSync } from "node:fs";
 // Offline tests for the source trial's parsers and scoring (lib/trial.js, scripts/trial.mjs).
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { cluster, nearAlerts, parseDate, parseFeed, parseFomc, parseIcs, parseWhereIsCricket, sacnilkTitles, tennisPlayers } from "../lib/trial.js";
+import { cluster, nearAlerts, parseDate, parseFeed, parseFomc, parseIcs, parseWhereIsCricket, sacnilkTitles, tennisPlayers, wireCandidates } from "../lib/trial.js";
 import { coverage, matchItem, missedCandidates, sourceQuality, tennisCheck, tierOf, wicTime } from "../scripts/trial.mjs";
 
 const gnItem = (title, outlet, related) => `<item><title>${title} - ${outlet}</title><link>https://news.google.com/rss/articles/x</link><pubDate>Mon, 28 Sep 2026 03:36:39 GMT</pubDate>
@@ -31,9 +32,24 @@ test("clustering joins an outlet's own item to the Google story that lists its h
     { kind: "news", feed: "ie-india", title: "Election Commission meets parties", outlet: "The Indian Express, India", url: "https://indianexpress.com/b" },
   ];
   const s = cluster(items);
-  assert.equal(s.length, 1);
+  // an outlet's item that matches no story now starts its own (1 Oct), so it still counts if other outlets carry it
+  assert.equal(s.length, 2);
   assert.equal(s[0].members.length, 1);
   assert.ok(s[0].outlets.includes("The Hindu"));
+  assert.equal(s[1].n, 1);
+});
+
+// 1 Oct: the Ronaldo story ran in five reading-list feeds in different words (the day's real reading list, frozen in
+// fixtures/wire-2026-10-01.json); they must group, unrelated stories must not join, and a story about a followed
+// national team must reach the wire check.
+test("clustering groups the same story told in different words; a followed team's story is a candidate", () => {
+  const items = JSON.parse(readFileSync(new URL("./fixtures/wire-2026-10-01.json", import.meta.url)));
+  const s = cluster(items), r = s.find(x => /Ronaldo leaves Portugal camp amid/.test(x.title));
+  assert.ok(r.n >= 7, `Ronaldo story has ${r.n} outlets`);
+  for (const m of r.members) assert.match(m.title, /Ronaldo|Jesus/);
+  const cfg = JSON.parse(readFileSync(new URL("../config/house.json", import.meta.url)));
+  const c = wireCandidates({ stories: s }, cfg).find(x => x.title === r.title);
+  assert.equal(c.region, "follow"); assert.equal(c.follows, "portugal"); assert.equal(c.section_hint, "pitch");
 });
 
 test("tennis: next and last match per followed player", () => {

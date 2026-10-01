@@ -330,8 +330,9 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
       }
     }
     // The wire check (from 30 Sep 2026, Parth's review of 29 Sep; scripts/wire-check.mjs): every story the day's news
-    // widely agreed on is carried (a story, a brief or an "Also in" line) or answered in checks.wire with {id, covered_by}
-    // or {id, skip} (why it is not for this paper).
+    // widely agreed on, every story about someone Parth follows from three outlets (lib/trial.js wireCandidates), and
+    // every paywalled lead with an open outlet, is carried (a story, a brief or an "Also in" line) or answered in
+    // checks.wire with {id, covered_by} or {id, skip} (why it is not for this paper).
     if (E.date > "2026-09-29") {
       let wc = null;
       try { wc = read("ledger/wire-check.json"); } catch {}
@@ -345,6 +346,16 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
           if (a?.skip) { if (a.skip.trim().length < 12) errors.push(`checks.wire: say why "${c.title}" is not for this paper`); continue; }
           if (printed.some(it => matchItem(it, [{ title: c.title }]))) continue;
           errors.push(`checks.wire: "${c.title}" (${c.n} outlets) is neither in the paper nor answered; print it (a story, a brief or an Also in line) and record {id: "${c.id}", covered_by}, or {id: "${c.id}", skip: "why not"}`);
+        }
+        // Leads (1 Oct, after the Ronaldo miss: The Athletic's lead on it had three open outlets and went unanswered).
+        // A lead with an open outlet is answered like a candidate; one with none yet cannot be printed, so it may wait.
+        for (const l of wc.leads || []) {
+          if (!l.id || !l.elsewhere?.length || l.carried_by) continue;
+          const a = answers.get(l.id);
+          if (a?.covered_by) { if (!ids.has(a.covered_by)) errors.push(`checks.wire: covered_by "${a.covered_by}" is not an item in this edition`); continue; }
+          if (a?.skip) { if (a.skip.trim().length < 12) errors.push(`checks.wire: say why lead "${l.title}" is not for this paper`); continue; }
+          if (printed.some(it => matchItem(it, [{ title: l.title }, ...l.elsewhere]))) continue;
+          errors.push(`checks.wire: lead "${l.title}" (${l.lead_from}; open at ${l.elsewhere.map(e => e.outlet).join(", ")}) is neither in the paper nor answered; print it from the open outlet and record {id: "${l.id}", covered_by}, or {id: "${l.id}", skip: "why not"}`);
         }
       }
     }
