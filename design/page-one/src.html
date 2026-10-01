@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Page One mock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..600&family=Libre+Franklin:wght@400..800&family=UnifrakturMaguntia&display=swap">
+<style>
+:root{color-scheme:light;
+ --paper:#f3f1ea;--sheet:#fbfaf6;--surface:#e9e6dc;--ink:#15140f;--ink2:#3a3830;--muted:#625d52;--rule:#d5d0c3;--rule2:#e4e0d5;--good:#0b7a43;--bad:#c0261d;
+ --d-one:#15140f;--d-news:#1f3f73;--d-home:#0a72a8;--d-sport:#b8460e;--d-tech:#6a3fb5;--d-money:#0b7a43;--d-off:#a87a00;
+ --head:"Newsreader",Georgia,serif;--serif:"Source Serif 4",Georgia,serif;--sans:"Libre Franklin",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--paper:#131210;--sheet:#1b1a17;--surface:#22201c;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;--good:#5fd08f;--bad:#ff8a7e;
+ --d-one:#eeeae0;--d-news:#a5bfeb;--d-home:#7ccbf2;--d-sport:#f29a62;--d-tech:#bba4f2;--d-money:#5fd9a0;--d-off:#e7c35a}}
+:root[data-theme=dark]{color-scheme:dark;--paper:#131210;--sheet:#1b1a17;--surface:#22201c;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;--good:#5fd08f;--bad:#ff8a7e;
+ --d-one:#eeeae0;--d-news:#a5bfeb;--d-home:#7ccbf2;--d-sport:#f29a62;--d-tech:#bba4f2;--d-money:#5fd9a0;--d-off:#e7c35a}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink)}
+body{font:15px/1.45 var(--serif);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.tnum{font-variant-numeric:lining-nums tabular-nums}
+.wrap{max-width:1320px;margin:0 auto;padding:0 clamp(16px,2.6vw,36px)}
+/* the run line */
+.run{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 0;border-bottom:1px solid var(--rule);font:500 12.5px var(--sans);color:var(--muted)}
+.run span+span{margin-left:14px}
+.run button{font:600 12px var(--sans);border:1px solid var(--rule);background:var(--sheet);color:var(--ink);border-radius:99px;padding:4px 11px;cursor:pointer}
+/* masthead: weather, the name, markets */
+.mast{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;padding:8px 0 6px}
+.k{font:700 10.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ear{font:13px/1.35 var(--sans);color:var(--ink2)}
+.ear .big{display:flex;align-items:baseline;gap:10px;margin:2px 0 4px}
+.ear .big b{font:600 38px/1 var(--head);font-variation-settings:"opsz" 60;color:var(--ink)}
+.ear .big span{font:500 14px var(--sans)}
+.ear .row{display:flex;gap:14px;flex-wrap:wrap}
+.ear .row i{font-style:normal;color:var(--muted)}
+.ear.r{justify-self:end;text-align:right}
+.ear.r .big{justify-content:flex-end}
+.ear table{border-collapse:collapse;margin-left:auto;font:600 12.5px var(--sans)}
+.ear td{padding:1px 0 1px 12px;white-space:nowrap}
+.ear td:first-child{text-align:left;padding-left:0;color:var(--ink);font-weight:600}
+.up{color:var(--good)}.dn{color:var(--bad)}
+.name{text-align:center;line-height:1}
+.name .the{font:400 30px/1 "UnifrakturMaguntia",serif}
+.name .hof{font:600 10.5px var(--sans);letter-spacing:.55em;margin:3px -.55em 0 0}
+.name .n{font:900 50px/.95 "Playfair Display",serif;letter-spacing:-.01em}
+.name .tag{font:italic 13px var(--serif);color:var(--muted);margin-top:4px}
+/* the tabs: one row, the desk's colour under the current one */
+nav.tabs{position:sticky;top:0;z-index:5;background:var(--paper);border-top:3px double var(--ink);border-bottom:1px solid var(--rule)}
+nav.tabs ol{list-style:none;margin:0 auto;padding:0 clamp(16px,2.6vw,36px);display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;max-width:1320px}
+nav.tabs ol::-webkit-scrollbar{display:none}
+nav.tabs a{display:block;padding:9px 12px 7px;font:700 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
+nav.tabs a:hover{color:var(--c)}
+nav.tabs a[aria-current=page]{color:var(--c);border-bottom-color:var(--c)}
+/* page one: three columns, one screen */
+.p1{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) minmax(0,.95fr);gap:0;padding:12px 0 8px}
+nav.tabs li:first-child a{padding-left:0}
+.p1>section{padding:0 22px;border-left:1px solid var(--rule);min-width:0}
+.p1>section:first-child{padding-left:0;border-left:0}
+.p1>section:last-child{padding-right:0}
+.bh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-top:2px solid var(--c,var(--ink));padding-top:6px;margin:0 0 8px}
+.bh h2{margin:0;font:700 19px/1.1 var(--head);font-variation-settings:"opsz" 30;color:var(--c,var(--ink))}
+.bh a{font:600 11.5px var(--sans);color:var(--muted)}
+.bh a:hover{color:var(--c)}
+.blk+.blk{margin-top:14px}
+/* the day in a minute */
+.lead{display:block;padding:2px 0 10px;border-bottom:1px solid var(--rule)}
+.lead .lab{font:700 10.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--c)}
+.lead h3{margin:3px 0 4px;font:650 24px/1.14 var(--head);font-variation-settings:"opsz" 40;letter-spacing:-.005em}
+.lead p{margin:0;font:15px/1.45 var(--serif);color:var(--ink2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lead:hover h3,.min a:hover b{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+ol.min{list-style:none;margin:0;padding:0}
+ol.min li{border-bottom:1px solid var(--rule2)}
+ol.min a{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:baseline;padding:6px 0}
+ol.min .lab{font:700 10.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--c);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ol.min b{font:500 16px/1.3 var(--head);font-variation-settings:"opsz" 18}
+/* lists in the middle and right columns */
+ul.rows{list-style:none;margin:0;padding:0}
+ul.rows li{display:grid;grid-template-columns:62px 1fr;gap:8px;padding:5px 0;border-bottom:1px solid var(--rule2);font:13.5px/1.35 var(--sans);color:var(--ink2)}
+ul.rows li:last-child{border-bottom:0}
+ul.rows .lab{font:700 10.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+ul.rows b{display:block;font:600 14px/1.3 var(--sans);color:var(--ink)}
+ul.rows .w{color:var(--muted)}
+ul.rows .live{color:var(--bad);font-weight:700}
+ul.rows .live::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--bad);margin-right:5px;vertical-align:1px}
+.para{margin:0;font:14.5px/1.45 var(--serif);color:var(--ink2)}
+.para b{font-weight:600;color:var(--ink)}
+.fam{margin:6px 0 0;padding:0;list-style:none}
+.fam li{padding:5px 0;border-top:1px solid var(--rule2);font:13.5px/1.35 var(--serif);color:var(--ink2)}
+.fam li b{font:700 11px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin-right:6px}
+.bet{display:block;padding:4px 0 2px}
+.bet .t{font:600 14px/1.3 var(--sans);color:var(--ink)}
+.bet .o{display:flex;align-items:baseline;gap:8px;margin-top:3px;font:13px var(--sans);color:var(--ink2)}
+.bet .o b{font:700 20px/1 var(--head);color:var(--ink)}
+.bet .bar{height:5px;border-radius:3px;background:var(--rule2);margin-top:5px;overflow:hidden}
+.bet .bar i{display:block;height:100%;background:var(--c)}
+.bet+.bet{border-top:1px solid var(--rule2);margin-top:6px;padding-top:7px}
+.pick .t{font:650 17px/1.2 var(--head);color:var(--ink)}
+.pick .v{display:inline-block;font:700 10px var(--sans);letter-spacing:.08em;text-transform:uppercase;background:var(--c);color:var(--paper);border-radius:3px;padding:2px 6px;margin-right:6px}
+.pick p{margin:4px 0 0;font:13.5px/1.4 var(--serif);color:var(--ink2)}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--rule);padding:8px 0 10px;font:500 12.5px var(--sans);color:var(--muted)}
+.foot nav a{margin-right:16px}.foot nav a:hover{color:var(--ink)}
+.foot a.next{font:700 13px var(--sans);color:var(--ink);border:1px solid var(--ink);border-radius:99px;padding:7px 14px}
+.foot a.next:hover{background:var(--ink);color:var(--paper)}
+/* a desk page: the opener and its index (the full sections come in the next mock) */
+.desk{max-width:860px;margin:0 auto;padding:22px 0 30px}
+.desk .dh{border-top:6px solid var(--c);padding-top:10px}
+.desk .dh .k{color:var(--c)}
+.desk h1{margin:4px 0 8px;font:700 clamp(40px,6vw,64px)/1 var(--head);font-variation-settings:"opsz" 72;color:var(--c);letter-spacing:-.01em}
+.desk .lede{font:18px/1.55 var(--serif);margin:0 0 18px;max-width:64ch}
+.desk ol{list-style:none;margin:0;padding:0;border-top:1.5px solid var(--ink)}
+.desk ol li a{display:grid;grid-template-columns:190px 1fr;gap:16px;padding:12px 0;border-bottom:1px solid var(--rule)}
+.desk ol b{font:700 19px/1.2 var(--head);color:var(--c)}
+.desk ol span{font:15px/1.4 var(--serif);color:var(--ink2)}
+.desk .stub{margin:22px 0;padding:14px 16px;border:1px dashed var(--rule);border-radius:4px;font:13.5px/1.5 var(--sans);color:var(--muted)}
+.desk .nextd{display:flex;justify-content:flex-end;margin-top:20px}
+.desk .nextd a{font:700 14px var(--sans);color:var(--c);border-bottom:2px solid var(--c);padding-bottom:2px}
+.mastmini{display:none;align-items:center;justify-content:space-between;padding:8px 0;font:600 13px var(--sans);color:var(--muted)}
+.mastmini .nm{font:900 22px/1 "Playfair Display",serif;color:var(--ink)}
+.mastmini .nm i{font:400 18px "UnifrakturMaguntia",serif;font-style:normal;margin-right:4px}
+body.deskview .mast{display:none}
+body.deskview .mastmini{display:flex}
+/* narrower screens */
+@media (max-width:1100px){.p1{grid-template-columns:1fr 1fr}.p1>section:nth-child(3){grid-column:1/-1;border-left:0;padding:14px 0 0;border-top:1px solid var(--rule);margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:0 22px}.p1>section:nth-child(2){padding-right:0}}
+@media (max-width:760px){
+ .mast{grid-template-columns:1fr;gap:10px}.name .n{font-size:46px}.ear.r{justify-self:stretch;text-align:left;border-top:1px solid var(--rule);padding-top:8px}.mast .name{order:-1}.ear.r .big{justify-content:flex-end;flex-direction:row-reverse}.ear table{margin-left:0;width:100%}.ear td{padding-left:6px}
+ ol.min .lab{white-space:normal;line-height:1.25;font-size:9.5px;letter-spacing:.04em}
+ .ear .big b{font-size:28px}.ear table{font-size:12px}.ear td{padding-left:8px}
+ .p1{grid-template-columns:1fr}.p1>section,.p1>section:nth-child(2){padding:0;border-left:0;margin-top:14px}.p1>section:nth-child(3){display:block;margin-top:14px}
+ ol.min a{grid-template-columns:84px 1fr}.desk ol li a{grid-template-columns:1fr;gap:2px}.run .hide{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="run"><div><span id="r-date"></span><span class="hide" id="r-vol"></span><span id="r-printed"></span></div><div><span class="hide">Mock · real edition of 30 Sep, live figures from 1 Oct, 11:15 IST</span><button id="th" type="button">Night</button></div></div>
+ <header class="mast" id="mast"></header>
+ <div class="mastmini"><a href="#/" class="nm"><i>The</i>House of 1400</a><span id="mini-r"></span></div>
+</div>
+<nav class="tabs" aria-label="Desks"><ol id="tabs"></ol></nav>
+<main class="wrap" id="main"></main>
+<script>
+const D = __DATA__;
+const $ = s => document.querySelector(s), esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const R = Math.round, NOW = Date.parse(D.weather.now.time + ":00+05:30");
+const TZ = "Asia/Kolkata", fmt = (iso, o) => new Date(iso).toLocaleString("en-GB", { timeZone: TZ, hour12: false, ...o }).replace(/,/g, "");
+const day = iso => fmt(iso, { weekday: "short", day: "numeric", month: "short" }), time = iso => fmt(iso, { hour: "2-digit", minute: "2-digit" });
+const when = iso => { const a = new Date(iso).toLocaleDateString("en-CA", { timeZone: TZ }), b = new Date(NOW).toLocaleDateString("en-CA", { timeZone: TZ }), n = Math.round((Date.parse(a) - Date.parse(b)) / 864e5);
+  return `${n === 0 ? "today" : n === 1 ? "tomorrow" : day(iso)}, ${time(iso)} IST`; };
+const pct = v => v == null ? "" : `${v < 0 ? "−" : "+"}${Math.abs(v).toFixed(2)}%`, inr = v => Math.round(v).toLocaleString("en-IN");
+const dir = v => (v == null ? "" : v < 0 ? "dn" : "up");
+
+// ---------------------------------------------------------------- the desks, in reading order
+const DESKS = [
+  { id: "one", name: "Page One", c: "--d-one" },
+  { id: "news", name: "News", c: "--d-news", sections: [["Desh", "India"], ["Videsh", "The world"], ["Talk of the Day", "What India and the world search for"], ["The Betting Window", "What the markets expect"]] },
+  { id: "home", name: "Close to Home", c: "--d-home", sections: [["Namma Beat", "Bengaluru"], ["Back Home", "Ranchi and Prayagraj"], ["Sky & Streets", "Weather and air, the weeks and months ahead"]] },
+  { id: "sport", name: "Sport", c: "--d-sport", sections: [["Madridismo", "Real Madrid"], ["Paddock Notes", "Formula 1"], ["The Crease", "India's cricket"], ["Deuce", "Alcaraz and Djokovic"], ["The Wider Pitch", "Football beyond Madrid"], ["The Sidelines", "Every other sport"]] },
+  { id: "tech", name: "Tech & AI", c: "--d-tech", sections: [["The Lab", "AI"], ["The Stack", "Technology: companies, products, security"], ["The Funnel", "Sales, go-to-market and SaaS"]] },
+  { id: "money", name: "Money", c: "--d-money", sections: [["The Ledger", "Markets up top, then the money stories"]] },
+  { id: "off", name: "Off Duty", c: "--d-off", sections: [["Screen & Stage", "What to watch, in theatres and at home"], ["Before You Go", "One thing to watch, one to do"]] },
+];
+const AI = /\bAI\b|OpenAI|Anthropic|Claude|Gemini|ChatGPT|model|DeepMind|Nvidia|LLM/i;
+// Where a story lives in the new structure: the old section, re-filed.
+function deskOf(sectionId, x = {}) {
+  const k = `${x.kicker || ""} ${x.headline || ""}`;
+  return ({ dateline: "news", namma: "home", sky: "home", talk: "news", betting: "news", madrid: "sport", pitch: "sport", paddock: "sport", crease: "sport", deuce: "sport", sidelines: "sport", fixtures: "sport",
+    workshop: "tech", pipeline: "tech", ledger: "money", screen: "off", bye: "off" })[sectionId] || "news";
+}
+const where = {}; // story id -> { desk, section }
+for (const [sid, list] of Object.entries(D.edition.sections)) for (const x of list) where[x.id] = { desk: deskOf(sid, x), sid };
+for (const x of [D.edition.lead, ...D.edition.seconds]) where[x.id] = { desk: deskOf(x.section, x), sid: x.section };
+const glanceDesk = g => where[g.target]?.desk || ({ Money: "money", Markets: "money", Health: "money", AI: "tech", India: "news", Karnataka: "home", "Asian Games": "sport" })[g.section] || "news";
+const dc = id => `var(${DESKS.find(d => d.id === id).c})`;
+
+// ---------------------------------------------------------------- the masthead
+function masthead() {
+  const W = D.weather, M = D.markets, sx = M.indices.find(q => q.name === "Sensex"), sp = M.indices.find(q => q.name === "S&P 500"), br = M.cross.find(q => /brent/i.test(q.name)), G = D.gold;
+  const aq = a => a <= 50 ? "good" : a <= 100 ? "moderate" : a <= 150 ? "poor" : "unhealthy";
+  const sky = c => (c <= 1 ? "Clear" : c <= 3 ? "Partly cloudy" : c < 60 ? "Cloudy" : "Rain");
+  const row = (n, lvl, ch, m) => `<tr><td>${n}</td><td style="font-weight:500;color:var(--ink2)">${lvl}</td><td class="${dir(ch)}">${pct(ch)}</td><td class="${dir(m)}">${pct(m)}</td></tr>`;
+  $("#mast").innerHTML = `<div class="ear"><div class="k">Bengaluru · now</div><div class="big"><b class="tnum">${R(W.now.temp)}°</b><span>${sky(W.now.code)} · feels ${R(W.now.feels)}°</span></div>
+<div class="row"><span>${R(W.today.max)}° / ${R(W.today.min)}°</span><span>Rain ${W.today.rain_prob}%</span><span>Air ${W.air} <i>${aq(W.air)}</i></span></div><div class="row"><span>↑ ${W.today.sunrise.slice(11)}</span><span>↓ ${W.today.sunset.slice(11)}</span><span>Humidity ${W.now.humidity}%</span></div></div>
+<div class="name"><div class="the">The</div><div class="hof">HOUSE OF</div><div class="n">1400</div><div class="tag">An afternoon newspaper for one reader · edited by T. A. Bhide</div></div>
+<div class="ear r"><div class="k">Sensex · ${sx.live ? "live" : "at close"}</div><div class="big"><span class="${dir(sx.change_pct)}">${pct(sx.change_pct)}</span><b class="tnum">${inr(sx.price)}</b></div>
+<table class="tnum"><thead><tr><td></td><td></td><td class="k">1D</td><td class="k">1M</td></tr></thead><tbody>${row("S&P 500", inr(sp.price), sp.change_pct, sp.chg_1m)}${row("Brent", "$" + br.price.toFixed(2), br.change_pct, br.chg_1m)}${row("Gold 24K", "₹" + inr(G.per_10g_24k), G.change_pct, G.change_1m_pct)}</tbody></table></div>`;
+  $("#mini-r").innerHTML = `${R(W.now.temp)}° Bengaluru · Sensex <b class="tnum">${inr(sx.price)}</b> <span class="${dir(sx.change_pct)}">${pct(sx.change_pct)}</span>`;
+  $("#r-date").textContent = new Date(NOW).toLocaleDateString("en-GB", { timeZone: TZ, weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  $("#r-vol").textContent = `No. ${D.edition.no}`;
+  $("#r-printed").textContent = "Printed 14:08 IST";
+}
+
+// ---------------------------------------------------------------- Page One
+function sportRows() {
+  const rows = [], C = D.crease, F = D.football, T = D.tennis?.players || [], f1 = D.f1?.race;
+  const cz = C?.next;
+  if (cz) rows.push({ lab: "Cricket", t: `India v ${cz.opponent} · ${cz.desc}`, s: cz.state === "live" ? `<span class="live">In play</span>${cz.score && !/null/.test(cz.score) ? ` · ${esc(cz.score)}` : ""} · on SonyLIV` : `${when(cz.start)} · on SonyLIV` });
+  const m = F?.next?.[0];
+  if (m) rows.push({ lab: "Madrid", t: `${m.home ? "v" : "at"} ${m.opponent} · ${m.competition}`, s: `${when(m.date)} · on FanCode` });
+  if (f1) { const race = f1.sessions.at(-1); rows.push({ lab: "F1", t: `${f1.name.replace(/ in Malaysia$/, "")} · Sepang`, s: `Race ${when(race.start)} · on FanCode` }); }
+  for (const p of T) {
+    const last = p.last, nx = p.next, nm = p.name.split(" ").pop();
+    if (last && NOW - Date.parse(last.when_utc) < 30 * 36e5) rows.push({ lab: "Tennis", t: `${nm} ${last.won ? "beat" : "lost to"} ${last.opponent}`, s: `${last.event}${nx ? `; next v ${nx.opponent}, ${when(nx.when_utc)}` : ""}` });
+    else if (nx) rows.push({ lab: "Tennis", t: `${nm} v ${nx.opponent} · ${nx.event.replace(/Kinoshita Group |Tennis Championships/g, "").trim()}`, s: `${when(nx.when_utc)} · on FanCode` });
+  }
+  return rows.slice(0, 6);
+}
+function pageOne() {
+  const E = D.edition, L = E.lead, ld = where[L.id]?.desk || "money";
+  const items = E.glance.filter(g => g.target !== L.id);
+  // Room for eight lines: after Bhide's own list, the other stories of the day, one desk at a time, so every desk is heard.
+  const seen = new Set(E.glance.map(g => g.target)), extra = Object.entries(E.sections).flatMap(([sid, list]) => list.filter(x => !seen.has(x.id)).slice(0, 1).map(x => ({ line: x.headline.split(/[;:,] /)[0], target: x.id })));
+  const used = new Set(items.map(glanceDesk));
+  for (const x of extra) { const d = glanceDesk(x); if (items.length < 8 && !used.has(d)) { items.push({ ...x, section: { news: "News", home: "Local", sport: "Sport", tech: "Tech", money: "Money", off: "Off duty" }[d] }); used.add(d); } }
+  const minute = `<a class="lead" href="#/${ld}" style="--c:${dc(ld)}"><span class="lab">${esc(L.kicker || "Lead")}</span><h3>${esc(L.headline)}</h3><p>${esc(L.deck)}</p></a>
+<ol class="min">${items.map(g => { const d = glanceDesk(g); return `<li><a href="#/${d}" style="--c:${dc(d)}"><span class="lab">${esc(g.section)}</span><b>${esc(g.line)}</b></a></li>`; }).join("")}</ol>`;
+  const sport = `<ul class="rows">${sportRows().map(r => `<li><span class="lab">${r.lab}</span><span><b>${esc(r.t)}</b>${r.s}</span></li>`).join("")}</ul>`;
+  const M = D.markets, sx = M.indices.find(q => q.name === "Sensex"), mood = M.mood?.India, F = D.flows?.day, money = (E.sections.ledger || [])[0];
+  const moneyB = `<p class="para"><b>Sensex ${inr(sx.price)}</b> <span class="${dir(sx.change_pct)}">${pct(sx.change_pct)}</span>, <span class="${dir(sx.chg_1m)}">${pct(sx.chg_1m)}</span> in a month; the mood is <b>${esc(mood.word.toLowerCase())}</b> (${mood.score}). ${F ? `Foreign investors ${F.fii < 0 ? "sold" : "bought"} ₹${inr(Math.abs(F.fii))} cr on ${day(F.date + "T12:00:00Z").split(" ")[0]}.` : ""}</p>${money ? `<p class="para" style="margin-top:6px"><a href="#/money"><b>${esc(money.headline)}</b></a></p>` : ""}`;
+  const fam = D.page.fam.map(f => `<li><b>${esc(f.name)}</b>${esc(f.line)}</li>`).join("");
+  const weather = `<p class="para"><b>${esc(D.page.sky_head)}.</b> Bengaluru ${R(D.weather.today.max)}° by day, ${D.weather.today.rain_prob}% chance of rain today.</p><ul class="fam">${fam}</ul>`;
+  // The one market worth a look: the biggest move since press, else the busiest outside sport (sport has its own odds).
+  const bets = (E.betting || []).filter(b => !/football|cricket|tennis|f1|ballon/i.test(`${b.category} ${b.title}`));
+  const bet = b => { const o = [...b.outcomes].sort((x, y) => y.prob - x.prob)[0]; return `<a class="bet" href="#/news" style="--c:${dc("news")}"><span class="t">${esc(b.title.replace(/\.\.\.\?$/, "…?"))}</span><span class="o"><b class="tnum">${R(o.prob)}%</b>${esc(o.name)}</span><span class="bar"><i style="width:${o.prob}%"></i></span></a>`; };
+  const must = (E.screen || []).find(s => s.verdict === "must");
+  const off = must ? `<a class="pick" href="#/off" style="--c:${dc("off")}"><span class="v">Must watch</span><span class="t">${esc(must.title)}</span><p>${esc(must.where)} · ${esc(must.release)}. ${esc(must.reason.split(". ")[0])}.</p></a>` : bets[1] ? bet(bets[1]) : "";
+  $("#main").innerHTML = `<div class="p1">
+<section style="--c:var(--d-one)"><div class="bh"><h2>The day in a minute</h2><a href="#/news">All the news →</a></div>${minute}</section>
+<section><div class="blk" style="--c:${dc("sport")}"><div class="bh"><h2>Sport this week</h2><a href="#/sport">Sport →</a></div>${sport}</div>
+<div class="blk" style="--c:${dc("money")}"><div class="bh"><h2>Money</h2><a href="#/money">The Ledger →</a></div>${moneyB}</div></section>
+<section><div class="blk" style="--c:${dc("home")}"><div class="bh"><h2>Weather</h2><a href="#/home">Sky & Streets →</a></div>${weather}</div>
+<div class="blk" style="--c:${dc("news")}"><div class="bh"><h2>The market expects</h2><a href="#/news">Betting Window →</a></div>${bets[0] ? bet(bets[0]) : ""}</div>
+${off ? `<div class="blk" style="--c:${must ? dc("off") : dc("news")}"><div class="bh"><h2>${must ? "Worth your evening" : "Also expected"}</h2><a href="#/${must ? "off" : "news"}">${must ? "Screen & Stage →" : "More →"}</a></div>${off}</div>` : ""}</section></div>
+<div class="foot"><nav><a href="#/">Your Desk</a><a href="#/">Letters</a><a href="#/">The editor</a><a href="#/">Archive</a></nav><a class="next" href="#/news">Start reading: News →</a></div>`;
+}
+
+// ---------------------------------------------------------------- a desk page (opener and index; the full sections are the next mock)
+function deskPage(d) {
+  const i = DESKS.indexOf(d), nx = DESKS[i + 1];
+  const tops = Object.entries(D.edition.sections).flatMap(([sid, list]) => list.map(x => ({ ...x, sid }))).filter(x => where[x.id]?.desk === d.id);
+  const lede = tops.slice(0, 2).map(x => x.headline).join(". ");
+  $("#main").innerHTML = `<div class="desk" style="--c:var(${d.c})"><div class="dh"><div class="k">Desk ${i} of 6</div><h1>${esc(d.name)}</h1>${lede ? `<p class="lede">${esc(lede)}.</p>` : ""}</div>
+<ol>${d.sections.map(([n, s]) => `<li><a href="#/${d.id}"><b>${esc(n)}</b><span>${esc(s)}</span></a></li>`).join("")}</ol>
+<p class="stub">This mock shows Page One and how you move around. Each desk page opens like this, with Bhide's two lines and its sections, followed by the sections themselves in the house style: words first, figures folded. The full desk pages come in the next mock.</p>
+${nx ? `<div class="nextd"><a href="#/${nx.id}">Next: ${esc(nx.name)} →</a></div>` : `<div class="nextd"><a href="#/">Back to Page One →</a></div>`}</div>`;
+}
+
+// ---------------------------------------------------------------- the tabs and the route
+function route() {
+  const id = (location.hash.match(/^#\/(\w+)/) || [])[1] || "one", d = DESKS.find(x => x.id === id) || DESKS[0];
+  $("#tabs").innerHTML = DESKS.map(x => `<li><a href="#/${x.id === "one" ? "" : x.id}" style="--c:var(${x.c})"${x === d ? ' aria-current="page"' : ""}>${esc(x.name)}</a></li>`).join("");
+  document.body.classList.toggle("deskview", d.id !== "one");
+  if (d.id === "one") pageOne(); else deskPage(d);
+  scrollTo(0, 0);
+}
+masthead(); route(); addEventListener("hashchange", route);
+$("#th").onclick = () => { const r = document.documentElement, dk = r.dataset.theme === "dark" || (!r.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches); r.dataset.theme = dk ? "light" : "dark"; };
+</script>
+</body>
+</html>
