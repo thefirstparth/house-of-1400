@@ -1,20 +1,8 @@
 {
-  "date": "2026-09-30",
+  "date": "2026-10-01",
   "source": "Cricbuzz",
-  "checked_at": "2026-09-30T08:38:03.143Z",
+  "checked_at": "2026-10-01T08:37:44.450Z",
   "matches": [
-    {
-      "desc": "2nd ODI",
-      "format": "ODI",
-      "series": "West Indies tour of India, 2026",
-      "opponent": "West Indies",
-      "start": "2026-09-30T08:30:00.000Z",
-      "ist": "Wed 30 Sept, 14:00",
-      "time_announced": true,
-      "ground": "Barsapara Cricket Stadium",
-      "city": "Guwahati",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/151543"
-    },
     {
       "desc": "2nd Semi-Final",
       "format": "T20",
@@ -26,6 +14,18 @@
       "ground": "Korogi Sports Park",
       "city": "Nisshin",
       "url": "https://www.cricbuzz.com/live-cricket-scores/171060"
+    },
+    {
+      "desc": "Gold Medal Match",
+      "format": "T20",
+      "series": "Asian Games 2026",
+      "opponent": "Pakistan",
+      "start": "2026-10-03T04:30:00.000Z",
+      "ist": "Sat 3 Oct, 10:00",
+      "time_announced": true,
+      "ground": "Korogi Sports Park",
+      "city": "Nisshin",
+      "url": "https://www.cricbuzz.com/live-cricket-scores/171070"
     },
     {
       "desc": "3rd ODI",
@@ -414,24 +414,6 @@
   ],
   "series": [
     {
-      "name": "West Indies tour of India, 2026",
-      "opponent": "West Indies",
-      "from": "2026-09-30",
-      "parts": [
-        {
-          "format": "ODI",
-          "total": 3,
-          "played": 1
-        },
-        {
-          "format": "T20",
-          "total": 5,
-          "played": 0
-        }
-      ],
-      "now": true
-    },
-    {
       "name": "Asian Games 2026",
       "opponent": "Sri Lanka",
       "from": "2026-10-01",
@@ -440,6 +422,24 @@
           "format": "T20",
           "total": null,
           "played": null
+        }
+      ],
+      "now": true
+    },
+    {
+      "name": "West Indies tour of India, 2026",
+      "opponent": "West Indies",
+      "from": "2026-10-03",
+      "parts": [
+        {
+          "format": "ODI",
+          "total": 3,
+          "played": 2
+        },
+        {
+          "format": "T20",
+          "total": 5,
+          "played": 0
         }
       ],
       "now": true

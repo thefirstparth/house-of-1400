@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-09-30T08:46:54.695Z",
-  "last_edition": "2026-09-30",
+  "last_updated": "2026-10-01T08:44:27.959Z",
+  "last_edition": "2026-10-01",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -25,23 +25,24 @@
     },
     {
       "thread_id": "india-markets-daily",
-      "title": "Shares steady after six-month lows as IT snaps an eight-day losing run",
+      "title": "Sensex falls 1,000 points to its 2026 low; eight losing weeks, the longest run in 25 years",
       "entities": [],
       "facts": {
         "sensex_close": "73580.54",
         "nifty_close": "23063.10",
-        "date": "2026-09-30",
+        "date": "2026-10-01",
         "sensex_move": "down over 1,000 points intraday",
         "nifty": "below 22,850",
         "trigger": "Hormuz plan rejected, oil up",
-        "level": "six-month low",
+        "level": "2026 low",
         "fii_sept": "20695 crore",
-        "fpi_sept": "-25662 crore",
-        "bofa": "100 bps hikes through H1 2027"
+        "fpi_sept": "-35861 crore",
+        "bofa": "100 bps hikes through H1 2027",
+        "us10y": "5.31%"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-30",
-      "last_change": "2026-09-30",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
       "status": "active",
       "votes": {
         "up": 0,
@@ -200,7 +201,7 @@
     },
     {
       "thread_id": "asian-games-2026-india",
-      "title": "Compound archers win three golds in a day; Lovlina reaches the boxing final",
+      "title": "Sailing silver and squash bronze; sepaktakraw men assured of a medal",
       "entities": [],
       "facts": {
         "hockey_men": "beat South Korea 8-2",
@@ -211,11 +212,12 @@
         "shooting": "Neeru Dhanda trap gold; team silver",
         "golds": "10",
         "archery": "compound hat-trick",
-        "boxing": "Lovlina in 75kg final"
+        "boxing": "Lovlina in 75kg final",
+        "day12": "sailing silver, squash team bronze, archery bronze"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-30",
-      "last_change": "2026-09-30",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
       "status": "active",
       "votes": {
         "up": 0,
@@ -522,7 +524,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Election Commission drops the extra voter-form declaration two commissioners had objected to",
+      "title": "Election Commission meets again and extends roll revisions in Andhra Pradesh and Meghalaya",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -531,11 +533,13 @@
         "status": "SC to hear suspension plea next week",
         "ec_meeting": "2026-09-26",
         "form6": "extra declaration withdrawn",
-        "opposition": "INDIA bloc seeks ballot papers"
+        "opposition": "INDIA bloc seeks ballot papers",
+        "meetings": "second in four days",
+        "extended": "Andhra Pradesh, Meghalaya"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-30",
-      "last_change": "2026-09-30",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1108,14 +1112,16 @@
     },
     {
       "thread_id": "asian-games-cricket-2026",
-      "title": "Rain sends India into the Asian Games semi-finals without a ball bowled",
+      "title": "India bowl Sri Lanka out for 45 and meet Pakistan for gold on Saturday",
       "entities": [],
       "facts": {
-        "qf": "washed out, India through"
+        "qf": "washed out, India through",
+        "sf": "beat Sri Lanka by 124 runs",
+        "final": "v Pakistan, 2026-10-03 10:00 IST"
       },
       "first_printed": "2026-09-28",
-      "last_printed": "2026-09-28",
-      "last_change": "2026-09-28",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1267,12 +1273,15 @@
     },
     {
       "thread_id": "india-us-ties-2026",
-      "title": "Jaishankar says US failure to grasp India's terror concerns strains ties",
+      "title": "Modi rings Trump as a US law threatens tariffs on buyers of Russian oil",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "call": "2026-09-30",
+        "law": "tariffs up to 100% on Russian oil buyers"
+      },
       "first_printed": "2026-09-29",
-      "last_printed": "2026-09-29",
-      "last_change": "2026-09-29",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1447,12 +1456,15 @@
     },
     {
       "thread_id": "asencio-injury-2026",
-      "title": "Asencio close to surgery that would keep him out for about three months",
+      "title": "Madrid confirm Asencio's surgery; Güler named September's player of the month",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "surgery": "confirmed",
+        "out": "about three months"
+      },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-09-30",
-      "last_change": "2026-09-30",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1462,12 +1474,16 @@
     },
     {
       "thread_id": "ind-wi-odis-2026",
-      "title": "India bowl first in Guwahati and hand a J&K seamer his ODI debut",
+      "title": "Gill's unbeaten 223 carries India to their highest ODI chase, 406 in 43.3 overs",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "result": "won 2nd ODI by 8 wickets",
+        "series": "India lead 2-0",
+        "gill": "223* off 133"
+      },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-09-30",
-      "last_change": "2026-09-30",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1552,12 +1568,17 @@
     },
     {
       "thread_id": "dubai-tel-aviv-diversion",
-      "title": "A Dubai–Tel Aviv flight diverted to Saudi Arabia after a cockpit fight between its pilots",
+      "title": "Indian captain, stabbed by his co-pilot, lands the Tel Aviv flight with 174 on board",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "cause": "co-pilot stabbed captain in apparent crash attempt",
+        "captain": "Smit Machchhar, stable after surgery",
+        "attacker": "arrested",
+        "people_on_board": "174"
+      },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-09-30",
-      "last_change": "2026-09-30",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1666,6 +1687,130 @@
       "first_printed": "2026-09-30",
       "last_printed": "2026-09-30",
       "last_change": "2026-09-30",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "small-savings-q3-2026",
+      "title": "PPF stays at 7.1% for a tenth straight quarter; commercial LPG costs ₹67 more in Bengaluru",
+      "entities": [],
+      "facts": {
+        "ppf": "7.1%",
+        "quarter": "Oct-Dec 2026",
+        "commercial_lpg_blr": "2898"
+      },
+      "first_printed": "2026-10-01",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "gemini-4-2026",
+      "title": "Google's Gemini 4 Argon goes first to vetted security teams, not the public",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-01",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "workshop"
+    },
+    {
+      "thread_id": "asiad-wrestling-2026",
+      "title": "Nitesh Kumar is India's first Greco-Roman finalist at the Games since 1962",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-01",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "sc-traffic-challans-2026",
+      "title": "Supreme Court floats blocking licence and RC renewals until traffic fines are paid",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-01",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "rabi-msp-2027",
+      "title": "Wheat's support price gets its smallest rise in 17 years in the new rabi MSPs",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-01",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "dateline"
+    },
+    {
+      "thread_id": "auto-sales-2026",
+      "title": "Auto shares slide on September sales; Bajaj Auto down about 8%",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-01",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "kotak-ceo-2026",
+      "title": "Kotak Mahindra Bank names insider Anup Kumar Saha as its next managing director and CEO",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-01",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "blr-rain-oct-2026",
+      "title": "Rain floods roads and underpasses; 24-hour control rooms ordered for the next few days",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-01",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
       "status": "active",
       "votes": {
         "up": 0,
