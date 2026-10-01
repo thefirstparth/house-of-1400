@@ -1032,20 +1032,22 @@ table.sessions td.r{white-space:nowrap}
 .cz-series{margin-top:14px}
 
 .cz-f h5{margin:10px 0 6px;font:600 13px var(--sans);color:var(--muted)}.cz-f h5 b{color:var(--ink)}
-.cz-strip{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
-.cz-strip li{min-width:0;display:flex;flex-direction:column;gap:1px;padding:8px 10px;border:1px solid var(--rule);border-radius:10px;font:12.5px/1.3 var(--sans);color:var(--muted);background:var(--sheet)}
+/* The matches share the row, however many there are (--n), and wrap only when a tile would be narrower than 150px. */
+.cz-strip{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(max(150px,calc((100% - (var(--n,5) - 1) * 8px) / var(--n,5))),1fr));gap:8px}
+.cz-strip li{min-width:0;display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--rule);border-radius:10px;font:12.5px/1.3 var(--sans);color:var(--muted);background:var(--sheet)}
 .cz-strip li b{font:700 14px var(--sans);color:var(--ink)}
 .cz-strip li em{font-style:normal;font-weight:600;color:var(--ink2)}
 .cz-strip li.won{border-color:color-mix(in srgb,var(--good) 45%,var(--rule))}.cz-strip li.won em{color:var(--good)}
 .cz-strip li.lost em{color:var(--bad)}
 .cz-strip li.is-next{border:2px solid var(--acc,var(--ink));background:var(--fc,var(--sheet))}
 .cz-strip li.is-next b,.cz-strip li.is-next span{color:var(--fo,var(--ink))}
-.cz-strip.small{grid-template-columns:repeat(auto-fill,minmax(112px,1fr))}
+.cz-strip.small{grid-template-columns:repeat(auto-fit,minmax(max(132px,calc((100% - (var(--n,5) - 1) * 8px) / var(--n,5))),1fr))}
 .cz-strip.small li{padding:6px 8px;font-size:12px}.cz-strip.small li b{font-size:13px}
 .cz-live{display:inline-flex;align-items:center;gap:5px;color:var(--bad)!important;font-style:normal}
 .cz-live i{width:7px;height:7px;border-radius:50%;background:var(--bad)}
 .cz-line{margin:12px 0 0;font:15px/1.5 var(--serif);color:var(--ink2)}.cz-line b{font-weight:700;color:var(--ink)}
-.cz-strip li span{overflow-wrap:anywhere;hyphens:auto}
+.cz-strip li span{overflow-wrap:break-word}
+.cz-strip li .cz-ts{display:flex;flex-direction:column}
 
 /* ---------- Paddock Notes in F1's own look (Parth, 1 Oct): Titillium Web, team colours from F1's data, no logos ---------- */
 :root{--f1font:"Titillium Web","Roboto Flex",system-ui,sans-serif}

@@ -1226,9 +1226,9 @@ function creaseLive() {
   const card = m => m.score ? `<p class="cz-sc tnum">${esc(m.score)}</p>` : "";
   if (D) h += `<div class="cz-next cz-today"><div class="cz-k">${playedDay(D.start)}</div><h3>India v ${esc(D.opponent)}</h3><p>${esc(D.desc)} · ${esc(place(D))}</p><p class="cz-when">${res(D)}</p>${card(D)}</div>`;
   if (N) h += `<div class="cz-next"><div class="cz-k">${N.state === "live" ? "In play" : "Next match"}</div><h3>India v ${esc(N.opponent)}</h3><p>${esc(N.desc)} · ${esc(place(N))}</p><p class="cz-when">${N.state === "live" ? res(N).replace(/<em class="cz-live"><i><\/i>In play<\/em>/, "") : `${esc(when(N))}${N.time_announced ? ` · <span data-until="${esc(N.start)}" data-min="480" data-done="">--</span>` : ""}${watchTag({ entity: "india_cricket", when_utc: N.start, label: `India v ${N.opponent}` })}`}</p>${N.state === "live" ? card(N).replace("</p>", `<small class="cz-asof">${asOf.replace(/^ · /, "")}</small></p>`) : ""}</div>`;
-  const strip = (f, big) => `<div class="cz-f"><h5>${esc(f.label)}${f.total ? ` · ${f.total} matches` : ""}${f.score ? ` · <b>${esc(f.score)}</b>` : ""}</h5><ol class="cz-strip${big ? "" : " small"}">${f.matches.map(m => {
+  const strip = (f, big) => `<div class="cz-f"><h5>${esc(f.label)}${f.total ? ` · ${f.total} matches` : ""}${f.score ? ` · <b>${esc(f.score)}</b>` : ""}</h5><ol class="cz-strip${big ? "" : " small"}" style="--n:${f.matches.length}">${f.matches.map(m => {
     const isNext = N && m.id === N.id;
-    return `<li class="${m.state}${isNext ? " is-next" : ""}${m.won === true ? " won" : m.won === false ? " lost" : ""}"><b>${esc(m.n ? m.desc.replace(/ (ODI|T20I|Test)$/i, "") : m.desc)}</b><span>${esc(day(m.start))}</span><span>${esc(m.city || "")}</span>${res(m)}${m.score ? `<span class="cz-ts tnum">${esc(m.score.replace(/ \([^)]*ov\)/g, ""))}</span>` : ""}</li>`;
+    return `<li class="${m.state}${isNext ? " is-next" : ""}${m.won === true ? " won" : m.won === false ? " lost" : ""}"><b>${esc(m.n ? m.desc.replace(/ (ODI|T20I|Test)$/i, "") : m.desc)}</b><span>${esc(day(m.start))}</span><span>${esc(m.city || "")}</span>${res(m)}${m.score ? `<span class="cz-ts tnum">${m.score.replace(/ \([^)]*ov\)/g, "").split(" · ").map(x => `<span>${esc(x)}</span>`).join("")}</span>` : ""}</li>`;
   }).join("")}</ol></div>`;
   const ko = S => {
     if (!S.knockouts?.length) return "";
