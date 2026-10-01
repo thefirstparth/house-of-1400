@@ -1148,7 +1148,7 @@
     },
     "art_orders": {
       "type": "array",
-      "maxItems": 5,
+      "maxItems": 8,
       "$comment": "Not printed. Bhide's art orders: the stories an outside illustrator may draw for (lib/art.js, /art/brief.json). The illustrator decides the idea and the style from the story and its sources.",
       "items": {
         "type": "object",
@@ -1165,7 +1165,7 @@
             "type": "string",
             "minLength": 10,
             "maxLength": 200,
-            "$comment": "Only needed for a third or later drawing on the Front Page: what makes this story a better picture than the sections' own."
+            "$comment": "Optional: a line on why this story earns a drawing beyond the lead and each desk's top story."
           }
         }
       }

@@ -313,7 +313,7 @@ async function loadArt(tries = 0) {
         changed = true;
       }
       ART = next;
-      if (changed) balanceFront(true);
+      if (changed) { balanceFront(true); balanceStories(); }
     }
   } catch {}
   const hm = new Date().toLocaleTimeString("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false });
@@ -1423,6 +1423,21 @@ function frontHTML() {
 // illustration lands, so no edition ever needs hand fixing. On a phone the order is as it always was: the lead and two
 // second stories, the day in a minute, then the rest.
 let frontW = 0;
+// A section's stories in two columns stay even when some carry a drawing (Parth, 1 Oct: one drawing per desk from 2 Oct).
+// A drawn story takes the whole row, its drawing beside the text, so it never towers over its neighbour; if that
+// leaves an odd number of undrawn stories, the last of them takes a whole row too, so no row has an empty half.
+function balanceStories() {
+  for (const g of $$(".sec .cols2")) {
+    const st = [...g.children].filter(x => x.matches("article.story"));
+    st.forEach(x => x.classList.remove("wide"));
+    const drawn = st.filter(x => x.querySelector(":scope > figure.art"));
+    g.classList.toggle("mixed", drawn.length > 0 && st.length > 1);
+    if (!drawn.length || st.length < 2) continue;
+    drawn.forEach(x => x.classList.add("wide"));
+    const rest = st.filter(x => !drawn.includes(x));
+    if (rest.length % 2) rest.at(-1).classList.add("wide");
+  }
+}
 function balanceFront(force = false) {
   const front = $("#front"); if (!front) return;
   if (!force && front.clientWidth === frontW) return;
@@ -1554,7 +1569,7 @@ function render() {
   h += `<div class="house" id="house"><b>${esc(sec("house").name)}</b><p>${esc(E.house_note)}</p></div>`;
   h += `<div class="foot">${esc(`THE HOUSE OF 1400 · ${longDate(E.date).toUpperCase()} · NO. ${n} · EDITED BY ${CFG.paper.editor.signature.replace(", Editor", "").toUpperCase()}`)}<br><a href="/editor">About the editor</a> · <a href="/archive">The Archive</a></div>`;
   $("#main").innerHTML = h;
-  balanceFront(true);
+  balanceFront(true); balanceStories();
   document.fonts?.ready.then(() => balanceFront(true));
   $$("#front img").forEach(img => img.complete || img.addEventListener("load", () => balanceFront(true), { once: true }));
 

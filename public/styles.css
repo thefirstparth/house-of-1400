@@ -222,12 +222,24 @@ section.sec{margin-top:56px;scroll-margin-top:64px}
 .cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 32px;background:linear-gradient(var(--rule),var(--rule)) calc((100% - 64px)/3 + 16px) 0/1px 100% no-repeat,linear-gradient(var(--rule),var(--rule)) calc((100% - 64px)*2/3 + 48px) 0/1px 100% no-repeat}
 .split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0 40px;align-items:start}
 .split-stories .story:first-child,.stack>.story:first-child,.cols2>.story:first-child,.cols2>.story:nth-child(2),.solo>.story{padding-top:0}
+/* Mixed rows (balanceStories in app.js): a drawn story, or the odd undrawn one, takes the whole row; the rest pair up.
+   Packed densely so a pair never leaves a hole; no centre rule, since it would run through a whole-row story. */
+.cols2.mixed{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;grid-auto-flow:row dense;background:none!important}
+.cols2.mixed>.story.wide{grid-column:1/-1;padding-top:0}
+.cols2.mixed>.story:not(.wide){padding-top:0}
+@media (min-width:900px){
+ .cols2.mixed>.story.wide .art-standard{float:left;width:min(40%,460px);margin:4px 28px 8px 0}
+ .cols2.mixed>.story.wide:has(.art-standard) .body{overflow:hidden}
+ .cols2.mixed>.story.wide:has(.art-standard) .tools{clear:both}
+ .cols2.mixed>.story.wide:not(:has(.art-standard)) .body{columns:2 300px;column-gap:40px}
+}
+@media (max-width:720px){.cols2.mixed{grid-template-columns:1fr!important}}
 .stack .story:last-child,.solo .story{border-bottom:0}
 .solo .story .body{columns:2 300px;column-gap:40px}
 /* A section's only story spans the page, but its 4:3 drawing never does (1 Oct: Ronaldo's ran 1222px wide): on a wide
    screen it sits left at under half the width, the text beside it in one column, the tools below both. */
 @media (min-width:900px){
- .solo .story .art-standard{float:left;width:min(44%,520px);margin:4px 28px 8px 0}
+ .solo .story .art-standard{float:left;width:min(40%,460px);margin:4px 28px 8px 0}
  .solo .story:has(.art-standard) .body{columns:1;overflow:hidden}
  .solo .story:has(.art-standard) .tools{clear:both}
 }

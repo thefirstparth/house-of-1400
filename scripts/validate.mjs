@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { matchItem } from "../lib/trial.js";
+import { MAX_ORDERS } from "../lib/art.js";
 
 export const BANNED_WORDS = ["pivotal", "crucial", "landmark", "testament", "underscores", "underscore", "highlights", "showcases", "delve", "delves", "landscape", "navigate", "navigates", "robust", "seamless", "seamlessly", "notably", "quietly", "amid", "amidst"];
 const BANNED_PATTERNS = [
@@ -57,22 +58,28 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   if (!v(E)) for (const e of v.errors) errors.push(`schema: ${e.instancePath || "/"} ${e.message}${e.params?.additionalProperty ? ` (${e.params.additionalProperty})` : ""}`);
   if (!E || typeof E !== "object" || !E.date) return { errors, warnings };
 
-  // Art orders (lib/art.js): printed stories only, 2 to 5. Warnings only: art never holds up the paper.
+  // Art orders (lib/art.js): printed stories only. From 2 Oct 2026 (Parth, 1 Oct): the lead always, and every desk
+  // (config desks) that printed a story gets at least one drawing, on its top story; one or two more on a big day; at
+  // most eight. Lazy loading keeps the page light. Errors, because the orders are only a list in the edition: missing
+  // or late images never hold up the paper.
   {
     const ids = new Set(allItems(E).filter(i => i._kind === "story").map(i => i.id));
     for (const o of E.art_orders || []) if (!ids.has(o.story_id)) warnings.push(`art_orders: ${o.story_id} is not a printed story (briefs get no art)`);
-    // From 30 Sep 2026 (Parth, 29 Sep): 2 to 5 a day, how many and which is Bhide's call.
-    if (E.date > "2026-09-29") {
-      const got = new Set((E.art_orders || []).map(o => o.story_id).filter(id => ids.has(id)));
+    const got = new Set((E.art_orders || []).map(o => o.story_id).filter(id => ids.has(id)));
+    if (E.date > "2026-10-01") {
+      let DESKS = []; try { DESKS = read("config/house.json").desks || []; } catch {}
+      const deskOf = sec => DESKS.find(d => d.id !== "front" && d.sections.includes(sec))?.id;
+      if (E.front?.lead && !got.has(E.front.lead.id)) errors.push(`art_orders: order the lead (${E.front.lead.id}); it is drawn 16:9 on the Front Page`);
+      // each desk's stories in the order they are printed: Front Page seconds first, then the sections in desk order
+      const order = [...(E.front?.seconds || []), ...DESKS.flatMap(d => d.sections.flatMap(sec => E.sections?.[sec]?.stories || []))];
+      for (const d of DESKS.filter(d => d.id !== "front")) {
+        const mine = order.filter(st => deskOf(st.section) === d.id);
+        if (mine.length && !mine.some(st => got.has(st.id))) errors.push(`art_orders: ${d.name} printed ${mine.length} ${mine.length > 1 ? "stories" : "story"} and has no drawing; order its top story (${mine[0].id})`);
+      }
+      if (got.size > MAX_ORDERS) errors.push(`art_orders: ${got.size} ordered; at most ${MAX_ORDERS}`);
+    } else if (E.date > "2026-09-29") {
       if (got.size < Math.min(2, ids.size)) warnings.push(`art_orders: ${got.size} ordered; order 2 to 5 printed stories`);
       if (got.size > 5) warnings.push(`art_orders: ${got.size} ordered; at most 5 are drawn`);
-      // Spread through the paper (Parth, 29 Sep): up to two drawings on the Front Page as a matter of course; a third or
-      // more is fine when the day calls for it, with a line in the order (why) saying what makes it a better picture
-      // than the sections' own stories. A warning, never a block.
-      const front = new Set([E.front?.lead?.id, ...(E.front?.seconds || []).map(s => s.id)]);
-      const onFront = (E.art_orders || []).filter(o => front.has(o.story_id));
-      if (onFront.length > 2 && onFront.slice(2).some(o => !(o.why || "").trim()))
-        warnings.push(`art_orders: ${onFront.length} drawings on the Front Page; for each beyond two say why in the order (why), or give it to a section's own story`);
     }
   }
 

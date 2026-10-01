@@ -543,3 +543,13 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 1 Oct 2026: Source trial stopped early (Parth)
 - The daily run no longer runs `scripts/trial.mjs` (RUNBOOK step 12) or waits on a missing trial file (step 1), to save run time and tokens. Three editions were scored (29 Sep to 1 Oct, `ledger/trial/`, the /trial page). What was already switched on stays on: Screen & Stage from `/api/live/screen`, the wire check from `/api/live/wire`, tennis from ESPN. The 8 Oct final-report reminder is switched off.
+
+## 1 Oct 2026: More illustrations, by rule (Parth), from the 2 Oct edition
+- Art orders: the lead always (16:9); the top story of every desk that printed a story (4:3; a Front Page second counts for its own desk; a poor picture passes to the desk's next story with a reason); one or two more on a big day; at most eight. Was 2 to 5 at Bhide's discretion. About 6 to 8 a day.
+- The validator refuses a missing lead or desk order, or more than eight. Shapes, sizes and Bunty's brief are unchanged; images load lazily, so the page does not get heavier to open.
+- Layout: every slot a drawing can land in was checked with a drawing in it (phone and laptop, light and dark) so no story stretches or leaves a gap; a section's only story keeps its drawing beside the text.
+
+## 1 Oct 2026: The morning's fixed steps in one command (Parth: fewer steps, same accuracy)
+- `node scripts/prep.mjs` runs letters, cricket times, betting candidates and the live snapshot in one step, and prints the last seven editions in brief (every headline with its thread) in place of reading the last three editions whole (about 300 KB each). Each helper prints and writes exactly what it did before; the validator is unchanged. Every step a run saves is one less re-read of its whole conversation.
+- Not done (Parth, 1 Oct): a fresh conversation for each run; the runs keep their history.
+- Illustrations from 2 Oct: a drawn story in a two-column section takes the whole row with its drawing beside the text, and an odd undrawn story takes a row too, so rows stay even (balanceStories in app.js). Checked with a drawing on every section's first story and on every story, phone and laptop, light and dark.
