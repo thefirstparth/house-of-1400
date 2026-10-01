@@ -224,6 +224,13 @@ section.sec{margin-top:56px;scroll-margin-top:64px}
 .split-stories .story:first-child,.stack>.story:first-child,.cols2>.story:first-child,.cols2>.story:nth-child(2),.solo>.story{padding-top:0}
 .stack .story:last-child,.solo .story{border-bottom:0}
 .solo .story .body{columns:2 300px;column-gap:40px}
+/* A section's only story spans the page, but its 4:3 drawing never does (1 Oct: Ronaldo's ran 1222px wide): on a wide
+   screen it sits left at under half the width, the text beside it in one column, the tools below both. */
+@media (min-width:900px){
+ .solo .story .art-standard{float:left;width:min(44%,520px);margin:4px 28px 8px 0}
+ .solo .story:has(.art-standard) .body{columns:1;overflow:hidden}
+ .solo .story:has(.art-standard) .tools{clear:both}
+}
 .solo .story .body p{max-width:none}
 .solo .story .body .why{display:inline-block;width:100%}
 .facts p{margin:0 0 10px}

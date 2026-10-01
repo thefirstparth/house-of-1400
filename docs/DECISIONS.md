@@ -537,3 +537,6 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 - **Fixed in the wire (lib/trial.js):** the same story in different words is grouped (shared rare words, weighted by rarity; measured on the day: Ronaldo 4 to 8 outlets, few wrong merges); outlets' own stories count without a Google signal; a story naming anyone in config `follows` needs an answer from three outlets (national teams only on sports feeds); each desk's three widest stories always make the list.
 - **Fixed in the validator:** every paywalled lead with an open outlet must be printed or answered (`checks.wire`, `lead-` ids).
 - **Editorial:** The Wider Pitch reads the top five of BBC football, the Guardian and ESPN FC each run; a global star's crisis or a big manager sacking is never left out. Lesson and owed story in `ledger/lessons.json` (until 3 Oct). Regression test on the day's real reading list.
+
+## 1 Oct 2026: A section's only story never has a page-wide drawing (Parth)
+- Ronaldo's drawing ran 1,222px wide because it was the only story in The Wider Pitch, which spans the page. On a wide screen a solo story's 4:3 drawing now sits left at under half the width (at most 520px), with the text beside it in one column. Phones unchanged.
