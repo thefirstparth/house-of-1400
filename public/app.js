@@ -363,6 +363,9 @@ function split(data, id) {
   const stories = storiesBlock(id, { beside: !!data });
   if (!data) return stories;
   if (!stories) return data;
+  // No stories of its own today (only a pointer to the front page): the data takes the full width and the pointer goes
+  // under it, so half the section is not left empty (Parth, 1 Oct).
+  const own = E.sections?.[id]; if (!(own?.stories?.length || own?.briefs?.length)) return `<div class="full-data">${data}</div>${stories}`;
   return `<div class="split"><div class="split-data">${data}</div><div class="split-stories">${stories}</div></div>`;
 }
 
@@ -818,7 +821,7 @@ function moodCard(m) {
     return arc(b.from + (i ? 0.8 : 0), to - (i < bands.length - 1 ? 0.8 : 0), on ? tone : "var(--rule)", on ? 12 : 9); }).join("");
   const tickAt = v => { if (v == null) return ""; const a = Math.PI * (1 - v / 100), c = Math.cos(a), sn = Math.sin(a); return `<line x1="${(cx + (r - 11) * c).toFixed(1)}" y1="${(cy - (r - 11) * sn).toFixed(1)}" x2="${(cx + (r + 11) * c).toFixed(1)}" y2="${(cy - (r + 11) * sn).toFixed(1)}" stroke="var(--muted)" stroke-width="1.5"><title>A month ago ${Math.round(v)}</title></line>`; };
   const [nx, ny] = (() => { const a = Math.PI * (1 - m.score / 100); return [cx + (r - 20) * Math.cos(a), cy - (r - 20) * Math.sin(a)]; })();
-  const scale = `<svg class="mgauge" viewBox="0 0 220 118" role="img" aria-label="${esc(m.region || "")} ${m.score} of 100, ${esc(word)}">${segs}${tickAt(m.prev_month)}<line x1="${cx}" y1="${cy}" x2="${nx.toFixed(1)}" y2="${ny.toFixed(1)}" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="5" fill="var(--ink)"/><text x="${cx - r}" y="116" text-anchor="middle" font-size="10" fill="var(--muted)">0</text><text x="${cx + r}" y="116" text-anchor="middle" font-size="10" fill="var(--muted)">100</text>${m.prev_month != null ? `<text x="${cx}" y="116" text-anchor="middle" font-size="10" fill="var(--muted)">| a month ago</text>` : ""}</svg>`;
+  const scale = `<svg class="mgauge" viewBox="0 0 220 118" role="img" aria-label="${esc(m.region || "")} ${m.score} of 100, ${esc(word)}">${segs}<line x1="${cx}" y1="${cy}" x2="${nx.toFixed(1)}" y2="${ny.toFixed(1)}" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="5" fill="var(--ink)"/><text x="${cx - r}" y="116" text-anchor="middle" font-size="10" fill="var(--muted)">0</text><text x="${cx + r}" y="116" text-anchor="middle" font-size="10" fill="var(--muted)">100</text></svg>`;
   const row = (label, v, extra = "") => (v == null ? "" : `<tr><td>${label}</td><td class="r tnum">${v}${extra}</td></tr>`);
   let rows, src = "";
   if (m.name) {

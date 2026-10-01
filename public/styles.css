@@ -1176,3 +1176,7 @@ table.tr td small{display:block;font:500 11px var(--sans);color:var(--muted)}
 /* The Wider Pitch: the club's cup knockouts (1 Oct 2026) */
 table.ko td small{display:block;font:500 12.5px var(--sans);color:var(--muted);margin-top:2px}
 table.ko td.r{text-align:right;white-space:nowrap}
+
+/* The Crease at full width (no stories beside it): the match on top, then each series side by side (1 Oct 2026) */
+@media (min-width:1000px){.full-data .cz{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 40px;align-items:start}
+.full-data .cz>.cz-next,.full-data .cz>.cz-line,.full-data .cz>.figsrc,.full-data .cz>.asof{grid-column:1/-1}}
