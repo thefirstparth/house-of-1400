@@ -85,7 +85,7 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   }
 
   // India at multi-nation events (from 2 Oct 2026, Parth, after the hockey semi-final v Pakistan was missed): while an
-  // event in config multi_events runs, checks.india_knockouts lists India's knockout and medal matches in every sport;
+  // event in config multi_events runs, checks.india_knockouts lists India's semi-finals and finals in every sport (Parth: not quarter-finals);
   // each one still to come in the next seven days is in The Fixture List (by time, or by opponent and day when the time
   // is not yet confirmed), and each one played is in the paper (covered_by).
   if (E.date > "2026-10-01") {
@@ -93,7 +93,7 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     const on = EV.filter(ev => E.date >= ev.from && E.date <= ev.until);
     if (on.length) {
       const K = E.checks?.india_knockouts;
-      if (!Array.isArray(K)) errors.push(`checks.india_knockouts: ${on.map(e => e.name).join(", ")} is on; list India's knockout and medal matches in every sport (an empty list only if there are none)`);
+      if (!Array.isArray(K)) errors.push(`checks.india_knockouts: ${on.map(e => e.name).join(", ")} is on; list India's semi-finals and finals in every sport (an empty list only if there are none)`);
       else {
         const printedIds = new Set(allItems(E).map(i => i.id));
         const cut = Date.parse(`${E.date}T${E.cut_ist || "14:00"}:00+05:30`), dayOf = t => new Date(Date.parse(t) + 5.5 * 36e5).toISOString().slice(0, 10);

@@ -1110,7 +1110,7 @@
         },
         "india_knockouts": {
           "type": "array",
-          "$comment": "While a config multi_events event runs: India's knockout and medal matches in every sport, from the cut to seven days ahead (and any under way at the cut).",
+          "$comment": "While a config multi_events event runs: India's semi-finals and finals in every sport, from the cut to seven days ahead (and any under way at the cut).",
           "items": {
             "type": "object",
             "additionalProperties": false,
