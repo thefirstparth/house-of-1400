@@ -4,6 +4,7 @@ A private, password-protected afternoon newspaper for one reader (Parth), hosted
 Half static, half live, like the Daily Prophet: the news is written once a day at 14:00 IST. Live widgets (markets, weather, fixtures, countdowns, tables, trends, betting odds) refresh in the browser.
 
 ## Read these first, in this order
+0. `docs/HANDOVER.md`: if you are new to the project (a new session or account), start here: context, how Parth works, the daily operation, QA protocol, and the redesign brief.
 1. `docs/SPEC.md`: what the site is, sections, layout, features, content schema
 2. `docs/EDITORIAL.md`: how the daily edition is chosen and written (the editorial brain)
 3. `docs/DATA.md`: live data sources, fallbacks, tested endpoints
