@@ -1836,5 +1836,16 @@
     "never": [
       "Tennis TV"
     ]
+  },
+  "multi_events": {
+    "note": "Multi-sport and multi-nation events where every India knockout match (quarter-final onward, and any medal match) in any sport goes into The Fixture List and its result into The Sidelines (Parth, 1 Oct, after the men's hockey semi-final v Pakistan was missed). While an event runs, the edition records India's knockouts in checks.india_knockouts. Add each event here with its dates.",
+    "events": [
+      {
+        "name": "Asian Games 2026",
+        "place": "Aichi-Nagoya",
+        "from": "2026-09-19",
+        "until": "2026-10-04"
+      }
+    ]
   }
 }

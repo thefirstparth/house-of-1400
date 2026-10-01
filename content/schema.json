@@ -1107,6 +1107,43 @@
               }
             }
           }
+        },
+        "india_knockouts": {
+          "type": "array",
+          "$comment": "While a config multi_events event runs: India's knockout and medal matches in every sport, from the cut to seven days ahead (and any under way at the cut).",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "sport",
+              "round",
+              "opponent"
+            ],
+            "properties": {
+              "sport": {
+                "type": "string"
+              },
+              "round": {
+                "type": "string"
+              },
+              "opponent": {
+                "type": "string"
+              },
+              "when_utc": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "time_tbc": {
+                "type": "boolean"
+              },
+              "result": {
+                "type": "string"
+              },
+              "covered_by": {
+                "type": "string"
+              }
+            }
+          }
         }
       }
     },

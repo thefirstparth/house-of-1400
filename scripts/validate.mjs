@@ -84,6 +84,30 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     }
   }
 
+  // India at multi-nation events (from 2 Oct 2026, Parth, after the hockey semi-final v Pakistan was missed): while an
+  // event in config multi_events runs, checks.india_knockouts lists India's knockout and medal matches in every sport;
+  // each one still to come in the next seven days is in The Fixture List (by time, or by opponent and day when the time
+  // is not yet confirmed), and each one played is in the paper (covered_by).
+  if (E.date > "2026-10-01") {
+    let EV = []; try { EV = read("config/house.json").multi_events?.events || []; } catch {}
+    const on = EV.filter(ev => E.date >= ev.from && E.date <= ev.until);
+    if (on.length) {
+      const K = E.checks?.india_knockouts;
+      if (!Array.isArray(K)) errors.push(`checks.india_knockouts: ${on.map(e => e.name).join(", ")} is on; list India's knockout and medal matches in every sport (an empty list only if there are none)`);
+      else {
+        const printedIds = new Set(allItems(E).map(i => i.id));
+        const cut = Date.parse(`${E.date}T${E.cut_ist || "14:00"}:00+05:30`), dayOf = t => new Date(Date.parse(t) + 5.5 * 36e5).toISOString().slice(0, 10);
+        for (const k of K) {
+          const t = k.when_utc ? Date.parse(k.when_utc) : NaN;
+          if (k.result) { if (!k.covered_by || !printedIds.has(k.covered_by)) errors.push(`checks.india_knockouts: India's ${k.sport} ${k.round} v ${k.opponent} (${k.result}) needs covered_by, an item in this edition`); continue; }
+          if (!Number.isNaN(t) && t - cut > 7 * 864e5) continue;
+          const hit = (E.fixtures || []).some(f => (!Number.isNaN(t) && !k.time_tbc) ? Math.abs(Date.parse(f.when_utc) - t) <= 30 * 6e4 : new RegExp(k.opponent.split(" ")[0], "i").test(f.label) && (!k.when_utc || dayOf(f.when_utc) === dayOf(k.when_utc)));
+          if (!hit) errors.push(`fixtures: India's ${k.sport} ${k.round} v ${k.opponent}${k.when_utc ? ` at ${k.when_utc}` : ""} is not in The Fixture List`);
+        }
+      }
+    }
+  }
+
   // The Fixture List carries every Real Madrid match and every F1 qualifying and race in the next seven days, from the
   // edition's own snapshot (from 2 Oct 2026, after India's 3rd ODI went missing on 1 Oct).
   if (E.date > "2026-10-01" && E.snapshot) {

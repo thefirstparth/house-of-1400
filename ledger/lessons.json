@@ -113,6 +113,21 @@
       ],
       "why": "Four of the paper's own F1 feeds (formula1.com, Motorsport.com, The Race, SB Nation) and BBC Sport ran it, each in different words, so the wire never grouped it into one widely covered story; Paddock Notes printed only its race-week data and no stories.",
       "fix": "The wire check lists a sports desk's own story when two rare words appear together in headlines from three or more of that desk's feeds (lib/trial.js; measured on 1 Oct: one hit, Ocon). Added to the 1 Oct paper by hand with an art order. Regression test."
+    },
+    {
+      "id": "2026-10-01-hockey-semi-pakistan",
+      "reported": "2026-10-01",
+      "missed": "India beat Pakistan 4-3 in the Asian Games men's hockey semi-final (Abhishek's winner with 49 seconds left) and play the final on Saturday; India's women play China in the final on Friday. The semi was under way at the 14:00 cut and in neither The Sidelines nor The Fixture List.",
+      "url": "https://sportstar.thehindu.com/asian-games/india-vs-pakistan-mens-hockey-asian-games-2026-semifinal-goals-score-result/article71532100.ece",
+      "sources": [
+        "https://sportstar.thehindu.com/asian-games/asian-games-2026-india-vs-china-womens-hockey-final-preview-ind-v-chn/article71533678.ece"
+      ],
+      "why": "The Fixture List had a structured check only for India cricket, Madrid and F1; India's knockouts in other sports at the Asian Games depended on the editor remembering them, and The Sidelines printed the day's medals instead.",
+      "fix": "config multi_events; checks.india_knockouts while an event runs; every India knockout or medal match in the Fixture List and every result printed (validator). EDITORIAL.md, The Sidelines and The Fixture List.",
+      "owed": {
+        "what": "India's hockey: the men's 4-3 semi-final win over Pakistan, the women's final v China on Friday and the men's final on Saturday (both in The Fixture List with confirmed times)",
+        "until": "2026-10-03"
+      }
     }
   ]
 }
