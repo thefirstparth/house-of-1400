@@ -61,6 +61,30 @@
         "until": "2026-10-02",
         "printed_on": "2026-09-30"
       }
+    },
+    {
+      "id": "2026-09-30-russia-oil-fuel",
+      "reported": "2026-10-01",
+      "missed": "Russia is buying its own crude back as refined fuel from Indian refiners, a record in September as Ukrainian strikes hit its refineries, while the US threatens tariffs over Russian oil (Times of India, 29 Sep; The Hindu, 13 Sep).",
+      "url": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxOM0dtZlNMNXl6OFdFMkZ5WlRQNDl4anJCMm1PcVJPbFRtdWpfMUZITUw3cGI4bm9TZkMwQjNLY2hQZGRBaE9ldnE5c1FHa2FuMEdZeXhON19zVjdEZVBDb05XUWNiTFZYQ2NUREw1ZzRmREhzc1JHdDBZRjVqLXdtalp0NUtrUGhQX1NNU2Rta0Q4U2ZoSFJ6SHJsY3EtTDcyUFkwWl9ybnVXMkJyWWd5TTk2bDRXcXVuWm96ZkI4dGJkUnVLSXVQeXIzQzdGOVRRRGNueURjSkNiWXZUYUNFXzZDMkJpNzhzcXdYOFRMOHhoajVuVjBDZ25Daw?oc=5",
+      "why": "It ran as an explainer, never as a headline on the national feeds the sweep reads, so it looked like analysis rather than news. It is India's trade with a Trump threat attached: the Dateline's India list should have had it.",
+      "fix": "Explainer desks added as sources (HT Explainers, Indian Express Explained) with an explainers rule in EDITORIAL.md.",
+      "owed": {
+        "what": "Russia buying its own oil back as fuel from India: the volumes, why, and the US tariff threat",
+        "until": "2026-10-03"
+      }
+    },
+    {
+      "id": "2026-09-30-xinjiang-air-route",
+      "reported": "2026-10-01",
+      "missed": "Why India wants an air route over China's Xinjiang to get around Pakistan's airspace ban, and why it is hard (HT Explainers, 30 Sep; HT, 29 Sep).",
+      "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxOS2JIT2RETlI1a04yTDd2b2ZPQjh6QmNkVEYtV3FnMFN2U0pRdTVWUHVRNGxJWHZKa2cyUG5ndmh3R2J6QWxaWXpuOHQ5ZW1TcVpvNDBPZTkyU3FXZ1BJNUUwTXRTTXRiUWFRdFozS2Y1SkFBUmpPZmZsaUVIU2lNRG56SzA1bWhacUxKaWF0aXVmNnlOMzFTLXJCSkg3SGZRSlU0alo0cmxCUGJvTHhXbmdMWGFYaHI3UEwwTkRCbWI0b2tEMjZKaEFyU3FwYVdMbHlNTnd4bks1OGREMVdUOV9HRVVXY05MUjNOQ1ljNNIB9AFBVV95cUxQemhCbU9yTnhid2RTemtvZ2QybVlaY3ktUENta1QzdlAtSUhMMDRzZmFvZE5zdDdtTXpsckRYa1NtUlg1bS1SSHJhWC1ET3F4eDg2dWZUN19oanl0Mk9lbGhVQ2JOUW5hd2JoV2N0bW1IejAtN3BIeFhtaHpsVTRaLUdheHBucDg5c2hIcE9RaGJyaG1adHhZR0ZwXy1HWXUtdXhhR3dFblBEOVItNnh5NDhLX3VGSWxvTk1xczQyZ0hQSk9yU3NyMG5kWlQ4dVZTVjJXWnA3Q0NYMDRmSTVXNUxPYmJkRzhaNWM3THBTRl8tbDh4?oc=5",
+      "why": "An explainer with news in it (India exploring the route) that no news feed headlined; the sweep did not read explainer desks.",
+      "fix": "As above: explainer desks are read every run; a short story is enough.",
+      "owed": {
+        "what": "India's proposed air route over Xinjiang around Pakistan's airspace ban: why, and what stands in the way",
+        "until": "2026-10-03"
+      }
     }
   ]
 }

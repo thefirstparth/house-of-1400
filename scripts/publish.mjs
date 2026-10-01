@@ -12,7 +12,11 @@ const { errors, warnings } = validateEdition(E, { ledger });
 warnings.forEach(w => console.log(`warn  ${w}`));
 if (errors.length) { errors.forEach(e => console.log(`ERROR ${e}`)); console.log("Not published."); process.exit(1); }
 
-writeFileSync("content/latest.json", raw.endsWith("\n") ? raw : raw + "\n");
+// The moment it went out, for the masthead ("Printed 14:16 IST"), written into the edition and latest.json alike.
+E.printed_at = new Date().toISOString();
+const out = JSON.stringify(E, null, 2) + "\n";
+writeFileSync(file, out);
+writeFileSync("content/latest.json", out);
 
 const archive = JSON.parse(readFileSync("content/archive.json", "utf8"));
 archive.editions = (archive.editions || []).filter(e => e.date !== E.date);

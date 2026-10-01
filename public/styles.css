@@ -268,9 +268,13 @@ table.compact td small{margin-left:4px}
 table.standings td:nth-child(2){position:relative;padding-bottom:11px}
 table.standings .mbar{position:absolute;left:0;bottom:3px;height:3px;background:var(--f,var(--india));opacity:.55;border-radius:2px}
 table.calendar .flag{margin-right:4px}
-table.liga th.rk,table.liga td.rk{width:26px}
-table.liga td.r,table.liga th.r{width:34px;padding-right:0;padding-left:4px}
-table.liga td.gd,table.liga th.gd{width:44px}
+/* Fixed columns, so La Liga and the Champions League line up the same way whatever the names (Parth, 1 Oct). */
+table.liga{table-layout:fixed;width:100%}
+table.liga th.rk,table.liga td.rk{width:30px;padding-right:2px}
+table.liga td.club,table.liga th.club{padding-left:0}
+table.liga td.club .crest{margin-right:8px}
+table.liga td.r,table.liga th.r{width:27px;padding-right:0;padding-left:2px}
+table.liga td.gd,table.liga th.gd{width:40px}
 table.liga td:last-child,table.liga th:last-child{padding-right:8px;width:42px}
 table.liga td.pts{font-weight:700}
 table.liga tr.on td.pts{font-weight:800}
@@ -290,7 +294,7 @@ table.liga .sh{display:none}
 .ctabs span{cursor:default;color:var(--ink)}
 .ctabs button:hover{color:var(--ink)}
 .ctabs button[aria-selected="true"]{color:var(--f,var(--ink));border-bottom-color:var(--f,var(--acc))}
-.ctabs button:focus-visible{outline:2px solid var(--f,var(--acc));outline-offset:2px}
+.ctabs button:focus-visible{outline:none;color:var(--ink);text-decoration:underline;text-underline-offset:5px}
 .cgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:18px 40px}
 .ldrs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 28px}
 .ldrs.n2{grid-template-columns:repeat(2,minmax(0,1fr))}.ldrs.n1{grid-template-columns:minmax(0,1fr)}
@@ -586,10 +590,11 @@ details.desk summary{font:700 12px var(--sans);letter-spacing:.1em;text-transfor
 .ed-title h1{font:700 clamp(52px,8vw,96px)/.95 var(--head);letter-spacing:-.03em;margin:8px 0 16px}
 .ed-title .deck{font:italic 22px/1.45 var(--serif);color:var(--muted);margin:0 0 14px;max-width:34ch}
 .ed-by{font:600 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.ed-stats{display:grid;grid-template-columns:repeat(4,1fr);margin:0;border-bottom:1px solid var(--rule)}
+.ed-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin:0;border-bottom:1px solid var(--rule)}
 .ed-stats div{padding:18px 16px;border-left:1px solid var(--rule)}
 .ed-stats div:first-child{border-left:0;padding-left:0}
 .ed-stats dt{font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ed-stats dd small{font:600 14px var(--sans);color:var(--muted)}
 .ed-stats dd{margin:4px 0 0;font:600 40px/1 var(--serif);font-variation-settings:"opsz" 72;font-variant-numeric:tabular-nums}
 .ed-body{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:48px;margin-top:40px}
 .ed-body section{margin-top:0}
@@ -1100,3 +1105,12 @@ table.sessions td.r{white-space:nowrap}
 .f1s li.on .p,.f1s li.on .n i,.f1r li.on .p,.f1r li.on small{color:inherit;opacity:.8}
 .f1s li.on .bar{background:color-mix(in srgb,var(--fo) 14%,transparent)}
 .pd.on b{background:var(--fc);color:var(--fo);border-radius:8px;padding:2px 8px}
+
+/* The editor's desk diary (1 Oct 2026) */
+.ed-diary{margin:30px 0 10px}
+.ed-diary-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:28px}
+.ed-entry h3{margin:4px 0 6px;font:700 21px/1.2 var(--hl)}
+.ed-entry p{margin:0;font:16.5px/1.55 var(--serif);color:var(--ink2)}
+.ed-entry.big{border-left:1px solid var(--rule);padding-left:28px}
+.ed-older .ed-entry{margin-top:14px}
+@media (max-width:720px){.ed-diary-grid{grid-template-columns:1fr}.ed-entry.big{border-left:0;padding-left:0;border-top:1px solid var(--rule);padding-top:16px}}

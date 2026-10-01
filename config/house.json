@@ -887,6 +887,20 @@
         "kind": "search"
       },
       {
+        "id": "ht-explainers",
+        "section": "dateline",
+        "name": "HT Explainers (via Google News)",
+        "url": "https://news.google.com/rss/search?q=%22HT%20Explainers%22%20when%3A2d&hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "search"
+      },
+      {
+        "id": "ie-explained",
+        "section": "dateline",
+        "name": "Indian Express Explained (via Google News)",
+        "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com%2Farticle%2Fexplained%20when%3A2d&hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "search"
+      },
+      {
         "id": "rbi-press",
         "section": "ledger",
         "name": "RBI press releases",

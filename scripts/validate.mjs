@@ -18,7 +18,7 @@ const BANNED_PATTERNS = [
   [/\bas an ai\b/i, "AI tell"],
 ];
 const ALLOW_TBD = /match TBD/;
-const SKIP_KEYS = new Set(["url", "id", "thread_id", "target", "section", "source", "when_utc", "until_utc", "date", "weekday", "cut_ist", "color", "verdict", "kind", "group", "language", "entity", "level", "snapshot", "as_of", "local_tz"]);
+const SKIP_KEYS = new Set(["url", "id", "thread_id", "target", "section", "source", "when_utc", "until_utc", "date", "weekday", "cut_ist", "printed_at", "color", "verdict", "kind", "group", "language", "entity", "level", "snapshot", "as_of", "local_tz"]);
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const read = p => JSON.parse(readFileSync(new URL(p, `file://${root}`), "utf8"));

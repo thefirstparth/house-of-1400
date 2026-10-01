@@ -350,6 +350,10 @@
         "sun"
       ]
     },
+    "printed_at": {
+      "type": "string",
+      "description": "When the run published this edition (ISO 8601, written by scripts/publish.mjs). The masthead prints it in IST."
+    },
     "cut_ist": {
       "type": "string",
       "pattern": "^\\d{2}:\\d{2}$"

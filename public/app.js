@@ -502,7 +502,7 @@ function madridBlock() {
         const z = r.zone?.color ? ` style="--zc:${r.zone.color}"` : "";
         return `<tr class="${isUs(r) ? "on" : ""}${x ? " x" : ""}${pin ? " pin" : ""}${r.zone?.color ? " z" : ""}"${x && !open ? " hidden" : ""}${z}><td class="rk tnum"${r.zone?.name ? ` title="${esc(r.zone.name)}"` : ""}>${r.rank}</td><td class="club">${crest(r.id, "")}<span class="lg">${esc(r.team)}</span><span class="sh">${esc(r.short || r.team)}</span></td>${cell(r.played)}${cell(r.wins)}${cell(r.draws)}${cell(r.losses)}<td class="r gd tnum">${signed(r.gd)}</td><td class="r tnum pts">${r.points ?? ""}</td></tr>`;
       };
-      return `<table class="compact liga${open ? " open" : ""}" data-t="${esc(id)}"><thead><tr><th class="rk">#</th><th>Club</th><th class="r" title="Played">P</th><th class="r" title="Won">W</th><th class="r" title="Drawn">D</th><th class="r" title="Lost">L</th><th class="r gd" title="Goal difference">GD</th><th class="r" title="Points">Pts</th></tr></thead><tbody>${c.rows.map(tr).join("")}</tbody></table>` +
+      return `<table class="compact liga${open ? " open" : ""}" data-t="${esc(id)}"><thead><tr><th class="rk">#</th><th class="club">Club</th><th class="r" title="Played">P</th><th class="r" title="Won">W</th><th class="r" title="Drawn">D</th><th class="r" title="Lost">L</th><th class="r gd" title="Goal difference">GD</th><th class="r" title="Points">Pts</th></tr></thead><tbody>${c.rows.map(tr).join("")}</tbody></table>` +
         (zones.length ? `<p class="zones"${open ? "" : " hidden"}>${zones.map(([n, col]) => `<span><i${col ? ` style="--zc:${col}"` : ""}></i>${esc(n)}</span>`).join("")}</p>` : "") +
         (rest > 0 ? `<button class="lmore" data-tmore="${esc(id)}" aria-expanded="${open}" data-n="${c.rows.length}">${open ? `Show top ${TOPR}` : `Show all ${c.rows.length} clubs`}</button>` : "");
     };
@@ -1334,7 +1334,12 @@ function render() {
   document.title = `The House of 1400 · ${longDate(E.date)}`;
   $("#run-date").textContent = longDate(E.date);
   $("#run-vol").textContent = `Vol. ${roman(Number(E.date.slice(0, 4)) - 2025)} · No. ${n} · ${CFG.paper.home_city}`;
-  $("#run-cut").textContent = `Information cut ${E.cut_ist} IST`;
+  // When it was printed (Parth, 1 Oct: "Information cut 14:00" said nothing true about the run). Editions before
+  // printed_at use the time their live snapshot was taken, the last thing a run does before publishing.
+  const snapAt = Object.values(E.snapshot || {}).map(x => x?.as_of).filter(t => t && !isNaN(Date.parse(t)) && t.slice(0, 10) >= E.date).sort().pop();
+  const printed = E.printed_at || snapAt;
+  $("#run-cut").textContent = printed ? `Printed ${istTime(printed)} IST` : `News to ${E.cut_ist} IST`;
+  if (printed) $("#run-cut").title = `News up to ${E.cut_ist} IST; printed ${istFull(printed)} IST`;
   $("#motto").innerHTML = `${esc(CFG.paper.motto)} · <img src="/bhide.svg" alt="" width="26" height="26"> Edited by <a href="/editor">${esc(CFG.paper.editor.signature.replace(", Editor", ""))}</a>`;
   $("#profile").textContent = E.profile_line;
 
@@ -1740,6 +1745,21 @@ async function renderArchive() {
 // ------------------------------------------------------------------ about the editor
 // A page of its own, linked from the byline, the editor's note and the foot of the paper. Never on the front page.
 // Laid out as a golden-age newspaper profile: framed portrait, pull quote, a day at the desk, the red pencil at work.
+// The paper's own numbers, worked out from its editions at build time (dist/editor.json), and Bhide's desk diary:
+// a short entry each day and the week's review on Mondays, written by the run (ledger/editor-log.json).
+function edStats(S) {
+  const cell = (k, v) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`;
+  if (!S) return `<dl class="ed-stats">${cell("Circulation", "1")}${cell("Em dashes printed", "0")}</dl>`;
+  const days = S.first ? Math.round((Date.parse(istDate()) - Date.parse(S.first)) / 864e5) + 1 : null;
+  return `<dl class="ed-stats">${cell("Editions printed", String(S.editions))}${days ? cell("Days on the stands", String(days)) : ""}${cell("Stories and briefs", S.items.toLocaleString("en-IN"))}${S.printed_latest ? `<div><dt>Latest paper went out</dt><dd>${esc(S.printed_latest)}<small> IST</small></dd></div>` : ""}${cell("Lessons on the desk", String(S.lessons))}${cell("Em dashes printed", "0")}</dl>`;
+}
+function edDiary(log) {
+  if (!log.length) return "";
+  const daily = log.filter(e => e.kind === "daily").sort((a, b) => b.date.localeCompare(a.date)), week = log.filter(e => e.kind === "weekly").sort((a, b) => b.date.localeCompare(a.date))[0];
+  const entry = (e, big) => `<article class="ed-entry${big ? " big" : ""}"><div class="kick">${big ? "The week at the desk" : "From the desk"} · ${esc(istDay(e.date + "T12:00:00Z"))}</div><h3>${esc(e.title)}</h3><p>${esc(e.text)}</p></article>`;
+  const older = daily.slice(1, 8);
+  return `<section class="ed-diary"><h2 class="subhd">The desk diary <span>a line every day, the week on Mondays</span></h2><div class="ed-diary-grid">${daily[0] ? entry(daily[0]) : ""}${week ? entry(week, true) : ""}</div>${older.length ? `<details class="figsrc ed-older"><summary>Earlier days</summary>${older.map(e => entry(e)).join("")}</details>` : ""}</section>`;
+}
 async function renderEditor() {
   const name = CFG.paper.editor.signature.replace(", Editor", "");
   document.title = `${name} · The House of 1400`;
@@ -1787,7 +1807,8 @@ async function renderEditor() {
     ["No filler", "A section with nothing worth printing is removed. The paper never tells you what it could not find."],
     ["Money and institutions", "He does not follow politics and neither does the reader, but a rule that changes what you pay, or a row inside the body that runs elections, is news. It prints, plainly."],
   ];
-  let memo = "";
+  let memo = "", X = null;
+  try { X = await getJSON("/editor.json"); } catch {}
   try {
     const L = await getJSON("/content/latest.json");
     if (L.editor_note) memo = `<figure class="ed-memo"><div class="memo-head"><span>MEMORANDUM</span><span>From: ${esc(name)}</span><span>To: The reader</span><span>Date: ${esc(longDate(L.date))}</span></div><blockquote>${esc(L.editor_note)}</blockquote><div class="memo-init" aria-hidden="true">TAB</div></figure>`;
@@ -1803,12 +1824,8 @@ async function renderEditor() {
     <div class="ed-by">By the staff of The House of 1400 · Filed at 14:00 IST</div>
   </div>
 </header>
-<dl class="ed-stats">
-  <div><dt>Circulation</dt><dd>1</dd></div>
-  <div><dt>Deadline</dt><dd>14:00</dd></div>
-  <div><dt>Words he will not print</dt><dd>15</dd></div>
-  <div><dt>Em dashes printed</dt><dd>0</dd></div>
-</dl>
+${edStats(X?.stats)}
+${edDiary(X?.log || [])}
 <div class="ed-body">
   <section class="ed-story">
     <h2>Who he is</h2>

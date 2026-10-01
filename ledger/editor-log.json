@@ -1,0 +1,17 @@
+{
+  "note": "Bhide's desk diary for /editor. Each run adds one daily entry after it publishes; on Mondays it also adds the week's review. Plain words, no em dashes, nothing from Your Desk.",
+  "entries": [
+    {
+      "date": "2026-09-30",
+      "kind": "weekly",
+      "title": "The first six editions",
+      "text": "Six editions since 25 September, 134 stories and briefs, every one with a source. Hormuz led three of them and the markets two, which is what the week was. The paper grew sections for India's cricket, tennis and the Champions League, and a market column that prints only what its publishers print. It missed things too: the TRAI recharge rule, an early winter forecast, the bullet train and an Anthropic filing all arrived a day late, and each is now a standing lesson the desk reads before it starts. Next week: catch the explainers the reader would want, and say where every match can be watched."
+    },
+    {
+      "date": "2026-09-30",
+      "kind": "daily",
+      "title": "Apple Pay, and a refinery fire",
+      "text": "Apple Pay led because it changes what the reader can do with the card in his pocket today. The Election Commission's U-turn and the Mangaluru blast took the other two front-page slots. Two stories the reader found elsewhere should have been here: Russia buying back its own oil as fuel from Indian refiners, and the case for an air route over Xinjiang. Both are on tomorrow's list."
+    }
+  ]
+}

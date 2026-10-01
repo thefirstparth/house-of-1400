@@ -18,6 +18,23 @@ if (existsSync("ledger/trial")) {
   for (const f of readdirSync("ledger/trial")) if (f.endsWith(".json")) cpSync(`ledger/trial/${f}`, `dist/trial/${f}`);
 }
 if (!existsSync("dist/content/latest.json")) console.warn("build: no content/latest.json yet");
+// The editor's page (Parth, 1 Oct: "it doesn't even say how many editions we have printed"): the paper's own numbers,
+// worked out from the editions at build time, and Bhide's desk diary (ledger/editor-log.json, written by each run:
+// a short entry daily, the week's review on Mondays).
+{
+  const eds = readdirSync("content/editions").filter(f => /^\d{4}-\d\d-\d\d\.json$/.test(f)).sort().map(f => JSON.parse(readFileSync(`content/editions/${f}`, "utf8")));
+  const { allItems } = await import("./validate.mjs");
+  const items = eds.map(e => { try { return allItems(e).length; } catch { return 0; } });
+  const printed = eds.map(e => e.printed_at || Object.values(e.snapshot || {}).map(x => x?.as_of).filter(t => t && t.slice(0, 10) >= e.date).sort().pop()).filter(Boolean);
+  const ist = t => new Date(Date.parse(t) + 5.5 * 36e5).toISOString().slice(11, 16);
+  const ledgerT = existsSync("ledger/story-ledger.json") ? JSON.parse(readFileSync("ledger/story-ledger.json", "utf8")).threads?.length || 0 : 0;
+  const lessons = existsSync("ledger/lessons.json") ? (JSON.parse(readFileSync("ledger/lessons.json", "utf8")).lessons || []).length : 0;
+  const log = existsSync("ledger/editor-log.json") ? JSON.parse(readFileSync("ledger/editor-log.json", "utf8")) : { entries: [] };
+  writeFileSync("dist/editor.json", JSON.stringify({
+    stats: { editions: eds.length, first: eds[0]?.date || null, latest: eds.at(-1)?.date || null, items: items.reduce((a, b) => a + b, 0), items_latest: items.at(-1) || 0,
+      threads: ledgerT, lessons, printed_latest: printed.length ? ist(printed.at(-1)) : null, printed_median: printed.length ? printed.map(ist).sort()[Math.floor(printed.length / 2)] : null },
+    log: (log.entries || []).slice(-60) }));
+}
 // The run's working notes (checks) and the market-movers scan are for the 14:00 run and the validator, not the
 // reader: strip them from the served editions so the page stays light.
 for (const f of ["dist/content/latest.json", ...readdirSync("dist/content/editions").map(x => `dist/content/editions/${x}`)]) {
