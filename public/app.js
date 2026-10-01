@@ -1207,7 +1207,7 @@ function fixturesBlock() {
     if (!byDay.has(key)) byDay.set(key, []);
     byDay.get(key).push(f);
   }
-  return `<div class="agenda">${[...byDay].map(([day, list]) => `<div class="day"><h3>${esc(dayName(day).replace(/^./, c => c.toUpperCase()))} <span>${esc(sparkLabel(day))}</span></h3><ul>${list.map(f => {
+  return `<div class="agenda" style="--n:${byDay.size}">${[...byDay].map(([day, list]) => `<div class="day"><h3>${esc(dayName(day).replace(/^./, c => c.toUpperCase()))} <span>${esc(sparkLabel(day))}</span></h3><ul>${list.map(f => {
     const st = f.time_tbc ? "next" : fixState(f, n);
     const when = f.time_tbc ? "Time TBC" : f.until_utc ? `Runs to ${sparkLabel(istDate(new Date(f.until_utc)))}` : istTime(f.when_utc);
     const extra = f.source === "ESPN" ? `${f.court ? ` <small>· ${esc(f.court)}</small>` : ""}${f.other ? ` <small>· another listing says ${esc(f.other)}</small>` : ""}` : "";

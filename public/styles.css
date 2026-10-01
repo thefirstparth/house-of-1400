@@ -377,7 +377,12 @@ sup.calc{font-size:.72em;color:var(--muted);margin-left:1px}
 @media (max-width:1100px){.board-wrap{grid-template-columns:1fr}.moods{grid-template-columns:1fr 1fr}.moods .figsrc{grid-column:1/-1}}
 
 /* ---------- fixtures ---------- */
-.agenda{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:4px 36px}
+/* The days run left to right in one row, as many columns as days, so a later date never wraps under an earlier one
+   (Parth, 1 Oct). Each day is its own container: when its column is narrow the time sits above the match.
+   Below 900px the days stack in one column, still in date order. */
+.agenda{display:grid;grid-template-columns:minmax(0,1fr);gap:4px 36px}
+@media (min-width:900px){.agenda{grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:4px clamp(14px,calc(140px / var(--n,4)),36px)}}
+.agenda .day{container-type:inline-size;min-width:0}
 .agenda .day h3{font:800 12.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;margin:10px 0 2px;padding-bottom:7px;border-bottom:1.5px solid var(--ink)}
 .agenda .day h3 span{color:var(--muted);font-weight:600;margin-left:6px}
 .agenda ul{list-style:none;margin:0;padding:0}
@@ -388,6 +393,9 @@ sup.calc{font-size:.72em;color:var(--muted);margin-left:1px}
 /* A match already played today stays until midnight IST, quieter, with its result (Parth, 1 Oct). */
 .agenda li.done .t,.agenda li.done .what{color:var(--muted)}
 .agenda li .res{display:inline-block;margin-left:4px;font-weight:600;color:var(--ink2)}
+/* after the row rules, so a narrow day column wins: the time above the match */
+@container (max-width:250px){.agenda li{grid-template-columns:1fr;gap:2px}.agenda li.on{padding-inline:8px}}
+@container (max-width:160px){.agenda li{font-size:13.5px}.agenda .day h3{font-size:11px;letter-spacing:.08em}}
 
 /* ---------- sky & streets ---------- */
 .sky-lede{font:400 22px/1.4 var(--serif);max-width:58ch;margin:2px 0 16px;text-wrap:pretty}
