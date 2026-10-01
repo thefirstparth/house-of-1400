@@ -1592,6 +1592,21 @@
         "medium.com",
         "substack.com"
       ]
+    },
+    "top_check": {
+      "per_feed": 5,
+      "note": "The desk check (from 2 Oct 2026, Parth, after the Ronaldo and Ocon misses): every feed's top stories in the window are read and answered by the editor, grouped by event whatever the wording. Titles matching skip are routine notices, never news.",
+      "skip": [
+        "^Appeal No\\.",
+        "^Broker['’]s call",
+        "^Open Thread",
+        "^Photo Album",
+        "Consumer Awareness Program",
+        "^Release Order",
+        "^Remittance Order",
+        "^General Remittance",
+        "^Order for "
+      ]
     }
   },
   "trial": {

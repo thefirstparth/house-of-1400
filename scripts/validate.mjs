@@ -19,7 +19,7 @@ const BANNED_PATTERNS = [
   [/\bas an ai\b/i, "AI tell"],
 ];
 const ALLOW_TBD = /match TBD/;
-const SKIP_KEYS = new Set(["url", "id", "thread_id", "target", "section", "source", "when_utc", "until_utc", "date", "weekday", "cut_ist", "printed_at", "color", "verdict", "kind", "group", "language", "entity", "level", "snapshot", "as_of", "local_tz"]);
+const SKIP_KEYS = new Set(["url", "id", "ids", "thread_id", "target", "section", "source", "when_utc", "until_utc", "date", "weekday", "cut_ist", "printed_at", "color", "verdict", "kind", "group", "language", "entity", "level", "snapshot", "as_of", "local_tz"]);
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const read = p => JSON.parse(readFileSync(new URL(p, `file://${root}`), "utf8"));
@@ -372,6 +372,19 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
           if (a?.skip) { if (a.skip.trim().length < 12) errors.push(`checks.wire: say why "${c.title}" is not for this paper`); continue; }
           if (printed.some(it => matchItem(it, [{ title: c.title }, ...(c.also || []).map(t => ({ title: t }))]))) continue;
           errors.push(`checks.wire: "${c.title}" (${c.n} outlets) is neither in the paper nor answered; print it (a story, a brief or an Also in line) and record {id: "${c.id}", covered_by}, or {id: "${c.id}", skip: "why not"}`);
+        }
+        // The desk check (from 2 Oct 2026, Parth, after the Ronaldo and Ocon misses): every outlet's top stories are read
+        // and answered by event, not matched by words. An item the paper visibly carries passes; every other id must be
+        // in checks.top, in a group {ids, covered_by} (an item in this edition) or {ids, skip} (a real reason).
+        if (E.date > "2026-10-01" && wc.top) {
+          const done = new Map();
+          for (const g of E.checks?.top || []) {
+            if (g.covered_by && !ids.has(g.covered_by)) errors.push(`checks.top: covered_by "${g.covered_by}" is not an item in this edition`);
+            else if (!g.covered_by && !((g.skip || "").trim().length >= 8)) errors.push(`checks.top: say why ${(g.ids || []).slice(0, 3).join(", ")} ${g.ids?.length > 3 ? "and the rest " : ""}are not for this paper`);
+            for (const id of g.ids || []) done.set(id, g);
+          }
+          const open = wc.top.filter(t => !t.carried_by && !done.has(t.id) && !printed.some(it => matchItem(it, [{ title: t.title }])));
+          if (open.length) errors.push(`checks.top: ${open.length} of the outlets' top stories are neither in the paper nor answered, e.g. ${open.slice(0, 5).map(t => `[${t.id}] ${t.title}`).join("; ")}; read them (scripts/wire-check.mjs lists them) and answer each group in checks.top`);
         }
         // Leads (1 Oct, after the Ronaldo miss: The Athletic's lead on it had three open outlets and went unanswered).
         // A lead with an open outlet is answered like a candidate; one with none yet cannot be printed, so it may wait.

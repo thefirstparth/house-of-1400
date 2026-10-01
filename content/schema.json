@@ -1081,6 +1081,32 @@
               }
             }
           }
+        },
+        "top": {
+          "type": "array",
+          "$comment": "The desk check (from 2 Oct 2026): the outlets' top stories from ledger/wire-check.json top, answered by event.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "ids"
+            ],
+            "properties": {
+              "ids": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "covered_by": {
+                "type": "string"
+              },
+              "skip": {
+                "type": "string"
+              }
+            }
+          }
         }
       }
     },

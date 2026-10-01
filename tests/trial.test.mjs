@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { cluster, nearAlerts, parseDate, parseFeed, parseFomc, parseIcs, parseWhereIsCricket, sacnilkTitles, tennisPlayers, wireCandidates } from "../lib/trial.js";
+import { cluster, nearAlerts, parseDate, parseFeed, parseFomc, parseIcs, parseWhereIsCricket, sacnilkTitles, tennisPlayers, topStories, wireCandidates } from "../lib/trial.js";
 import { coverage, matchItem, missedCandidates, sourceQuality, tennisCheck, tierOf, wicTime } from "../scripts/trial.mjs";
 
 const gnItem = (title, outlet, related) => `<item><title>${title} - ${outlet}</title><link>https://news.google.com/rss/articles/x</link><pubDate>Mon, 28 Sep 2026 03:36:39 GMT</pubDate>
@@ -133,3 +133,14 @@ test("a story four of a desk's own feeds ran in different words is a candidate",
   assert.match(desk[0].title, /Ocon/); assert.equal(desk[0].section_hint, "paddock"); assert.ok(desk[0].n >= 4);
 });
 
+
+// 2 Oct: the desk check lists every outlet's top stories (no word matching), without routine notices.
+test("the desk check lists every outlet's top five, routine notices left out", () => {
+  const items = JSON.parse(readFileSync(new URL("./fixtures/wire-2026-10-01.json", import.meta.url)));
+  const cfg = JSON.parse(readFileSync(new URL("../config/house.json", import.meta.url)));
+  const top = topStories({ items }, cfg);
+  assert.ok(top.length > 200);
+  assert.ok(top.some(t => /Ocon/.test(t.title)) && top.some(t => /Ronaldo/.test(t.title)));
+  assert.ok(!top.some(t => /^Appeal No\./.test(t.title)));
+  assert.equal(new Set(top.map(t => t.id)).size, top.length);
+});

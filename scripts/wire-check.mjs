@@ -7,7 +7,7 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { ensureProxy } from "./proxy.mjs";
 import { remoteLive, useRemote } from "./remote.mjs";
-import { matchItem, tokens, wireCandidates } from "../lib/trial.js";
+import { matchItem, tokens, topStories, wireCandidates } from "../lib/trial.js";
 const leadId = t => tokens(t).slice(0, 7).join("-").slice(0, 70);
 import { allItems } from "./validate.mjs";
 ensureProxy();
@@ -34,7 +34,9 @@ try {
   });
   // Leads from paywalled feeds (config sources.paywalled): read the open outlets listed, never the paywalled story.
   const leads = (r.value.leads || []).map(l => ({ id: "lead-" + leadId(l.title), ...l, carried_by: printed.find(it => matchItem(it, [{ title: l.title }, ...(l.elsewhere || [])]))?.id || null }));
-  out = { date: E.date, window: { from, to }, checked_at: new Date().toISOString(), candidates: cands, leads };
+  // The desk check: every outlet's top stories, for the editor to read and answer by event (EDITORIAL.md, Research).
+  const top = topStories(r.value, C).map(t => ({ ...t, carried_by: printed.find(it => matchItem(it, [{ title: t.title }]))?.id || null }));
+  out = { date: E.date, window: { from, to }, checked_at: new Date().toISOString(), candidates: cands, leads, top };
   const open = cands.filter(c => !c.carried_by);
   console.log(`wire check: ${cands.length} widely covered stories since ${from}; ${cands.length - open.length} already carried, ${open.length} to answer.\n`);
   for (const c of open) console.log(`  [${c.id}] ${c.region}/${c.section_hint || "?"} · ${c.n} outlets · ${c.title}\n      ${c.links[0] || ""}`);
@@ -42,6 +44,12 @@ try {
   if (L.length) {
     console.log(`\nLeads (${L.length}) from paywalled feeds: tip-offs only. Print one only through an open outlet that reports it; never link the paywalled story.`);
     for (const l of L) console.log(`  · [${l.id}] ${l.title} (${l.lead_from})\n      ${l.elsewhere == null ? "not searched (time ran out): search for it yourself" : l.elsewhere.length ? "open outlets (check it is the same story):\n      " + l.elsewhere.map(e => `${e.outlet}: ${e.title}\n        ${e.url}`).join("\n      ") : "no open outlet yet: leave it, or search once more before the cut"}`);
+  }
+  const T = (out.top || []).filter(t => !t.carried_by);
+  if (T.length) {
+    console.log(`\nWhat every outlet leads with (${out.top.length} top stories, ${T.length} not yet matched to the paper). Read them all; group the same event however it is worded; answer each group in checks.top as {ids, covered_by} or {ids, skip: "why"}.`);
+    let last = null;
+    for (const t of T) { if (t.section !== last) { console.log(`  -- ${t.section || "?"}`); last = t.section; } console.log(`  [${t.id}] ${t.outlet}: ${t.title}`); }
   }
 } catch (e) {
   out = { date: E.date, window: { from, to }, checked_at: new Date().toISOString(), error: String(e.message || e), candidates: [] };
