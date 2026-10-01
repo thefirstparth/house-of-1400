@@ -123,7 +123,7 @@
         "https://sportstar.thehindu.com/asian-games/asian-games-2026-india-vs-china-womens-hockey-final-preview-ind-v-chn/article71533678.ece"
       ],
       "why": "The Fixture List had a structured check only for India cricket, Madrid and F1; India's knockouts in other sports at the Asian Games depended on the editor remembering them, and The Sidelines printed the day's medals instead.",
-      "fix": "config multi_events; checks.india_knockouts while an event runs; every India knockout or medal match in the Fixture List and every result printed (validator). EDITORIAL.md, The Sidelines and The Fixture List.",
+      "fix": "config multi_events; checks.india_knockouts while an event runs; every India men's knockout (quarter-final on, bronze included) and women's final in the Fixture List and every result printed (validator). EDITORIAL.md, The Sidelines and The Fixture List.",
       "owed": {
         "what": "India's hockey: the men's 4-3 semi-final win over Pakistan, the women's final v China on Friday and the men's final on Saturday (both in The Fixture List with confirmed times)",
         "until": "2026-10-03"

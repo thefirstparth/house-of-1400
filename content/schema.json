@@ -1110,12 +1110,13 @@
         },
         "india_knockouts": {
           "type": "array",
-          "$comment": "While a config multi_events event runs: India's semi-finals and finals in every sport, from the cut to seven days ahead (and any under way at the cut).",
+          "$comment": "While a config multi_events event runs: India's men's (and mixed) knockouts from the quarter-final on, bronze-medal matches included, and women's finals, in every sport, from the cut to seven days ahead (and any under way at the cut).",
           "items": {
             "type": "object",
             "additionalProperties": false,
             "required": [
               "sport",
+              "team",
               "round",
               "opponent"
             ],
@@ -1141,6 +1142,13 @@
               },
               "covered_by": {
                 "type": "string"
+              },
+              "team": {
+                "enum": [
+                  "men",
+                  "women",
+                  "mixed"
+                ]
               }
             }
           }

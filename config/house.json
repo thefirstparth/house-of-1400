@@ -1838,7 +1838,7 @@
     ]
   },
   "multi_events": {
-    "note": "Multi-sport and multi-nation events where every India semi-final and final (the gold-medal match) in any sport goes into The Fixture List and its result into The Sidelines (Parth, 1 Oct, after the men's hockey semi-final v Pakistan was missed). While an event runs, the edition records India's knockouts in checks.india_knockouts. Add each event here with its dates.",
+    "note": "Multi-sport and multi-nation events where every India men's (or mixed) knockout match from the quarter-final on, bronze-medal matches included, and every India women's final, in any sport goes into The Fixture List and its result into The Sidelines (Parth, 1 Oct, after the men's hockey semi-final v Pakistan was missed). While an event runs, the edition records India's knockouts in checks.india_knockouts. Add each event here with its dates.",
     "events": [
       {
         "name": "Asian Games 2026",
