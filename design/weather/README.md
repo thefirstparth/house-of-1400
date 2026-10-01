@@ -40,3 +40,13 @@ charts, the same for Ranchi and Prayagraj. `variants2.html` (from `src2.html` an
 New data: station normals from Meteostat (daily records 1991 to 2020 for Bengaluru HAL 43295, Ranchi 42701,
 Allahabad 42475); ECMWF seasonal corrected by its September error against the station; Copernicus air quality for
 2022 to 2025 for the usual months; sunrise and sunset from NOAA's formula. Wind is left out while it is calm.
+
+## Round three (1 Oct): D's week and month, drawn as E
+
+Parth liked D's week-to-week and month-to-month and E's picture, wanted a better picture, sunset for Bengaluru only,
+the same fields for Ranchi and Prayagraj, the tables folded, the words about this month and next only (the month after
+only when it is a real change), and nothing said twice. `variants3.html` (from `src3.html` and `data3-2026-10-01.json`):
+the words and the picture show; the picture is two panels on one scale (last, this and next week; October to December
+against a usual month, dashed) with the air under each; the folded figures carry only what the picture does not (feels
+like, humidity, rainy days, rain against usual, daylight, and sunset for Bengaluru). For Ranchi and Prayagraj the words
+show and the picture and figures fold.
