@@ -12,6 +12,8 @@ const ICONS = {};
 // ICONS:END
 // Desh and Videsh (from 2 Oct 2026) wear Dateline's mark.
 ICONS["s:desh"] ||= ICONS["s:dateline"]; ICONS["s:videsh"] ||= ICONS["s:dateline"];
+// AI, Tech and Sales & SaaS (from 2 Oct 2026) wear The Workshop's and The Pipeline's marks.
+ICONS["s:ai"] ||= ICONS["s:workshop"]; ICONS["s:tech"] ||= ICONS["s:workshop"]; ICONS["s:sales"] ||= ICONS["s:pipeline"];
 
 // ------------------------------------------------------------------ helpers
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -1523,7 +1525,7 @@ addEventListener("resize", () => { clearTimeout(balanceT); balanceT = setTimeout
 const colourBar = () => `<i class="rm"></i><span>${[...new Set(CFG.sections.map(x => x.palette).filter(p => p && !["ink", "slate"].includes(p)))].map(p => `<b style="background:var(--${p})"></b>`).join("")}</span><i class="rm"></i>`;
 // The desks (config desks, agreed 29 Sep 2026): the sections grouped under six headings on one page. Only the order and
 // the headings change; every section keeps its id, colours and content. Without a desks list the old order stands.
-const OLD_ORDER = ["week", "fixtures", "madrid", "pitch", "paddock", "crease", "deuce", "sidelines", "desh", "videsh", "dateline", "workshop", "pipeline", "ledger", "sky", "namma", "screen", "talk", "betting", "bye"];
+const OLD_ORDER = ["week", "fixtures", "madrid", "pitch", "paddock", "crease", "deuce", "sidelines", "desh", "videsh", "dateline", "ai", "tech", "sales", "workshop", "pipeline", "ledger", "sky", "namma", "screen", "talk", "betting", "bye"];
 function desksHTML(S) {
   let h = "";
   const placed = new Set();
@@ -1569,6 +1571,10 @@ function render() {
   S.videsh = secWrap("videsh", storiesBlock("videsh"), "The world");
   S.workshop = secWrap("workshop", storiesBlock("workshop"), "Tech · AI · wearables");
   S.pipeline = secWrap("pipeline", storiesBlock("pipeline"), "SDR · outbound · GTM");
+  // From 2 Oct 2026 Tech & AI is AI, Tech and Sales & SaaS; The Workshop and The Pipeline stay for older editions.
+  S.ai = secWrap("ai", storiesBlock("ai"), "Models, labs, AI products and the money behind them");
+  S.tech = secWrap("tech", storiesBlock("tech"), "Phones, apps, platforms, security, science and space");
+  S.sales = secWrap("sales", storiesBlock("sales"), "Outbound, go-to-market and the SaaS business");
   S.ledger = secWrap("ledger", `<div data-live="ledger">${ledgerBlock()}</div><div data-live="ledgerx">${ledgerExtras()}</div>` + storiesBlock("ledger"), "Markets · money · cards");
   S.sky = secWrap("sky", `<div data-live="sky">${skyBlock()}</div>` + storiesBlock("sky"), [CFG.paper.home_city, ...(CFG.weather.family || []).map(c => c.name)].join(", ").replace(/, ([^,]*)$/, " and $1") + " · the weeks and months ahead");
   S.namma = secWrap("namma", storiesBlock("namma"), `${CFG.paper.home_city} · fuller on Fri, Sat, Sun`);

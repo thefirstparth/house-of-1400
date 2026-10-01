@@ -247,6 +247,12 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     const filed = [...items.filter(x => x.section === "dateline"), ...(E.sections?.dateline?.lines || [])];
     if (filed.length || Object.keys(E.sections?.dateline || {}).length) errors.push(`sections: Dateline is retired from 2 Oct 2026; file each story in desh (India) or videsh (the world)${filed.length ? ` (${filed.map(x => x.id).join(", ")})` : ""}`);
   }
+  // From the same edition Tech & AI is three sections Bhide files to (Parth, 1 Oct): AI (ai), Tech (tech) and
+  // Sales & SaaS (sales), in place of The Workshop and The Pipeline (EDITORIAL.md, Section briefs).
+  if (E.date >= "2026-10-02") for (const [old, name, now] of [["workshop", "The Workshop", "ai (AI) or tech (Tech)"], ["pipeline", "The Pipeline", "sales (Sales & SaaS)"]]) {
+    const filed = [...items.filter(x => x.section === old), ...(E.sections?.[old]?.lines || [])];
+    if (filed.length || Object.keys(E.sections?.[old] || {}).length) errors.push(`sections: ${name} is retired from 2 Oct 2026; file each story in ${now}${filed.length ? ` (${filed.map(x => x.id).join(", ")})` : ""}`);
+  }
   over("screen", (E.screen || []).filter(x => !x.coming_soon).length, weekend ? RG.screen?.max_weekend : RG.screen?.max_weekday, "current titles");
   over("screen", (E.screen || []).filter(x => x.coming_soon).length, RG.screen?.max_coming_soon, "Coming soon titles");
   for (const g of ["india", "world"]) over("talk", E.trends?.[g]?.length || 0, RG.talk?.max_each, `${g} trends`);

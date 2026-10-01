@@ -25,10 +25,10 @@ const wordmark = readFileSync(H + "wordmark.js", "utf8").replace(/^export /gm, "
 const { storiesFromEdition } = await import(H + "wordmark.js");
 const full = JSON.parse(readFileSync(H + "../../content/editions/" + JSON.parse(data).edition.date + ".json", "utf8"));
 const DESKS = [
-  { id: "news", name: "News", sections: ["week", "dateline", "talk", "betting"] },
+  { id: "news", name: "News", sections: ["week", "desh", "videsh", "dateline", "talk", "betting"] },
   { id: "home", name: "Close to Home", sections: ["namma", "sky"] },
   { id: "sport", name: "Sport", sections: ["fixtures", "madrid", "paddock", "crease", "deuce", "pitch", "sidelines"] },
-  { id: "tech", name: "Tech & AI", sections: ["workshop", "pipeline"] },
+  { id: "tech", name: "Tech & AI", sections: ["ai", "tech", "sales", "workshop", "pipeline"] },
   { id: "money", name: "Money", sections: ["ledger"] },
   { id: "off", name: "Off Duty", sections: ["screen", "bye"] },
 ];

@@ -116,6 +116,27 @@
       "palette": "dispatch"
     },
     {
+      "id": "ai",
+      "name": "AI",
+      "short": "AI",
+      "accent": "--acc-tc",
+      "palette": "tech"
+    },
+    {
+      "id": "tech",
+      "name": "Tech",
+      "short": "Tech",
+      "accent": "--acc-tc",
+      "palette": "tech"
+    },
+    {
+      "id": "sales",
+      "name": "Sales & SaaS",
+      "short": "Sales & SaaS",
+      "accent": "--acc-tc",
+      "palette": "tech"
+    },
+    {
       "id": "workshop",
       "name": "The Workshop",
       "short": "Workshop",
@@ -243,6 +264,9 @@
       "id": "tech",
       "name": "Tech & AI",
       "sections": [
+        "ai",
+        "tech",
+        "sales",
         "workshop",
         "pipeline"
       ]

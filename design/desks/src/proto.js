@@ -7,7 +7,7 @@ const NEWDESKS = [
   { id: "news", name: "News", href: "/news", sections: ["desh", "videsh", "dateline", "talk", "betting"] },
   { id: "home", name: "Close to Home", href: "/close-to-home", sections: ["namma", "sky"] },
   { id: "sport", name: "Sport", href: "/sport", sections: ["fixtures", "madrid", "paddock", "crease", "deuce", "pitch", "sidelines"] },
-  { id: "tech", name: "Tech & AI", href: "/tech", sections: ["workshop", "pipeline"] },
+  { id: "tech", name: "Tech & AI", href: "/tech", sections: ["ai", "tech", "sales", "workshop", "pipeline"] },
   { id: "money", name: "Money", href: "/money", sections: ["ledger"] },
   { id: "off", name: "Off Duty", href: "/off-duty", sections: ["screen", "bye"] },
 ];
