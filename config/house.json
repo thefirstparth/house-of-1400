@@ -257,7 +257,20 @@
       ],
       "analysis_sources": [
         "Managing Madrid"
-      ]
+      ],
+      "knockouts": {
+        "note": "Cups whose knockout rounds The Wider Pitch draws when Madrid are in them (1 Oct 2026, Parth): every tie of the round, Madrid's marked. ESPN league slugs.",
+        "cups": [
+          {
+            "label": "Champions League",
+            "espn": "uefa.champions"
+          },
+          {
+            "label": "Copa del Rey",
+            "espn": "esp.copa_del_rey"
+          }
+        ]
+      }
     },
     "f1_driver": {
       "name": "Max Verstappen",

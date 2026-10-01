@@ -80,7 +80,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where", "outlook"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where", "outlook", "club_knockouts"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -1057,12 +1057,12 @@ function skyChart(o, { w = 640, compact = false } = {}) {
   const M = m.map(x => ({ l: MONL[+x.month.slice(5) - 1], s: "", hi: x.hi, lo: x.lo, uhi: x.usual_hi, ulo: x.usual_lo, aq: x.usual_aqi, au: 1 }));
   const P = [...W, ...M], all = P.flatMap(p => [p.hi, p.lo, p.uhi, p.ulo]).filter(x => x != null);
   if (!all.length) return "";
-  const t0 = Math.floor(Math.min(...all) - 1), t1 = Math.ceil(Math.max(...all) + 1), nW = W.length;
-  const h = compact ? 214 : 262, top = 40, bot = compact ? 70 : 76, ax = 30, gap = 26, colw = (w - ax - gap) / P.length, y = t => top + (1 - (t - t0) / (t1 - t0)) * (h - top - bot);
+  const t0 = Math.floor(Math.min(...all) - 2), t1 = Math.ceil(Math.max(...all) + 2), nW = W.length;
+  const h = compact ? 226 : 276, top = 46, bot = compact ? 70 : 76, ax = 30, gap = 26, colw = (w - ax - gap) / P.length, y = t => top + (1 - (t - t0) / (t1 - t0)) * (h - top - bot);
   const X = i => ax + (i < nW ? 0 : gap) + i * colw + colw / 2, cap = compact ? 16 : 20, id = `sg-${o.name.replace(/\W/g, "")}`;
   let s = `<svg class="sky-chart" viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="${esc(o.name)}: day and night temperatures and the air, week to week and month to month">`;
   s += `<text x="${ax}" y="13" font-size="10.5" font-weight="700" letter-spacing=".08em" fill="var(--muted)">WEEK TO WEEK</text>${M.length ? `<text x="${ax + gap + nW * colw}" y="13" font-size="10.5" font-weight="700" letter-spacing=".08em" fill="var(--muted)">MONTH TO MONTH</text>` : ""}`;
-  if (w >= 500 && M.length) s += `<rect x="${w - 112}" y="4" width="10" height="12" rx="4" fill="none" stroke="var(--muted)" stroke-dasharray="2 2"/><text x="${w - 97}" y="14" font-size="10.5" fill="var(--muted)">a usual month</text>`;
+  if (w >= 500 && M.length) s += `<rect x="${w - 156}" y="4" width="10" height="12" rx="4" fill="none" stroke="var(--muted)" stroke-dasharray="2 2"/><text x="${w - 141}" y="14" font-size="10.5" fill="var(--muted)">30-year average</text>`;
   for (let t = Math.ceil(t0 / 5) * 5; t <= t1; t += 5) s += `<line x1="${ax}" x2="${w}" y1="${y(t)}" y2="${y(t)}" stroke="var(--rule2)"/><text x="${ax - 6}" y="${y(t) + 4}" text-anchor="end" font-size="10.5" fill="var(--muted)">${t}°</text>`;
   if (M.length) s += `<line x1="${ax + nW * colw + gap / 2}" x2="${ax + nW * colw + gap / 2}" y1="${top - 14}" y2="${h - bot + 50}" stroke="var(--rule)"/>`;
   P.forEach((p, i) => {
@@ -1070,8 +1070,10 @@ function skyChart(o, { w = 640, compact = false } = {}) {
     const cx = X(i);
     if (p.uhi != null) s += `<rect x="${cx - cap / 2 - 5}" y="${y(p.uhi)}" width="${cap + 10}" height="${y(p.ulo) - y(p.uhi)}" rx="${(cap + 10) / 2}" fill="none" stroke="var(--muted)" stroke-dasharray="2.5 2.5"><title>A usual ${esc(p.l)}: ${Math.round(p.uhi)}° by day, ${Math.round(p.ulo)}° at night</title></rect>`;
     s += `<rect x="${cx - cap / 2}" y="${y(p.hi)}" width="${cap}" height="${Math.max(cap, y(p.lo) - y(p.hi))}" rx="${cap / 2}" fill="url(#${id})"${p.now ? ` stroke="var(--ink)" stroke-width="1.5"` : ""}><title>${esc(p.l)}: ${Math.round(p.hi)}° by day, ${Math.round(p.lo)}° at night</title></rect>`;
-    s += `<text x="${cx}" y="${y(p.hi) - 7}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--warm)">${Math.round(p.hi)}°</text><text x="${cx}" y="${y(p.lo) + 16}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--cool)">${Math.round(p.lo)}°</text>`;
-    s += `<text x="${cx}" y="${h - bot + 20}" text-anchor="middle" font-size="${colw < 70 ? 10.5 : 12}" font-weight="${p.now ? 800 : 700}" fill="var(--ink)">${colw < 70 ? p.l.replace(" week", " wk").replace(/^(\w{3})\w+$/, "$1") : p.l}</text>${p.s ? `<text x="${cx}" y="${h - bot + 33}" text-anchor="middle" font-size="10" fill="var(--muted)">${p.s}</text>` : ""}`;
+    // Labels sit outside both the bar and the dashed outline, never on them (Parth, 1 Oct).
+    const topY = y(Math.max(p.hi, p.uhi ?? -99)), botY = y(Math.min(p.lo, p.ulo ?? 99));
+    s += `<text x="${cx}" y="${topY - 8}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--warm)">${Math.round(p.hi)}°</text><text x="${cx}" y="${botY + 17}" text-anchor="middle" font-size="12" font-weight="800" fill="var(--cool)">${Math.round(p.lo)}°</text>`;
+    s += `<text x="${cx}" y="${h - bot + 20}" text-anchor="middle" font-size="${colw < 70 ? 10.5 : 12}" font-weight="${p.now ? 800 : 700}" fill="var(--ink)">${colw < 70 ? p.l.replace(" week", " wk").replace(/^(\w{3})\w+$/, "$1") : p.l}</text>${p.s && colw >= 70 ? `<text x="${cx}" y="${h - bot + 33}" text-anchor="middle" font-size="10" fill="var(--muted)">${p.s}</text>` : ""}`;
     if (p.aq != null) { const [k, word] = aqWord(p.aq); s += `<rect x="${cx - 21}" y="${h - bot + 40}" width="42" height="17" rx="8.5" fill="var(--aq${k}c)"><title>Air ${p.aq}, ${word}${p.au ? " (a usual month)" : ""}</title></rect><text x="${cx}" y="${h - bot + 52.5}" text-anchor="middle" font-size="11" font-weight="800" fill="var(--aq${k})">${p.aq}</text>`; }
   });
   s += `<text x="${ax - 6}" y="${h - bot + 52.5}" text-anchor="end" font-size="10" font-weight="700" fill="var(--muted)">AIR</text>`;
@@ -1098,7 +1100,7 @@ function skyOutlook() {
   const [B, ...rest] = O, F = rest.filter(c => c.family), head = skyHeadline(B);
   const phone = innerWidth < 720, cw = Math.min(640, innerWidth - 32);
   let h = `<div class="sky-top"><div><p class="kick">${esc(B.name)}</p>${head ? `<h3 class="sky-h">${esc(head)}</h3>` : ""}<p class="sky-dek">${esc(skyDek(B, today(B.name)))}</p></div>
-<figure class="sky-fig">${skyChart(B, { w: phone ? cw : 640 })}<figcaption>Bars run from the night's low to the day's high. Months: this year's outlook against a usual month (dashed). Air: US AQI; months as a usual month.</figcaption></figure></div>
+<figure class="sky-fig">${skyChart(B, { w: phone ? cw : 640 })}<figcaption>Each bar runs from the night's low to the day's high. For the months, the bar is this year's forecast and the dashed outline is the same month's 30-year average at the city's weather station. Air is the US AQI: the week's average, and for the months what that month is usually like.</figcaption></figure></div>
 <details class="more sky-more"><summary>Week to week and month to month, in figures</summary>${skyFigures(B, { sunset: true })}</details>`;
   if (F.length) h += `<h3 class="subhd famhead">${esc(F.map(x => x.name).join(" and "))} <span>where the family is</span></h3><div class="sky-fam">${F.map(c => { const t = today(c.name), k = cur(c.name);
     return `<div><h4>${esc(c.name)}${k ? `<small>${Math.round(k.temp)}° now${t?.feels_max != null ? ` · feels ${Math.round(t.feels_max)}° by day` : ""}</small>` : ""}</h4>${skyHeadline(c) ? `<p class="l">${esc(skyHeadline(c))}</p>` : ""}<p class="s">${esc(skyDek(c, t, true))}</p>
@@ -1137,6 +1139,14 @@ function skyWeek() {
 // last four days and its next match in the next ten, from ESPN. Scores arrive by themselves, so the day after a match
 // the paper shows the result without anyone writing it.
 const LEAGUE = { "uefa.nations": "Nations League", "fifa.friendly": "Friendly", "fifa.worldq.uefa": "World Cup qualifier", "fifa.worldq.conmebol": "World Cup qualifier", "fifa.worldq.afc": "World Cup qualifier" };
+// The club's cup knockouts (from 1 Oct 2026): every tie of the round Madrid are in, two legs joined, Madrid's first.
+function clubKnockouts() {
+  const R = LIVE.club_knockouts?.value?.rounds || []; if (!R.length) return "";
+  const club = CFG.follows.football_club.name;
+  const legs = t => t.legs.map(l => l.score ? `${esc(l.home)} ${esc(l.score)}` : `${esc(istDay(l.date))}${l.state === "pre" ? `, ${esc(istTime(l.date))} IST` : ""}`).join(" · ");
+  const res = t => t.state === "done" && t.through ? `<b>${esc(t.through)} through</b>${t.agg ? `<small class="tnum">${Object.entries(t.agg).map(([k, v]) => `${esc(k)} ${v}`).join(", ")} on aggregate</small>` : ""}` : t.state === "live" ? `<em class="cz-live"><i></i>In play</em>` : t.next ? `${esc(istFull(t.next))} IST` : "";
+  return R.map(r => `<h4 class="subhd" style="margin-top:0">${esc(r.cup)} · ${esc(r.round)} <span>${esc(istDay(r.from))} to ${esc(istDay(r.to))}</span></h4><div class="tbl" style="margin-bottom:14px"><table class="compact ko"><tbody>${r.ties.map(t => `<tr class="${t.ours ? "on" : ""}"><td>${t.teams.map(x => `${crest(x.id, "")}${esc(x.name)}`).join(" v ")}<small>${legs(t)}</small></td><td class="r">${res(t)}</td></tr>`).join("")}</tbody></table></div>`).join("") + staleNote("club_knockouts");
+}
 function intlBlock() {
   const M = LIVE.intl_football?.value?.matches || [], teams = CFG.follows?.national_teams || [];
   if (!M.length || !teams.length) return "";
@@ -1515,7 +1525,7 @@ function render() {
   if (E.week_ahead?.length) S.week = secWrap("week", weekBlock(), "Monday to Sunday · what to watch");
   S.fixtures = secWrap("fixtures", `<div data-live="fixtures">${fixturesBlock()}</div>`, "Next 7 days · IST");
   S.madrid = secWrap("madrid", `<div data-live="madrid">${madridBlock()}</div>` + storiesBlock("madrid"));
-  S.pitch = secWrap("pitch", `<div data-live="intl">${intlBlock()}</div>` + storiesBlock("pitch"), "Football beyond Madrid");
+  S.pitch = secWrap("pitch", `<div data-live="intl">${clubKnockouts()}${intlBlock()}</div>` + storiesBlock("pitch"), "Football beyond Madrid");
   const race = LIVE.f1_next?.value?.race;
   S.paddock = secWrap("paddock", `<div data-live="paddock">${paddockBlock()}</div>` + storiesBlock("paddock"), race ? `${race.flag} Round ${race.round ?? ""} · ${race.name}${race.locality ? " · " + race.locality : ""}` : undefined);
   S.crease = secWrap("crease", creaseBlock(), "India men · senior team");
@@ -1560,7 +1570,7 @@ function paintLive() {
   const rail = railHTML(); if ($("#rail").dataset.html !== rail) { $("#rail").innerHTML = rail; $("#rail").dataset.html = rail; }
   const [eL, eR] = earsHTML(); $("#earL").innerHTML = eL; $("#earR").innerHTML = eR;
   $("#mkts").innerHTML = marketDots();
-  const map = { crease: () => { const rows = E.sections?.crease?.data?.rows || []; return creaseLive() || (rows.length ? `<table class="kv"><tbody>${rows.map(r => `<tr class="${r.on ? "on" : ""}"><th scope="row">${esc(r.label)}</th><td>${esc(r.text)}</td></tr>`).join("")}</tbody></table>` : ""); }, deuce: deuceData, intl: intlBlock, ledgerx: ledgerExtras, talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
+  const map = { crease: () => { const rows = E.sections?.crease?.data?.rows || []; return creaseLive() || (rows.length ? `<table class="kv"><tbody>${rows.map(r => `<tr class="${r.on ? "on" : ""}"><th scope="row">${esc(r.label)}</th><td>${esc(r.text)}</td></tr>`).join("")}</tbody></table>` : ""); }, deuce: deuceData, intl: () => clubKnockouts() + intlBlock(), ledgerx: ledgerExtras, talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
   for (const [k, fn] of Object.entries(map)) {
     const el = document.querySelector(`[data-live="${k}"]`);
     if (!el) continue;

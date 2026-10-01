@@ -1170,3 +1170,7 @@ table.tr td small{display:block;font:500 11px var(--sans);color:var(--muted)}
 .cz-asof{display:block;font:500 12px var(--sans);color:var(--muted)}
 
 .br-top{margin:10px 0 0;font:16px/1.5 var(--serif);color:var(--ink2)}
+
+/* The Wider Pitch: the club's cup knockouts (1 Oct 2026) */
+table.ko td small{display:block;font:500 12.5px var(--sans);color:var(--muted);margin-top:2px}
+table.ko td.r{text-align:right;white-space:nowrap}

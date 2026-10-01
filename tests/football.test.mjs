@@ -68,3 +68,16 @@ test("espnTable keeps ESPN's zone for each row", () => {
   e.note = { description: "Qualifies for round of 16", color: "#81D6AC" };
   assert.deepEqual(espnTable({ standings: { entries: [e] } })[0].zone, { name: "Qualifies for round of 16", color: "#81D6AC" });
 });
+
+test("cup knockouts: two legs make one tie, the aggregate and who went through, Madrid's tie first (2024-25 quarter-finals)", async () => {
+  const { koTies } = await import("../lib/football.js");
+  const { readFileSync } = await import("node:fs");
+  const ev = JSON.parse(readFileSync(new URL("./fixtures/ucl-qf-2025.json", import.meta.url), "utf8"));
+  const T = koTies(ev, 86);
+  assert.equal(T.length, 4);
+  assert.ok(T[0].ours && T[0].teams.some(t => t.name === "Real Madrid"));
+  assert.equal(T[0].through, "Arsenal");
+  assert.deepEqual(T[0].agg, { "Real Madrid": 1, Arsenal: 5 });
+  assert.equal(T[0].legs.length, 2);
+  assert.ok(T.every(t => t.state === "done"));
+});
