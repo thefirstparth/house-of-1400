@@ -158,6 +158,10 @@ the same edition JSON; the redesign renders it differently.
 - `config.desks` holds today's grouping; the redesign changes its membership and names (config change, allowed in a
   build session, log it).
 
+### 7.2a Feedback on work so far
+
+Read `docs/REDESIGN-FEEDBACK.md` before continuing: Parth's reviews of each mock, newest first.
+
 ### 7.3 Suggested order of work
 
 1. Mock the Sport desk page in B's style (Parth asked for it next), then one more desk, and get his approval.
