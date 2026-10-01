@@ -124,8 +124,8 @@ the same edition JSON; the redesign renders it differently.
 - **Desks and order** (from the Page One mock; Parth did not object, confirm names once more before building):
   Page One · News (Desh = India, Videsh = the world, Talk of the Day, The Betting Window) · Close to Home (Namma Beat =
   Bengaluru, Back Home = Ranchi and Prayagraj, Sky & Streets) · Sport (Madridismo, Paddock Notes, The Crease, Deuce,
-  The Wider Pitch, The Sidelines; Fixture List within Sport) · Tech & AI (The Lab = AI, The Stack = technology, The
-  Funnel = sales, go-to-market, SaaS) · Money (The Ledger, one section) · Off Duty (Screen & Stage, Before You Go).
+  The Wider Pitch, The Sidelines; the Fixture List first, Parth 1 Oct) · Tech & AI (AI, Tech, Sales & SaaS: Parth's
+  names, 1 Oct, in place of The Lab, The Stack, The Funnel) · Money (The Ledger, one section) · Off Duty (Screen & Stage, Before You Go).
   Your Desk, Letters, the editor's page, Archive and the House Note move to the footer area.
 - **Page One is variant B** (`design/page-one/page-one-variants.html?v=B`; spec in `design/page-one/README.md`, FINAL):
   run line; nameplate with the desk strip as navigation; three columns: the day in a minute (lead headline, no deck,
@@ -149,10 +149,9 @@ the same edition JSON; the redesign renders it differently.
 - **Back Home (Ranchi and Prayagraj news)** needs new content: a new section in the schema, sources (Prabhat Khabar,
   Dainik Jagran, Amar Ujala, TOI city pages) and an editorial brief. Build the slot so it hides when empty; get his
   go-ahead for the content change separately.
-- **Desh / Videsh** split today's Dateline. Either the editor files stories into two sections (schema and editorial
-  change) or the page splits Dateline by its kicker (presentation only, less reliable). Recommend asking for the schema
-  change.
-- **The Lab / The Stack / The Funnel** re-file today's Workshop and Pipeline. Same choice as above.
+- **Done (1 Oct, live from the 2 Oct edition):** Bhide files Desh and Videsh in place of Dateline, and AI, Tech and
+  Sales & SaaS in place of The Workshop and The Pipeline (schema, validator, config, the live page, EDITORIAL.md;
+  DECISIONS.md). The old sections stay valid and readable for editions up to 1 Oct.
 - **Talk of the Day and The Betting Window move from Life to News**; **Before You Go and Screen & Stage become Off
   Duty**: these are presentation only (re-grouping), fine to do.
 - `config.desks` holds today's grouping; the redesign changes its membership and names (config change, allowed in a
