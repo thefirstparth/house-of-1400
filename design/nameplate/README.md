@@ -2,7 +2,7 @@
 
 Working samples of five ways the nameplate's "1400" could come alive, plus a recommended combination. Inspired by the
 idea behind The Daily Index's masthead (the name reacts to you and can show information) without copying its
-look: ours are in print language, not a dot-matrix screen. **Chosen (Parth, 1 Oct): 1 + 4, on Page One.** It is built in `design/page-one/wordmark.js` and specified in `design/page-one/README.md` (The wordmark).
+look: ours are in print language, not a dot-matrix screen. **Chosen (Parth, 1 Oct): 1 + 4, on Page One.** It is built in `v2/wordmark.js` and specified in `design/page-one/README.md` (The wordmark).
 
 - `nameplate-samples.html`: one self-contained file that works offline, with the fonts embedded and figures from the
   1 Oct edition. The black bar switches between the options, the size (Large, or Page One B's 52px), Motion off (what a

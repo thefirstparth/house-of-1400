@@ -41,7 +41,7 @@ const fonts = [
 // ---------------------------------------------------------------- the renderer, patched
 let js = read("public/app.js");
 const rep = (a, b) => { if (!js.includes(a)) throw new Error("app.js anchor missing: " + a.slice(0, 80)); js = js.replace(a, () => b); };
-const layer = readFileSync(SRC + "sample.js", "utf8") + "\n" + read("design/page-one/wordmark.js").replace(/^export /gm, "");
+const layer = readFileSync(SRC + "sample.js", "utf8") + "\n" + read("v2/wordmark.js").replace(/^export /gm, "");
 rep("function render() {", layer + "\nfunction render() {");
 rep("function desksHTML(S) {", "function desksHTML_v1(S) {");
 rep('<div class="sechead">${seal(id, 54)}<div>', '<div class="sechead"><div>');

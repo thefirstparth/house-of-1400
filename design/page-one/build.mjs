@@ -20,9 +20,9 @@ const fonts = [
   face("Libre Franklin", "libre-franklin/files/libre-franklin-latin-wght-normal.woff2", "100 900"),
   face("Libre Franklin", "libre-franklin/files/libre-franklin-latin-ext-wght-normal.woff2", "100 900", "normal", EXT),
 ].join("\n");
-const wordmark = readFileSync(H + "wordmark.js", "utf8").replace(/^export /gm, "");
+const wordmark = readFileSync(H + "../../v2/wordmark.js", "utf8").replace(/^export /gm, "");
 // The wordmark's pieces, from the full edition the mock is built from, with the desks as agreed on 1 Oct.
-const { storiesFromEdition } = await import(H + "wordmark.js");
+const { storiesFromEdition } = await import(H + "../../v2/wordmark.js");
 const full = JSON.parse(readFileSync(H + "../../content/editions/" + JSON.parse(data).edition.date + ".json", "utf8"));
 const DESKS = [
   { id: "news", name: "News", sections: ["week", "desh", "videsh", "dateline", "talk", "betting"] },

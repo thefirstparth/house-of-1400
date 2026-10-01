@@ -603,3 +603,8 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 1 Oct 2026: the editor's note is one point in two sentences (Parth on the 1 Oct note: "Read too AI. Either fix or remove." He chose to fix the voice and keep it)
 - From the 2 Oct edition the note makes one point, in at most two sentences and 35 words; never a recap of the day's stories, a reading order or a sentimental turn. The validator refuses a longer note, "spare a thought" and "read X before/first". The 25 Sep note is the model (EDITORIAL.md, The editor's note).
+
+## 1 Oct 2026: the new design ships behind ?v2, beside the old one (Parth: "Yes, ship behind ?v2")
+- After Parth's 24 notes on the full sample, the new design is live on the real site behind a switch: `/?v2` opens it and the device remembers; `/?v1` goes back. Edition pages only; Archive, the editor's page and posters stay in v1. v1 is unchanged: v2 is assembled at build time from `app.js` and `styles.css` (v2/README.md), and a v2 that cannot be assembled never fails the build.
+- The changes from his notes are in v2/README.md: five lines at least in the day in a minute; Money headed 1D with each market's live or closed state; The market expects ranked by relevance to his follows (config `betting.page_one`), so another country's election stays in the Betting Window; the lead at the top of its own section with its 16:9 drawing across the column; the Fixture List grouped by sport.
+- v2's desks are config `desks_v2` (Page One, News, Close to Home with Back Home, Sport, Tech & AI, Money, Off Duty; The Week Ahead opens News on Mondays; Your Desk folded at the foot of Off Duty). v1 keeps config `desks`.

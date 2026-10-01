@@ -1,0 +1,279 @@
+/* ================================================================ THE NEW DESIGN (v2, behind ?v2; v2/README.md)
+   Over the live stylesheet (radii turned down to 4px by v2/assemble.mjs): Newsreader headlines, Source Serif 4 text,
+   Libre Franklin labels and figures, all self-hosted; one colour per desk, carried by a rule and the name, never by a
+   filled band. Built from the desk mocks (design/desks) and the full sample Parth reviewed (design/sample). */
+:root{
+  --serif:"Source Serif 4",Georgia,serif;--hl:"Newsreader","Source Serif 4",Georgia,serif;--head:"Playfair Display",Georgia,serif;
+  --sans:"Libre Franklin",system-ui,-apple-system,"Segoe UI",sans-serif;--black:"UnifrakturMaguntia","Old English Text MT",serif;
+  --f1font:"Titillium Web","Libre Franklin",system-ui,sans-serif;
+  --radius:4px;--r-l:4px;
+  --d-one:#15140f;--d-news:#1f3f73;--d-home:#0a72a8;--d-sport:#b8460e;--d-tech:#6a3fb5;--d-money:#0b7a43;--d-off:#a87a00;
+  --d:var(--d-sport);--dc:color-mix(in srgb,var(--d) 9%,var(--paper));--dc2:color-mix(in srgb,var(--d) 16%,var(--paper));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--d-one:#eeeae0;--d-news:#a5bfeb;--d-home:#7ccbf2;--d-sport:#f29a62;--d-tech:#bba4f2;--d-money:#5fd9a0;--d-off:#e7c35a;--dc:color-mix(in srgb,var(--d) 13%,var(--paper));--dc2:color-mix(in srgb,var(--d) 22%,var(--paper))}}
+:root[data-theme="dark"]{--d-one:#eeeae0;--d-news:#a5bfeb;--d-home:#7ccbf2;--d-sport:#f29a62;--d-tech:#bba4f2;--d-money:#5fd9a0;--d-off:#e7c35a;--dc:color-mix(in srgb,var(--d) 13%,var(--paper));--dc2:color-mix(in srgb,var(--d) 22%,var(--paper))}
+body{font-size:17.5px}
+#top,nav.idx,#pmenu{display:none!important}
+.layout{padding-top:0}
+.sheet{max-width:1240px}
+@media (min-width:1500px){.sheet{max-width:1320px}}
+@media (min-width:1900px){.sheet{max-width:1520px}}
+
+/* one colour per desk: every section, story, table highlight and pill on this page takes the desk's */
+#main,#main [data-fam]{--f:var(--d);--fc:var(--dc);--fo:var(--ink)}
+
+/* ---------- run line and the one-line masthead ---------- */
+.dwrap{max-width:1240px;margin:0 auto;padding-inline:clamp(16px,3vw,40px)}
+@media (min-width:1500px){.dwrap{max-width:1320px}}
+@media (min-width:1900px){.dwrap{max-width:1520px}}
+.drun{display:flex;justify-content:space-between;gap:4px 18px;flex-wrap:wrap;padding:8px 0 6px;font:500 12.5px var(--sans);color:var(--muted)}
+.drun span+span{margin-left:14px}
+.drun a{color:inherit}
+.dbar{display:flex;justify-content:space-between;align-items:center;gap:10px 24px;flex-wrap:wrap;padding:6px 0 10px}
+.np{display:inline-flex;align-items:baseline;gap:8px;color:var(--ink);text-decoration:none;white-space:nowrap}
+.np .the{font:400 25px/1 var(--black)}
+.np .hof{font:600 10px var(--sans);letter-spacing:.42em;text-transform:uppercase;transform:translateY(-4px)}
+.np .n{font:900 28px/1 var(--head);font-variant-numeric:lining-nums}
+.now{display:flex;gap:6px 22px;flex-wrap:wrap;font:500 13.5px var(--sans);color:var(--ink2)}
+.now a{text-decoration:none;color:inherit;white-space:nowrap}
+.now .k{font:700 10.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.now b{font-weight:700;color:var(--ink)}
+
+/* ---------- the desk tabs: one row, pinned, each a rule in its desk's colour ---------- */
+nav.dtabs{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:1px solid var(--rule)}
+nav.dtabs ol{list-style:none;margin:0 auto;padding:0 clamp(16px,3vw,40px);max-width:1240px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+@media (min-width:1500px){nav.dtabs ol{max-width:1320px}}
+@media (min-width:1900px){nav.dtabs ol{max-width:1520px}}
+nav.dtabs a{display:block;text-align:center;border-top:4px solid var(--c);padding:7px 4px 9px;font:700 11.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--c);white-space:nowrap;text-decoration:none}
+nav.dtabs a:hover{background:color-mix(in srgb,var(--c) 6%,transparent)}
+nav.dtabs a[aria-current]{background:color-mix(in srgb,var(--c) 11%,transparent);color:var(--ink)}
+@media (max-width:860px){
+ nav.dtabs ol{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity}
+ nav.dtabs ol::-webkit-scrollbar{display:none}
+ nav.dtabs li{flex:none;scroll-snap-align:center}
+ nav.dtabs a{padding:7px 12px 9px}
+}
+
+/* ---------- the desk's opener: its name, then the jump list ---------- */
+.dopen{padding:26px 0 4px}
+.dopen h1{margin:0;font:600 clamp(40px,5vw,58px)/1 var(--hl);font-variation-settings:"opsz" 72;letter-spacing:-.015em;color:var(--d)}
+.jump{display:flex;flex-wrap:wrap;gap:4px 0;margin-top:12px;font:600 13.5px var(--sans)}
+.jump a{color:var(--ink2);text-decoration:none;white-space:nowrap}
+.jump a:not(:last-child)::after{content:"·";color:var(--muted);margin:0 10px;font-weight:400;display:inline-block}
+.jump a:hover{color:var(--d);text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- section heads: a rule in the desk's colour, the name, the line under it ---------- */
+section.sec{margin-top:46px;scroll-margin-top:52px}
+section.sec:first-of-type{margin-top:26px}
+.sechead{display:block;background:none;color:var(--ink);border-radius:0;border-top:2px solid var(--d);padding:9px 0 0;margin-bottom:20px}
+.sechead h2{font:600 clamp(26px,2.6vw,32px)/1.08 var(--hl);font-variation-settings:"opsz" 48;text-transform:none;letter-spacing:-.005em;color:var(--d)}
+.sechead span{font:italic 400 15.5px/1.35 var(--serif);color:var(--muted);opacity:1;margin-top:3px}
+
+/* ---------- stories in the new faces ---------- */
+.lead-story h2,.story h3{font-family:var(--hl);font-variation-settings:"opsz" 36}
+.story h3{font-size:26px;line-height:1.15;font-weight:600;letter-spacing:-.006em}
+.lead-story h2{font-weight:600;font-variation-settings:"opsz" 72}
+.kick,.item .tag{font-size:11.5px;letter-spacing:.09em}
+.lead-story p.first::first-letter,.sec .story:first-of-type>.body>p:first-child::first-letter{font:600 3.4em/.8 var(--hl);color:var(--ink)}
+.why{border-radius:4px}
+.by{font-family:var(--serif)}
+
+/* ---------- quieter live furniture: no tonal cards ---------- */
+.signal{background:none;border:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);border-radius:0;padding:10px 0;margin:-6px 0 22px}
+.signal .sg-bar{height:4px}
+.agenda li.on{background:var(--dc);border-radius:4px}
+.f1-next li{background:none}
+
+/* ---------- the next desk, and the foot ---------- */
+.nextdesk{margin:56px 0 0;border-top:3px double var(--ink);padding-top:16px;display:flex;justify-content:flex-end}
+.nextdesk a{display:inline-flex;align-items:baseline;gap:8px;font:600 15px var(--sans);color:var(--ink);text-decoration:none;border-top:4px solid var(--c);padding:10px 2px 2px}
+.nextdesk a b{font:600 24px/1 var(--hl);color:var(--c)}
+.nextdesk a:hover b{text-decoration:underline;text-underline-offset:4px}
+.dfoot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 24px;margin:26px 0 40px;padding-top:12px;border-top:1px solid var(--rule);font:500 13.5px var(--sans);color:var(--muted)}
+.dfoot nav{display:flex;gap:6px 22px;flex-wrap:wrap}
+.dfoot a{color:var(--ink2);text-decoration:none}
+.dfoot a:hover{text-decoration:underline}
+@media (max-width:720px){
+ .drun .tag{display:none}
+ .dbar{padding-bottom:8px}
+ .np .the{font-size:21px}.np .n{font-size:24px}.np .hof{font-size:9px;letter-spacing:.36em}
+ .now{font-size:13px;gap:4px 16px}
+ .dopen{padding-top:18px}
+ .sechead h2{font-size:26px}
+ .story h3{font-size:23px}
+}
+.after-data{margin-top:30px}
+#main section.sec,#main [data-fam]{--acc:var(--d)!important}
+/* a section's stories never sit tight against its live data */
+.sec [data-live]:not(:empty)+:is(.solo,.cols2,.cols3,.stack,.alsoin){margin-top:30px}
+/* phones: a table never pushes past its column (today's paper clips Madrid's next matches by 47px at 390px) */
+.cols2>*,.split>*{min-width:0}
+@media (max-width:720px){
+ #madrid .tbl table{font-size:14px}
+ #madrid .tbl td,#madrid .tbl th{padding-right:6px}
+ #madrid .tbl td:last-child{white-space:normal;min-width:84px}
+}
+@media (max-width:720px){#deuce .tbl td:last-child,#deuce .tbl th:last-child{white-space:normal}#deuce .tbl table{font-size:14px}}
+.cz-ko td:first-child{white-space:nowrap}
+
+/* ---------- colour weight (feedback, 1 Oct): the desk colour marks structure, not every small thing ----------
+   Desk colour: the desk's name, section rules and names, kickers, the current tab, in-section tabs, market bars and the
+   followed team's tint. Ink: times, figures, "Show more", Source and the other small links. */
+.agenda li .t{color:var(--ink)}
+.lmore,.f1-box .lmore,.linkish{color:var(--ink2)}
+.lmore:hover,.linkish:hover{color:var(--ink)}
+.tools a{color:var(--ink2)}
+.tools .rm{text-decoration-color:var(--rule)}
+.tools a:hover,.tools .rm:hover{color:var(--ink)}
+.why b{color:var(--ink2)}
+.why.good b{color:var(--good)}.why.bad b{color:var(--bad)}
+#main{--odds:var(--d)}
+
+/* ---------- the market's view: one size for every price, all on one baseline ---------- */
+.signal .sg-o{align-items:baseline}
+.signal .sg-o span{display:inline-flex;align-items:baseline;gap:5px;white-space:nowrap}
+.signal .sg-o b,.signal .sg-o .fav b{font:700 16px/1.2 var(--sans);color:var(--ink)}
+.signal .sg-o .fav b{font-weight:800}
+
+/* ---------- The Crease's next tour: across the section, breaking only between its parts ---------- */
+.cz-line{grid-column:1/-1}
+.nw{white-space:nowrap}
+
+/* ---------- phone tabs: the edges fade where the row has more to show ---------- */
+@media (max-width:860px){
+ nav.dtabs ol.more-r{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent)}
+ nav.dtabs ol.more-l{-webkit-mask-image:linear-gradient(90deg,transparent,#000 36px);mask-image:linear-gradient(90deg,transparent,#000 36px)}
+ nav.dtabs ol.more-l.more-r{-webkit-mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent)}
+}
+
+
+:root{
+  --sun:#d9861a;--halo:#f6d9a8;--moon:#e9e4d2;--mdark:#4a5568;--mhalo:#dfe3ea;--night:#5b6b8c
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sun:#f2b552;--halo:#4a3718;--moon:#f1ecd8;--mdark:#3a3f4a;--mhalo:#262b36;--night:#9fb0d0;}}
+:root[data-theme="dark"]{--sun:#f2b552;--halo:#4a3718;--moon:#f1ecd8;--mdark:#3a3f4a;--mhalo:#262b36;--night:#9fb0d0;}
+body{background:var(--paper);color:var(--ink)}
+
+/* ---------- the header: on Page One the full nameplate, on a desk the one-line masthead ---------- */
+#bigplate{display:none;text-align:center;padding:2px 0 10px;--np:78px;user-select:none;-webkit-user-select:none}
+#bigplate .the{display:block;font:400 33px/1 var(--black)}
+#bigplate .hof{display:block;font:600 11px var(--sans);letter-spacing:.55em;padding-left:.55em;margin:4px 0 3px;text-transform:uppercase}
+#bigplate .n{display:flex;justify-content:center;align-items:center;height:calc(var(--np) * 1.02);font:900 var(--np)/1 var(--head);font-variant-numeric:lining-nums;margin-top:-.04em}
+#bigplate .wmcap{height:16px;margin-top:1px;font:600 11.5px/16px var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);opacity:0;transition:opacity .25s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#bigplate .wmcap a,.run .wmrun a,.drun .wmrun a{color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--rule)}
+.drun .wmrun{font:600 11.5px var(--sans);letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw;display:inline-block;vertical-align:bottom}
+@media (min-width:761px){#bigplate .wmcap{display:none}}
+@media (max-width:760px){#bigplate{--np:76px}#bigplate .the{font-size:32px}#bigplate .wmcap{font-size:11px;letter-spacing:.03em}}
+body.on-one #bigplate{display:block}
+body.on-one .dbar{display:none}
+
+/* ---------- Page One B ---------- */
+.p1 a{color:inherit;text-decoration:none}
+.p1 .k{font:700 10.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.p1body{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr);gap:22px 34px;padding:14px 0 6px;align-items:start}
+.p1 .stack{display:flex;flex-direction:column;gap:20px}
+.p1 .bh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 10px;padding-top:7px;border-top:2px solid var(--c,var(--ink))}
+.p1 .bh h2{margin:0;font:600 18px/1.1 var(--hl);font-variation-settings:"opsz" 30;color:var(--c,var(--ink))}
+.p1 .bh a{font:600 11.5px var(--sans);color:var(--muted)}
+.p1 .bh a:hover{color:var(--c)}
+.p1 .leadh{display:block;margin:0 0 6px}
+.p1 .leadh .lab{font:700 10.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--c)}
+.p1 .leadh h3{margin:2px 0 0;font:600 24px/1.14 var(--hl);font-variation-settings:"opsz" 40;letter-spacing:-.005em;text-wrap:balance}
+.p1 ol.min{list-style:none;margin:0;padding:0}
+.p1 ol.min a{display:grid;grid-template-columns:1fr;gap:1px;padding:6px 0;border-top:1px solid var(--rule2)}
+.p1 ol.min .lab{font:700 10px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+.p1 ol.min b{font:500 15.5px/1.3 var(--hl);font-variation-settings:"opsz" 16}
+.p1 a:hover>b,.p1 .leadh:hover h3{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.p1 .eve:not(:empty){border-top:1px solid var(--ink);margin-top:12px;padding-top:10px}
+.p1 .pick .v{display:inline-block;font:700 9.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--c);margin-right:6px}
+.p1 .pick b{font:600 16px/1.25 var(--hl)}
+.p1 .pick p{margin:3px 0 0;font:13px/1.4 var(--serif);color:var(--ink2)}
+.p1 .ednote{margin:8px 0 4px;padding:8px 0 8px 12px;border-left:3px solid var(--ink);font:italic 14px/1.45 var(--serif);color:var(--ink2)}
+.p1 .ednote b{display:block;font:700 9.5px var(--sans);font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.p1 .ednote i{display:block;font:600 12px var(--sans);font-style:normal;color:var(--ink);margin-top:3px}
+.p1 ul.rows{list-style:none;margin:0;padding:0}
+.p1 ul.rows li{display:grid;grid-template-columns:58px 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule2);font:13px/1.35 var(--sans);color:var(--muted)}
+.p1 ul.rows li:first-child{border-top:0;padding-top:0}
+.p1 ul.rows .lab{font:700 10px var(--sans);letter-spacing:.08em;text-transform:uppercase;padding-top:2px}
+.p1 ul.rows b{display:block;font:600 14px/1.3 var(--sans);color:var(--ink)}
+.p1 .live{display:inline;color:var(--bad);font-weight:700}
+.p1 .live::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--bad);margin-right:5px;vertical-align:1px}
+.p1 .wx{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:center}
+.p1 .wx .t{font:600 40px/1 var(--hl);font-variation-settings:"opsz" 60}
+.p1 .wx .c{font:13px/1.35 var(--sans);color:var(--ink2)}
+.p1 .wx .c b{display:block;font:600 15px var(--hl);color:var(--ink)}
+.p1 .arc{grid-column:1/-1;width:100%;height:auto;display:block;margin-top:2px;max-height:96px}
+.p1 .arc .track{fill:none;stroke:var(--rule);stroke-width:1.5;stroke-dasharray:2 4}
+.p1 .arc .done{fill:none;stroke:var(--sun);stroke-width:2.5;stroke-linecap:round}
+.p1 .arc.night .done{stroke:var(--night)}
+.p1 .arc .hz{stroke:var(--rule);stroke-width:1}
+.p1 .arc text{font:500 10.5px var(--sans);fill:var(--muted)}
+.p1 .wxs{display:flex;justify-content:space-between;gap:8px;font:12.5px var(--sans);color:var(--muted);margin-top:6px}
+.p1 .wxs b{color:var(--ink);font-weight:600}
+.p1 .fam1{margin:8px 0 0;font:13px/1.4 var(--sans);color:var(--ink2);border-top:1px solid var(--rule2);padding-top:7px}
+.p1 .fam1 b{color:var(--ink);font-weight:600}
+.p1 .mny .sx{display:flex;align-items:baseline;gap:10px}
+.p1 .mny .sx b{font:600 30px/1 var(--hl);font-variation-settings:"opsz" 48}
+.p1 .mny .sx span{font:600 13.5px var(--sans)}
+.p1 .mny .sx .k{align-self:center}
+.p1 .mny table{width:100%;border-collapse:collapse;margin-top:6px;font:600 13px var(--sans)}
+.p1 .mny td{padding:4px 0;border-top:1px solid var(--rule2);border-bottom:0}
+.p1 .mny td.l{color:var(--ink);font-weight:600}.p1 .mny td.v{color:var(--ink2);font-weight:500;text-align:right}.p1 .mny td.r{text-align:right;width:62px}
+.p1 .fear{display:flex;gap:16px;margin-top:8px;font:12.5px/1.3 var(--sans);color:var(--muted)}
+.p1 .fear span b{display:block;font:700 14px var(--sans);color:var(--ink)}
+.p1 .fear span b.dn{color:var(--bad)}.p1 .fear span b.up{color:var(--good)}
+.p1 ol.bets{list-style:none;margin:0;padding:0}
+.p1 ol.bets li{padding:6px 0;border-top:1px solid var(--rule2)}
+.p1 ol.bets li:first-child{border-top:0;padding-top:0}
+.p1 ol.bets .t{display:block;font:600 13.5px/1.3 var(--sans);color:var(--ink)}
+.p1 ol.bets .o{display:grid;grid-template-columns:44px 1fr;gap:8px;align-items:center;margin-top:3px;font:12.5px var(--sans);color:var(--ink2)}
+.p1 ol.bets .o b{font:700 17px/1 var(--hl);color:var(--ink)}
+.p1 ol.bets .bar{grid-column:1/-1;height:4px;border-radius:2px;background:var(--rule2);overflow:hidden}
+.p1 ol.bets .bar i{display:block;height:100%;background:var(--c)}
+.p1end .hn{display:flex;align-items:baseline;gap:14px;margin:0;padding:9px 0;border-top:3px double var(--rule);font:15px/1.45 var(--serif);color:var(--ink)}
+.p1end .hn b{flex:none;font:700 10.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.p1end .foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--rule);padding:9px 0 12px;font:500 12.5px var(--sans);color:var(--muted)}
+.p1end .foot a{color:inherit;text-decoration:none}
+.p1end .foot nav a{margin-right:16px;white-space:nowrap}.p1end .foot nav a:hover{color:var(--ink)}
+.p1end .foot a.next{white-space:nowrap;font:700 13px var(--sans);color:var(--ink);border:1px solid var(--ink);border-radius:3px;padding:6px 14px}
+@media (max-width:1100px){.p1body{grid-template-columns:1fr 1fr}.p1body>.news{grid-column:1/-1}}
+@media (max-width:760px){.p1body{grid-template-columns:1fr;gap:18px}.p1end .hn{display:block}.p1end .hn b{display:block;margin-bottom:2px}}
+body.on-one .layout{padding-top:0}
+
+@media (prefers-reduced-motion:reduce){#bigplate .wmcap{transition:none}}
+
+.p1end .hn,.p1end .hn span{max-width:none}
+
+/* ---------- the day's lead, at the top of its own section (Parth, 1 Oct: by the drawing's shape) ----------
+   Headline across, the 16:9 drawing across the column under it, then the text; on a wide screen the text runs in two
+   columns under the drawing. */
+.dlead{margin:4px 0 30px;padding-bottom:22px;border-bottom:1px solid var(--rule)}
+.dlead .lead-story h2{font-size:clamp(32px,3.8vw,50px);line-height:1.06;margin:6px 0 12px;max-width:40ch}
+.dlead .lead-story .deck{font-size:19px;max-width:60ch}
+.dlead .lead-story>figure.art{margin:10px 0 18px}
+.dlead .lead-story>figure.art img{width:100%}
+@media (min-width:900px){.dlead .lead-story:has(figure.art-wide)>.body{columns:2 320px;column-gap:40px}.dlead .lead-story>.body>*{break-inside:avoid-column}}
+
+/* ---------- The Fixture List: each day in sport groups, under a small label ---------- */
+.agenda li.sp{display:block;padding:12px 0 2px;border-bottom:0;font:700 10.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--d)}
+.agenda li.sp:first-child{padding-top:8px}
+.agenda li.sp+li{border-top:1px solid var(--rule)}
+
+/* ---------- Money on Page One: 1D, and whether each market is live or closed ---------- */
+.p1 .mny .mst{margin:4px 0 0;font:500 12px var(--sans);color:var(--muted)}
+.p1 .mdot{display:inline-block;width:7px;height:7px;border-radius:50%;border:1.5px solid var(--muted);margin-right:6px;vertical-align:0}
+.p1 .mdot.on{background:var(--good);border-color:var(--good)}
+.p1 .mny th{font:700 10px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:0 0 2px;border:0}
+.p1 .mny th.r{text-align:right}
+.p1 .mny td small{display:inline;font:500 11px var(--sans);color:var(--muted);margin-left:4px}
+.p1 .mny td.r{width:84px;white-space:nowrap}
+
+/* ---------- Your Desk, folded, at the foot of the last desk ---------- */
+.ydesk{margin-top:46px}
+.ydesk details.desk{border-top:2px solid var(--d);padding-top:9px}
+
+/* ---------- the run line's day and night switch ---------- */
+.drun .drr{display:inline-flex;align-items:baseline;gap:14px;min-width:0}
+#dtheme{font:600 12px var(--sans);background:none;color:var(--ink2);border:1px solid var(--rule);border-radius:3px;padding:2px 9px;cursor:pointer}
+#dtheme:hover{color:var(--ink);border-color:var(--ink2)}
+@media (max-width:720px){.drun{flex-wrap:nowrap;align-items:baseline}.drun>span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.drun span+span{margin-left:10px}#dtheme{padding:1px 7px}}

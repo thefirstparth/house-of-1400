@@ -291,6 +291,76 @@
       ]
     }
   ],
+  "desks_v2": {
+    "note": "The new design (behind ?v2 until Parth switches it on, 1 Oct 2026): Page One, then six desks, each its own page behind one row of tabs. A section no desk names is not shown in v2. Your Desk prints folded at the foot of Off Duty.",
+    "desks": [
+      {
+        "id": "one",
+        "name": "Page One",
+        "sections": []
+      },
+      {
+        "id": "news",
+        "name": "News",
+        "sections": [
+          "week",
+          "desh",
+          "videsh",
+          "dateline",
+          "talk",
+          "betting"
+        ]
+      },
+      {
+        "id": "home",
+        "name": "Close to Home",
+        "sections": [
+          "namma",
+          "back",
+          "sky"
+        ]
+      },
+      {
+        "id": "sport",
+        "name": "Sport",
+        "sections": [
+          "fixtures",
+          "madrid",
+          "paddock",
+          "crease",
+          "deuce",
+          "pitch",
+          "sidelines"
+        ]
+      },
+      {
+        "id": "tech",
+        "name": "Tech & AI",
+        "sections": [
+          "ai",
+          "tech",
+          "sales",
+          "workshop",
+          "pipeline"
+        ]
+      },
+      {
+        "id": "money",
+        "name": "Money",
+        "sections": [
+          "ledger"
+        ]
+      },
+      {
+        "id": "off",
+        "name": "Off Duty",
+        "sections": [
+          "screen",
+          "bye"
+        ]
+      }
+    ]
+  },
   "follows": {
     "football_club": {
       "name": "Real Madrid",
@@ -679,6 +749,24 @@
       "politics": "dispatch",
       "geopolitics": "dispatch",
       "world": "dispatch"
+    },
+    "page_one": {
+      "note": "The market expects, on Page One (Parth, 1 Oct: \"How is Brazil important?\"): the three busiest markets that touch what he follows. A market naming a follow (config follows: the club, the driver, the players, India and its named players, the NBA team) ranks first; then a season-long market in these categories, or a match of a followed national side; then a war or trade fight that moves markets. A single match of anyone else, other countries' politics and awards never reach Page One; the Betting Window still prints them.",
+      "show": 3,
+      "then": {
+        "categories": [
+          "Football",
+          "Tennis",
+          "F1",
+          "Formula 1",
+          "Cricket",
+          "AI",
+          "Tech"
+        ]
+      },
+      "last": {
+        "pattern": "war|ceasefire|blockade|tariff|oil|opec"
+      }
     }
   },
   "day_profiles": {

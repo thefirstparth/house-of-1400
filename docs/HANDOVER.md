@@ -163,8 +163,9 @@ Read `docs/REDESIGN-FEEDBACK.md` before continuing: Parth's reviews of each mock
 
 ### 7.3 Suggested order of work
 
-1. Mock the Sport desk page in B's style (Parth asked for it next), then one more desk, and get his approval.
-2. Build behind a switch (for example `?v2`) so the live paper stays as is until he approves; share screenshots.
+1. Done (1 Oct): Sport and News desk mocks, then the full sample (design/sample) with Parth's 24 notes.
+2. Done (1 Oct): built behind `?v2` on the live site, v1 unchanged (v2/README.md). Next: Parth reads v2 for a few
+   days and says when to switch.
 3. Implement: fonts (self-hosted) and tokens; nameplate and tabs; Page One B; desk pages; footer; then retire the old
    section colours. Keep every live widget's behaviour (stale "as of" times, fallbacks, refresh intervals).
 4. QA (section 6) on phone, laptop and big monitor, light and dark, before and after; check the illustrations land

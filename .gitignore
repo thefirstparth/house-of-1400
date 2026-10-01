@@ -5,3 +5,4 @@ node_modules/
 dist/
 qa-data/
 qa-shots/
+v2/shots/
