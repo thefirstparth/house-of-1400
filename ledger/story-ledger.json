@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_updated": "2026-10-01T12:41:31.238Z",
+  "last_updated": "2026-10-01T12:48:42.483Z",
   "last_edition": "2026-10-01",
   "threads": [
     {
@@ -1837,6 +1837,24 @@
         "down": 0
       },
       "section": "pitch"
+    },
+    {
+      "thread_id": "ocon-haas-2027",
+      "title": "Ocon will leave Haas at the end of the season and says he would take a reserve role to stay in F1",
+      "entities": [],
+      "facts": {
+        "leaves": "Haas, end of 2026",
+        "open_2027_seats": "Racing Bulls, Haas"
+      },
+      "first_printed": "2026-10-01",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
     }
   ]
 }

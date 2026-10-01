@@ -370,7 +370,7 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
           const a = answers.get(c.id);
           if (a?.covered_by) { if (!ids.has(a.covered_by)) errors.push(`checks.wire: covered_by "${a.covered_by}" is not an item in this edition`); continue; }
           if (a?.skip) { if (a.skip.trim().length < 12) errors.push(`checks.wire: say why "${c.title}" is not for this paper`); continue; }
-          if (printed.some(it => matchItem(it, [{ title: c.title }]))) continue;
+          if (printed.some(it => matchItem(it, [{ title: c.title }, ...(c.also || []).map(t => ({ title: t }))]))) continue;
           errors.push(`checks.wire: "${c.title}" (${c.n} outlets) is neither in the paper nor answered; print it (a story, a brief or an Also in line) and record {id: "${c.id}", covered_by}, or {id: "${c.id}", skip: "why not"}`);
         }
         // Leads (1 Oct, after the Ronaldo miss: The Athletic's lead on it had three open outlets and went unanswered).

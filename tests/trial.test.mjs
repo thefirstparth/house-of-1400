@@ -122,3 +122,14 @@ test("tennis: why a due match has not started (the match on its court, or ESPN's
   assert.equal(d.next.ahead_on_court, 1);
   assert.equal(a.next.held, "Postponed");
 });
+
+// 1 Oct: Ocon leaving Haas ran on four F1 desks in four different headlines; the wire check must list it as a Paddock
+// story, and nothing else from the day's sports desks.
+test("a story four of a desk's own feeds ran in different words is a candidate", () => {
+  const items = JSON.parse(readFileSync(new URL("./fixtures/wire-2026-10-01.json", import.meta.url)));
+  const cfg = JSON.parse(readFileSync(new URL("../config/house.json", import.meta.url)));
+  const desk = wireCandidates({ items, stories: cluster(items) }, cfg).filter(c => c.region === "desk");
+  assert.equal(desk.length, 1);
+  assert.match(desk[0].title, /Ocon/); assert.equal(desk[0].section_hint, "paddock"); assert.ok(desk[0].n >= 4);
+});
+

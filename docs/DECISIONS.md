@@ -562,3 +562,6 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 1 Oct 2026: Paddock Notes without the empty column (Parth)
 - The race preview sat under the sessions in the left column, so the circuit map's column ran empty below it. Now the sessions sit beside the map (Max Watch and the notes under the sessions); with no map (a new circuit, or the map source slow), the sessions sit beside Max Watch and the notes. "The race ahead" runs across the section below: the read and the market on the left, the F1 press on the right.
+
+## 1 Oct 2026: The Ocon miss (Parth)
+- Ocon leaving Haas ran on four of the paper's F1 feeds and BBC Sport in different words; nothing grouped them, and Paddock Notes printed no stories. The wire check now lists a sports desk's own story when two words rare that day appear together in headlines from three or more of that desk's feeds (on 1 Oct across six sports desks: one hit, Ocon). The story and an art order were added to the 1 Oct paper.
