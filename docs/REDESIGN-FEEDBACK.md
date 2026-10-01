@@ -55,3 +55,18 @@ From the 2 Oct edition the code picks 5 to 9 drawings a day spread across news, 
 orders), up from 2 to 3. The lead's 16:9 drawing is skipped when the lead is in poor taste. Every desk page must look
 right with a drawing on any story or on none, and with no lead drawing; use `balanceStories` behaviour (a drawn story
 takes the whole row with the drawing beside the text).
+
+## 2 Oct 2026 (01:30 IST): review of v2 as shipped behind ?v2
+Checked with the real 1 Oct edition and with a simulated edition in the 2 Oct format (Desh, Videsh, Back Home, AI and
+Tech, 9 drawings), every desk, 390 / 1280 / 1440 / 1920, light: no page errors, no sideways scroll, no overlapping
+text; v1 also renders the new sections. Colours (all 14 desk tokens), fonts (self-hosted), 4 px radii, desk names and
+order, Page One B (three columns, weather arc, Money with 1D and moods, The market expects top 3, House Note line,
+no drawings), Fixture List first in Sport, Back Home in Close to Home, Your Desk folded in Off Duty: all as agreed.
+
+Fix:
+1. **Phone run line clips:** at 390 px it reads "Printed 14:1…". Let it wrap, or drop "No. 7" on phones.
+2. **Phone tabs** still show a sliver of the previous tab ("S" of News) at the left edge; fade both edges so the
+   strip reads as scrollable (raised in the first review).
+3. **Screen & Stage verdict chips** keep the old magenta and red. They read as a status scale, so they may stay, but
+   tone them to the Off Duty gold and ink (must watch filled, good watch outline, your call grey, skip ink) if Parth
+   wants one colour per desk strictly. Ask him.
