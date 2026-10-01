@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Page One, three ways</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..600&family=Libre+Franklin:wght@400..800&family=UnifrakturMaguntia&display=swap">
+<style>
+:root{color-scheme:light;
+ --paper:#f3f1ea;--sheet:#fbfaf6;--surface:#ebe8df;--ink:#15140f;--ink2:#3a3830;--muted:#6b665b;--rule:#d5d0c3;--rule2:#e4e0d5;--good:#0b7a43;--bad:#c0261d;--sun:#d9861a;--halo:#f6d9a8;
+ --d-one:#15140f;--d-news:#1f3f73;--d-home:#0a72a8;--d-sport:#b8460e;--d-tech:#6a3fb5;--d-money:#0b7a43;--d-off:#a87a00;
+ --head:"Newsreader",Georgia,serif;--serif:"Source Serif 4",Georgia,serif;--sans:"Libre Franklin",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--paper:#131210;--sheet:#1b1a17;--surface:#201f1b;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;--good:#5fd08f;--bad:#ff8a7e;--sun:#f2b552;--halo:#4a3718;
+ --d-one:#eeeae0;--d-news:#a5bfeb;--d-home:#7ccbf2;--d-sport:#f29a62;--d-tech:#bba4f2;--d-money:#5fd9a0;--d-off:#e7c35a}}
+:root[data-theme=dark]{color-scheme:dark;--paper:#131210;--sheet:#1b1a17;--surface:#201f1b;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;--good:#5fd08f;--bad:#ff8a7e;--sun:#f2b552;--halo:#4a3718;
+ --d-one:#eeeae0;--d-news:#a5bfeb;--d-home:#7ccbf2;--d-sport:#f29a62;--d-tech:#bba4f2;--d-money:#5fd9a0;--d-off:#e7c35a}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink)}
+body{font:15px/1.45 var(--serif);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.tnum{font-variant-numeric:lining-nums tabular-nums}
+.wrap{max-width:1320px;margin:0 auto;padding:0 clamp(16px,2.6vw,40px)}
+.up{color:var(--good)}.dn{color:var(--bad)}
+.k{font:700 10.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+/* the switch between variants (mock only) */
+.switch{display:flex;gap:6px;align-items:center;justify-content:center;padding:6px 0;background:var(--ink);color:var(--paper);font:600 12px var(--sans)}
+.switch a{padding:3px 10px;border-radius:99px;border:1px solid transparent}
+.switch a[aria-current]{border-color:var(--paper)}
+.switch button{margin-left:12px;font:600 12px var(--sans);background:none;color:inherit;border:1px solid currentColor;border-radius:99px;padding:3px 10px;cursor:pointer}
+/* the run line */
+.run{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font:500 12.5px var(--sans);color:var(--muted)}
+.run span+span{margin-left:14px}
+/* the nameplate Parth liked: The / HOUSE OF / 1400, then the six desks as a coloured strip that is also the navigation */
+.plate{text-align:center;padding:4px 0 0}
+.plate .the{font:400 28px/1 "UnifrakturMaguntia",serif}
+.plate .hof{font:600 10.5px var(--sans);letter-spacing:.55em;margin:3px -.55em 2px 0}
+.plate .n{font:900 52px/.92 "Playfair Display",serif}
+nav.desks{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--rule)}
+nav.desks ol{list-style:none;margin:0 auto;padding:0 clamp(16px,2.6vw,40px);max-width:1320px;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.desks a{display:block;text-align:center;border-top:4px solid var(--c);padding:6px 4px 8px;font:700 11.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--c);white-space:nowrap}
+nav.desks a[aria-current]{background:color-mix(in srgb,var(--c) 9%,transparent)}
+/* block heads: a short rule in the block's colour, the name, a quiet link */
+.bh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 10px;padding-top:7px;border-top:2px solid var(--c,var(--ink))}
+.bh h2{margin:0;font:700 18px/1.1 var(--head);font-variation-settings:"opsz" 30;color:var(--c,var(--ink))}
+.bh a{font:600 11.5px var(--sans);color:var(--muted)}
+.bh a:hover{color:var(--c)}
+/* the day in a minute */
+.leadh{display:block;margin:0 0 6px}
+.leadh .lab{font:700 10.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--c)}
+.leadh h3{margin:2px 0 0;font:650 24px/1.14 var(--head);font-variation-settings:"opsz" 40;letter-spacing:-.005em}
+ol.min{list-style:none;margin:0;padding:0}
+ol.min a{display:grid;grid-template-columns:112px 1fr;gap:12px;align-items:baseline;padding:6px 0;border-top:1px solid var(--rule2)}
+ol.min .lab{font:700 10px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+ol.min b{font:500 15.5px/1.3 var(--head);font-variation-settings:"opsz" 16}
+a:hover>b,.leadh:hover h3{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+/* sport rows */
+ul.rows{list-style:none;margin:0;padding:0}
+ul.rows li{display:grid;grid-template-columns:58px 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--rule2);font:13px/1.35 var(--sans);color:var(--muted)}
+ul.rows li:first-child{border-top:0;padding-top:0}
+ul.rows .lab{font:700 10px var(--sans);letter-spacing:.08em;text-transform:uppercase;padding-top:2px}
+ul.rows b{display:block;font:600 14px/1.3 var(--sans);color:var(--ink)}
+.live{color:var(--bad);font-weight:700}.live::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--bad);margin-right:5px;vertical-align:1px}
+/* weather: the sun's arc, cleaner */
+.wx{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:center}
+.wx .t{font:600 40px/1 var(--head);font-variation-settings:"opsz" 60}
+.wx .c{font:13px/1.35 var(--sans);color:var(--ink2)}
+.wx .c b{display:block;font:600 15px var(--head);color:var(--ink)}
+.arc{grid-column:1/-1;width:100%;height:auto;display:block;margin-top:2px}
+.arc .track{fill:none;stroke:var(--rule);stroke-width:1.5;stroke-dasharray:2 4}
+.arc .done{fill:none;stroke:var(--sun);stroke-width:2.5;stroke-linecap:round}
+.arc .hz{stroke:var(--rule);stroke-width:1}
+.arc text{font:500 10.5px var(--sans);fill:var(--muted)}
+.wxs{display:flex;justify-content:space-between;gap:8px;font:12.5px var(--sans);color:var(--muted);margin-top:6px}
+.wxs b{color:var(--ink);font-weight:600}
+.fam1{margin:8px 0 0;font:13px/1.4 var(--sans);color:var(--ink2);border-top:1px solid var(--rule2);padding-top:7px}
+.fam1 b{color:var(--ink);font-weight:600}
+/* money */
+.mny .sx{display:flex;align-items:baseline;gap:10px}
+.mny .sx b{font:600 30px/1 var(--head);font-variation-settings:"opsz" 48}
+.mny .sx span{font:600 13.5px var(--sans)}
+.mny table{width:100%;border-collapse:collapse;margin-top:6px;font:600 13px var(--sans)}
+.mny td{padding:4px 0;border-top:1px solid var(--rule2)}
+.mny td.l{color:var(--ink);font-weight:600}.mny td.v{color:var(--ink2);font-weight:500;text-align:right}.mny td.r{text-align:right;width:62px}
+.fear{display:flex;gap:16px;margin-top:8px;font:12.5px/1.3 var(--sans);color:var(--muted)}
+.fear span b{display:block;font:700 14px var(--sans)}
+/* the market expects, top three */
+ol.bets{list-style:none;margin:0;padding:0}
+ol.bets li{padding:6px 0;border-top:1px solid var(--rule2)}
+ol.bets li:first-child{border-top:0;padding-top:0}
+ol.bets .t{display:block;font:600 13.5px/1.3 var(--sans);color:var(--ink)}
+ol.bets .o{display:grid;grid-template-columns:44px 1fr;gap:8px;align-items:center;margin-top:3px;font:12.5px var(--sans);color:var(--ink2)}
+ol.bets .o b{font:700 17px/1 var(--head);color:var(--ink)}
+ol.bets .bar{grid-column:1/-1;height:4px;border-radius:2px;background:var(--rule2);overflow:hidden}
+ol.bets .bar i{display:block;height:100%;background:var(--c)}
+.pick .v{display:inline-block;font:700 9.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--c);margin-right:6px}
+.pick b{font:650 16px/1.25 var(--head)}
+.pick p{margin:3px 0 0;font:13px/1.4 var(--serif);color:var(--ink2)}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--rule);padding:9px 0 12px;font:500 12.5px var(--sans);color:var(--muted)}
+.foot nav a{margin-right:16px;white-space:nowrap}.foot a.next{white-space:nowrap}.foot nav a:hover{color:var(--ink)}
+.foot a.next{font:700 13px var(--sans);color:var(--ink);border:1px solid var(--ink);border-radius:99px;padding:6px 14px}
+
+/* ===== A · The broadsheet: weather and money as the nameplate's ears; three columns under the desks */
+.vA .top{display:grid;grid-template-columns:1fr auto 1fr;gap:28px;align-items:end;padding:6px 0 10px}
+.vA .top>.wxb{max-width:300px}
+.vA .top>.mny{justify-self:end;width:300px}
+.vA .body{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr) minmax(0,1fr);gap:0 34px;padding:14px 0 6px}
+/* ===== B · The front page: the news big on the left, a rail of four on the right */
+.vB .plate{padding:2px 0 10px}
+.vB .body{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr);gap:22px 34px;padding:14px 0 6px}
+.vB .eve{border-top:1px solid var(--ink);margin-top:12px;padding-top:10px}
+.vB .stack .arc,.vC .panels .arc{max-height:96px}
+.vB .stack{display:flex;flex-direction:column;gap:20px}
+.vB .news ol.min a{grid-template-columns:1fr;gap:1px}
+.vB .news ol.min{columns:1}
+/* ===== C · The calm grid: the day's news across the top in two columns, then four equal panels */
+.vC .plate{padding:2px 0 10px}
+.vC .newsrow{padding:14px 0 4px}
+.vC .newsrow .cols{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) minmax(0,1fr);gap:0 34px}
+.vC .newsrow ol.min a{grid-template-columns:1fr;gap:1px}
+.vC .panels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 34px;padding:12px 0 6px}
+.vC .panels .wx .t{font-size:34px}
+@media (max-width:1100px){.vA .body,.vB .body{grid-template-columns:1fr 1fr}.vB .news{grid-column:1/-1}.vC .panels{grid-template-columns:1fr 1fr;gap:16px 30px}.vC .newsrow .cols{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){
+ .vA .top{grid-template-columns:1fr;gap:12px}.vA .top>.plate{order:-1}.vA .top>.wxb,.vA .top>.mny-wrap{max-width:none;width:auto!important;justify-self:stretch!important}.vA .mny-wrap>.k{text-align:left!important}
+ .vA .body,.vB .body,.vC .panels,.vC .newsrow .cols{grid-template-columns:1fr;gap:18px}
+ nav.desks ol{display:flex}nav.desks a{min-width:96px}
+ ol.min a{grid-template-columns:76px 1fr}.run .hide{display:none}}
+</style>
+</head>
+<body>
+<div class="switch">Page One, three ways: <a href="?v=A">A · Broadsheet</a><a href="?v=B">B · Front page</a><a href="?v=C">C · Calm grid</a><button id="th" type="button">Night</button></div>
+<div id="page"></div>
+<script>
+const D = __DATA__;
+const V = (new URLSearchParams(location.search).get("v") || "A").toUpperCase();
+document.querySelectorAll(".switch a").forEach(a => { if (a.getAttribute("href") === "?v=" + V) a.setAttribute("aria-current", "page"); });
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const R = Math.round, NOW = Date.parse(D.weather.now.time + ":00+05:30"), TZ = "Asia/Kolkata";
+const fmt = (iso, o) => new Date(iso).toLocaleString("en-GB", { timeZone: TZ, hour12: false, ...o }).replace(/,/g, "");
+const day = iso => fmt(iso, { weekday: "short", day: "numeric", month: "short" }), time = iso => fmt(iso, { hour: "2-digit", minute: "2-digit" });
+const when = iso => { const a = new Date(iso).toLocaleDateString("en-CA", { timeZone: TZ }), b = new Date(NOW).toLocaleDateString("en-CA", { timeZone: TZ }), n = Math.round((Date.parse(a) - Date.parse(b)) / 864e5); return `${n === 0 ? "today" : n === 1 ? "tomorrow" : day(iso)}, ${time(iso)}`; };
+const pct = v => v == null ? "" : `${v < 0 ? "−" : "+"}${Math.abs(v).toFixed(2)}%`, inr = v => Math.round(v).toLocaleString("en-IN"), dir = v => (v == null ? "" : v < 0 ? "dn" : "up");
+const DESKS = [["one", "Page One"], ["news", "News"], ["home", "Close to Home"], ["sport", "Sport"], ["tech", "Tech & AI"], ["money", "Money"], ["off", "Off Duty"]];
+const dc = id => `var(--d-${id})`;
+const deskOf = sid => ({ dateline: "news", talk: "news", betting: "news", namma: "home", sky: "home", madrid: "sport", pitch: "sport", paddock: "sport", crease: "sport", deuce: "sport", sidelines: "sport", workshop: "tech", pipeline: "tech", ledger: "money", screen: "off", bye: "off" })[sid] || "news";
+const where = {}; for (const [sid, list] of Object.entries(D.edition.sections)) for (const x of list) where[x.id] = deskOf(sid);
+for (const x of [D.edition.lead, ...D.edition.seconds]) where[x.id] = deskOf(x.section);
+const SEC2DESK = { Money: "money", Markets: "money", Health: "money", AI: "tech", India: "news", World: "news", Karnataka: "home", "Asian Games": "sport" };
+
+// ---------------------------------------------------------------- shared pieces
+function nameplate() {
+  return `<div class="plate"><div class="the">The</div><div class="hof">HOUSE OF</div><div class="n">1400</div></div>`;
+}
+function desks() {
+  return `<nav class="desks" aria-label="Desks"><ol>${DESKS.map(([id, n], i) => `<li><a href="#${id}" style="--c:${dc(id)}"${i === 0 ? ' aria-current="page"' : ""}>${esc(n)}</a></li>`).join("")}</ol></nav>`;
+}
+function run() {
+  return `<div class="run"><div><span>${new Date(NOW).toLocaleDateString("en-GB", { timeZone: TZ, weekday: "long", day: "numeric", month: "long", year: "numeric" })}</span><span class="hide">No. ${D.edition.no}</span><span>Printed 14:08 IST</span></div><div class="hide">An afternoon newspaper for one reader · edited by T. A. Bhide</div></div>`;
+}
+// The day in a minute: the lead's headline, then Bhide's list, then one story from each desk not yet heard, until n lines.
+function minute(n) {
+  const E = D.edition, L = E.lead, ld = where[L.id] || "money";
+  const items = E.glance.filter(g => g.target !== L.id).map(g => ({ ...g, desk: where[g.target] || SEC2DESK[g.section] || "news" }));
+  const seen = new Set([L.id, ...E.glance.map(g => g.target)]), heard = new Set(items.map(x => x.desk));
+  const rest = Object.entries(E.sections).flatMap(([sid, list]) => list.filter(x => !seen.has(x.id)).map(x => ({ line: x.headline.split(/; | as | after /)[0], target: x.id, desk: deskOf(sid), section: (x.kicker || "").split(" · ")[0] || DESKS.find(d => d[0] === deskOf(sid))[1] })));
+  for (const pass of [x => !heard.has(x.desk), x => x.desk !== "sport", () => true]) for (const x of rest) { if (items.length >= n) break; if (items.includes(x) || !pass(x)) continue; items.push(x); heard.add(x.desk); }
+  return { lead: `<a class="leadh" href="#${ld}" style="--c:${dc(ld)}"><span class="lab">${esc(L.kicker || "Lead")}</span><h3>${esc(L.headline)}</h3></a>`,
+    list: items.slice(0, n).map(x => `<a href="#${x.desk}" style="--c:${dc(x.desk)}"><span class="lab">${esc(x.section)}</span><b>${esc(x.line)}</b></a>`) };
+}
+function minuteBlock(n, { split = 1 } = {}) {
+  const m = minute(n), per = Math.ceil(m.list.length / split);
+  const cols = [...Array(split)].map((_, i) => `<ol class="min">${m.list.slice(i * per, (i + 1) * per).map(x => `<li>${x}</li>`).join("")}</ol>`);
+  return { head: `<div class="bh" style="--c:var(--d-one)"><h2>The day in a minute</h2><a href="#news">All the news →</a></div>`, lead: m.lead, cols };
+}
+function sportRows(max = 5) {
+  const rows = [], C = D.crease, F = D.football, T = D.tennis?.players || [], f1 = D.f1?.race, cz = C?.next;
+  if (cz) rows.push(["Cricket", `India v ${cz.opponent} · ${cz.desc}`, cz.state === "live" ? `<span class="live">In play</span>${cz.score && !/null/.test(cz.score) ? ` ${esc(cz.score)}` : ""} · SonyLIV` : `${when(cz.start)} · SonyLIV`]);
+  const m = F?.next?.[0]; if (m) rows.push(["Madrid", `${m.home ? "v" : "at"} ${m.opponent}`, `${m.competition} · ${when(m.date)} · FanCode`]);
+  if (f1) rows.push(["F1", `${f1.name.replace(/ in Malaysia$/, "")}, Sepang`, `Race ${when(f1.sessions.at(-1).start)} · FanCode`]);
+  for (const p of T) { const l = p.last, nx = p.next, nm = p.name.split(" ").pop();
+    if (l && NOW - Date.parse(l.when_utc) < 30 * 36e5) rows.push(["Tennis", `${nm} beat ${l.opponent}`, `Next v ${nx?.opponent}, ${when(nx?.when_utc)}`]);
+    else if (nx) rows.push(["Tennis", `${nm} v ${nx.opponent}`, `${when(nx.when_utc)} · FanCode`]); }
+  return `<ul class="rows">${rows.slice(0, max).map(([l, t, s]) => `<li><span class="lab">${l}</span><span><b>${esc(t)}</b>${s}</span></li>`).join("")}</ul>`;
+}
+// The sun's day as an arc from sunrise to sunset, the sun where it is now; cleaner than the masthead's today.
+function weather({ family = true } = {}) {
+  const W = D.weather, rise = Date.parse(W.today.sunrise + ":00+05:30"), set = Date.parse(W.today.sunset + ":00+05:30"), f = Math.max(0, Math.min(1, (NOW - rise) / (set - rise)));
+  const X = t => 14 + 192 * (0.5 - 0.5 * Math.cos(Math.PI * t)), Y = t => 52 - 40 * Math.sin(Math.PI * t), pts = n => [...Array(n + 1)].map((_, i) => `${X(i / n * f).toFixed(1)},${Y(i / n * f).toFixed(1)}`).join(" ");
+  const full = [...Array(41)].map((_, i) => `${X(i / 40).toFixed(1)},${Y(i / 40).toFixed(1)}`).join(" ");
+  const left = set - NOW, hm = `${Math.floor(left / 36e5)}h ${R(left % 36e5 / 6e4)}m`;
+  const arc = `<svg class="arc" viewBox="0 0 220 72" aria-label="The sun's day: ${hm} to sunset"><polyline class="track" points="${full}"/><polyline class="done" points="${pts(30)}"/><line class="hz" x1="6" x2="214" y1="52.5" y2="52.5"/><circle cx="${X(f)}" cy="${Y(f)}" r="9" fill="var(--halo)"/><circle cx="${X(f)}" cy="${Y(f)}" r="5.5" fill="var(--sun)"/><text x="6" y="68">↑ ${W.today.sunrise.slice(11)}</text><text x="110" y="68" text-anchor="middle">${hm} to sunset</text><text x="214" y="68" text-anchor="end">${W.today.sunset.slice(11)} ↓</text></svg>`;
+  const aq = a => (a <= 50 ? "good" : a <= 100 ? "moderate" : a <= 150 ? "poor" : "unhealthy");
+  const fam = D.page.fam.map(x => `<b>${esc(x.name)}</b> ${esc(x.now.split(" · ")[0].replace(" now", "°").replace("°°", "°"))}`).join(" · ");
+  return `<div class="wx"><div class="t tnum">${R(W.now.temp)}°</div><div class="c"><b>${esc(D.page.sky_head)}</b>Feels ${R(W.now.feels)}° · ${R(W.today.max)}°/${R(W.today.min)}°</div>${arc}</div>
+<div class="wxs"><span>Rain <b>${W.today.rain_prob}%</b></span><span>Air <b>${W.air}</b> ${aq(W.air)}</span><span>Humidity <b>${W.now.humidity}%</b></span></div>${family ? `<p class="fam1">${fam} now; both dry this week.</p>` : ""}`;
+}
+function money() {
+  const M = D.markets, sx = M.indices.find(q => q.name === "Sensex"), sp = M.indices.find(q => q.name === "S&P 500"), br = M.cross.find(q => /brent/i.test(q.name)), G = D.gold, In = M.mood.India, Us = M.mood.US;
+  const row = (n, v, c) => `<tr><td class="l">${n}</td><td class="v tnum">${v}</td><td class="r tnum ${dir(c)}">${pct(c)}</td></tr>`;
+  return `<div class="mny"><div class="sx"><span class="k" style="align-self:center">Sensex</span><b class="tnum">${inr(sx.price)}</b><span class="${dir(sx.change_pct)}">${pct(sx.change_pct)}</span></div>
+<table><tbody>${row("S&P 500", inr(sp.price), sp.change_pct)}${row("Brent", "$" + br.price.toFixed(2), br.change_pct)}${row("Gold 24K", "₹" + inr(G.per_10g_24k), G.change_pct)}</tbody></table>
+<div class="fear"><span>India mood<b class="dn">${In.score} · ${esc(In.word.toLowerCase())}</b></span><span>US mood<b class="dn">${Us.score} · ${esc(Us.word.toLowerCase())}</b></span></div></div>`;
+}
+function bets(n = 3) {
+  const list = (D.edition.betting || []).slice(0, n);
+  return `<ol class="bets" style="--c:${dc("news")}">${list.map(b => { const o = [...b.outcomes].sort((x, y) => y.prob - x.prob)[0];
+    return `<li><span class="t">${esc(b.title.replace(/\.\.\.\?$/, "…?").replace(/^UEFA /, ""))}</span><span class="o"><b class="tnum">${R(o.prob)}%</b><span>${esc(o.name)}</span><span class="bar"><i style="width:${o.prob}%"></i></span></span></li>`; }).join("")}</ol>`;
+}
+function evening() {
+  const s = (D.edition.screen || []).find(x => x.verdict === "must"); if (!s) return "";
+  return `<a class="pick" href="#off" style="--c:${dc("off")}"><span class="v">Must watch</span><b>${esc(s.title)}</b><p>${esc(s.where)} · ${esc(s.release.toLowerCase())}. ${esc(s.reason.split(". ")[0])}.</p></a>`;
+}
+const blk = (id, title, link, body, label) => `<section class="blk" style="--c:${dc(id)}"><div class="bh"><h2>${title}</h2><a href="#${id}">${link} →</a></div>${body}</section>`;
+const foot = () => `<div class="foot"><nav><a href="#">Your Desk</a><a href="#">Letters</a><a href="#">The editor</a><a href="#">Archive</a></nav><a class="next" href="#news">Start reading: News →</a></div>`;
+
+// ---------------------------------------------------------------- the three
+function A(n = 10) {
+  const m = minuteBlock(n);
+  return `<div class="vA"><div class="wrap">${run()}<div class="top"><div class="wxb" style="--c:${dc("home")}"><div class="k" style="margin-bottom:4px">Bengaluru · now</div>${weather({ family: false })}</div>${nameplate()}<div class="mny-wrap" style="justify-self:end;width:300px"><div class="k" style="margin-bottom:6px;text-align:right">Markets</div>${money()}</div></div></div>${desks()}
+<div class="wrap"><div class="body"><section>${m.head}${m.lead}${m.cols[0]}</section>
+<div>${blk("sport", "Sport this week", "Sport", sportRows(5))}<div style="height:14px"></div>${blk("home", "Back home", "Close to Home", `<p class="fam1" style="border:0;margin:0;padding:0">${D.page.fam.map(x => `<b>${esc(x.name)}</b> ${esc(x.line.split(";")[0])}.`).join(" ")}</p>`)}</div>
+<div>${blk("news", "The market expects", "Betting Window", bets(3))}<div style="height:14px"></div>${evening() ? blk("off", "Worth your evening", "Screen & Stage", evening()) : ""}</div></div>${foot()}</div></div>`;
+}
+function B(n = 11) {
+  const m = minuteBlock(n);
+  return `<div class="vB"><div class="wrap">${run()}${nameplate()}</div>${desks()}
+<div class="wrap"><div class="body"><section class="news">${m.head}${m.lead}${m.cols[0]}${evening() ? `<div class="eve">${evening()}</div>` : ""}</section>
+<div class="stack">${blk("home", "Weather", "Sky & Streets", weather())}${blk("sport", "Sport this week", "Sport", sportRows(4))}</div>
+<div class="stack">${blk("money", "Money", "The Ledger", money())}${blk("news", "The market expects", "Betting Window", bets(3))}</div></div>${foot()}</div></div>`;
+}
+function C(n = 10) {
+  const m = minuteBlock(n, { split: 2 });
+  return `<div class="vC"><div class="wrap">${run()}${nameplate()}</div>${desks()}
+<div class="wrap"><div class="newsrow">${m.head}<div class="cols"><div>${m.lead}${evening() ? `<div style="margin-top:12px">${evening()}</div>` : ""}</div>${m.cols[0]}${m.cols[1]}</div></div>
+<div class="panels">${blk("sport", "Sport this week", "Sport", sportRows(4))}${blk("home", "Weather", "Sky & Streets", weather())}${blk("money", "Money", "The Ledger", money())}${blk("news", "The market expects", "Betting Window", bets(3))}</div>${foot()}</div></div>`;
+}
+// Page One is one screen on a laptop: print as many of the day's lines as fit, never fewer than six.
+const page = document.getElementById("page"), make = ({ A, B, C })[V] || A, MAX = { A: 10, B: 11, C: 10 }[V] || 10;
+// a phone scrolls anyway, so it gets the top eight
+function fit() { let n = innerWidth < 1000 ? Math.min(MAX, 8) : MAX; page.innerHTML = make(n);
+  if (innerWidth < 1000) return;
+  // the dark switch bar is mock chrome, not the paper, so it does not count
+  const bar = document.querySelector(".switch").offsetHeight;
+  while (n > 6 && document.documentElement.scrollHeight - bar > innerHeight) page.innerHTML = make(--n); }
+fit(); document.fonts?.ready.then(fit); addEventListener("resize", fit);
+document.getElementById("th").onclick = () => { const r = document.documentElement, dk = r.dataset.theme === "dark" || (!r.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches); r.dataset.theme = dk ? "light" : "dark"; };
+</script>
+</body>
+</html>

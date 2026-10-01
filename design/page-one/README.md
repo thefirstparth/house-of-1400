@@ -23,3 +23,11 @@ for colour-blind readers sit at 6.9 to 7.8, legal because every colour always ap
 Navigation: one row of tabs under the masthead, pinned while scrolling; on desk pages the masthead shrinks to one line
 (the name, Bengaluru now, the Sensex); each desk ends with "Next: <desk> →". No second row of section chips.
 Page One fits one screen on a laptop (1280 x 760 and up); on a phone it stacks in the same order.
+
+## Round 2: three ways (1 Oct)
+`page-one-variants.html?v=A|B|C` (built from `src2.html` by `build.mjs`; screenshots `vA-*`, `vB-*`, `vC-*`, shot by `shot2.mjs`).
+- **A · Broadsheet:** weather and money are the nameplate's ears; three columns below.
+- **B · Front page:** the day's news big on the left; weather + sport, then money + what the market expects, as two rails.
+- **C · Calm grid:** the day's news across the top in three columns; four equal panels below.
+
+All three use the specimen nameplate with the desk strip as navigation and the cleaner sun arc. The lead has no deck. The page prints as many day-in-a-minute lines as fit one laptop screen, at least six (on a phone, the top eight). Fill lines prefer desks that have no panel of their own on Page One.
