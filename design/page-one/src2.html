@@ -160,12 +160,10 @@ function run() {
   return `<div class="run"><div><span>${new Date(NOW).toLocaleDateString("en-GB", { timeZone: TZ, weekday: "long", day: "numeric", month: "long", year: "numeric" })}</span><span class="hide">No. ${D.edition.no}</span><span>Printed 14:08 IST</span></div><div class="hide">An afternoon newspaper for one reader · edited by T. A. Bhide</div></div>`;
 }
 // The day in a minute: the lead's headline, then Bhide's list, then one story from each desk not yet heard, until n lines.
+// The day in a minute is the editor's own five to ten lines (glance), lead first; Page One never writes its own.
 function minute(n) {
   const E = D.edition, L = E.lead, ld = where[L.id] || "money";
   const items = E.glance.filter(g => g.target !== L.id).map(g => ({ ...g, desk: where[g.target] || SEC2DESK[g.section] || "news" }));
-  const seen = new Set([L.id, ...E.glance.map(g => g.target)]), heard = new Set(items.map(x => x.desk));
-  const rest = Object.entries(E.sections).flatMap(([sid, list]) => list.filter(x => !seen.has(x.id)).map(x => ({ line: x.headline.split(/; | as | after /)[0], target: x.id, desk: deskOf(sid), section: (x.kicker || "").split(" · ")[0] || DESKS.find(d => d[0] === deskOf(sid))[1] })));
-  for (const pass of [x => !heard.has(x.desk), x => x.desk !== "sport", () => true]) for (const x of rest) { if (items.length >= n) break; if (items.includes(x) || !pass(x)) continue; items.push(x); heard.add(x.desk); }
   return { lead: `<a class="leadh" href="#${ld}" style="--c:${dc(ld)}"><span class="lab">${esc(L.kicker || "Lead")}</span><h3>${esc(L.headline)}</h3></a>`,
     list: items.slice(0, n).map(x => `<a href="#${x.desk}" style="--c:${dc(x.desk)}"><span class="lab">${esc(x.section)}</span><b>${esc(x.line)}</b></a>`) };
 }
@@ -245,14 +243,13 @@ function C(n = 10) {
 <div class="wrap"><div class="newsrow">${m.head}<div class="cols"><div>${m.lead}${evening() ? `<div style="margin-top:12px">${evening()}</div>` : ""}</div>${m.cols[0]}${m.cols[1]}</div></div>
 <div class="panels">${blk("sport", "Sport this week", "Sport", sportRows(4))}${blk("home", "Weather", "Sky & Streets", weather())}${blk("money", "Money", "The Ledger", money())}${blk("news", "The market expects", "Betting Window", bets(3))}</div>${foot()}</div></div>`;
 }
-// Page One is one screen on a laptop: print as many of the day's lines as fit, never fewer than six.
-const page = document.getElementById("page"), make = ({ A, B, C })[V] || A, MAX = { A: 10, B: 11, C: 10 }[V] || 10;
-// a phone scrolls anyway, so it gets the top eight
-function fit() { let n = innerWidth < 1000 ? Math.min(MAX, 8) : MAX; page.innerHTML = make(n);
+// Page One is one screen on a laptop: print as many of the editor's lines as fit, never fewer than five (with the lead).
+const page = document.getElementById("page"), make = ({ A, B, C })[V] || A, MAX = 9;
+function fit() { let n = MAX; page.innerHTML = make(n);
   if (innerWidth < 1000) return;
   // the dark switch bar is mock chrome, not the paper, so it does not count
   const bar = document.querySelector(".switch").offsetHeight;
-  while (n > 6 && document.documentElement.scrollHeight - bar > innerHeight) page.innerHTML = make(--n); }
+  while (n > 4 && document.documentElement.scrollHeight - bar > innerHeight) page.innerHTML = make(--n); }
 fit(); document.fonts?.ready.then(fit); addEventListener("resize", fit);
 document.getElementById("th").onclick = () => { const r = document.documentElement, dk = r.dataset.theme === "dark" || (!r.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches); r.dataset.theme = dk ? "light" : "dark"; };
 </script>

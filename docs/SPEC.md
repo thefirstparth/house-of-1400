@@ -63,7 +63,7 @@ Empty sections are omitted, never padded.
 - Thumbs: "More like this" / "Less". Visible state plus a short toast. POST `/api/vote` stores `{date, story_id, thread_id, section, vote}` (Vercel Blob or KV if configured; otherwise localStorage only). The daily run reads votes via `/api/votes` with `RUN_KEY`.
 - "New for you" label on stories picked for guessed interests.
 - Illustrations (optional, added after the paper is out): Bhide lists 2 to 5 printed stories in the edition's hidden `art_orders` (which stories is his judgment alone); the paper's illustrator, Bunty Brushwala (drawn by Codex), reads them in full with their sources and the paper's look (config `art`, as inspiration) from `/art/brief.json`, decides the idea and the style, and pushes the images to `public/art/YYYY-MM-DD/`. Parth gives the illustrator any design rules directly. The build checks only what the page needs (an ordered story, one image each, the shape, a readable PNG, JPEG, WebP or GIF, at most 600 KB, alt text) and serves those that pass; the page shows each image inside its story (16:9 for the front-page lead, 4:3 elsewhere), credited "Illustration by Bunty Brushwala", without review, and checks every five minutes until 17:00 IST, adding, replacing or removing images to match the manifest (a redrawn file gets a new address, so no browser keeps the old one).
-- At a Glance: floating button, opens the day's top lines, tap to jump.
+- At a Glance ("the day in a minute"): five to ten ranked lines, lead first; floating button, opens the day's top lines, tap to jump.
 
 ## Live layer
 - All live data comes from `/api/live/*` functions, never directly from third parties in the browser (CORS, keys, caching).

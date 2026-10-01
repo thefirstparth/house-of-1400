@@ -1031,14 +1031,19 @@ function rainWords(o) {
   if (sh.length) return `dry, with a chance of a shower ${sh.length === 1 ? "on " + sayDay(sh[0].date) : "from " + sayDay(sh[0].date)}`;
   return "dry for the next two weeks";
 }
+// How this month leans against its 1991-2020 normal. Rain is only judged in a month that usually has some (15 mm+).
+function monthLean(m) {
+  const oR = m.usual_rain >= 15 ? m.rain / m.usual_rain : 1, oT = m.usual_hi != null ? m.hi - m.usual_hi : 0;
+  return [oR < 0.6 ? "much drier" : oR < 0.9 ? "a little drier" : oR > 1.4 ? "much wetter" : oR > 1.1 ? "a little wetter" : "", oT <= -1 ? "cooler" : oT >= 1 ? "warmer" : ""].filter(Boolean);
+}
+// The headline leads with this month; next month joins only for a real turn (nights 3 degrees+ cooler, or the air going bad).
 function skyHeadline(o) {
   const w = o.weeks, m = o.months; if (!w?.[1] || m.length < 2) return "";
-  const next = Math.round(w[1].lo - m[1].lo), after = m[2] ? Math.round(w[1].lo - m[2].lo) : 0, Nm = MONL[+m[1].month.slice(5) - 1];
-  let temp = next >= 3 ? `Nights cool from ${Math.round(w[1].lo)}° to about ${Math.round(m[1].lo)}° in ${Nm}` : next >= 1 ? `Mild into ${Nm}, nights a little cooler` : `Mild into ${Nm}`;
-  if (next < 3 && after >= 6 && m[2]) temp += `, then a cold ${MONL[+m[2].month.slice(5) - 1]}`;
-  const ua = m[1].usual_aqi, now = w[1].aqi ?? w[0].aqi, first = m[0].usual_aqi;
-  const air = ua != null && aqWord(ua)[0] >= 4 && (now == null || aqWord(now)[0] < 4) ? `the air usually turns unhealthy in ${Nm}` : ua != null && first != null && ua - Math.min(first, now ?? first) >= 30 ? "the air usually worsens after the rains" : "";
-  return air ? `${temp}; ${air}` : temp;
+  const Tm = MONL[+m[0].month.slice(5) - 1], Nm = MONL[+m[1].month.slice(5) - 1], lean = monthLean(m[0]);
+  const head = lean.length ? `${Tm} looks ${lean.join(" and ")} than usual` : `A usual ${Tm}, days near ${Math.round(m[0].hi)}° and nights near ${Math.round(m[0].lo)}°`;
+  const drop = Math.round(w[1].lo - m[1].lo), ua = m[1].usual_aqi, now = w[1].aqi ?? w[0].aqi;
+  const turn = drop >= 3 ? `nights near ${Math.round(m[1].lo)}° by ${Nm}` : ua != null && aqWord(ua)[0] >= 4 && (now == null || aqWord(now)[0] < 4) ? `the air usually turns unhealthy in ${Nm}` : "";
+  return turn ? `${head}; ${turn}` : head;
 }
 function skyDek(o, today, short = false) {
   const w = o.weeks, m = o.months, out = [];
@@ -1047,10 +1052,9 @@ function skyDek(o, today, short = false) {
   out.push(`Days ${Math.abs(dT) < 0.7 ? "hold at" : dT > 0 ? "warm to" : "cool to"} about ${Math.round(w[1].hi)}° this week, feeling like ${Math.round(w[1].feels)}° in the afternoon; nights ${Math.round(w[1].lo)}°.`);
   if (!short && w[1].aqi != null) out.push(`The air is ${aqWord(w[1].aqi)[1]} this week (AQI about ${w[1].aqi}${w[0].aqi != null ? `, ${w[1].aqi > w[0].aqi + 10 ? "up" : w[1].aqi < w[0].aqi - 10 ? "down" : "about level"} from ${w[0].aqi} last week` : ""}).`);
   if (m[0] && m[1]) {
-    const oR = m[0].usual_rain ? m[0].rain / m[0].usual_rain : 1, oT = m[0].usual_hi != null ? m[0].hi - m[0].usual_hi : 0, Tm = MONL[+m[0].month.slice(5) - 1], Nm = MONL[+m[1].month.slice(5) - 1];
-    const lean = [oR < 0.6 ? "much drier" : oR < 0.9 ? "a little drier" : oR > 1.4 ? "much wetter" : oR > 1.1 ? "a little wetter" : "", oT <= -1 ? "cooler" : oT >= 1 ? "warmer" : ""].filter(Boolean);
-    const nT = m[1].usual_hi != null ? m[1].hi - m[1].usual_hi : 0;
-    out.push(`${lean.length ? `${Tm} looks ${lean.join(" and ")} than usual. ` : ""}${m[1].usual_hi != null ? `${Nm} usually brings days of ${Math.round(m[1].usual_hi)}° and nights of ${Math.round(m[1].usual_lo)}°${Math.abs(nT) >= 1 ? `; this year leans ${nT > 0 ? "warmer" : "cooler"}` : ""}.` : ""}`);
+    // this month's lean is the headline, so the dek does not repeat it
+    const Nm = MONL[+m[1].month.slice(5) - 1], nT = m[1].usual_hi != null ? m[1].hi - m[1].usual_hi : 0;
+    out.push(`${m[1].usual_hi != null ? `${Nm} usually brings days of ${Math.round(m[1].usual_hi)}° and nights of ${Math.round(m[1].usual_lo)}°${Math.abs(nT) >= 1 ? `; this year leans ${nT > 0 ? "warmer" : "cooler"}` : ""}.` : ""}`);
   }
   return out.filter(Boolean).join(" ");
 }

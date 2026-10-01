@@ -121,6 +121,9 @@ Every section keeps its named sources and topics as must-checks. Each also has a
 - **Before You Go:** Watch and Do lines only. No restating.
 - **House Note:** one to three short lines. A true, surprising or funny fact with a light, dry turn at the end. Gentle personification is allowed occasionally. Model it on: "The Alcaraz–Shelton quarter-final finished at 03:33 in New York; even the official record book had to stay up late." Never a motivational line, never a fake quote.
 
+## The day in a minute (`glance`)
+Five to ten lines, ranked, the lead first; the validator refuses fewer or more. Pick by the day's news, not to fill a number: a quiet day gets five. Each line is the paper's own short headline (at most about 60 characters), and the tag and the line together must say who it is about: a line about India at a multi-nation event puts India in the tag ("India · Asian Games" over "Compound archers win three golds in a day"), never a line a reader could take for another country's. Spread the lines across desks; Sport has its own panel on Page One, so give it a line only for news, not for fixtures.
+
 ## Also in (one-line stories)
 Each section may end with up to six **Also in** lines (`sections.<id>.lines`): stories worth knowing that do not need an article. One headline in the paper's words (at most 140 characters, a fact, not a tease), the publisher's own link (never a Google News link), the outlet, and when it was published (`time_ist` today, or `date`). Optional `kicker` for a short tag ("NBA", "Golf"). Use them for the good stories that would otherwise be dropped: the wire check's candidates, the second tier of a busy section, a useful update. A line has its own `thread_id` and follows the same one-home rule as stories. A section may carry lines alone on a quiet day, but lines never count toward a section floor.
 
