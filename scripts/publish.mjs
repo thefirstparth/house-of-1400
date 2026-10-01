@@ -2,12 +2,23 @@
 // Usage: node scripts/publish.mjs content/editions/YYYY-MM-DD.json
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { allItems, validateEdition } from "./validate.mjs";
+import { pickArt } from "../lib/art.js";
 
 const file = process.argv[2];
 if (!file) { console.error("usage: publish.mjs content/editions/YYYY-MM-DD.json"); process.exit(2); }
 const raw = readFileSync(file, "utf8");
 const E = JSON.parse(raw);
 const ledger = JSON.parse(readFileSync("ledger/story-ledger.json", "utf8"));
+// Art orders come from Bhide's scores (lib/art.js pickArt; Parth, 1 Oct 2026). On the first publish of the day they are
+// picked fresh; on a later correction the orders already published stay as they are, in order, and new picks are only
+// added, so the illustrator's finished work is never thrown out.
+if (E.art_scores?.length) {
+  const picks = pickArt(E, JSON.parse(readFileSync("config/house.json", "utf8")));
+  const before = E.printed_at ? (E.art_orders || []).map(o => o.story_id) : [];
+  const ids = [...new Set([...before, ...picks])];
+  E.art_orders = ids.map(id => (E.art_orders || []).find(o => o.story_id === id) || { story_id: id });
+  console.log(`art: ${E.art_orders.length} orders${before.length ? ` (${before.length} kept from the first publish)` : ""}: ${ids.join(", ")}`);
+}
 const { errors, warnings } = validateEdition(E, { ledger });
 warnings.forEach(w => console.log(`warn  ${w}`));
 if (errors.length) { errors.forEach(e => console.log(`ERROR ${e}`)); console.log("Not published."); process.exit(1); }

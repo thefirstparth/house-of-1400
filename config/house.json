@@ -1683,7 +1683,36 @@
     "styles_the_editor_likes": [
       "Pen and ink on newsprint, with one accent colour from the story's section",
       "Bold flat colour, modern editorial illustration"
-    ]
+    ],
+    "selection": {
+      "note": "How the paper chooses what Bunty draws (Parth, 1 Oct 2026). Bhide scores every printed story in the edition's hidden art_scores; scripts/publish.mjs picks the orders from the scores with these settings and writes art_orders, most important first. The brief Bunty reads (/art/brief.json) is unchanged. Nothing here ever stops the paper from printing.",
+      "min": 5,
+      "max": 9,
+      "candidate_drawable": 2,
+      "weights": {
+        "importance": 1,
+        "relevance": 1,
+        "drawable": 1
+      },
+      "groups": {
+        "news": [
+          "news",
+          "money",
+          "tech"
+        ],
+        "sport": [
+          "sport"
+        ],
+        "other": [
+          "life"
+        ]
+      },
+      "never_sections": [
+        "sky"
+      ],
+      "max_group_share": 0.5,
+      "max_per_desk": 2
+    }
   },
   "money": {
     "note": "The India money sweep's sources (EDITORIAL.md, Research). Both groups are read every run and the validator checks that checks.money_sweep has at least one page from each. When a miss shows a body was needed, add it here and record the miss in ledger/lessons.json.",
@@ -1859,6 +1888,17 @@
     ],
     "never": [
       "Tennis TV"
+    ]
+  },
+  "multi_events": {
+    "note": "Multi-sport and multi-nation events where every India men's (or mixed) knockout match from the quarter-final on, bronze-medal matches included, and every India women's final, in any sport goes into The Fixture List and its result into The Sidelines (Parth, 1 Oct, after the men's hockey semi-final v Pakistan was missed). While an event runs, the edition records India's knockouts in checks.india_knockouts. Add each event here with its dates.",
+    "events": [
+      {
+        "name": "Asian Games 2026",
+        "place": "Aichi-Nagoya",
+        "from": "2026-09-19",
+        "until": "2026-10-04"
+      }
     ]
   }
 }

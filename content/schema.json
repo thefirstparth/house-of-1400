@@ -1109,6 +1109,51 @@
               }
             }
           }
+        },
+        "india_knockouts": {
+          "type": "array",
+          "$comment": "While a config multi_events event runs: India's men's (and mixed) knockouts from the quarter-final on, bronze-medal matches included, and women's finals, in every sport, from the cut to seven days ahead (and any under way at the cut).",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "sport",
+              "team",
+              "round",
+              "opponent"
+            ],
+            "properties": {
+              "sport": {
+                "type": "string"
+              },
+              "round": {
+                "type": "string"
+              },
+              "opponent": {
+                "type": "string"
+              },
+              "when_utc": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "time_tbc": {
+                "type": "boolean"
+              },
+              "result": {
+                "type": "string"
+              },
+              "covered_by": {
+                "type": "string"
+              },
+              "team": {
+                "enum": [
+                  "men",
+                  "women",
+                  "mixed"
+                ]
+              }
+            }
+          }
         }
       }
     },
@@ -1176,7 +1221,7 @@
     },
     "art_orders": {
       "type": "array",
-      "maxItems": 8,
+      "maxItems": 12,
       "$comment": "Not printed. Bhide's art orders: the stories an outside illustrator may draw for (lib/art.js, /art/brief.json). The illustrator decides the idea and the style from the story and its sources.",
       "items": {
         "type": "object",
@@ -1220,6 +1265,73 @@
           }
         }
       ]
+    },
+    "art_scores": {
+      "type": "array",
+      "$comment": "Not printed, not sent to the illustrator. Bhide's scores for every printed story; publish.mjs picks art_orders from them (config art.selection; EDITORIAL.md, Art orders).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "story_id",
+          "importance",
+          "relevance",
+          "drawable"
+        ],
+        "properties": {
+          "story_id": {
+            "type": "string"
+          },
+          "importance": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "relevance": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2
+          },
+          "drawable": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 200
+          }
+        }
+      }
+    },
+    "art_overrides": {
+      "type": "array",
+      "$comment": "Not printed. Bhide's changes to the picked art orders, each with a reason.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "story_id",
+          "action",
+          "why"
+        ],
+        "properties": {
+          "story_id": {
+            "type": "string"
+          },
+          "action": {
+            "enum": [
+              "add",
+              "remove"
+            ]
+          },
+          "why": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 200
+          }
+        }
+      }
     }
   }
 }
