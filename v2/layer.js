@@ -268,16 +268,11 @@ function fitOne() {
   at(lo);
 }
 let unmountMark = () => {};
-// The wordmark draws its lining figures through an SVG image, which needs the face itself (self-hosted, /fonts)
-let pf = null;
-const playfair = () => (pf ||= fetch("/fonts/playfair-display-latin-wght-normal.woff2").then(r => (r.ok ? r.arrayBuffer() : Promise.reject(r.status))).then(b => {
-  let s = ""; const u = new Uint8Array(b); for (let i = 0; i < u.length; i += 32768) s += String.fromCharCode.apply(null, u.subarray(i, i + 32768)); return btoa(s);
-}));
 function mountMark() {
   unmountMark(); unmountMark = () => {};
   const n = document.querySelector("#bigplate .n"); if (!n || DESK.id !== "one") return;
   const size = parseFloat(getComputedStyle(document.querySelector("#bigplate")).getPropertyValue("--np")) || 96;
-  playfair().then(font => mountWordmark(n, { font, size })).then(u => { unmountMark = u; }).catch(() => {});
+  mountWordmark(n, { size }).then(u => { unmountMark = u; }).catch(() => {});
 }
 
 // ---------------------------------------------------------------- moving between desks

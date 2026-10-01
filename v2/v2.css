@@ -277,3 +277,34 @@ body.on-one .layout{padding-top:0}
 }
 /* phones (review, 2 Oct): the run line keeps its print time in full; the edition number goes */
 @media (max-width:720px){#r-no{display:none}.drun>span:first-child{overflow:visible}}
+
+/* ---------- phones (QA on Nothing Phone 2, iPhone 17, 16 Pro and the other iPhones, 2 Oct) ---------- */
+/* Page One's foot: the links wrap within the screen */
+.p1end .foot nav{display:flex;flex-wrap:wrap;gap:4px 16px;min-width:0}
+.p1end .foot nav a{margin-right:0}
+@media (max-width:760px){
+ /* The Ledger's board fits a 375px screen (iPhone SE and mini) */
+ .board-wrap{grid-template-columns:minmax(0,1fr)}
+ .board,.moods{min-width:0}
+ .board{padding:12px 10px 10px}
+ .board td,.board th{padding-inline:5px}
+ .board td{font-size:14px}
+ .board tr.grp th .mstate{font-size:10.5px}
+ /* nothing under 10px on a phone */
+ .p1 .ednote b,.p1 .pick .v{font-size:10.5px}
+ .np .hof{font-size:9.5px}
+}
+/* a finger, not a pointer: every small link and button gets a hit area at least 40px tall, without moving the type */
+@media (pointer:coarse),(hover:none),(max-width:760px){
+ .p1 .bh a,.jump a,.dfoot a,.p1end .foot nav a,#main .tools a,#main .tools button,#main .by a,#main .lmore,#main .item .src a{display:inline-block;padding-block:11px;margin-block:-11px}
+ /* the masthead's two rows sit close: their hit areas share the gap between them, never overlap */
+ .np{padding-block:4px;margin-block:-4px}
+ .now a{display:inline-block;padding-block:7px;margin-block:-7px}
+ .p1end .foot a.next{padding:10px 16px}
+ #dtheme{padding:10px 12px;margin:-10px -4px}
+ .jump{row-gap:14px}
+ .p1end .foot nav{row-gap:18px}
+}
+/* The Ledger's board: all five columns (market, level, 1D, 7D, 1M) on any phone, without a sideways scroll */
+@media (max-width:430px){.board{padding:10px 8px 8px}.board td,.board th{padding-inline:4px}.board td{font-size:13.5px}.board td.ix b{font-size:14.5px}}
+@media (max-width:380px){.board td{font-size:12.5px}.board td.ix b{font-size:13.5px}.board th{font-size:10.5px}}

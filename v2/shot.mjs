@@ -16,12 +16,20 @@ const TYPES = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/ja
 const crest = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="17" fill="#b9b2a2"/></svg>`;
 const track = `<svg xmlns="http://www.w3.org/2000/svg" width="1056" height="704"><rect width="1056" height="704" fill="#e7e2d6"/><path d="M180 520 C120 300 300 140 520 170 S900 160 880 360 S700 600 520 560 S260 640 180 520Z" fill="none" stroke="#3a3830" stroke-width="18"/></svg>`;
 const DESKS = mode === "v2" ? (JSON.parse(readFileSync(`${D}/config/house.json`, "utf8")).desks_v2?.desks || []).map(d => d.id) : ["page"];
-const SIZES = (process.env.SIZES || "1440x900-light,390x844-light,1440x900-dark,390x844-dark,1280x720-light,1920x1080-light").split(",");
+// Phones as Parth uses them (2 Oct: "Nothing Phone 2, iPhone 17, 16 Pro, other iPhones; half my reading is on a
+// phone"): each one's CSS width and pixel density, and the height left once the browser's bars are drawn.
+const PHONES = {
+  nothing2: "412x835@2.625", iphone17: "402x760@3", iphone16pro: "402x760@3", iphone16: "393x740@3", iphone17promax: "440x840@3",
+  iphone16plus: "430x820@3", iphone13: "390x730@3", iphonemini: "375x700@3", iphonese: "375x548@2",
+  iphone17land: "874x370@3", nothing2land: "915x380@2.625",
+};
+const SIZES = (process.env.SIZES || (process.env.PHONES ? process.env.PHONES.split(",").flatMap(n => ["light", "dark"].map(t => `${n}-${t}`)).join(",") : "1440x900-light,390x844-light,1440x900-dark,390x844-dark,1280x720-light,1920x1080-light")).split(",");
 const b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
 const report = {};
 for (const sz of SIZES) {
-  const [wh, theme] = sz.split("-"), [w, h] = wh.split("x").map(Number), touch = w < 500;
-  const ctx = await b.newContext({ viewport: { width: w, height: h }, colorScheme: theme, deviceScaleFactor: touch ? 2 : 1, hasTouch: touch, isMobile: touch });
+  const [wh, theme] = sz.split("-"), spec = PHONES[wh] || wh, [dims, dpr0] = spec.split("@"), [w, h] = dims.split("x").map(Number);
+  const phone = !!PHONES[wh] || w < 500, touch = phone, dpr = Number(dpr0) || (phone ? 2 : 1);
+  const ctx = await b.newContext({ viewport: { width: w, height: h }, colorScheme: theme, deviceScaleFactor: dpr, hasTouch: touch, isMobile: touch });
   await ctx.addInitScript(`(function(){var R=Date,O=${T0}-R.now();function D(){var a=[].slice.call(arguments);return a.length?new(Function.prototype.bind.apply(R,[null].concat(a))):new R(R.now()+O)}
 D.prototype=R.prototype;D.now=function(){return R.now()+O};D.parse=R.parse;D.UTC=R.UTC;window.Date=D;})();`);
   const p = await ctx.newPage();
@@ -42,8 +50,8 @@ D.prototype=R.prototype;D.now=function(){return R.now()+O};D.parse=R.parse;D.UTC
     await p.evaluate(() => document.querySelectorAll("img[loading=lazy]").forEach(i => (i.loading = "eager"))); await p.waitForTimeout(400);
     const name = `${wh}-${theme}-${d}`;
     await p.screenshot({ path: `${O}${name}-top.png` });
-    if (!touch || d === "one" || mode === "v1") await p.screenshot({ path: `${O}${name}-full.png`, fullPage: true, scale: "css" });
-    report[name] = await p.evaluate(() => {
+    if (!touch || d === "one" || mode === "v1" || process.env.FULL) await p.screenshot({ path: `${O}${name}-full.png`, fullPage: true, scale: "css" });
+    report[name] = await p.evaluate(VW => {
       const vis = e => e.checkVisibility() && e.getBoundingClientRect().width > 0;
       const els = [...document.querySelectorAll("#main h1,#main h2,#main h3,#main h4,#main .kick,#main p,#main li,#main td,#main th,#dtop a,#dtop span.n")].filter(e => vis(e) && e.textContent.trim() && !e.closest("details:not([open])")).map(e => [e, e.getBoundingClientRect()]);
       const overlaps = [];
@@ -51,16 +59,23 @@ D.prototype=R.prototype;D.now=function(){return R.now()+O};D.parse=R.parse;D.UTC
       const end = document.querySelector(".p1end")?.getBoundingClientRect().bottom;
       return {
         design: window.H1400V2 ? "v2" : "v1",
-        sideways: document.documentElement.scrollWidth - innerWidth,
+        // against the screen's own width: a phone browser quietly widens the page to fit anything that overflows
+        sideways: Math.max(document.documentElement.scrollWidth, innerWidth) - VW,
         sections: [...document.querySelectorAll("#main section.sec")].filter(s => !s.hidden).map(s => s.id).join(" "),
         onescreen: end != null ? (innerWidth < 1000 ? "phone" : Math.round(end) <= innerHeight) : "",
         lines: document.querySelectorAll(".p1 ol.min a").length || "",
         zoom: document.getElementById("layout")?.style.zoom || "",
-        tables: [...document.querySelectorAll("#main table, #main .tbl")].filter(t => vis(t) && (t.scrollWidth > t.clientWidth + 1 || t.getBoundingClientRect().right > innerWidth)).map(t => t.closest("section")?.id).join(" "),
+        tables: [...document.querySelectorAll("#main table, #main .tbl")].filter(t => vis(t) && (t.scrollWidth > t.clientWidth + 1 || t.getBoundingClientRect().right > VW)).map(t => t.closest("section")?.id).join(" "),
         fonts: [...document.fonts].filter(f => f.status === "loaded").map(f => f.family.replace(/"/g, "")).filter((x, i, a) => a.indexOf(x) === i).join(", "),
         overlaps,
+        // phones: anything wider than the screen (the tab row scrolls on purpose), type under 11px, links and buttons
+        // under 32px tall to tap, and the wordmark's canvas against the screen
+        wide: [...document.querySelectorAll("#main *, #dtop *")].filter(e => vis(e) && !e.closest("#dtabs") && e.getBoundingClientRect().right > VW + 1 && getComputedStyle(e).position !== "fixed").slice(0, 5).map(e => `${e.tagName.toLowerCase()}.${e.className}`.slice(0, 40)),
+        tiny: [...new Set([...document.querySelectorAll("#main *, #dtop *, #dtabs *")].filter(e => vis(e) && [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()) && parseFloat(getComputedStyle(e).fontSize) * (parseFloat(document.getElementById("layout")?.style.zoom) || 1) < 11).map(e => `${e.tagName.toLowerCase()}.${String(e.className).split(" ")[0]} ${parseFloat(getComputedStyle(e).fontSize)}px`))].slice(0, 8),
+        taps: innerWidth < 1000 ? [...document.querySelectorAll("#dtabs a, #main a, #main button, #dtop a, #dtop button")].filter(e => vis(e) && !e.closest("p, li, td, .agenda, .board, .tbl, .signal") && e.getBoundingClientRect().height < 32).slice(0, 6).map(e => `${e.textContent.trim().slice(0, 18)} ${Math.round(e.getBoundingClientRect().height)}px`) : [],
+        mark: (() => { const c = document.querySelector("#bigplate canvas"); if (!c) return ""; const r = c.getBoundingClientRect(); return `${Math.round(r.left)}..${Math.round(r.right)} of ${VW}`; })(),
       };
-    });
+    }, w);
   }
   report[`${wh}-${theme}`] = { errs };
   await ctx.close();

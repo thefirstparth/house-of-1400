@@ -7,19 +7,21 @@
 // - Pointer (laptop): the dots part around the pointer with a swirl and spring back when it leaves.
 // - Tap or click: the dots are thrown out from the finger and settle back onto the screen.
 // - Motion off (prefers-reduced-motion): one still, printed figure.
-// It stops drawing when it is off screen or the tab is hidden. Lining figures: the text is drawn through an SVG
-// image (Playfair's default figures are oldstyle, and a canvas cannot switch them), which works in every browser.
-// mountWordmark(el, { font: base64 woff2 of Playfair Display, size: px }) -> destroy()
+// It stops drawing when it is off screen or the tab is hidden. The figure is Playfair Display Black's lining "1400"
+// (Playfair's default figures are oldstyle) as a fixed outline, taken from v2/fonts by v2/glyphs.py, so it needs no
+// font loading and draws the same in every browser, Safari on an iPhone included.
+// mountWordmark(el, { size: px }) -> destroy()
 
 const CACHE = new Map();
 
-async function maskOf(text, size, W, H, font) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><style>@font-face{font-family:P;src:url(data:font/woff2;base64,${font})}text{font:900 ${size}px P;font-variant-numeric:lining-nums}</style><text x="${W / 2}" y="${H / 2 + size * 0.36}" text-anchor="middle">${text}</text></svg>`;
-  const img = new Image();
-  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
-  await img.decode();
+// "1400" in Playfair Display Black, lining figures, in ems: baseline at 0, advance ADV (v2/glyphs.py)
+const ADV = 2.338;
+const PATH = "M0.314 -0.718V-0.093Q0.314 -0.065 0.3205 -0.0495Q0.327 -0.034 0.3415 -0.0275Q0.356 -0.021 0.38 -0.021V0Q0.358 -0.001 0.3155 -0.0025Q0.273 -0.004 0.229 -0.004Q0.174 -0.004 0.12 -0.0025Q0.066 -0.001 0.038 0V-0.021Q0.073 -0.021 0.094 -0.03Q0.115 -0.039 0.1245 -0.061Q0.134 -0.083 0.134 -0.123V-0.558Q0.134 -0.593 0.1245 -0.6095Q0.115 -0.626 0.092 -0.631Q0.069 -0.636 0.028 -0.636V-0.657Q0.138 -0.669 0.2045 -0.6855Q0.271 -0.702 0.314 -0.718ZM0.833 -0.722 0.831 -0.69 0.436 -0.155 0.493 -0.252H0.945V-0.135H0.414V-0.156ZM0.849 -0.722V-0.106Q0.849 -0.07 0.8535 -0.052Q0.858 -0.034 0.8712 -0.028Q0.8844 -0.022 0.91 -0.02V0Q0.885 -0.002 0.8427 -0.0025Q0.8005 -0.003 0.752 -0.003Q0.7151 -0.003 0.679 -0.0025Q0.643 -0.002 0.618 0V-0.02Q0.6517 -0.022 0.6693 -0.028Q0.687 -0.034 0.693 -0.052Q0.699 -0.07 0.699 -0.106V-0.522L0.833 -0.722ZM1.3139 -0.722Q1.4031 -0.722 1.4701 -0.679Q1.537 -0.636 1.574 -0.5555Q1.611 -0.475 1.611 -0.36Q1.611 -0.248 1.573 -0.164Q1.535 -0.08 1.4675 -0.033Q1.3999 0.014 1.3131 0.014Q1.2239 0.014 1.1569 -0.029Q1.09 -0.072 1.053 -0.153Q1.016 -0.234 1.016 -0.348Q1.016 -0.46 1.054 -0.544Q1.092 -0.628 1.1595 -0.675Q1.2271 -0.722 1.3139 -0.722ZM1.31 -0.704Q1.258 -0.704 1.232 -0.613Q1.206 -0.522 1.206 -0.352Q1.206 -0.177 1.2355 -0.0905Q1.265 -0.004 1.317 -0.004Q1.3704 -0.004 1.3957 -0.095Q1.421 -0.186 1.421 -0.356Q1.421 -0.531 1.3915 -0.6175Q1.362 -0.704 1.31 -0.704ZM1.9969 -0.722Q2.0861 -0.722 2.1531 -0.679Q2.22 -0.636 2.257 -0.5555Q2.294 -0.475 2.294 -0.36Q2.294 -0.248 2.256 -0.164Q2.218 -0.08 2.1505 -0.033Q2.0829 0.014 1.9961 0.014Q1.9069 0.014 1.8399 -0.029Q1.773 -0.072 1.736 -0.153Q1.699 -0.234 1.699 -0.348Q1.699 -0.46 1.737 -0.544Q1.775 -0.628 1.8425 -0.675Q1.9101 -0.722 1.9969 -0.722ZM1.993 -0.704Q1.941 -0.704 1.915 -0.613Q1.889 -0.522 1.889 -0.352Q1.889 -0.177 1.9185 -0.0905Q1.948 -0.004 2 -0.004Q2.0534 -0.004 2.0787 -0.095Q2.104 -0.186 2.104 -0.356Q2.104 -0.531 2.0745 -0.6175Q2.045 -0.704 1.993 -0.704Z";
+async function maskOf(size, W, H) {
   const c = document.createElement("canvas"); c.width = W; c.height = H;
-  const x = c.getContext("2d", { willReadFrequently: true }); x.drawImage(img, 0, 0);
+  const x = c.getContext("2d", { willReadFrequently: true });
+  x.setTransform(size, 0, 0, size, W / 2 - (ADV * size) / 2, H / 2 + size * 0.36);
+  x.fill(new Path2D(PATH));
   const d = x.getImageData(0, 0, W, H).data, I = new Float32Array((W + 1) * (H + 1));
   for (let y = 0; y < H; y++) { let r = 0; for (let i = 0; i < W; i++) { r += d[(y * W + i) * 4 + 3] / 255; I[(y + 1) * (W + 1) + i + 1] = I[y * (W + 1) + i + 1] + r; } }
   return (cx, cy, h) => {
@@ -57,15 +59,11 @@ export function storiesFromEdition(E, desks, href = d => "#" + d) {
 }
 
 // The screen for one size, worked out once: every dot's home on the screen and its size at rest.
-async function screenFor(size, font) {
+async function screenFor(size) {
   const key = String(size);
   if (CACHE.has(key)) return CACHE.get(key);
-  const probe = document.createElement("span");
-  probe.textContent = "1400";
-  probe.style.cssText = `position:absolute;visibility:hidden;font:900 ${size}px "Playfair Display",serif;font-variant-numeric:lining-nums`;
-  document.body.append(probe); const w = probe.getBoundingClientRect().width; probe.remove();
-  const W = Math.ceil(w + size * 0.5), H = Math.ceil(size * 1.02), g = Math.max(3, size / 21);
-  const cover = await maskOf("1400", size, W, H, font);
+  const W = Math.ceil(ADV * size + size * 0.5), H = Math.ceil(size * 1.02), g = Math.max(3, size / 21);
+  const cover = await maskOf(size, W, H);
   const dots = [], span = Math.hypot(W, H), ca = Math.SQRT1_2, sa = Math.SQRT1_2;
   for (let j = -span / g; j < span / g; j++) for (let i = -span / g; i < span / g; i++) {
     const u = i * g, v = j * g, x = W / 2 + u * ca - v * sa, y = H / 2 + u * sa + v * ca;
@@ -78,9 +76,9 @@ async function screenFor(size, font) {
   return s;
 }
 
-export async function mountWordmark(el, { font, size }) {
+export async function mountWordmark(el, { size }) {
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const { W, H, g, dots } = await screenFor(size, font), R = g * 0.6;
+  const { W, H, g, dots } = await screenFor(size), R = g * 0.6;
   // the canvas reaches past the figure, so loose ink and parted dots have room; it never takes the pointer itself
   const PX = Math.round(W * 0.2), PY = Math.round(H * 0.3), CW = W + 2 * PX, CH = H + 2 * PY;
   const c = document.createElement("canvas");
