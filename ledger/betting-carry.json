@@ -1,63 +1,63 @@
 {
-  "date": "2026-09-30",
-  "from": "2026-09-29",
+  "date": "2026-10-01",
+  "from": "2026-09-30",
   "carry": [
-    {
-      "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
-      "title": "UEFA Champions League: 2027 Champion",
-      "since": "2026-09-25",
-      "reason": "#2 by 24h volume"
-    },
     {
       "id": "pm:brazil-presidential-election",
       "title": "Brazil Presidential Election",
       "since": "2026-09-25",
+      "reason": "#1 by 24h volume"
+    },
+    {
+      "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
+      "title": "UEFA Champions League: 2027 Champion",
+      "since": "2026-09-25",
       "reason": "#4 by 24h volume"
+    },
+    {
+      "id": "pm:which-company-has-the-best-ai-model-end-of-october",
+      "title": "Which company has the best AI model end of October?",
+      "since": "2026-09-30",
+      "reason": "#6 by 24h volume; Google moved 61.0 pts since printed"
     },
     {
       "id": "pm:ballon-dor-winner-2026",
       "title": "Ballon d'Or Winner 2026",
       "since": "2026-09-25",
-      "reason": "#5 by 24h volume"
-    },
-    {
-      "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
-      "title": "US announces end of Iranian blockade by...?",
-      "since": "2026-09-25",
-      "reason": "#9 by 24h volume"
+      "reason": "#8 by 24h volume"
     },
     {
       "id": "pm:us-iran-ceasefire-continues-throughptptpt",
       "title": "US-Iran ceasefire continues through...?",
       "since": "2026-09-25",
-      "reason": "#12 by 24h volume"
+      "reason": "#9 by 24h volume"
     },
     {
-      "id": "pm:saudi-oil-pipeline-east-west-restarts-byptptpt",
-      "title": "Saudi Oil Pipeline (East-West) restarts by...?",
-      "since": "2026-09-28",
-      "reason": "By September 30 moved 15.3 pts since printed"
+      "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
+      "title": "US announces end of Iranian blockade by...?",
+      "since": "2026-09-25",
+      "reason": "#10 by 24h volume"
     }
   ],
   "dropped": [
     {
-      "id": "pm:unl-cze-eng-2026-09-29",
-      "title": "Czechia vs. England",
-      "why": "cooled: outside the ranking by volume, moved 3.0 pts"
+      "id": "pm:crint-ind-wst-2026-09-30",
+      "title": "West Indies Tour of India ODIs: India vs West Indies",
+      "why": "cooled: outside the ranking by volume, moved 1.0 pts"
+    },
+    {
+      "id": "pm:unl-den-prt-2026-10-01",
+      "title": "Denmark vs. Portugal",
+      "why": "ended or decided, no next market in the same line"
     },
     {
       "id": "pm:anthropic-ipo-by",
       "title": "Anthropic IPO by __?",
-      "why": "cooled: #29 by volume, moved 0.0 pts"
+      "why": "cooled: #33 by volume, moved 0.0 pts"
     },
     {
-      "id": "pm:which-company-has-the-best-ai-model-end-of-october",
-      "title": "Which company has the best AI model end of October?",
-      "why": "cooled: #26 by volume, moved 0.0 pts"
-    },
-    {
-      "id": "pm:unl-hrv-esp-2026-10-06",
-      "title": "Croatia vs. Spain",
+      "id": "pm:saudi-oil-pipeline-east-west-restarts-byptptpt",
+      "title": "Saudi Oil Pipeline (East-West) restarts by...?",
       "why": "carry cap of 6"
     }
   ]

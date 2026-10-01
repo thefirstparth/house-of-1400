@@ -69,6 +69,32 @@
       "section": "ledger",
       "found_by": "daily run 2026-09-30 (wire check)",
       "printed_on": "2026-09-30"
+    },
+    {
+      "id": "small-savings-q3-fy27",
+      "what": "Small savings rates unchanged for October to December 2026: PPF 7.1%, NSC 7.7%, SSY and SCSS 8.2%",
+      "who": "Ministry of Finance",
+      "announced": "2026-09-30",
+      "effective": "2026-10-01",
+      "sources": [
+        "https://theprint.in/economy/govt-keeps-interest-rates-on-small-savings-schemes-unchanged-for-oct-dec/3058179/"
+      ],
+      "section": "ledger",
+      "found_by": "daily run 2026-10-01 (wire check)",
+      "printed_on": "2026-10-01"
+    },
+    {
+      "id": "commercial-lpg-oct-2026",
+      "what": "19 kg commercial LPG cylinder up about Rs 62.50 to Rs 71.50 from 1 October (Rs 2,898 in Bengaluru); domestic cylinder unchanged",
+      "who": "Oil marketing companies",
+      "announced": "2026-10-01",
+      "effective": "2026-10-01",
+      "sources": [
+        "https://www.businesstoday.in/india/story/commercial-lpg-price-hike-ahead-of-festive-season-19-kg-cylinder-rates-rise-by-rs62-50-in-delhi-558928-2026-10-01"
+      ],
+      "section": "ledger",
+      "found_by": "daily run 2026-10-01 (wider net)",
+      "printed_on": "2026-10-01"
     }
   ]
 }
