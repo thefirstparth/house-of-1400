@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_updated": "2026-10-01T08:44:27.959Z",
+  "last_updated": "2026-10-01T09:36:16.500Z",
   "last_edition": "2026-10-01",
   "threads": [
     {
@@ -1817,6 +1817,26 @@
         "down": 0
       },
       "section": "namma"
+    },
+    {
+      "thread_id": "ronaldo-portugal-2026",
+      "title": "Ronaldo walks out of Portugal's camp after Jorge Jesus says he will not start against Denmark",
+      "entities": [],
+      "facts": {
+        "left": "30 Sep, Copenhagen",
+        "goals": "146",
+        "caps": "234",
+        "next": "Denmark v Portugal, 1 Oct"
+      },
+      "first_printed": "2026-10-01",
+      "last_printed": "2026-10-01",
+      "last_change": "2026-10-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
     }
   ]
 }

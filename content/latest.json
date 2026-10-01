@@ -24,6 +24,11 @@
       "color": "--acc-rm"
     },
     {
+      "section": "Portugal · Football",
+      "line": "Ronaldo walks out of Portugal's camp before Denmark",
+      "target": "ronaldo-leaves-portugal-camp"
+    },
+    {
       "section": "India v West Indies",
       "line": "Gill's 223 powers a record 406 chase",
       "target": "gill-223-record-chase",
@@ -531,6 +536,48 @@
             }
           ],
           "tone": "bad"
+        }
+      ]
+    },
+    "pitch": {
+      "stories": [
+        {
+          "id": "ronaldo-leaves-portugal-camp",
+          "thread_id": "ronaldo-portugal-2026",
+          "section": "pitch",
+          "kicker": "Portugal · Nations League",
+          "headline": "Ronaldo walks out of Portugal's camp after Jorge Jesus says he will not start against Denmark",
+          "byline": "REUTERS, ESPN · 30 SEP",
+          "short": "Cristiano Ronaldo left Portugal's training camp in Copenhagen on Wednesday, hours after coach Jorge Jesus said Gonçalo Ramos would lead the attack in Thursday's Nations League game against Denmark. \"I have decided to leave the national team's training camp,\" Ronaldo wrote on Instagram, after a talk with federation president Pedro Proença, and promised to tell Portuguese fans \"the truth about the reasons behind my departure\" in due course.",
+          "more": [
+            "It began on Sunday. Jesus told Ronaldo he would come on against Norway, had him warm up for a long spell, then left him on the bench in a 2–1 win. Ronaldo worked in the gym instead of training with the squad on Monday and Tuesday, though he was not injured, and Proença flew to Copenhagen to meet them both.",
+            "Jesus denied a rift on Wednesday. \"It seems like there was an issue between us, but there was no issue,\" he said, admitting it was a mistake to keep Ronaldo warming up and not use him. \"I can promise whatever I want, I'm the coach. No player will ever make a decision for me.\" The federation said preparations would go on with the other 24 players.",
+            "Ronaldo, 41, is Portugal's record scorer with 146 goals and their most-capped player with 234 appearances. Last week he said he could leave \"today\" if the manager did not want him. Whether this ends his international career is the question his promised statement should answer."
+          ],
+          "why": {
+            "text": "Portugal is one of your teams, and this may be the end of Ronaldo's 23 years with them. Denmark v Portugal is tonight, without him.",
+            "personal": true
+          },
+          "sources": [
+            {
+              "label": "Al Jazeera (Reuters)",
+              "url": "https://www.aljazeera.com/sports/2026/9/30/cristiano-ronaldo-misses-portugal-training-as-coach-jorge-jesus-denies-rift"
+            },
+            {
+              "label": "ESPN",
+              "url": "https://www.espn.in/football/story/_/id/50069045/cristiano-ronaldo-portugal-coach-leave-camp-jorge-jesus-bench-denmark"
+            },
+            {
+              "label": "India Today",
+              "url": "https://www.indiatoday.in/sports/football/story/cristiano-ronaldo-reaction-portugal-camp-exit-truth-jorge-jesus-3007029-2026-10-01"
+            }
+          ],
+          "facts": {
+            "left": "30 Sep, Copenhagen",
+            "goals": "146",
+            "caps": "234",
+            "next": "Denmark v Portugal, 1 Oct"
+          }
         }
       ]
     }
@@ -9577,6 +9624,9 @@
     },
     {
       "story_id": "asiad-cricket-final-pakistan"
+    },
+    {
+      "story_id": "ronaldo-leaves-portugal-camp"
     }
   ],
   "betting": [

@@ -98,7 +98,7 @@
       "why": "Seven reading-list feeds ran it (BBC football, BBC Sport, the Guardian, Al Jazeera via Google, Sportstar twice, NDTV) but in different words, and the wire grouped an outlet's own headline only when it was near-identical, so the story counted 4 outlets and never reached the must-answer list (6). The Athletic's lead on it, with three open outlets, was listed but leads needed no answer. Nothing tied stories about followed national teams to the check.",
       "fix": "The wire groups the same story told in different words (shared rare words, weighted), and outlets' own stories count even without a Google signal; a story naming anyone Parth follows (club, national teams on sports feeds, driver, players, team) needs an answer from three outlets; each desk's three widest stories always make the list; every lead with an open outlet must be printed or answered. Regression test on the day's real reading list (tests/trial.test.mjs).",
       "owed": {
-        "what": "Ronaldo and Portugal: why he left the camp, what Jorge Jesus and Ronaldo said, the Denmark result, and whether his international career is over",
+        "what": "The Ronaldo follow-up: his promised statement on why he left, the Denmark result, and whether he plays for Portugal again (the walk-out itself was added to the 1 Oct paper after Parth's report)",
         "until": "2026-10-03"
       }
     }
