@@ -810,10 +810,15 @@ function moodCard(m) {
   const toneOf = w => (/fear|fearful|cautious/i.test(w) ? "bad" : /greed|confident|exuberant/i.test(w) ? "good" : "neutral");
   const tone = toneOf(word) === "neutral" ? "var(--muted)" : `var(--${toneOf(word)})`;
   const bands = m.bands || [{ from: 0, word: "Fearful" }, { from: 25, word: "Cautious" }, { from: 45, word: "Neutral" }, { from: 56, word: "Confident" }, { from: 75, word: "Exuberant" }];
-  const at = v => `${Math.max(0, Math.min(100, v)).toFixed(1)}%`;
+  // A gauge (Parth, 1 Oct: "a gauge, not a bar", clean): a thin arc in the publisher's bands, all grey but the band
+  // the reading is in, a slim needle, and a short mark where it stood a month ago.
+  const cx = 110, cy = 100, r = 84, P = v => { const a = Math.PI * (1 - Math.max(0, Math.min(100, v)) / 100); return [cx + r * Math.cos(a), cy - r * Math.sin(a)]; };
+  const arc = (f, t, col, wd) => { const [x1, y1] = P(f), [x2, y2] = P(t); return `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${col}" stroke-width="${wd}" fill="none" stroke-linecap="butt"/>`; };
   const segs = bands.map((b, i) => { const to = bands[i + 1]?.from ?? 100, on = m.score >= b.from && m.score < (bands[i + 1]?.from ?? 101);
-    return `<i style="width:${to - b.from}%${on ? `;background:${tone}` : ""}" title="${esc(b.word)}: ${b.from} to ${to}"></i>`; }).join("");
-  const scale = `<div class="mscale" role="img" aria-label="${esc(m.region || "")} ${m.score} of 100, ${esc(word)}"><div class="mbar">${segs}${m.prev_month != null ? `<span class="mtick" style="left:${at(m.prev_month)}" title="A month ago ${Math.round(m.prev_month)}"></span>` : ""}<span class="mdot" style="left:${at(m.score)}"></span></div><div class="mends"><span>${esc(bands[0].word)}</span><span>${esc(bands.at(-1).word)}</span></div></div>`;
+    return arc(b.from + (i ? 0.8 : 0), to - (i < bands.length - 1 ? 0.8 : 0), on ? tone : "var(--rule)", on ? 12 : 9); }).join("");
+  const tickAt = v => { if (v == null) return ""; const a = Math.PI * (1 - v / 100), c = Math.cos(a), sn = Math.sin(a); return `<line x1="${(cx + (r - 11) * c).toFixed(1)}" y1="${(cy - (r - 11) * sn).toFixed(1)}" x2="${(cx + (r + 11) * c).toFixed(1)}" y2="${(cy - (r + 11) * sn).toFixed(1)}" stroke="var(--muted)" stroke-width="1.5"><title>A month ago ${Math.round(v)}</title></line>`; };
+  const [nx, ny] = (() => { const a = Math.PI * (1 - m.score / 100); return [cx + (r - 20) * Math.cos(a), cy - (r - 20) * Math.sin(a)]; })();
+  const scale = `<svg class="mgauge" viewBox="0 0 220 118" role="img" aria-label="${esc(m.region || "")} ${m.score} of 100, ${esc(word)}">${segs}${tickAt(m.prev_month)}<line x1="${cx}" y1="${cy}" x2="${nx.toFixed(1)}" y2="${ny.toFixed(1)}" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="5" fill="var(--ink)"/><text x="${cx - r}" y="116" text-anchor="middle" font-size="10" fill="var(--muted)">0</text><text x="${cx + r}" y="116" text-anchor="middle" font-size="10" fill="var(--muted)">100</text>${m.prev_month != null ? `<text x="${cx}" y="116" text-anchor="middle" font-size="10" fill="var(--muted)">| a month ago</text>` : ""}</svg>`;
   const row = (label, v, extra = "") => (v == null ? "" : `<tr><td>${label}</td><td class="r tnum">${v}${extra}</td></tr>`);
   let rows, src = "";
   if (m.name) {
@@ -857,7 +862,11 @@ function breadthBlock() {
   const when = B.day === istDate() && fmt(new Date().toISOString(), { hour: "2-digit", minute: "2-digit" }) < "15:40" ? "so far today" : esc(istDay(B.day + "T12:00:00Z"));
   return `<div class="ledx"><h4 class="subhd">Breadth <span>${when}</span></h4>
 <div class="adv"><div class="adv-n"><b class="tnum up">${B.up} rose</b><b class="tnum dn">${B.down} fell</b></div><div class="adv-bar" role="img" aria-label="${B.up} of ${n} Nifty 500 stocks rose, ${B.down} fell"><i class="up" style="width:${up}%"></i><i class="dn"></i></div><div class="adv-s">${n >= 500 ? "Nifty 500" : `${n} of the Nifty 500`}${B.flat ? ` · ${B.flat} unchanged` : ""}</div></div>
-<div class="br-g">${list(`Rose most · ${from}`, B.gainers, co)}${list(`Fell most · ${from}`, B.losers, co)}${list("Industries up most", B.best, x => x.industry)}${list("Industries down most", B.worst, x => x.industry)}</div>
+${(() => {
+  // The day in one line stays in sight (the leader each way); the four lists fold (Parth, 1 Oct).
+  const g = B.gainers?.[0], l = B.losers?.[0], top = [g && `${esc(co(g))} led the gainers (${sg(g.pct)})`, l && `${esc(co(l))} the fallers (${sg(l.pct)})`].filter(Boolean).join(", ");
+  return `${top ? `<p class="br-top">${top}.</p>` : ""}<details class="more"><summary>The biggest movers, stocks and industries</summary><div class="br-g">${list(`Rose most · ${from}`, B.gainers, co)}${list(`Fell most · ${from}`, B.losers, co)}${list("Industries up most", B.best, x => x.industry)}${list("Industries down most", B.worst, x => x.industry)}</div></details>`;
+})()}
 ${aboutFig("Closing prices from Yahoo Finance for NSE's index lists; an industry's move is the median of its Nifty 500 stocks.")}${staleNote("movers")}</div>`;
 }
 function ledgerExtras() {
@@ -1199,23 +1208,26 @@ function creaseLive() {
   const day = iso => istDay(iso);
   const when = m => `${day(m.start)}${m.time_announced ? `, ${istTime(m.start)} IST` : ", time TBC"}`;
   const place = m => [m.ground, m.city].filter(Boolean).join(", ");
-  const res = m => m.state === "live" ? `<em class="cz-live"><i></i>Live · ${esc(m.status || "in play")}</em>` : m.state === "done" ? `<em class="${m.won === true ? "up" : m.won === false ? "dn" : ""}">${esc((m.status || "").replace(/^India won/i, "Won").replace(/ due to .*$/i, "") || "Result")}</em>` : "";
+  const asOf = LIVE.crease?.as_of ? ` · score at ${esc(istTime(LIVE.crease.as_of))} IST` : "";
+  const res = m => m.state === "live" ? `<em class="cz-live"><i></i>In play${/opt|elected|won the toss/i.test(m.status || "") ? "" : m.status ? ` · ${esc(m.status)}` : ""}</em>` : m.state === "done" ? `<em class="${m.won === true ? "up" : m.won === false ? "dn" : ""}">${esc((m.status || "").replace(/^India won/i, "Won").replace(/ due to .*$/i, "") || "Result")}</em>` : "";
   let h = "";
   const N = C.next, D = C.today && keptToday(Date.parse(C.today.start)) ? C.today : null;
   // The scorecard in a line (Parth, 1 Oct: tennis had its score, cricket only its result).
   const card = m => m.score ? `<p class="cz-sc tnum">${esc(m.score)}</p>` : "";
   if (D) h += `<div class="cz-next cz-today"><div class="cz-k">${playedDay(D.start)}</div><h3>India v ${esc(D.opponent)}</h3><p>${esc(D.desc)} · ${esc(place(D))}</p><p class="cz-when">${res(D)}</p>${card(D)}</div>`;
-  if (N) h += `<div class="cz-next"><div class="cz-k">${N.state === "live" ? "Live now" : "Next match"}</div><h3>India v ${esc(N.opponent)}</h3><p>${esc(N.desc)} · ${esc(place(N))}</p><p class="cz-when">${N.state === "live" ? res(N) : `${esc(when(N))}${N.time_announced ? ` · <span data-until="${esc(N.start)}" data-min="480" data-done="">--</span>` : ""}${watchTag({ entity: "india_cricket", when_utc: N.start, label: `India v ${N.opponent}` })}`}</p>${N.state === "live" ? card(N) : ""}</div>`;
+  if (N) h += `<div class="cz-next"><div class="cz-k">${N.state === "live" ? "In play" : "Next match"}</div><h3>India v ${esc(N.opponent)}</h3><p>${esc(N.desc)} · ${esc(place(N))}</p><p class="cz-when">${N.state === "live" ? res(N).replace(/<em class="cz-live"><i><\/i>In play<\/em>/, "") : `${esc(when(N))}${N.time_announced ? ` · <span data-until="${esc(N.start)}" data-min="480" data-done="">--</span>` : ""}${watchTag({ entity: "india_cricket", when_utc: N.start, label: `India v ${N.opponent}` })}`}</p>${N.state === "live" ? card(N).replace("</p>", `<small class="cz-asof">${asOf.replace(/^ · /, "")}</small></p>`) : ""}</div>`;
   const strip = (f, big) => `<div class="cz-f"><h5>${esc(f.label)}${f.total ? ` · ${f.total} matches` : ""}${f.score ? ` · <b>${esc(f.score)}</b>` : ""}</h5><ol class="cz-strip${big ? "" : " small"}">${f.matches.map(m => {
     const isNext = N && m.id === N.id;
     return `<li class="${m.state}${isNext ? " is-next" : ""}${m.won === true ? " won" : m.won === false ? " lost" : ""}"><b>${esc(m.n ? m.desc.replace(/ (ODI|T20I|Test)$/i, "") : m.desc)}</b><span>${esc(day(m.start))}</span><span>${esc(m.city || "")}</span>${res(m)}${m.score ? `<span class="cz-ts tnum">${esc(m.score.replace(/ \([^)]*ov\)/g, ""))}</span>` : ""}</li>`;
   }).join("")}</ol></div>`;
-  const M = C.main;
-  if (M) h += `<div class="cz-series"><h4 class="subhd">${esc(M.name.replace(/,? \d{4}$/, ""))}</h4>${M.formats.map((f, i) => strip(f, i === 0 || f.matches.some(m => N && m.id === N.id))).join("")}</div>`;
-  for (const A of C.also || []) {
-    const up = A.formats.flatMap(f => f.matches).find(m => m.state !== "done" && !(N && m.id === N.id)), last = A.formats.flatMap(f => f.matches).filter(m => m.state === "done").at(-1);
-    h += `<p class="cz-line"><b>Also:</b> ${esc(A.name.replace(/,? \d{4}$/, ""))}${up ? ` · ${esc(up.desc)}${up.opponent && up.opponent !== "TBC" ? ` v ${esc(up.opponent)}` : ""} · ${esc(when(up))}${up.city ? ` · ${esc(up.city)}` : ""}` : ""}${last ? ` <span class="asof">(last: ${esc(last.desc)}${last.opponent ? ` v ${esc(last.opponent)}` : ""}, ${esc((last.status || "").replace(/^India won/i, "won").replace(/ due to .*$/i, "").toLowerCase())})</span>` : ""}</p>`;
-  }
+  const ko = S => {
+    if (!S.knockouts?.length) return "";
+    const st = k => k.state === "done" ? `<b>${esc(k.status)}</b>${k.score ? `<small class="tnum">${esc(k.score)}</small>` : ""}` : k.state === "live" ? `<em class="cz-live"><i></i>In play</em>${k.score ? `<small class="tnum">${esc(k.score)}</small>` : ""}` : k.state === "off" ? esc(k.status || "No result") : `${esc(day(k.start))}, ${esc(istTime(k.start))} IST`;
+    return `<div class="cz-ko"><h5>The knockouts</h5><table class="compact"><tbody>${S.knockouts.map(k => `<tr class="${k.india ? "on" : ""}"><td class="sub" title="${esc(k.stage)}">${esc(k.stage.replace(/^(\d)\w* Quarter-?Final$/i, "QF $1").replace(/^(\d)\w* Semi-?Final$/i, "SF $1"))}</td><td>${esc(k.teams.join(" v "))}</td><td class="r">${st(k)}</td></tr>`).join("")}</tbody></table></div>`;
+  };
+  // In a tournament whose knockouts are listed, India's own knockout matches are already in that table.
+  const block = (S, first) => `<div class="cz-series"><h4 class="subhd">${esc(S.name.replace(/,? \d{4}$/, ""))}</h4>${S.formats.filter(f => !(S.knockouts?.length && f.matches.every(m => /final/i.test(m.desc || "")))).map((f, i) => strip(f, first && (i === 0 || f.matches.some(m => N && m.id === N.id)))).join("")}${ko(S)}</div>`;
+  for (const [i, S] of [C.main, ...(C.also || [])].filter(Boolean).entries()) h += block(S, i === 0);
   const T = C.after;
   if (T) h += `<p class="cz-line"><b>Next tour:</b> ${esc(T.name.replace(/,? \d{4}$/, ""))} · from ${esc(day(T.first))} · ${esc(T.formats.map(f => `${f.total || f.matches.length} ${f.label}`).join(", "))}</p>`;
   return `<div class="cz">${h}${aboutFig("Schedule and results from Cricbuzz.")}${staleNote("crease")}</div>`;
@@ -2098,6 +2110,8 @@ async function boot() {
       try { const p = await navigator.permissions?.query({ name: "geolocation" }); if (p?.state === "granted") myLocation(false); } catch {}
     }
     liveTimer = setInterval(() => { if (!document.hidden) refreshLive(); }, LIVE_EVERY);
+    // India in play: the score every minute, not every five (the server holds it for a minute while a match is live).
+    setInterval(() => { const C = LIVE.crease?.value; if (!document.hidden && [C?.next, ...(C?.main?.formats || []).flatMap(f => f.matches)].some(m => m?.state === "live")) live("crease").then(paintSoon); }, 60 * 1000);
     document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshLive(); });
   }
 }

@@ -19,6 +19,8 @@ export async function GET(request) {
   let [s, swr] = CACHE[key] || [300, 900];
   // No index trading anywhere: the market feed changes slowly (the rupee, oil, Bitcoin), so hold it for 30 minutes.
   if (key === "markets" && out.ok && !(out.value?.indices || []).some(i => i.live)) [s, swr] = [1800, 3600];
+  // A match in play: The Crease's score is held for a minute, not ten (Parth, 1 Oct: "Live now" showed a stale score).
+  if (key === "crease" && out.ok && [out.value?.next, ...(out.value?.main?.formats || []).flatMap(f => f.matches)].some(m => m?.state === "live")) [s, swr] = [60, 60];
   const personal = url.searchParams.has("lat");
   return Response.json(out, {
     headers: { "cache-control": out.ok && !personal ? `public, s-maxage=${s}, stale-while-revalidate=${swr}` : "no-store" },

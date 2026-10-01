@@ -360,12 +360,8 @@ sup.calc{font-size:.72em;color:var(--muted);margin-left:1px}
 .mood .mh{display:flex;justify-content:space-between;align-items:baseline;font:700 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .mood .mh b{font:800 28px/1 var(--hl);letter-spacing:0;color:var(--ink);font-variation-settings:"wdth" 80}
 .mood .mword{font:700 18px/1.15 var(--hl);margin:0}
-.mood .mscale{margin:8px 0 4px}
-.mood .mbar{position:relative;display:flex;gap:2px;height:8px}
-.mood .mbar i{display:block;height:100%;border-radius:2px;background:var(--rule)}
-.mood .mdot{position:absolute;top:50%;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 2px var(--sheet)}
-.mood .mtick{position:absolute;top:-4px;bottom:-4px;width:1.5px;margin-left:-.75px;background:var(--muted)}
-.mood .mends{display:flex;justify-content:space-between;margin-top:5px;font:500 11px var(--sans);color:var(--muted)}
+.mood .mgauge{display:block;width:100%;max-width:240px;margin:6px auto 2px}
+.mood .mgauge text{font-family:var(--sans)}
 .mood .mt{width:100%;border-collapse:collapse;margin:4px 0 0}
 .mood .mt td{padding:5px 0;border-top:1px solid var(--rule2);font:14px/1.3 var(--serif);color:var(--ink2)}
 .mood .mt td.r{text-align:right;font:600 14px var(--sans);color:var(--ink);white-space:nowrap}
@@ -1165,3 +1161,12 @@ table.tr td small{display:block;font:500 11px var(--sans);color:var(--muted)}
 .sky-fam .sky-figs{grid-template-columns:1fr}
 @media (max-width:900px){.sky-top{grid-template-columns:1fr;gap:14px}}
 @media (max-width:720px){.sky-figs,.sky-fam{grid-template-columns:1fr;gap:20px}table.tr td,table.tr th{padding-left:5px;padding-right:5px}table.tr td{font-size:14px}}
+
+/* The Crease: a tournament's knockouts, so the reader sees who India might meet (1 Oct 2026) */
+.cz-ko{margin-top:14px}
+.cz-ko h5{margin:0 0 4px;font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cz-ko td small{display:block;font:500 12px var(--sans);color:var(--muted)}
+.cz-ko td.r{text-align:right}
+.cz-asof{display:block;font:500 12px var(--sans);color:var(--muted)}
+
+.br-top{margin:10px 0 0;font:16px/1.5 var(--serif);color:var(--ink2)}
