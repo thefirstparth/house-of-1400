@@ -1,0 +1,182 @@
+{
+ "1300-light": {
+  "sideways": 0,
+  "sections": [
+   "fixtures",
+   "madrid",
+   "paddock",
+   "crease",
+   "deuce",
+   "pitch",
+   "sidelines"
+  ],
+  "overlaps": [],
+  "widths": {
+   "mast": [
+    69,
+    1231
+   ],
+   "tabs": [
+    69,
+    1231
+   ],
+   "content": [
+    69,
+    1231
+   ]
+  },
+  "tables": [],
+  "broken": 0,
+  "errs": []
+ },
+ "390-light": {
+  "sideways": 0,
+  "sections": [
+   "fixtures",
+   "madrid",
+   "paddock",
+   "crease",
+   "deuce",
+   "pitch",
+   "sidelines"
+  ],
+  "overlaps": [],
+  "widths": {
+   "mast": [
+    16,
+    374
+   ],
+   "tabs": [
+    -138,
+    496
+   ],
+   "content": [
+    16,
+    374
+   ]
+  },
+  "tables": [],
+  "broken": 0,
+  "errs": []
+ },
+ "1300-dark": {
+  "sideways": 0,
+  "sections": [
+   "fixtures",
+   "madrid",
+   "paddock",
+   "crease",
+   "deuce",
+   "pitch",
+   "sidelines"
+  ],
+  "overlaps": [],
+  "widths": {
+   "mast": [
+    69,
+    1231
+   ],
+   "tabs": [
+    69,
+    1231
+   ],
+   "content": [
+    69,
+    1231
+   ]
+  },
+  "tables": [],
+  "broken": 0,
+  "errs": []
+ },
+ "390-dark": {
+  "sideways": 0,
+  "sections": [
+   "fixtures",
+   "madrid",
+   "paddock",
+   "crease",
+   "deuce",
+   "pitch",
+   "sidelines"
+  ],
+  "overlaps": [],
+  "widths": {
+   "mast": [
+    16,
+    374
+   ],
+   "tabs": [
+    -138,
+    496
+   ],
+   "content": [
+    16,
+    374
+   ]
+  },
+  "tables": [],
+  "broken": 0,
+  "errs": []
+ },
+ "1920-light": {
+  "sideways": 0,
+  "sections": [
+   "fixtures",
+   "madrid",
+   "paddock",
+   "crease",
+   "deuce",
+   "pitch",
+   "sidelines"
+  ],
+  "overlaps": [],
+  "widths": {
+   "mast": [
+    240,
+    1680
+   ],
+   "tabs": [
+    240,
+    1680
+   ],
+   "content": [
+    240,
+    1680
+   ]
+  },
+  "tables": [],
+  "broken": 0,
+  "errs": []
+ },
+ "2560-light": {
+  "sideways": 0,
+  "sections": [
+   "fixtures",
+   "madrid",
+   "paddock",
+   "crease",
+   "deuce",
+   "pitch",
+   "sidelines"
+  ],
+  "overlaps": [],
+  "widths": {
+   "mast": [
+    320,
+    2240
+   ],
+   "tabs": [
+    320,
+    2240
+   ],
+   "content": [
+    320,
+    2240
+   ]
+  },
+  "tables": [],
+  "broken": 0,
+  "errs": []
+ }
+}

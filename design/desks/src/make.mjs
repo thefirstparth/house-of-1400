@@ -1,4 +1,4 @@
-// node design/sport/src/make.mjs [desk]: build the desk page mock as one self-contained, working HTML file.
+// node design/desks/src/make.mjs [desk]: build the desk page mock as one self-contained, working HTML file.
 // The paper's own renderer (public/app.js) with the mock layer (proto.js, proto.css) patched in; the edition of
 // content/latest.json as the build serves it; its press-time snapshot answers every live call; the clock is held at
 // 15:00 IST on the edition's day; the fonts are embedded (self-hosted, never Google). Your Desk is removed.
@@ -6,7 +6,7 @@
 import { execSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
-const H = new URL("../../../", import.meta.url).pathname, SRC = H + "design/sport/src/";
+const H = new URL("../../../", import.meta.url).pathname, SRC = H + "design/desks/src/";
 const desk = process.argv[2] || "sport";
 const read = f => readFileSync(H + f, "utf8");
 
@@ -56,7 +56,14 @@ js = js.replace(/\n  h \+= `<div class="foot">[^\n]*/, "\n  h += deskFoot();");
 if (!js.includes("h += deskFoot();")) throw new Error("foot anchor missing");
 rep("  const [eL, eR] = earsHTML();", "  paintShell(); const [eL, eR] = earsHTML();");
 rep("    observeIndex(present);", "    observeIndex(present); paintJump();");
-// a section that is not on this desk is never built (its data would only be hidden)
+// News (mock only): Dateline printed as Desh (India) and Videsh (the world), split by the story's kicker. In production
+// Bhide would file each story to its section; that is a schema and editorial change for Parth to agree.
+rep('  S.dateline = secWrap("dateline", storiesBlock("dateline"), "World & India");', '  S.dateline = secWrap("dateline", storiesBlock("dateline"), "World & India");\n  S.desh = secWrap("desh", storiesBlock("desh"), "India: the country, its courts, its institutions");\n  S.videsh = secWrap("videsh", storiesBlock("videsh"), "The world, as it touches India");');
+// Big monitors: the masthead and the tabs scale with the page, so all three share one width.
+rep('for (const id of ["top", "idx", "layout", "late", "pastbar"])', 'for (const id of ["top", "idx", "layout", "late", "pastbar", "dtop", "dtabs"])');
+// The Crease's next tour breaks only between its parts, never inside one ("2 / Tests").
+js = js.replace(/^.*<b>Next tour:<\/b>.*$/m, line => line.replace("<b>Next tour:</b> ", '<b>Next tour:</b> <span class="nw">').replace(/ · /g, '</span> · <span class="nw">').replace("</p>`", "</span></p>`"));
+if (!js.includes('<b>Next tour:</b> <span class="nw">')) throw new Error("next tour anchor missing");
 if (js.includes("</script")) throw new Error("app.js contains </script");
 
 // ---------------------------------------------------------------- styles: the live sheet, radii down to 4px, then the mock's
@@ -69,7 +76,8 @@ const E = JSON.parse(read("dist/content/latest.json"));
 delete E.desk; delete E.coverage_waivers; // Your Desk (Gmail, Calendar) never leaves the edition JSON
 const secOf = {};
 for (const x of [E.front.lead, ...E.front.seconds, ...E.front.briefs, ...Object.values(E.sections || {}).flatMap(s => [...(s.stories || []), ...(s.briefs || [])])]) secOf[x.id] = x.section;
-const deskSecs = { sport: ["fixtures", "madrid", "paddock", "crease", "deuce", "pitch", "sidelines"] }[desk] || [];
+// the edition's own sections on each desk (Desh and Videsh are both Dateline), for the drawings to embed
+const deskSecs = { sport: ["fixtures", "madrid", "paddock", "crease", "deuce", "pitch", "sidelines"], news: ["dateline", "talk", "betting"] }[desk] || [];
 const man = JSON.parse(read(`dist/art/${E.date}/manifest.json`));
 man.items = man.items.filter(i => deskSecs.includes(secOf[i.story_id])).map(i => {
   const f = H + "public" + i.src.split("?")[0];
@@ -97,11 +105,11 @@ let html = read("public/index.html")
   .replace(/<link rel="icon"[^>]*>/, "")
   .replace('<link rel="stylesheet" href="/styles.css">', () => `<style>${fonts}\n${css}</style>`)
   .replace('<script type="module" src="/app.js"></script>', () => `${boot}\n<script type="module">\n${js}\n</script>`)
-  .replace('<nav class="idx"', `<header class="dtop"><div class="dwrap"><div class="drun"><span><span id="r-date"></span><span id="r-no"></span><span id="r-print"></span></span><span class="tag" id="r-tag"></span></div>
+  .replace('<nav class="idx"', `<header class="dtop" id="dtop"><div class="dwrap"><div class="drun"><span><span id="r-date"></span><span id="r-no"></span><span id="r-print"></span></span><span class="tag" id="r-tag"></span></div>
  <div class="dbar"><a class="np" href="/" aria-label="The House of 1400, Page One"><span class="the">The</span><span class="hof">House of</span><span class="n">1400</span></a><div class="now" id="now"></div></div></div></header>
 <nav class="dtabs" id="dtabs" aria-label="Desks"><ol></ol></nav>
 <nav class="idx"`)
   .replace("<body>", `<body>\n<div class="mockbar">Desk page mock · ${desk} · the edition of ${E.date}, live figures as printed at press time · not the live paper</div>`);
-const out = H + `design/sport/${desk}-desk.html`;
+const out = H + `design/desks/${desk}-desk.html`;
 writeFileSync(out, html);
 console.log(out, Math.round(html.length / 1024) + " KB", "art:", man.items.map(i => i.story_id).join(", "));

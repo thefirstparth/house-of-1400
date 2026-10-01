@@ -115,3 +115,44 @@ section.sec:first-of-type{margin-top:26px}
 }
 @media (max-width:720px){#deuce .tbl td:last-child,#deuce .tbl th:last-child{white-space:normal}#deuce .tbl table{font-size:14px}}
 .cz-ko td:first-child{white-space:nowrap}
+
+/* ---------- colour weight (feedback, 1 Oct): the desk colour marks structure, not every small thing ----------
+   Desk colour: the desk's name, section rules and names, kickers, the current tab, in-section tabs, market bars and the
+   followed team's tint. Ink: times, figures, "Show more", Source and the other small links. */
+.agenda li .t{color:var(--ink)}
+.lmore,.f1-box .lmore,.linkish{color:var(--ink2)}
+.lmore:hover,.linkish:hover{color:var(--ink)}
+.tools a{color:var(--ink2)}
+.tools .rm{text-decoration-color:var(--rule)}
+.tools a:hover,.tools .rm:hover{color:var(--ink)}
+.why b{color:var(--ink2)}
+.why.good b{color:var(--good)}.why.bad b{color:var(--bad)}
+#main{--odds:var(--d)}
+
+/* ---------- the market's view: one size for every price, all on one baseline ---------- */
+.signal .sg-o{align-items:baseline}
+.signal .sg-o span{display:inline-flex;align-items:baseline;gap:5px;white-space:nowrap}
+.signal .sg-o b,.signal .sg-o .fav b{font:700 16px/1.2 var(--sans);color:var(--ink)}
+.signal .sg-o .fav b{font-weight:800}
+
+/* ---------- The Crease's next tour: across the section, breaking only between its parts ---------- */
+.cz-line{grid-column:1/-1}
+.nw{white-space:nowrap}
+
+/* ---------- phone tabs: the edges fade where the row has more to show ---------- */
+@media (max-width:860px){
+ nav.dtabs ol.more-r{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent)}
+ nav.dtabs ol.more-l{-webkit-mask-image:linear-gradient(90deg,transparent,#000 36px);mask-image:linear-gradient(90deg,transparent,#000 36px)}
+ nav.dtabs ol.more-l.more-r{-webkit-mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,transparent,#000 36px,#000 calc(100% - 36px),transparent)}
+}
+
+/* ---------- the day's lead, at the top of its desk: headline across, the 16:9 drawing beside the text ---------- */
+.dlead{margin-top:22px;padding-bottom:6px;border-bottom:1px solid var(--rule)}
+.dlead .lead-story h2{font-size:clamp(32px,3.8vw,50px);line-height:1.06;margin:6px 0 12px;max-width:40ch}
+.dlead .lead-story .deck{font-size:19px;max-width:60ch}
+@media (min-width:900px){
+ .dlead .lead-story:has(figure.art){display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);column-gap:36px;align-items:start}
+ .dlead .lead-story:has(figure.art)>:not(figure.art):not(.body):not(.tools){grid-column:1/-1}
+ .dlead .lead-story>figure.art{grid-column:1;grid-row:span 2;margin:4px 0 0}
+ .dlead .lead-story:has(figure.art)>.body,.dlead .lead-story:has(figure.art)>.tools{grid-column:2}
+}
