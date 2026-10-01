@@ -116,7 +116,7 @@ function sportGroups(list) {
 }
 
 // ---------------------------------------------------------------- Page One (variant B, design/page-one/README.md FINAL)
-// The day in a minute: every one of the editor's lines (five to ten), never fewer than five under the lead
+// The day in a minute: every one of the editor's lines (Parth, 2 Oct: "the original had 7, what happened to ours?")
 const P1MAX = 10, P1MIN = 5; let p1lines = P1MAX;
 const storyDesk = id => { const s = allStories().find(x => x.id === id); return s ? deskOf(s.section)?.id : null; };
 function minuteHTML(n) {
@@ -220,22 +220,37 @@ function paintOne() {
   const parts = { minute: () => minuteHTML(p1lines), evening: eveningHTML, weather: weatherHTML, sport: () => sportHTML(4), money: moneyHTML, bets: () => betsHTML(3) };
   for (const [k, fn] of Object.entries(parts)) { const el = document.querySelector(`[data-p1="${k}"]`); if (!el) continue; const h = fn(); if (el.dataset.html !== h) { el.innerHTML = h; el.dataset.html = h; } }
 }
-// One screen on any laptop or monitor: as many of the editor's lines as fit (never fewer than five under the lead,
-// Parth 1 Oct), then the page scales (0.8 to 2; 0.75 on a big day, with the editor's note) to fill the height within
-// the width. Phones scroll.
-const ZOOMED = ["dtop", "dtabs", "layout"];
+// The page fills the screen's width on every laptop and monitor, whatever its shape (Parth, 2 Oct: "too much white
+// space on my Mac and my BenQ"): the masthead, the tabs and the page scale together (zoom) and their width is the
+// screen's, so nothing sits in a narrow column with empty margins. Phones and small tablets keep the plain layout.
+const ZOOMED = ["dtop", "dtabs", "layout", "late", "pastbar"];
+function setZoom(z, w) {
+  for (const id of ZOOMED) { const el = document.getElementById(id); if (el) el.style.zoom = z === 1 ? "" : String(z); }
+  document.documentElement.style.setProperty("--pw", w ? `${Math.round(w)}px` : "");
+}
+// A desk page: the type grows with the screen (zoom 1 to 1.8, by width and by height), the page takes the full width,
+// up to 1920px of layout so lines never run too long on an ultra-wide screen.
+function fitDesk() {
+  const W = innerWidth, H = innerHeight;
+  if (W < 1100) return setZoom(1, 0);
+  const z = Math.max(1, Math.min(W / 1440, H / 760, 1.8));
+  setZoom(z, Math.min(W / z, 1920));
+}
+// Page One: one screen. Every one of the editor's lines prints; the page takes the full width and scales (0.62 to
+// 2.2) until it fills the height. Only on a screen too short even then does it drop lines, never below five.
 function fitOne() {
-  const setZ = z => ZOOMED.forEach(id => { const el = document.getElementById(id); if (el) el.style.zoom = z === 1 ? "" : String(z); });
-  setZ(1);
+  setZoom(1, 0);
   if (DESK.id !== "one" || !document.querySelector(".p1end")) return;
   const end = () => document.querySelector(".p1end")?.getBoundingClientRect().bottom ?? 0;
-  if (innerWidth < 1000) { if (p1lines !== P1MAX) { p1lines = P1MAX; paintOne(); } return; }
-  const room = () => innerHeight;
-  p1lines = P1MAX; paintOne();
-  while (p1lines > P1MIN && end() > room()) { p1lines--; paintOne(); }
-  let lo = E.editor_note ? 0.75 : 0.8, hi = Math.max(1, Math.min(innerWidth / 1320, 2));
-  for (let k = 0; k < 12; k++) { const z = (lo + hi) / 2; setZ(z); if (end() > room()) hi = z; else lo = z; }
-  setZ(lo);
+  if (p1lines !== P1MAX) { p1lines = P1MAX; paintOne(); }
+  const W = innerWidth; if (W < 1000) return;
+  const at = z => { setZoom(z, Math.min(W / z, 2600)); return end() <= innerHeight; };
+  const LO = 0.62;
+  while (!at(LO) && p1lines > P1MIN) { p1lines--; paintOne(); }
+  let lo = LO, hi = Math.max(LO, Math.min(W / 1100, 2.2));
+  if (at(hi)) lo = hi;
+  else for (let k = 0; k < 14; k++) { const z = (lo + hi) / 2; if (at(z)) lo = z; else hi = z; }
+  at(lo);
 }
 let unmountMark = () => {};
 // The wordmark draws its lining figures through an SVG image, which needs the face itself (self-hosted, /fonts)
@@ -246,13 +261,8 @@ const playfair = () => (pf ||= fetch("/fonts/playfair-display-latin-wght-normal.
 function mountMark() {
   unmountMark(); unmountMark = () => {};
   const n = document.querySelector("#bigplate .n"); if (!n || DESK.id !== "one") return;
-  const size = parseFloat(getComputedStyle(document.querySelector("#bigplate")).getPropertyValue("--np")) || 78;
-  const tag = $("#r-tag"), below = document.querySelector("#bigplate .wmcap");
-  const caption = innerWidth <= 760 ? { show: h => { below.innerHTML = h; below.style.opacity = 1; }, hide: () => { below.style.opacity = 0; } }
-    : { show: h => { tag.innerHTML = `<span class="wmrun">${h}</span>`; }, hide: () => { tag.innerHTML = tagline; } };
-  const desks = NEWDESKS.filter(d => d.id !== "one").map(d => ({ id: d.id, name: d.name, sections: d.sections }));
-  const items = storiesFromEdition(E, desks, deskHref).map(p => ({ ...p, headline: esc(p.headline) }));
-  playfair().then(font => mountWordmark(n, { items, font, caption, size })).then(u => { unmountMark = u; }).catch(() => {});
+  const size = parseFloat(getComputedStyle(document.querySelector("#bigplate")).getPropertyValue("--np")) || 96;
+  playfair().then(font => mountWordmark(n, { font, size })).then(u => { unmountMark = u; }).catch(() => {});
 }
 
 // ---------------------------------------------------------------- moving between desks

@@ -15,17 +15,12 @@
 body{font-size:17.5px}
 #top,nav.idx,#pmenu{display:none!important}
 .layout{padding-top:0}
-.sheet{max-width:1240px}
-@media (min-width:1500px){.sheet{max-width:1320px}}
-@media (min-width:1900px){.sheet{max-width:1520px}}
 
 /* one colour per desk: every section, story, table highlight and pill on this page takes the desk's */
 #main,#main [data-fam]{--f:var(--d);--fc:var(--dc);--fo:var(--ink)}
 
 /* ---------- run line and the one-line masthead ---------- */
-.dwrap{max-width:1240px;margin:0 auto;padding-inline:clamp(16px,3vw,40px)}
-@media (min-width:1500px){.dwrap{max-width:1320px}}
-@media (min-width:1900px){.dwrap{max-width:1520px}}
+.dwrap{max-width:var(--pw,1240px);margin:0 auto;padding-inline:clamp(16px,3vw,40px)}
 .drun{display:flex;justify-content:space-between;gap:4px 18px;flex-wrap:wrap;padding:8px 0 6px;font:500 12.5px var(--sans);color:var(--muted)}
 .drun span+span{margin-left:14px}
 .drun a{color:inherit}
@@ -41,9 +36,7 @@ body{font-size:17.5px}
 
 /* ---------- the desk tabs: one row, pinned, each a rule in its desk's colour ---------- */
 nav.dtabs{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:1px solid var(--rule)}
-nav.dtabs ol{list-style:none;margin:0 auto;padding:0 clamp(16px,3vw,40px);max-width:1240px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
-@media (min-width:1500px){nav.dtabs ol{max-width:1320px}}
-@media (min-width:1900px){nav.dtabs ol{max-width:1520px}}
+nav.dtabs ol{list-style:none;margin:0 auto;padding:0 clamp(16px,3vw,40px);max-width:var(--pw,1240px);display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
 nav.dtabs a{display:block;text-align:center;border-top:4px solid var(--c);padding:7px 4px 9px;font:700 11.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--c);white-space:nowrap;text-decoration:none}
 nav.dtabs a:hover{background:color-mix(in srgb,var(--c) 6%,transparent)}
 nav.dtabs a[aria-current]{background:color-mix(in srgb,var(--c) 11%,transparent);color:var(--ink)}
@@ -155,15 +148,11 @@ section.sec:first-of-type{margin-top:26px}
 body{background:var(--paper);color:var(--ink)}
 
 /* ---------- the header: on Page One the full nameplate, on a desk the one-line masthead ---------- */
-#bigplate{display:none;text-align:center;padding:2px 0 10px;--np:78px;user-select:none;-webkit-user-select:none}
+#bigplate{display:none;text-align:center;padding:2px 0 12px;--np:96px;user-select:none;-webkit-user-select:none}
 #bigplate .the{display:block;font:400 33px/1 var(--black)}
 #bigplate .hof{display:block;font:600 11px var(--sans);letter-spacing:.55em;padding-left:.55em;margin:4px 0 3px;text-transform:uppercase}
 #bigplate .n{display:flex;justify-content:center;align-items:center;height:calc(var(--np) * 1.02);font:900 var(--np)/1 var(--head);font-variant-numeric:lining-nums;margin-top:-.04em}
-#bigplate .wmcap{height:16px;margin-top:1px;font:600 11.5px/16px var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);opacity:0;transition:opacity .25s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#bigplate .wmcap a,.run .wmrun a,.drun .wmrun a{color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--rule)}
-.drun .wmrun{font:600 11.5px var(--sans);letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw;display:inline-block;vertical-align:bottom}
-@media (min-width:761px){#bigplate .wmcap{display:none}}
-@media (max-width:760px){#bigplate{--np:76px}#bigplate .the{font-size:32px}#bigplate .wmcap{font-size:11px;letter-spacing:.03em}}
+@media (max-width:760px){#bigplate{--np:84px}#bigplate .the{font-size:32px}}
 body.on-one #bigplate{display:block}
 body.on-one .dbar{display:none}
 
@@ -240,7 +229,6 @@ body.on-one .dbar{display:none}
 @media (max-width:760px){.p1body{grid-template-columns:1fr;gap:18px}.p1end .hn{display:block}.p1end .hn b{display:block;margin-bottom:2px}}
 body.on-one .layout{padding-top:0}
 
-@media (prefers-reduced-motion:reduce){#bigplate .wmcap{transition:none}}
 
 .p1end .hn,.p1end .hn span{max-width:none}
 
@@ -277,3 +265,13 @@ body.on-one .layout{padding-top:0}
 #dtheme{font:600 12px var(--sans);background:none;color:var(--ink2);border:1px solid var(--rule);border-radius:3px;padding:2px 9px;cursor:pointer}
 #dtheme:hover{color:var(--ink);border-color:var(--ink2)}
 @media (max-width:720px){.drun{flex-wrap:nowrap;align-items:baseline}.drun>span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.drun span+span{margin-left:10px}#dtheme{padding:1px 7px}}
+
+/* ---------- the page width comes from the screen (the layer sets --pw with the zoom) ---------- */
+.sheet{max-width:var(--pw,1240px)}
+#bigplate .n{position:relative;cursor:default}
+/* the day in a minute: in a wide column its lines run in two columns, so all of them fit with the type still large */
+.p1 section.news{container-type:inline-size}
+@container (min-width:560px){
+ .p1 ol.min{columns:2;column-gap:30px}
+ .p1 ol.min li{break-inside:avoid}
+}

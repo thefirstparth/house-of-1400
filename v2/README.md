@@ -28,8 +28,16 @@ Live on the real site since 1 Oct 2026, beside the old design (v1), until Parth 
 | Close to Home: Ranchi and Prayagraj | Back Home (`back`), a new section from 2 Oct (DECISIONS.md). |
 | Madridismo: club logos | ESPN's crests load in production (the sample could not reach ESPN). |
 
+## Parth's notes on v2 (2 Oct)
+| Note | Change |
+|---|---|
+| "I don't need to open the news by hovering over the logo" | The wordmark carries no stories, links, colours or caption any more. |
+| "Keeps flowing, like the Daily Index; slightly bigger; no section colours" | Ink only and always moving: a slow current sways the dots and swells them thick and thin, a stronger swell sweeps across every 7 seconds, loose ink drifts around it, the pointer parts the dots with a swirl, a click scatters them and they settle back. 96px (84px on a phone), was 78px. Still with reduced motion; it stops drawing off screen or in a hidden tab. Our own code (halftone dots on a screen), not the Daily Index's. |
+| "Too much white space left and right on my Mac and my BenQ" | The page width is the screen's on every laptop and monitor (`--pw`, set with the zoom by `fitOne` and `fitDesk`): Page One scales to fill the height at full width; desk pages grow their type with the screen (zoom 1 to 1.8) at full width, up to 1920px of layout. |
+| "The original day in a minute had 7 lines, what happened to ours?" | Every one of the editor's lines prints. In a wide column they run in two columns, so all of them fit one screen with the type still large (zoom 0.94 at 1470x830). |
+
 ## QA
-`npm run build`, then `node v2/shot.mjs <tag> v2` (every desk) or `node v2/shot.mjs <tag> v1`, optionally with a path (`/e/2026-09-25`) and `SIZES=1440x900-light,390x844-dark`. It serves `dist/`, answers the live calls from the edition's press-time snapshot and holds the clock at 15:00 IST; it reports page errors, sideways scroll, overlapping text, tables wider than their column and whether Page One fits one screen. On 1 Oct: v1 before and after these changes identical except the pulsing live dots; v2 clean on all desks at 390, 1280, 1440 and 1920, light and dark.
+`npm run build`, then `node v2/shot.mjs <tag> v2` (every desk) or `node v2/shot.mjs <tag> v1`, optionally with a path (`/e/2026-09-25`) and `SIZES=1440x900-light,390x844-dark`. It serves `dist/`, answers the live calls from the edition's press-time snapshot and holds the clock at 15:00 IST; it reports page errors, sideways scroll, overlapping text, tables wider than their column and whether Page One fits one screen. On 1 Oct: v1 before and after these changes identical except the pulsing live dots; v2 clean on all desks at 390, 1280, 1440 and 1920, light and dark. On 2 Oct also at 1470x830 (a MacBook Air's window), 2560x1440 and 3440x1440: Page One one screen with all seven lines at each.
 
 ## Switching over (when Parth says so)
 Make v2 the default in `withV2` (v1 behind `?v1` for a while), then retire v1: fold the layer into `app.js`, `v2.css` into `styles.css`, drop the old section colours and the patch list. Log it in DECISIONS.md and SPEC.md.

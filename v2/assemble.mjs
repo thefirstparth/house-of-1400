@@ -49,9 +49,8 @@ export function assemble({ app = read("public/app.js"), styles = read("public/st
   if (js === before) throw new Error("v2: foot anchor missing");
   rep("  const [eL, eR] = earsHTML();", "  paintShell(); const [eL, eR] = earsHTML();");
   rep("  paintSignals();\n", "  paintSignals(); paintJump();\n");
-  // Page One fits one screen; desk pages scale on big monitors with their masthead and tabs
-  rep("function fitMonitor() {", "function fitMonitor() {\n  if (DESK.id === \"one\") return fitOne();");
-  rep('for (const id of ["top", "idx", "layout", "late", "pastbar"])', 'for (const id of ["top", "idx", "layout", "late", "pastbar", "dtop", "dtabs"])');
+  // Page One fits one screen and desk pages fill the width, with their masthead and tabs (layer.js, fitOne, fitDesk)
+  rep("function fitMonitor() {", "function fitMonitor() {\n  return DESK.id === \"one\" ? fitOne() : fitDesk();");
   rep("  render();\n  loadArt();", "  render();\n  loadArt(); showDesk(DESK.id); dthemeLabel();");
   rep("    await refreshLive();", "    await refreshLive(); fitMonitor();");
   // The Crease's next tour breaks only between its parts
