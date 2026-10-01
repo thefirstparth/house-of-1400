@@ -88,3 +88,15 @@ test("validator: from 1 Oct nothing may rest only on paywalled outlets", async (
   b.sources.push({ label: "CNBC", url: "https://www.cnbc.com/x" });
   assert.equal(pay(E).length, 0, "an open outlet beside it is enough");
 });
+
+test("validator: tennis streamer needs two sites and never Tennis TV; the race preview links open outlets (1 Oct)", () => {
+  const E = JSON.parse(readFileSync("content/latest.json", "utf8"));
+  const errs = x => validateEdition(x).errors.filter(e => /^(tennis|paddock): /.test(e) && !/max_note/.test(e));
+  const ev = { name: "China Open", dates: "30 Sep–6 Oct" };
+  assert.equal(errs({ ...E, tennis: { ...E.tennis, events: [{ ...ev, where: "FanCode", where_sources: ["https://khelnow.com/a", "https://sundayguardianlive.com/b"] }] } }).length, 0);
+  assert.equal(errs({ ...E, tennis: { ...E.tennis, events: [{ ...ev, where: "FanCode", where_sources: ["https://khelnow.com/a", "https://khelnow.com/b"] }] } }).length, 1, "one site is not two");
+  assert.equal(errs({ ...E, tennis: { ...E.tennis, events: [{ ...ev, where: "Tennis TV", where_sources: ["https://a.com/x", "https://b.com/y"] }] } }).length, 1, "never Tennis TV");
+  const pd = p => ({ ...E, sections: { ...E.sections, paddock: { ...E.sections.paddock, data: { ...E.sections.paddock.data, preview: p } } } });
+  assert.equal(errs(pd({ text: "Long straights suit Mercedes.", picks: [{ outlet: "SB Nation", says: "Russell", url: "https://www.sbnation.com/f1/x" }] })).length, 0);
+  assert.equal(errs(pd({ text: "x", picks: [{ outlet: "The Athletic", says: "Antonelli", url: "https://www.nytimes.com/athletic/x" }] })).length, 1, "a paywalled link is not a source");
+});

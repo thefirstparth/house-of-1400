@@ -573,6 +573,18 @@ const ordinal = n => n + (["th", "st", "nd", "rd"][(n % 100 - 20) % 10] || ["th"
 // Bhide's Max Watch note, less any sentence that repeats the standings the line already prints live (1 Oct audit;
 // the validator stops new ones, this keeps an edition written before that clean).
 const maxNote = t => String(t || "").split(/(?<=[.;])\s+/).filter(x => !/\bstandings\b|\bpoints?\b|\bbehind\b|\bchampionship\b/i.test(x)).join(" ").replace(/;$/, ".").trim();
+// The race ahead, printed at 14:00 with the edition (Parth, 1 Oct; never a live line): Bhide's few sentences on the
+// track, the car it suits and the form, the race-winner market at press time (Kalshi, Polymarket), and what the F1
+// writers predict, each linked. Shown until the race starts.
+function racePreview(P, race) {
+  if (!P?.text) return "";
+  const start = race?.sessions?.at(-1)?.start;
+  if (start && Date.now() > Date.parse(start)) return "";
+  const who = CFG.follows.f1_driver.name, mk = (P.market?.outcomes || []).slice(0, 4);
+  const market = mk.length ? `<p class="f1p-mk"><span class="f1p-k">${esc(P.market.source || "The market")} at press</span>${mk.map(o => `<span class="${o.name === who ? "on" : ""}">${esc(lastName(o.name))} <b class="tnum">${Math.round(o.prob)}%</b></span>`).join("")}</p>` : "";
+  const picks = (P.picks || []).filter(x => x.outlet && x.says && x.url);
+  return `<div class="f1p"><div class="f1k">The race ahead${P.favours ? ` <span>suits ${esc(P.favours)}</span>` : ""}</div><p class="f1p-t">${esc(P.text)}</p>${market}${picks.length ? `<ul class="f1p-picks">${picks.map(x => `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.outlet)}</a> ${esc(x.says)}</li>`).join("")}</ul>` : ""}</div>`;
+}
 function paddockBlock() {
   const N = LIVE.f1_next?.value, S = LIVE.f1_standings?.value, Lr = LIVE.f1_last?.value, D = E.sections?.paddock?.data || {};
   const n = Date.now();
@@ -604,7 +616,7 @@ function paddockBlock() {
   let calendar = "";
   if (N?.upcoming?.length) calendar = `<div class="f1-next"><h5>${N.next_season ? `${esc(N.race.season)} season` : "Next races"}</h5><ol>${N.upcoming.map(r => `<li><span class="flag" aria-hidden="true">${esc(r.flag)}</span><b>${esc(r.name.replace(/ Grand Prix$/, ""))}</b><small class="tnum">${r.round ? `R${r.round} · ` : ""}${esc(sparkLabel(istDate(new Date(r.date))))}</small></li>`).join("")}</ol></div>`;
   if (!sessions && !bits.length && !champ && !last && !track) return "";
-  const facts = `<div class="facts"${sessions ? ' style="margin-top:14px"' : ""}>${bits.join("")}${staleNote("f1_standings")}</div>`;
+  const facts = `<div class="facts"${sessions ? ' style="margin-top:14px"' : ""}>${bits.join("")}${staleNote("f1_standings")}</div>${racePreview(D.preview, N?.race)}`;
   return (sessions || track ? `<div class="cols2"><div>${sessions}${facts}</div><div>${track}</div></div>` : facts) +
     (champ || last ? `<div class="cols2 gap-top f1">${champ ? `<div>${champ}</div>` : "<div></div>"}${last ? `<div>${last}</div>` : "<div></div>"}</div>` : "") + calendar;
 }

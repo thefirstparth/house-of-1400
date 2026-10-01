@@ -85,6 +85,15 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     const hosts = new Set((ev.where_sources || []).map(u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return null; } }).filter(Boolean));
     if (hosts.size < 2) errors.push(`tennis: ${ev.name} says "${ev.where}" with ${hosts.size} source(s); two different sites must name it, or leave "where" out`);
   }
+  // The race ahead: prices at press time as published, and every pick linked to an open outlet.
+  const pv = E.sections?.paddock?.data?.preview;
+  if (pv) {
+    if (!pv.text) errors.push("paddock: preview has no text");
+    for (const o of pv.market?.outcomes || []) if (!(o.prob >= 0 && o.prob <= 100)) errors.push(`paddock: preview market price for ${o.name} is ${o.prob}`);
+    let PH = []; try { PH = read("config/house.json").sources?.paywalled?.hosts || []; } catch {}
+    const PAID = u => { try { const h = new URL(u).hostname.replace(/^www\./, ""); return PH.some(p => h === p || h.endsWith("." + p)); } catch { return false; } };
+    for (const x of pv.picks || []) if (!/^https:\/\//.test(x.url || "") || PAID(x.url)) errors.push(`paddock: preview pick from ${x.outlet} needs an open outlet's link`);
+  }
   // Max Watch opens with the live position, points and gap; the note must not say them again (1 Oct audit).
   const mn = E.sections?.paddock?.data?.max_note;
   if (mn && /\bstandings\b|\bpoints?\b|\bbehind\b|\bchampionship\b/i.test(mn)) errors.push(`paddock: max_note repeats the standings the page already prints live ("${mn.slice(0, 60)}"); say only what the numbers do not`);
