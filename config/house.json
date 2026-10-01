@@ -172,6 +172,13 @@
       "palette": "namma"
     },
     {
+      "id": "back",
+      "name": "Back Home",
+      "short": "Back Home",
+      "accent": "--acc-ct",
+      "palette": "namma"
+    },
+    {
       "id": "screen",
       "name": "Screen & Stage",
       "short": "Screen & Stage",
@@ -237,7 +244,8 @@
         "desh",
         "videsh",
         "dateline",
-        "namma"
+        "namma",
+        "back"
       ]
     },
     {
@@ -1387,6 +1395,22 @@
         "kind": "search"
       },
       {
+        "id": "gn-ranchi",
+        "section": "back",
+        "name": "Ranchi (via Google News)",
+        "url": "https://news.google.com/rss/search?q=Ranchi%20when%3A1d&hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "search",
+        "top": 3
+      },
+      {
+        "id": "gn-prayagraj",
+        "section": "back",
+        "name": "Prayagraj (via Google News)",
+        "url": "https://news.google.com/rss/search?q=Prayagraj%20when%3A1d&hl=en-IN&gl=IN&ceid=IN:en",
+        "kind": "search",
+        "top": 3
+      },
+      {
         "id": "variety",
         "section": "screen",
         "name": "Variety",
@@ -1635,7 +1659,7 @@
     },
     "top_check": {
       "per_feed": 5,
-      "note": "The desk check (from 2 Oct 2026, Parth, after the Ronaldo and Ocon misses): every feed's top stories in the window are read and answered by the editor, grouped by event whatever the wording. Titles matching skip are routine notices, never news.",
+      "note": "The desk check (from 2 Oct 2026, Parth, after the Ronaldo and Ocon misses): every feed's top stories in the window are read and answered by the editor, grouped by event whatever the wording. Titles matching skip are routine notices, never news. A feed's own top (Back Home's local searches: 3) replaces per_feed for that feed.",
       "skip": [
         "^Appeal No\\.",
         "^Broker['’]s call",
@@ -1892,6 +1916,10 @@
     "week_ahead": {
       "max_items": 12,
       "label": "The Week Ahead"
+    },
+    "back": {
+      "max_stories": 2,
+      "label": "Back Home (full stories)"
     }
   },
   "watch_in_india": {

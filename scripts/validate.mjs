@@ -240,7 +240,7 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   const over = (key, n, max, what) => { if (max && n > max) warnings.push(`long: ${RG[key]?.label || key} has ${n} ${what}; its usual range tops out at ${max}. Keep the strongest and move the rest to briefs, or keep it if the news is that big.`); };
   over("front", 1 + (E.front?.seconds?.length || 0) + (E.front?.briefs?.length || 0), RG.front?.max_items, "items");
   for (const k of ["madrid", "pitch", "sidelines"]) over(k, count(k), RG[k]?.max_items, "items");
-  for (const k of ["dateline", "desh", "videsh"]) over(k, E.sections?.[k]?.stories?.length || 0, RG[k]?.max_stories, "full stories");
+  for (const k of ["dateline", "desh", "videsh", "back"]) over(k, E.sections?.[k]?.stories?.length || 0, RG[k]?.max_stories, "full stories");
   // From the 2 Oct 2026 edition Dateline is two sections and Bhide files each story himself (Parth, 1 Oct): Desh for
   // India, Videsh for the world (EDITORIAL.md, Section briefs). Dateline stays readable in older editions only.
   if (E.date >= "2026-10-02") {
