@@ -1378,7 +1378,7 @@ function bettingBlock() {
 <div class="sb"><div class="meta">${esc(b.category || "World")}${since}</div><a class="title" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(vsV(b.title).replace(/\.\.\.\?$/, "…?"))}</a>${b.note ? `<small class="nt">${esc(b.note)}</small>` : ""}
 <div class="bar">${bar}</div>${lis ? `<ul>${lis}</ul>` : ""}${mv}</div></li>`;
   }).join("");
-  return `<ol class="slips">${slips}</ol>${LIVE.betting && !LIVE.betting.stale ? "" : `<p class="asof" style="margin-top:12px">Prices ${esc(agoIST(LIVE.betting?.as_of) || "at press time")}</p>`}${aboutFig("Prices from Polymarket. A price is what traders pay for a yes, read as the chance they give it.")}`;
+  return `<ol class="slips">${slips}</ol><p class="asof" style="margin-top:12px">${LIVE.betting?.as_of ? `Prices ${LIVE.betting.stale ? "last read" : "updated"} ${esc(istFull(LIVE.betting.as_of))} IST` : "Prices at press time"}</p>${aboutFig("Prices from Polymarket. A price is what traders pay for a yes, read as the chance they give it.")}`;
 }
 
 function byeBlock() {
