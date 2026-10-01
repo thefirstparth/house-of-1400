@@ -70,3 +70,6 @@ Fix:
 3. **Screen & Stage verdict chips** keep the old magenta and red. They read as a status scale, so they may stay, but
    tone them to the Off Duty gold and ink (must watch filled, good watch outline, your call grey, skip ink) if Parth
    wants one colour per desk strictly. Ask him.
+  - Done (2 Oct): 1. the phone run line drops "No. 7" and keeps "Printed 14:14 IST" whole; 2. the phone tabs start at a
+    whole tab (the current one, or the furthest that still shows it) and fade only an edge that cuts a tab. 3. asked
+    Parth.

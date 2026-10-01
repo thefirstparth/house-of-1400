@@ -41,9 +41,9 @@ nav.dtabs a{display:block;text-align:center;border-top:4px solid var(--c);paddin
 nav.dtabs a:hover{background:color-mix(in srgb,var(--c) 6%,transparent)}
 nav.dtabs a[aria-current]{background:color-mix(in srgb,var(--c) 11%,transparent);color:var(--ink)}
 @media (max-width:860px){
- nav.dtabs ol{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity}
+ nav.dtabs ol{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity;scroll-padding-inline:4px}
  nav.dtabs ol::-webkit-scrollbar{display:none}
- nav.dtabs li{flex:none;scroll-snap-align:center}
+ nav.dtabs li{flex:none;scroll-snap-align:start}
  nav.dtabs a{padding:7px 12px 9px}
 }
 
@@ -275,3 +275,5 @@ body.on-one .layout{padding-top:0}
  .p1 ol.min{columns:2;column-gap:30px}
  .p1 ol.min li{break-inside:avoid}
 }
+/* phones (review, 2 Oct): the run line keeps its print time in full; the edition number goes */
+@media (max-width:720px){#r-no{display:none}.drun>span:first-child{overflow:visible}}

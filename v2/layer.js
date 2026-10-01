@@ -58,9 +58,24 @@ function shellStatic() {
   tagline = `${esc(CFG.paper.motto)} · edited by ${esc(CFG.paper.editor.signature.replace(", Editor", ""))}`;
   $("#r-tag").innerHTML = tagline;
   $("#dtabs ol").innerHTML = NEWDESKS.map(d => `<li><a href="${deskHref(d.id)}" data-desk="${d.id}" style="--c:var(--d-${d.id})"${d === DESK ? ' aria-current="page"' : ""}>${esc(d.name)}</a></li>`).join("");
-  const ol = $("#dtabs ol"), fade = () => { ol.classList.toggle("more-l", ol.scrollLeft > 2); ol.classList.toggle("more-r", ol.scrollLeft + ol.clientWidth < ol.scrollWidth - 2); };
+  // Phone tabs (review, 2 Oct): the current tab starts the row, so no sliver of the one before it shows; an edge fades
+  // only where a tab is cut by it, so the row reads as one that scrolls.
+  const ol = $("#dtabs ol"), fade = () => {
+    const L = ol.scrollLeft, R = L + ol.clientWidth, cut = [...ol.children].map(li => [li.offsetLeft, li.offsetLeft + li.offsetWidth]);
+    ol.classList.toggle("more-l", cut.some(([a, b]) => a < L - 1 && b > L + 1));
+    ol.classList.toggle("more-r", R < ol.scrollWidth - 2);
+  };
   if (!ol.dataset.wired) { ol.dataset.wired = 1; ol.addEventListener("scroll", fade, { passive: true }); addEventListener("resize", fade); }
-  requestAnimationFrame(() => { const a = ol.querySelector("[aria-current]"); if (a && ol.scrollWidth > ol.clientWidth) ol.scrollLeft = a.parentElement.offsetLeft - (ol.clientWidth - a.parentElement.offsetWidth) / 2; fade(); });
+  requestAnimationFrame(() => {
+    const li = ol.querySelector("[aria-current]")?.parentElement;
+    if (li && ol.scrollWidth > ol.clientWidth) {
+      // start the row at a tab, the current one if the row can scroll that far, else the furthest tab that still shows it
+      const max = ol.scrollWidth - ol.clientWidth, starts = [...ol.children].map((x, i) => (i ? x.offsetLeft - 4 : 0));
+      const fit = starts.filter(b => b <= max && b <= starts[[...ol.children].indexOf(li)] && b + ol.clientWidth >= li.offsetLeft + li.offsetWidth + 4);
+      ol.scrollLeft = fit.length ? Math.max(...fit) : max;
+    }
+    fade();
+  });
   document.title = `${DESK.id === "one" ? "" : DESK.name + " · "}The House of 1400 · ${longDate(E.date)}`;
   document.documentElement.style.setProperty("--d", `var(--d-${DESK.id})`);
   document.body.classList.toggle("on-one", DESK.id === "one");
