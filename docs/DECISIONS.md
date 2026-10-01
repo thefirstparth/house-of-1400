@@ -540,3 +540,6 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 1 Oct 2026: A section's only story never has a page-wide drawing (Parth)
 - Ronaldo's drawing ran 1,222px wide because it was the only story in The Wider Pitch, which spans the page. On a wide screen a solo story's 4:3 drawing now sits left at under half the width (at most 520px), with the text beside it in one column. Phones unchanged.
+
+## 1 Oct 2026: Source trial stopped early (Parth)
+- The daily run no longer runs `scripts/trial.mjs` (RUNBOOK step 12) or waits on a missing trial file (step 1), to save run time and tokens. Three editions were scored (29 Sep to 1 Oct, `ledger/trial/`, the /trial page). What was already switched on stays on: Screen & Stage from `/api/live/screen`, the wire check from `/api/live/wire`, tennis from ESPN. The 8 Oct final-report reminder is switched off.
