@@ -571,6 +571,17 @@
               },
               "level": {
                 "type": "string"
+              },
+              "where": {
+                "$ref": "#/definitions/text",
+                "description": "The Indian streamer for this tournament, only when two independent Indian sources name it (EDITORIAL.md). Never Tennis TV."
+              },
+              "where_sources": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "At least two URLs, from different sites, naming `where`."
               }
             }
           }

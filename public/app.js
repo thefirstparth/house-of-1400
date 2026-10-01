@@ -80,7 +80,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -160,6 +160,26 @@ function liveTennis() {
   }));
 }
 // The edition's fixtures, with the live tennis matches in place of the edition's lines for the same players.
+// Where to watch in India (Parth, 1 Oct), for any match: the edition's own word first (tennis needs two sources,
+// EDITORIAL.md), then the fixed rules in config watch_in_india (F1 and La Liga on FanCode, the Champions League on
+// SonyLIV), then India's cricket from WhereIsCricket by date and opponent. Never Tennis TV; nothing when unsure.
+function watchOn(x) {
+  const W = CFG.watch_in_india || {}, never = w => !w || (W.never || []).some(n => w.toLowerCase().includes(n.toLowerCase()));
+  const text = [x.competition, x.label, x.event].filter(Boolean).join(" ");
+  if (x.where && !never(x.where)) return x.where;
+  if (x.entity === "tennis" || /tennis/i.test(x.entity || "")) {
+    const ev = (E.tennis?.events || []).find(e => e.where && text.toLowerCase().includes(String(e.name).toLowerCase().replace(/\s+(open|masters)$/i, "")));
+    return ev && !never(ev.where) ? ev.where : null;
+  }
+  for (const r of W.rules || []) if ((r.entity && r.entity === x.entity) || (r.competition && text.includes(r.competition))) return never(r.where) ? null : r.where;
+  if (/cricket/.test(x.entity || "") && x.when_utc) {
+    const rows = LIVE.cricket_where?.value?.india || [], day = istDay(x.when_utc);
+    const hit = rows.filter(r => r.date === day && r.ott && !/not in india/i.test(r.ott) && r.teams.split(/\s+v\s+/).some(t => t !== "India" && text.includes(t)));
+    if (hit.length === 1) return hit[0].ott.split(/\s*·\s*/)[0];
+  }
+  return null;
+}
+const watchTag = x => { const w = watchOn(x); return w ? ` <span class="watch">on ${esc(w)}</span>` : ""; };
 function allFixtures() {
   const T = liveTennis(), names = T.map(t => lastName(t.player));
   const keep = (E.fixtures || []).filter(f => f.until_utc || f.entity !== "tennis" || !names.some(nm => f.label.includes(nm)));
@@ -468,7 +488,7 @@ function madridBlock() {
   const ourPlayer = p => (p.team_id != null && String(p.team_id) === String(club.espn_id)) || p.team === club.name;
   let table = "";
   if (F?.next?.length) {
-    table = `<div class="tbl"><table><thead><tr><th>Next</th><th>Competition</th><th class="r">IST</th></tr></thead><tbody>${F.next.slice(0, 4).map((e, i) => `<tr class="${i === 0 ? "on" : ""}"><td class="club">${crest(e.opponent_id, "")}${esc(e.opponent)} <small>${e.home ? "home" : "away"}</small></td><td>${esc(e.competition || "")}</td><td class="r tnum">${e.time_confirmed ? esc(istFull(e.date)) : esc(istDay(e.date)) + ", time TBC"}</td></tr>`).join("")}</tbody></table></div>`;
+    table = `<div class="tbl"><table><thead><tr><th>Next</th><th>Competition</th><th class="r">IST</th></tr></thead><tbody>${F.next.slice(0, 4).map((e, i) => `<tr class="${i === 0 ? "on" : ""}"><td class="club">${crest(e.opponent_id, "")}${esc(e.opponent)} <small>${e.home ? "home" : "away"}</small></td><td>${esc(e.competition || "")}${watchTag({ competition: e.competition })}</td><td class="r tnum">${e.time_confirmed ? esc(istFull(e.date)) : esc(istDay(e.date)) + ", time TBC"}</td></tr>`).join("")}</tbody></table></div>`;
   }
   const lines = [];
   if (F?.last) {
@@ -564,7 +584,7 @@ function paddockBlock() {
     const ss = N.race.sessions, first = ss[0]?.start, last = ss[ss.length - 1]?.start;
     const dm = iso => fmt(iso, { day: "numeric", month: "short" }), span = first && last ? (dm(first) === dm(last) ? dm(first) : `${fmt(first, { day: "numeric" })}${fmt(first, { month: "short" }) === fmt(last, { month: "short" }) ? "" : " " + fmt(first, { month: "short" })} to ${dm(last)}`) : "";
     const soon = first && Date.parse(first) - n < 7 * 864e5;
-    sessions = `<div class="tbl"><table class="compact sessions"><thead><tr><th>${soon ? "This weekend" : "Race weekend"}${span ? ` · ${esc(span)}` : ""}</th>${tz ? `<th class="r">Local</th>` : ""}<th class="r">IST</th></tr></thead><tbody>${N.race.sessions.map(s => {
+    sessions = `<div class="tbl"><table class="compact sessions"><thead><tr><th>${soon ? "This weekend" : "Race weekend"}${span ? ` · ${esc(span)}` : ""}${watchTag({ entity: "f1" })}</th>${tz ? `<th class="r">Local</th>` : ""}<th class="r">IST</th></tr></thead><tbody>${N.race.sessions.map(s => {
       const st = stateOf({ start: Date.parse(s.start), end: Date.parse(s.start) + s.minutes * 6e4 }, n);
       return `<tr class="${st === "on" ? "on" : st === "done" ? "done" : ""}"><td>${esc(s.name)}${st === "on" ? ` <span class="live"><i></i>On now, go watch</span> <button class="refresh" data-refresh="f1_next">Refresh</button>` : st === "done" ? ` <small>done</small>` : ""}</td>${tz ? `<td class="r tnum">${s.time_confirmed ? t(s.start, tz) : "TBC"}</td>` : ""}<td class="r tnum">${s.time_confirmed ? t(s.start) : "TBC"}</td></tr>`;
     }).join("")}</tbody></table></div>`;
@@ -1033,7 +1053,7 @@ function fixturesBlock() {
     const extra = f.source === "ESPN" ? `${f.court ? ` <small>· ${esc(f.court)}</small>` : ""}${f.other ? ` <small>· another listing says ${esc(f.other)}</small>` : ""}` : "";
     const res = st === "done" ? resultOf(f) : "";
     const tag = st === "done" ? ` <span class="res">${esc(res || "Finished")}</span>` : st === "on" ? ` <span class="live"><i></i>On now, go watch</span> <button class="refresh" data-refresh="fixtures">Refresh</button>` : st === "due" || (st === "next" && f.held) ? ` <span class="due">${esc(dueWhy(f))}</span>` : "";
-    return `<li class="${st === "span" ? "next" : st === "due" ? "next" : st}"><span class="t tnum">${esc(when)}</span><span class="what">${esc(f.label)}${f.where ? ` <small>· ${esc(f.where)}</small>` : ""}${extra}${tag}</span></li>`;
+    return `<li class="${st === "span" ? "next" : st === "due" ? "next" : st}"><span class="t tnum">${esc(when)}</span><span class="what">${esc(f.label)}${watchTag(f)}${extra}${tag}</span></li>`;
   }).join("")}</ul></div>`).join("")}</div>`;
 }
 
@@ -1051,7 +1071,7 @@ function creaseLive() {
   // The scorecard in a line (Parth, 1 Oct: tennis had its score, cricket only its result).
   const card = m => m.score ? `<p class="cz-sc tnum">${esc(m.score)}</p>` : "";
   if (D) h += `<div class="cz-next cz-today"><div class="cz-k">${playedDay(D.start)}</div><h3>India v ${esc(D.opponent)}</h3><p>${esc(D.desc)} · ${esc(place(D))}</p><p class="cz-when">${res(D)}</p>${card(D)}</div>`;
-  if (N) h += `<div class="cz-next"><div class="cz-k">${N.state === "live" ? "Live now" : "Next match"}</div><h3>India v ${esc(N.opponent)}</h3><p>${esc(N.desc)} · ${esc(place(N))}</p><p class="cz-when">${N.state === "live" ? res(N) : `${esc(when(N))}${N.time_announced ? ` · <span data-until="${esc(N.start)}" data-min="480" data-done="">--</span>` : ""}`}</p>${N.state === "live" ? card(N) : ""}</div>`;
+  if (N) h += `<div class="cz-next"><div class="cz-k">${N.state === "live" ? "Live now" : "Next match"}</div><h3>India v ${esc(N.opponent)}</h3><p>${esc(N.desc)} · ${esc(place(N))}</p><p class="cz-when">${N.state === "live" ? res(N) : `${esc(when(N))}${N.time_announced ? ` · <span data-until="${esc(N.start)}" data-min="480" data-done="">--</span>` : ""}${watchTag({ entity: "india_cricket", when_utc: N.start, label: `India v ${N.opponent}` })}`}</p>${N.state === "live" ? card(N) : ""}</div>`;
   const strip = (f, big) => `<div class="cz-f"><h5>${esc(f.label)}${f.total ? ` · ${f.total} matches` : ""}${f.score ? ` · <b>${esc(f.score)}</b>` : ""}</h5><ol class="cz-strip${big ? "" : " small"}">${f.matches.map(m => {
     const isNext = N && m.id === N.id;
     return `<li class="${m.state}${isNext ? " is-next" : ""}${m.won === true ? " won" : m.won === false ? " lost" : ""}"><b>${esc(m.n ? m.desc.replace(/ (ODI|T20I|Test)$/i, "") : m.desc)}</b><span>${esc(day(m.start))}</span><span>${esc(m.city || "")}</span>${res(m)}${m.score ? `<span class="cz-ts tnum">${esc(m.score.replace(/ \([^)]*ov\)/g, ""))}</span>` : ""}</li>`;
@@ -1084,7 +1104,7 @@ function deuceData() {
     const lv = LT.find(t => t.player === p.name && !t.final), done = LT.find(t => t.player === p.name && t.final), n = Date.now(), st = lv && fixState(lv, n);
     const won = done && /^Won/.test(done.result), sc = done ? done.result.replace(/^(Won|Lost)\s*/, "") : "";
     const todayLine = done ? `<p style="margin:6px 0 4px"><b>${playedDay(done.when_utc)}:</b> <span class="${won ? "up" : "dn"}">${won ? "Beat" : "Lost to"} ${esc(done.opponent || "")}${sc ? " " + esc(sc) : ""}</span> · ${esc([done.event, done.round].filter(Boolean).join(", "))}</p>` : "";
-    const nextLine = lv ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc([lv.round, `v ${lv.opponent || "TBC"}`].filter(Boolean).join(" "))} · ${esc(lv.event)} · ${esc(istFull(lv.when_utc))} IST${lv.court ? ` · ${esc(lv.court)}` : ""}.${st === "on" ? ` <span class="live"><i></i>On court now</span>` : st === "due" || (st === "next" && lv.held) ? ` <span class="due">${esc(dueWhy(lv))}</span>` : ""}</p>${lv.other ? `<p class="note">Another listing (Tennis Explorer) has it at ${esc(lv.other)} IST, so worth a look nearer the time.</p>` : ""}`
+    const nextLine = lv ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc([lv.round, `v ${lv.opponent || "TBC"}`].filter(Boolean).join(" "))} · ${esc(lv.event)} · ${esc(istFull(lv.when_utc))} IST${lv.court ? ` · ${esc(lv.court)}` : ""}${watchTag({ entity: "tennis", event: lv.event, label: lv.label })}.${st === "on" ? ` <span class="live"><i></i>On court now</span>` : st === "due" || (st === "next" && lv.held) ? ` <span class="due">${esc(dueWhy(lv))}</span>` : ""}</p>${lv.other ? `<p class="note">Another listing (Tennis Explorer) has it at ${esc(lv.other)} IST, so worth a look nearer the time.</p>` : ""}`
       : p.next_match ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc(p.next_match.text)}</p>` : "";
     // With a live match, the live match says where the player plays next; the edition's line may be out of date.
     const ev = p.next_event && !lv ? `<p style="margin:6px 0 4px"><b>${p.next_match ? "Event" : "Next event"}:</b> ${esc(p.next_event.text)}${p.next_match || /TBD/i.test(p.next_event.text) ? "" : " Match TBD."}</p>` : "";

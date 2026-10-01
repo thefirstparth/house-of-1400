@@ -1114,3 +1114,8 @@ table.sessions td.r{white-space:nowrap}
 .ed-entry.big{border-left:1px solid var(--rule);padding-left:28px}
 .ed-older .ed-entry{margin-top:14px}
 @media (max-width:720px){.ed-diary-grid{grid-template-columns:1fr}.ed-entry.big{border-left:0;padding-left:0;border-top:1px solid var(--rule);padding-top:16px}}
+
+/* Where to watch in India, beside a match (1 Oct 2026) */
+.watch{white-space:nowrap;font:600 .82em var(--sans);color:var(--muted)}
+.watch::before{content:"· "}
+th .watch{font-size:11px;letter-spacing:.04em}

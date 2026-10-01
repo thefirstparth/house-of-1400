@@ -78,6 +78,13 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
 
   // Date and weekday
   const wd = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"][new Date(E.date + "T12:00:00Z").getUTCDay()];
+  // Where to watch tennis: two independent sources for the Indian streamer, and never Tennis TV (Parth, 1 Oct).
+  for (const ev of E.tennis?.events || []) {
+    if (!ev.where) continue;
+    if (/tennis\s*tv/i.test(ev.where)) errors.push(`tennis: ${ev.name} lists Tennis TV; name the Indian streaming partner, or leave "where" out`);
+    const hosts = new Set((ev.where_sources || []).map(u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return null; } }).filter(Boolean));
+    if (hosts.size < 2) errors.push(`tennis: ${ev.name} says "${ev.where}" with ${hosts.size} source(s); two different sites must name it, or leave "where" out`);
+  }
   // Max Watch opens with the live position, points and gap; the note must not say them again (1 Oct audit).
   const mn = E.sections?.paddock?.data?.max_note;
   if (mn && /\bstandings\b|\bpoints?\b|\bbehind\b|\bchampionship\b/i.test(mn)) errors.push(`paddock: max_note repeats the standings the page already prints live ("${mn.slice(0, 60)}"); say only what the numbers do not`);

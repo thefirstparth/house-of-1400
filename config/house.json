@@ -1781,5 +1781,25 @@
       "max_items": 12,
       "label": "The Week Ahead"
     }
+  },
+  "watch_in_india": {
+    "note": "Where to watch in India, printed beside a match (Parth, 1 Oct). Fixed rules first; India's cricket from WhereIsCricket (live); tennis only when the run finds two independent Indian sources naming the same streamer (EDITORIAL.md) and writes it into the fixture's `where`. Never Tennis TV.",
+    "rules": [
+      {
+        "entity": "f1",
+        "where": "FanCode"
+      },
+      {
+        "competition": "La Liga",
+        "where": "FanCode"
+      },
+      {
+        "competition": "Champions League",
+        "where": "SonyLIV"
+      }
+    ],
+    "never": [
+      "Tennis TV"
+    ]
   }
 }
