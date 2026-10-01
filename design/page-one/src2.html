@@ -8,12 +8,12 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..600&family=Libre+Franklin:wght@400..800&family=UnifrakturMaguntia&display=swap">
 <style>
 :root{color-scheme:light;
- --paper:#f3f1ea;--sheet:#fbfaf6;--surface:#ebe8df;--ink:#15140f;--ink2:#3a3830;--muted:#6b665b;--rule:#d5d0c3;--rule2:#e4e0d5;--good:#0b7a43;--bad:#c0261d;--sun:#d9861a;--halo:#f6d9a8;
+ --paper:#f3f1ea;--sheet:#fbfaf6;--surface:#ebe8df;--ink:#15140f;--ink2:#3a3830;--muted:#6b665b;--rule:#d5d0c3;--rule2:#e4e0d5;--good:#0b7a43;--bad:#c0261d;--sun:#d9861a;--halo:#f6d9a8;--moon:#e9e4d2;--mdark:#4a5568;--mhalo:#dfe3ea;--night:#5b6b8c;
  --d-one:#15140f;--d-news:#1f3f73;--d-home:#0a72a8;--d-sport:#b8460e;--d-tech:#6a3fb5;--d-money:#0b7a43;--d-off:#a87a00;
  --head:"Newsreader",Georgia,serif;--serif:"Source Serif 4",Georgia,serif;--sans:"Libre Franklin",system-ui,sans-serif}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--paper:#131210;--sheet:#1b1a17;--surface:#201f1b;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;--good:#5fd08f;--bad:#ff8a7e;--sun:#f2b552;--halo:#4a3718;
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--paper:#131210;--sheet:#1b1a17;--surface:#201f1b;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;--good:#5fd08f;--bad:#ff8a7e;--sun:#f2b552;--halo:#4a3718;--moon:#f1ecd8;--mdark:#3a3f4a;--mhalo:#262b36;--night:#9fb0d0;
  --d-one:#eeeae0;--d-news:#a5bfeb;--d-home:#7ccbf2;--d-sport:#f29a62;--d-tech:#bba4f2;--d-money:#5fd9a0;--d-off:#e7c35a}}
-:root[data-theme=dark]{color-scheme:dark;--paper:#131210;--sheet:#1b1a17;--surface:#201f1b;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;--good:#5fd08f;--bad:#ff8a7e;--sun:#f2b552;--halo:#4a3718;
+:root[data-theme=dark]{color-scheme:dark;--paper:#131210;--sheet:#1b1a17;--surface:#201f1b;--ink:#eeeae0;--ink2:#cbc6ba;--muted:#a39d90;--rule:#36332d;--rule2:#282621;--good:#5fd08f;--bad:#ff8a7e;--sun:#f2b552;--halo:#4a3718;--moon:#f1ecd8;--mdark:#3a3f4a;--mhalo:#262b36;--night:#9fb0d0;
  --d-one:#eeeae0;--d-news:#a5bfeb;--d-home:#7ccbf2;--d-sport:#f29a62;--d-tech:#bba4f2;--d-money:#5fd9a0;--d-off:#e7c35a}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--paper);color:var(--ink)}
@@ -69,6 +69,7 @@ ul.rows b{display:block;font:600 14px/1.3 var(--sans);color:var(--ink)}
 .arc{grid-column:1/-1;width:100%;height:auto;display:block;margin-top:2px}
 .arc .track{fill:none;stroke:var(--rule);stroke-width:1.5;stroke-dasharray:2 4}
 .arc .done{fill:none;stroke:var(--sun);stroke-width:2.5;stroke-linecap:round}
+.arc.night .done{stroke:var(--night)}
 .arc .hz{stroke:var(--rule);stroke-width:1}
 .arc text{font:500 10.5px var(--sans);fill:var(--muted)}
 .wxs{display:flex;justify-content:space-between;gap:8px;font:12.5px var(--sans);color:var(--muted);margin-top:6px}
@@ -136,7 +137,7 @@ const D = __DATA__;
 const V = (new URLSearchParams(location.search).get("v") || "A").toUpperCase();
 document.querySelectorAll(".switch a").forEach(a => { if (a.getAttribute("href") === "?v=" + V) a.setAttribute("aria-current", "page"); });
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const R = Math.round, NOW = Date.parse(D.weather.now.time + ":00+05:30"), TZ = "Asia/Kolkata";
+const R = Math.round, NOW = new URLSearchParams(location.search).get("at") ? Date.parse(D.weather.today.sunset.slice(0, 11) + new URLSearchParams(location.search).get("at") + ":00+05:30") : Date.parse(D.weather.now.time + ":00+05:30"), TZ = "Asia/Kolkata";
 const fmt = (iso, o) => new Date(iso).toLocaleString("en-GB", { timeZone: TZ, hour12: false, ...o }).replace(/,/g, "");
 const day = iso => fmt(iso, { weekday: "short", day: "numeric", month: "short" }), time = iso => fmt(iso, { hour: "2-digit", minute: "2-digit" });
 const when = iso => { const a = new Date(iso).toLocaleDateString("en-CA", { timeZone: TZ }), b = new Date(NOW).toLocaleDateString("en-CA", { timeZone: TZ }), n = Math.round((Date.parse(a) - Date.parse(b)) / 864e5); return `${n === 0 ? "today" : n === 1 ? "tomorrow" : day(iso)}, ${time(iso)}`; };
@@ -184,16 +185,25 @@ function sportRows(max = 5) {
   return `<ul class="rows">${rows.slice(0, max).map(([l, t, s]) => `<li><span class="lab">${l}</span><span><b>${esc(t)}</b>${s}</span></li>`).join("")}</ul>`;
 }
 // The sun's day as an arc from sunrise to sunset, the sun where it is now; cleaner than the masthead's today.
+// By day the sun runs sunrise to sunset; by night the moon, in its phase, runs sunset to sunrise (as the live masthead does).
+const SYNODIC = 29.530588853, NEW_MOON = Date.UTC(2000, 0, 6, 18, 14);
+function moonNow(t) { const age = (((t - NEW_MOON) / 864e5) % SYNODIC + SYNODIC) % SYNODIC; return { lit: (1 - Math.cos(2 * Math.PI * age / SYNODIC)) / 2, waxing: age < SYNODIC / 2 }; }
 function weather({ family = true } = {}) {
-  const W = D.weather, rise = Date.parse(W.today.sunrise + ":00+05:30"), set = Date.parse(W.today.sunset + ":00+05:30"), f = Math.max(0, Math.min(1, (NOW - rise) / (set - rise)));
+  const W = D.weather, rise = Date.parse(W.today.sunrise + ":00+05:30"), set = Date.parse(W.today.sunset + ":00+05:30"), DAY = 864e5;
+  const day = NOW >= rise && NOW < set, from = day ? rise : NOW >= set ? set : set - DAY, to = day ? set : NOW >= set ? rise + DAY : rise;
+  const f = Math.max(0, Math.min(1, (NOW - from) / (to - from)));
   const X = t => 14 + 192 * (0.5 - 0.5 * Math.cos(Math.PI * t)), Y = t => 52 - 40 * Math.sin(Math.PI * t), pts = n => [...Array(n + 1)].map((_, i) => `${X(i / n * f).toFixed(1)},${Y(i / n * f).toFixed(1)}`).join(" ");
   const full = [...Array(41)].map((_, i) => `${X(i / 40).toFixed(1)},${Y(i / 40).toFixed(1)}`).join(" ");
-  const left = set - NOW, hm = `${Math.floor(left / 36e5)}h ${R(left % 36e5 / 6e4)}m`;
-  const arc = `<svg class="arc" viewBox="0 0 220 72" aria-label="The sun's day: ${hm} to sunset"><polyline class="track" points="${full}"/><polyline class="done" points="${pts(30)}"/><line class="hz" x1="6" x2="214" y1="52.5" y2="52.5"/><circle cx="${X(f)}" cy="${Y(f)}" r="9" fill="var(--halo)"/><circle cx="${X(f)}" cy="${Y(f)}" r="5.5" fill="var(--sun)"/><text x="6" y="68">↑ ${W.today.sunrise.slice(11)}</text><text x="110" y="68" text-anchor="middle">${hm} to sunset</text><text x="214" y="68" text-anchor="end">${W.today.sunset.slice(11)} ↓</text></svg>`;
+  const left = to - NOW, hm = `${Math.floor(left / 36e5)}h ${R(left % 36e5 / 6e4)}m`, x = X(f).toFixed(1), y = Y(f).toFixed(1), clock = t => new Date(t).toLocaleTimeString("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit" });
+  let body;
+  if (day) body = `<circle cx="${x}" cy="${y}" r="9" fill="var(--halo)"/><circle cx="${x}" cy="${y}" r="5.5" fill="var(--sun)"/>`;
+  else { const m = moonNow(NOW), r = 6, rx = (r * Math.abs(1 - 2 * m.lit)).toFixed(2), sweep = m.lit > 0.5 ? 1 : 0;
+    body = `<circle cx="${x}" cy="${y}" r="9" fill="var(--mhalo)"/><g transform="translate(${x} ${y})${m.waxing ? "" : " scale(-1 1)"}"><circle r="${r}" fill="var(--mdark)"/><path d="M0 ${-r} A${r} ${r} 0 0 1 0 ${r} A${rx} ${r} 0 0 ${sweep} 0 ${-r}Z" fill="var(--moon)"/></g>`; }
+  const arc = `<svg class="arc ${day ? "day" : "night"}" viewBox="0 0 220 72" aria-label="${day ? `${hm} to sunset` : `${hm} to sunrise`}"><polyline class="track" points="${full}"/><polyline class="done" points="${pts(30)}"/><line class="hz" x1="6" x2="214" y1="52.5" y2="52.5"/>${body}<text x="6" y="68">${day ? "↑" : "↓"} ${clock(from)}</text><text x="110" y="68" text-anchor="middle">${hm} to ${day ? "sunset" : "sunrise"}</text><text x="214" y="68" text-anchor="end">${clock(to)} ${day ? "↓" : "↑"}</text></svg>`;
   const aq = a => (a <= 50 ? "good" : a <= 100 ? "moderate" : a <= 150 ? "poor" : "unhealthy");
   const fam = D.page.fam.map(x => `<b>${esc(x.name)}</b> ${esc(x.now.split(" · ")[0].replace(" now", "°").replace("°°", "°"))}`).join(" · ");
   return `<div class="wx"><div class="t tnum">${R(W.now.temp)}°</div><div class="c"><b>${esc(D.page.sky_head)}</b>Feels ${R(W.now.feels)}° · ${R(W.today.max)}°/${R(W.today.min)}°</div>${arc}</div>
-<div class="wxs"><span>Rain <b>${W.today.rain_prob}%</b></span><span>Air <b>${W.air}</b> ${aq(W.air)}</span><span>Humidity <b>${W.now.humidity}%</b></span></div>${family ? `<p class="fam1">${fam} now; both dry this week.</p>` : ""}`;
+<div class="wxs">${day ? `<span>Rain <b>${W.today.rain_prob}%</b></span>` : `<span>Moon <b>${R(moonNow(NOW).lit * 100)}%</b> lit</span>`}<span>Air <b>${W.air}</b> ${aq(W.air)}</span><span>Humidity <b>${W.now.humidity}%</b></span></div>${family ? `<p class="fam1">${fam} now; both dry this week.</p>` : ""}`;
 }
 function money() {
   const M = D.markets, sx = M.indices.find(q => q.name === "Sensex"), sp = M.indices.find(q => q.name === "S&P 500"), br = M.cross.find(q => /brent/i.test(q.name)), G = D.gold, In = M.mood.India, Us = M.mood.US;
