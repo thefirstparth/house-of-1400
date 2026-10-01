@@ -284,11 +284,8 @@ function fit() {
   mountPlate();
 }
 // ---------------------------------------------------------------- the wordmark (design/page-one/wordmark.js)
-// Every dot of the halftone 1400 belongs to one of today's stories, desk by desk in reading order.
-const ORDER = ["news", "home", "sport", "tech", "money", "off"], NAMES = Object.fromEntries(DESKS);
-const STORIES = (() => { const seen = new Set(), out = [];
-  for (const x of [D.edition.lead, ...D.edition.seconds, ...Object.values(D.edition.sections).flat()]) if (x && !seen.has(x.id) && where[x.id]) { seen.add(x.id); out.push({ headline: esc(x.headline), desk: where[x.id], deskName: NAMES[where[x.id]], href: "#" + where[x.id] }); }
-  return out.sort((a, b) => ORDER.indexOf(a.desk) - ORDER.indexOf(b.desk)); })();
+// Every dot of the halftone 1400 belongs to a piece of today's paper, desk by desk in reading order, in proportion to its length.
+const STORIES = D.wordmark; // worked out by build.mjs from the full edition (storiesFromEdition in wordmark.js)
 let unmount = () => {};
 function mountPlate() {
   const n = page.querySelector(".plate .n"); if (!n) return;

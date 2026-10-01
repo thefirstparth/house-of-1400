@@ -32,9 +32,37 @@ async function maskOf(text, size, W, H, font) {
   };
 }
 
-// The screen for one size, worked out once: every dot's place, its size at rest and its story.
-async function screenFor(size, font, nItems) {
-  const key = `${size}|${nItems}`;
+// Every piece of the day's paper, in reading order, with its length in words: each desk's sections in the paper's
+// order, the front page's stories at the top of their own section (as on the desk pages), then every article, brief
+// and one-line story, and the sections that are lists (Screen & Stage, Talk of the Day, The Betting Window, the
+// Fixture List, Before You Go) line by line. Your Desk is left out; Page One's own lines (the day in a minute, the
+// notes) are not a desk's. Tables and charts count only their written lines.
+// desks: [{id, name, sections: [section ids]}] in page order; href(desk, item) -> link.
+export function storiesFromEdition(E, desks, href = d => "#" + d) {
+  const words = (...xs) => xs.flat(Infinity).join(" ").split(/\s+/).filter(Boolean).length;
+  const strings = o => (o == null ? [] : typeof o === "string" ? [o] : typeof o !== "object" ? [] : Object.entries(o).filter(([k]) => !/url|source|^id$|thread|when|date|time|kind/i.test(k)).flatMap(([, v]) => strings(v)));
+  const F = E.front || {}, S = E.sections || {}, out = [];
+  const add = (desk, headline, n, label = "") => n > 0 && headline && out.push({ desk: desk.id, deskName: desk.name, headline: label ? `${label}: ${headline}` : headline, words: n, href: href(desk.id) });
+  const story = x => words(x.headline, x.deck, x.short, x.more, x.text, x.why?.text);
+  for (const desk of desks) for (const id of desk.sections) {
+    for (const x of [F.lead, ...(F.seconds || []), ...(F.briefs || [])]) if (x?.section === id) add(desk, x.headline, story(x));
+    const s = S[id] || {};
+    for (const x of [...(s.stories || []), ...(s.briefs || []), ...(s.lines || [])]) add(desk, x.headline, story(x));
+    const notes = words(strings(s.data)); if (notes) add(desk, ({ paddock: "Paddock Notes", madrid: "Madridismo", crease: "The Crease", ledger: "The Ledger", sky: "Sky & Streets" })[id] || "Notes", notes, "");
+    if (id === "screen") for (const t of E.screen || []) add(desk, t.title, words(t.title, t.reason, t.if_you_liked), "Screen & Stage");
+    if (id === "talk") for (const t of [...(E.trends?.india || []), ...(E.trends?.world || [])]) add(desk, t.term, words(t.term, t.what), "Talk of the Day");
+    if (id === "betting") for (const b of E.betting || []) add(desk, b.title, words(b.title, (b.outcomes || []).map(o => o.name)), "The Betting Window");
+    if (id === "fixtures") for (const f of E.fixtures || []) add(desk, f.label, words(f.label, f.where), "The Fixture List");
+    if (id === "bye") for (const l of [...(E.before_you_go?.watch || []), ...(E.before_you_go?.do || [])]) add(desk, l, words(l), "Before You Go");
+    if (id === "week") for (const w of E.week_ahead || []) add(desk, w.what, words(w.what, w.why), "The Week Ahead");
+  }
+  return out;
+}
+
+// The screen for one size, worked out once: every dot's place, its size at rest and its story. The figure's dots
+// are shared out in proportion to each piece's length, so a desk takes as much of 1400 as it takes of the paper.
+async function screenFor(size, font, items) {
+  const nItems = items.length, key = `${size}|${items.map(i => i.words || 1).join(",")}`;
   if (CACHE.has(key)) return CACHE.get(key);
   const probe = document.createElement("span");
   probe.textContent = "1400";
@@ -48,9 +76,16 @@ async function screenFor(size, font, nItems) {
     if (x < -g || y < -g || x > W + g || y > H + g) continue;
     dots.push({ x, y, base: Math.sqrt(cover(x, y, g / 2)), story: -1 });
   }
-  // the figure's dots shared among the stories in reading order, left to right
-  const ink = dots.filter(d => d.base > 0.3).sort((a, b) => a.x - b.x || a.y - b.y), per = ink.length / Math.max(1, nItems);
-  ink.forEach((d, k) => { d.story = Math.min(nItems - 1, Math.floor(k / per)); });
+  // the figure's dots shared among the pieces in reading order, left to right, each in proportion to its length
+  // (at least one dot each, so every piece can be found)
+  const ink = dots.filter(d => d.base > 0.3).sort((a, b) => a.x - b.x || a.y - b.y);
+  const len = items.map(i => Math.max(1, i.words || 1)), total = len.reduce((a, b) => a + b, 0) || 1;
+  let k = 0;
+  for (let i = 0, acc = 0; i < nItems; i++) {
+    acc += len[i];
+    const end = i === nItems - 1 ? ink.length : Math.max(k + 1, Math.round(ink.length * acc / total));
+    for (; k < end && k < ink.length; k++) ink[k].story = i;
+  }
   const s = { W, H, g, dots, span };
   CACHE.set(key, s);
   return s;
@@ -58,7 +93,7 @@ async function screenFor(size, font, nItems) {
 
 export async function mountWordmark(el, { items, font, caption, size }) {
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const S = await screenFor(size, font, items.length);
+  const S = await screenFor(size, font, items);
   const { W, H, g, dots, span } = S, R = g * 0.6;
   const c = document.createElement("canvas");
   c.setAttribute("aria-hidden", "true");

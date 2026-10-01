@@ -21,8 +21,25 @@ const fonts = [
   face("Libre Franklin", "libre-franklin/files/libre-franklin-latin-ext-wght-normal.woff2", "100 900", "normal", EXT),
 ].join("\n");
 const wordmark = readFileSync(H + "wordmark.js", "utf8").replace(/^export /gm, "");
+// The wordmark's pieces, from the full edition the mock is built from, with the desks as agreed on 1 Oct.
+const { storiesFromEdition } = await import(H + "wordmark.js");
+const full = JSON.parse(readFileSync(H + "../../content/editions/" + JSON.parse(data).edition.date + ".json", "utf8"));
+const DESKS = [
+  { id: "news", name: "News", sections: ["week", "dateline", "talk", "betting"] },
+  { id: "home", name: "Close to Home", sections: ["namma", "sky"] },
+  { id: "sport", name: "Sport", sections: ["fixtures", "madrid", "paddock", "crease", "deuce", "pitch", "sidelines"] },
+  { id: "tech", name: "Tech & AI", sections: ["workshop", "pipeline"] },
+  { id: "money", name: "Money", sections: ["ledger"] },
+  { id: "off", name: "Off Duty", sections: ["screen", "bye"] },
+];
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const pieces = storiesFromEdition(full, DESKS).map(p => ({ ...p, headline: esc(p.headline) }));
+const share = Object.fromEntries(DESKS.map(d => [d.name, pieces.filter(p => p.desk === d.id).reduce((a, p) => a + p.words, 0)]));
+const all = Object.values(share).reduce((a, b) => a + b, 0);
+console.log("wordmark:", pieces.length, "pieces;", Object.entries(share).map(([k, v]) => `${k} ${Math.round(100 * v / all)}%`).join(", "));
+const dataWithMark = JSON.stringify({ ...JSON.parse(data), wordmark: pieces });
 const html = readFileSync(H + "src2.html", "utf8")
-  .replace("__FONTS__", () => fonts).replace("__DATA__", () => data)
+  .replace("__FONTS__", () => fonts).replace("__DATA__", () => dataWithMark.replace(/</g, "\\u003c"))
   .replace("__PLAYFAIR__", () => b64("playfair-display/files/playfair-display-latin-wght-normal.woff2"))
   .replace("__WORDMARK__", () => wordmark);
 writeFileSync(H + "page-one-variants.html", html);
