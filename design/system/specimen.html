@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Type and colour, today and proposed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..800;1,8..60,400..700&family=Roboto+Serif:wdth,wght@85..100,600..800&family=Roboto+Flex:wdth,wght@62..100,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..700&family=Libre+Franklin:wght@400..800&family=UnifrakturMaguntia&display=swap">
+<style>
+:root{--paper:#f3f1ea;--sheet:#fbfaf6;--ink:#15140f;--ink2:#3a3830;--muted:#625d52;--rule:#d5d0c3;--rule2:#e4e0d5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "Source Serif 4",Georgia,serif}
+.wrap{max-width:1240px;margin:0 auto;padding:24px clamp(16px,3vw,40px) 60px}
+.top{font:600 13px "Libre Franklin",sans-serif;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:10px;margin-bottom:22px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.lbl{font:800 12px "Libre Franklin",sans-serif;letter-spacing:.14em;text-transform:uppercase;border-top:6px solid var(--ink);padding-top:8px;margin:0 0 18px;display:flex;justify-content:space-between}
+.lbl span{font:italic 400 14px "Source Serif 4",serif;letter-spacing:0;text-transform:none;color:var(--muted)}
+.mast{text-align:center;border-bottom:3px double var(--ink);padding-bottom:10px;margin-bottom:16px}
+.mast .the{font:400 34px/1 "UnifrakturMaguntia",serif}
+.mast .hof{font-size:12px;letter-spacing:.55em;text-transform:uppercase;margin:4px 0}
+.mast .n{font:900 64px/0.9 "Playfair Display",serif}
+.story{border-top:1px solid var(--rule);padding-top:12px;margin-top:14px}
+.why{border-radius:14px;padding:10px 14px;margin-top:10px;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.chips i{font-style:normal;padding:5px 10px;border-radius:99px;font-size:12.5px}
+table{width:100%;border-collapse:collapse;margin-top:12px}
+th{text-align:left;color:var(--muted);border-bottom:1.5px solid var(--ink);padding:5px 8px 5px 0}
+td{border-bottom:1px solid var(--rule2);padding:7px 8px 7px 0}
+td.r,th.r{text-align:right}
+/* today */
+.old .kick{font:700 12px "Roboto Flex",sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.old h3{font:700 27px/1.16 "Roboto Serif",serif;font-variation-settings:"wdth" 92;margin:4px 0 6px}
+.old th,.old td,.old .chips i{font-family:"Roboto Flex",sans-serif}
+.old th{font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.old .band{border-radius:26px;padding:12px 20px;font:800 30px/1 "Roboto Flex",sans-serif;font-variation-settings:"wdth" 62;text-transform:uppercase;margin:6px 0}
+.old .band small{display:block;font:italic 400 14px "Source Serif 4",serif;text-transform:none;margin-top:3px}
+.old .strip{display:flex;gap:4px;margin:6px 0}.old .strip i{flex:1;height:8px}
+/* proposed */
+.new .kick{font:700 12px "Libre Franklin",sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.new h3{font:650 30px/1.12 "Newsreader",serif;font-variation-settings:"opsz" 48;margin:4px 0 6px;letter-spacing:-.005em}
+.new th,.new td,.new .chips i{font-family:"Libre Franklin",sans-serif}
+.new th{font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.new .band{border-top:3px solid var(--d);padding:10px 0 2px;margin:6px 0;display:flex;align-items:baseline;gap:14px}
+.new .band b{font:700 32px/1 "Newsreader",serif;font-variation-settings:"opsz" 60;color:var(--d)}
+.new .band small{font:italic 400 15px "Source Serif 4",serif;color:var(--muted)}
+.new .strip{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin:6px 0}
+.new .strip span{border-top:4px solid var(--c);padding-top:4px;font:700 11px "Libre Franklin",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+.note{font:14px/1.5 "Libre Franklin",sans-serif;color:var(--ink2);margin-top:16px}
+.note b{color:var(--ink)}
+@media (max-width:900px){.cols{grid-template-columns:1fr}}
+</style>
+</head>
+<body><div class="wrap">
+<div class="top">The House of 1400 · type and colour · today on the left, proposed on the right · same words, same layout</div>
+<div class="cols">
+<section class="old">
+<h2 class="lbl">Today <span>Roboto Serif · Source Serif 4 · Roboto Flex · 14 section colours</span></h2>
+<div class="mast"><div class="the">The</div><div class="hof">House of</div><div class="n">1400</div>
+<div class="strip"><i style="background:#4f2f9e"></i><i style="background:#2e7d32"></i><i style="background:#d0021b"></i><i style="background:#1440a8"></i><i style="background:#566f00"></i><i style="background:#ad4a1c"></i><i style="background:#1f3f73"></i><i style="background:#00697a"></i><i style="background:#00704a"></i><i style="background:#0a72a8"></i><i style="background:#946000"></i><i style="background:#ae2168"></i><i style="background:#8a6200"></i></div></div>
+<div class="band" style="background:#dbe4f4;color:#0c1d3b">Dateline<small>India and the world</small></div>
+<div class="story"><div class="kick" style="color:#1f3f73">India · Institutions</div><h3>Election Commission drops the disputed voter-roll rule after a week of protests</h3>
+<p style="margin:0">The Commission said on Wednesday that the rule, which asked voters to re-prove citizenship, will not apply to the coming bypolls. Opposition parties had called it a purge.</p>
+<div class="why" style="background:#e9e6dc"><b style="font:700 11.5px 'Roboto Flex';letter-spacing:.1em;text-transform:uppercase;display:block">Why it matters</b>Bihar's bypolls on 6 November run on the old rolls.</div></div>
+<div class="band" style="background:#c4eed6;color:#00391f;margin-top:22px">The Ledger<small>Markets · money · cards</small></div>
+<table><thead><tr><th>Market</th><th class="r">Level</th><th class="r">1D</th><th class="r">1M</th></tr></thead><tbody><tr><td>Sensex</td><td class="r">72,437</td><td class="r" style="color:#c0261d">−0.06%</td><td class="r" style="color:#c0261d">−5.84%</td></tr><tr><td>Gold 24K</td><td class="r">₹1,47,890</td><td class="r" style="color:#0b7a43">+0.15%</td><td class="r" style="color:#c0261d">−5.10%</td></tr></tbody></table>
+<p class="note"><b>What works:</b> the masthead, Source Serif for reading, the warm paper, the double rules.<br><b>What holds it at 6 or 7:</b> fourteen colours that read as a rainbow, not a paper; filled rounded bands that look like a phone app; Roboto, the Android face, for headlines and labels; teal and green that cannot be told apart.</p>
+</section>
+<section class="new">
+<h2 class="lbl">Proposed <span>Newsreader · Source Serif 4 · Libre Franklin · 6 desk colours</span></h2>
+<div class="mast"><div class="the">The</div><div class="hof" style="font-family:'Libre Franklin'">House of</div><div class="n">1400</div>
+<div class="strip"><span style="--c:#15140f">Front</span><span style="--c:#1f3f73">News</span><span style="--c:#0b7a43">Money</span><span style="--c:#b8460e">Sport</span><span style="--c:#6a3fb5">Tech &amp; AI</span><span style="--c:#b8860b">Life</span></div></div>
+<div class="band" style="--d:#1f3f73"><b>Dateline</b><small>India and the world</small></div>
+<div class="story"><div class="kick" style="color:#1f3f73">India · Institutions</div><h3>Election Commission drops the disputed voter-roll rule after a week of protests</h3>
+<p style="margin:0">The Commission said on Wednesday that the rule, which asked voters to re-prove citizenship, will not apply to the coming bypolls. Opposition parties had called it a purge.</p>
+<div class="why" style="background:#e9e6dc;border-radius:4px;border-left:3px solid #1f3f73"><b style="font:700 11.5px 'Libre Franklin';letter-spacing:.1em;text-transform:uppercase;display:block">Why it matters</b>Bihar's bypolls on 6 November run on the old rolls.</div></div>
+<div class="band" style="--d:#0b7a43;margin-top:22px"><b>The Ledger</b><small>Markets · money · cards</small></div>
+<table><thead><tr><th>Market</th><th class="r">Level</th><th class="r">1D</th><th class="r">1M</th></tr></thead><tbody><tr><td>Sensex</td><td class="r">72,437</td><td class="r" style="color:#c0261d">−0.06%</td><td class="r" style="color:#c0261d">−5.84%</td></tr><tr><td>Gold 24K</td><td class="r">₹1,47,890</td><td class="r" style="color:#0b7a43">+0.15%</td><td class="r" style="color:#c0261d">−5.10%</td></tr></tbody></table>
+<p class="note"><b>Kept:</b> the masthead, Source Serif for reading, the paper colour, the double rules, the section names.<br><b>Changed:</b> headlines in Newsreader (made for news on screens); labels and figures in Libre Franklin (the Franklin Gothic of NYT and WaPo labels); six desk colours instead of fourteen, carried by a rule and the section name rather than a filled band; radii from 26px to 4px.</p>
+</section>
+</div></div></body></html>
