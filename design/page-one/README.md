@@ -37,3 +37,23 @@ All three use the specimen nameplate with the desk strip as navigation and the c
 - **Fill the screen, any screen** (`fit()` in `src2.html`): print as many of the editor's lines as fit (never fewer than five with the lead), then scale the whole page (CSS `zoom`) until it fills the height, limited by the width (0.85 to 2). A 1280×720 laptop shrinks slightly instead of scrolling; a 1920×1080 or 2560×1440 monitor scales up 1.45 to 1.94 times instead of leaving half the screen empty. Phones are untouched (normal scroll).
 - B's columns are top-aligned and the evening pick goes to the shortest column.
 - Screenshots `big-B-<w>x<h>.png` from `shot3.mjs`.
+
+## FINAL: Page One is B (approved by Parth, 1 Oct). Parked for implementation.
+Mock: `page-one-variants.html?v=B` (add `&note=1` for a big-day editor's note, `&at=21:30` for the night arc). A and C stay for reference only.
+
+**Layout, top to bottom**
+1. Run line: date, edition number, "Printed HH:MM IST"; tagline right.
+2. Nameplate: blackletter "The", spaced "HOUSE OF", Playfair "1400".
+3. Desk strip = navigation: Page One, News, Close to Home, Sport, Tech & AI, Money, Off Duty, each a rule in its desk colour.
+4. Three columns:
+   - **The day in a minute:** the lead headline (no deck), the editor's note under it on big days only, then the editor's glance lines (5 to 10 with the lead, each tagged, each a link to its desk). The evening pick ("Must watch" from Screen & Stage) when there is one.
+   - **Weather** (Bengaluru: temperature, the month headline, feels like and high/low, the sun arc by day or the moon arc in its phase by night, rain or moon lit, air, humidity, one family line) then **Sport this week** (cricket, Madrid, F1, tennis; where to watch on each).
+   - **Money** (Sensex big; S&P 500, Brent, Gold 24K with 1D; India and US mood) then **The market expects** (top 3 by the likeliest outcome).
+5. Foot line: Your Desk, Letters, The editor, Archive; the House Note (every day); "Start reading: News".
+
+**Behaviour**
+- One screen, any screen: as many glance lines as fit (never fewer than five with the lead), then the whole page scales (0.85 to 2) to fill the height within the width. Phones scroll normally.
+- The evening pick goes to the shortest column.
+- No illustrations on Page One.
+
+**When implementing, carry over the live paper's rules:** every live figure keeps primary, backup, last-known-good with its "as of", else it is hidden; a panel with nothing to say is left out and the columns rebalance (no filler); market-closed and stale states show their time; the arc and figures refresh in the browser as today.

@@ -517,3 +517,9 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 - **Weather headline:** it said "Mild into November" on 1 October. It now leads with this month against its 30-year normal ("October looks a little drier and cooler than usual") and adds next month only for a real turn (nights 3° or more cooler, or the air usually turning unhealthy). The dek no longer repeats this month's lean. Rain is judged only in months that usually get 15 mm or more.
 - **The day in a minute** (`glance`) is five to ten lines, the lead first, enforced by the schema. Each line's tag and words together say who it is about: India's results at multi-nation events carry India in the tag ("India · Asian Games"), after "Three archery golds in a day" read as anyone's.
 
+
+## 1 Oct 2026: Page One design approved (B, "Front page"); parked for implementation (Parth)
+- Chosen over A (broadsheet ears, too cluttered) and C (calm grid). Spec in `design/page-one/README.md` (FINAL), mock `design/page-one/page-one-variants.html?v=B`.
+- Page One fills one screen on any laptop or monitor: lines first, then the whole page scales to the height (within the width). No illustrations on Page One.
+- The House Note moves to Page One's foot line; the editor's note (big days only) sits under the lead.
+- Not live yet: the redesign (desks, fonts, colours, Page One) is implemented later, in one go, after the desk pages are designed.
