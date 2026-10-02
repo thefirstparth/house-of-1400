@@ -269,8 +269,8 @@ body.on-one .layout{padding-top:0}
 .p1 .mdot.on{background:var(--good);border-color:var(--good)}
 .p1 .mny th{font:700 10px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:0 0 2px;border:0}
 .p1 .mny th.r{text-align:right}
-.p1 .mny td small{display:inline;font:500 11px var(--sans);color:var(--muted);margin-left:4px}
-.p1 .mny td.r{width:84px;white-space:nowrap}
+.p1 .mny td small{display:inline;font:500 11px var(--sans);color:var(--muted);margin-left:6px}
+.p1 .mny td.r{width:62px;white-space:nowrap}
 
 /* ---------- Your Desk, folded, at the foot of the last desk ---------- */
 .ydesk{margin-top:46px}

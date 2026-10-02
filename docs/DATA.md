@@ -41,6 +41,7 @@ Run-only keys in `lib/trial.js`, called by `scripts/trial.mjs` after the edition
 | wire | 71 feeds in config `sources.feeds`: Google News top and topic pages, outlets, regulators (RBI, SEBI, PIB), Google News searches | Items inside the news window, grouped into stories by Google News coverage lists; per-feed health |
 | tennis_players | ESPN ATP scoreboard | Each followed player's next and last match |
 | screen | OMDb (`OMDB_KEY`), TMDB (`TMDB_KEY`), JustWatch India chart (keyless GraphQL), Sacnilk box office page | Keys never appear in responses or errors |
+| nse holidays | NSE `www.nseindia.com/api/holiday-master?type=trading` (keyless; the `CM` list) | Copied into config `markets.hours.India.holidays` each December; the page reads the config, never NSE |
 | nse | NSE's official MCP server `mcp.nseindia.in/bhavcopy/cm/mcp` (keyless) | Breadth, top movers, corporate actions. On 28 Sep its data was two sessions old; the live-market server had no data during trading hours |
 | alerts | Sachet (NDMA and IMD) `sachet.ndma.gov.in/cap_public_website/FetchAllAlertDetails` | Alerts naming or within 60 km of the paper's cities |
 | cricket_where | WhereIsCricket `whereiscricket.com` | India's matches with TV and streaming in India |

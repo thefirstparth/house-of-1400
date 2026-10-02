@@ -723,26 +723,42 @@ function tzInstant(tz, y, mo, d, hm) {
   const p = tzParts(tz, new Date(guess)), seen = Date.UTC(p.y, p.mo - 1, p.d, +p.hm.slice(0, 2), +p.hm.slice(3));
   return new Date(guess - (seen - guess));
 }
+// The exchange's published holidays (config markets.hours.<exchange>.holidays, from NSE's own list) close a weekday too.
+const ymd = p => `${p.y}-${String(p.mo).padStart(2, "0")}-${String(p.d).padStart(2, "0")}`;
+const holidayOn = (H, date) => (H.holidays || []).find(x => x.date === date) || null;
+const tradesOn = (H, p) => H.days.includes(p.wd) && !holidayOn(H, ymd(p));
 function session(exchange) {
   const H = CFG.markets.hours?.[exchange]; if (!H) return null;
   const now = new Date(), t = tzParts(H.tz, now);
-  const openNow = H.days.includes(t.wd) && t.hm >= H.open && t.hm < H.close;
+  const openNow = tradesOn(H, t) && t.hm >= H.open && t.hm < H.close;
   const closeAt = tzInstant(H.tz, t.y, t.mo, t.d, H.close);
   let next = null;
-  for (let i = 0; i < 8 && !next; i++) {
+  for (let i = 0; i < 12 && !next; i++) {
     const day = tzParts(H.tz, new Date(now.getTime() + i * 864e5));
     const at = tzInstant(H.tz, day.y, day.mo, day.d, H.open);
-    if (H.days.includes(day.wd) && at > now) next = at;
+    if (tradesOn(H, day) && at > now) next = at;
   }
-  return { openNow, closeAt, next };
+  return { openNow, closeAt, next, today: ymd(t), holiday: holidayOn(H, ymd(t)) };
+}
+// Which session a closed market's figure is from, and the holiday that shut it since (Parth, 2 Oct: "Nifty 50 data is
+// from Thursday, but it should clearly say that ... I should know that the market was closed on Friday"): "Thursday's
+// close · shut Fri for Gandhi Jayanti". Nothing when the figure is today's.
+function closedSince(q, exchange) {
+  const H = CFG.markets.hours?.[exchange], s = session(exchange); if (!H || !s || !q?.session_date || q.session_date >= s.today) return "";
+  const day = d => fmt(d + "T12:00:00Z", { weekday: "long" }), age = (Date.parse(s.today) - Date.parse(q.session_date)) / 864e5;
+  const was = age < 7 ? `${day(q.session_date)}'s close` : `${fmt(q.session_date + "T12:00:00Z", { day: "numeric", month: "short" })} close`;
+  const shut = (H.holidays || []).filter(x => x.date > q.session_date && x.date <= s.today).at(-1);
+  const when = shut && (shut.date === s.today ? "today" : day(shut.date).slice(0, 3));
+  return [was, shut && `shut ${when} for ${shut.name}`].filter(Boolean).join(" · ");
 }
 const istWhen = d => (istDate(d) === istDate() ? istTime(d.toISOString()) : istDate(d) === istDate(new Date(Date.now() + 864e5)) ? `tomorrow ${istTime(d.toISOString())}` : `${fmt(d.toISOString(), { weekday: "short" })} ${istTime(d.toISOString())}`);
 function hoursLine(q) {
-  const s = session(CFG.markets.indices.find(i => i.name === q.name)?.exchange);
+  const ex = CFG.markets.indices.find(i => i.name === q.name)?.exchange, s = session(ex);
   if (!s) return q.live ? "Live" : "Market closed";
   if (q.live) return `Live · till ${istTime(s.closeAt.toISOString())}`;
-  if (s.openNow) return "Closed today";
-  return `Closed · opens ${istWhen(s.next)}`;
+  const since = closedSince(q, ex);
+  if (s.openNow) return since ? `${since} · closed today` : "Closed today";
+  return `${since ? `${since.replace(/^./, c => c.toUpperCase())} · opens` : "Closed · opens"} ${istWhen(s.next)}`;
 }
 const allShut = () => Object.keys(CFG.markets.hours || {}).every(ex => !session(ex)?.openNow);
 const mstate = q => `<span class="mstate ${q.live ? "open" : "closed"}">${esc(hoursLine(q))}</span>`;

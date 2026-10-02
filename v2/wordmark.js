@@ -211,8 +211,10 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
   const inkOf = (homes, gg = g) => {
     let x0 = 1e9, x1 = -1e9; const rows = new Map(), step = gg * Math.SQRT1_2; // the screen's rows are this far apart
     for (const d of homes) if (d.base > 0.35) { if (d.x < x0) x0 = d.x; if (d.x > x1) x1 = d.x; const r = Math.round(d.y / step); rows.set(r, (rows.get(r) || 0) + 1); }
-    const most = Math.max(...rows.values()), body = [...rows].filter(([, n]) => n >= most * 0.18).map(([r]) => r * step);
-    return { x0, x1, y0: Math.min(...body), y1: Math.max(...body) };
+    // the bottom is the baseline (a descender's tail, as in Sunny's y, holds under a fifth of the busiest row); the top
+    // is the tallest letter's, so a capital or an ascender counts (Sunny's S stands above its lowercase)
+    const most = Math.max(...rows.values()), at = k => [...rows].filter(([, n]) => n >= most * k).map(([r]) => r * step);
+    return { x0, x1, y0: Math.min(...at(0.06)), y1: Math.max(...at(0.18)) };
   };
   const first = await textDots("1400", size, W, H, g);
   place(first); onShape?.(inkOf(first), "1400");

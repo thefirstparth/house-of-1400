@@ -1,0 +1,59 @@
+:root{--paper:#f3f1ea;--sheet:#fbfaf6;--ink:#15140f;--ink2:#3a3830;--muted:#625d52;--rule:#d5d0c3;--rule2:#e4e0d5;
+ --sun:#d9861a;--halo:#f6d9a8;--moon:#e9e4d2;--mdark:#4a5568;--mhalo:#dfe3ea;--star:#fff;--c:#0a72a8;
+ --sans:"Libre Franklin",system-ui,sans-serif;--hl:"Newsreader",Georgia,serif;color-scheme:light}
+:root[data-theme="dark"]{--paper:#131210;--sheet:#1b1a17;--ink:#efe8d8;--ink2:#d4ccba;--muted:#aca390;--rule:#3a3730;--rule2:#282621;
+ --sun:#f2b552;--halo:#4a3718;--moon:#f1ecd8;--mdark:#3a3f4a;--mhalo:#262b36;--c:#86cff3;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 var(--hl)}
+.tnum{font-variant-numeric:tabular-nums}
+header.top,main{max-width:1240px;margin:0 auto;padding:0 16px}
+header.top{padding-top:26px;padding-bottom:14px;border-bottom:3px double var(--rule)}
+h1{margin:0;font:600 32px/1.1 var(--hl)}
+.lede{margin:6px 0 12px;color:var(--ink2);max-width:78ch}
+.controls{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.controls button{font:600 13px var(--sans);color:var(--ink);background:none;border:1px solid var(--rule);border-radius:4px;padding:7px 14px;cursor:pointer}
+.scrub{display:flex;align-items:center;gap:10px;font:600 12px var(--sans);text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.scrub input{width:min(380px,52vw);accent-color:var(--sun)}
+.scrub b{font:700 18px var(--sans);color:var(--ink);letter-spacing:0;min-width:3.2em}
+section{padding:22px 0 18px;border-bottom:1px solid var(--rule)}
+h2{margin:0;font:600 24px/1.2 var(--hl)}
+.dek{margin:4px 0 14px;color:var(--ink2);max-width:80ch}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+@media (max-width:1000px){.trio{grid-template-columns:1fr;max-width:420px}}
+.var h3{margin:0 0 2px;font:700 12px var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--ink)}
+.var p.note{margin:0 0 10px;font:500 13px/1.45 var(--sans);color:var(--muted);min-height:3.9em}
+.card{background:var(--paper);border-top:2px solid var(--ink);padding:10px 0 4px;max-width:380px}
+.card .lab{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;font:700 12px var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--c)}
+.card .lab small{font:600 11px var(--sans);letter-spacing:.04em;color:var(--muted);text-transform:none}
+.moments{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin:0 0 22px}
+.moments .when{font:700 11px var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 4px}
+.moments h3{grid-column:1/-1;margin:6px 0 0;font:700 12px var(--sans);letter-spacing:.09em;text-transform:uppercase}
+@media (max-width:1000px){.moments{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.moments{grid-template-columns:1fr}}
+
+/* the Weather block, as Page One sets it (v2/v2.css .p1 .wx3) */
+.wx3 .now{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
+.wx3 .t{font:600 42px/1 var(--hl);font-variation-settings:"opsz" 60}
+.wx3 .c b{display:block;font:600 15px/1.25 var(--hl);color:var(--ink)}
+.wx3 .c span{display:block;margin-top:3px;font:500 12.5px var(--sans);color:var(--muted)}
+.wx3 .reads{display:flex;flex-wrap:wrap;gap:4px 18px;margin:12px 0 0;padding-top:9px;border-top:1px solid var(--rule2);font:500 12.5px var(--sans);color:var(--muted)}
+.wx3 .reads i{font:700 10px var(--sans);font-style:normal;letter-spacing:.09em;text-transform:uppercase;margin-right:6px;color:var(--muted)}
+.wx3 .reads b{font:700 15px var(--sans);color:var(--ink)}
+.wx3 .elsewhere{display:flex;flex-wrap:wrap;gap:2px 14px;margin:8px 0 0;font:500 12.5px var(--sans);color:var(--muted)}
+.wx3 .elsewhere b{font-weight:600;color:var(--ink2)}
+.small .wx3 .elsewhere,.small .wx3 .reads{display:none}
+
+/* the day line, common */
+.dl{margin:12px 0 0;font:500 11.5px var(--sans);color:var(--muted)}
+.dl .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:3px}
+.dl .top b{font:500 12px var(--sans);color:var(--muted)}
+.dl .top b em{font-style:normal;font-weight:700;color:var(--ink)}
+.dl .top .x{white-space:nowrap}
+.dl svg{display:block;width:100%;overflow:visible}
+.dl .ends{display:flex;justify-content:space-between;margin-top:2px}
+.dl text{font:600 10px var(--sans);fill:var(--muted)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes twinkle{0%,100%{opacity:.9}50%{opacity:.25}}
+.rays{animation:spin 40s linear infinite;transform-box:fill-box;transform-origin:center}
+.star{animation:twinkle 3.2s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.rays,.star{animation:none}}
