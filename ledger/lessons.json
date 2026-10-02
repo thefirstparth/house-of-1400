@@ -71,7 +71,8 @@
       "fix": "Explainer desks added as sources (HT Explainers, Indian Express Explained) with an explainers rule in EDITORIAL.md.",
       "owed": {
         "what": "Russia buying its own oil back as fuel from India: the volumes, why, and the US tariff threat",
-        "until": "2026-10-03"
+        "until": "2026-10-03",
+        "printed_on": "2026-10-02"
       }
     },
     {
@@ -83,7 +84,8 @@
       "fix": "As above: explainer desks are read every run; a short story is enough.",
       "owed": {
         "what": "India's proposed air route over Xinjiang around Pakistan's airspace ban: why, and what stands in the way",
-        "until": "2026-10-03"
+        "until": "2026-10-03",
+        "printed_on": "2026-10-02"
       }
     },
     {
@@ -99,7 +101,8 @@
       "fix": "The wire groups the same story told in different words (shared rare words, weighted), and outlets' own stories count even without a Google signal; a story naming anyone Parth follows (club, national teams on sports feeds, driver, players, team) needs an answer from three outlets; each desk's three widest stories always make the list; every lead with an open outlet must be printed or answered. Regression test on the day's real reading list (tests/trial.test.mjs).",
       "owed": {
         "what": "The Ronaldo follow-up: his promised statement on why he left, the Denmark result, and whether he plays for Portugal again (the walk-out itself was added to the 1 Oct paper after Parth's report)",
-        "until": "2026-10-03"
+        "until": "2026-10-03",
+        "printed_on": "2026-10-02"
       }
     },
     {
@@ -126,7 +129,8 @@
       "fix": "config multi_events; checks.india_knockouts while an event runs; every India men's knockout (quarter-final on, bronze included) and women's final in the Fixture List and every result printed (validator). EDITORIAL.md, The Sidelines and The Fixture List.",
       "owed": {
         "what": "India's hockey: the men's 4-3 semi-final win over Pakistan, the women's final v China on Friday and the men's final on Saturday (both in The Fixture List with confirmed times)",
-        "until": "2026-10-03"
+        "until": "2026-10-03",
+        "printed_on": "2026-10-02"
       }
     }
   ]

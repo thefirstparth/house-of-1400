@@ -1,20 +1,8 @@
 {
-  "date": "2026-10-01",
+  "date": "2026-10-02",
   "source": "Cricbuzz",
-  "checked_at": "2026-10-01T08:37:44.450Z",
+  "checked_at": "2026-10-02T08:37:44.305Z",
   "matches": [
-    {
-      "desc": "2nd Semi-Final",
-      "format": "T20",
-      "series": "Asian Games 2026",
-      "opponent": "Sri Lanka",
-      "start": "2026-10-01T04:30:00.000Z",
-      "ist": "Thu 1 Oct, 10:00",
-      "time_announced": true,
-      "ground": "Korogi Sports Park",
-      "city": "Nisshin",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/171060"
-    },
     {
       "desc": "Gold Medal Match",
       "format": "T20",
@@ -30,7 +18,7 @@
     {
       "desc": "3rd ODI",
       "format": "ODI",
-      "series": "West Indies tour of India, 2026",
+      "series": "India v West Indies",
       "opponent": "West Indies",
       "start": "2026-10-03T08:30:00.000Z",
       "ist": "Sat 3 Oct, 14:00",
@@ -410,13 +398,73 @@
       "ground": "Narendra Modi Stadium",
       "city": "Ahmedabad",
       "url": "https://www.cricbuzz.com/live-cricket-scores/151746"
+    },
+    {
+      "desc": "1st Match, Group A",
+      "format": "ODI",
+      "series": "ICC Men's Cricket World Cup 2027",
+      "opponent": "Australia",
+      "start": "2027-10-07T08:00:00.000Z",
+      "ist": "Thu 7 Oct, 13:30",
+      "time_announced": true,
+      "ground": "Newlands",
+      "city": "Cape Town",
+      "url": "https://www.cricbuzz.com/live-cricket-scores/174481"
+    },
+    {
+      "desc": "6th Match, Group A",
+      "format": "ODI",
+      "series": "ICC Men's Cricket World Cup 2027",
+      "opponent": "Pakistan",
+      "start": "2027-10-10T08:00:00.000Z",
+      "ist": "Sun 10 Oct, 13:30",
+      "time_announced": true,
+      "ground": "The Wanderers Stadium",
+      "city": "Johannesburg",
+      "url": "https://www.cricbuzz.com/live-cricket-scores/174511"
+    },
+    {
+      "desc": "13th Match, Group A",
+      "format": "ODI",
+      "series": "ICC Men's Cricket World Cup 2027",
+      "opponent": "Afghanistan",
+      "start": "2027-10-14T08:00:00.000Z",
+      "ist": "Thu 14 Oct, 13:30",
+      "time_announced": true,
+      "ground": "SuperSport Park",
+      "city": "Centurion",
+      "url": "https://www.cricbuzz.com/live-cricket-scores/174561"
+    },
+    {
+      "desc": "18th Match, Group A",
+      "format": "ODI",
+      "series": "ICC Men's Cricket World Cup 2027",
+      "opponent": "TBC (Qualifier A)",
+      "start": "2027-10-17T08:00:00.000Z",
+      "ist": "Sun 17 Oct, 13:30",
+      "time_announced": true,
+      "ground": "Mangaung Oval",
+      "city": "Bloemfontein",
+      "url": "https://www.cricbuzz.com/live-cricket-scores/174603"
+    },
+    {
+      "desc": "30th Match, Group A",
+      "format": "ODI",
+      "series": "ICC Men's Cricket World Cup 2027",
+      "opponent": "Zimbabwe",
+      "start": "2027-10-24T08:00:00.000Z",
+      "ist": "Sun 24 Oct, 13:30",
+      "time_announced": true,
+      "ground": "Mosi-oa-Tunya International Cricket Stadium",
+      "city": "Victoria Falls",
+      "url": "https://www.cricbuzz.com/live-cricket-scores/174701"
     }
   ],
   "series": [
     {
       "name": "Asian Games 2026",
-      "opponent": "Sri Lanka",
-      "from": "2026-10-01",
+      "opponent": "Pakistan",
+      "from": "2026-10-03",
       "parts": [
         {
           "format": "T20",
@@ -427,7 +475,7 @@
       "now": true
     },
     {
-      "name": "West Indies tour of India, 2026",
+      "name": "India v West Indies",
       "opponent": "West Indies",
       "from": "2026-10-03",
       "parts": [
@@ -435,7 +483,15 @@
           "format": "ODI",
           "total": 3,
           "played": 2
-        },
+        }
+      ],
+      "now": true
+    },
+    {
+      "name": "West Indies tour of India, 2026",
+      "opponent": "West Indies",
+      "from": "2026-10-06",
+      "parts": [
         {
           "format": "T20",
           "total": 5,

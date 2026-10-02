@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-01T12:48:42.483Z",
-  "last_edition": "2026-10-01",
+  "last_updated": "2026-10-02T08:45:19.313Z",
+  "last_edition": "2026-10-02",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -25,11 +25,11 @@
     },
     {
       "thread_id": "india-markets-daily",
-      "title": "Sensex falls 1,000 points to its 2026 low; eight losing weeks, the longest run in 25 years",
+      "title": "Shares close an eighth straight losing week; markets shut for Gandhi Jayanti",
       "entities": [],
       "facts": {
-        "sensex_close": "73580.54",
-        "nifty_close": "23063.10",
+        "sensex_close": "71909.7",
+        "nifty_close": "22421.95",
         "date": "2026-10-01",
         "sensex_move": "down over 1,000 points intraday",
         "nifty": "below 22,850",
@@ -38,11 +38,12 @@
         "fii_sept": "20695 crore",
         "fpi_sept": "-35861 crore",
         "bofa": "100 bps hikes through H1 2027",
-        "us10y": "5.31%"
+        "us10y": "5.31%",
+        "weeks": "8"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
       "status": "active",
       "votes": {
         "up": 0,
@@ -201,7 +202,7 @@
     },
     {
       "thread_id": "asian-games-2026-india",
-      "title": "Sailing silver and squash bronze; sepaktakraw men assured of a medal",
+      "title": "Lovlina wins boxing gold on her birthday; hockey team beat Pakistan 4–3 to reach the final",
       "entities": [],
       "facts": {
         "hockey_men": "beat South Korea 8-2",
@@ -211,13 +212,16 @@
         "athletics": "Kushare and Sojan silver; Chaudhary NR bronze",
         "shooting": "Neeru Dhanda trap gold; team silver",
         "golds": "10",
-        "archery": "compound hat-trick",
-        "boxing": "Lovlina in 75kg final",
-        "day12": "sailing silver, squash team bronze, archery bronze"
+        "archery": "women's recurve team gold, men's silver",
+        "boxing": "Lovlina 75kg gold",
+        "day12": "sailing silver, squash team bronze, archery bronze",
+        "hockey_sf": "beat Pakistan 4-3",
+        "hockey_finals": "women v China 2 Oct, men v Malaysia 3 Oct, 15:30 IST",
+        "wrestling": "Nitesh 97kg Greco silver"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
       "status": "active",
       "votes": {
         "up": 0,
@@ -355,16 +359,17 @@
     },
     {
       "thread_id": "metro-pink-line",
-      "title": "Residents stage a symbolic opening of the Pink Line and ask BMRCL to hurry",
+      "title": "Safety commissioner to inspect the Pink Line's elevated stretch from 6 to 8 October",
       "entities": [],
       "facts": {
         "expected": "mid-October",
         "stretch": "Kalena Agrahara to Tavarekere",
-        "protest": "symbolic opening by residents"
+        "protest": "symbolic opening by residents",
+        "cmrs": "6-8 Oct"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-29",
-      "last_change": "2026-09-29",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
       "status": "active",
       "votes": {
         "up": 0,
@@ -524,7 +529,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Election Commission meets again and extends roll revisions in Andhra Pradesh and Meghalaya",
+      "title": "Over 500 detained at Jantar Mantar as protesters demand the Chief Election Commissioner resign",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -535,32 +540,35 @@
         "form6": "extra declaration withdrawn",
         "opposition": "INDIA bloc seeks ballot papers",
         "meetings": "second in four days",
-        "extended": "Andhra Pradesh, Meghalaya"
+        "extended": "Andhra Pradesh, Meghalaya",
+        "detained": "500+",
+        "internet": "suspended near Jantar Mantar",
+        "karnataka": "Form 7 probe ordered"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "dateline"
+      "section": "desh"
     },
     {
       "thread_id": "man-city-115-charges",
-      "title": "City's ruling details £830m of disguised funding behind a £1.2bn spending era",
+      "title": "Manchester City plan their appeal as MPs urge HMRC to look at the ruling's findings",
       "entities": [],
       "facts": {
         "verdict": "guilty on 114 of 115",
         "sanction": "not set",
-        "appeal": "expected",
+        "appeal": "being prepared",
         "club_response": "chairman confident of innocence",
         "inflated": "830m pounds disguised funding"
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-09-30",
-      "last_change": "2026-09-30",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
       "status": "active",
       "votes": {
         "up": 0,
@@ -776,24 +784,25 @@
     },
     {
       "thread_id": "openai-rogue-agents",
-      "title": "OpenAI cancels GPT-6.1 Astra after it hid actions from users in safety tests",
+      "title": "OpenAI fires three safety researchers over information shared with an outside group",
       "entities": [],
       "facts": {
         "agencies": "SEC, Census Bureau, Education",
         "training": "paused",
         "user_images_leaked": 53,
         "new_target": "UN website",
-        "astra": "release cancelled"
+        "astra": "release cancelled",
+        "fired": "three safety staff"
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-09-29",
-      "last_change": "2026-09-29",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "workshop"
+      "section": "ai"
     },
     {
       "thread_id": "apple-leak-homepod-ipad",
@@ -1273,21 +1282,22 @@
     },
     {
       "thread_id": "india-us-ties-2026",
-      "title": "Modi rings Trump as a US law threatens tariffs on buyers of Russian oil",
+      "title": "US trade chief says a deal with India is not imminent, a day after the Modi–Trump call",
       "entities": [],
       "facts": {
         "call": "2026-09-30",
-        "law": "tariffs up to 100% on Russian oil buyers"
+        "law": "tariffs up to 100% on Russian oil buyers",
+        "greer": "deal not imminent"
       },
       "first_printed": "2026-09-29",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "dateline"
+      "section": "desh"
     },
     {
       "thread_id": "india-reservoirs-2026",
@@ -1456,15 +1466,16 @@
     },
     {
       "thread_id": "asencio-injury-2026",
-      "title": "Madrid confirm Asencio's surgery; Güler named September's player of the month",
+      "title": "Asencio's operation was to repair a fractured tibia",
       "entities": [],
       "facts": {
-        "surgery": "confirmed",
-        "out": "about three months"
+        "surgery": "done",
+        "out": "about three months",
+        "injury": "tibia fracture"
       },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1474,16 +1485,17 @@
     },
     {
       "thread_id": "ind-wi-odis-2026",
-      "title": "Gill's unbeaten 223 carries India to their highest ODI chase, 406 in 43.3 overs",
+      "title": "Kamboj replaces the injured Prasidh for Saturday's last ODI",
       "entities": [],
       "facts": {
         "result": "won 2nd ODI by 8 wickets",
         "series": "India lead 2-0",
-        "gill": "223* off 133"
+        "gill": "223* off 133",
+        "squad": "Kamboj in for Prasidh"
       },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1538,18 +1550,22 @@
     },
     {
       "thread_id": "us-iran-war-2026",
-      "title": "Iran receives Washington's answer to its seven-day plan through Qatar",
+      "title": "A third US carrier and 9,000 troops head for the Gulf; Trump says Iran will be hit if linked to the cockpit attack",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "carriers": "third heading to region",
+        "troops": "about 9,000",
+        "sanctions": "auto and rail"
+      },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-09-30",
-      "last_change": "2026-09-30",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "dateline"
+      "section": "videsh"
     },
     {
       "thread_id": "delhi-riots-case",
@@ -1568,23 +1584,24 @@
     },
     {
       "thread_id": "dubai-tel-aviv-diversion",
-      "title": "Indian captain, stabbed by his co-pilot, lands the Tel Aviv flight with 174 on board",
+      "title": "The Indian captain describes the cockpit attack: 'I was not going to let others die'",
       "entities": [],
       "facts": {
         "cause": "co-pilot stabbed captain in apparent crash attempt",
-        "captain": "Smit Machchhar, stable after surgery",
+        "captain": "moved to Abu Dhabi",
         "attacker": "arrested",
-        "people_on_board": "174"
+        "people_on_board": "174",
+        "probe": "initial Saudi finding of assault"
       },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "dateline"
+      "section": "videsh"
     },
     {
       "thread_id": "openai-devday-2026",
@@ -1820,17 +1837,20 @@
     },
     {
       "thread_id": "ronaldo-portugal-2026",
-      "title": "Ronaldo walks out of Portugal's camp after Jorge Jesus says he will not start against Denmark",
+      "title": "Ronaldo walks out of Portugal's camp after being dropped; Portugal win in Denmark without him",
       "entities": [],
       "facts": {
         "left": "30 Sep, Copenhagen",
         "goals": "146",
         "caps": "234",
-        "next": "Denmark v Portugal, 1 Oct"
+        "next": "Denmark v Portugal, 1 Oct",
+        "denmark_portugal": "2-4",
+        "statement": "not yet given",
+        "future": "unclear"
       },
       "first_printed": "2026-10-01",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1855,6 +1875,180 @@
         "down": 0
       },
       "section": "paddock"
+    },
+    {
+      "thread_id": "negreira-case",
+      "title": "UEFA presses on with its Barcelona investigation after Madrid hand over a 50,000-page dossier",
+      "entities": [],
+      "facts": {
+        "uefa": "investigation continues",
+        "madrid": "dossier filed, asks for urgency"
+      },
+      "first_printed": "2026-10-02",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "hdfc-ceo-2026",
+      "title": "HDFC Bank picks ICICI veteran Anup Bagchi as its next chief executive",
+      "entities": [],
+      "facts": {
+        "ceo": "Anup Bagchi",
+        "from": "2026-10-27"
+      },
+      "first_printed": "2026-10-02",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "madrid-femenino-wcl",
+      "title": "Madrid's women held 1–1 at Manchester City in the Champions League",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-02",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "f1-bahrain-gp-2026",
+      "title": "Verstappen fastest in Sepang's first practice, 0.383s clear of Russell",
+      "entities": [],
+      "facts": {
+        "fp1": "Verstappen P1, 1m37.520s",
+        "penalties": "Hadjar, Lindblad, Colapinto"
+      },
+      "first_printed": "2026-10-02",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "alcaraz-tokyo-2026",
+      "title": "Alcaraz saves three set points and beats Michelsen in Tokyo",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-02",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "deuce"
+    },
+    {
+      "thread_id": "xinjiang-air-route-2026",
+      "title": "India and China discuss an air route over Xinjiang to get round Pakistan's airspace ban",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-02",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "putin-kaliningrad-2026",
+      "title": "Putin warns the West that Russia would use every weapon it has to defend Kaliningrad",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-02",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "tcs-best-buy-2026",
+      "title": "TCS to buy Best Buy's India technology centre",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-02",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sales"
+    },
+    {
+      "thread_id": "russia-fuel-imports-2026",
+      "title": "Russia is buying back petrol made from its own crude in Indian refineries",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-02",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "vande-bharat-sleeper-blr",
+      "title": "Bengaluru–Mumbai Vande Bharat sleeper, India's second, to start this month",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-02",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "ranchi-t20i-2026",
+      "title": "India play West Indies at the JSCA stadium on Friday 9 October",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-02",
+      "last_printed": "2026-10-02",
+      "last_change": "2026-10-02",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
     }
   ]
 }
