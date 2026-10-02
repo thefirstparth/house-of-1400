@@ -22,3 +22,13 @@ its press-time live figures, at a laptop's width and a phone's, light and night:
 - **C · Team rooms** (3.9 screens, news 79%): after the week strip and the lead, a room per team ordered by whose
   next match is soonest: four tiles (next, last, standing, forecast), then its stories; tables and results in the
   room's own tabs, closed until opened; a team with no news is just its tiles.
+
+## Round 2: B, cleaner (Parth, 2 Oct: "pick B, but make the scoreboard look cleaner ... why are tennis, internationals
+## and the Warriors under India cricket? ... Madridismo news was scattered all across the page")
+
+The mock opens on B. **Stories**: the lead across the page, then the news team by team (all of Madrid's together),
+each team's standing and next match said once in its group's head rather than under every story; the groups flow in two
+columns on a laptop, one on a phone. **Scoreboard**: one card per team in a grid (three across on a laptop, two on a
+narrower screen, one on a phone), every card the same shape: the team and its standing in one line, then Next, the
+table or standings, Last; long lists (all drivers and the constructors, the full race result, every knockout) folded
+inside their own card. Laptop: Stories 2.6 screens, news 90%; Scoreboard 1.6 screens.

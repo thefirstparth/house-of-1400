@@ -513,6 +513,47 @@ function markCycle() {
     return String(x);
   });
 }
+// "The HOUSE OF" on the centre line of what follows it (Parth, 2 Oct: "shouldn't the house of be vertically
+// centre-aligned with 24 here? Same for Clear ... with whatever comes next"). Measured, not guessed: the middle of the
+// capitals of HOUSE OF (from the font's own measure, at its baseline) against the middle of the ink the dots form; and
+// the gap from "OF" to the ink is the same for every shape, so a narrower shape draws the words along with it and the
+// nameplate stays centred. The words glide as the dots re-form.
+function capsMid(hof, z) {
+  const p = document.createElement("span"); p.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
+  hof.append(p); const base = p.getBoundingClientRect().top; p.remove();
+  const cs = getComputedStyle(hof), c = document.createElement("canvas").getContext("2d"); c.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+  const m = c.measureText(String(hof.textContent).toUpperCase());
+  return base - z * (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2;
+}
+const zoomOf = () => parseFloat(document.getElementById("dtop")?.style.zoom) || 1;
+let plateInk = null, plateGeom = null;
+function alignPlate(b = plateInk) {
+  plateInk = b;
+  const plate = document.getElementById("bigplate"), w = plate?.querySelector(".words"), hof = w?.querySelector(".hof"), n = plate?.querySelector(".n");
+  if (!b || !plateGeom || !w || !hof || !n || !plate.offsetParent) return;
+  const z = zoomOf(), first = !w.style.transform;
+  const was = w.style.transform; w.style.transition = "none"; w.style.transform = "none";
+  const nr = n.getBoundingClientRect(), hr = hof.getBoundingClientRect(), ls = parseFloat(getComputedStyle(hof).letterSpacing) || 0;
+  const mid = nr.top + z * (b.y0 + b.y1) / 2, left = nr.left + z * (plateGeom.px + b.x0), cm = capsMid(hof, z);
+  const dx = (left - z * plateGeom.size * 0.12 - (hr.right - z * ls)) / z, dy = (mid - cm) / z;
+  w.style.transform = was; void w.offsetWidth; if (!first) w.style.transition = "";
+  w.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)`;
+  if (first) requestAnimationFrame(() => { w.style.transition = ""; });
+}
+// the desk pages' small nameplate: the same centre line, on the still figure (its ink's middle is 0.006 of the size
+// below the middle of its canvas: the outline runs from 0.722 above the baseline to 0.014 below, wordmark.js)
+function alignMini() {
+  const np = document.querySelector("#dtop .np"), w = np?.querySelector(".words"), hof = w?.querySelector(".hof"), c = np?.querySelector(".n canvas");
+  if (!c || !hof || !np.offsetParent) return;
+  const z = zoomOf(), size = parseFloat(getComputedStyle(np.querySelector(".n")).fontSize) || 28;
+  w.style.transform = "none";
+  const cr = c.getBoundingClientRect(), mid = cr.top + cr.height / 2 + z * size * 0.006, dy = (mid - capsMid(hof, z)) / z;
+  w.style.transform = `translateY(${dy.toFixed(1)}px)`;
+}
+let alignT = 0;
+addEventListener("resize", () => { clearTimeout(alignT); alignT = setTimeout(() => { alignPlate(); alignMini(); }, 120); });
+document.fonts?.ready.then(() => { alignPlate(); alignMini(); });
+
 function mountMark() {
   unmountMark(); unmountMark = () => {};
   const n = document.querySelector("#bigplate .n"); if (!n || DESK.id !== "one") return;
@@ -521,11 +562,12 @@ function mountMark() {
   // close to "HOUSE OF" (the ink runs from 0.028 to 2.294 em of the outline's advance, wordmark.js)
   const W0 = Math.ceil(ADV * size + size * 0.5), PX0 = Math.round(W0 * 0.2), pad = (W0 - ADV * size) / 2;
   n.style.margin = `0 ${-(PX0 + pad + (ADV - 2.294) * size).toFixed(1)}px 0 ${-(PX0 + pad + 0.028 * size).toFixed(1)}px`;
+  plateGeom = { size, px: PX0 };
   const shares = dayShares();
   n.setAttribute("aria-label", sharesLabel(shares));
   // the stamp prints the figure once per visit (a browser session), the first time Page One shows
   let press = false; try { press = !sessionStorage.getItem("h1400-pressed"); sessionStorage.setItem("h1400-pressed", "1"); } catch {}
-  mountWordmark(n, { size, shares, cycle: markCycle, homeAfter: CFG.desks_v2?.wordmark?.home_after_s || 6, weather: markWeather, press }).then(u => { unmountMark = u; }).catch(() => {});
+  mountWordmark(n, { size, shares, cycle: markCycle, homeAfter: CFG.desks_v2?.wordmark?.home_after_s || 6, weather: markWeather, press, onShape: b => alignPlate(b) }).then(u => { unmountMark = u; alignPlate(); }).catch(() => {});
 }
 // The pinned tab bar: once the masthead is off the screen, Page One's tab shows the day in dots instead of its name.
 let tabObs = null;
@@ -546,7 +588,7 @@ function mountMini() {
   if (key === miniKey && n.querySelector("canvas")) return;
   miniKey = key; unmountMini(); unmountMini = () => {};
   const shares = dayShares();
-  stillWordmark(n, { size, shares }).then(u => { unmountMini = u; }).catch(() => {});
+  stillWordmark(n, { size, shares }).then(u => { unmountMini = u; alignMini(); }).catch(() => {});
 }
 
 // ---------------------------------------------------------------- the read time, in the run line (Parth, 2 Oct)

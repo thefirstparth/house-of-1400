@@ -27,7 +27,8 @@ body{font-size:17.5px}
 .dbar{display:flex;justify-content:space-between;align-items:center;gap:10px 24px;flex-wrap:wrap;padding:6px 0 10px}
 .np{display:inline-flex;align-items:baseline;gap:8px;color:var(--ink);text-decoration:none;white-space:nowrap}
 .np .the{font:400 25px/1 var(--black)}
-.np .hof{font:600 10px var(--sans);letter-spacing:.42em;text-transform:uppercase;transform:translateY(-4px)}
+.np .words{display:inline-flex;align-items:baseline;gap:8px}
+.np .hof{font:600 10px var(--sans);letter-spacing:.42em;text-transform:uppercase;margin-right:-.42em}
 .np .n{font:900 28px/1 var(--head);font-variant-numeric:lining-nums}
 .now{display:flex;gap:6px 22px;flex-wrap:wrap;font:500 13.5px var(--sans);color:var(--ink2)}
 .now a{text-decoration:none;color:inherit;white-space:nowrap}
@@ -151,12 +152,15 @@ body{background:var(--paper);color:var(--ink)}
 /* The nameplate on one line (Parth, 2 Oct: variant A of design/nameplate-oneline, "with the existing font for The House
    of"): "The" in blackletter and "HOUSE OF" in spaced capitals, as before, on the line of a larger 1400 */
 #bigplate{display:none;padding:6px 0 12px;--np:128px;user-select:none;-webkit-user-select:none}
-#bigplate .the{display:block;flex:none;font:400 calc(var(--np) * .42)/1 var(--black);margin:0 calc(var(--np) * .1) calc(var(--np) * .1) 0}
-#bigplate .hof{display:block;flex:none;font:600 calc(var(--np) * .13)/1 var(--sans);letter-spacing:.42em;text-transform:uppercase;margin:0 calc(var(--np) * .1) calc(var(--np) * .135) 0}
+/* "The" and "HOUSE OF" share a baseline; together they sit on the centre line of whatever the dots form, the gap after
+   "OF" always the same (layer.js alignPlate measures both and moves the words, gliding as the dots re-form) */
+#bigplate .words{display:flex;align-items:baseline;flex:none;transition:transform .45s cubic-bezier(.2,0,0,1)}
+#bigplate .the{display:block;flex:none;font:400 calc(var(--np) * .42)/1 var(--black);margin-right:calc(var(--np) * .12)}
+#bigplate .hof{display:block;flex:none;font:600 calc(var(--np) * .13)/1 var(--sans);letter-spacing:.42em;text-transform:uppercase;margin-right:calc(var(--np) * .065)}
 #bigplate .n{display:flex;flex:none;justify-content:center;align-items:center;height:calc(var(--np) * 1.02);font:900 var(--np)/1 var(--head);font-variant-numeric:lining-nums}
 @media (max-width:760px){#bigplate{--np:76px}}
 @media (max-width:380px){#bigplate{--np:66px}}
-body.on-one #bigplate{display:flex;justify-content:center;align-items:flex-end;overflow-x:clip;overflow-clip-margin:0}
+body.on-one #bigplate{display:flex;justify-content:center;align-items:center;overflow-x:clip;overflow-clip-margin:0}
 body.on-one .dbar{display:none}
 
 /* ---------- Page One B ---------- */

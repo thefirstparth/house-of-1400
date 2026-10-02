@@ -107,13 +107,49 @@ const UP = () => `<div class="upnext">${[
   CR?.next && ["India", `v ${CR.next.opp}, ${CR.next.desc}`, when(CR.next.at)],
   ...D.tennis.filter(p => p.next).slice(0, 2).map(p => [p.name.split(" ").pop(), `v ${p.next.opp}`, `${when(p.next.at)} · ${p.next.round}`]),
 ].filter(Boolean).slice(0, 5).map(([t, w, s]) => `<div class="u"><span class="t">${esc(t)}</span><span class="w">${esc(w)}</span><span class="s">${esc(s)}</span></div>`).join("")}</div>`;
+// B, round 2 (Parth, 2 Oct: "pick B, but make the scoreboard look cleaner ... why are tennis, internationals and the
+// Warriors under India cricket? ... in the news, Madridismo news was scattered all across the page")
+const TEAMS = [["madrid", "Real Madrid"], ["f1", "Formula 1"], ["cricket", "India cricket"], ["tennis", "Tennis"], ["football", "Internationals"], ["other", "Everything else"]];
+// Stories: the lead across the page, then the news team by team; each team's context is said once, in its head
+function storiesB() {
+  const lead = news[0], groups = TEAMS.map(([k, n]) => [k, n, news.filter(s => s !== lead && s.team === k)]).filter(([, , l]) => l.length);
+  return `${UP()}<div class="sb-lead">${storyHTML(lead, { lead: true })}</div><div class="tgs">${groups.map(([k, n, l]) => `<section class="tg"><div class="tgh"><h3>${n}</h3>${ctx(l[0])}</div>${l.map(s => storyHTML(s, { withCtx: false, art: true })).join("")}</section>`).join("")}</div>`;
+}
+// Scoreboard: one card per team, all of one anatomy: a head (the team and its standing in one line), then the same
+// labelled parts in the same order (next, table or standings, last); anything long is folded
+const row = (a, b, c = "", cls = "") => `<tr class="${cls}"><td>${a}</td><td class="r">${b}</td>${c !== null ? `<td class="r muted">${c}</td>` : ""}</tr>`;
+const part = (label, body) => body ? `<div class="part"><h6>${label}</h6>${body}</div>` : "";
+const card = (name, stat, body, k) => `<article class="card" data-team="${k}"><header><h4>${name}</h4><p>${stat}</p></header>${body}</article>`;
+const CARDB = {
+  madrid: () => M && card("Real Madrid", `<b>${ord(us.rank)}</b> in La Liga · ${us.pts} pts${topR.us ? "" : ` · ${topR.pts - us.pts} behind ${esc(topR.team)}`} · ${formDots(M.form)}`,
+    part("Next", `<table class="t2">${M.next.map(n => row(`${n.home ? "v" : "at"} <b>${esc(n.opp)}</b> <span class="muted">${esc(n.comp === "Champions League" ? "UCL" : "Liga")}</span>`, esc(when(n.at)), esc(n.where || ""))).join("")}</table>`)
+    + part("La Liga", `<table class="t2">${M.table.slice(0, 5).concat(us.rank > 5 ? [us] : []).map(r => row(`<span class="muted n">${r.rank}</span>${esc(r.team)}`, `${r.pts}`, `${r.gd > 0 ? "+" : ""}${r.gd}`, r.us ? "us" : "")).join("")}</table>`)
+    + part("Last", M.last ? `<p class="one"><b>${M.last.res === "W" ? "Won" : M.last.res === "L" ? "Lost" : "Drew"} ${M.last.us}–${M.last.them}</b> ${M.last.home ? "v" : "at"} ${esc(M.last.opp)} <span class="muted">· ${esc(M.last.comp)}</span></p>` : "")
+    + fc(M.market), "madrid"),
+  f1: () => F1 && card("Formula 1", `Verstappen <b>P${F1.max.pos}</b> · ${F1.max.pts} pts · ${F1.max.behind} behind ${esc(F1.max.leader.split(" ").pop())}`,
+    part(`${esc(F1.race.flag)} ${esc(F1.race.name)}`, `<table class="t2">${F1.race.sessions.map(se => { const done = Date.parse(se.at) + 3600e3 < NOW, nx = se === nextSession; return row(`<span class="${done ? "done" : ""}">${nx ? "<b>" : ""}${esc(se.name)}${nx ? "</b>" : ""}</span>`, `<span class="${done ? "done" : ""}">${esc(when(se.at))}</span>`, null); }).join("")}</table>`)
+    + part("Drivers", `<table class="t2">${F1.drivers.slice(0, 5).concat(F1.max.pos > 5 ? F1.drivers.filter(d => d.code === "VER") : []).map(d => row(`<span class="muted n">${d.pos}</span>${sw(d.team)}${esc(d.name)}`, `${d.pts}`, null, d.code === "VER" ? "us" : "")).join("")}</table><details><summary>All drivers and the constructors</summary><table class="t2">${F1.drivers.slice(5).map(d => row(`<span class="muted n">${d.pos}</span>${sw(d.team)}${esc(d.name)}`, `${d.pts}`, null)).join("")}</table><table class="t2" style="margin-top:8px">${F1.constructors.map(c => row(`<span class="muted n">${c.pos}</span>${sw(c.name)}${esc(c.name)}`, `${c.pts}`, null)).join("")}</table></details>`)
+    + part(`Last race · ${esc(F1.last?.flag || "")} ${esc(F1.last?.name || "")}`, F1.last ? `<table class="t2">${F1.last.results.slice(0, 3).map(r => row(`<span class="muted n">${r.pos}</span>${sw(r.team)}${esc(r.name)}`, esc(r.time), null, r.code === "VER" ? "us" : "")).join("")}</table><details><summary>The full result</summary><table class="t2">${F1.last.results.slice(3).map(r => row(`<span class="muted n">${r.pos}</span>${sw(r.team)}${esc(r.name)}`, esc(r.time), null, r.code === "VER" ? "us" : "")).join("")}</table></details>` : "")
+    + fc(F1.market), "f1"),
+  cricket: () => CR && card("India cricket", CR.next ? `Next: <b>v ${esc(CR.next.opp)}</b> · ${esc(CR.next.desc)}` : "",
+    part("Next", CR.next ? `<p class="one"><b>India v ${esc(CR.next.opp)}</b> · ${esc(when(CR.next.at))}<br><span class="muted">${esc(CR.next.series)} · ${esc(CR.next.ground)}</span></p>` : "")
+    + part("Series", `<table class="t2">${(D.creaseRows || []).filter(r => !r.on).map(r => row(`<b>${esc(r.label)}</b>`, "", null) + `<tr><td colspan="2" class="muted sub">${esc(r.text)}</td></tr>`).join("")}</table>`)
+    + (CR.knockouts.length ? part("Asian Games knockouts", `<table class="t2">${CR.knockouts.filter(k => k.india).map(k => row(`<span class="muted">${esc(k.stage.replace("Quarter-Final", "QF").replace("Semi-Final", "SF"))}</span> ${esc(k.teams.join(" v "))}`, esc(k.status || ""), null)).join("")}</table><details><summary>All ${CR.knockouts.length} knockouts</summary><table class="t2">${CR.knockouts.filter(k => !k.india).map(k => row(`<span class="muted">${esc(k.stage.replace("Quarter-Final", "QF").replace("Semi-Final", "SF"))}</span> ${esc(k.teams.join(" v "))}`, esc(k.status || ""), null)).join("")}</table></details>`) : "")
+    + fc(CR.market), "cricket"),
+  tennis: () => card("Tennis", "Alcaraz and Djokovic",
+    D.tennis.map(p => part(esc(p.name), `<p class="one">${p.next ? `<b>v ${esc(p.next.opp)}</b> · ${esc(p.next.round)} · ${esc(when(p.next.at))}<br><span class="muted">${esc(p.next.event.replace("Kinoshita Group Japan Open Tennis Championships", "Japan Open"))}${p.next.court ? ` · ${esc(p.next.court)}` : ""}</span>` : ""}${p.last ? `<br><span class="muted">Last: ${p.last.won ? "beat" : "lost to"} ${esc(p.last.opp)}, ${esc(p.last.round)}</span>` : ""}</p>`)).join("") + fc(D.tennisMarket), "tennis"),
+  football: () => D.intl.length && card("Internationals", "Portugal, Brazil, Spain, England",
+    part("Results", `<table class="t2">${D.intl.filter(m => m.state === "post").map(m => row(`${esc(m.home)} <b>${esc(m.score.replace("-", "–"))}</b> ${esc(m.away)}`, esc(dname(m.at)), null)).join("")}</table>`)
+    + part("Next", `<table class="t2">${D.intl.filter(m => m.state === "pre").slice(0, 5).map(m => row(`${esc(m.home)} v ${esc(m.away)}`, esc(when(m.at)), null)).join("")}</table>`), "football"),
+  nba: () => D.nba && card("Golden State Warriors", D.nba.preseason ? "Preseason" : "",
+    part("Next", `<table class="t2">${D.nba.next.map(g => row(`${g.home ? "v" : "at"} <b>${esc(g.opp)}</b>`, esc(when(g.at)), null)).join("")}</table>`), "nba"),
+};
 const B = {
   name: "B · Stories and Scoreboard",
-  why: `<b>Two views of one desk, your call each time.</b> <i>Stories</i> is the news alone, set like a newspaper page, with a strip of what is next for each team across the top and the same context bar on every story, so a Madrid story never reads blind. <i>Scoreboard</i> is the data alone, as an almanac: every team in one panel of the same shape (next, last, table, results), all on one screen on a laptop. Page One's "Sport this week" opens the Scoreboard; a story's context bar links to its team's panel.`,
+  why: `<b>Two views of one desk, your call each time.</b> <i>Stories</i> is the news alone: the day's lead across the page, then the news team by team (all of Madrid's together), each team's standing and next match said once in its head. <i>Scoreboard</i> is the data alone: one card per team, every card the same shape (the team and its standing, then next, the table or standings, last), the long tables folded inside their own card. Page One's "Sport this week" opens the Scoreboard.`,
   tab: "stories",
   html() { return chrome(`<div class="deskhd"><h2>Sport</h2><span class="sub">${counts}</span></div><div class="subtabs" role="tablist"><button role="tab" data-tab="stories" aria-selected="${this.tab === "stories"}">Stories</button><button role="tab" data-tab="board" aria-selected="${this.tab === "board"}">Scoreboard</button><span class="hint">${this.tab === "stories" ? "The news. Scores, tables and fixtures are on the Scoreboard." : "The data. The news is under Stories."}</span></div>
-${this.tab === "stories" ? `${UP()}<div class="cb-stories"><div class="colA">${storyHTML(news[0], { lead: true })}</div><div>${news.slice(1).filter((_, i) => i % 2 === 0).map(s => storyHTML(s, { art: true })).join("")}</div><div>${news.slice(1).filter((_, i) => i % 2 === 1).map(s => storyHTML(s, { art: true })).join("")}</div></div>`
-  : `${week({ max: 12 })}<div class="board">${FULL.madrid()}${FULL.f1()}${FULL.cricket()}${FULL.tennis()}${FULL.football()}${FULL.nba() || ""}</div>`}`); },
+${this.tab === "stories" ? storiesB() : `${week({ max: 12 })}<div class="cards">${["madrid", "f1", "cricket", "tennis", "football", "nba"].map(k => CARDB[k]()).filter(Boolean).join("")}</div>`}`); },
 };
 
 // ---------------------------------------------------------------- C · Team rooms: each team its own room, news inside
@@ -155,7 +191,7 @@ ${st.length ? `<div class="rb"><div>${st.map(s => storyHTML(s, { withCtx: false 
 
 // ---------------------------------------------------------------- the stage: concept, screen, theme, and the numbers
 const CONCEPTS = { A, B, C };
-let cur = location.hash.match(/[ABC]/)?.[0] || "A", dev = /phone/.test(location.hash) ? "phone" : "laptop";
+let cur = location.hash.match(/[ABC]/)?.[0] || "B", dev = /phone/.test(location.hash) ? "phone" : "laptop";
 function render() {
   const c = CONCEPTS[cur], st = document.getElementById("stage");
   st.innerHTML = `<div class="wrap"><div class="frame ${dev}">${c.html()}<div class="drawer" id="drawer"><button class="x" aria-label="Close">×</button><div class="dc"></div></div></div></div>`;

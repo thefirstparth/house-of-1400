@@ -181,3 +181,35 @@ main#stage{max-width:1480px;margin:0 auto;padding:16px}
 @container (max-width:600px){.room .rb{grid-template-columns:1fr}.tiles{width:100%;overflow-x:auto}.tile{min-width:120px}.room .rh h3{font-size:28px}}
 
 .f1{font-family:"Titillium Web",var(--sans)}
+/* B round 2: Stories by team; the Scoreboard as a grid of same-shape cards */
+.sb-lead{padding-top:6px}
+.tgs{columns:2 420px;column-gap:44px;margin-top:6px;padding-bottom:24px}
+.tg{break-inside:avoid;margin:0 0 18px}
+.tgh{border-top:3px solid var(--d);padding-top:8px}
+.tgh h3{margin:0;font:600 26px/1.1 var(--hl);color:var(--d)}
+.tgh .ctx{border-top:0;margin-top:4px}
+.tg .story:first-of-type{border-top:0}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;padding:14px 0 30px;align-items:stretch}
+.card{border:1px solid var(--rule);border-top:3px solid var(--d);border-radius:4px;background:var(--sheet);padding:12px 16px 14px;min-width:0}
+.card header{border-bottom:1px solid var(--rule);padding-bottom:8px;margin-bottom:4px}
+.card h4{margin:0;font:600 24px/1.1 var(--hl);color:var(--d)}
+.card header p{margin:3px 0 0;font:500 13px var(--sans);color:var(--ink2)}
+.card .part{padding:8px 0 2px}
+.card .part + .part{border-top:1px solid var(--rule2)}
+.card h6{margin:0 0 4px;font:700 10.5px var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.card .one{margin:0;font:500 13.5px/1.45 var(--sans)}
+.t2{width:100%;border-collapse:collapse;font:500 13.5px/1.35 var(--sans)}
+.t2 td{padding:3px 0;vertical-align:baseline}
+.t2 td.r{text-align:right;white-space:nowrap;padding-left:10px;font-variant-numeric:tabular-nums}
+.t2 td.sub{padding:0 0 5px;font-size:12.5px}
+.t2 .n{display:inline-block;width:20px}
+.t2 tr.us td{font-weight:700}
+.t2 tr.us td:first-child{box-shadow:inset 3px 0 0 var(--d);padding-left:6px}
+.t2 .done{color:var(--muted)}
+.card details{margin-top:4px}
+.card summary{cursor:pointer;font:600 12.5px var(--sans);color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;list-style:none}
+.card summary::-webkit-details-marker{display:none}
+.card .fc{margin-top:10px}
+@container (max-width:1100px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@container (max-width:600px){.cards{grid-template-columns:1fr}.tgs{columns:1}}
+

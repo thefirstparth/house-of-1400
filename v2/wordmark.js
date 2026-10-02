@@ -173,7 +173,7 @@ async function textDots(text, size, W, H, g) {
 // At rest the figure is still and crisp. Every 7 seconds one swell sweeps across it; the pointer parts the dots while
 // it moves; a tap or click re-forms the dots into the next shape of the cycle, and the figure comes back to 1400 by
 // itself after a few seconds. It stops drawing whenever nothing moves, off screen, or in a hidden tab.
-export async function mountWordmark(el, { size, shares = [], cycle = () => ["1400"], homeAfter = 6, weather = null, press = false }) {
+export async function mountWordmark(el, { size, shares = [], cycle = () => ["1400"], homeAfter = 6, weather = null, press = false, onShape = null }) {
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const { W, H, g } = await screenFor(size), R = g * 0.6;
   const PX = Math.round(W * 0.2), PY = Math.round(H * 0.3), CW = W + 2 * PX, CH = H + 2 * PY;
@@ -205,7 +205,17 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
   // the tapped words (the temperature, the sky, the time, a name) are printed on a finer screen than 1400, with dots to
   // match, so their thinner strokes stay readable; 1400 keeps its own screen
   let RS = R, shapeText = "1400"; const gOf = text => (text === "1400" ? g : g * 0.72);
-  place(await textDots("1400", size, W, H, g));
+  // the ink's box of each shape (in the figure's own pixels), for the page to set "The HOUSE OF" beside it
+  // vertically, the word's body: rows holding a fair share of its ink, so a descender's thin tail (the y of "Sunny")
+  // does not pull the centre line down, as a typesetter centres on the letters, not their tails
+  const inkOf = (homes, gg = g) => {
+    let x0 = 1e9, x1 = -1e9; const rows = new Map(), step = gg * Math.SQRT1_2; // the screen's rows are this far apart
+    for (const d of homes) if (d.base > 0.35) { if (d.x < x0) x0 = d.x; if (d.x > x1) x1 = d.x; const r = Math.round(d.y / step); rows.set(r, (rows.get(r) || 0) + 1); }
+    const most = Math.max(...rows.values()), body = [...rows].filter(([, n]) => n >= most * 0.18).map(([r]) => r * step);
+    return { x0, x1, y0: Math.min(...body), y1: Math.max(...body) };
+  };
+  const first = await textDots("1400", size, W, H, g);
+  place(first); onShape?.(inkOf(first), "1400");
   const dust = [...Array(reduced ? 0 : Math.round(CW * CH / 1500))].map(() => ({ x: Math.random() * CW, y: Math.random() * CH, r: 0.45 + Math.random() * 0.85, a: Math.random() < 0.3, vx: 0, vy: 0 }));
   let pointer = null, quietTill = 0, lastMove = 0, morphAt = -1e9, swellAt = -1e9, energy = 0, raf = 0, alive = true, shown = true, last = 0, swellT = 0, homeT = 0, idx = 0;
   const at = e => { const r = c.getBoundingClientRect(), z = r.width / CW || 1; return [(e.clientX - r.left) / z - PX, (e.clientY - r.top) / z - PY]; };
@@ -320,7 +330,7 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
   const wake = () => { if (!reduced && !raf && alive && shown && !document.hidden) raf = requestAnimationFrame(frame); };
   // one swell every 7 seconds, while the figure is on screen
   const swellLoop = () => { clearTimeout(swellT); if (!alive) return; if (shown && !document.hidden && !reduced) { swellAt = performance.now() / 1000; wake(); } swellT = setTimeout(swellLoop, 7000); };
-  const reform = async text => { const gs = gOf(text), homes = await textDots(text, size, W, H, gs); RS = gs * 0.6; shapeText = text; place(homes, parts); morphAt = performance.now(); el.setAttribute("aria-label", text); if (reduced) draw(performance.now()); else wake(); };
+  const reform = async text => { const gs = gOf(text), homes = await textDots(text, size, W, H, gs); RS = gs * 0.6; shapeText = text; place(homes, parts); onShape?.(inkOf(homes, gs), text); morphAt = performance.now(); el.setAttribute("aria-label", text); if (reduced) draw(performance.now()); else wake(); };
   const onMove = e => { if (e.pointerType === "mouse") { pointer = at(e); lastMove = performance.now(); wake(); } };
   const onLeave = () => { pointer = null; };
   const onDown = () => {
