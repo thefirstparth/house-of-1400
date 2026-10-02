@@ -637,3 +637,6 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 2 Oct 2026: Page One's header stays as it is (Parth: "nah, let it be empty")
 - Offered ears beside the nameplate (weather and markets; or the edition's details and a legend of the day's desk colours) and a colour legend under 1400. Parth chose to keep the header as it is: the run line, the nameplate alone in the middle, the tabs.
+
+## 2 Oct 2026: Sport this week runs in time order and carries every followed side's next match (Parth: "should be in ascending order; India v West Indies is missing")
+- Page One's Sport this week took one cricket match (India's next) and listed sports in a fixed order. It now takes the next match of each thing followed (each India cricket series in the live schedule, so the Asian Games side and the West Indies series both appear, Real Madrid, the F1 race, each followed player) within seven days, Madrid's within fourteen, then more by time, up to six rows, in time order. Page-only (v2/layer.js); the daily run is unchanged.

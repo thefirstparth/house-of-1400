@@ -148,21 +148,39 @@ function eveningHTML() {
   return `<a class="pick" href="${deskHref("off")}" data-desk="off" data-to="screen" style="--c:var(--d-off)"><span class="v">Must watch</span><b>${esc(s.title)}</b><p>${esc([s.where, s.release].filter(Boolean).join(" · "))}. ${esc(String(s.reason || "").split(". ")[0])}.</p></a>`;
 }
 const when1 = iso => { const n = Math.round((Date.parse(istDate(new Date(iso))) - Date.parse(istDate())) / 864e5); return `${n === 0 ? "today" : n === 1 ? "tomorrow" : istDay(iso)}, ${istTime(iso)}`; };
+// Sport this week (Parth, 2 Oct: "should be in ascending order; India v West Indies is missing"): the next match of
+// everything he follows, in time order, a match under way first. "Everything" is each India cricket series in the
+// live schedule (the Asian Games side and the West Indies series both count), Real Madrid, the F1 race and each
+// followed player: the next match of each within seven days, then Madrid's if within fourteen, then more matches by
+// time while rows remain. A match more than three hours past that is not in play is left out.
 function sportHTML(max = 5) {
-  const rows = [], C = LIVE.crease?.value, F = LIVE.football?.value, T = LIVE.tennis_players?.value?.players || [], f1 = LIVE.f1_next?.value?.race, n = Date.now();
-  const on = w => (w ? ` · ${esc(w)}` : "");
-  const cz = C?.today?.state === "live" ? C.today : C?.next;
-  if (cz) rows.push(["Cricket", `India v ${cz.opponent} · ${cz.desc}`, cz.state === "live" ? `<span class="live">In play</span>${cz.score ? ` ${esc(cz.score)}` : ""}` : `${when1(cz.start)}${on(watchOn({ entity: "cricket", label: `India v ${cz.opponent}`, when_utc: cz.start }))}`]);
-  const m = F?.next?.[0];
-  if (m && Date.parse(m.date) - n < 14 * 864e5) rows.push(["Madrid", `${m.home ? "v" : "at"} ${m.opponent}`, `${esc(m.competition)} · ${m.time_confirmed ? when1(m.date) : istDay(m.date)}${on(watchOn({ competition: m.competition, label: m.name }))}`]);
-  const race = f1?.sessions?.at(-1);
-  if (race && Date.parse(race.start) + race.minutes * 6e4 > n) rows.push(["F1", `${f1.name.replace(/ in [A-Z][a-z]+$/, "")}${f1.locality ? `, ${f1.locality}` : ""}`, `Race ${when1(race.start)}${on(watchOn({ entity: "f1" }))}`]);
-  for (const p of T) {
-    const nx = p.next, nm = lastName(p.name);
-    if (!nx?.when_utc) continue;
-    rows.push(["Tennis", `${nm} v ${nx.opponent || "TBC"}`, `${nx.live ? `<span class="live">On court</span>` : when1(nx.when_utc)}${on(watchOn({ entity: "tennis", label: `${nm} v ${nx.opponent}`, event: nx.event }))}`]);
+  const C = LIVE.crease?.value, F = LIVE.football?.value, T = LIVE.tennis_players?.value?.players || [], f1 = LIVE.f1_next?.value?.race, n = Date.now();
+  const on = w => (w ? ` · ${esc(w)}` : ""), live = t => `<span class="live">${t}</span>`, all = [];
+  // India's cricket: today's, the next, and every match in the series under way and the others in the schedule
+  const series = [C?.main, ...(Array.isArray(C?.also) ? C.also : [C?.also])].filter(Boolean);
+  const seen = new Set();
+  for (const m of [C?.today, C?.next, ...series.flatMap(x => (x.formats || []).flatMap(f => f.matches || []))]) {
+    if (!m?.start || seen.has(m.id ?? m.start)) continue; seen.add(m.id ?? m.start);
+    const t = Date.parse(m.start); if (m.state === "done" || (m.state !== "live" && t < n - 6 * 36e5)) continue;
+    all.push({ sport: "Cricket", key: `cz:${m.series_id ?? m.series ?? series.find(x => (x.formats || []).some(f => (f.matches || []).includes(m)))?.label ?? "india"}`, t, title: `India v ${m.opponent} · ${m.desc}`, sub: m.state === "live" ? `${live("In play")}${m.score ? ` ${esc(m.score)}` : ""}` : `${m.time_announced === false ? `${istDay(m.start)}, time TBC` : when1(m.start)}${on(watchOn({ entity: "cricket", label: `India v ${m.opponent}`, when_utc: m.start }))}`, live: m.state === "live" });
   }
-  return rows.length ? `<ul class="rows">${rows.slice(0, max).map(([l, t, s]) => `<li><span class="lab">${l}</span><span><b>${esc(t)}</b>${s}</span></li>`).join("")}</ul>` : "";
+  for (const m of F?.next || []) {
+    const t = Date.parse(m.date); if (!Number.isFinite(t) || t < n - 3 * 36e5) continue;
+    all.push({ sport: "Madrid", key: "madrid", t, title: `${m.home ? "v" : "at"} ${m.opponent}`, sub: `${esc(m.competition)} · ${m.time_confirmed ? when1(m.date) : istDay(m.date)}${on(watchOn({ competition: m.competition, label: m.name }))}` });
+  }
+  const race = f1?.sessions?.at(-1);
+  if (race && Date.parse(race.start) + race.minutes * 6e4 > n) all.push({ sport: "F1", key: "f1", t: Date.parse(race.start), title: `${f1.name.replace(/ in [A-Z][a-z]+$/, "")}${f1.locality ? `, ${f1.locality}` : ""}`, sub: `Race ${when1(race.start)}${on(watchOn({ entity: "f1" }))}` });
+  for (const p of T) {
+    const nx = p.next, nm = lastName(p.name); if (!nx?.when_utc || (!nx.live && Date.parse(nx.when_utc) < n - 3 * 36e5)) continue;
+    all.push({ sport: "Tennis", key: `tn:${p.name}`, t: Date.parse(nx.when_utc), title: `${nm} v ${nx.opponent || "TBC"}`, sub: `${nx.live ? live("On court") : when1(nx.when_utc)}${on(watchOn({ entity: "tennis", label: `${nm} v ${nx.opponent}`, event: nx.event }))}`, live: !!nx.live });
+  }
+  all.sort((a, b) => a.t - b.t);
+  const pick = new Set(), keys = new Set(), within = d => x => x.t - n < d * 864e5;
+  for (const x of all.filter(within(7))) if (!keys.has(x.key) && pick.size < max) { keys.add(x.key); pick.add(x); }
+  const madrid = all.find(x => x.key === "madrid" && within(14)(x)); if (madrid && !keys.has("madrid") && pick.size < max) pick.add(madrid);
+  for (const x of all.filter(within(7))) { if (pick.size >= max) break; pick.add(x); }
+  const rows = all.filter(x => pick.has(x));
+  return rows.length ? `<ul class="rows">${rows.map(x => `<li><span class="lab">${x.sport}</span><span><b>${esc(x.title)}</b>${x.sub}</span></li>`).join("")}</ul>` : "";
 }
 // Weather (Parth, 2 Oct: "too cluttered; present it better without removing any of the data"): three calm parts.
 // The temperature with the outlook and the day's range; the sun's arc, flatter, holding the time left until sunset
@@ -293,7 +311,7 @@ function sinceHTML() {
 const blk = (id, desk, title, link, to, body) => (body ? `<section class="blk" id="p1-${id}" style="--c:var(--d-${desk})"><div class="bh"><h2>${title}</h2><a href="${deskHref(desk)}" data-desk="${desk}" data-to="${to}">${link} →</a></div><div data-p1="${id}">${body}</div></section>` : "");
 function pageOne() {
   return `<div class="p1"><div data-p1="since">${sinceHTML()}</div><div class="p1body"><section class="news" id="p1-minute"><div class="bh" style="--c:var(--d-one)"><h2>The day in a minute</h2><a href="${deskHref("news")}" data-desk="news">All the news →</a></div><div data-p1="minute">${minuteHTML(p1lines)}</div><div class="eve" data-p1="evening">${eveningHTML()}</div></section>
-<div class="stack">${blk("weather", "home", "Weather", "Sky &amp; Streets", "sky", weatherHTML())}${blk("sport", "sport", "Sport this week", "Sport", "fixtures", sportHTML(4))}</div>
+<div class="stack">${blk("weather", "home", "Weather", "Sky &amp; Streets", "sky", weatherHTML())}${blk("sport", "sport", "Sport this week", "Sport", "fixtures", sportHTML(6))}</div>
 <div class="stack">${blk("money", "money", "Money", "The Ledger", "ledger", moneyHTML())}${blk("bets", "news", "The market expects", "Betting Window", "betting", betsHTML(3))}</div></div></div>`;
 }
 function oneFoot() {
@@ -302,7 +320,7 @@ function oneFoot() {
 }
 // Live figures repaint the blocks in place (the edition's own lines never change)
 function paintOne() {
-  const parts = { since: sinceHTML, minute: () => minuteHTML(p1lines), evening: eveningHTML, weather: weatherHTML, sport: () => sportHTML(4), money: moneyHTML, bets: () => betsHTML(3) };
+  const parts = { since: sinceHTML, minute: () => minuteHTML(p1lines), evening: eveningHTML, weather: weatherHTML, sport: () => sportHTML(6), money: moneyHTML, bets: () => betsHTML(3) };
   for (const [k, fn] of Object.entries(parts)) { const el = document.querySelector(`[data-p1="${k}"]`); if (!el) continue; const h = fn(); if (el.dataset.html !== h) { el.innerHTML = h; el.dataset.html = h; } }
 }
 // The page fills the screen's width on every laptop and monitor, whatever its shape (Parth, 2 Oct: "too much white
@@ -480,7 +498,7 @@ function liveFx() {
 function drawIn(el) {
   const ease = "cubic-bezier(.2,0,0,1)";
   if (el.dataset.draw === "line") {
-    const L = el.getTotalLength?.(); if (!L) return;
+    let L = 0; try { L = el.getTotalLength?.() || 0; } catch { return; } if (!L) return;
     el.style.strokeDasharray = L;
     el.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 300, easing: ease }).onfinish = () => { el.style.strokeDasharray = ""; };
   } else {
