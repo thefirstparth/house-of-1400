@@ -723,7 +723,16 @@
       {
         "name": "Bengaluru",
         "lat": 12.97,
-        "lon": 77.59
+        "lon": 77.59,
+        "stations": {
+          "imd": [
+            "43295",
+            "43296"
+          ],
+          "metar": [
+            "VOBG"
+          ]
+        }
       }
     ],
     "use_reader_location": true,
@@ -745,15 +754,29 @@
       {
         "name": "Ranchi",
         "lat": 23.34,
-        "lon": 85.31
+        "lon": 85.31,
+        "stations": {
+          "imd": [
+            "42701"
+          ],
+          "metar": [
+            "VERC"
+          ]
+        }
       },
       {
         "name": "Prayagraj",
         "lat": 25.44,
-        "lon": 81.85
+        "lon": 81.85,
+        "stations": {
+          "imd": [
+            "42474"
+          ]
+        }
       }
     ],
-    "family_note": "Shown every day: where the reader's parents live. Temperature, humidity, air and the week ahead."
+    "family_note": "Shown every day: where the reader's parents live. Temperature, humidity, air and the week ahead.",
+    "stations_note": "The temperature now is measured when a station near the city reported in the last 75 minutes (lib/live.js pickMeasured): IMD city stations by WMO number (43295 Bengaluru-City, 3-hourly; 43296 Bengaluru-HAL; 42701 Ranchi; 42474 Prayagraj, about 15 km south) and airport METARs (VOBG HAL, 8 km from the centre; VERC Ranchi). Prayagraj's airport (VEAB) stopped reporting in March 2026."
   },
   "trends": {
     "india_geo": "IN",

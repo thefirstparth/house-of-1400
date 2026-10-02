@@ -600,3 +600,5 @@ html.vs-open{overflow:hidden}
 /* the time now, at the head of the run line's right side: plain and readable (Parth, 3 Oct) */
 #r-now{color:var(--ink2);white-space:nowrap}
 @media (max-width:480px){.drun{flex-wrap:wrap;row-gap:2px}.drun>span:first-child{overflow:visible}.drun .drr{margin-left:auto}}
+/* the time of a measured reading beside the place (3 Oct): plain, small */
+.p1 .wx3 .wxplace .ms{margin-left:8px;font:500 11px var(--sans);letter-spacing:0;text-transform:none;color:var(--muted)}
