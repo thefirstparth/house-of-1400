@@ -393,8 +393,12 @@ html.vs-open{overflow:hidden}
 .vs-x{position:absolute;top:10px;right:12px;width:40px;height:40px;font:400 28px/1 var(--sans);background:none;border:0;color:var(--muted);cursor:pointer}
 .vs-x:hover{color:var(--ink)}
 .vs-h{margin:0 0 18px;font:600 30px/1.1 var(--hl);font-variation-settings:"opsz" 48}
-.vs-share{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;align-items:start}
-.vs-prev img{display:block;width:100%;max-height:68vh;object-fit:contain;object-position:top;border:1px solid var(--rule);border-radius:4px;background:var(--paper)}
+/* the share sheet hugs its card (Parth, 2 Oct: "so much white space?"): the card keeps its own shape at the screen's
+   height, its frame fits it, the actions sit beside it, and the sheet is as wide as the two together */
+.vs-panel:has(.vs-share){width:max-content;max-width:calc(100vw - 48px)}
+.vs-share{display:grid;grid-template-columns:auto minmax(260px,340px);gap:32px;align-items:start}
+.vs-prev{min-width:300px}
+.vs-prev img{display:block;width:auto;height:auto;max-width:min(560px,calc(100vw - 480px));max-height:calc(min(88vh,920px) - 140px);border:1px solid var(--rule);border-radius:4px;background:var(--paper)}
 .vs-wait{font:italic 15px var(--serif);color:var(--muted);padding:40px 0}
 .vs-acts{display:grid;gap:10px}
 .vs-acts h3{margin:14px 0 0;font:700 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
@@ -423,8 +427,10 @@ html.vs-open{overflow:hidden}
  .vs-panel{left:0;right:0;top:auto;bottom:0;width:auto;max-height:90vh;transform:translateY(100%);opacity:1;border-radius:12px 12px 0 0;border:0;border-top:3px solid var(--ink);padding:18px 16px calc(20px + env(safe-area-inset-bottom,0px))}
  .vs-panel::before{content:"";display:block;width:40px;height:4px;border-radius:2px;background:var(--rule);margin:-8px auto 12px}
  .vsheet.in .vs-panel{transform:translateY(0)}
+ .vs-panel:has(.vs-share){width:auto;max-width:none}
  .vs-share{grid-template-columns:1fr;gap:16px}
- .vs-prev img{max-height:46vh}
+ .vs-prev{min-width:0}
+ .vs-prev img{max-width:100%;max-height:46vh;margin:0 auto}
  .vs-h{font-size:26px}
 }
 @media (prefers-reduced-motion:reduce){.vs-back,.vs-panel{transition:none}}
