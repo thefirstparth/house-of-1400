@@ -310,9 +310,9 @@ function sinceHTML() {
 
 const blk = (id, desk, title, link, to, body) => (body ? `<section class="blk" id="p1-${id}" style="--c:var(--d-${desk})"><div class="bh"><h2>${title}</h2><a href="${deskHref(desk)}" data-desk="${desk}" data-to="${to}">${link} →</a></div><div data-p1="${id}">${body}</div></section>` : "");
 function pageOne() {
-  return `<div class="p1"><div data-p1="since">${sinceHTML()}</div><div class="p1body"><section class="news" id="p1-minute"><div class="bh" style="--c:var(--d-one)"><h2>The day in a minute</h2><a href="${deskHref("news")}" data-desk="news">All the news →</a></div><div data-p1="minute">${minuteHTML(p1lines)}</div><div class="eve" data-p1="evening">${eveningHTML()}</div></section>
-<div class="stack">${blk("weather", "home", "Weather", "Sky &amp; Streets", "sky", weatherHTML())}${blk("sport", "sport", "Sport this week", "Sport", "fixtures", sportHTML(6))}</div>
-<div class="stack">${blk("money", "money", "Money", "The Ledger", "ledger", moneyHTML())}${blk("bets", "news", "The market expects", "Betting Window", "betting", betsHTML(3))}</div></div></div>`;
+  return `<div class="p1"><div data-p1="since">${sinceHTML()}</div><div class="p1body"><div class="stack c1"><section class="news" id="p1-minute"><div class="bh" style="--c:var(--d-one)"><h2>The day in a minute</h2><a href="${deskHref("news")}" data-desk="news">All the news →</a></div><div data-p1="minute">${minuteHTML(p1lines)}</div></section><div class="eve" id="p1-eve" data-p1="evening">${eveningHTML()}</div></div>
+<div class="stack c2">${blk("weather", "home", "Weather", "Sky &amp; Streets", "sky", weatherHTML())}${blk("sport", "sport", "Sport this week", "Sport", "fixtures", sportHTML(6))}</div>
+<div class="stack c3">${blk("money", "money", "Money", "The Ledger", "ledger", moneyHTML())}${blk("bets", "news", "The market expects", "Betting Window", "betting", betsHTML(3))}</div></div></div>`;
 }
 function oneFoot() {
   const nx = NEWDESKS[1] || NEWDESKS[0];
@@ -341,21 +341,72 @@ function fitDesk() {
   const z = Math.max(1, Math.min(W / 1440, H / 760, 1.8));
   setZoom(z, Math.min(W / z, 1920));
 }
+// Page One's blocks find their column (Parth, 2 Oct, on a MacBook Air: "so much white space, and what happened to
+// the font size?"). The page scales until its tallest column fits the screen, so one tall column (Weather with
+// Sport this week) shrank everything and left the others half empty. On a laptop or monitor the day in a minute
+// keeps the first column; the other blocks (Weather, Sport this week, Money, The market expects, and the evening pick,
+// which goes last in whichever column it joins) may sit in any column, in that order within it. The news column is
+// tried at three widths, its lines in one column or two, and the layout with the shortest tallest column wins (the
+// usual one unless another is clearly shorter). Each block is measured once in each column, so every arrangement is
+// worked out, not laid out. Phones and narrow windows keep the usual order.
+const P1BLOCKS = ["weather", "sport", "money", "bets", "eve"], P1HOME = [1, 1, 2, 2, 0], P1WIDE = [1.5, 1.25, 1];
+function balanceOne() {
+  const body = document.querySelector(".p1body"), news = document.getElementById("p1-minute"), cols = [...document.querySelectorAll(".p1body > .stack")];
+  if (!body || !news || cols.length !== 3) return;
+  const blocks = P1BLOCKS.map(id => document.getElementById(`p1-${id}`));
+  const layout = (a, r, one) => {
+    body.style.gridTemplateColumns = r ? `minmax(0,${r}fr) minmax(0,1fr) minmax(0,1fr)` : "";
+    news.classList.toggle("onecol", !!one);
+    blocks.forEach((b, i) => b && cols[a[i]].append(b));
+  };
+  layout(P1HOME);
+  if (innerWidth <= 1100) return;
+  const gap = parseFloat(getComputedStyle(cols[0]).rowGap) || 0, hOf = el => (el && el.childElementCount ? el.getBoundingClientRect().height : 0);
+  const stackH = hs => { const on = hs.filter(h => h > 0); return on.reduce((x, h) => x + h, 0) + gap * Math.max(0, on.length - 1); };
+  const options = [];
+  for (const r of P1WIDE) {
+    // each block's height in each column at this width (a block's height depends only on its column's width)
+    const H = [0, 1, 2].map(c => { layout(blocks.map(() => c), r); return blocks.map(hOf); });
+    for (const one of [false, true]) {
+      layout(P1HOME, r, one); const minute = hOf(news);
+      for (let code = 0; code < 3 ** blocks.length; code++) {
+        const a = blocks.map((_, i) => Math.floor(code / 3 ** i) % 3);
+        const tall = Math.max(...[0, 1, 2].map(c => stackH([c === 0 ? minute : 0, ...blocks.map((_, i) => (a[i] === c ? H[c][i] : 0))])));
+        options.push({ tall, a, r, one, home: r === 1.5 && !one && a.every((x, i) => x === P1HOME[i]) });
+      }
+    }
+  }
+  const home = options.find(o => o.home), best = options.reduce((x, o) => (o.tall < x.tall ? o : x), home);
+  const pick = best.tall < home.tall * 0.97 ? best : home;
+  layout(pick.a, pick.home ? 0 : pick.r, pick.one);
+}
 // Page One: one screen. Every one of the editor's lines prints; the page takes the full width and scales (0.62 to
 // 2.2) until it fills the height. Only on a screen too short even then does it drop lines, never below five.
+// The type is not made smaller than its own size just to bring the House Note and the foot onto the screen (Parth, 2
+// Oct, on a MacBook Air: "what happened to the font size?"): on a shorter laptop the page scales as far towards 1 as
+// keeps all three columns on the screen, and the House Note and the foot sit a short scroll below.
 function fitOne() {
   setZoom(1, 0);
   if (DESK.id !== "one" || !document.querySelector(".p1end")) return;
-  const end = () => document.querySelector(".p1end")?.getBoundingClientRect().bottom ?? 0;
+  const bottom = s => document.querySelector(s)?.getBoundingClientRect().bottom ?? 0;
   if (p1lines !== P1MAX) { p1lines = P1MAX; paintOne(); }
-  const W = innerWidth; if (W < 1000) return;
-  const at = z => { setZoom(z, Math.min(W / z, 2600)); return end() <= innerHeight; };
+  const W = innerWidth;
+  balanceOne();
+  if (W < 1000) return;
+  setZoom(1, W); balanceOne(); // arrange at the screen's own width, then scale
+  const at = (z, s = ".p1end") => { setZoom(z, Math.min(W / z, 2600)); return bottom(s) <= innerHeight; };
   const LO = 0.62;
   while (!at(LO) && p1lines > P1MIN) { p1lines--; paintOne(); }
-  let lo = LO, hi = Math.max(LO, Math.min(W / 1100, 2.2));
-  if (at(hi)) lo = hi;
-  else for (let k = 0; k < 14; k++) { const z = (lo + hi) / 2; if (at(z)) lo = z; else hi = z; }
-  at(lo);
+  const search = (s, top) => {
+    let lo = LO, hi = Math.max(LO, top);
+    if (at(hi, s)) return hi;
+    for (let k = 0; k < 14; k++) { const z = (lo + hi) / 2; if (at(z, s)) lo = z; else hi = z; }
+    return lo;
+  };
+  // and never below 0.85, whatever the window: a window too short for even that scrolls
+  const scale = () => Math.max(0.85, search(".p1end", Math.min(W / 1100, 2.2)), search(".p1body", Math.min(1, W / 1100)));
+  // the page's width changes with its scale, so arrange again at the scale found, then scale once more
+  at(scale()); balanceOne(); at(scale());
 }
 let unmountMark = () => {};
 // The day in dots: each desk's share of today's paper, in words, in the tabs' order (storiesFromEdition)

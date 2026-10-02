@@ -640,3 +640,10 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 2 Oct 2026: Sport this week runs in time order and carries every followed side's next match (Parth: "should be in ascending order; India v West Indies is missing")
 - Page One's Sport this week took one cricket match (India's next) and listed sports in a fixed order. It now takes the next match of each thing followed (each India cricket series in the live schedule, so the Asian Games side and the West Indies series both appear, Real Madrid, the F1 race, each followed player) within seven days, Madrid's within fourteen, then more by time, up to six rows, in time order. Page-only (v2/layer.js); the daily run is unchanged.
+
+## 2 Oct 2026: Page One arranges its blocks to the screen, and keeps its type size on a laptop (Parth, on a MacBook Air: "why is there so much white space, and what happened to the font size?")
+- Page One scaled until its tallest column fitted the screen. Weather with Sport this week made the middle column tallest, so on a MacBook Air's window (1470x830) the page shrank to 0.81 and the other two columns ended half way down.
+- The blocks now find their columns on every laptop and monitor. The day in a minute keeps the first column. Weather, Sport this week, Money, The market expects and the evening pick (last in its column, as the 1 Oct spec said) can each go in any column, in that order within it. The news column is tried at three widths, and its lines in one column or two. The page then scales. Phones and windows up to 1100px keep the usual order.
+- Supersedes part of 1 Oct's "Page One fills one screen": on a laptop the type is not made smaller than its own size just to bring the House Note and the foot onto the screen. The three columns stay on the screen, and the House Note and foot may sit a short scroll below. Larger screens still fit everything and scale up to 2.2. Nothing prints below 0.85.
+- Page-only (v2/layer.js, v2/v2.css); v1 and the daily run are unchanged.
+
