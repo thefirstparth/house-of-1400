@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-02",
+  "made_by": "Codex",
+  "items": [
+    {
+      "story_id": "asiad-india-two-finals",
+      "file": "asiad-india-two-finals.webp",
+      "alt": "An Indian boxer raises an Asian Games gold medal and birthday cake while an Indian hockey player scores in the background."
+    },
+    {
+      "story_id": "uefa-negreira-investigation",
+      "file": "uefa-negreira-investigation.webp",
+      "alt": "A Real Madrid player pushes a towering dossier into a football governing body's offices while investigators examine documents inside."
+    },
+    {
+      "story_id": "ronaldo-leaves-portugal-camp",
+      "file": "ronaldo-leaves-portugal-camp.webp",
+      "alt": "A Portugal captain caricature leaves a training camp with a suitcase as teammates continue training behind him."
+    },
+    {
+      "story_id": "jantar-mantar-cec-protest",
+      "file": "jantar-mantar-cec-protest.webp",
+      "alt": "A giant official hand stamps voter-list papers inside a civic office while protesters face police barricades outside."
+    },
+    {
+      "story_id": "sepang-fp1-verstappen",
+      "file": "sepang-fp1-verstappen.webp",
+      "alt": "A Red Bull-style Formula 1 car leads a Mercedes-style car through a tyre-shredding tropical circuit corner."
+    }
+  ]
+}
