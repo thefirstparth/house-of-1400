@@ -245,6 +245,47 @@ function markWeather() {
   return inkState({ code: c.current.code, temp: c.current.temp, wind: c.current.wind, lat: c.lat ?? h.lat, lon: c.lon ?? h.lon });
 }
 
+// The day line (Parth, 3 Oct, of design/sunline: "let's go ahead with B"): the whole day, midnight to midnight where
+// the reader is, as one band in the sky's own colours, worked out minute by minute from the sun's height: deep blue
+// night with its stars, violet and rose twilight, amber golden hours, pale day. A needle marks now, carrying the sun or
+// the moon in its phase; a fine line above the band is the moon's hours in the sky, from its real position. Over it,
+// the time left to sunset (or sunrise) and one more fact: the golden hour by day, the moon by night.
+const SKYC = [[-18, "#1f2747", "#12172b"], [-12, "#2c3766", "#1b2242"], [-6, "#5b4f88", "#2e2852"], [-2, "#c47478", "#6e3c4b"], [1, "#ee9d50", "#9c5b22"], [6, "#f3c071", "#a87628"], [15, "#f2dca5", "#6f6342"], [35, "#d3e2ea", "#3a5264"], [90, "#bcd6e8", "#33506a"]];
+function skyColour(deg, k) {
+  const hex = s => [1, 3, 5].map(i => parseInt(s.slice(i, i + 2), 16));
+  if (deg <= SKYC[0][0]) return SKYC[0][k];
+  for (let i = 1; i < SKYC.length; i++) if (deg <= SKYC[i][0]) {
+    const a = SKYC[i - 1], b = SKYC[i], f = (deg - a[0]) / (b[0] - a[0]), A = hex(a[k]), B = hex(b[k]);
+    return "#" + A.map((v, j) => Math.round(v + (B[j] - v) * f).toString(16).padStart(2, "0")).join("");
+  }
+  return SKYC.at(-1)[k];
+}
+function dayRibbon(c, away, n) {
+  const h = homeAt(), lat = c.lat ?? h.lat, lon = c.lon ?? h.lon, off = (c.utc_offset_seconds ?? 19800) * 1000, D = 864e5, M = 6e4, deg = 180 / Math.PI;
+  const d0 = Math.floor((n + off) / D) * D - off, pc = t => +((t - d0) / D * 100).toFixed(2), alt = t => sunAt(lat, lon, t).alt * deg, moon = t => moonAt(lat, lon, t) * deg;
+  // the first time f crosses thr between a and b, rising (up) or setting
+  const cross = (f, a, b, thr, up) => { let p = f(a); for (let t = a + 2 * M; t <= b; t += 2 * M) { const v = f(t); if (up ? p < thr && v >= thr : p >= thr && v < thr) return t; p = v; } return null; };
+  const H0 = -0.833, day = alt(n) > H0, rise = cross(alt, d0, d0 + D, H0, true), set = cross(alt, d0, d0 + D, H0, false);
+  const to = day ? cross(alt, n, n + D, H0, false) : cross(alt, n, n + D, H0, true); if (!to || !rise || !set) return "";
+  const stops = k => [...Array(97)].map((_, i) => `${skyColour(alt(d0 + i * 15 * M), k)} ${(i / 0.96).toFixed(2)}%`).join(",");
+  // stars where the sky is dark enough, always in the same places
+  let seed = 11; const rnd = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
+  const stars = [...Array(44)].map(() => [rnd(), rnd(), rnd()]).filter(([x]) => alt(d0 + x * D) < -10).map(([x, y, s]) => `<i style="left:${(x * 100).toFixed(1)}%;top:${(15 + y * 70).toFixed(0)}%;--s:${(1.4 + s * 1.1).toFixed(1)}px;animation-delay:${(s * 3).toFixed(1)}s"></i>`).join("");
+  // the moon's hours, from its real place
+  const ups = []; let on = null; for (let t = d0; t <= d0 + D; t += 10 * M) { const up = moon(t) > 0; if (up && on == null) on = t; if (on != null && (!up || t > d0 + D - 10 * M)) { ups.push([on, t]); on = null; } }
+  const moonG = (r, m = moonNow(n)) => { const rx = (r * Math.abs(1 - 2 * m.lit)).toFixed(2), sweep = m.lit > 0.5 ? 1 : 0; return `<g${m.waxing ? "" : ' transform="scale(-1 1)"'}><circle r="${r}" fill="var(--mdark)"/><path d="M0 ${-r} A${r} ${r} 0 0 1 0 ${r} A${rx} ${r} 0 0 ${sweep} 0 ${-r}Z" fill="var(--moon)"/></g>`; };
+  const mline = ups.map(([a, b]) => `<span class="mup" style="left:${pc(a)}%;width:${Math.max(0, pc(b) - pc(a))}%"><svg viewBox="-4 -4 8 8" aria-hidden="true">${moonG(3.2)}</svg></span>`).join("");
+  const edge = p => (p < 9 ? " s" : p > 91 ? " e" : "");
+  const label = (t, w) => `<span class="rt${edge(pc(t))}" style="left:${pc(t)}%">${w} <b class="tnum">${istTime(new Date(t).toISOString())}</b></span>`;
+  const mark = day ? `<svg viewBox="-10 -10 20 20" aria-hidden="true"><circle r="9" fill="var(--paper)"/><circle r="6.5" fill="var(--sun)"/></svg>` : `<svg viewBox="-10 -10 20 20" aria-hidden="true"><circle r="9" fill="var(--paper)"/>${moonG(6.5)}</svg>`;
+  let x;
+  if (day) { const g = cross(alt, Math.max(n, to - 3 * 36e5), to, 6, false); x = g ? `Golden hour ${istTime(new Date(g).toISOString())}` : alt(n) < 6 && n > (rise + set) / 2 ? "Golden hour now" : `${hm(set - rise)} of daylight`; }
+  else { const up = moon(n) > 0, lit = Math.round(moonNow(n).lit * 100), nx = cross(moon, n, to + 36e5, 0, !up);
+    x = up ? `Moon ${lit}% · up till ${nx ? istTime(new Date(nx).toISOString()) : "dawn"}` : nx && nx < to ? `Moon ${lit}% · rises ${istTime(new Date(nx).toISOString())}` : `Moon ${lit}%, down tonight`; }
+  const said = `${day ? "Sunset" : "Sunrise"} at ${istTime(new Date(to).toISOString())}, ${hm(to - n)} from now`;
+  return `<div class="ribbon ${day ? "day" : "night"}" style="--rib-l:linear-gradient(90deg,${stops(1)});--rib-d:linear-gradient(90deg,${stops(2)})"><p class="rtop"><b><em class="tnum">${hm(to - n)}</em> to ${day ? "sunset" : "sunrise"}</b><span>${esc(x)}</span></p>
+<div class="rwrap" role="img" aria-label="${esc(said)}"><div class="moons">${mline}</div><div class="band">${stars}</div><span class="needle" style="left:${pc(n)}%">${mark}</span>${label(rise, "Sunrise")}${label(set, "Sunset")}</div></div>`;
+}
 // The Weather block (Parth, 2 Oct: "since we added Where I am, this section has become too data-heavy, too cluttered,
 // with no real structure"): four tiers, each one line or close to it. Now (the place when away, the temperature, the
 // sky, feels, high and low); the day as a slim line from sunrise to sunset (or sunset to sunrise) with the sun or the
@@ -252,21 +293,12 @@ function markWeather() {
 // quiet line of the other cities. The city shown is never repeated in that line.
 function weatherHTML() {
   const W = LIVE.weather?.value?.cities, away = awayCity(), c = away || W?.[0]; if (!c?.current) return "";
-  const d0 = (c.daily || [])[0] || {}, off = c.utc_offset_seconds ?? 19800, n = Date.now();
-  const rise = localMs(d0.sunrise, off), set = localMs(d0.sunset, off), DAY = 864e5;
-  let sun = "";
-  if (Number.isFinite(rise) && Number.isFinite(set)) {
-    const day = n >= rise && n < set, from = day ? rise : n >= set ? set : set - DAY, to = day ? set : n >= set ? rise + DAY : rise;
-    const f = Math.max(0, Math.min(1, (n - from) / (to - from))), t0 = istTime(new Date(from).toISOString()), t1 = istTime(new Date(to).toISOString());
-    const mm = day ? null : moonNow(n), x = (4 + 212 * f).toFixed(1);
-    const body = day ? `<circle cx="${x}" cy="7" r="6.5" fill="var(--halo)"/><circle cx="${x}" cy="7" r="3.8" fill="var(--sun)"/>`
-      : (() => { const r = 4.2, rx = (r * Math.abs(1 - 2 * mm.lit)).toFixed(2), sweep = mm.lit > 0.5 ? 1 : 0; return `<circle cx="${x}" cy="7" r="6.5" fill="var(--mhalo)"/><g transform="translate(${x} 7)${mm.waxing ? "" : " scale(-1 1)"}"><circle r="${r}" fill="var(--mdark)"/><path d="M0 ${-r} A${r} ${r} 0 0 1 0 ${r} A${rx} ${r} 0 0 ${sweep} 0 ${-r}Z" fill="var(--moon)"/></g>`; })();
-    sun = `<div class="dayline ${day ? "day" : "night"}"><span class="tnum">${day ? "Sunrise" : "Sunset"} ${t0}</span><svg viewBox="0 0 220 14" preserveAspectRatio="none" role="img" aria-label="${day ? "Sunrise" : "Sunset"} ${t0}, ${day ? "sunset" : "sunrise"} ${t1}, ${hm(to - n)} to go"><line class="track" x1="4" x2="216" y1="7" y2="7"/><line class="done" x1="4" x2="${x}" y1="7" y2="7"/>${body}</svg><span class="tnum">${day ? "Sunset" : "Sunrise"} ${t1}</span><b class="tnum"><em>${hm(to - n)}</em> to ${day ? "sunset" : "sunrise"}</b></div>`;
-  }
+  const d0 = (c.daily || [])[0] || {}, n = Date.now(), sun = dayRibbon(c, away, n);
   const O = away ? null : LIVE.outlook?.value?.cities?.[0], head = (O && skyHeadline(O)) || wx(c.current.code)[1];
   const air = c.air?.now, day = away ? sunAt(c.lat, c.lon, n).alt > 0 : !isNight(Number(istTime(new Date(n).toISOString()).slice(0, 2)));
   const read = (k, v, w = "") => `<span><i>${k}</i><b class="tnum">${v}</b>${w ? ` ${esc(w)}` : ""}</span>`;
-  const reads = [day && d0.rain_prob != null ? read("Rain", `${d0.rain_prob}%`, "today") : read("Moon", `${Math.round(moonNow(n).lit * 100)}%`, "lit"),
+  // by night the day line already gives the moon, so the readings do not repeat it
+  const reads = [day && d0.rain_prob != null ? read("Rain", `${d0.rain_prob}%`, "today") : sun ? "" : read("Moon", `${Math.round(moonNow(n).lit * 100)}%`, "lit"),
     air != null ? read("Air", String(air), airWord(air)) : "", c.current.humidity != null ? read("Humidity", `${c.current.humidity}%`) : ""].join("");
   const others = (W || []).filter(x => x.current && x.name !== c.name).map(x => `<span><b>${esc(x.name)}</b> <span class="tnum">${Math.round(x.current.temp)}°</span> ${esc(wx(x.current.code)[1].toLowerCase())}</span>`).join("");
   return `<div class="wx3${away ? " away" : ""}">${away ? `<p class="wxplace">${esc(away.name)}${away.region && away.region !== away.name ? `<span>, ${esc(away.region)}</span>` : ""}</p>` : ""}<div class="now"><span class="t tnum">${Math.round(c.current.temp)}°</span><div class="c"><b>${esc(head)}</b><span class="tnum">Feels ${Math.round(c.current.feels)}° · High ${Math.round(d0.max)}° · Low ${Math.round(d0.min)}°</span></div></div>

@@ -31,6 +31,16 @@ export function sunAt(lat, lon, ms) {
   return { alt: Math.asin(Math.sin(la) * Math.sin(dec) + Math.cos(la) * Math.cos(dec) * Math.cos(H)), az: Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(la) - Math.tan(dec) * Math.cos(la)) + Math.PI };
 }
 
+// The moon's altitude in radians (the low-precision lunar theory SunCalc uses; good to about a degree): the Weather
+// block's day line draws the moon only while it is up, and says when it rises
+export function moonAt(lat, lon, ms) {
+  const r = Math.PI / 180, d = ms / 864e5 - 10957.5, L = r * (218.316 + 13.176396 * d), M = r * (134.963 + 13.064993 * d), F = r * (93.272 + 13.22935 * d);
+  const l = L + r * 6.289 * Math.sin(M), b = r * 5.128 * Math.sin(F), e = r * 23.4397;
+  const ra = Math.atan2(Math.sin(l) * Math.cos(e) - Math.tan(b) * Math.sin(e), Math.cos(l)), dec = Math.asin(Math.sin(b) * Math.cos(e) + Math.cos(b) * Math.sin(e) * Math.sin(l));
+  const H = r * (280.16 + 360.9856235 * d) + r * lon - ra, la = lat * r;
+  return Math.asin(Math.sin(la) * Math.sin(dec) + Math.cos(la) * Math.cos(dec) * Math.cos(H));
+}
+
 // The weather the ink shows, from a live reading: { code (WMO), temp, wind, lat, lon } and the time
 export function inkState(w, ms = Date.now()) {
   if (!w || w.code == null) return null;

@@ -4,8 +4,13 @@
 // covers, so it reads as the solid Playfair 1400 from a distance and as a printed screen up close.
 // - The day in dots: the figure is shared among today's desks in the tabs' order, left to right, each in proportion to
 //   its length in words, and each desk's dots are printed in its colour. A long Sport day makes a wide orange band.
-// - At rest the figure is still and crisp. Every 7 seconds one swell sweeps across it, thickening the dots it passes,
-//   and a little loose ink drifts while it moves (Parth, 2 Oct: rest, then swell, to spare a phone's battery).
+// - At rest the figure is still and crisp. Every 4 seconds a little life (Parth, 3 Oct, of The Daily Index's livelier
+//   figure: "get inspired by this ... it needs to be ours"): the desks are re-inked in turn, tabs' order, one plate at a
+//   time, a ripple of fresh ink spreading through that desk's dots from its middle; every third beat one swell sweeps
+//   across the whole figure, thickening the dots it passes, and a little loose ink drifts while it moves.
+// - Out of register: a dot pushed fast (by the pointer, or re-forming) slips off its plate, and the plate beside it
+//   shows for a moment as a coloured fringe behind it, the way a press's plates slip; it settles back into register as
+//   it slows.
 // - Pointer (laptop): the dots part around the pointer with a swirl and spring back when it leaves.
 // - Tap or click: the dots re-form into the next shape of the cycle (config desks_v2.wordmark: 1400, the temperature,
 //   the sky in a word, the time, a name), and the figure comes back to 1400 by itself after a few seconds.
@@ -219,6 +224,8 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
   const first = await textDots("1400", size, W, H, g);
   place(first); onShape?.(inkOf(first), "1400");
   const dust = [...Array(reduced ? 0 : Math.round(CW * CH / 1500))].map(() => ({ x: Math.random() * CW, y: Math.random() * CH, r: 0.45 + Math.random() * 0.85, a: Math.random() < 0.3, vx: 0, vy: 0 }));
+  let pulseAt = -1e9, pulseBi = -1, beat = 0;
+  const PULSE = 1.7;
   let pointer = null, quietTill = 0, lastMove = 0, morphAt = -1e9, swellAt = -1e9, energy = 0, raf = 0, alive = true, shown = true, last = 0, swellT = 0, homeT = 0, idx = 0;
   const at = e => { const r = c.getBoundingClientRect(), z = r.width / CW || 1; return [(e.clientX - r.left) / z - PX, (e.clientY - r.top) / z - PY]; };
   const field = (x, y, t) => [Math.sin(x * 0.021 + t * 0.8) + Math.sin(y * 0.05 - t * 0.6 + x * 0.008), Math.cos(x * 0.017 - t * 0.7) + Math.sin(y * 0.043 + t * 0.9)];
@@ -271,12 +278,19 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
     if (stamping) { stampShadow(t); stampEmboss(t); }
     const A = g * 0.42 * energy, Rp = H * 0.62, P = g * 0.9;
     const front = swell >= 0 ? swell * (W + 2 * PX) - PX : -1e9, band = W * 0.13;
-    let moving = false;
+    // the re-inked plate: a ring of fresh ink spreading from the middle of one desk's dots
+    const pul = !reduced && t - pulseAt < PULSE ? (t - pulseAt) / PULSE : -1;
+    let moving = false; const slips = [];
     bands.forEach((list, bi) => {
       ctx.fillStyle = colours[bi] || ink; ctx.beginPath();
+      let pc = null;
+      if (pul >= 0 && bi === pulseBi && list.length) {
+        if (!list.mid) { let x = 0, y = 0; for (const d of list) { x += d.x; y += d.y; } x /= list.length; y /= list.length; let far = 0; for (const d of list) far = Math.max(far, Math.hypot(d.x - x, d.y - y)); list.mid = [x, y, far]; }
+        pc = list.mid;
+      }
       let faint = inked ? new Map() : null; // dots the weather (or the stamp's uneven ink) dims, drawn after at their own strength
       for (const d of list) {
-        let r = d.base;
+        let r = d.base, ring = 0;
         if (!reduced) {
           const [a, b] = field(d.x, d.y, t), sw = Math.max(0, 1 - Math.abs(d.x - front) / band), s2 = sw * sw * (3 - 2 * sw);
           const tx = A * a + s2 * g * 0.9 * Math.sin(d.y * 0.09 + t * 2), ty = A * 0.6 * b - s2 * g * 1.4;
@@ -286,10 +300,15 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
           if (Math.abs(d.vx) + Math.abs(d.vy) > 0.02 || Math.abs(d.px) + Math.abs(d.py) > 0.08) moving = true;
           const wave = 0.5 + 0.5 * Math.sin(d.x * 0.035 - t * 1.6 + d.y * 0.012), moved = Math.min(1, Math.hypot(d.vx, d.vy) / g);
           r = d.base * (1 + energy * (0.32 * wave - 0.2) + 0.25 * s2) * (1 - 0.25 * moved);
+          if (pc) { const k = (Math.hypot(d.x - pc[0], d.y - pc[1]) - pul * (pc[2] + g * 3)) / (g * 2.4); ring = Math.exp(-k * k) * Math.sqrt(1 - pul); r *= 1 + 0.45 * ring; }
+          // fast enough to slip off the plate: the neighbouring plate shows behind it, trailing the way it came
+          const sp = Math.hypot(d.vx, d.vy) / g;
+          if (sp > 0.18 && S.length > 1) slips.push(bi, PX + d.x + d.px + d.wx - d.vx * 1.6, PY + d.y + d.py + d.wy - d.vy * 1.6, Math.min(1, (sp - 0.18) * 2.2), d);
         } else { d.px = 0; d.py = 0; }
         // a dot never grows past 1.15 of its size, in motion or in weather, so neighbours never run into each other (2 Oct:
         // at 1.3 a tapped word's thin strokes ran into blobs)
-        let x = PX + d.x + d.px + d.wx, y = PY + d.y + d.py + d.wy, rr = Math.min(r * d.wr, 1.15) * RS;
+        // (fresh ink, for the moment the ring passes, stands a little higher and fuller: up to 1.28)
+        let x = PX + d.x + d.px + d.wx, y = PY + d.y + d.py + d.wy - ring * g * 0.3, rr = Math.min(r * d.wr, 1.15 + 0.13 * ring) * RS;
         if (rr < 0.25) continue;
         if (stamping) {
           if (ss < 0) continue; // the forme has not come down yet
@@ -303,6 +322,15 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
       ctx.fill();
       if (faint) for (const [k, a] of faint) { ctx.globalAlpha = k; ctx.beginPath(); for (let i = 0; i < a.length; i += 3) { ctx.moveTo(a[i] + a[i + 2], a[i + 1]); ctx.arc(a[i], a[i + 1], a[i + 2], 0, Math.PI * 2); } ctx.fill(); ctx.globalAlpha = 1; }
     });
+    // the fringes, under nothing and over the paper: drawn after the plates, faint, in the next plate's colour
+    if (slips.length) {
+      for (let i = 0; i < slips.length; i += 5) {
+        const d = slips[i + 4], rr = Math.min(d.base * d.wr, 1.15) * RS * 0.92; if (rr < 0.25) continue;
+        ctx.globalAlpha = 0.5 * slips[i + 3]; ctx.fillStyle = colours[(slips[i] + 1) % colours.length] || ink;
+        ctx.beginPath(); ctx.arc(slips[i + 1], slips[i + 2], rr, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
     if (inked) wink.over(ctx, t, dt / 60, look);
     if (stamping) stampSpecks(t, dt / 60);
     // loose ink drifts only while the figure moves
@@ -318,7 +346,7 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
     }
     for (const dark of [true, false]) { ctx.fillStyle = ink; ctx.globalAlpha = dark ? 0.55 : 0.28; ctx.beginPath(); for (const p of dust) if (p.a === dark) { ctx.moveTo(p.x + p.r, p.y); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); } ctx.fill(); }
     ctx.globalAlpha = 1;
-    return busy || energy > 0.01 || moving || inked || stamping || (ST.at > 0 && t < ST.at);
+    return busy || pul >= 0 || energy > 0.01 || moving || inked || stamping || (ST.at > 0 && t < ST.at);
   }
   // with only the weather moving, it draws at about 30 frames a second to spare a phone's battery
   let lastDraw = 0;
@@ -330,8 +358,18 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
     if (draw(now)) raf = requestAnimationFrame(frame); else last = 0;
   }
   const wake = () => { if (!reduced && !raf && alive && shown && !document.hidden) raf = requestAnimationFrame(frame); };
-  // one swell every 7 seconds, while the figure is on screen
-  const swellLoop = () => { clearTimeout(swellT); if (!alive) return; if (shown && !document.hidden && !reduced) { swellAt = performance.now() / 1000; wake(); } swellT = setTimeout(swellLoop, 7000); };
+  // a beat every 4 seconds while the figure is on screen: a desk re-inked (in the tabs' order, skipping a sliver too
+  // small to see), and every third beat the swell across the whole figure
+  const swellLoop = () => {
+    clearTimeout(swellT); if (!alive) return;
+    if (shown && !document.hidden && !reduced) {
+      const now = performance.now() / 1000;
+      if (beat++ % 3 === 2 || bands.length < 2) swellAt = now;
+      else { const n = bands.length, total = bands.reduce((a, l) => a + l.length, 0); for (let k = 1; k <= n; k++) { const i = (pulseBi + k + n) % n; if (bands[i].length >= total * 0.04) { pulseBi = i; break; } } pulseAt = now; }
+      wake();
+    }
+    swellT = setTimeout(swellLoop, 4000);
+  };
   const reform = async text => { const gs = gOf(text), homes = await textDots(text, size, W, H, gs); RS = gs * 0.6; shapeText = text; place(homes, parts); onShape?.(inkOf(homes, gs), text); morphAt = performance.now(); el.setAttribute("aria-label", text); if (reduced) draw(performance.now()); else wake(); };
   const onMove = e => { if (e.pointerType === "mouse") { pointer = at(e); lastMove = performance.now(); wake(); } };
   const onLeave = () => { pointer = null; };
