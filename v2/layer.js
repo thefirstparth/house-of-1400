@@ -50,11 +50,23 @@ function paintShell() {
   if (el && el.dataset.html !== html) { el.innerHTML = html; el.dataset.html = html; }
   if (DESK.id === "one") paintOne();
 }
+// The date and time now (Parth, 3 Oct: "we are not showing the current date and time anywhere ... I don't want it
+// in bold, but it should be readable and present"): plain, at the head of the run line's right side; on a phone just
+// the time, with the day when it is not the paper's.
+let nowT = 0;
+function tickNow() {
+  const el = $("#r-now"); if (!el) return;
+  const d = new Date(), day = o => d.toLocaleDateString("en-GB", { ...o, timeZone: TZ }), t = istTime(d.toISOString()), other = istDate(d) !== E?.date;
+  const html = `<span class="lg">${esc(day({ weekday: "short" }))} ${esc(day({ day: "numeric", month: "short" }))} · ${t} IST</span><span class="sh">${other ? `${esc(day({ weekday: "short" }))} ` : ""}${t}</span>`;
+  if (el.innerHTML !== html) el.innerHTML = html;
+  clearTimeout(nowT); nowT = setTimeout(tickNow, 60000 - (Date.now() % 60000) + 50);
+}
 let tagline = "";
 function shellStatic() {
   $("#r-date").innerHTML = `<span class="lg">${esc(longDate(E.date))}</span><span class="sh">${esc(new Date(E.date + "T12:00:00+05:30").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "Asia/Kolkata" }))}</span>`;
   $("#r-no").textContent = `No. ${E.edition_no}`;
   $("#r-print").textContent = E.printed_at ? `Printed ${istTime(E.printed_at)} IST` : "";
+  tickNow();
   tagline = `${esc(CFG.paper.motto)} · edited by ${esc(CFG.paper.editor.signature.replace(", Editor", ""))}`;
   $("#r-tag").innerHTML = tagline;
   // Page One's tab carries a small, still day in dots, shown once the masthead has scrolled away (Parth, 2 Oct)
@@ -301,7 +313,9 @@ function weatherHTML() {
   const reads = [day && d0.rain_prob != null ? read("Rain", `${d0.rain_prob}%`, "today") : sun ? "" : read("Moon", `${Math.round(moonNow(n).lit * 100)}%`, "lit"),
     air != null ? read("Air", String(air), airWord(air)) : "", c.current.humidity != null ? read("Humidity", `${c.current.humidity}%`) : ""].join("");
   const others = (W || []).filter(x => x.current && x.name !== c.name).map(x => `<span><b>${esc(x.name)}</b> <span class="tnum">${Math.round(x.current.temp)}°</span> ${esc(wx(x.current.code)[1].toLowerCase())}</span>`).join("");
-  return `<div class="wx3${away ? " away" : ""}">${away ? `<p class="wxplace">${esc(away.name)}${away.region && away.region !== away.name ? `<span>, ${esc(away.region)}</span>` : ""}</p>` : ""}<div class="now"><span class="t tnum">${Math.round(c.current.temp)}°</span><div class="c"><b>${esc(head)}</b><span class="tnum">Feels ${Math.round(c.current.feels)}° · High ${Math.round(d0.max)}° · Low ${Math.round(d0.min)}°</span></div></div>
+  // the place is always named, home too (Parth, 3 Oct: "the weather does not mention that it is by default for
+  // Bengaluru; that is very confusing")
+  return `<div class="wx3${away ? " away" : ""}">${away ? `<p class="wxplace">${esc(away.name)}${away.region && away.region !== away.name ? `<span>, ${esc(away.region)}</span>` : ""}</p>` : `<p class="wxplace">${esc(c.name || CFG.paper.home_city || "Bengaluru")}</p>`}<div class="now"><span class="t tnum">${Math.round(c.current.temp)}°</span><div class="c"><b>${esc(head)}</b><span class="tnum">Feels ${Math.round(c.current.feels)}° · High ${Math.round(d0.max)}° · Low ${Math.round(d0.min)}°</span></div></div>
 ${sun}<p class="reads">${reads}</p>${others ? `<p class="elsewhere">${others}</p>` : ""}</div>${staleNote("weather")}`;
 }
 // Money (Parth, 1 Oct: "The % change is 1 day change? What do you show on a weekend?"): each figure's change on its

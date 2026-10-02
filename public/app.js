@@ -1356,13 +1356,15 @@ const outcomeLabel = n => String(n).replace(/^(By|Through) (January|February|Mar
 
 // The market's view, one line in a section: what Polymarket traders make of the next race or match. Kept small and
 // set apart, so the section stays a newspaper.
-function signalHTML(g) {
+// The likeliest outcome first (Parth, 3 Oct: "considering India is 80%, why isn't India mentioned first?"), and the
+// time the prices were read ("why does it not say when the data was last refreshed?").
+function signalHTML(g, at) {
   if (!g?.outcomes?.length) return "";
-  const o = g.outcomes.slice(0, 3), vol = g.volume >= 1e6 ? `$${(g.volume / 1e6).toFixed(1)}m` : g.volume >= 1e3 ? `$${Math.round(g.volume / 1e3)}k` : `$${g.volume}`;
+  const o = [...g.outcomes].sort((a, b) => b.prob - a.prob).slice(0, 3), vol = g.volume >= 1e6 ? `$${(g.volume / 1e6).toFixed(1)}m` : g.volume >= 1e3 ? `$${Math.round(g.volume / 1e3)}k` : `$${g.volume}`;
   return `<div class="signal" data-fam="odds"><div class="sg-h"><span class="sg-k">${icon("s:betting")}The market's view</span><span class="sg-t">${esc(vsV(g.label || g.title))}</span></div>
 <div class="sg-o">${o.map((x, i) => `<span class="${i === 0 ? "fav" : ""}"><b class="tnum">${Math.round(x.prob)}%</b> ${esc(outcomeLabel(x.name))}</span>`).join("")}</div>
 <div class="sg-bar">${o.map((x, i) => `<i class="s${i}" style="width:${Math.max(0, Math.min(100, x.prob)).toFixed(1)}%"></i>`).join("")}</div>
-<a class="sg-src" href="${esc(g.url)}" target="_blank" rel="noopener">Polymarket · ${vol} traded ↗</a></div>`;
+<a class="sg-src" href="${esc(g.url)}" target="_blank" rel="noopener">Polymarket · ${vol} traded${at ? ` · as of ${esc(istDate(new Date(at)) === istDate() ? istTime(at) : `${fmt(at, { day: "numeric", month: "short" })}, ${istTime(at)}`)} IST` : ""} ↗</a></div>`;
 }
 function paintSignals() {
   const G = LIVE.signals?.value || {};
@@ -1370,7 +1372,7 @@ function paintSignals() {
     const secEl = document.getElementById(id); if (!secEl) continue;
     let el = secEl.querySelector(":scope > .signal-slot");
     if (!el) { el = document.createElement("div"); el.className = "signal-slot"; secEl.querySelector(".sechead")?.after(el); }
-    const html = signalHTML(G[id]);
+    const html = signalHTML(G[id], LIVE.signals?.as_of);
     if (el.dataset.html !== html) { el.innerHTML = html; el.dataset.html = html; }
   }
 }
