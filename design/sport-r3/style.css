@@ -1,0 +1,143 @@
+/* Sport, round 3 (mock). Only layout and the new heads are new; every story, table and figure keeps the page's own
+   style. The page's few section-scoped rules follow the pieces that moved (data-from). */
+.r3 [data-from=madrid] .tbl table,.r3 [data-from=madrid].tbl table{font-size:14px}
+.r3 [data-from=madrid] .tbl td,.r3 [data-from=madrid] .tbl th{padding-right:6px}
+.r3 [data-from=madrid] .tbl td:last-child{white-space:normal;min-width:84px}
+.r3 [data-from=deuce] .tbl td:last-child,.r3 [data-from=deuce] .tbl th:last-child,.r3 [data-from=deuce].tbl td:last-child{white-space:normal}
+.r3 [data-from=deuce] .tbl table,.r3 [data-from=deuce].tbl table{font-size:14px}
+.r3{--r3pin:0px;margin-top:6px}
+.r3 .signal-slot,.r3 .signal{margin:0}
+.r3 .solo,.r3 .cols2,.r3 .stack{margin-top:0}
+
+/* heads */
+.r3-h{margin:34px 0 16px;padding-top:8px;border-top:3px solid var(--ink);font:700 12.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--d-sport)}
+.r3-k{margin:0 0 8px;font:700 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.r3-k span{font-weight:500;letter-spacing:.02em;text-transform:none;margin-left:6px}
+.r3-room-h{display:flex;align-items:center;justify-content:space-between;gap:10px 22px;flex-wrap:wrap;padding:12px 0 12px;border-top:3px solid var(--d-sport)}
+.r3-room-h .nm{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.r3-room-h .nm b{font:700 24px/1.1 var(--hl);color:var(--ink)}
+.r3-room-h .nm span{font:500 13px var(--sans);color:var(--muted)}
+.r3-room-h .signal-slot{flex:1 1 420px;max-width:640px}
+.r3-crest{width:26px;height:26px;flex:none;object-fit:contain}
+
+/* the pinned contents line */
+.r3-nav{position:sticky;top:var(--r3pin);z-index:6;display:flex;align-items:center;flex-wrap:wrap;gap:6px 20px;padding:10px 0;background:var(--paper);border-bottom:1px solid var(--rule);font:600 13px var(--sans)}
+.r3-nav a{color:var(--ink);text-decoration:none;white-space:nowrap}
+.r3-nav a:hover{color:var(--d-sport)}
+.r3-nav .sep{flex:1}
+.r3-nav button,.r3-open,.r3-close{font:600 12.5px var(--sans);color:var(--ink);background:none;border:1px solid var(--rule);border-radius:4px;padding:6px 12px;cursor:pointer}
+.r3-chips{gap:8px}
+.r3-chips a{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border:1px solid var(--rule);border-radius:999px}
+.r3-chips a .r3-crest{width:18px;height:18px}
+.r3-chips small{font:700 11px var(--sans);color:var(--paper);background:var(--d-sport);border-radius:999px;padding:1px 6px}
+
+/* folds */
+.r3-fold{border-top:1px solid var(--rule)}
+.r3-fold>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr 18px;gap:3px 14px;align-items:center;padding:13px 0}
+.r3-fold>summary::-webkit-details-marker{display:none}
+.r3-fold .t{font:600 15px/1.3 var(--sans);color:var(--ink)}
+.r3-fold .t b{color:var(--d-sport);font-weight:700;margin-right:6px}
+.r3-fold .g{grid-column:1;font:500 13px/1.4 var(--sans);color:var(--muted)}
+.r3-fold>summary i{grid-row:1/3;grid-column:2;width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .2s;justify-self:center}
+.r3-fold[open]>summary i{transform:rotate(-135deg)}
+.r3-fold>summary:hover .t{color:var(--d-sport)}
+.r3-fbody{padding:2px 0 22px}
+.r3-fbody>*+*{margin-top:18px}
+
+/* stories: the illustration beside the words (above them on a phone), at a size that keeps a story to about one
+   illustration's height */
+.r3 .r3-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 40px;margin-top:28px}
+.r3 :is(.r3-grid,.r3-news,.r3-group)>:is(article,.f1p){margin:0;padding-top:14px;border-top:1px solid var(--rule)}
+.r3 :is(.r3-grid,.r3-news,.r3-group)>article.story{display:grid;grid-template-columns:minmax(0,4.2fr) minmax(0,5.8fr);column-gap:22px;align-content:start}
+.r3 :is(.r3-grid,.r3-news,.r3-group)>article.story>*{grid-column:2;min-width:0;max-width:none;width:auto}
+.r3 :is(.r3-grid,.r3-news,.r3-group)>article.story>figure.art{grid-column:1;grid-row:1/span 9;float:none;width:100%;max-width:none;margin:4px 0 0;align-self:start}
+.r3 :is(.r3-grid,.r3-news,.r3-group,.r3-lead) figure.art img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
+.r3 :is(.r3-grid,.r3-news,.r3-group) article .body{columns:auto;width:auto;max-width:none}
+.r3 :is(.r3-grid,.r3-news,.r3-group) article .why{max-width:none}
+.r3 :is(.r3-grid,.r3-news,.r3-group) article h3{font-size:21px;line-height:1.2}
+.r3 :is(.r3-grid,.r3-news,.r3-group) .f1p{display:block}
+.r3 :is(.r3-grid,.r3-news,.r3-group) .f1p>div,.r3 :is(.r3-grid,.r3-news,.r3-group) .f1p>ul{width:auto;max-width:none}
+.r3 :is(.r3-grid,.r3-news,.r3-group) .f1p>ul{margin-top:12px}
+/* the day's lead beside the week (B) or over the panes (C): the illustration across, the words under it */
+.r3 :is(.r3-top,.r3-panes) .r3-lead article{display:block}
+.r3 :is(.r3-top,.r3-panes) .r3-lead article>*{width:auto;max-width:none;float:none}
+.r3 :is(.r3-top,.r3-panes) .r3-lead h2{font-size:34px;line-height:1.12}
+.r3 :is(.r3-top,.r3-panes) .r3-lead figure.art{margin:12px 0}
+.r3 :is(.r3-top,.r3-panes) .r3-lead figure.art img{aspect-ratio:16/9}
+.r3 :is(.r3-top,.r3-panes) .r3-lead .body{columns:2;column-gap:28px}
+.r3 .r3-briefs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 30px;margin-top:30px}
+.r3 .r3-briefs>.item,.r3 .r3-news>.item,.r3 .r3-group>.item{margin:0;padding-top:12px;border-top:1px solid var(--rule)}
+
+/* A · next up */
+.r3-a .r3-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:26px 34px;margin-top:18px}
+.r3-card{min-width:0}
+.r3-card>*+*{margin-top:12px}
+.r3-card .cols2{display:block}
+.r3-card .cols2>*+*{margin-top:12px}
+.r3-card .panel{margin:0}
+.r3 :is(.r3-card,.r3-data,.r3-pan,.r3-group) .signal{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center}
+.r3 :is(.r3-card,.r3-data,.r3-pan,.r3-group) .signal .sg-h{grid-column:1/-1;width:auto;max-width:none;display:flex;gap:8px;align-items:baseline}
+.r3 :is(.r3-card,.r3-data,.r3-pan,.r3-group) .signal .sg-o{grid-column:1;width:auto}
+.r3 :is(.r3-card,.r3-data,.r3-pan,.r3-group) .signal .sg-bar{grid-column:1/-1;width:auto}
+.r3 :is(.r3-card,.r3-data,.r3-pan,.r3-group) .signal .sg-src{grid-column:2;grid-row:2}
+.r3-a .r3-folds{column-count:2;column-gap:40px}
+.r3-a .r3-folds>.r3-fold{break-inside:avoid;margin:0}
+.r3-a .r3-folds>.r3-fold[open]{column-span:all}
+.r3-a .r3-agenda{border-top:0}
+
+/* B · rooms */
+.r3-top{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(300px,1fr);gap:36px;align-items:start;margin-bottom:22px}
+.r3-week .agenda{display:block}
+.r3-week .agenda .day{width:auto;margin:0 0 14px}
+.r3-b .r3-nav{margin-bottom:8px}
+.r3-room{margin-top:30px;scroll-margin-top:calc(var(--r3pin) + 60px)}
+.r3-room-b{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:36px;align-items:start}
+.r3-news>*+*{margin-top:22px}
+.r3-news.r3-wide{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 36px}
+.r3-news.r3-wide>*+*{margin-top:0}
+.r3-data .cols2{display:block}
+.r3-data .cols2>*+*{margin-top:12px}
+.r3-data .r3-drawer{margin-top:16px}
+.r3-data .cgrid,.r3-pan .cgrid{display:block}
+.r3-data .cgrid>*+*,.r3-pan .cgrid>*+*{margin-top:16px}
+.r3-data .ldrs,.r3-pan .ldrs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px}
+.r3-quiet{font:500 14px var(--sans);color:var(--muted)}
+
+/* C · two panes */
+.r3-panes{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:40px;align-items:start}
+.r3-left>*+*{margin-top:30px}
+.r3-group>*+*{margin-top:18px}
+.r3-group .r3-room-h{padding-bottom:4px}
+.r3-rail{position:sticky;top:calc(var(--r3pin) + 10px);max-height:calc(100vh - var(--r3pin) - 20px);display:flex;flex-direction:column;border-top:3px solid var(--ink)}
+.r3-tabs{display:flex;flex-wrap:wrap;gap:4px;padding:10px 0;border-bottom:1px solid var(--rule)}
+.r3-tabs button{display:inline-flex;align-items:center;gap:6px;font:600 12.5px var(--sans);color:var(--muted);background:none;border:1px solid transparent;border-radius:999px;padding:5px 11px;cursor:pointer}
+.r3-tabs button .r3-crest{width:16px;height:16px}
+.r3-tabs button[aria-selected=true]{color:var(--ink);border-color:var(--ink);background:color-mix(in srgb,var(--ink) 6%,transparent)}
+.r3-pans{overflow:auto;padding:14px 4px 30px 0;overscroll-behavior:contain}
+.r3-pan>*+*{margin-top:16px}
+.r3-pan .cols2{display:block}
+.r3-pan .cols2>*+*{margin-top:12px}
+.r3-pan .agenda{display:block}
+.r3-pan .agenda .day{width:auto;margin:0 0 14px}
+.r3-open{display:none}
+.r3-close{display:none}
+
+/* phones */
+@media (max-width:860px){
+  .r3 :is(.r3-grid,.r3-news,.r3-group)>article.story{display:block}
+  .r3 :is(.r3-grid,.r3-news,.r3-group)>article.story>figure.art{margin:10px 0 12px}
+  .r3 :is(.r3-grid,.r3-news,.r3-group,.r3-lead) figure.art img{aspect-ratio:16/9}
+  .r3 :is(.r3-top,.r3-panes) .r3-lead .body{columns:1}
+  .r3 :is(.r3-top,.r3-panes) .r3-lead h2{font-size:27px}
+  .r3 .r3-grid,.r3 .r3-briefs,.r3-a .r3-cards,.r3-top,.r3-room-b,.r3-panes,.r3-news.r3-wide{grid-template-columns:minmax(0,1fr)}
+  .r3-a .r3-cards{gap:22px}
+  .r3-a .r3-folds{column-count:1}
+  .r3-nav{gap:4px 14px;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
+  .r3-nav .sep,.r3-nav button{display:none}
+  .r3-room-h .nm b{font-size:21px}
+  .r3-room-h .signal-slot{flex-basis:100%}
+  .r3-rail{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:50;max-height:82vh;background:var(--paper);border-top:0;border-radius:14px 14px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.25);padding:0 16px;transform:translateY(105%);transition:transform .28s cubic-bezier(.2,0,0,1)}
+  .r3-sheet .r3-rail{transform:none}
+  .r3-close{display:block;align-self:flex-end;margin:10px 0 0}
+  .r3-open{display:flex;justify-content:space-between;width:100%;padding:11px 14px;font-size:13.5px}
+}
