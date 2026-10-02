@@ -55,7 +55,7 @@ Live on the real site since 1 Oct 2026, beside the old design (v1), until Parth 
 | Bottom sheet on phones | sheet.js: from the bottom on a phone, in the middle on a laptop; used by sharing and by a market's detail (tap a slip or a line of "The market expects"). |
 | The Week Ahead in seven columns | Monday to Sunday; an empty day is a short rule. |
 | docs/DESIGN.md | Google's DESIGN.md format; `npm run design:lint` (0 errors). |
-| "Since 14:00" strip | Mocked only, for Parth to decide. |
+| "Since 14:00" strip | Built (2 Oct; Parth: "only as long as it does not impact the next day's 2 pm run"). On Page One, only when something changed after print: a market's close, a result not in at press time (checked against the edition's press-time snapshot), sunset or sunrise at home, a forecast that moved 5 points or more. Page-only, from live figures the page already reads: no change to the run, the edition, the validator or the live functions; each edition starts it again from its own print time. No news after press (it would need a new live source). |
 | Page One's weather "too cluttered" (2 Oct) | Same readings, three calm parts: the temperature with the outlook and "Feels · High · Low"; a flatter sun arc holding the time left, with sunrise and sunset at its ends; then rain (or the moon at night), air and humidity as label-over-figure cells, and the family's cities as a matching row. |
 
 ## QA

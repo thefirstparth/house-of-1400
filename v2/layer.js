@@ -233,9 +233,66 @@ function betsHTML(k = 3) {
   return `<ol class="bets" style="--c:var(--d-news)">${list.map(b => { const L = liveM.find(m => m.id === idOf(b)), o = [...((L?.outcomes?.length ? L.outcomes : b.outcomes) || [])].sort((x, y) => y.prob - x.prob)[0]; if (!o) return "";
     return `<li data-bet="${esc(b.id)}" tabindex="0" role="button" aria-label="${esc(b.title)}: in detail"><span class="t">${esc(vsV(b.title).replace(/^UEFA /, ""))}</span><span class="o"><b class="tnum">${Math.round(o.prob)}%</b><span>${esc(outcomeLabel(o.name))}</span><span class="bar"><i style="width:${Math.max(0, Math.min(100, o.prob))}%"></i></span></span></li>`; }).join("")}</ol>`;
 }
+// ---------------------------------------------------------------- Since the paper went out (Parth, 2 Oct)
+// What changed after this edition was printed, timestamped, from the live figures the page already reads: a market's
+// close, a result that was not in at press time (checked against the edition's own press-time snapshot), sunset or
+// sunrise at home, and a forecast that has moved since press. It is worked out in the page only: the daily run, the
+// edition and the live functions are untouched, and the next edition starts it again from its own print time. News
+// after press is not here (it would need a new live source). On a quiet afternoon there is no strip at all.
+function printedAt() {
+  if (E.printed_at) return Date.parse(E.printed_at);
+  const t = Object.values(E.snapshot || {}).map(x => x?.as_of).filter(x => x && x.slice(0, 10) >= E.date).sort().pop();
+  return t ? Date.parse(t) : NaN;
+}
+function sinceItems() {
+  if (ROUTE?.kind === "edition") return [];
+  const P = printedAt(), n = Date.now(), out = [], snap = E.snapshot || {}; if (!Number.isFinite(P)) return out;
+  const add = (t, when, desk, text, extra = {}) => { if (t > P && t <= n) out.push({ t, when, desk, text, ...extra }); };
+  // a market's close
+  const M = LIVE.markets?.value;
+  for (const name of ["Sensex", "S&P 500"]) {
+    const q = M?.indices?.find(x => x.name === name), ex = CFG.markets.indices.find(i => i.name === name)?.exchange, s = ex && session(ex);
+    if (!q || q.live || !s?.closeAt || !Number.isFinite(q.price) || !Number.isFinite(q.change_pct)) continue;
+    const at = s.closeAt.getTime(); if (q.session_date && q.session_date !== new Date(at).toLocaleDateString("en-CA", { timeZone: CFG.markets.hours[ex].tz })) continue;
+    add(at, istTime(s.closeAt.toISOString()), "money", `${name} closed at ${inr(q.price, name === "Sensex" ? 0 : 2)}, ${q.change_pct >= 0 ? "up" : "down"} ${Math.abs(q.change_pct).toFixed(2)}%${q.note ? `: ${q.note.replace(/^./, c => c.toLowerCase())}` : ""}.`);
+  }
+  // results that were not in at press time
+  const C = LIVE.crease?.value?.today, C0 = snap.crease?.value?.today;
+  if (C?.state === "done" && !(C0?.id === C.id && C0?.state === "done")) add(Math.min(n, Date.parse(LIVE.crease.as_of || n)), "Result", "sport", `India v ${C.opponent}, ${C.desc}: ${C.status}${C.score ? ` (${C.score})` : ""}.`);
+  const L = LIVE.football?.value?.last, L0 = snap.football?.value?.last;
+  if (L?.completed && L.score && L.id !== L0?.id) add(Math.min(n, Date.parse(LIVE.football.as_of || n)), "Result", "sport", `${CFG.follows.football_club.name} ${L.winner === "us" ? "won" : L.winner === "them" ? "lost" : "drew"} ${L.score.us}–${L.score.them} ${L.home ? "v" : "at"} ${L.opponent} (${L.competition}).`);
+  for (const p of LIVE.tennis_players?.value?.players || []) {
+    const x = p.last, x0 = (snap.tennis_players?.value?.players || []).find(q => q.name === p.name)?.last;
+    if (!x?.when_utc || (x0 && x0.when_utc === x.when_utc)) continue;
+    const sc = setScore(x.note);
+    add(Math.min(n, Date.parse(LIVE.tennis_players.as_of || n)), "Result", "sport", `${lastName(p.name)} ${x.won ? "beat" : "lost to"} ${x.opponent}${sc ? ` ${sc}` : ""}, ${x.event}${x.round ? `, ${x.round}` : ""}.`);
+  }
+  const F = LIVE.f1_last?.value, F0 = snap.f1_last?.value;
+  if (F?.results?.length && F.date !== F0?.date) {
+    const win = F.results[0], me = F.results.find(r => r.name === CFG.follows.f1_driver?.name);
+    add(Math.min(n, Date.parse(LIVE.f1_last.as_of || n)), "Result", "sport", `${win.name} won the ${F.name}${me && me !== win ? `; ${lastName(me.name)} ${me.pos ? `P${me.pos}` : me.status}` : ""}.`);
+  }
+  // sunset and sunrise at home
+  const c = LIVE.weather?.value?.cities?.[0], off = c?.utc_offset_seconds ?? 19800;
+  for (const d of (c?.daily || []).slice(0, 2)) for (const [k, v] of [["Sunset", d.sunset], ["Sunrise", d.sunrise]]) {
+    const t = localMs(v, off); if (Number.isFinite(t) && c?.current) add(t, istTime(new Date(t).toISOString()), "home", `${k} in ${CFG.paper.home_city}; now ${Math.round(c.current.temp)}° and ${wx(c.current.code)[1].toLowerCase()}.`);
+  }
+  // a forecast that has moved since press
+  const liveM = !LIVE.betting?.stale && LIVE.betting?.value?.markets || [], min = CFG.betting?.carry?.min_move_pts || 5;
+  const moves = (E.betting || []).map(b => { const Lm = liveM.find(m => m.id === (b.id?.includes(":") ? b.id : `pm:${b.id}`)), o = Lm && [...(Lm.outcomes || [])].sort((x, y) => y.prob - x.prob)[0], w = o && b.outcomes?.find(q => q.name === o.name)?.prob; return o && w != null ? { b, o, w, d: o.prob - w } : null; })
+    .filter(x => x && Math.abs(x.d) >= min).sort((x, y) => Math.abs(y.d) - Math.abs(x.d)).slice(0, 1);
+  for (const m of moves) add(Math.min(n, Date.parse(LIVE.betting.as_of || n)), istTime(LIVE.betting.as_of || new Date(n).toISOString()), "news", `${vsV(m.b.title).replace(/^UEFA /, "")} · ${outcomeLabel(m.o.name)} ${Math.round(m.o.prob)}% now (${Math.round(m.w)}% at press).`, { forecast: true, bet: m.b.id });
+  return out.sort((x, y) => x.t - y.t).slice(-4);
+}
+function sinceHTML() {
+  const it = sinceItems(); if (!it.length) return "";
+  const P = printedAt(), name = id => NEWDESKS.find(d => d.id === id)?.name || "";
+  return `<section class="after14" aria-label="Since the paper went out"><div class="lab"><span><i></i>Since ${esc(istTime(new Date(P).toISOString()))}</span><small>what changed after we printed</small></div><ol>${it.map(x => `<li style="--c:var(--d-${x.desk})"${x.bet ? ` data-bet="${esc(x.bet)}" tabindex="0" role="button"` : ""}><span class="w tnum">${esc(x.when)}<span>${x.forecast ? "Forecast" : esc(name(x.desk))}</span></span>${esc(x.text)}</li>`).join("")}</ol></section>`;
+}
+
 const blk = (id, desk, title, link, to, body) => (body ? `<section class="blk" id="p1-${id}" style="--c:var(--d-${desk})"><div class="bh"><h2>${title}</h2><a href="${deskHref(desk)}" data-desk="${desk}" data-to="${to}">${link} →</a></div><div data-p1="${id}">${body}</div></section>` : "");
 function pageOne() {
-  return `<div class="p1"><div class="p1body"><section class="news" id="p1-minute"><div class="bh" style="--c:var(--d-one)"><h2>The day in a minute</h2><a href="${deskHref("news")}" data-desk="news">All the news →</a></div><div data-p1="minute">${minuteHTML(p1lines)}</div><div class="eve" data-p1="evening">${eveningHTML()}</div></section>
+  return `<div class="p1"><div data-p1="since">${sinceHTML()}</div><div class="p1body"><section class="news" id="p1-minute"><div class="bh" style="--c:var(--d-one)"><h2>The day in a minute</h2><a href="${deskHref("news")}" data-desk="news">All the news →</a></div><div data-p1="minute">${minuteHTML(p1lines)}</div><div class="eve" data-p1="evening">${eveningHTML()}</div></section>
 <div class="stack">${blk("weather", "home", "Weather", "Sky &amp; Streets", "sky", weatherHTML())}${blk("sport", "sport", "Sport this week", "Sport", "fixtures", sportHTML(4))}</div>
 <div class="stack">${blk("money", "money", "Money", "The Ledger", "ledger", moneyHTML())}${blk("bets", "news", "The market expects", "Betting Window", "betting", betsHTML(3))}</div></div></div>`;
 }
@@ -245,7 +302,7 @@ function oneFoot() {
 }
 // Live figures repaint the blocks in place (the edition's own lines never change)
 function paintOne() {
-  const parts = { minute: () => minuteHTML(p1lines), evening: eveningHTML, weather: weatherHTML, sport: () => sportHTML(4), money: moneyHTML, bets: () => betsHTML(3) };
+  const parts = { since: sinceHTML, minute: () => minuteHTML(p1lines), evening: eveningHTML, weather: weatherHTML, sport: () => sportHTML(4), money: moneyHTML, bets: () => betsHTML(3) };
   for (const [k, fn] of Object.entries(parts)) { const el = document.querySelector(`[data-p1="${k}"]`); if (!el) continue; const h = fn(); if (el.dataset.html !== h) { el.innerHTML = h; el.dataset.html = h; } }
 }
 // The page fills the screen's width on every laptop and monitor, whatever its shape (Parth, 2 Oct: "too much white

@@ -172,6 +172,7 @@ Corners are 4px at most ({rounded.md}); small marks 3px. Pills, round cards and 
 - **Forecasts** (the market's view, the Betting Window, Page One's "The market expects", a market's sheet) sit in a dashed box marked "Forecast", so a price is never read as a result.
 - **Live figures** show their age when stale ("as of"), and flash once in ink when they change. Charts and bars draw themselves in once, the first time they are seen.
 - **The sheet** rises from the bottom on a phone and opens in the middle on a laptop: sharing a story (the paper's own card, with its drawing), a market's detail.
+- **Since the paper went out**: on Page One, a timestamped strip of what changed after print (a market close, a result, sunset, a moved forecast), only when something did.
 - **The archive** is a calendar: each printed day a tile with its lead, its item count, the Sensex's close as a dot, and the day's paper by desk as a strip of desk colours.
 
 ## Motion

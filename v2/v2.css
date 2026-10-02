@@ -479,3 +479,16 @@ html.vs-open{overflow:hidden}
 .p1 .wx2 .k{display:block;font:700 10.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .p1 .wx2 .cells b{display:inline-block;margin-top:1px;font:700 16px var(--sans);color:var(--ink)}
 .p1 .wx2 .cells small{display:block;font:500 11.5px/1.3 var(--sans);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ---------- Since the paper went out: a timestamped strip on Page One, only when something changed ---------- */
+.after14{display:grid;grid-template-columns:auto 1fr;align-items:stretch;border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);margin:14px 0 2px}
+.after14 .lab{display:flex;flex-direction:column;justify-content:center;padding:8px 18px 8px 0;border-right:1px solid var(--rule);font:700 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.after14 .lab small{display:block;margin-top:3px;font:500 11px var(--sans);letter-spacing:0;text-transform:none;color:var(--muted)}
+.after14 .lab i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--bad);margin-right:6px;vertical-align:1px}
+.after14 ol{list-style:none;margin:0;padding:0;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)}
+.after14 li{padding:8px 14px;border-left:1px solid var(--rule2);font:14px/1.35 var(--serif);color:var(--ink)}
+.after14 li:first-child{border-left:0}
+.after14 li[data-bet]{border:1px dashed color-mix(in srgb,var(--ink) 38%,transparent);border-radius:4px;margin:4px 0 4px 8px}
+.after14 .w{display:block;font:700 11.5px var(--sans);letter-spacing:.04em;color:var(--c)}
+.after14 .w span{color:var(--muted);font-weight:600;margin-left:6px;letter-spacing:.08em;text-transform:uppercase;font-size:10.5px}
+@media (max-width:760px){.after14{grid-template-columns:1fr}.after14 .lab{flex-direction:row;gap:8px;align-items:baseline;border-right:0;border-bottom:1px solid var(--rule2);padding:8px 0}.after14 ol{grid-auto-flow:row;grid-auto-columns:auto}.after14 li{border-left:0;border-top:1px solid var(--rule2);padding:8px 0}.after14 li:first-child{border-top:0}.after14 li[data-bet]{margin:6px 0;padding:8px 10px}}
