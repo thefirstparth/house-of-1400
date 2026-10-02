@@ -22,7 +22,7 @@
     },
     {
       "section": "Portugal",
-      "line": "Ronaldo walks out of the national camp",
+      "line": "Portugal win 4–2 in Denmark without Ronaldo",
       "target": "ronaldo-leaves-portugal-camp",
       "color": "--acc-rm"
     },
@@ -142,9 +142,9 @@
         "thread_id": "ronaldo-portugal-2026",
         "section": "pitch",
         "kicker": "Nations League",
-        "headline": "Ronaldo walks out of Portugal's camp after being dropped; Portugal win in Denmark without him",
+        "headline": "Portugal win 4–2 in Denmark without Ronaldo, who has still not said why he left",
         "byline": "AL JAZEERA · ESPN · THE GUARDIAN · 1 OCT",
-        "short": "Coach Jorge Jesus said Cristiano Ronaldo would not start in Copenhagen after he spent the win over Norway on the bench; Ronaldo then left the squad, saying on Instagram he would explain his reasons to the Portuguese people in due course. Jesus says there is no rift. Without him Portugal won 4–2 in Copenhagen on Thursday, with Gonçalo Ramos, who has taken his place, scoring one and setting up another; Rasmus Højlund celebrated a Denmark goal with Ronaldo's 'Siu'. Ronaldo has not yet given his reasons, and has not said whether he will play for Portugal again.",
+        "short": "Portugal won 4–2 in Copenhagen on Thursday without Cristiano Ronaldo. Gonçalo Ramos, who took his place, scored one and set up another, and Rasmus Højlund celebrated a Denmark goal with Ronaldo's ‘Siu’. Ronaldo left the squad on Wednesday after coach Jorge Jesus said he would not start, promising on Instagram to explain his reasons to the Portuguese people in due course. He has not done so yet, or said whether he will play for Portugal again. Jesus says there is no rift.",
         "why": {
           "text": "At 41, this may be how Ronaldo's international career ends.",
           "personal": false
@@ -171,6 +171,11 @@
           "denmark_portugal": "2-4",
           "statement": "not yet given",
           "future": "unclear"
+        },
+        "update": {
+          "since": "2026-10-01",
+          "new": "Portugal won 4–2 in Denmark without him; his promised statement has not come.",
+          "front": "Portugal, one of Parth's teams, played its first match without Ronaldo, and it may be the end of his 23 years with them."
         }
       },
       {
