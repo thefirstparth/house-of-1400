@@ -634,3 +634,6 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 ## 2 Oct 2026: "Since 14:00" on Page One, without touching the daily run (Parth: "only as long as it does not impact next day's 2 pm news run")
 - A strip of what changed after the edition was printed: a market's close, a result that was not in at press time (checked against the edition's own press-time snapshot), sunset or sunrise at home, a forecast that moved 5 points or more since press. Shown only when there is something; a quiet afternoon has no strip.
 - It is worked out in the page (v2/layer.js) from live figures the page already fetches. The daily run, its runbook and checks, the edition schema, the validator and the live functions are unchanged, and nothing new is fetched. Each new edition starts it again from its own print time. News after press is left out; it would need a new live source, which would be a separate decision.
+
+## 2 Oct 2026: Page One's header stays as it is (Parth: "nah, let it be empty")
+- Offered ears beside the nameplate (weather and markets; or the edition's details and a legend of the day's desk colours) and a colour legend under 1400. Parth chose to keep the header as it is: the run line, the nameplate alone in the middle, the tabs.
