@@ -73,6 +73,8 @@ D.prototype=R.prototype;D.now=function(){return R.now()+O};D.parse=R.parse;D.UTC
         wide: [...document.querySelectorAll("#main *, #dtop *")].filter(e => vis(e) && !e.closest("#dtabs") && e.getBoundingClientRect().right > VW + 1 && getComputedStyle(e).position !== "fixed").slice(0, 5).map(e => `${e.tagName.toLowerCase()}.${e.className}`.slice(0, 40)),
         tiny: [...new Set([...document.querySelectorAll("#main *, #dtop *, #dtabs *")].filter(e => vis(e) && [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()) && parseFloat(getComputedStyle(e).fontSize) * (parseFloat(document.getElementById("layout")?.style.zoom) || 1) < 11).map(e => `${e.tagName.toLowerCase()}.${String(e.className).split(" ")[0]} ${parseFloat(getComputedStyle(e).fontSize)}px`))].slice(0, 8),
         taps: innerWidth < 1000 ? [...document.querySelectorAll("#dtabs a, #main a, #main button, #dtop a, #dtop button")].filter(e => vis(e) && !e.closest("p, li, td, .agenda, .board, .tbl, .signal") && e.getBoundingClientRect().height < 32).slice(0, 6).map(e => `${e.textContent.trim().slice(0, 18)} ${Math.round(e.getBoundingClientRect().height)}px`) : [],
+        // the tallest drawing on the page as a share of the screen's height (2 Oct: never the whole screen)
+        art: Math.round(100 * Math.max(0, ...[...document.querySelectorAll("#main figure.art img")].filter(vis).map(i => i.getBoundingClientRect().height)) / innerHeight) + "%",
         mark: (() => { const c = document.querySelector("#bigplate canvas"); if (!c) return ""; const r = c.getBoundingClientRect(); return `${Math.round(r.left)}..${Math.round(r.right)} of ${VW}`; })(),
       };
     }, w);

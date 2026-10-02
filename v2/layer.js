@@ -242,6 +242,8 @@ const ZOOMED = ["dtop", "dtabs", "layout", "late", "pastbar"];
 function setZoom(z, w) {
   for (const id of ZOOMED) { const el = document.getElementById(id); if (el) el.style.zoom = z === 1 ? "" : String(z); }
   document.documentElement.style.setProperty("--pw", w ? `${Math.round(w)}px` : "");
+  // the screen's height in the page's own (zoomed) pixels, so a drawing can be held to part of the screen at any zoom
+  document.documentElement.style.setProperty("--vh", `${Math.round(innerHeight / z)}px`);
 }
 // A desk page: the type grows with the screen (zoom 1 to 1.8, by width and by height), the page takes the full width,
 // up to 1920px of layout so lines never run too long on an ultra-wide screen.

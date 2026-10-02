@@ -239,8 +239,17 @@ body.on-one .layout{padding-top:0}
 .dlead .lead-story h2{font-size:clamp(32px,3.8vw,50px);line-height:1.06;margin:6px 0 12px;max-width:40ch}
 .dlead .lead-story .deck{font-size:19px;max-width:60ch}
 .dlead .lead-story>figure.art{margin:10px 0 18px}
-.dlead .lead-story>figure.art img{width:100%}
-@media (min-width:900px){.dlead .lead-story:has(figure.art-wide)>.body{columns:2 320px;column-gap:40px}.dlead .lead-story>.body>*{break-inside:avoid-column}}
+/* Never taller than the screen (2 Oct: on a 3440px-wide monitor the full-width drawing filled the whole screen). The
+   16:9 drawing is held to 60% of the screen's height. On a landscape screen it sits beside the story: headline across,
+   the drawing on the left (64% of the width at most), the text on the right, so the lead reads in one screen. */
+#main figure.art img{width:auto;max-width:100%;max-height:calc(var(--vh,100vh) * .62)}
+@media (min-width:900px){
+ .dlead .lead-story:has(figure.art-wide){display:grid;grid-template-columns:minmax(0,min(64%,calc(var(--vh,100vh) * .6 * 16 / 9))) minmax(0,1fr);column-gap:40px;align-items:start}
+ .dlead .lead-story:has(figure.art-wide)>:not(figure.art):not(.body):not(.tools){grid-column:1/-1}
+ .dlead .lead-story:has(figure.art-wide)>figure.art{grid-column:1;grid-row:span 2;margin:6px 0 0}
+ .dlead .lead-story:has(figure.art-wide)>figure.art img{width:100%;max-height:none}
+ .dlead .lead-story:has(figure.art-wide)>.body,.dlead .lead-story:has(figure.art-wide)>.tools{grid-column:2}
+}
 
 /* ---------- The Fixture List: each day in sport groups, under a small label ---------- */
 .agenda li.sp{display:block;padding:12px 0 2px;border-bottom:0;font:700 10.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--d)}

@@ -617,3 +617,6 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 ## 2 Oct 2026: v2 on phones (Parth: "I use the website on mobile about 50% of the time, so QA properly")
 - QA now covers his phones (Nothing Phone 2, iPhone 17, 16 Pro, 16, 17 Pro Max, 16 Plus, 13, mini, SE; two landscapes), light and dark, every desk (v2/README.md). It found and fixed: Page One 11px to 48px wider than every phone (the foot links did not wrap) and The Ledger's board needing a sideways scroll on all of them; links and buttons too small to tap (now about 40px hit areas without moving the type); labels under 10px.
 - The wordmark is drawn from a fixed outline of Playfair's lining "1400" (v2/glyphs.py) instead of a font loaded into an SVG image, so it draws the same in Safari on an iPhone, with no font download for it.
+
+## 2 Oct 2026: a drawing is never taller than the screen (Parth, on a friend's ultra-wide monitor: "not acceptable")
+- In v2 the lead's 16:9 drawing ran the full page width; on a 3440px monitor that made it taller than the screen. Every drawing is now held to about 60% of the screen's height at any zoom, and on a landscape screen the lead's drawing sits beside the story (headline across, drawing left, text right). Phones keep the drawing across the column. v2/shot.mjs reports the tallest drawing as a share of the screen.
