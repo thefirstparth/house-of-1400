@@ -516,6 +516,12 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
       });
     }
   }
+  // The market holidays live in config (NSE's list, one year at a time): a daily run cannot add next year's, so it says
+  // so from December, and every day if this year's are missing (the Money line would miss a holiday)
+  { let HD = []; try { HD = read("config/house.json").markets?.hours?.India?.holidays || []; } catch {}
+    const y = Number(String(E.date).slice(0, 4)), has = yr => HD.some(h => String(h.date).startsWith(String(yr)));
+    if (y && !has(y)) warnings.push(`config: markets.hours.India.holidays has no ${y} dates; a build session should add NSE's list (DATA.md, nse holidays)`);
+    else if (y && String(E.date).slice(5) >= "12-01" && !has(y + 1)) warnings.push(`config: markets.hours.India.holidays has no ${y + 1} dates yet; a build session should add NSE's list when it is out`); }
   return { errors, warnings };
 }
 
