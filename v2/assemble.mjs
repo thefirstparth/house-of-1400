@@ -29,7 +29,7 @@ export const FONTS = () => [
 export function assemble({ app = read("public/app.js"), styles = read("public/styles.css") } = {}) {
   let js = app;
   const rep = (a, b) => { if (!js.includes(a)) throw new Error("v2: app.js anchor missing: " + a.slice(0, 80)); js = js.replace(a, () => b); };
-  const layer = `const GLYPHS = ${read("v2/glyphs.json").trim()};\n` + read("v2/sun.js") + "\n" + read("v2/layer.js") + "\n" + read("v2/sheet.js") + "\n" + read("v2/wordmark.js").replace(/^export /gm, "");
+  const layer = `const GLYPHS = ${read("v2/glyphs.json").trim()};\n` + read("v2/sun.js") + "\n" + read("v2/layer.js") + "\n" + read("v2/sheet.js") + "\n" + read("v2/ink.js").replace(/^export /gm, "") + "\n" + read("v2/wordmark.js").replace(/^export /gm, "");
   rep("function render() {", layer + "\nfunction render() {");
   // the desks: v2's own (config desks_v2), one desk to a page
   rep("function desksHTML(S) {", "function desksHTML_v1(S) {");
@@ -62,7 +62,7 @@ export function assemble({ app = read("public/app.js"), styles = read("public/st
   rep("  paintSignals();\n", "  paintSignals(); paintJump(); liveFx();\n");
   // Page One fits one screen and desk pages fill the width, with their masthead and tabs (layer.js, fitOne, fitDesk)
   rep("function fitMonitor() {", "function fitMonitor() {\n  return E && DESK.id === \"one\" ? fitOne() : fitDesk();");
-  rep("  render();\n  loadArt();", "  render();\n  loadArt(); showDesk(DESK.id); followSun(); dthemeLabel();");
+  rep("  render();\n  loadArt();", "  render();\n  loadArt(); showDesk(DESK.id); followSun(); dthemeLabel(); hereBoot();");
   rep("    await refreshLive();", "    await refreshLive(); fitMonitor();");
   // The Crease's next tour breaks only between its parts
   js = js.replace(/^.*<b>Next tour:<\/b>.*$/m, line => line.replace("<b>Next tour:</b> ", '<b>Next tour:</b> <span class="nw">').replace(/ · /g, '</span> · <span class="nw">').replace("</p>`", "</span></p>`"));

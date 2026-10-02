@@ -20,12 +20,12 @@ colors:
   desk-tech: "#6a3fb5"
   desk-money: "#9b2f6e"
   desk-off: "#876200"
-  night-paper: "#26231e"
-  night-sheet: "#2d2a24"
+  night-paper: "#131210"
+  night-sheet: "#1b1a17"
   night-ink: "#efe8d8"
   night-ink-2: "#d4ccba"
   night-muted: "#aca390"
-  night-rule: "#4a453c"
+  night-rule: "#3a3730"
   night-good: "#6fd49a"
   night-bad: "#ff9585"
   night-desk-news: "#a9c2ee"
@@ -134,7 +134,7 @@ One ink, one paper, and one colour per desk. Colour marks structure, never decor
 - **The desk colours** (News {colors.desk-news}, Close to Home {colors.desk-home}, Sport {colors.desk-sport}, Tech & AI {colors.desk-tech}, Money {colors.desk-money}, Off Duty {colors.desk-off}) mark a desk's structure only: its name, its tab, section rules and names, kickers, in-section tabs, market bars, the followed team's tint, and the wordmark's dots. Times, figures, "Show more", sources and other small links stay ink.
 - **Good** {colors.good} and **bad** {colors.bad} are data colours: up and down, wins and losses. No desk may use a green or a red, so a desk is never read as a result. Money is a claret pink (a financial paper's pink) for this reason.
 - Data keeps its own colours where the world has them: F1 team colours, club crests.
-- **Night** is newsprint under a lamp, never black: {colors.night-paper} paper, {colors.night-ink} cream ink, warm rules. Night follows the sun in Bengaluru (sunset to sunrise) unless the reader has chosen Day or Night by hand.
+- **Night** is a warm near-black, the old design's (Parth, 2 Oct): {colors.night-paper} paper, {colors.night-ink} cream ink, warm rules. Never a cold pure black. Night follows the sun in Bengaluru (sunset to sunrise) unless the reader has chosen Day or Night by hand.
 - Every pair of text and paper passes WCAG AA (4.5:1) in both modes; Off Duty's gold is the closest at 4.9:1 by day.
 
 ## Typography
@@ -167,12 +167,13 @@ Corners are 4px at most ({rounded.md}); small marks 3px. Pills, round cards and 
 
 ## Components
 
-- **The wordmark** on Page One: "1400" as a newsprint halftone, its dots shared among the desks, left to right in the tabs' order, each as wide as its share of the day's words, in the desk's colour. At rest it is still; every 7 seconds one swell sweeps across it; the pointer parts the dots; a tap re-forms them into the temperature, the sky in a word, the time and a name (config desks_v2.wordmark), and it returns to 1400. The desk pages' masthead and the pinned tab bar carry the same day in dots, still.
+- **The wordmark** on Page One: "1400" as a newsprint halftone, its dots shared among the desks, left to right in the tabs' order, each as wide as its share of the day's words, in the desk's colour. At rest it is still; every 7 seconds one swell sweeps across it; the pointer parts the dots; a tap re-forms them into the temperature, the sky in a word, the time and a name (config desks_v2.wordmark), and it returns to 1400. The desk pages' masthead and the pinned tab bar carry the same day in dots, still. Once per visit the figure is printed by a stamp: the forme's shadow falls, the ink lands unevenly and soaks in, the paper keeps a faint impression, specks fly, the shadow lifts (about two seconds). All day the live weather moves its ink (v2/ink.js): rain streaks with rings where drops meet dots and drips, lightning in a storm, a soft shadow away from the real sun on a clear day and a mirage above 33°, drifting cloud shadows, fog, snow settling on its top edges, wind leaning it, a dimmer figure with twinkling ink at night.
 - **Desk tabs**: one row, pinned; a 4px rule in each desk's colour, the name in capitals; the current tab is tinted. On a phone the row scrolls, starts at a whole tab and fades an edge only where a tab is cut.
 - **Forecasts** (the market's view, the Betting Window, Page One's "The market expects", a market's sheet) sit in a dashed box marked "Forecast", so a price is never read as a result.
 - **Live figures** show their age when stale ("as of"), and flash once in ink when they change. Charts and bars draw themselves in once, the first time they are seen.
 - **The sheet** rises from the bottom on a phone and opens in the middle on a laptop: sharing a story (the paper's own card, with its drawing), a market's detail.
-- **Since the paper went out**: on Page One, a timestamped list of what changed after print (a market close, a result, sunset, a moved forecast), only when something did; a block in the shortest column on a laptop, a strip across the top on a phone.
+- **Stop press** (since the paper went out): on Page One, a timestamped list of what changed after print (a market close, a result, sunset, a moved forecast), only when something did. On a laptop a box framed in ink in the shortest column, its "Stop press" label reversed out of ink, a red ring pulsing twice when the page opens; on a phone a strip across the top.
+- **Where I am**: a quiet switch in Page One's Weather head. Only on a tap does the browser ask for the reader's location; away from Bengaluru the block, the wordmark's ink and its tap cycle show the weather there, with Bengaluru and the family's cities in a row below.
 - **The archive** is a calendar: each printed day a tile with its lead, its item count, the Sensex's close as a dot, and the day's paper by desk as a strip of desk colours.
 
 ## Motion
@@ -186,7 +187,7 @@ Quick and quiet. Feedback 120ms; content (a sheet, a draw-in) 200 to 300ms, on c
 - **Do** let a quiet section stay short or leave it out. Never fill space with words about nothing happening.
 - **Do** check every change on a phone (390 to 440 wide, light and dark) and on a 3440px monitor before shipping (v2/shot.mjs).
 - **Don't** use green or red for anything that is not good or bad news, up or down.
-- **Don't** use pure black for night, pure white for day, shadows on cards, gradients, or corners rounder than 4px.
+- **Don't** use a cold pure black for night, pure white for day, shadows on cards, gradients, or corners rounder than 4px.
 - **Don't** load fonts from a third party, or set type below 10px on a phone.
 - **Don't** let a picture fill the screen, or anything run wider than it.
 - **Don't** link the wordmark to stories or show headlines on hover; it is the day's paper in dots, not a menu.

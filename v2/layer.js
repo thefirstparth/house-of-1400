@@ -189,8 +189,64 @@ function sportHTML(max = 5) {
 // The temperature with the outlook and the day's range; the sun's arc, flatter, holding the time left until sunset
 // (or sunrise) with the two times at its ends; then every reading as a label over a figure, in one grid, and the
 // family's cities in the same grid below.
+// ---------------------------------------------------------------- Weather where you are (Parth, 2 Oct)
+// "Can we not ask for live location on the web page itself and show the live weather there, wherever the person is
+// accessing it?" Only when the reader asks: "Where I am" in the Weather block's head asks the browser, once; the
+// point, rounded to about a kilometre, goes to the paper's own weather function (Open-Meteo, the place's name from
+// OpenStreetMap) and nowhere else, and nothing is stored but a note on this device that the reader said yes. Away from
+// home (more than 30 km from Bengaluru) the block shows the weather there, with Bengaluru and the family's cities in a
+// row below; the wordmark's ink and its tap cycle follow it too. At home nothing changes. A tap on it again turns it
+// off. If the browser says no or the weather cannot be had, the block stays on Bengaluru (a wrong or empty field is
+// never shown).
+const HERE_KEY = "h1400-here";
+let HERE = null, hereBusy = false, hereNote = "";
+const hereOn = () => { try { return localStorage.getItem(HERE_KEY) === "1"; } catch { return false; } };
+const homeAt = () => CFG.weather?.always?.[0] || { lat: 12.97, lon: 77.59 };
+const kmApart = (a, b) => { const r = Math.PI / 180, h = Math.sin((b.lat - a.lat) * r / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin((b.lon - a.lon) * r / 2) ** 2; return 12742 * Math.asin(Math.sqrt(h)); };
+const awayCity = () => (HERE?.current && hereOn() && kmApart(HERE, homeAt()) > 30 ? HERE : null);
+function locate(asked) {
+  if (!("geolocation" in navigator)) return;
+  hereBusy = asked; if (asked) hereRepaint();
+  navigator.geolocation.getCurrentPosition(async pos => {
+    try { localStorage.setItem(HERE_KEY, "1"); } catch {}
+    try {
+      const r = await fetch(`/api/live/weather?lat=${pos.coords.latitude.toFixed(2)}&lon=${pos.coords.longitude.toFixed(2)}`), j = await r.json();
+      const c = j.ok && j.value?.cities?.[0];
+      if (c?.current && Number.isFinite(c.current.temp)) { HERE = c; hereNote = ""; } else if (asked) hereNote = "The weather there is not in yet";
+    } catch { if (asked) hereNote = "The weather there is not in yet"; }
+    hereBusy = false; hereRepaint();
+  }, err => {
+    hereBusy = false;
+    if (err.code === 1) { try { localStorage.removeItem(HERE_KEY); } catch {} HERE = null; if (asked) hereNote = "Location is off for this site"; }
+    hereRepaint();
+  }, { enableHighAccuracy: false, timeout: 12000, maximumAge: 30 * 60e3 });
+}
+// On a later visit it follows the reader again by itself, but only where the browser says the permission still stands
+// (so the page never asks unbidden); it looks again every 15 minutes while open.
+async function hereBoot() {
+  if (!hereOn() || !("geolocation" in navigator)) return;
+  try { const p = await navigator.permissions?.query({ name: "geolocation" }); if (p?.state === "granted") locate(false); else if (p?.state === "denied") localStorage.removeItem(HERE_KEY); } catch {}
+  setInterval(() => { if (hereOn() && HERE) locate(false); }, 15 * 60e3);
+}
+function hereRepaint() { if (DESK.id === "one" && document.querySelector(".p1")) { paintOne(); fitMonitor(); } unmountMark?.setWeather?.(markWeather()); }
+function hereHead() {
+  if (!("geolocation" in navigator)) return "";
+  const away = awayCity(), on = hereOn() && HERE;
+  if (hereBusy) return `<span class="here busy">Finding you…</span>`;
+  if (hereNote) { const n = hereNote; setTimeout(() => { if (hereNote === n) { hereNote = ""; hereRepaint(); } }, 4000); return `<span class="here note">${esc(n)}</span>`; }
+  return on ? `<button type="button" class="here on" data-here="off" aria-pressed="true" title="Back to ${esc(CFG.paper.home_city || "Bengaluru")}">${away ? `${esc(away.name)} · ` : ""}where I am</button>`
+    : `<button type="button" class="here" data-here="on" aria-pressed="false" title="Show the weather where you are (your browser asks first)">Where I am</button>`;
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-here]"); if (!b) return; e.preventDefault(); if (b.dataset.here === "on") locate(true); else { try { localStorage.removeItem(HERE_KEY); } catch {} HERE = null; hereRepaint(); } });
+// What the wordmark's ink shows: the weather where the reader is, or at home
+function markWeather() {
+  const away = awayCity(), c = away || LIVE.weather?.value?.cities?.[0], h = homeAt();
+  if (!c?.current) return null;
+  return inkState({ code: c.current.code, temp: c.current.temp, wind: c.current.wind, lat: c.lat ?? h.lat, lon: c.lon ?? h.lon });
+}
+
 function weatherHTML() {
-  const W = LIVE.weather?.value?.cities, c = W?.[0]; if (!c?.current) return "";
+  const W = LIVE.weather?.value?.cities, away = awayCity(), c = away || W?.[0]; if (!c?.current) return "";
   const d0 = (c.daily || [])[0] || {}, off = c.utc_offset_seconds ?? 19800, n = Date.now();
   const rise = localMs(d0.sunrise, off), set = localMs(d0.sunset, off), DAY = 864e5;
   let sun = "";
@@ -207,13 +263,13 @@ function weatherHTML() {
     sun = `<div class="sun ${day ? "day" : "night"}"><svg class="arc ${day ? "day" : "night"}" viewBox="0 0 220 40" preserveAspectRatio="xMidYMax meet" role="img" aria-label="${day ? "Sunrise" : "Sunset"} ${t0}, ${day ? "sunset" : "sunrise"} ${t1}, ${hm(to - n)} to go"><polyline class="track" points="${full}"/><polyline class="done" points="${pts(30)}"/><line class="hz" x1="2" x2="218" y1="36.5" y2="36.5"/>${body}</svg>
 <p class="left tnum"><b>${hm(to - n)}</b> to ${day ? "sunset" : "sunrise"}</p><p class="ends tnum"><span>${day ? "Sunrise" : "Sunset"} ${t0}</span><span>${day ? "Sunset" : "Sunrise"} ${t1}</span></p></div>`;
   }
-  const O = LIVE.outlook?.value?.cities?.[0], head = (O && skyHeadline(O)) || wx(c.current.code)[1];
-  const air = c.air?.now, day = !isNight(Number(istTime(new Date(n).toISOString()).slice(0, 2)));
+  const O = away ? null : LIVE.outlook?.value?.cities?.[0], head = (O && skyHeadline(O)) || wx(c.current.code)[1];
+  const air = c.air?.now, day = away ? sunAt(c.lat, c.lon, n).alt > 0 : !isNight(Number(istTime(new Date(n).toISOString()).slice(0, 2)));
   const cell = (k, v, sub = "") => `<div><span class="k">${k}</span><b class="tnum">${v}</b>${sub ? `<small>${esc(sub)}</small>` : ""}</div>`;
   const reads = [day && d0.rain_prob != null ? cell("Rain", `${d0.rain_prob}%`, "chance today") : cell("Moon", `${Math.round(moonNow(n).lit * 100)}%`, "lit"),
     air != null ? cell("Air", String(air), airWord(air)) : "", c.current.humidity != null ? cell("Humidity", `${c.current.humidity}%`) : ""].join("");
-  const fam = (W || []).slice(1).filter(x => x.current).map(x => cell(esc(x.name), `${Math.round(x.current.temp)}°`, wx(x.current.code)[1].toLowerCase())).join("");
-  return `<div class="wx2"><div class="now"><span class="t tnum">${Math.round(c.current.temp)}°</span><div class="c"><b>${esc(head)}</b><span class="tnum">Feels ${Math.round(c.current.feels)}° · High ${Math.round(d0.max)}° · Low ${Math.round(d0.min)}°</span></div></div>
+  const fam = (W || []).slice(away ? 0 : 1).filter(x => x.current).map(x => cell(esc(x.name), `${Math.round(x.current.temp)}°`, wx(x.current.code)[1].toLowerCase())).join("");
+  return `<div class="wx2${away ? " away" : ""}">${away ? `<p class="wxplace">${esc(away.name)}${away.region && away.region !== away.name ? `<span>, ${esc(away.region)}</span>` : ""}<small>where you are</small></p>` : ""}<div class="now"><span class="t tnum">${Math.round(c.current.temp)}°</span><div class="c"><b>${esc(head)}</b><span class="tnum">Feels ${Math.round(c.current.feels)}° · High ${Math.round(d0.max)}° · Low ${Math.round(d0.min)}°</span></div></div>
 ${sun}<div class="cells">${reads}</div>${fam ? `<div class="cells kin">${fam}</div>` : ""}</div>${staleNote("weather")}`;
 }
 // Money (Parth, 1 Oct: "The % change is 1 day change? What do you show on a weekend?"): each figure's change on its
@@ -308,13 +364,13 @@ function sinceItems() {
 function sinceHTML() {
   const it = sinceItems(); if (!it.length) return "";
   const P = printedAt(), name = id => NEWDESKS.find(d => d.id === id)?.name || "";
-  return `<section class="after14" aria-label="Since the paper went out"><div class="lab"><span><i></i>Since ${esc(istTime(new Date(P).toISOString()))}</span><small>what changed after we printed</small></div><ol>${it.map(x => `<li style="--c:var(--d-${x.desk})"${x.bet ? ` data-bet="${esc(x.bet)}" tabindex="0" role="button"` : ""}><span class="w tnum">${esc(x.when)}<span>${x.forecast ? "Forecast" : esc(name(x.desk))}</span></span>${esc(x.text)}</li>`).join("")}</ol></section>`;
+  return `<section class="after14" aria-label="Since the paper went out"><div class="lab"><span><b class="stop">Stop press</b><i></i>Since ${esc(istTime(new Date(P).toISOString()))}</span><small>what changed after we printed</small></div><ol>${it.map(x => `<li style="--c:var(--d-${x.desk})"${x.bet ? ` data-bet="${esc(x.bet)}" tabindex="0" role="button"` : ""}><span class="w tnum">${esc(x.when)}<span>${x.forecast ? "Forecast" : esc(name(x.desk))}</span></span>${esc(x.text)}</li>`).join("")}</ol></section>`;
 }
 
-const blk = (id, desk, title, link, to, body) => (body ? `<section class="blk" id="p1-${id}" style="--c:var(--d-${desk})"><div class="bh"><h2>${title}</h2><a href="${deskHref(desk)}" data-desk="${desk}" data-to="${to}">${link} →</a></div><div data-p1="${id}">${body}</div></section>` : "");
+const blk = (id, desk, title, link, to, body, extra = "") => (body ? `<section class="blk" id="p1-${id}" style="--c:var(--d-${desk})"><div class="bh"><h2>${title}</h2>${extra}<a href="${deskHref(desk)}" data-desk="${desk}" data-to="${to}">${link} →</a></div><div data-p1="${id}">${body}</div></section>` : "");
 function pageOne() {
   return `<div class="p1"><div id="p1-since" data-p1="since">${sinceHTML()}</div><div class="p1body"><div class="stack c1"><section class="news" id="p1-minute"><div class="bh" style="--c:var(--d-one)"><h2>The day in a minute</h2><a href="${deskHref("news")}" data-desk="news">All the news →</a></div><div data-p1="minute">${minuteHTML(p1lines)}</div></section><div class="eve" id="p1-eve" data-p1="evening">${eveningHTML()}</div></div>
-<div class="stack c2">${blk("weather", "home", "Weather", "Sky &amp; Streets", "sky", weatherHTML())}${blk("sport", "sport", "Sport this week", "Sport", "fixtures", sportHTML(6))}</div>
+<div class="stack c2">${blk("weather", "home", "Weather", "Sky &amp; Streets", "sky", weatherHTML(), `<span class="bhx" data-p1="wxhead">${hereHead()}</span>`)}${blk("sport", "sport", "Sport this week", "Sport", "fixtures", sportHTML(6))}</div>
 <div class="stack c3">${blk("money", "money", "Money", "The Ledger", "ledger", moneyHTML())}${blk("bets", "news", "The market expects", "Betting Window", "betting", betsHTML(3))}</div></div></div>`;
 }
 function oneFoot() {
@@ -323,7 +379,7 @@ function oneFoot() {
 }
 // Live figures repaint the blocks in place (the edition's own lines never change)
 function paintOne() {
-  const parts = { since: sinceHTML, minute: () => minuteHTML(p1lines), evening: eveningHTML, weather: weatherHTML, sport: () => sportHTML(6), money: moneyHTML, bets: () => betsHTML(3) };
+  const parts = { wxhead: hereHead, since: sinceHTML, minute: () => minuteHTML(p1lines), evening: eveningHTML, weather: weatherHTML, sport: () => sportHTML(6), money: moneyHTML, bets: () => betsHTML(3) };
   for (const [k, fn] of Object.entries(parts)) { const el = document.querySelector(`[data-p1="${k}"]`); if (!el) continue; const h = fn(); if (el.dataset.html !== h) { el.innerHTML = h; el.dataset.html = h; } }
 }
 // The page fills the screen's width on every laptop and monitor, whatever its shape (Parth, 2 Oct: "too much white
@@ -426,10 +482,10 @@ const sharesLabel = shares => { const all = shares.reduce((a, x) => a + x.words,
 // What a tap on the wordmark cycles through (config desks_v2.wordmark), worked out at the moment of the tap
 const SKY1 = c => (c <= 1 ? "sun" : c <= 3 ? "Cloudy" : c <= 48 ? "Foggy" : c <= 57 ? "Drizzle" : c <= 67 || (c >= 80 && c <= 82) ? "Rainy" : c <= 77 || c === 85 || c === 86 ? "Snowy" : c >= 95 ? "Stormy" : "Cloudy");
 function markCycle() {
-  const w = LIVE.weather?.value?.cities?.[0]?.current, hh = Number(istTime(new Date().toISOString()).slice(0, 2));
+  const away = awayCity(), w = (away || LIVE.weather?.value?.cities?.[0])?.current, hh = Number(istTime(new Date().toISOString()).slice(0, 2));
   return (CFG.desks_v2?.wordmark?.cycle || ["1400"]).map(x => {
     if (x === "temperature") return w ? `${Math.round(w.temp)}°` : "";
-    if (x === "sky") { if (!w) return ""; const k = SKY1(w.code); return k === "sun" ? (isNight(hh) ? "Clear" : "Sunny") : k; }
+    if (x === "sky") { if (!w) return ""; const k = SKY1(w.code); return k === "sun" ? ((away ? sunAt(away.lat, away.lon, Date.now()).alt <= 0 : isNight(hh)) ? "Clear" : "Sunny") : k; }
     if (x === "time") return istTime(new Date().toISOString());
     return String(x);
   });
@@ -440,7 +496,9 @@ function mountMark() {
   const size = parseFloat(getComputedStyle(document.querySelector("#bigplate")).getPropertyValue("--np")) || 96;
   const shares = dayShares();
   n.setAttribute("aria-label", sharesLabel(shares));
-  mountWordmark(n, { size, shares, cycle: markCycle, homeAfter: CFG.desks_v2?.wordmark?.home_after_s || 6 }).then(u => { unmountMark = u; }).catch(() => {});
+  // the stamp prints the figure once per visit (a browser session), the first time Page One shows
+  let press = false; try { press = !sessionStorage.getItem("h1400-pressed"); sessionStorage.setItem("h1400-pressed", "1"); } catch {}
+  mountWordmark(n, { size, shares, cycle: markCycle, homeAfter: CFG.desks_v2?.wordmark?.home_after_s || 6, weather: markWeather, press }).then(u => { unmountMark = u; }).catch(() => {});
 }
 // The pinned tab bar: once the masthead is off the screen, Page One's tab shows the day in dots instead of its name.
 let tabObs = null;

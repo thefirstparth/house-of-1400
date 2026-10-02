@@ -173,7 +173,7 @@ async function textDots(text, size, W, H, g) {
 // At rest the figure is still and crisp. Every 7 seconds one swell sweeps across it; the pointer parts the dots while
 // it moves; a tap or click re-forms the dots into the next shape of the cycle, and the figure comes back to 1400 by
 // itself after a few seconds. It stops drawing whenever nothing moves, off screen, or in a hidden tab.
-export async function mountWordmark(el, { size, shares = [], cycle = () => ["1400"], homeAfter = 6 }) {
+export async function mountWordmark(el, { size, shares = [], cycle = () => ["1400"], homeAfter = 6, weather = null, press = false }) {
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const { W, H, g } = await screenFor(size), R = g * 0.6;
   const PX = Math.round(W * 0.2), PY = Math.round(H * 0.3), CW = W + 2 * PX, CH = H + 2 * PY;
@@ -184,11 +184,14 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
   el.style.touchAction = "manipulation";
   const ctx = c.getContext("2d");
   const S = shares.filter(x => x.words > 0);
-  let ink = "", colours = [];
-  const readInk = () => { const cs = getComputedStyle(document.documentElement); ink = cs.getPropertyValue("--ink").trim() || "#15140f"; colours = S.length ? S.map(x => cs.getPropertyValue(`--d-${x.desk}`).trim() || ink) : [ink]; };
+  let ink = "", colours = [], look = {};
+  const readInk = () => { const cs = getComputedStyle(document.documentElement); ink = cs.getPropertyValue("--ink").trim() || "#15140f"; colours = S.length ? S.map(x => cs.getPropertyValue(`--d-${x.desk}`).trim() || ink) : [ink];
+    look = { ink, colours, paper: cs.getPropertyValue("--paper").trim() || "#f3f1ea", muted: cs.getPropertyValue("--muted").trim() || ink, dark: document.documentElement.dataset.theme === "dark" }; };
   readInk();
   const scale = () => { const r = c.getBoundingClientRect(), z = r.width / CW || 1, k = Math.min(3, (devicePixelRatio || 1) * z); c.width = Math.round(CW * k); c.height = Math.round(CH * k); ctx.setTransform(k, 0, 0, k, 0, 0); };
   scale();
+  // the weather in the ink (v2/ink.js): fed every new shape's dots, set from the live weather where the reader is
+  const wink = typeof inkWeather === "function" && !reduced ? inkWeather({ W, H, g, R, PX, PY, CW, CH }) : null;
   // the particles: each has a home on the current shape, an offset from it, a speed, and its desk band
   let parts = [], bands = [];
   const place = (homes, from) => {
@@ -196,6 +199,8 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
     parts = order.map((h, i) => { const o = old?.[Math.floor(i * old.length / order.length)];
       return { x: h.x, y: h.y, base: h.base, px: o ? o.x + o.px - h.x : 0, py: o ? o.y + o.py - h.y : 0, vx: o ? o.vx + (Math.random() - 0.5) * g : 0, vy: o ? o.vy + (Math.random() - 0.5) * g : 0 }; });
     bands = bandsOf(parts, S);
+    bands.forEach((list, bi) => list.forEach(d => { d.bi = bi; d.wx = 0; d.wy = 0; d.wr = 1; d.wa = 1; d.inkv = 0.62 + Math.random() * 0.38; }));
+    wink?.parts(parts);
   };
   place(await textDots("1400", size, W, H, g));
   const dust = [...Array(reduced ? 0 : Math.round(CW * CH / 1500))].map(() => ({ x: Math.random() * CW, y: Math.random() * CH, r: 0.45 + Math.random() * 0.85, a: Math.random() < 0.3, vx: 0, vy: 0 }));
@@ -203,16 +208,57 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
   const at = e => { const r = c.getBoundingClientRect(), z = r.width / CW || 1; return [(e.clientX - r.left) / z - PX, (e.clientY - r.top) / z - PY]; };
   const field = (x, y, t) => [Math.sin(x * 0.021 + t * 0.8) + Math.sin(y * 0.05 - t * 0.6 + x * 0.008), Math.cos(x * 0.017 - t * 0.7) + Math.sin(y * 0.043 + t * 0.9)];
   const SWELL = 2.4;
+  // The stamp (Parth, 2 Oct: "implement the stamp, but make it more realistic and beautiful"): once per visit the
+  // figure is printed like a letterpress forme coming down on the page. Its shadow falls and darkens as it comes
+  // down; on contact the ink squashes out and lands unevenly, as a real impression does, then soaks in and evens out;
+  // the paper keeps a faint embossed impression for a moment; the nameplate gives a small thump; a few specks of ink
+  // fly from the edges and settle; and the shadow lifts away. About two seconds, then the figure rests as before.
+  const ST = { at: press && !reduced ? performance.now() / 1000 + 0.35 : -1, down: 0.24, specks: null, thumped: false };
+  const stampOn = t => ST.at > 0 && t - ST.at < 2.4;
+  function stampShadow(t) {
+    const s = t - ST.at; let k, sx, sy, sc;
+    if (s < ST.down) { k = Math.max(0, s / ST.down); sc = 1 + 0.16 * (1 - k); sx = g * 1.8 * (1 - k); sy = g * 2.4 * (1 - k); }
+    else if (s > 0.42 && s < 0.85) { const u = (s - 0.42) / 0.43; k = 1 - u; sc = 1 + 0.12 * u; sx = -g * 1.2 * u; sy = -g * 1.8 * u; }
+    else return;
+    const cx = W / 2, cy = H / 2;
+    ctx.globalAlpha = (look.dark ? 0.55 : 0.2) * k * k; ctx.fillStyle = look.dark ? "#000" : ink; ctx.beginPath();
+    for (const d of parts) { const rr = Math.min(d.base, 1.1) * R * sc * 1.15; if (rr < 0.3) continue; const x = PX + cx + (d.x - cx) * sc + sx, y = PY + cy + (d.y - cy) * sc + sy; ctx.moveTo(x + rr, y); ctx.arc(x, y, rr, 0, Math.PI * 2); }
+    ctx.fill(); ctx.globalAlpha = 1;
+  }
+  function stampEmboss(t) {
+    const s = t - ST.at - ST.down; if (s < 0) return;
+    const e = Math.exp(-s * 1.5); if (e < 0.03) return;
+    const pass = (dx, dy, col, a) => { ctx.globalAlpha = a * e; ctx.fillStyle = col; ctx.beginPath(); for (const d of parts) { const rr = Math.min(d.base, 1.15) * R * 1.12; if (rr < 0.3) continue; const x = PX + d.x + dx, y = PY + d.y + dy; ctx.moveTo(x + rr, y); ctx.arc(x, y, rr, 0, Math.PI * 2); } ctx.fill(); };
+    if (!look.dark) pass(-0.9, -0.9, "#fff", 0.85);
+    pass(1, 1.2, look.dark ? "#000" : ink, look.dark ? 0.6 : 0.16);
+    ctx.globalAlpha = 1;
+  }
+  function stampSpecks(t, dt) {
+    const s = t - ST.at - ST.down; if (s < 0) return;
+    if (!ST.specks) {
+      const edge = parts.filter(d => d.base > 0.6), cx = W / 2, cy = H / 2;
+      ST.specks = [...Array(26)].map(() => { const d = edge[Math.floor(Math.random() * edge.length)], a = Math.atan2(d.y - cy, d.x - cx) + (Math.random() - 0.5) * 0.9, v = 40 + Math.random() * 150; return { x: d.x, y: d.y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: 0.4 + Math.random() * 1.1, bi: d.bi, sat: Math.random() < 0.4 }; });
+      if (!ST.thumped) { ST.thumped = true; (el.closest("#bigplate") || el).animate?.([{ transform: "translateY(0)" }, { transform: "translateY(1.6px)" }, { transform: "translateY(0)" }], { duration: 170, easing: "cubic-bezier(.2,0,0,1)" }); }
+    }
+    const fade = Math.max(0, 1 - Math.max(0, s - 0.5) / 1.4);
+    for (const p of ST.specks) { const drag = Math.pow(0.0008, dt); p.vx *= drag; p.vy *= drag; p.x += p.vx * dt; p.y += p.vy * dt; }
+    for (const p of ST.specks) { ctx.globalAlpha = 0.8 * fade; ctx.fillStyle = colours[p.bi] || ink; ctx.beginPath(); ctx.arc(PX + p.x, PY + p.y, p.r, 0, Math.PI * 2); if (p.sat) ctx.arc(PX + p.x - p.vx * 0.01 - 2, PY + p.y - p.vy * 0.01 - 1, p.r * 0.45, 0, Math.PI * 2); ctx.fill(); }
+    ctx.globalAlpha = 1;
+  }
   function draw(now) {
     const t = now / 1000, dt = last ? Math.min(3, (now - last) / 16.67) : 1; last = now;
     const swell = (t - swellAt) < SWELL ? (t - swellAt) / SWELL : -1, busy = !!pointer && now - lastMove < 1200 || now - morphAt < 2500 || swell >= 0;
     energy += ((busy ? 1 : 0) - energy) * Math.min(1, 0.06 * dt);
     ctx.clearRect(0, 0, CW, CH);
+    const inked = !!wink?.on(), stamping = stampOn(t), ss = stamping ? t - ST.at - ST.down : 0;
+    if (inked) { wink.apply(t, dt / 60); wink.under(ctx, t, look); }
+    if (stamping) { stampShadow(t); stampEmboss(t); }
     const A = g * 0.42 * energy, Rp = H * 0.62, P = g * 0.9;
     const front = swell >= 0 ? swell * (W + 2 * PX) - PX : -1e9, band = W * 0.13;
     let moving = false;
     bands.forEach((list, bi) => {
       ctx.fillStyle = colours[bi] || ink; ctx.beginPath();
+      let faint = inked ? new Map() : null; // dots the weather (or the stamp's uneven ink) dims, drawn after at their own strength
       for (const d of list) {
         let r = d.base;
         if (!reduced) {
@@ -225,12 +271,22 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
           const wave = 0.5 + 0.5 * Math.sin(d.x * 0.035 - t * 1.6 + d.y * 0.012), moved = Math.min(1, Math.hypot(d.vx, d.vy) / g);
           r = d.base * (1 + energy * (0.32 * wave - 0.2) + 0.25 * s2) * (1 - 0.25 * moved);
         } else { d.px = 0; d.py = 0; }
-        const x = PX + d.x + d.px, y = PY + d.y + d.py, rr = Math.min(r, 1.15) * R;
+        let x = PX + d.x + d.px + d.wx, y = PY + d.y + d.py + d.wy, rr = Math.min(r * d.wr, 1.3) * R;
         if (rr < 0.25) continue;
+        if (stamping) {
+          if (ss < 0) continue; // the forme has not come down yet
+          const settle = Math.min(1, ss / 1.3), a = 1 - (1 - d.inkv) * (1 - settle * settle * (3 - 2 * settle));
+          rr *= 1 + 0.5 * Math.exp(-ss * 4.2); if (ss < 0.12) { x += (Math.random() - 0.5) * 0.9; y += (Math.random() - 0.5) * 0.9; }
+          if (a < 0.97) { const k = Math.round(a * 20) / 20; (faint || (faint = new Map())); if (!faint.has(k)) faint.set(k, []); faint.get(k).push(x, y, Math.min(rr, 1.6 * R)); continue; }
+        }
+        if (faint && d.wa < 0.97) { const k = Math.round(d.wa * 20) / 20; if (!faint.has(k)) faint.set(k, []); faint.get(k).push(x, y, rr); continue; }
         ctx.moveTo(x + rr, y); ctx.arc(x, y, rr, 0, Math.PI * 2);
       }
       ctx.fill();
+      if (faint) for (const [k, a] of faint) { ctx.globalAlpha = k; ctx.beginPath(); for (let i = 0; i < a.length; i += 3) { ctx.moveTo(a[i] + a[i + 2], a[i + 1]); ctx.arc(a[i], a[i + 1], a[i + 2], 0, Math.PI * 2); } ctx.fill(); ctx.globalAlpha = 1; }
     });
+    if (inked) wink.over(ctx, t, dt / 60, look);
+    if (stamping) stampSpecks(t, dt / 60);
     // loose ink drifts only while the figure moves
     for (const p of dust) {
       if (energy > 0.02) {
@@ -244,9 +300,17 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
     }
     for (const dark of [true, false]) { ctx.fillStyle = ink; ctx.globalAlpha = dark ? 0.55 : 0.28; ctx.beginPath(); for (const p of dust) if (p.a === dark) { ctx.moveTo(p.x + p.r, p.y); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); } ctx.fill(); }
     ctx.globalAlpha = 1;
-    return busy || energy > 0.01 || moving;
+    return busy || energy > 0.01 || moving || inked || stamping || (ST.at > 0 && t < ST.at);
   }
-  function frame(now) { raf = 0; if (!alive || !shown || document.hidden) return; if (draw(now)) raf = requestAnimationFrame(frame); else last = 0; }
+  // with only the weather moving, it draws at about 30 frames a second to spare a phone's battery
+  let lastDraw = 0;
+  function frame(now) {
+    raf = 0; if (!alive || !shown || document.hidden) return;
+    const calm = wink?.on() && energy < 0.01 && !pointer && now - morphAt > 2500;
+    if (calm && now - lastDraw < 31) { raf = requestAnimationFrame(frame); return; }
+    lastDraw = now;
+    if (draw(now)) raf = requestAnimationFrame(frame); else last = 0;
+  }
   const wake = () => { if (!reduced && !raf && alive && shown && !document.hidden) raf = requestAnimationFrame(frame); };
   // one swell every 7 seconds, while the figure is on screen
   const swellLoop = () => { clearTimeout(swellT); if (!alive) return; if (shown && !document.hidden && !reduced) { swellAt = performance.now() / 1000; wake(); } swellT = setTimeout(swellLoop, 7000); };
@@ -267,7 +331,13 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
   const redraw = () => { readInk(); draw(performance.now()); };
   const mo = new MutationObserver(redraw); mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   const mq = matchMedia("(prefers-color-scheme: dark)"); mq.addEventListener?.("change", redraw);
-  draw(performance.now()); last = 0; swellT = setTimeout(swellLoop, 1500);
-  return () => { alive = false; cancelAnimationFrame(raf); clearTimeout(swellT); clearTimeout(homeT); io.disconnect(); mo.disconnect(); mq.removeEventListener?.("change", redraw); document.removeEventListener("visibilitychange", onVis); removeEventListener("resize", onResize);
-    el.removeEventListener("pointermove", onMove); el.removeEventListener("pointerleave", onLeave); el.removeEventListener("pointerdown", onDown); };
+  // the weather: read now and every minute (the page's live weather refreshes every few minutes)
+  const readWeather = () => { if (!wink || !weather) return; let st = null; try { st = weather(); } catch {} wink.set(st); wake(); };
+  readWeather(); const wxT = setInterval(readWeather, 60000);
+  draw(performance.now()); last = 0; swellT = setTimeout(swellLoop, ST.at > 0 ? 3500 : 1500); if (ST.at > 0) wake();
+  const destroy = () => { clearInterval(wxT); undo(); };
+  destroy.setWeather = st => { if (wink) { wink.set(st); wake(); } };
+  return destroy;
+  function undo() { alive = false; cancelAnimationFrame(raf); clearTimeout(swellT); clearTimeout(homeT); io.disconnect(); mo.disconnect(); mq.removeEventListener?.("change", redraw); document.removeEventListener("visibilitychange", onVis); removeEventListener("resize", onResize);
+    el.removeEventListener("pointermove", onMove); el.removeEventListener("pointerleave", onLeave); el.removeEventListener("pointerdown", onDown); }
 }

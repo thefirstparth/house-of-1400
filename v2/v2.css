@@ -323,18 +323,18 @@ body.on-one .layout{padding-top:0}
 
 /* ---------- colour fixes and the night paper (2 Oct; docs/DESIGN.md) ----------
    Money is a claret pink (the colour of a financial paper), so it never reads as "up" green or "down" red; Off Duty's
-   gold is darker so its small labels pass WCAG AA (4.9:1). Night is newsprint under a lamp, not black: warm charcoal
-   paper, cream ink, warm rules; every desk colour and every figure colour is 7:1 or more on it. The wordmark reads
+   gold is darker so its small labels pass WCAG AA (4.9:1). Night is the old design's warm near-black (Parth, 2 Oct: "the black in v1 was better"),
+   cream ink, warm rules; every desk colour and every figure colour is 7:1 or more on it. The wordmark reads
    these same tokens, so it changes with them. */
 :root{--d-money:#9b2f6e;--d-off:#876200}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --paper:#26231e;--sheet:#2d2a24;--surface:#332f29;--surface2:#3c3831;--ink:#efe8d8;--ink2:#d4ccba;--muted:#aca390;--rule:#4a453c;--rule2:#3a362f;
-  --good:#6fd49a;--bad:#ff9585;--inverse:#efe8d8;--on-inverse:#26231e;--ink-c:#3a362f;--ink-on:#efe8d8;
+  --paper:#131210;--sheet:#1b1a17;--surface:#22201c;--surface2:#2c2a25;--ink:#efe8d8;--ink2:#d4ccba;--muted:#aca390;--rule:#3a3730;--rule2:#282621;
+  --good:#6fd49a;--bad:#ff9585;--inverse:#efe8d8;--on-inverse:#131210;--ink-c:#2c2a25;--ink-on:#efe8d8;
   --d-one:#efe8d8;--d-news:#a9c2ee;--d-home:#86cff3;--d-sport:#f4a06a;--d-tech:#c0aaf4;--d-money:#f0a3c9;--d-off:#e9c766;
   --shadow:0 10px 30px rgba(0,0,0,.35)}}
 :root[data-theme="dark"]{
-  --paper:#26231e;--sheet:#2d2a24;--surface:#332f29;--surface2:#3c3831;--ink:#efe8d8;--ink2:#d4ccba;--muted:#aca390;--rule:#4a453c;--rule2:#3a362f;
-  --good:#6fd49a;--bad:#ff9585;--inverse:#efe8d8;--on-inverse:#26231e;--ink-c:#3a362f;--ink-on:#efe8d8;
+  --paper:#131210;--sheet:#1b1a17;--surface:#22201c;--surface2:#2c2a25;--ink:#efe8d8;--ink2:#d4ccba;--muted:#aca390;--rule:#3a3730;--rule2:#282621;
+  --good:#6fd49a;--bad:#ff9585;--inverse:#efe8d8;--on-inverse:#131210;--ink-c:#2c2a25;--ink-on:#efe8d8;
   --d-one:#efe8d8;--d-news:#a9c2ee;--d-home:#86cff3;--d-sport:#f4a06a;--d-tech:#c0aaf4;--d-money:#f0a3c9;--d-off:#e9c766;
   --shadow:0 10px 30px rgba(0,0,0,.35)}
 
@@ -522,4 +522,30 @@ html.vs-open{overflow:hidden}
 .p1 .stack .after14 li{border-left:0;border-top:1px solid var(--rule2);padding:6px 0}
 .p1 .stack .after14 li:first-child{border-top:0}
 .p1 .stack .after14 li[data-bet]{margin:5px 0;padding:6px 10px}
+/* Weather where you are (layer.js hereHead): a quiet switch in the Weather block's head; away from home the place's
+   name heads the block */
+.p1 .bh .bhx{margin-left:auto;margin-right:12px;min-width:0}
+.p1 .here{font:600 11.5px var(--sans);letter-spacing:.02em;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.p1 .here::before{content:"";display:inline-block;width:7px;height:7px;margin-right:6px;border:1.5px solid currentColor;border-radius:50%;vertical-align:0}
+.p1 .here:hover{color:var(--ink)}
+.p1 .here.on{color:var(--c)}
+.p1 .here.on::before{background:currentColor}
+.p1 .here.busy,.p1 .here.note{cursor:default;font-style:italic;font-weight:500}
+.p1 .here.busy::before,.p1 .here.note::before{display:none}
+.wx2 .wxplace{margin:0 0 2px;font:700 11px var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--c)}
+.wx2 .wxplace span{font-weight:600;color:var(--muted)}
+.wx2 .wxplace small{margin-left:8px;font:500 11px var(--sans);letter-spacing:0;text-transform:none;color:var(--muted)}
+@media (pointer:coarse),(hover:none),(max-width:760px){.p1 .here{padding-block:11px;margin-block:-11px}}
+/* the Since block in a column is a Stop press box (Parth, 2 Oct: "can we highlight this a bit? Otherwise I might miss
+   it"): framed in ink, its label reversed out of ink, and a red ring that pulses twice when the page opens */
+.after14 .stop{display:none}
+.p1 .stack .after14{border:2px solid var(--ink);border-radius:4px;padding:0 12px 4px;background:var(--sheet);animation:stopin 1.1s cubic-bezier(.2,0,0,1) .8s 2 both}
+.p1 .stack .after14 .lab{margin:0 -12px 2px;padding:7px 12px;background:var(--ink);color:var(--paper);border:0}
+.p1 .stack .after14 .lab span{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.p1 .stack .after14 .stop{display:inline;font:800 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--paper)}
+.p1 .stack .after14 .lab i{margin:0 0 0 2px;background:var(--bad);animation:stopdot 2s ease-in-out infinite}
+.p1 .stack .after14 .lab span{font-weight:600;letter-spacing:.06em}
+@keyframes stopin{0%{outline:0 solid color-mix(in srgb,var(--bad) 60%,transparent);outline-offset:0}60%{outline:4px solid color-mix(in srgb,var(--bad) 30%,transparent);outline-offset:6px}100%{outline:4px solid transparent;outline-offset:10px}}
+@keyframes stopdot{0%,100%{opacity:1}50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.p1 .stack .after14,.p1 .stack .after14 .lab i{animation:none}}
 
