@@ -559,11 +559,11 @@ function markCycle() {
     return String(x);
   });
 }
-// "The HOUSE OF" on the centre line of what follows it (Parth, 2 Oct: "shouldn't the house of be vertically
-// centre-aligned with 24 here? Same for Clear ... with whatever comes next"). Measured, not guessed: the middle of the
-// capitals of HOUSE OF (from the font's own measure, at its baseline) against the middle of the ink the dots form; and
-// the gap from "OF" to the ink is the same for every shape, so a narrower shape draws the words along with it and the
-// nameplate stays centred. The words glide as the dots re-form.
+// "The HOUSE OF" on the centre line of 1400 (Parth, 2 Oct: "shouldn't the house of be vertically centre-aligned with
+// 24 here?"), set once and never moved (3 Oct: "the position of 'The House of' should never change; why is it changing
+// on every click?"). Measured, not guessed: the middle of the capitals of HOUSE OF (the font's own measure, at its
+// baseline) against the middle of the ink of 1400, and a fixed gap from "OF" to its first stroke. The shapes a tap
+// brings start where 1400 starts, on its baseline, and fit its box (wordmark.js textDots), so the words stay put.
 function capsMid(hof, z) {
   const p = document.createElement("span"); p.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
   hof.append(p); const base = p.getBoundingClientRect().top; p.remove();
@@ -613,7 +613,7 @@ function mountMark() {
   n.setAttribute("aria-label", sharesLabel(shares));
   // the stamp prints the figure once per visit (a browser session), the first time Page One shows
   let press = false; try { press = !sessionStorage.getItem("h1400-pressed"); sessionStorage.setItem("h1400-pressed", "1"); } catch {}
-  mountWordmark(n, { size, shares, cycle: markCycle, homeAfter: CFG.desks_v2?.wordmark?.home_after_s || 6, weather: markWeather, press, onShape: b => alignPlate(b) }).then(u => { unmountMark = u; alignPlate(); }).catch(() => {});
+  mountWordmark(n, { size, shares, cycle: markCycle, homeAfter: CFG.desks_v2?.wordmark?.home_after_s || 6, weather: markWeather, press, onShape: (b, text) => { if (text === "1400") alignPlate(b); } }).then(u => { unmountMark = u; alignPlate(); }).catch(() => {});
 }
 // The pinned tab bar: once the masthead is off the screen, Page One's tab shows the day in dots instead of its name.
 let tabObs = null;

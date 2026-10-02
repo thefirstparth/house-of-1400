@@ -160,7 +160,9 @@ async function textDots(text, size, W, H, g) {
     const hf = (T.y1 - T.y0) / Math.max(1, B.y1 - B.y0), sz = Math.min(size * hf, (size * ADV) / (advOf(1) || 1)), topY = H / 2 + size * 0.36 - (base0 - B.y0) * (sz / size);
     const c = document.createElement("canvas"); c.width = W; c.height = H;
     const x = c.getContext("2d", { willReadFrequently: true });
-    set(x, sz, W / 2 - advOf(sz) / 2, H / 2 + size * 0.36, topY);
+    // every shape starts where the ink of "1400" starts and grows to the right (Parth, 3 Oct: "the position of 'The
+    // House of' should never change"): the words stay put and the shapes come and go beside them
+    set(x, sz, T.x0 - (B.x0 - 10) * (sz / size), H / 2 + size * 0.36, topY);
     const d = x.getImageData(0, 0, W, H).data, I = new Float32Array((W + 1) * (H + 1)), W1 = W + 1;
     for (let y = 0; y < H; y++) { let r = 0; for (let i = 0; i < W; i++) { r += d[(y * W + i) * 4 + 3] / 255; I[(y + 1) * W1 + i + 1] = I[y * W1 + i + 1] + r; } }
     const cover = (cx, cy, h) => { const x0 = Math.max(0, Math.floor(cx - h)), x1 = Math.min(W, Math.ceil(cx + h)), y0 = Math.max(0, Math.floor(cy - h)), y1 = Math.min(H, Math.ceil(cy + h)); if (x1 <= x0 || y1 <= y0) return 0; return (I[y1 * W1 + x1] - I[y0 * W1 + x1] - I[y1 * W1 + x0] + I[y0 * W1 + x0]) / ((x1 - x0) * (y1 - y0)); };
