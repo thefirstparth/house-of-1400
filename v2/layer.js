@@ -324,14 +324,15 @@ function printedAt() {
 function sinceItems() {
   if (ROUTE?.kind === "edition") return [];
   const P = printedAt(), n = Date.now(), out = [], snap = E.snapshot || {}; if (!Number.isFinite(P)) return out;
-  const add = (t, when, desk, text, extra = {}) => { if (t > P && t <= n) out.push({ t, when, desk, text, ...extra }); };
+  // every row: its time (when it happened, or when the result came in), a label, the line (Parth, 2 Oct: "one alignment")
+  const add = (t, label, desk, text, extra = {}) => { if (t > P && t <= n) out.push({ t, when: istTime(new Date(t).toISOString()), label, desk, text, ...extra }); };
   // a market's close
   const M = LIVE.markets?.value;
   for (const name of ["Sensex", "S&P 500"]) {
     const q = M?.indices?.find(x => x.name === name), ex = CFG.markets.indices.find(i => i.name === name)?.exchange, s = ex && session(ex);
     if (!q || q.live || !s?.closeAt || !Number.isFinite(q.price) || !Number.isFinite(q.change_pct)) continue;
     const at = s.closeAt.getTime(); if (q.session_date && q.session_date !== new Date(at).toLocaleDateString("en-CA", { timeZone: CFG.markets.hours[ex].tz })) continue;
-    add(at, istTime(s.closeAt.toISOString()), "money", `${name} closed at ${inr(q.price, name === "Sensex" ? 0 : 2)}, ${q.change_pct >= 0 ? "up" : "down"} ${Math.abs(q.change_pct).toFixed(2)}%${q.note ? `: ${q.note.replace(/^./, c => c.toLowerCase())}` : ""}.`);
+    add(at, "Money", "money", `${name} closed at ${inr(q.price, name === "Sensex" ? 0 : 2)}, ${q.change_pct >= 0 ? "up" : "down"} ${Math.abs(q.change_pct).toFixed(2)}%${q.note ? `: ${q.note.replace(/^./, c => c.toLowerCase())}` : ""}.`);
   }
   // results that were not in at press time
   const C = LIVE.crease?.value?.today, C0 = snap.crease?.value?.today;
@@ -349,22 +350,38 @@ function sinceItems() {
     const win = F.results[0], me = F.results.find(r => r.name === CFG.follows.f1_driver?.name);
     add(Math.min(n, Date.parse(LIVE.f1_last.as_of || n)), "Result", "sport", `${win.name} won the ${F.name}${me && me !== win ? `; ${lastName(me.name)} ${me.pos ? `P${me.pos}` : me.status}` : ""}.`);
   }
+  // internationals: a result for a national team followed (config follows.national_teams), or for any match the
+  // Betting Window carried, that came in after print (Parth, 2 Oct: "for France v Italy, why are we showing the
+  // forecast and not the score?")
+  const IN = LIVE.intl_football?.value?.matches || [], IN0 = snap.intl_football?.value?.matches || [], nations = CFG.follows?.national_teams || [];
+  const LEAGUE = { "uefa.nations": "Nations League", "fifa.friendly": "friendly", "fifa.worldq.uefa": "World Cup qualifier", "uefa.euroq": "Euro qualifier", "fifa.world": "World Cup", "uefa.euro": "Euro" };
+  const betOn = m => (E.betting || []).some(b => b.title && b.title.includes(m.home) && b.title.includes(m.away));
+  const decided = [];
+  for (const m of IN) {
+    if (m.state !== "post" || !m.score || !(nations.includes(m.home) || nations.includes(m.away) || betOn(m))) continue;
+    if (IN0.find(x => x.home === m.home && x.away === m.away && x.when_utc === m.when_utc)?.state === "post") continue;
+    const lg = LEAGUE[m.league] || "";
+    add(Math.min(n, Math.max(Date.parse(m.when_utc) + 115 * 6e4, P + 6e4)), "Result", "sport", `${m.home} ${String(m.score).replace(/\s*-\s*/, "–")} ${m.away}${lg ? `, ${lg}` : ""}.`);
+    decided.push(m);
+  }
   // sunset and sunrise at home
   const c = LIVE.weather?.value?.cities?.[0], off = c?.utc_offset_seconds ?? 19800;
   for (const d of (c?.daily || []).slice(0, 2)) for (const [k, v] of [["Sunset", d.sunset], ["Sunrise", d.sunrise]]) {
-    const t = localMs(v, off); if (Number.isFinite(t) && c?.current) add(t, istTime(new Date(t).toISOString()), "home", `${k} in ${CFG.paper.home_city}; now ${Math.round(c.current.temp)}° and ${wx(c.current.code)[1].toLowerCase()}.`);
+    const t = localMs(v, off); if (Number.isFinite(t) && c?.current) add(t, "Weather", "home", `${k} in ${CFG.paper.home_city}; now ${Math.round(c.current.temp)}° and ${wx(c.current.code)[1].toLowerCase()}.`);
   }
   // a forecast that has moved since press
   const liveM = !LIVE.betting?.stale && LIVE.betting?.value?.markets || [], min = CFG.betting?.carry?.min_move_pts || 5;
-  const moves = (E.betting || []).map(b => { const Lm = liveM.find(m => m.id === (b.id?.includes(":") ? b.id : `pm:${b.id}`)), o = Lm && [...(Lm.outcomes || [])].sort((x, y) => y.prob - x.prob)[0], w = o && b.outcomes?.find(q => q.name === o.name)?.prob; return o && w != null ? { b, o, w, d: o.prob - w } : null; })
+  // a market at 99% or 1% has been decided: it is a result, not a forecast, and is never printed as one
+  const settled = Lm => (Lm.outcomes || []).some(o => o.prob >= 99 || (Lm.outcomes.length === 2 && o.prob <= 1));
+  const moves = (E.betting || []).filter(b => !decided.some(m => b.title?.includes(m.home) && b.title?.includes(m.away))).map(b => { const Lm = liveM.find(m => m.id === (b.id?.includes(":") ? b.id : `pm:${b.id}`)); if (!Lm || settled(Lm)) return null; const o = [...(Lm.outcomes || [])].sort((x, y) => y.prob - x.prob)[0], w = o && b.outcomes?.find(q => q.name === o.name)?.prob; return o && w != null ? { b, o, w, d: o.prob - w } : null; })
     .filter(x => x && Math.abs(x.d) >= min).sort((x, y) => Math.abs(y.d) - Math.abs(x.d)).slice(0, 1);
-  for (const m of moves) add(Math.min(n, Date.parse(LIVE.betting.as_of || n)), istTime(LIVE.betting.as_of || new Date(n).toISOString()), "news", `${vsV(m.b.title).replace(/^UEFA /, "")} · ${outcomeLabel(m.o.name)} ${Math.round(m.o.prob)}% now (${Math.round(m.w)}% at press).`, { forecast: true, bet: m.b.id });
+  for (const m of moves) add(Math.min(n, Date.parse(LIVE.betting.as_of || n)), "Forecast", "news", `${vsV(m.b.title).replace(/^UEFA /, "")} · ${outcomeLabel(m.o.name)} ${Math.round(m.o.prob)}% now (${Math.round(m.w)}% at press).`, { forecast: true, bet: m.b.id });
   return out.sort((x, y) => x.t - y.t).slice(-4);
 }
 function sinceHTML() {
   const it = sinceItems(); if (!it.length) return "";
   const P = printedAt(), name = id => NEWDESKS.find(d => d.id === id)?.name || "";
-  return `<section class="after14" aria-label="Since the paper went out"><div class="lab"><span><b class="stop">Stop press</b><i></i>Since ${esc(istTime(new Date(P).toISOString()))}</span><small>what changed after we printed</small></div><ol>${it.map(x => `<li style="--c:var(--d-${x.desk})"${x.bet ? ` data-bet="${esc(x.bet)}" tabindex="0" role="button"` : ""}><span class="w tnum">${esc(x.when)}<span>${x.forecast ? "Forecast" : esc(name(x.desk))}</span></span>${esc(x.text)}</li>`).join("")}</ol></section>`;
+  return `<section class="after14" aria-label="Since we printed"><div class="lab"><span><i></i>Since we printed<b class="tnum">${esc(istTime(new Date(P).toISOString()))}</b></span></div><ol>${it.map(x => `<li class="${x.forecast ? "fc" : ""}"${x.bet ? ` data-bet="${esc(x.bet)}" tabindex="0" role="button"` : ""}><span class="a14t tnum">${esc(x.when)}</span><span class="a14l">${esc(x.label || name(x.desk))}</span><span class="a14x">${esc(x.text)}</span></li>`).join("")}</ol></section>`;
 }
 
 const blk = (id, desk, title, link, to, body, extra = "") => (body ? `<section class="blk" id="p1-${id}" style="--c:var(--d-${desk})"><div class="bh"><h2>${title}</h2>${extra}<a href="${deskHref(desk)}" data-desk="${desk}" data-to="${to}">${link} →</a></div><div data-p1="${id}">${body}</div></section>` : "");

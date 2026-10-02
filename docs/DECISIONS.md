@@ -690,3 +690,9 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 - The tapped words are printed on a finer screen (0.72 of 1400's, with dots to match) so their thinner strokes stay readable; 1400 keeps its own. The sun's shadow and the mirage are drawn under 1400 only, never under a word.
 - The tap cycle (config desks_v2.wordmark.cycle) adds "feels" after the temperature: "Feels 31°", left out when it is the same as the reading.
 - QA (26 screens) after the one-line nameplate: every Mac, monitor, Windows laptop and iPad fits Page One on one screen except a 1080p laptop at 150% (scrolls a little at the type floor); story text 17.5 to 31.5px on desk pages; phones clean (the nameplate's canvas is clipped sideways, the whole figure in view on a 360px phone).
+
+## 2 Oct 2026: "Since we printed": one alignment, results before forecasts (Parth: "not correctly aligned"; "for France v Italy, why forecast and not the score?"; "I don't like the name Stop Press")
+- Every row is one grid: the time (a result's is when it came in), a label (Money, Result, Weather, Forecast) in small grey capitals, the line. Times in ink, no longer in desk colours. A forecast's label has a light dashed outline; the row is no longer an inset box.
+- Results before forecasts: an international that finished after print prints its score ("France 1–1 Italy, Nations League") when it involves a national team followed (config follows.national_teams) or a match the Betting Window carried; a market at 99% (or 1% of two) is decided and never prints as a forecast; a forecast whose match has a result is left out. France v Italy had printed "Draw 100% now (20% at press)" because the strip read only Madrid, India's cricket, tennis and F1 results and treated a settled market as an 80-point move.
+- The box is "Since we printed" (with the print time), not "Stop press".
+

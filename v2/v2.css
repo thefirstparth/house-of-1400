@@ -494,15 +494,11 @@ html.vs-open{overflow:hidden}
 /* ---------- Since the paper went out: a timestamped strip on Page One, only when something changed ---------- */
 .after14{display:grid;grid-template-columns:auto 1fr;align-items:stretch;border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);margin:14px 0 2px}
 .after14 .lab{display:flex;flex-direction:column;justify-content:center;padding:8px 18px 8px 0;border-right:1px solid var(--rule);font:700 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
-.after14 .lab small{display:block;margin-top:3px;font:500 11px var(--sans);letter-spacing:0;text-transform:none;color:var(--muted)}
 .after14 .lab i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--bad);margin-right:6px;vertical-align:1px}
 .after14 ol{list-style:none;margin:0;padding:0;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)}
 .after14 li{padding:8px 14px;border-left:1px solid var(--rule2);font:14px/1.35 var(--serif);color:var(--ink)}
 .after14 li:first-child{border-left:0}
-.after14 li[data-bet]{border:1px dashed color-mix(in srgb,var(--ink) 38%,transparent);border-radius:4px;margin:4px 0 4px 8px}
-.after14 .w{display:block;font:700 11.5px var(--sans);letter-spacing:.04em;color:var(--c)}
-.after14 .w span{color:var(--muted);font-weight:600;margin-left:6px;letter-spacing:.08em;text-transform:uppercase;font-size:10.5px}
-@media (max-width:760px){.after14{grid-template-columns:1fr}.after14 .lab{flex-direction:row;gap:8px;align-items:baseline;border-right:0;border-bottom:1px solid var(--rule2);padding:8px 0}.after14 ol{grid-auto-flow:row;grid-auto-columns:auto}.after14 li{border-left:0;border-top:1px solid var(--rule2);padding:8px 0}.after14 li:first-child{border-top:0}.after14 li[data-bet]{margin:6px 0;padding:8px 10px}}
+@media (max-width:760px){.after14{grid-template-columns:1fr}.after14 .lab{flex-direction:row;gap:8px;align-items:baseline;border-right:0;border-bottom:1px solid var(--rule2);padding:8px 0}.after14 ol{grid-auto-flow:row;grid-auto-columns:auto}.after14 li{border-left:0;border-top:1px solid var(--rule2);padding:8px 0}.after14 li:first-child{border-top:0}}
 
 /* ---------- Page One on a laptop: one screen at a large type size (Parth, 2 Oct, on a MacBook Air) ---------- */
 @media (min-width:761px){
@@ -512,10 +508,7 @@ html.vs-open{overflow:hidden}
  .p1end .foot{flex:0 1 auto;border-top:0;padding:9px 0;margin:0}
  /* the Since strip is one line: the label alone, each change with its time inline */
  .after14 .lab{flex-direction:row;align-items:center;padding:6px 16px 6px 0}
- .after14 .lab small{display:none}
  .after14 li{padding:6px 14px}
- .after14 li[data-bet]{margin:3px 0 3px 8px;padding:4px 12px}
- .after14 .w{display:inline;margin-right:8px}
 }
 /* the Since strip as a block in a column (laptops; balanceOne puts it in the shortest) */
 .p1 #p1-since:empty{display:none}
@@ -524,7 +517,6 @@ html.vs-open{overflow:hidden}
 .p1 .stack .after14 ol{grid-auto-flow:row;grid-auto-columns:auto}
 .p1 .stack .after14 li{border-left:0;border-top:1px solid var(--rule2);padding:6px 0}
 .p1 .stack .after14 li:first-child{border-top:0}
-.p1 .stack .after14 li[data-bet]{margin:5px 0;padding:6px 10px}
 /* Weather where you are (layer.js hereHead): a quiet switch in the Weather block's head; away from home the place's
    name heads the block */
 .p1 .bh .bhx{margin-left:auto;margin-right:12px;min-width:0}
@@ -539,13 +531,11 @@ html.vs-open{overflow:hidden}
 .wx2 .wxplace span{font-weight:600;color:var(--muted)}
 .wx2 .wxplace small{margin-left:8px;font:500 11px var(--sans);letter-spacing:0;text-transform:none;color:var(--muted)}
 @media (pointer:coarse),(hover:none),(max-width:760px){.p1 .here{padding-block:11px;margin-block:-11px}}
-/* the Since block in a column is a Stop press box (Parth, 2 Oct: "can we highlight this a bit? Otherwise I might miss
+/* the Since block in a column is a box that stands out (Parth, 2 Oct: "can we highlight this a bit? Otherwise I might miss
    it"): framed in ink, its label reversed out of ink, and a red ring that pulses twice when the page opens */
-.after14 .stop{display:none}
 .p1 .stack .after14{border:2px solid var(--ink);border-radius:4px;padding:0 12px 4px;background:var(--sheet);animation:stopin 1.1s cubic-bezier(.2,0,0,1) .8s 2 both}
 .p1 .stack .after14 .lab{margin:0 -12px 2px;padding:7px 12px;background:var(--ink);color:var(--paper);border:0}
 .p1 .stack .after14 .lab span{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.p1 .stack .after14 .stop{display:inline;font:800 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--paper)}
 .p1 .stack .after14 .lab i{margin:0 0 0 2px;background:var(--bad);animation:stopdot 2s ease-in-out infinite}
 .p1 .stack .after14 .lab span{font-weight:600;letter-spacing:.06em}
 @keyframes stopin{0%{outline:0 solid color-mix(in srgb,var(--bad) 60%,transparent);outline-offset:0}60%{outline:4px solid color-mix(in srgb,var(--bad) 30%,transparent);outline-offset:6px}100%{outline:4px solid transparent;outline-offset:10px}}
@@ -582,4 +572,15 @@ html.vs-open{overflow:hidden}
 .p1 .wx3 .reads b{font:700 15px var(--sans);color:var(--ink)}
 .p1 .wx3 .elsewhere{display:flex;flex-wrap:wrap;gap:2px 14px;margin:8px 0 0;font:500 12.5px var(--sans);color:var(--muted)}
 .p1 .wx3 .elsewhere b{font-weight:600;color:var(--ink2)}
+/* Since we printed (Parth, 2 Oct: "not correctly aligned"; the name "Stop press" dropped): every row is one grid, the
+   time, a label and the line, so all three start at the same place in every row; times in ink, labels in small grey
+   capitals; a forecast keeps a light dashed marker on its label, never an inset box */
+.after14 li{display:grid;grid-template-columns:3.2em 5.9em minmax(0,1fr);column-gap:10px;align-items:baseline}
+.after14 .a14t{font:700 12.5px var(--sans);color:var(--ink)}
+.after14 .a14l{justify-self:start;font:700 10.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.after14 li.fc .a14l{border:1px dashed color-mix(in srgb,var(--ink) 38%,transparent);border-radius:3px;padding:0 4px;margin-left:-5px}
+.after14 .a14x{min-width:0}
+.after14 .lab b{margin-left:8px;font-weight:700;letter-spacing:.04em}
+.p1 .stack .after14 .lab span{display:flex;align-items:center;gap:0;flex-wrap:wrap;font:800 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--paper)}
+.p1 .stack .after14 .lab i{margin:0 9px 0 0}
 
