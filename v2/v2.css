@@ -271,9 +271,10 @@ body.on-one .layout{padding-top:0}
 
 /* ---------- the run line's day and night switch ---------- */
 .drun .drr{display:inline-flex;align-items:baseline;gap:14px;min-width:0}
-#dtheme{font:600 12px var(--sans);background:none;color:var(--ink2);border:1px solid var(--rule);border-radius:3px;padding:2px 9px;cursor:pointer}
-#dtheme:hover{color:var(--ink);border-color:var(--ink2)}
-@media (max-width:720px){.drun{flex-wrap:nowrap;align-items:baseline}.drun>span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.drun span+span{margin-left:10px}#dtheme{padding:1px 7px}}
+#dtheme,#dauto{font:600 12px var(--sans);background:none;color:var(--ink2);border:1px solid var(--rule);border-radius:3px;padding:2px 9px;cursor:pointer}
+#dauto{border-style:dashed;margin-left:-8px}
+#dtheme:hover,#dauto:hover{color:var(--ink);border-color:var(--ink2)}
+@media (max-width:720px){.drun{flex-wrap:nowrap;align-items:baseline}.drun>span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.drun span+span{margin-left:10px}#dtheme,#dauto{padding:1px 7px}}
 
 /* ---------- the page width comes from the screen (the layer sets --pw with the zoom) ---------- */
 .sheet{max-width:var(--pw,1240px)}
@@ -310,10 +311,150 @@ body.on-one .layout{padding-top:0}
  .np{padding-block:4px;margin-block:-4px}
  .now a{display:inline-block;padding-block:7px;margin-block:-7px}
  .p1end .foot a.next{padding:10px 16px}
- #dtheme{padding:10px 12px;margin:-10px -4px}
+ #dtheme,#dauto{padding:10px 12px;margin:-10px -4px}
  .jump{row-gap:14px}
  .p1end .foot nav{row-gap:18px}
 }
 /* The Ledger's board: all five columns (market, level, 1D, 7D, 1M) on any phone, without a sideways scroll */
 @media (max-width:430px){.board{padding:10px 8px 8px}.board td,.board th{padding-inline:4px}.board td{font-size:13.5px}.board td.ix b{font-size:14.5px}}
 @media (max-width:380px){.board td{font-size:12.5px}.board td.ix b{font-size:13.5px}.board th{font-size:10.5px}}
+
+/* ---------- colour fixes and the night paper (2 Oct; docs/DESIGN.md) ----------
+   Money is a claret pink (the colour of a financial paper), so it never reads as "up" green or "down" red; Off Duty's
+   gold is darker so its small labels pass WCAG AA (4.9:1). Night is newsprint under a lamp, not black: warm charcoal
+   paper, cream ink, warm rules; every desk colour and every figure colour is 7:1 or more on it. The wordmark reads
+   these same tokens, so it changes with them. */
+:root{--d-money:#9b2f6e;--d-off:#876200}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#26231e;--sheet:#2d2a24;--surface:#332f29;--surface2:#3c3831;--ink:#efe8d8;--ink2:#d4ccba;--muted:#aca390;--rule:#4a453c;--rule2:#3a362f;
+  --good:#6fd49a;--bad:#ff9585;--inverse:#efe8d8;--on-inverse:#26231e;--ink-c:#3a362f;--ink-on:#efe8d8;
+  --d-one:#efe8d8;--d-news:#a9c2ee;--d-home:#86cff3;--d-sport:#f4a06a;--d-tech:#c0aaf4;--d-money:#f0a3c9;--d-off:#e9c766;
+  --shadow:0 10px 30px rgba(0,0,0,.35)}}
+:root[data-theme="dark"]{
+  --paper:#26231e;--sheet:#2d2a24;--surface:#332f29;--surface2:#3c3831;--ink:#efe8d8;--ink2:#d4ccba;--muted:#aca390;--rule:#4a453c;--rule2:#3a362f;
+  --good:#6fd49a;--bad:#ff9585;--inverse:#efe8d8;--on-inverse:#26231e;--ink-c:#3a362f;--ink-on:#efe8d8;
+  --d-one:#efe8d8;--d-news:#a9c2ee;--d-home:#86cff3;--d-sport:#f4a06a;--d-tech:#c0aaf4;--d-money:#f0a3c9;--d-off:#e9c766;
+  --shadow:0 10px 30px rgba(0,0,0,.35)}
+
+/* ---------- the pinned tab bar: Page One's tab becomes the day in dots once the masthead is off the screen ---------- */
+nav.dtabs a[data-desk="one"]{position:relative}
+nav.dtabs .tmk{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding-top:4px;opacity:0;transition:opacity .25s}
+nav.dtabs .tmk canvas{margin:0!important}
+nav.dtabs .tl{transition:opacity .25s}
+nav.dtabs.stuck a[data-desk="one"] .tl{opacity:0}
+nav.dtabs.stuck a[data-desk="one"] .tmk{opacity:1}
+@media (prefers-reduced-motion:reduce){nav.dtabs .tmk,nav.dtabs .tl{transition:none}}
+
+/* ---------- a live figure that changes flashes once, in ink (layer.js, liveFx) ---------- */
+@keyframes h1400-tick{from{background:color-mix(in srgb,var(--ink) 18%,transparent);box-shadow:0 0 0 3px color-mix(in srgb,var(--ink) 18%,transparent)}to{background:transparent;box-shadow:0 0 0 3px transparent}}
+.tick{animation:h1400-tick 1.6s cubic-bezier(.2,0,0,1);border-radius:2px}
+@media (prefers-reduced-motion:reduce){.tick{animation:none}}
+
+/* ---------- forecasts are boxed apart from facts (Parth, 2 Oct: "I love this") ----------
+   A market's prices are a forecast, not a result: every one sits in a dashed box marked "Forecast", so it never reads
+   as data. The market's view lines, the Betting Window and Page One's "The market expects". */
+.signal,#betting [data-live="betting"]>*:first-child,.p1 #p1-bets [data-p1="bets"]{border:1px dashed color-mix(in srgb,var(--ink) 38%,transparent);border-radius:4px}
+.signal{padding:10px 14px;margin:-4px 0 22px}
+#betting [data-live="betting"]>*:first-child{padding:12px 14px}
+.p1 #p1-bets [data-p1="bets"]{padding:10px 12px 4px}
+.signal .sg-k::after,.p1 #p1-bets .bh h2::after,#betting .sechead h2::after{content:"Forecast";display:inline-block;vertical-align:middle;margin-left:8px;padding:1px 6px;border:1px dashed color-mix(in srgb,var(--ink) 38%,transparent);border-radius:3px;font:600 10.5px/1.4 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+#betting .sechead h2::after{vertical-align:6px}
+
+/* ---------- the read time, in the run line ---------- */
+#r-read b{font-weight:600;color:var(--ink2)}
+.drun .sh{display:none}
+@media (max-width:720px){.drun .lg{display:none}.drun .sh{display:inline}#r-read .skim{display:none}}
+
+/* ---------- The Week Ahead: Monday to Sunday in seven columns ---------- */
+.week7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0;border-top:1px solid var(--ink)}
+.week7 .wcol{padding:10px 12px 14px;border-left:1px solid var(--rule);min-width:0}
+.week7 .wcol:first-child{border-left:0;padding-left:0}
+.week7 h4{margin:0 0 8px;font:700 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.week7 h4 span{color:var(--muted);font-weight:600;margin-right:4px}
+.week7 .today h4,.week7 .today h4 span{color:var(--d)}
+.week7 ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.week7 li{border-top:2px solid var(--c);padding-top:6px}
+.week7 .wt{font:700 12.5px var(--sans);color:var(--ink);margin-right:6px}
+.week7 .wk{font:700 10.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+.week7 li b{display:block;margin-top:2px;font:600 15px/1.3 var(--hl);color:var(--ink)}
+.week7 li p{margin:4px 0 0;font:14px/1.4 var(--serif);color:var(--ink2)}
+.week7 .wnone{display:block;width:18px;border-top:1.5px solid var(--rule);margin-top:10px}
+@media (max-width:1000px){.week7{grid-template-columns:1fr}.week7 .wcol{border-left:0;border-top:1px solid var(--rule);padding:10px 0;display:grid;grid-template-columns:64px 1fr;gap:10px}.week7 .wcol:first-child{border-top:0}.week7 h4{margin:2px 0 0}.week7 .wnone{margin-top:9px}}
+
+/* ---------- the sheet: from the bottom on a phone, in the middle on a laptop (sheet.js) ---------- */
+html.vs-open{overflow:hidden}
+.vsheet{position:fixed;inset:0;z-index:80}
+.vs-back{position:absolute;inset:0;background:color-mix(in srgb,var(--ink) 38%,transparent);opacity:0;transition:opacity .2s}
+.vs-panel{position:absolute;left:50%;top:50%;width:min(980px,calc(100vw - 48px));max-height:min(88vh,920px);overflow:auto;transform:translate(-50%,-46%);opacity:0;transition:transform .22s cubic-bezier(.2,0,0,1),opacity .2s;background:var(--sheet);color:var(--ink);border:1px solid var(--rule);border-top:3px solid var(--ink);border-radius:4px;padding:26px 28px 28px;box-shadow:var(--shadow)}
+.vsheet.in .vs-back{opacity:1}
+.vsheet.in .vs-panel{transform:translate(-50%,-50%);opacity:1}
+.vs-x{position:absolute;top:10px;right:12px;width:40px;height:40px;font:400 28px/1 var(--sans);background:none;border:0;color:var(--muted);cursor:pointer}
+.vs-x:hover{color:var(--ink)}
+.vs-h{margin:0 0 18px;font:600 30px/1.1 var(--hl);font-variation-settings:"opsz" 48}
+.vs-share{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;align-items:start}
+.vs-prev img{display:block;width:100%;max-height:68vh;object-fit:contain;object-position:top;border:1px solid var(--rule);border-radius:4px;background:var(--paper)}
+.vs-wait{font:italic 15px var(--serif);color:var(--muted);padding:40px 0}
+.vs-acts{display:grid;gap:10px}
+.vs-acts h3{margin:14px 0 0;font:700 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.vs-acts button,.vs-acts a,.vs-btn{display:block;text-align:center;font:600 15px var(--sans);color:var(--ink);background:none;border:1px solid var(--rule);border-radius:4px;padding:12px 14px;cursor:pointer;text-decoration:none}
+.vs-acts button:hover,.vs-acts a:hover,.vs-btn:hover{border-color:var(--ink)}
+.vs-acts .vs-pri,.vs-btn.vs-pri{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.vs-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vs-note{margin:8px 0 0;font:14px/1.45 var(--serif);color:var(--muted)}
+.vs-k{margin:0 0 6px;font:700 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.vs-fc{display:inline-block;margin-left:8px;padding:1px 6px;border:1px dashed color-mix(in srgb,var(--ink) 38%,transparent);border-radius:3px}
+.vs-t{font-size:26px;max-width:36ch}
+.vs-outs{list-style:none;margin:0 0 14px;padding:0;border:1px dashed color-mix(in srgb,var(--ink) 38%,transparent);border-radius:4px}
+.vs-outs li{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:10px 14px;border-top:1px solid var(--rule2)}
+.vs-outs li:first-child{border-top:0}
+.vs-outs .n{font:600 15px var(--sans)}
+.vs-outs b{font:700 18px var(--sans)}
+.vs-outs .bar{grid-column:1/-1;height:4px;background:var(--rule2);border-radius:2px;overflow:hidden}
+.vs-outs .bar i{display:block;height:100%;background:var(--d-news)}
+.vs-outs small{grid-column:1/-1;font:500 12.5px var(--sans)}
+.vs-outs small.up{color:var(--good)}.vs-outs small.dn{color:var(--bad)}
+.vs-meta{margin:0;font:500 13px var(--sans);color:var(--muted)}
+.vs-btn{margin-top:16px}
+[data-bet]{cursor:pointer}
+.p1 ol.bets li[data-bet]:hover .t{text-decoration:underline;text-underline-offset:3px}
+@media (max-width:760px){
+ .vs-panel{left:0;right:0;top:auto;bottom:0;width:auto;max-height:90vh;transform:translateY(100%);opacity:1;border-radius:12px 12px 0 0;border:0;border-top:3px solid var(--ink);padding:18px 16px calc(20px + env(safe-area-inset-bottom,0px))}
+ .vs-panel::before{content:"";display:block;width:40px;height:4px;border-radius:2px;background:var(--rule);margin:-8px auto 12px}
+ .vsheet.in .vs-panel{transform:translateY(0)}
+ .vs-share{grid-template-columns:1fr;gap:16px}
+ .vs-prev img{max-height:46vh}
+ .vs-h{font-size:26px}
+}
+@media (prefers-reduced-motion:reduce){.vs-back,.vs-panel{transition:none}}
+
+/* ---------- the archive, as a calendar ---------- */
+.asub{margin:10px 0 0;font:italic 16px/1.45 var(--serif);color:var(--muted);max-width:60ch}
+.amonth{margin-top:40px}
+.amonth h2{margin:0 0 10px;padding-top:9px;border-top:2px solid var(--ink);font:600 28px/1.1 var(--hl)}
+.awk,.acal{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.awk li{font:700 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:0 2px 4px}
+.acal li{min-height:150px;border-radius:4px;min-width:0}
+.acal .pad{visibility:hidden}
+.acal .none{border:1px dashed var(--rule)}
+.acal .none .adn,.acal .fut .adn{display:block;padding:8px 10px;font:600 14px var(--sans);color:var(--muted)}
+.acal .ed a{position:relative;display:flex;flex-direction:column;gap:6px;height:100%;padding:8px 10px 0;background:var(--sheet);border:1px solid var(--rule);border-radius:4px;color:var(--ink);text-decoration:none;overflow:hidden}
+.acal .ed a:hover{border-color:var(--ink)}
+.acal .ed a:hover b{text-decoration:underline;text-underline-offset:3px}
+.acal .adn{font:600 22px/1 var(--hl)}
+.acal .mk{position:absolute;top:10px;right:10px;font:600 11.5px var(--sans);color:var(--muted)}
+.acal .mk i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;vertical-align:1px}
+.acal .mk.rise i{background:var(--good)}.acal .mk.fall i{background:var(--bad)}
+.acal .fut{opacity:.45}
+.acal b{font:600 14.5px/1.3 var(--hl);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.acal .meta{margin-top:auto;font:500 11.5px var(--sans);color:var(--muted)}
+.acal .strip{display:flex;height:5px;margin:4px -10px 0;gap:1px}
+.acal .strip i{display:block}
+.acal .today>a,.acal .today.none{outline:2px solid var(--ink);outline-offset:2px}
+@media (max-width:760px){
+ .awk{display:none}
+ .acal{grid-template-columns:1fr;gap:10px}
+ .acal .pad,.acal .none,.acal .fut{display:none}
+ .acal li{min-height:0}
+ .acal .ed a{display:grid;grid-template-columns:44px 1fr;grid-template-areas:"dn b" "dn meta" "strip strip";gap:4px 10px;padding:10px 12px 0}
+ .acal .adn{grid-area:dn;font-size:26px}.acal b{grid-area:b;padding-right:64px}.acal .meta{grid-area:meta;margin:0 0 8px}.acal .strip{grid-area:strip;margin:0 -12px}
+}

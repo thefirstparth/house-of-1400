@@ -27,7 +27,7 @@ test("a changed app.js fails loudly, so the build ships v1 alone", () => {
   assert.throws(() => assemble({ app: readFileSync(root + "public/app.js", "utf8").replace("function render() {", "function draw() {") }), /anchor missing/);
 });
 
-test("the switch: v1 readers get the very same tags; v2 its own; only edition pages switch", () => {
+test("the switch: v1 readers get the very same tags; v2 its own; edition pages and the archive switch", () => {
   const html = readFileSync(root + "public/index.html", "utf8").replace('"/app.js"', '"/app.js?v=1"').replace('"/styles.css"', '"/styles.css?v=1"');
   const out = withV2(html, "<header id=\"dtop\"></header>", "/v2.js?v=2", "/v2.css?v=2");
   const writes = [...out.matchAll(/document\.write\(window\.H1400V2\?("(?:[^"\\]|\\.)*"):("(?:[^"\\]|\\.)*")\)/g)].map(m => [JSON.parse(m[1]), JSON.parse(m[2])]);
@@ -48,7 +48,8 @@ test("the switch: v1 readers get the very same tags; v2 its own; only edition pa
   assert.deepEqual(run("/", "?v2"), [true, "v2"]);
   assert.deepEqual(run("/", "", "v2"), [true, "v2"]);
   assert.deepEqual(run("/e/2026-09-25", "", "v2"), [true, "v2"]);
-  assert.deepEqual(run("/archive", "", "v2"), [false, "v2"]);
+  assert.deepEqual(run("/archive", "", "v2"), [true, "v2"]); // the archive calendar is in the new design (2 Oct)
+  assert.deepEqual(run("/editor", "", "v2"), [false, "v2"]);
   assert.deepEqual(run("/poster/today", "", "v2"), [false, "v2"]);
   assert.deepEqual(run("/", "?v1", "v2"), [false, null]);
 });

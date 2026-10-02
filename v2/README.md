@@ -38,6 +38,25 @@ Live on the real site since 1 Oct 2026, beside the old design (v1), until Parth 
 
 | "We figured we add colours based on the length of each section; why is it not there?" (2 Oct) | I had read "without colours" in the note above literally and removed them; the colours are back, always on: the figure is shared among the desks in the tabs' order, left to right, each as wide as its share of the day's words, in its own colour (1 Oct: News 26%, Sport 44%, Money 18%, Off Duty 7%, Tech & AI 3%, Close to Home 2%). Its accessible name lists the shares. |
 
+## Parth's picks from the design review (2 Oct; the full system is docs/DESIGN.md)
+| Pick | What it is now |
+|---|---|
+| Night, chosen before the page appears, newspaper-like | Follows the sun in Bengaluru (v2/sun.js) before the first paint; Night or Day by hand is kept until "Auto". Night is warm charcoal newsprint with cream ink, never black. |
+| Colour fixes | Off Duty's gold darker (4.9:1); Money is claret pink, so no desk is green or red. The wordmark reads the same tokens and changed with them. |
+| Small wordmark in the pinned tabs | Once the masthead scrolls away, Page One's tab shows the day in dots. |
+| A live figure flashes once | In ink, when a live figure changes; countdowns never flash. |
+| Forecasts boxed apart | The market's view, the Betting Window, Page One's "The market expects" and a market's sheet sit in a dashed box marked Forecast. All refresh every 5 minutes (Page One's now uses live prices too). |
+| Charts and bars draw in once | 300ms, the first time they are seen on a desk; never again on a live repaint. |
+| Read time in the run line | "15 min read · 1 to skim" (the skim figure is hidden on a phone). |
+| The wordmark rests, then swells | Still between swells (no drawing at all), one swell every 7 seconds. |
+| A tap re-forms the wordmark | 1400, the temperature, the sky in a word, the time, "Bhatia" (config desks_v2.wordmark), back to 1400 after 6 seconds. Letters from v2/glyphs.json (v2/glyphset.py). |
+| Archive calendar | /archive in v2: month calendars, a tile per printed day with the lead, items, the Sensex close and the day's desk strip (dist/archive-days.json, built from the editions). |
+| A story as a picture, with its drawing | The Share button opens a sheet with the paper's own card (nameplate in dots, desk rule, the drawing when there is one, headline, text, why it matters, sources); share, copy or download it; send the original story's link to WhatsApp, X, LinkedIn or Telegram. |
+| Bottom sheet on phones | sheet.js: from the bottom on a phone, in the middle on a laptop; used by sharing and by a market's detail (tap a slip or a line of "The market expects"). |
+| The Week Ahead in seven columns | Monday to Sunday; an empty day is a short rule. |
+| docs/DESIGN.md | Google's DESIGN.md format; `npm run design:lint` (0 errors). |
+| "Since 14:00" strip | Mocked only, for Parth to decide. |
+
 ## QA
 **Phones (Parth reads half the time on a phone: Nothing Phone 2, iPhone 17, 16 Pro and other iPhones):** `PHONES=nothing2,iphone17,iphone16pro,iphone16,iphone17promax,iphone16plus,iphone13,iphonemini,iphonese,iphone17land,nothing2land node v2/shot.mjs <tag> v2` shoots every desk on each at its own width and pixel density, with the height left by the browser's bars, light and dark. Phone checks measure against the screen's own width (a phone browser widens the page silently to fit anything that overflows), type under 11px, and links or buttons under 32px tall. 2 Oct: 154 pages, no errors, nothing wider than the screen, no clipped tables, no overlapping text; every small link has a hit area of about 40px (the masthead's two rows 30px, so they never overlap). Chromium only: Safari itself is not in this sandbox, which is one reason the wordmark no longer depends on font loading.
 

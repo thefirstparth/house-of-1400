@@ -29,7 +29,7 @@ export const FONTS = () => [
 export function assemble({ app = read("public/app.js"), styles = read("public/styles.css") } = {}) {
   let js = app;
   const rep = (a, b) => { if (!js.includes(a)) throw new Error("v2: app.js anchor missing: " + a.slice(0, 80)); js = js.replace(a, () => b); };
-  const layer = read("v2/layer.js") + "\n" + read("v2/wordmark.js").replace(/^export /gm, "");
+  const layer = `const GLYPHS = ${read("v2/glyphs.json").trim()};\n` + read("v2/sun.js") + "\n" + read("v2/layer.js") + "\n" + read("v2/sheet.js") + "\n" + read("v2/wordmark.js").replace(/^export /gm, "");
   rep("function render() {", layer + "\nfunction render() {");
   // the desks: v2's own (config desks_v2), one desk to a page
   rep("function desksHTML(S) {", "function desksHTML_v1(S) {");
@@ -47,11 +47,19 @@ export function assemble({ app = read("public/app.js"), styles = read("public/st
   const before = js;
   js = js.replace(/\n  h \+= `<div class="foot">[^\n]*/, "\n  h += deskFoot();");
   if (js === before) throw new Error("v2: foot anchor missing");
-  rep("  const [eL, eR] = earsHTML();", "  paintShell(); const [eL, eR] = earsHTML();");
-  rep("  paintSignals();\n", "  paintSignals(); paintJump();\n");
+  rep("  const [eL, eR] = earsHTML();", "  paintShell(); readLine(); const [eL, eR] = earsHTML();");
+  // the read time counts the live tables of the whole paper, not only the desk on screen
+  rep('  const modules = $$("#main [data-live]").length;', '  const modules = Object.values(S).join("").split("data-live=").length - 1;');
+  // the Betting Window's slips open their market in a sheet
+  rep('return `<li class="slip${n === 0 ? " lead" : ""}">', 'return `<li class="slip${n === 0 ? " lead" : ""}" data-bet="${esc(b.id || "")}" tabindex="0">');
+  // the archive is a calendar in the new design
+  rep('  if (ROUTE.kind === "archive") return renderArchive();', '  if (ROUTE.kind === "archive") return archiveV2();');
+  // The Week Ahead in seven columns, Monday to Sunday
+  rep('S.week = secWrap("week", weekBlock(),', 'S.week = secWrap("week", weekV2(),');
+  rep("  paintSignals();\n", "  paintSignals(); paintJump(); liveFx();\n");
   // Page One fits one screen and desk pages fill the width, with their masthead and tabs (layer.js, fitOne, fitDesk)
-  rep("function fitMonitor() {", "function fitMonitor() {\n  return DESK.id === \"one\" ? fitOne() : fitDesk();");
-  rep("  render();\n  loadArt();", "  render();\n  loadArt(); showDesk(DESK.id); dthemeLabel();");
+  rep("function fitMonitor() {", "function fitMonitor() {\n  return E && DESK.id === \"one\" ? fitOne() : fitDesk();");
+  rep("  render();\n  loadArt();", "  render();\n  loadArt(); showDesk(DESK.id); followSun(); dthemeLabel();");
   rep("    await refreshLive();", "    await refreshLive(); fitMonitor();");
   // The Crease's next tour breaks only between its parts
   js = js.replace(/^.*<b>Next tour:<\/b>.*$/m, line => line.replace("<b>Next tour:</b> ", '<b>Next tour:</b> <span class="nw">').replace(/ · /g, '</span> · <span class="nw">').replace("</p>`", "</span></p>`"));
@@ -66,16 +74,35 @@ export function assemble({ app = read("public/app.js"), styles = read("public/st
 
 // The switch in the page itself: the old design's links and script, or the new design's, written in place. For a
 // reader of v1 the page loads exactly the files it always did.
-export function withV2(html, head, js, css) {
+export function withV2(html, head, js, css, home = null) {
   const tag = s => JSON.stringify(s).replace(/<\//g, "<\\/");
-  const decide = `<script>(function(){var q=location.search,on=/[?&]v2(=|&|$)/.test(q),off=/[?&]v1(=|&|$)/.test(q),k="h1400-design",V=false;try{if(on)localStorage.setItem(k,"v2");if(off)localStorage.removeItem(k);V=!off&&(on||localStorage.getItem(k)==="v2")}catch(e){V=on}var p=location.pathname.replace(/\\/+$/,"")||"/";window.H1400V2=V&&(p==="/"||p==="/today"||/^\\/e\\/\\d{4}-\\d\\d-\\d\\d$/.test(p))})()</script>`;
+  const decide = `<script>(function(){var q=location.search,on=/[?&]v2(=|&|$)/.test(q),off=/[?&]v1(=|&|$)/.test(q),k="h1400-design",V=false;try{if(on)localStorage.setItem(k,"v2");if(off)localStorage.removeItem(k);V=!off&&(on||localStorage.getItem(k)==="v2")}catch(e){V=on}var p=location.pathname.replace(/\\/+$/,"")||"/";window.H1400V2=V&&(p==="/"||p==="/today"||p==="/archive"||/^\\/e\\/\\d{4}-\\d\\d-\\d\\d$/.test(p))})()</script>`;
   const a = html.indexOf('<link rel="preconnect" href="https://fonts.googleapis.com">'), m = html.match(/<link rel="stylesheet" href="\/styles\.css[^"]*">/);
   if (a < 0 || !m || m.index < a) throw new Error("index.html: the stylesheet links are not where v2 expects them");
   const v1head = html.slice(a, m.index + m[0].length), app = html.match(/<script type="module" src="\/app\.js[^"]*"><\/script>/);
   if (!app || !html.includes("<body>\n")) throw new Error("index.html: the script or body is not where v2 expects it");
   return html
-    .replace("</title>\n", () => `</title>\n${decide}\n`)
+    .replace("</title>\n", () => `</title>\n${decide}\n${home ? night(home) : ""}`)
     .replace(v1head, () => `<script>document.write(window.H1400V2?${tag(`<link rel="stylesheet" href="${css}">`)}:${tag(v1head)})</script>`)
     .replace("<body>\n", () => `<body>\n<script>if(window.H1400V2)document.write(${tag(head)})</script>\n`)
     .replace(app[0], () => `<script>document.write(window.H1400V2?${tag(`<script type="module" src="${js}"></script>`)}:${tag(app[0])})</script>`);
+}
+
+// Night by the sun (Parth, 2 Oct: "auto-dark at night, chosen before the page appears"): before the first paint, a v2
+// page with no theme chosen on this device takes day or night from the home city's sunrise and sunset. A choice made
+// with the run line's Night/Day button (stored as h1400-theme) wins until "Auto" clears it.
+const night = ({ lat, lon }) => `<script>${read("v2/sun.js").replace(/^\/\/.*\n/gm, "")}(function(){if(!window.H1400V2)return;try{if(localStorage.getItem("h1400-theme"))return}catch(e){}document.documentElement.setAttribute("data-theme",h1400Day(${Number(lat)},${Number(lon)},Date.now())[0]?"light":"dark")})()</script>\n`;
+
+// The archive calendar's days (Parth, 2 Oct), worked out at build time from the editions themselves, so the daily run
+// writes nothing new: the lead, how many items, the Sensex close, and the day's paper by desk (as the wordmark has it).
+export async function archiveDays(editions, cfg, count) {
+  const { storiesFromEdition } = await import("./wordmark.js");
+  const desks = (cfg.desks_v2?.desks || []).filter(d => d.id !== "one");
+  return editions.map(E => {
+    const pieces = storiesFromEdition(E, desks), total = pieces.reduce((a, p) => a + p.words, 0) || 1;
+    const sx = E.snapshot?.markets?.value?.indices?.find(i => i.name === "Sensex");
+    return { date: E.date, no: E.edition_no, lead: E.front?.lead?.headline || "", items: count(E),
+      sensex: Number.isFinite(sx?.change_pct) ? Math.round(sx.change_pct * 100) / 100 : null,
+      desks: desks.map(d => [d.id, Math.round(1000 * pieces.filter(p => p.desk === d.id).reduce((a, p) => a + p.words, 0) / total) / 10]).filter(x => x[1] > 0) };
+  });
 }

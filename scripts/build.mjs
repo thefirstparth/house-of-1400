@@ -79,14 +79,19 @@ for (const f of ["app.js", "styles.css"]) {
 // them, and only the edition pages (/, /today, /e/<date>) use it. A v2 that cannot be built never fails the build:
 // the paper ships in the old design alone.
 try {
-  const { assemble, withV2 } = await import("../v2/assemble.mjs");
+  const { assemble, withV2, archiveDays } = await import("../v2/assemble.mjs");
+  {
+    const { allItems } = await import("./validate.mjs");
+    const eds = readdirSync("content/editions").filter(f => /^\d{4}-\d\d-\d\d\.json$/.test(f)).sort().map(f => JSON.parse(readFileSync(`content/editions/${f}`, "utf8")));
+    writeFileSync("dist/archive-days.json", JSON.stringify(await archiveDays(eds, fullConfig, e => { try { return allItems(e).length; } catch { return 0; } })));
+  }
   const v2 = assemble();
   writeFileSync("dist/v2.js", v2.js);
   writeFileSync("dist/v2.css", v2.css);
   mkdirSync("dist/fonts", { recursive: true });
   for (const f of readdirSync("v2/fonts")) cpSync(`v2/fonts/${f}`, `dist/fonts/${f}`);
   const ver = f => createHash("sha256").update(readFileSync(`dist/${f}`)).digest("hex").slice(0, 10);
-  html = withV2(html, v2.head, `/v2.js?v=${ver("v2.js")}`, `/v2.css?v=${ver("v2.css")}`);
+  html = withV2(html, v2.head, `/v2.js?v=${ver("v2.js")}`, `/v2.css?v=${ver("v2.css")}`, fullConfig.weather?.always?.[0]);
   console.log("build: v2 ready (behind ?v2)");
 } catch (e) { console.warn(`build: v2 skipped, the paper ships in the old design only: ${e.message}`); }
 writeFileSync("dist/index.html", html);

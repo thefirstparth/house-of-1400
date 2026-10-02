@@ -626,3 +626,7 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 2 Oct 2026: the desk pages' small 1400 carries the day's split too, still (Parth: "can the logo change every day based on the split ... this can be static")
 - On every desk page the masthead's "1400" is the same day in dots as Page One: the desks' shares of the day's words, left to right in the tabs' order, each in its colour. It does not move, at the masthead's size, on a finer screen of dots so it stays crisp.
+
+## 2 Oct 2026: the design review's picks, built into v2 (Parth went through the list item by item)
+- Built: night by the sun before the first paint, as warm newsprint (never black); Off Duty's gold darkened and Money moved to claret pink so no desk is green or red; the day in dots in the pinned tab bar; live figures flash once; forecasts in dashed "Forecast" boxes (all live every 5 minutes); charts draw in once; the read time in the run line; the wordmark rests and swells, and a tap cycles 1400, the temperature, the sky, the time and "Bhatia"; the archive as a calendar; a story shared as the paper's own card with its drawing; one sheet for detail (bottom on phones); the Week Ahead in seven columns; docs/DESIGN.md in Google's format. Details in v2/README.md.
+- Not built: the "Since 14:00" strip, mocked for Parth to decide. Its market close, results and weather can come from the live data the page already has; news after press time would need a new live source.

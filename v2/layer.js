@@ -52,12 +52,14 @@ function paintShell() {
 }
 let tagline = "";
 function shellStatic() {
-  $("#r-date").textContent = longDate(E.date);
+  $("#r-date").innerHTML = `<span class="lg">${esc(longDate(E.date))}</span><span class="sh">${esc(new Date(E.date + "T12:00:00+05:30").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "Asia/Kolkata" }))}</span>`;
   $("#r-no").textContent = `No. ${E.edition_no}`;
   $("#r-print").textContent = E.printed_at ? `Printed ${istTime(E.printed_at)} IST` : "";
   tagline = `${esc(CFG.paper.motto)} · edited by ${esc(CFG.paper.editor.signature.replace(", Editor", ""))}`;
   $("#r-tag").innerHTML = tagline;
-  $("#dtabs ol").innerHTML = NEWDESKS.map(d => `<li><a href="${deskHref(d.id)}" data-desk="${d.id}" style="--c:var(--d-${d.id})"${d === DESK ? ' aria-current="page"' : ""}>${esc(d.name)}</a></li>`).join("");
+  // Page One's tab carries a small, still day in dots, shown once the masthead has scrolled away (Parth, 2 Oct)
+  $("#dtabs ol").innerHTML = NEWDESKS.map(d => `<li><a href="${deskHref(d.id)}" data-desk="${d.id}" style="--c:var(--d-${d.id})"${d === DESK ? ' aria-current="page"' : ""}>${d.id === "one" ? `<span class="tl">${esc(d.name)}</span><span class="tmk" aria-hidden="true"></span>` : esc(d.name)}</a></li>`).join("");
+  tabMark();
   // Phone tabs (review, 2 Oct): the current tab starts the row, so no sliver of the one before it shows; an edge fades
   // only where a tab is cut by it, so the row reads as one that scrolls.
   const ol = $("#dtabs ol"), fade = () => {
@@ -99,7 +101,7 @@ function deskFoot() {
     `<div class="nextdesk"><a href="${deskHref(nx.id)}" data-desk="${nx.id}" style="--c:var(--d-${nx.id})">Next: <b>${esc(nx.name)}</b> →</a></div>` + footLine();
 }
 const lastDesk = () => NEWDESKS.at(-1)?.id || "off";
-const footNav = () => `<nav>${E.desk?.length ? `<a href="${deskHref(lastDesk())}" data-desk="${lastDesk()}" data-to="desk" data-open="desk">${esc(sec("desk")?.name || "Your Desk")}</a>` : ""}<a href="/editor">The editor and letters</a><a href="/archive">Archive</a><a href="?v1" data-v1>The old design</a></nav>`;
+const footNav = () => `<nav>${E?.desk?.length ? `<a href="${deskHref(lastDesk())}" data-desk="${lastDesk()}" data-to="desk" data-open="desk">${esc(sec("desk")?.name || "Your Desk")}</a>` : ""}<a href="/editor">The editor and letters</a><a href="/archive">Archive</a><a href="?v1" data-v1>The old design</a></nav>`;
 const footLine = () => `<footer class="dfoot">${footNav()}<span>${esc(`The House of 1400 · ${longDate(E.date)} · No. ${E.edition_no}`)}</span></footer>`;
 // The desk's sections in order, with the lead's section first when the lead is on this desk
 function deskOrder() {
@@ -217,8 +219,10 @@ function betsPick(k) {
 }
 function betsHTML(k = 3) {
   const list = betsPick(k); if (!list.length) return "";
-  return `<ol class="bets" style="--c:var(--d-news)">${list.map(b => { const o = [...(b.outcomes || [])].sort((x, y) => y.prob - x.prob)[0]; if (!o) return "";
-    return `<li><span class="t">${esc(vsV(b.title).replace(/^UEFA /, ""))}</span><span class="o"><b class="tnum">${Math.round(o.prob)}%</b><span>${esc(outcomeLabel(o.name))}</span><span class="bar"><i style="width:${Math.max(0, Math.min(100, o.prob))}%"></i></span></span></li>`; }).join("")}</ol>`;
+  // live prices where the market is in the live feed (every 5 minutes), else the edition's own
+  const liveM = !LIVE.betting?.stale && LIVE.betting?.value?.markets || [], idOf = b => (b.id?.includes(":") ? b.id : `pm:${b.id}`);
+  return `<ol class="bets" style="--c:var(--d-news)">${list.map(b => { const L = liveM.find(m => m.id === idOf(b)), o = [...((L?.outcomes?.length ? L.outcomes : b.outcomes) || [])].sort((x, y) => y.prob - x.prob)[0]; if (!o) return "";
+    return `<li data-bet="${esc(b.id)}" tabindex="0" role="button" aria-label="${esc(b.title)}: in detail"><span class="t">${esc(vsV(b.title).replace(/^UEFA /, ""))}</span><span class="o"><b class="tnum">${Math.round(o.prob)}%</b><span>${esc(outcomeLabel(o.name))}</span><span class="bar"><i style="width:${Math.max(0, Math.min(100, o.prob))}%"></i></span></span></li>`; }).join("")}</ol>`;
 }
 const blk = (id, desk, title, link, to, body) => (body ? `<section class="blk" id="p1-${id}" style="--c:var(--d-${desk})"><div class="bh"><h2>${title}</h2><a href="${deskHref(desk)}" data-desk="${desk}" data-to="${to}">${link} →</a></div><div data-p1="${id}">${body}</div></section>` : "");
 function pageOne() {
@@ -280,13 +284,34 @@ function dayShares() {
   shareMemo = { E, v }; return v;
 }
 const sharesLabel = shares => { const all = shares.reduce((a, x) => a + x.words, 0) || 1; return `1400: today's paper by desk, ${shares.map(x => `${x.name} ${Math.round(100 * x.words / all)}%`).join(", ")}`; };
+// What a tap on the wordmark cycles through (config desks_v2.wordmark), worked out at the moment of the tap
+const SKY1 = c => (c <= 1 ? "sun" : c <= 3 ? "Cloudy" : c <= 48 ? "Foggy" : c <= 57 ? "Drizzle" : c <= 67 || (c >= 80 && c <= 82) ? "Rainy" : c <= 77 || c === 85 || c === 86 ? "Snowy" : c >= 95 ? "Stormy" : "Cloudy");
+function markCycle() {
+  const w = LIVE.weather?.value?.cities?.[0]?.current, hh = Number(istTime(new Date().toISOString()).slice(0, 2));
+  return (CFG.desks_v2?.wordmark?.cycle || ["1400"]).map(x => {
+    if (x === "temperature") return w ? `${Math.round(w.temp)}°` : "";
+    if (x === "sky") { if (!w) return ""; const k = SKY1(w.code); return k === "sun" ? (isNight(hh) ? "Clear" : "Sunny") : k; }
+    if (x === "time") return istTime(new Date().toISOString());
+    return String(x);
+  });
+}
 function mountMark() {
   unmountMark(); unmountMark = () => {};
   const n = document.querySelector("#bigplate .n"); if (!n || DESK.id !== "one") return;
   const size = parseFloat(getComputedStyle(document.querySelector("#bigplate")).getPropertyValue("--np")) || 96;
   const shares = dayShares();
   n.setAttribute("aria-label", sharesLabel(shares));
-  mountWordmark(n, { size, shares }).then(u => { unmountMark = u; }).catch(() => {});
+  mountWordmark(n, { size, shares, cycle: markCycle, homeAfter: CFG.desks_v2?.wordmark?.home_after_s || 6 }).then(u => { unmountMark = u; }).catch(() => {});
+}
+// The pinned tab bar: once the masthead is off the screen, Page One's tab shows the day in dots instead of its name.
+let tabObs = null;
+function tabMark() {
+  const tm = document.querySelector("#dtabs .tmk"); if (!tm || !E) return;
+  stillWordmark(tm, { size: 20, shares: dayShares() }).catch(() => {});
+  if (!tabObs && "IntersectionObserver" in window) {
+    tabObs = new IntersectionObserver(es => { for (const e of es) document.getElementById("dtabs")?.classList.toggle("stuck", !e.isIntersecting); });
+    const top = document.getElementById("dtop"); if (top) tabObs.observe(top);
+  }
 }
 // The desk pages' small 1400: the same split, still (Parth, 2 Oct). Drawn once per edition and size.
 addEventListener("resize", () => { if (NEWDESKS.length && DESK.id !== "one") mountMini(); });
@@ -300,6 +325,104 @@ function mountMini() {
   stillWordmark(n, { size, shares }).then(u => { unmountMini = u; }).catch(() => {});
 }
 
+// ---------------------------------------------------------------- the read time, in the run line (Parth, 2 Oct)
+// The renderer works it out as before (headlines at a skimming pace; every word at a reading pace plus the tables);
+// the run line prints it plainly: "34 min read · 3 to skim".
+function readLine() {
+  const el = $("#r-read"), m = ($("#readtime")?.textContent || "").match(/Headlines: (\d+) min · Everything: (\d+) min/); if (!el || !m) return;
+  const h = `<b>${m[2]} min</b> read<span class="skim"> · ${m[1]} to skim</span>`;
+  if (el.dataset.html !== h) { el.innerHTML = h; el.dataset.html = h; }
+}
+
+// ---------------------------------------------------------------- The Week Ahead, Monday to Sunday (Parth, 2 Oct)
+// Seven columns, one per day from the edition's Monday; what to watch under each, with its time and section; a day
+// with nothing is a short rule, never words. On a phone the days stack.
+function weekV2() {
+  const W = (E.week_ahead || []).slice().sort((a, b) => (a.date + (a.time_ist || "99")).localeCompare(b.date + (b.time_ist || "99")));
+  if (!W.length) return "";
+  const d0 = Date.parse(E.date + "T12:00:00+05:30"), days = [...Array(7)].map((_, i) => istDate(new Date(d0 + i * 864e5)));
+  const col = d => { const list = W.filter(w => w.date === d), k = deskOf(list[0]?.area)?.id;
+    return `<div class="wcol${d === istDate() ? " today" : ""}"><h4><span>${esc(fmt(d + "T12:00:00+05:30", { weekday: "short" }))}</span> ${esc(String(Number(d.slice(8))))}</h4>${list.length ? `<ul>${list.map(w => `<li style="--c:var(--d-${deskOf(w.area)?.id || "news"})">${w.time_ist ? `<span class="wt tnum">${esc(w.time_ist)}</span>` : ""}<span class="wk">${esc(sec(w.area)?.short || "")}</span><b>${esc(w.what)}</b>${w.why ? `<p>${esc(w.why)}</p>` : ""}</li>`).join("")}</ul>` : `<i class="wnone" aria-label="Nothing listed"></i>`}</div>`; };
+  return `<div class="week7">${days.map(col).join("")}</div>`;
+}
+
+// ---------------------------------------------------------------- the archive, as a calendar (Parth, 2 Oct)
+// Month by month, newest first, Monday to Sunday. A printed day is a tile: the date, the lead, how many items, a dot
+// for the Sensex's close (green up, red down), and a strip of the day's paper by desk in the desks' colours, as the
+// wordmark has it. A day without an edition is an empty dashed square. Each tile opens that day's paper.
+async function archiveV2() {
+  desksInit();
+  document.title = "Archive · The House of 1400";
+  document.body.classList.remove("on-one"); document.documentElement.style.setProperty("--d", "var(--d-one)");
+  let days = [];
+  try { days = await getJSON("/archive-days.json"); } catch { try { days = (await getJSON("/content/archive.json")).editions.map(e => ({ date: e.date, no: e.edition_no, lead: e.lead })); } catch { days = []; } }
+  days.sort((a, b) => b.date.localeCompare(a.date));
+  $("#r-date").textContent = "The Archive"; $("#r-no").textContent = ""; $("#r-print").textContent = `${days.length} edition${days.length === 1 ? "" : "s"}`; $("#r-read").textContent = "";
+  $("#r-tag").textContent = CFG.paper.motto;
+  $("#now").innerHTML = `<a href="/"><span class="k">Today's paper</span> →</a>`;
+  $("#dtabs ol").innerHTML = NEWDESKS.map(d => `<li><a href="/${deskHref(d.id)}" style="--c:var(--d-${d.id})">${esc(d.name)}</a></li>`).join("");
+  const by = new Map(days.map(d => [d.date, d])), months = [...new Set(days.map(d => d.date.slice(0, 7)))];
+  const name = ym => new Date(ym + "-15T12:00:00Z").toLocaleDateString("en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
+  const today = istDate(), first = days.at(-1)?.date || today;
+  const month = ym => {
+    const [y, m] = ym.split("-").map(Number), lead = (new Date(Date.UTC(y, m - 1, 1)).getUTCDay() + 6) % 7, last = new Date(Date.UTC(y, m, 0)).getUTCDate();
+    // the month runs to its last day, or, in the current month, to the end of this week
+    const t = today.startsWith(ym) ? Number(today.slice(8)) : 0, n = t ? Math.min(last, t + (6 - (lead + t - 1) % 7)) : last;
+    const cells = [...Array(lead)].map(() => `<li class="pad" aria-hidden="true"></li>`);
+    for (let d = 1; d <= n; d++) {
+      const ds = `${ym}-${String(d).padStart(2, "0")}`, e = by.get(ds);
+      if (!e && ds < first) { cells.push(`<li class="pad" aria-hidden="true"></li>`); continue; } // before the first edition
+      if (!e) { cells.push(`<li class="${ds > today ? "fut" : "none"}${ds === today ? " today" : ""}"><span class="adn">${d}</span></li>`); continue; }
+      const strip = (e.desks || []).map(([k, v]) => `<i style="flex:${v};background:var(--d-${k})"></i>`).join("");
+      const mk = e.sensex == null ? "" : `<span class="mk ${e.sensex >= 0 ? "rise" : "fall"}" title="Sensex ${e.sensex >= 0 ? "+" : ""}${e.sensex}%"><i></i>${e.sensex >= 0 ? "+" : ""}${e.sensex}%</span>`;
+      cells.push(`<li class="ed${ds === today ? " today" : ""}"><a href="/e/${ds}"><span class="adn">${d}</span>${mk}<b>${esc(e.lead || "")}</b><span class="meta">No. ${e.no}${e.items ? ` · ${e.items} items` : ""}</span>${strip ? `<span class="strip" aria-hidden="true">${strip}</span>` : ""}</a></li>`);
+    }
+    return `<section class="amonth"><h2>${esc(name(ym))}</h2><ol class="awk" aria-hidden="true">${["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(w => `<li>${w}</li>`).join("")}</ol><ol class="acal">${cells.join("")}</ol></section>`;
+  };
+  $("#main").innerHTML = `<header class="dopen"><h1>The Archive</h1><p class="asub">Every edition, by the day. The strip under each day is that day's paper by desk; the dot is how the Sensex closed.</p></header>${days.length ? months.map(month).join("") : ""}<footer class="dfoot">${footNav()}<span>The House of 1400</span></footer>`;
+  fitDesk();
+}
+
+// ---------------------------------------------------------------- live figures and charts (Parth, 2 Oct)
+// A live figure that changes (a score, an index, a price) flashes once in ink, so the eye catches what just moved;
+// countdowns, which change every minute, never flash. Charts and bars draw themselves in once, in 300ms, the first
+// time they come into view on a desk; a live repaint never draws them again. Both are off with reduced motion.
+const FX = { seen: new Map(), drawn: new Set(), desk: "", io: null, wait: new Map() };
+const stillPage = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+function liveFx() {
+  if (FX.desk !== DESK.id) { FX.desk = DESK.id; FX.seen = new Map(); FX.drawn.clear(); }
+  const first = !FX.seen.size, now = new Map();
+  for (const box of document.querySelectorAll("#main [data-live], #main [data-p1], #now")) {
+    const k = box.dataset.live || box.dataset.p1 || box.id;
+    box.querySelectorAll(".tnum").forEach((el, i) => {
+      const t = el.textContent.trim(); if (!/\d/.test(t) || /\d\s*[hdm]\b/.test(t)) return;
+      const key = `${k}|${i}`, was = FX.seen.get(key); now.set(key, t);
+      if (!first && was != null && was !== t && !stillPage()) { el.classList.remove("tick"); void el.offsetWidth; el.classList.add("tick"); }
+    });
+  }
+  FX.seen = now;
+  if (stillPage() || !("IntersectionObserver" in window)) return;
+  FX.io ||= new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; FX.io.unobserve(e.target); const key = FX.wait.get(e.target); FX.wait.delete(e.target); if (FX.drawn.has(key)) return; FX.drawn.add(key); drawIn(e.target); }), { rootMargin: "0px 0px -6% 0px" });
+  const count = new Map(), keyOf = (el, kind) => { const box = el.closest("[data-live],[data-p1],section.sec"), b = box?.dataset.live || box?.dataset.p1 || box?.id || "page", c = `${b}|${kind}`, n = count.get(c) || 0; count.set(c, n + 1); return `${c}|${n}`; };
+  const lines = [...document.querySelectorAll('#main svg path[fill="none"], #main .arc polyline.done')].filter(el => getComputedStyle(el).strokeDasharray === "none");
+  const bars = [...document.querySelectorAll('#main [style*="width:"]')].filter(el => !el.textContent.trim() && !el.querySelector("img,svg,canvas") && el.offsetHeight > 0 && el.offsetHeight <= 16);
+  for (const [el, kind] of [...lines.map(el => [el, "line"]), ...bars.map(el => [el, "bar"])]) {
+    const key = keyOf(el, kind); if (FX.drawn.has(key)) continue;
+    el.dataset.draw = kind; FX.wait.set(el, key); FX.io.observe(el);
+  }
+}
+function drawIn(el) {
+  const ease = "cubic-bezier(.2,0,0,1)";
+  if (el.dataset.draw === "line") {
+    const L = el.getTotalLength?.(); if (!L) return;
+    el.style.strokeDasharray = L;
+    el.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 300, easing: ease }).onfinish = () => { el.style.strokeDasharray = ""; };
+  } else {
+    el.style.transformOrigin = "left center";
+    el.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { duration: 300, easing: ease });
+  }
+}
+
 // ---------------------------------------------------------------- moving between desks
 function showDesk(id, to, open) {
   desksInit();
@@ -308,25 +431,52 @@ function showDesk(id, to, open) {
   if (!same) { render(); scrollTo({ top: 0 }); }
   if (location.hash !== deskHref(d.id)) history.replaceState(null, "", deskHref(d.id));
   requestAnimationFrame(() => {
-    fitMonitor(); if (d.id === "one") mountMark(); else { unmountMark(); mountMini(); }
+    fitMonitor(); if (d.id === "one") mountMark(); else { unmountMark(); mountMini(); } liveFx();
     if (to) { const el = document.getElementById(to) || document.getElementById("s-" + to); if (el) { if (open && el.tagName === "DETAILS") el.open = true; setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), same ? 0 : 60); } }
   });
 }
 document.addEventListener("click", e => {
   const a = e.target.closest("[data-desk]"); if (!a) return;
   e.preventDefault(); e.stopPropagation();
+  if (!E) { location.href = "/" + deskHref(a.dataset.desk); return; } // the archive has no edition: go to today's paper
   showDesk(a.dataset.desk, a.dataset.to, !!a.dataset.open);
 }, true);
 // The old design stays one tap away until Parth switches (?v1 forgets the choice on this device)
 document.addEventListener("click", e => { if (e.target.closest("[data-v1]")) { try { localStorage.removeItem("h1400-design"); } catch {} } }, true);
-// Day and night, in the run line (the old masthead's switch is not on this page)
-function dthemeLabel() { const b = $("#dtheme"); if (!b) return; const r = document.documentElement, dk = r.getAttribute("data-theme") === "dark" || (!r.hasAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches); b.textContent = dk ? "Day" : "Night"; }
+// Day and night, in the run line (the old masthead's switch is not on this page). By default the page follows the sun
+// in the home city (Parth, 2 Oct): night from sunset to sunrise, checked every minute. Night or Day chosen by hand is
+// kept on this device (h1400-theme) until "Auto" hands it back to the sun.
+const isDark = () => { const r = document.documentElement; return r.getAttribute("data-theme") === "dark" || (!r.hasAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches); };
+const chosen = () => { try { return localStorage.getItem("h1400-theme"); } catch { return null; } };
+function setTheme(mode) {
+  const r = document.documentElement;
+  if (r.getAttribute("data-theme") !== mode) r.setAttribute("data-theme", mode);
+  // the phone's own bar takes the paper's colour
+  const paper = getComputedStyle(r).getPropertyValue("--paper").trim();
+  document.querySelectorAll('meta[name="theme-color"]').forEach(m => { m.removeAttribute("media"); if (paper) m.setAttribute("content", paper); });
+  dthemeLabel();
+}
+function followSun() {
+  if (chosen()) return;
+  const h = CFG?.weather?.always?.[0]; if (!h) return;
+  setTheme(h1400Day(h.lat, h.lon, Date.now())[0] ? "light" : "dark");
+}
+function dthemeLabel() {
+  const b = $("#dtheme"), a = $("#dauto"); if (!b) return;
+  b.textContent = isDark() ? "Day" : "Night";
+  if (a) a.hidden = !chosen();
+}
+setInterval(followSun, 60000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) followSun(); });
 document.addEventListener("click", e => {
-  if (!e.target.closest("#dtheme")) return;
-  const r = document.documentElement, dk = r.getAttribute("data-theme") === "dark" || (!r.hasAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
-  r.setAttribute("data-theme", dk ? "light" : "dark");
-  try { localStorage.setItem("h1400-theme", dk ? "light" : "dark"); } catch {}
-  dthemeLabel(); requestAnimationFrame(() => { if (DESK.id === "one") mountMark(); });
+  if (e.target.closest("#dtheme")) {
+    const mode = isDark() ? "light" : "dark";
+    try { localStorage.setItem("h1400-theme", mode); } catch {}
+    setTheme(mode);
+  } else if (e.target.closest("#dauto")) {
+    try { localStorage.removeItem("h1400-theme"); } catch {}
+    followSun();
+  }
 });
 addEventListener("hashchange", () => { const m = location.hash.match(/^#d-([a-z]+)$/); if (m && NEWDESKS.length && m[1] !== DESK.id) showDesk(m[1]); });
 

@@ -4,10 +4,11 @@
 // covers, so it reads as the solid Playfair 1400 from a distance and as a printed screen up close.
 // - The day in dots: the figure is shared among today's desks in the tabs' order, left to right, each in proportion to
 //   its length in words, and each desk's dots are printed in its colour. A long Sport day makes a wide orange band.
-// - Always: a slow current runs through the figure. The dots sway with it and swell thick and thin as it passes,
-//   every few seconds a stronger swell sweeps across, and a little loose ink drifts around the figure.
+// - At rest the figure is still and crisp. Every 7 seconds one swell sweeps across it, thickening the dots it passes,
+//   and a little loose ink drifts while it moves (Parth, 2 Oct: rest, then swell, to spare a phone's battery).
 // - Pointer (laptop): the dots part around the pointer with a swirl and spring back when it leaves.
-// - Tap or click: the dots are thrown out from the finger and settle back onto the screen.
+// - Tap or click: the dots re-form into the next shape of the cycle (config desks_v2.wordmark: 1400, the temperature,
+//   the sky in a word, the time, a name), and the figure comes back to 1400 by itself after a few seconds.
 // - Motion off (prefers-reduced-motion): one still, printed figure.
 // It stops drawing when it is off screen or the tab is hidden. The figure is Playfair Display Black's lining "1400"
 // (Playfair's default figures are oldstyle) as a fixed outline, taken from v2/fonts by v2/glyphs.py, so it needs no
@@ -119,106 +120,131 @@ export async function stillWordmark(el, { size, shares = [] }) {
   return () => { mo.disconnect(); mq.removeEventListener?.("change", draw); removeEventListener("resize", draw); };
 }
 
-export async function mountWordmark(el, { size, shares = [] }) {
+// Any short text in the same face, for the shapes a tap cycles through (v2/glyphs.json, embedded by the build as
+// GLYPHS): it is set to fit the width of "1400" at most, on the same baseline.
+const shapeCache = new Map();
+async function textDots(text, size, W, H, g) {
+  const key = `${text}|${size}|${g}`; if (shapeCache.has(key)) return shapeCache.get(key);
+  let dots;
+  if (text === "1400" || typeof GLYPHS === "undefined") dots = (await screenFor(size, g)).dots;
+  else {
+    const chars = [...text].filter(ch => GLYPHS[ch] || ch === " "), adv = chars.reduce((a, ch) => a + (GLYPHS[ch]?.[0] ?? 0.28), 0) || 1;
+    const sz = Math.min(size * 1.05, (size * ADV) / adv), c = document.createElement("canvas"); c.width = W; c.height = H;
+    const x = c.getContext("2d", { willReadFrequently: true });
+    let at = W / 2 - (adv * sz) / 2;
+    for (const ch of chars) { const G = GLYPHS[ch]; if (G) { x.setTransform(sz, 0, 0, sz, at, H / 2 + size * 0.36); x.fill(new Path2D(G[1])); } at += (G?.[0] ?? 0.28) * sz; }
+    const d = x.getImageData(0, 0, W, H).data, I = new Float32Array((W + 1) * (H + 1)), W1 = W + 1;
+    for (let y = 0; y < H; y++) { let r = 0; for (let i = 0; i < W; i++) { r += d[(y * W + i) * 4 + 3] / 255; I[(y + 1) * W1 + i + 1] = I[y * W1 + i + 1] + r; } }
+    const cover = (cx, cy, h) => { const x0 = Math.max(0, Math.floor(cx - h)), x1 = Math.min(W, Math.ceil(cx + h)), y0 = Math.max(0, Math.floor(cy - h)), y1 = Math.min(H, Math.ceil(cy + h)); if (x1 <= x0 || y1 <= y0) return 0; return (I[y1 * W1 + x1] - I[y0 * W1 + x1] - I[y1 * W1 + x0] + I[y0 * W1 + x0]) / ((x1 - x0) * (y1 - y0)); };
+    dots = []; const span = Math.hypot(W, H), ca = Math.SQRT1_2;
+    for (let j = -span / g; j < span / g; j++) for (let i = -span / g; i < span / g; i++) {
+      const u = i * g, v = j * g, px = W / 2 + u * ca - v * ca, py = H / 2 + u * ca + v * ca;
+      if (px < -g || py < -g || px > W + g || py > H + g) continue;
+      const base = Math.sqrt(cover(px, py, g / 2)); if (base > 0.04) dots.push({ x: px, y: py, base });
+    }
+  }
+  shapeCache.set(key, dots); return dots;
+}
+
+// mountWordmark(el, { size: px, shares: [{ desk, words }], cycle: () => ["1400", "29°", "Cloudy", "15:42", ...] })
+// At rest the figure is still and crisp. Every 7 seconds one swell sweeps across it; the pointer parts the dots while
+// it moves; a tap or click re-forms the dots into the next shape of the cycle, and the figure comes back to 1400 by
+// itself after a few seconds. It stops drawing whenever nothing moves, off screen, or in a hidden tab.
+export async function mountWordmark(el, { size, shares = [], cycle = () => ["1400"], homeAfter = 6 }) {
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const { W, H, g, dots } = await screenFor(size), R = g * 0.6;
-  // the canvas reaches past the figure, so loose ink and parted dots have room; it never takes the pointer itself
+  const { W, H, g } = await screenFor(size), R = g * 0.6;
   const PX = Math.round(W * 0.2), PY = Math.round(H * 0.3), CW = W + 2 * PX, CH = H + 2 * PY;
   const c = document.createElement("canvas");
   c.setAttribute("aria-hidden", "true");
   c.style.cssText = `display:block;width:${CW}px;height:${CH}px;margin:${-PY}px auto;pointer-events:none;flex:none`;
   el.replaceChildren(c);
-  el.style.touchAction = "pan-y";
+  el.style.touchAction = "manipulation";
   const ctx = c.getContext("2d");
-  const S = shares.filter(x => x.words > 0), bands = bandsOf(dots, S);
+  const S = shares.filter(x => x.words > 0);
   let ink = "", colours = [];
-  const readInk = () => {
-    const cs = getComputedStyle(document.documentElement);
-    ink = cs.getPropertyValue("--ink").trim() || "#15140f";
-    colours = S.length ? S.map(x => cs.getPropertyValue(`--d-${x.desk}`).trim() || ink) : [ink];
-  };
+  const readInk = () => { const cs = getComputedStyle(document.documentElement); ink = cs.getPropertyValue("--ink").trim() || "#15140f"; colours = S.length ? S.map(x => cs.getPropertyValue(`--d-${x.desk}`).trim() || ink) : [ink]; };
   readInk();
-  // sharp at any page zoom (Page One scales itself to the screen) and on any phone
   const scale = () => { const r = c.getBoundingClientRect(), z = r.width / CW || 1, k = Math.min(3, (devicePixelRatio || 1) * z); c.width = Math.round(CW * k); c.height = Math.round(CH * k); ctx.setTransform(k, 0, 0, k, 0, 0); };
   scale();
-  for (const d of dots) { d.px = 0; d.py = 0; d.vx = 0; d.vy = 0; }
-  // loose ink: a few specks drifting around the figure on the same current
+  // the particles: each has a home on the current shape, an offset from it, a speed, and its desk band
+  let parts = [], bands = [];
+  const place = (homes, from) => {
+    const order = [...homes].sort((a, b) => a.x - b.x || a.y - b.y), old = from ? [...from].sort((a, b) => (a.x + a.px) - (b.x + b.px)) : null;
+    parts = order.map((h, i) => { const o = old?.[Math.floor(i * old.length / order.length)];
+      return { x: h.x, y: h.y, base: h.base, px: o ? o.x + o.px - h.x : 0, py: o ? o.y + o.py - h.y : 0, vx: o ? o.vx + (Math.random() - 0.5) * g : 0, vy: o ? o.vy + (Math.random() - 0.5) * g : 0 }; });
+    bands = bandsOf(parts, S);
+  };
+  place(await textDots("1400", size, W, H, g));
   const dust = [...Array(reduced ? 0 : Math.round(CW * CH / 1500))].map(() => ({ x: Math.random() * CW, y: Math.random() * CH, r: 0.45 + Math.random() * 0.85, a: Math.random() < 0.3, vx: 0, vy: 0 }));
-  let pointer = null, kicks = [], raf = 0, alive = true, shown = true, last = 0;
+  let pointer = null, quietTill = 0, lastMove = 0, morphAt = -1e9, swellAt = -1e9, energy = 0, raf = 0, alive = true, shown = true, last = 0, swellT = 0, homeT = 0, idx = 0;
   const at = e => { const r = c.getBoundingClientRect(), z = r.width / CW || 1; return [(e.clientX - r.left) / z - PX, (e.clientY - r.top) / z - PY]; };
   const field = (x, y, t) => [Math.sin(x * 0.021 + t * 0.8) + Math.sin(y * 0.05 - t * 0.6 + x * 0.008), Math.cos(x * 0.017 - t * 0.7) + Math.sin(y * 0.043 + t * 0.9)];
-  function draw(t, dt) {
+  const SWELL = 2.4;
+  function draw(now) {
+    const t = now / 1000, dt = last ? Math.min(3, (now - last) / 16.67) : 1; last = now;
+    const swell = (t - swellAt) < SWELL ? (t - swellAt) / SWELL : -1, busy = !!pointer && now - lastMove < 1200 || now - morphAt < 2500 || swell >= 0;
+    energy += ((busy ? 1 : 0) - energy) * Math.min(1, 0.06 * dt);
     ctx.clearRect(0, 0, CW, CH);
-    const A = g * 0.42, Rp = H * 0.62, P = g * 0.9;
-    // the swell: every 7 seconds a band sweeps left to right, lifting and thickening the dots it passes
-    const front = ((t % 7) / 7) * (W + 2 * PX) - PX, band = W * 0.13;
+    const A = g * 0.42 * energy, Rp = H * 0.62, P = g * 0.9;
+    const front = swell >= 0 ? swell * (W + 2 * PX) - PX : -1e9, band = W * 0.13;
+    let moving = false;
     bands.forEach((list, bi) => {
-    ctx.fillStyle = colours[bi] || ink;
-    ctx.beginPath();
-    for (const d of list) {
-      let r = d.base;
-      if (!reduced) {
-        const [a, b] = field(d.x, d.y, t), sw = Math.max(0, 1 - Math.abs(d.x - front) / band), s2 = sw * sw * (3 - 2 * sw);
-        const tx = A * a + s2 * g * 0.9 * Math.sin(d.y * 0.09 + t * 2), ty = A * 0.6 * b - s2 * g * 1.4;
-        let ax = (tx - d.px) * 0.06, ay = (ty - d.py) * 0.06;
-        if (pointer) {
-          const dx = d.x + d.px - pointer[0], dy = d.y + d.py - pointer[1], dd = Math.hypot(dx, dy) || 1;
-          if (dd < Rp) { const f = (1 - dd / Rp) ** 2 * P; ax += (dx / dd) * f - (dy / dd) * f * 0.7; ay += (dy / dd) * f + (dx / dd) * f * 0.7; }
-        }
-        for (const k of kicks) {
-          if (k.done) continue;
-          const dx = d.x - k.x, dy = d.y - k.y, dd = Math.hypot(dx, dy) || 1, f = Math.max(0, 1 - dd / (W * 0.7)) * g * 2.6;
-          d.vx += (dx / dd) * f + (Math.random() - 0.5) * f * 0.6; d.vy += (dy / dd) * f + (Math.random() - 0.5) * f * 0.6;
-        }
-        d.vx = (d.vx + ax * dt) * 0.86 ** dt; d.vy = (d.vy + ay * dt) * 0.86 ** dt;
-        d.px += d.vx * dt; d.py += d.vy * dt;
-        // thick and thin: a ripple of ink weight runs along the figure, and the swell inks heavier
-        const wave = 0.5 + 0.5 * Math.sin(d.x * 0.035 - t * 1.6 + d.y * 0.012);
-        const moved = Math.min(1, Math.hypot(d.vx, d.vy) / g);
-        r = d.base * (0.8 + 0.32 * wave + 0.25 * s2) * (1 - 0.25 * moved);
+      ctx.fillStyle = colours[bi] || ink; ctx.beginPath();
+      for (const d of list) {
+        let r = d.base;
+        if (!reduced) {
+          const [a, b] = field(d.x, d.y, t), sw = Math.max(0, 1 - Math.abs(d.x - front) / band), s2 = sw * sw * (3 - 2 * sw);
+          const tx = A * a + s2 * g * 0.9 * Math.sin(d.y * 0.09 + t * 2), ty = A * 0.6 * b - s2 * g * 1.4;
+          let ax = (tx - d.px) * 0.06, ay = (ty - d.py) * 0.06;
+          if (pointer && now > quietTill) { const dx = d.x + d.px - pointer[0], dy = d.y + d.py - pointer[1], dd = Math.hypot(dx, dy) || 1; if (dd < Rp) { const f = (1 - dd / Rp) ** 2 * P; ax += (dx / dd) * f - (dy / dd) * f * 0.7; ay += (dy / dd) * f + (dx / dd) * f * 0.7; } }
+          d.vx = (d.vx + ax * dt) * 0.86 ** dt; d.vy = (d.vy + ay * dt) * 0.86 ** dt; d.px += d.vx * dt; d.py += d.vy * dt;
+          if (Math.abs(d.vx) + Math.abs(d.vy) > 0.02 || Math.abs(d.px) + Math.abs(d.py) > 0.08) moving = true;
+          const wave = 0.5 + 0.5 * Math.sin(d.x * 0.035 - t * 1.6 + d.y * 0.012), moved = Math.min(1, Math.hypot(d.vx, d.vy) / g);
+          r = d.base * (1 + energy * (0.32 * wave - 0.2) + 0.25 * s2) * (1 - 0.25 * moved);
+        } else { d.px = 0; d.py = 0; }
+        const x = PX + d.x + d.px, y = PY + d.y + d.py, rr = Math.min(r, 1.15) * R;
+        if (rr < 0.25) continue;
+        ctx.moveTo(x + rr, y); ctx.arc(x, y, rr, 0, Math.PI * 2);
       }
-      const x = PX + d.x + d.px, y = PY + d.y + d.py, rr = Math.min(r, 1.15) * R;
-      if (rr < 0.25) continue;
-      ctx.moveTo(x + rr, y); ctx.arc(x, y, rr, 0, Math.PI * 2);
-    }
-    ctx.fill();
+      ctx.fill();
     });
-    ctx.fillStyle = ink;
-    kicks.forEach(k => (k.done = true)); kicks = [];
+    // loose ink drifts only while the figure moves
     for (const p of dust) {
-      const [a, b] = field(p.x, p.y, t * 0.6);
-      p.vx += (a * 0.05 + 0.04) * dt; p.vy += b * 0.035 * dt;
-      if (pointer) { const dx = p.x - PX - pointer[0], dy = p.y - PY - pointer[1], dd = Math.hypot(dx, dy) || 1; if (dd < Rp) { const f = (1 - dd / Rp) * 0.25; p.vx += (dx / dd) * f; p.vy += (dy / dd) * f; } }
+      if (energy > 0.02) {
+        const [a, b] = field(p.x, p.y, t * 0.6);
+        p.vx += (a * 0.05 + 0.04) * dt * energy; p.vy += b * 0.035 * dt * energy;
+        if (pointer) { const dx = p.x - PX - pointer[0], dy = p.y - PY - pointer[1], dd = Math.hypot(dx, dy) || 1; if (dd < Rp) { const f = (1 - dd / Rp) * 0.25; p.vx += (dx / dd) * f; p.vy += (dy / dd) * f; } }
+      }
       p.vx *= 0.94 ** dt; p.vy *= 0.94 ** dt; p.x += p.vx * dt; p.y += p.vy * dt;
+      if (Math.abs(p.vx) + Math.abs(p.vy) > 0.01) moving = true;
       if (p.x > CW + 2) p.x = -2; if (p.x < -2) p.x = CW + 2; if (p.y > CH + 2) p.y = -2; if (p.y < -2) p.y = CH + 2;
     }
-    for (const dark of [true, false]) {
-      ctx.globalAlpha = dark ? 0.55 : 0.28; ctx.beginPath();
-      for (const p of dust) if (p.a === dark) { ctx.moveTo(p.x + p.r, p.y); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); }
-      ctx.fill();
-    }
+    for (const dark of [true, false]) { ctx.fillStyle = ink; ctx.globalAlpha = dark ? 0.55 : 0.28; ctx.beginPath(); for (const p of dust) if (p.a === dark) { ctx.moveTo(p.x + p.r, p.y); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); } ctx.fill(); }
     ctx.globalAlpha = 1;
+    return busy || energy > 0.01 || moving;
   }
-  function frame(now) {
-    raf = 0; if (!alive || !shown || document.hidden) return;
-    const dt = last ? Math.min(3, (now - last) / 16.67) : 1; last = now;
-    draw(now / 1000, dt);
-    raf = requestAnimationFrame(frame);
-  }
-  const wake = () => { if (!reduced && !raf && alive && shown && !document.hidden) { last = 0; raf = requestAnimationFrame(frame); } };
-  const onMove = e => { if (e.pointerType === "mouse") pointer = at(e); };
+  function frame(now) { raf = 0; if (!alive || !shown || document.hidden) return; if (draw(now)) raf = requestAnimationFrame(frame); else last = 0; }
+  const wake = () => { if (!reduced && !raf && alive && shown && !document.hidden) raf = requestAnimationFrame(frame); };
+  // one swell every 7 seconds, while the figure is on screen
+  const swellLoop = () => { clearTimeout(swellT); if (!alive) return; if (shown && !document.hidden && !reduced) { swellAt = performance.now() / 1000; wake(); } swellT = setTimeout(swellLoop, 7000); };
+  const reform = async text => { const homes = await textDots(text, size, W, H, g); place(homes, parts); morphAt = performance.now(); el.setAttribute("aria-label", text); if (reduced) draw(performance.now()); else wake(); };
+  const onMove = e => { if (e.pointerType === "mouse") { pointer = at(e); lastMove = performance.now(); wake(); } };
   const onLeave = () => { pointer = null; };
-  const onDown = e => { const [x, y] = at(e); kicks.push({ x, y }); if (reduced) draw(0, 1); };
-  const onVis = () => wake();
-  const onResize = () => { scale(); if (reduced) draw(0, 1); };
+  const onDown = () => {
+    quietTill = performance.now() + 1800; // the new shape shows whole, even with the pointer still on it
+    const list = cycle().filter(Boolean); if (list.length < 2) return;
+    idx = (idx + 1) % list.length; reform(list[idx]);
+    clearTimeout(homeT); homeT = setTimeout(() => { if (idx) { idx = 0; reform(list[0]); } }, homeAfter * 1000);
+  };
+  const onVis = () => { last = 0; wake(); };
+  const onResize = () => { scale(); draw(performance.now()); };
   el.addEventListener("pointermove", onMove); el.addEventListener("pointerleave", onLeave); el.addEventListener("pointerdown", onDown);
   document.addEventListener("visibilitychange", onVis); addEventListener("resize", onResize);
-  const io = new IntersectionObserver(es => { shown = es.some(x => x.isIntersecting); wake(); });
-  io.observe(el);
-  const mo = new MutationObserver(() => { readInk(); if (reduced) draw(0, 1); });
-  mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-  const mq = matchMedia("(prefers-color-scheme: dark)"), onScheme = () => { readInk(); if (reduced) draw(0, 1); }; mq.addEventListener?.("change", onScheme);
-  draw(0, 1); wake();
-  return () => { alive = false; cancelAnimationFrame(raf); io.disconnect(); mo.disconnect(); mq.removeEventListener?.("change", onScheme); document.removeEventListener("visibilitychange", onVis); removeEventListener("resize", onResize);
+  const io = new IntersectionObserver(es => { shown = es.some(x => x.isIntersecting); last = 0; wake(); }); io.observe(el);
+  const redraw = () => { readInk(); draw(performance.now()); };
+  const mo = new MutationObserver(redraw); mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  const mq = matchMedia("(prefers-color-scheme: dark)"); mq.addEventListener?.("change", redraw);
+  draw(performance.now()); last = 0; swellT = setTimeout(swellLoop, 1500);
+  return () => { alive = false; cancelAnimationFrame(raf); clearTimeout(swellT); clearTimeout(homeT); io.disconnect(); mo.disconnect(); mq.removeEventListener?.("change", redraw); document.removeEventListener("visibilitychange", onVis); removeEventListener("resize", onResize);
     el.removeEventListener("pointermove", onMove); el.removeEventListener("pointerleave", onLeave); el.removeEventListener("pointerdown", onDown); };
 }

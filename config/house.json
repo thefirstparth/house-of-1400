@@ -359,7 +359,18 @@
           "bye"
         ]
       }
-    ]
+    ],
+    "wordmark": {
+      "note": "Page One's wordmark (Parth, 2 Oct): a tap re-forms the dots into the next of these, then it returns to 1400 after home_after_s. temperature = Bengaluru now, sky = the sky in one word, time = the time in IST; anything else prints as written.",
+      "cycle": [
+        "1400",
+        "temperature",
+        "sky",
+        "time",
+        "Bhatia"
+      ],
+      "home_after_s": 6
+    }
   },
   "follows": {
     "football_club": {

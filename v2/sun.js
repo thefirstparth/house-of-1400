@@ -1,0 +1,3 @@
+// Day or night at a place, from the sunrise equation (good to a minute or two): h1400Day(lat, lon, ms) -> [isDay, rise, set].
+// Used before the first paint (index.html, via v2/assemble.mjs) and by the page (v2/layer.js) to follow the sun.
+function h1400Day(lat,lon,t){var r=Math.PI/180,s=Math.sin,c=Math.cos,J=t/864e5+2440587.5,n0=Math.ceil(J-2451545.0009);for(var n=n0-1;n<=n0+1;n++){var Js=n-lon/360,M=(357.5291+.98560028*Js)%360,C=1.9148*s(M*r)+.02*s(2*M*r)+.0003*s(3*M*r),L=(M+C+282.9372)%360,Jt=2451545+Js+.0053*s(M*r)-.0069*s(2*L*r),d=Math.asin(s(L*r)*s(23.4397*r)),w=Math.acos((s(-.833*r)-s(lat*r)*s(d))/(c(lat*r)*c(d)))/r,R=(Jt-w/360-2440587.5)*864e5,S=(Jt+w/360-2440587.5)*864e5;if(t>=R&&t<S)return[true,R,S]}return[false]}
