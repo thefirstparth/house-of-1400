@@ -270,17 +270,34 @@ function fitOne() {
   at(lo);
 }
 let unmountMark = () => {};
+// The day in dots: each desk's share of today's paper, in words, in the tabs' order (storiesFromEdition)
+let shareMemo = null;
+function dayShares() {
+  if (shareMemo?.E === E) return shareMemo.v;
+  const desks = NEWDESKS.filter(d => d.id !== "one");
+  const pieces = storiesFromEdition(E, desks.map(d => ({ id: d.id, name: d.name, sections: d.sections })));
+  const v = desks.map(d => ({ desk: d.id, name: d.name, words: pieces.filter(p => p.desk === d.id).reduce((a, p) => a + p.words, 0) })).filter(x => x.words);
+  shareMemo = { E, v }; return v;
+}
+const sharesLabel = shares => { const all = shares.reduce((a, x) => a + x.words, 0) || 1; return `1400: today's paper by desk, ${shares.map(x => `${x.name} ${Math.round(100 * x.words / all)}%`).join(", ")}`; };
 function mountMark() {
   unmountMark(); unmountMark = () => {};
   const n = document.querySelector("#bigplate .n"); if (!n || DESK.id !== "one") return;
   const size = parseFloat(getComputedStyle(document.querySelector("#bigplate")).getPropertyValue("--np")) || 96;
-  // the day in dots: each desk's share of today's paper, in words, in the tabs' order (storiesFromEdition)
-  const desks = NEWDESKS.filter(d => d.id !== "one");
-  const pieces = storiesFromEdition(E, desks.map(d => ({ id: d.id, name: d.name, sections: d.sections })));
-  const shares = desks.map(d => ({ desk: d.id, name: d.name, words: pieces.filter(p => p.desk === d.id).reduce((a, p) => a + p.words, 0) })).filter(x => x.words);
-  const all = shares.reduce((a, x) => a + x.words, 0) || 1;
-  n.setAttribute("aria-label", `1400: today's paper by desk, ${shares.map(x => `${x.name} ${Math.round(100 * x.words / all)}%`).join(", ")}`);
+  const shares = dayShares();
+  n.setAttribute("aria-label", sharesLabel(shares));
   mountWordmark(n, { size, shares }).then(u => { unmountMark = u; }).catch(() => {});
+}
+// The desk pages' small 1400: the same split, still (Parth, 2 Oct). Drawn once per edition and size.
+addEventListener("resize", () => { if (NEWDESKS.length && DESK.id !== "one") mountMini(); });
+let miniKey = "", unmountMini = () => {};
+function mountMini() {
+  const n = document.querySelector("#dtop .np .n"); if (!n || !E) return;
+  const size = parseFloat(getComputedStyle(n).fontSize) || 28, key = `${E.date}|${size}`;
+  if (key === miniKey && n.querySelector("canvas")) return;
+  miniKey = key; unmountMini(); unmountMini = () => {};
+  const shares = dayShares();
+  stillWordmark(n, { size, shares }).then(u => { unmountMini = u; }).catch(() => {});
 }
 
 // ---------------------------------------------------------------- moving between desks
@@ -291,7 +308,7 @@ function showDesk(id, to, open) {
   if (!same) { render(); scrollTo({ top: 0 }); }
   if (location.hash !== deskHref(d.id)) history.replaceState(null, "", deskHref(d.id));
   requestAnimationFrame(() => {
-    fitMonitor(); if (d.id === "one") mountMark(); else unmountMark();
+    fitMonitor(); if (d.id === "one") mountMark(); else { unmountMark(); mountMini(); }
     if (to) { const el = document.getElementById(to) || document.getElementById("s-" + to); if (el) { if (open && el.tagName === "DETAILS") el.open = true; setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), same ? 0 : 60); } }
   });
 }

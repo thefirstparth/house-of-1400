@@ -61,10 +61,10 @@ export function storiesFromEdition(E, desks, href = d => "#" + d) {
 }
 
 // The screen for one size, worked out once: every dot's home on the screen and its size at rest.
-async function screenFor(size) {
-  const key = String(size);
+async function screenFor(size, g = Math.max(3, size / 21)) {
+  const key = `${size}|${g}`;
   if (CACHE.has(key)) return CACHE.get(key);
-  const W = Math.ceil(ADV * size + size * 0.5), H = Math.ceil(size * 1.02), g = Math.max(3, size / 21);
+  const W = Math.ceil(ADV * size + size * 0.5), H = Math.ceil(size * 1.02);
   const cover = await maskOf(size, W, H);
   const dots = [], span = Math.hypot(W, H), ca = Math.SQRT1_2, sa = Math.SQRT1_2;
   for (let j = -span / g; j < span / g; j++) for (let i = -span / g; i < span / g; i++) {
@@ -78,6 +78,47 @@ async function screenFor(size) {
   return s;
 }
 
+// The day in dots: bands left to right, one per desk, each as wide (in dots) as the desk is long (in words)
+function bandsOf(dots, S) {
+  if (!S.length) return [dots];
+  const total = S.reduce((a, x) => a + x.words, 0), order = [...dots].sort((a, b) => a.x - b.x || a.y - b.y), bands = S.map(() => []);
+  for (let i = 0, k = 0, acc = 0; i < S.length; i++) {
+    acc += S[i].words;
+    const end = i === S.length - 1 ? order.length : Math.round(order.length * acc / total);
+    for (; k < end; k++) bands[i].push(order[k]);
+  }
+  return bands;
+}
+
+// The small 1400 in the desk pages' masthead (Parth, 2 Oct: "can the logo change every day based on the split ... it
+// can be static"): the same day in dots, still, at the masthead's size, on a finer screen so the figure stays crisp.
+// stillWordmark(el, { size: px, shares }) -> destroy()
+export async function stillWordmark(el, { size, shares = [] }) {
+  const { W, H, g, dots } = await screenFor(size, Math.max(1.5, size / 15)), R = g * 0.62;
+  const S = shares.filter(x => x.words > 0), bands = bandsOf(dots, S), side = Math.round(size * 0.22);
+  const c = document.createElement("canvas");
+  c.setAttribute("aria-hidden", "true");
+  // the figure's baseline sits where the text's did (0.87 of the size from the top)
+  c.style.cssText = `display:block;width:${W}px;height:${H}px;margin:0 ${-side}px ${-(H - size * 0.87).toFixed(1)}px;flex:none`;
+  el.replaceChildren(c);
+  const ctx = c.getContext("2d");
+  const draw = () => {
+    const r = c.getBoundingClientRect(), z = r.width / W || 1, k = Math.min(4, (devicePixelRatio || 1) * z);
+    c.width = Math.round(W * k); c.height = Math.round(H * k); ctx.setTransform(k, 0, 0, k, 0, 0);
+    const cs = getComputedStyle(document.documentElement), ink = cs.getPropertyValue("--ink").trim() || "#15140f";
+    bands.forEach((list, i) => {
+      ctx.fillStyle = (S[i] && cs.getPropertyValue(`--d-${S[i].desk}`).trim()) || ink; ctx.beginPath();
+      for (const d of list) { const rr = Math.min(d.base, 1.1) * R; if (rr < 0.2) continue; ctx.moveTo(d.x + rr, d.y); ctx.arc(d.x, d.y, rr, 0, Math.PI * 2); }
+      ctx.fill();
+    });
+  };
+  draw();
+  const mo = new MutationObserver(draw); mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  const mq = matchMedia("(prefers-color-scheme: dark)"); mq.addEventListener?.("change", draw);
+  addEventListener("resize", draw);
+  return () => { mo.disconnect(); mq.removeEventListener?.("change", draw); removeEventListener("resize", draw); };
+}
+
 export async function mountWordmark(el, { size, shares = [] }) {
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const { W, H, g, dots } = await screenFor(size), R = g * 0.6;
@@ -89,14 +130,7 @@ export async function mountWordmark(el, { size, shares = [] }) {
   el.replaceChildren(c);
   el.style.touchAction = "pan-y";
   const ctx = c.getContext("2d");
-  // the day in dots: bands left to right, one per desk, each as wide (in dots) as the desk is long (in words)
-  const S = shares.filter(x => x.words > 0), total = S.reduce((a, x) => a + x.words, 0);
-  const order = [...dots].sort((a, b) => a.x - b.x || a.y - b.y), bands = S.length ? S.map(() => []) : [dots];
-  if (S.length) for (let i = 0, k = 0, acc = 0; i < S.length; i++) {
-    acc += S[i].words;
-    const end = i === S.length - 1 ? order.length : Math.round(order.length * acc / total);
-    for (; k < end; k++) bands[i].push(order[k]);
-  }
+  const S = shares.filter(x => x.words > 0), bands = bandsOf(dots, S);
   let ink = "", colours = [];
   const readInk = () => {
     const cs = getComputedStyle(document.documentElement);

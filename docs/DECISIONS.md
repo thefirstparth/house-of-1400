@@ -623,3 +623,6 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 2 Oct 2026: the day in dots is always in colour (Parth: "we figured that we add colours based on the length of each section, why did we not implement it?")
 - The wordmark's dots are shared among the desks in the tabs' order, left to right, each desk as wide as its share of the day's words and printed in its desk colour, always (no hover, no links, still flowing). The earlier ink-only version came from reading "without colours from sections" in his 2 Oct note literally; he meant the colours, without the hover.
+
+## 2 Oct 2026: the desk pages' small 1400 carries the day's split too, still (Parth: "can the logo change every day based on the split ... this can be static")
+- On every desk page the masthead's "1400" is the same day in dots as Page One: the desks' shares of the day's words, left to right in the tabs' order, each in its colour. It does not move, at the masthead's size, on a finer screen of dots so it stays crisp.
