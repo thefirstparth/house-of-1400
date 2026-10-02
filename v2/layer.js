@@ -456,7 +456,7 @@ function fitOne() {
   if (W < 1000) return;
   setZoom(1, W); balanceOne(); // arrange at the screen's own width, then scale
   const at = (z, s = ".p1end") => { setZoom(z, Math.min(W / z, 2600)); return bottom(s) <= innerHeight; };
-  const LO = 0.62;
+  const LO = 0.8; // lines are dropped (never below five) before the type goes under this
   while (!at(LO) && p1lines > P1MIN) { p1lines--; paintOne(); }
   const search = (s, top) => {
     let lo = LO, hi = Math.max(LO, top);
@@ -464,7 +464,9 @@ function fitOne() {
     for (let k = 0; k < 14; k++) { const z = (lo + hi) / 2; if (at(z, s)) lo = z; else hi = z; }
     return lo;
   };
-  const scale = () => search(".p1end", Math.min(W / 1100, 2.2));
+  // the type never goes below 0.8 of its size (body text about 12.5px; QA, 2 Oct: a 1080p Windows laptop at 150% has
+  // a window only 595px tall, and fitting it all printed the text at 10.5px). Only such a short window scrolls, a little.
+  const scale = () => Math.max(0.8, search(".p1end", Math.min(W / 1100, 2.2)));
   // the page's width changes with its scale, so arrange again at the scale found, then scale once more
   at(scale()); balanceOne(); at(scale());
 }

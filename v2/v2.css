@@ -548,4 +548,15 @@ html.vs-open{overflow:hidden}
 @keyframes stopin{0%{outline:0 solid color-mix(in srgb,var(--bad) 60%,transparent);outline-offset:0}60%{outline:4px solid color-mix(in srgb,var(--bad) 30%,transparent);outline-offset:6px}100%{outline:4px solid transparent;outline-offset:10px}}
 @keyframes stopdot{0%,100%{opacity:1}50%{opacity:.35}}
 @media (prefers-reduced-motion:reduce){.p1 .stack .after14,.p1 .stack .after14 .lab i{animation:none}}
+/* QA across 26 screens (2 Oct): the narrowest phones (360px, a Galaxy S24) keep every table inside the screen; the
+   masthead's two live links get a full finger's height without their hit areas touching */
+@media (max-width:380px){
+ #main .tbl td,#main .tbl th{padding-left:3px;padding-right:3px}
+ .board{padding-inline:6px}
+ .board td,.board th{padding-inline:2px;font-size:12px}
+}
+@media (pointer:coarse),(hover:none),(max-width:760px){
+ .now{row-gap:18px;margin-top:8px}
+ .now a{padding-block:9px;margin-block:-9px}
+}
 

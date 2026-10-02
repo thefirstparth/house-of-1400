@@ -82,7 +82,7 @@ D.prototype=R.prototype;D.now=function(){return R.now()+O};D.parse=R.parse;D.UTC
         fonts: [...document.fonts].filter(f => f.status === "loaded").map(f => f.family.replace(/"/g, "")).filter((x, i, a) => a.indexOf(x) === i).join(", "),
         overlaps,
         // the type as it reaches the eye: the body text and headlines' size on screen, with the page's zoom
-        type: (() => { const z = parseFloat(document.getElementById("layout")?.style.zoom) || 1, px = sel => { const e = [...document.querySelectorAll(sel)].find(vis); return e ? Math.round(parseFloat(getComputedStyle(e).fontSize) * z * 10) / 10 : null; }; return { body: px("#main .story p, #main .brief, #main .p1 ol.min b, #main p"), head: px("#main h3, #main .leadh h3"), small: px("#main .kick, #main .lab") }; })(),
+        type: (() => { const z = parseFloat(document.getElementById("layout")?.style.zoom) || 1, px = sel => { const e = [...document.querySelectorAll(sel)].find(vis); return e ? Math.round(parseFloat(getComputedStyle(e).fontSize) * z * 10) / 10 : null; }; return { body: px("#main .p1 ol.min b, #main article.story .body p, #main article.lead-story .body p"), head: px("#main .leadh h3, #main article.story h3"), small: px("#main .kick, #main .lab") }; })(),
         // phones: anything wider than the screen (the tab row scrolls on purpose), type under 11px, links and buttons
         // under 32px tall to tap, and the wordmark's canvas against the screen
         wide: [...document.querySelectorAll("#main *, #dtop *")].filter(e => vis(e) && !e.closest("#dtabs") && e.getBoundingClientRect().right > VW + 1 && getComputedStyle(e).position !== "fixed").slice(0, 5).map(e => `${e.tagName.toLowerCase()}.${e.className}`.slice(0, 40)),
