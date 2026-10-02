@@ -23,12 +23,25 @@ const PHONES = {
   iphone16plus: "430x820@3", iphone13: "390x730@3", iphonemini: "375x700@3", iphonese: "375x548@2",
   iphone17land: "874x370@3", nothing2land: "915x380@2.625",
 };
-const SIZES = (process.env.SIZES || (process.env.PHONES ? process.env.PHONES.split(",").flatMap(n => ["light", "dark"].map(t => `${n}-${t}`)).join(",") : "1440x900-light,390x844-light,1440x900-dark,390x844-dark,1280x720-light,1920x1080-light")).split(",");
+// The QA matrix (Parth, 2 Oct: "proper QA once and for all for the top 15-20 screens"): each device's browser window
+// at its default display scaling, after the menu bar or taskbar and Chrome's tabs and address bar; phones after
+// Safari's or Chrome's bars. DEVICES=all runs every one (light; dark too with DARK=1).
+const DEVICES = {
+  "macbook-air-13": "1470x830", "macbook-air-15": "1710x985", "macbook-pro-14": "1512x855", "macbook-pro-16": "1728x990",
+  "macbook-air-13-full": "1470x956", "imac-24": "2240x1130",
+  "win-1080p-150": "1280x595", "win-1080p-125": "1536x730", "win-1366": "1366x657", "win-1080p-100": "1920x937", "surface-laptop": "1504x870",
+  "monitor-1920x1200": "1920x1057", "monitor-2560x1440": "2560x1297", "monitor-4k-150": "2560x1297", "monitor-4k-100": "3840x2017",
+  "ultrawide-3440": "3440x1297", "superwide-5120": "5120x1297",
+  "ipad-landscape": "1180x760", "ipad-portrait": "820x1110",
+  "iphone-17": "iphone17", "iphone-17-pro-max": "iphone17promax", "iphone-se": "iphonese", "nothing-phone-2": "nothing2",
+  "galaxy-s24": "360x700@3", "pixel-9": "412x790@2.625", "iphone-17-landscape": "iphone17land",
+};
+const SIZES = (process.env.DEVICES === "all" ? Object.entries(DEVICES).flatMap(([n, v]) => [`${v}-light`, ...(process.env.DARK ? [`${v}-dark`] : [])]).filter((x, i, a) => a.indexOf(x) === i).join(",") : process.env.SIZES || (process.env.PHONES ? process.env.PHONES.split(",").flatMap(n => ["light", "dark"].map(t => `${n}-${t}`)).join(",") : "1440x900-light,390x844-light,1440x900-dark,390x844-dark,1280x720-light,1920x1080-light")).split(",");
 const b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
 const report = {};
 for (const sz of SIZES) {
   const [wh, theme] = sz.split("-"), spec = PHONES[wh] || wh, [dims, dpr0] = spec.split("@"), [w, h] = dims.split("x").map(Number);
-  const phone = !!PHONES[wh] || w < 500, touch = phone, dpr = Number(dpr0) || (phone ? 2 : 1);
+  const phone = !!PHONES[wh] || w < 760, touch = phone || /@/.test(spec) || w === 820 || w === 1180, dpr = Number(dpr0) || (phone ? 2 : touch ? 2 : 1);
   const ctx = await b.newContext({ viewport: { width: w, height: h }, colorScheme: theme, deviceScaleFactor: dpr, hasTouch: touch, isMobile: touch });
   await ctx.addInitScript(`(function(){var R=Date,O=${T0}-R.now();function D(){var a=[].slice.call(arguments);return a.length?new(Function.prototype.bind.apply(R,[null].concat(a))):new R(R.now()+O)}
 D.prototype=R.prototype;D.now=function(){return R.now()+O};D.parse=R.parse;D.UTC=R.UTC;window.Date=D;})();`);
@@ -68,6 +81,8 @@ D.prototype=R.prototype;D.now=function(){return R.now()+O};D.parse=R.parse;D.UTC
         tables: [...document.querySelectorAll("#main table, #main .tbl")].filter(t => vis(t) && (t.scrollWidth > t.clientWidth + 1 || t.getBoundingClientRect().right > VW)).map(t => t.closest("section")?.id).join(" "),
         fonts: [...document.fonts].filter(f => f.status === "loaded").map(f => f.family.replace(/"/g, "")).filter((x, i, a) => a.indexOf(x) === i).join(", "),
         overlaps,
+        // the type as it reaches the eye: the body text and headlines' size on screen, with the page's zoom
+        type: (() => { const z = parseFloat(document.getElementById("layout")?.style.zoom) || 1, px = sel => { const e = [...document.querySelectorAll(sel)].find(vis); return e ? Math.round(parseFloat(getComputedStyle(e).fontSize) * z * 10) / 10 : null; }; return { body: px("#main .story p, #main .brief, #main .p1 ol.min b, #main p"), head: px("#main h3, #main .leadh h3"), small: px("#main .kick, #main .lab") }; })(),
         // phones: anything wider than the screen (the tab row scrolls on purpose), type under 11px, links and buttons
         // under 32px tall to tap, and the wordmark's canvas against the screen
         wide: [...document.querySelectorAll("#main *, #dtop *")].filter(e => vis(e) && !e.closest("#dtabs") && e.getBoundingClientRect().right > VW + 1 && getComputedStyle(e).position !== "fixed").slice(0, 5).map(e => `${e.tagName.toLowerCase()}.${e.className}`.slice(0, 40)),
