@@ -620,3 +620,6 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 2 Oct 2026: a drawing is never taller than the screen (Parth, on a friend's ultra-wide monitor: "not acceptable")
 - In v2 the lead's 16:9 drawing ran the full page width; on a 3440px monitor that made it taller than the screen. Every drawing is now held to about 60% of the screen's height at any zoom, and on a landscape screen the lead's drawing sits beside the story (headline across, drawing left, text right). Phones keep the drawing across the column. v2/shot.mjs reports the tallest drawing as a share of the screen.
+
+## 2 Oct 2026: the day in dots is always in colour (Parth: "we figured that we add colours based on the length of each section, why did we not implement it?")
+- The wordmark's dots are shared among the desks in the tabs' order, left to right, each desk as wide as its share of the day's words and printed in its desk colour, always (no hover, no links, still flowing). The earlier ink-only version came from reading "without colours from sections" in his 2 Oct note literally; he meant the colours, without the hover.

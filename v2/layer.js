@@ -274,7 +274,13 @@ function mountMark() {
   unmountMark(); unmountMark = () => {};
   const n = document.querySelector("#bigplate .n"); if (!n || DESK.id !== "one") return;
   const size = parseFloat(getComputedStyle(document.querySelector("#bigplate")).getPropertyValue("--np")) || 96;
-  mountWordmark(n, { size }).then(u => { unmountMark = u; }).catch(() => {});
+  // the day in dots: each desk's share of today's paper, in words, in the tabs' order (storiesFromEdition)
+  const desks = NEWDESKS.filter(d => d.id !== "one");
+  const pieces = storiesFromEdition(E, desks.map(d => ({ id: d.id, name: d.name, sections: d.sections })));
+  const shares = desks.map(d => ({ desk: d.id, name: d.name, words: pieces.filter(p => p.desk === d.id).reduce((a, p) => a + p.words, 0) })).filter(x => x.words);
+  const all = shares.reduce((a, x) => a + x.words, 0) || 1;
+  n.setAttribute("aria-label", `1400: today's paper by desk, ${shares.map(x => `${x.name} ${Math.round(100 * x.words / all)}%`).join(", ")}`);
+  mountWordmark(n, { size, shares }).then(u => { unmountMark = u; }).catch(() => {});
 }
 
 // ---------------------------------------------------------------- moving between desks

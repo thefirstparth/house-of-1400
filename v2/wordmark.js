@@ -1,7 +1,9 @@
-// The House of 1400's wordmark on Page One (Parth, 1 Oct 2026: options 1 + 4 of design/nameplate; 2 Oct: ink only,
-// always flowing, no links).
-// "1400" printed as a newsprint halftone: a 45° screen of round ink dots, each sized by how much of its cell the
-// figure covers, so it reads as the solid Playfair 1400 from a distance and as a printed screen up close.
+// The House of 1400's wordmark on Page One (Parth, 1 Oct 2026: options 1 + 4 of design/nameplate; 2 Oct: always
+// flowing, no links, the desk colours always on).
+// "1400" printed as a newsprint halftone: a 45° screen of round dots, each sized by how much of its cell the figure
+// covers, so it reads as the solid Playfair 1400 from a distance and as a printed screen up close.
+// - The day in dots: the figure is shared among today's desks in the tabs' order, left to right, each in proportion to
+//   its length in words, and each desk's dots are printed in its colour. A long Sport day makes a wide orange band.
 // - Always: a slow current runs through the figure. The dots sway with it and swell thick and thin as it passes,
 //   every few seconds a stronger swell sweeps across, and a little loose ink drifts around the figure.
 // - Pointer (laptop): the dots part around the pointer with a swirl and spring back when it leaves.
@@ -10,7 +12,7 @@
 // It stops drawing when it is off screen or the tab is hidden. The figure is Playfair Display Black's lining "1400"
 // (Playfair's default figures are oldstyle) as a fixed outline, taken from v2/fonts by v2/glyphs.py, so it needs no
 // font loading and draws the same in every browser, Safari on an iPhone included.
-// mountWordmark(el, { size: px }) -> destroy()
+// mountWordmark(el, { size: px, shares: [{ desk, words }] in order }) -> destroy()
 
 const CACHE = new Map();
 
@@ -76,7 +78,7 @@ async function screenFor(size) {
   return s;
 }
 
-export async function mountWordmark(el, { size }) {
+export async function mountWordmark(el, { size, shares = [] }) {
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const { W, H, g, dots } = await screenFor(size), R = g * 0.6;
   // the canvas reaches past the figure, so loose ink and parted dots have room; it never takes the pointer itself
@@ -87,8 +89,20 @@ export async function mountWordmark(el, { size }) {
   el.replaceChildren(c);
   el.style.touchAction = "pan-y";
   const ctx = c.getContext("2d");
-  let ink = "";
-  const readInk = () => { ink = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim() || "#15140f"; };
+  // the day in dots: bands left to right, one per desk, each as wide (in dots) as the desk is long (in words)
+  const S = shares.filter(x => x.words > 0), total = S.reduce((a, x) => a + x.words, 0);
+  const order = [...dots].sort((a, b) => a.x - b.x || a.y - b.y), bands = S.length ? S.map(() => []) : [dots];
+  if (S.length) for (let i = 0, k = 0, acc = 0; i < S.length; i++) {
+    acc += S[i].words;
+    const end = i === S.length - 1 ? order.length : Math.round(order.length * acc / total);
+    for (; k < end; k++) bands[i].push(order[k]);
+  }
+  let ink = "", colours = [];
+  const readInk = () => {
+    const cs = getComputedStyle(document.documentElement);
+    ink = cs.getPropertyValue("--ink").trim() || "#15140f";
+    colours = S.length ? S.map(x => cs.getPropertyValue(`--d-${x.desk}`).trim() || ink) : [ink];
+  };
   readInk();
   // sharp at any page zoom (Page One scales itself to the screen) and on any phone
   const scale = () => { const r = c.getBoundingClientRect(), z = r.width / CW || 1, k = Math.min(3, (devicePixelRatio || 1) * z); c.width = Math.round(CW * k); c.height = Math.round(CH * k); ctx.setTransform(k, 0, 0, k, 0, 0); };
@@ -101,12 +115,13 @@ export async function mountWordmark(el, { size }) {
   const field = (x, y, t) => [Math.sin(x * 0.021 + t * 0.8) + Math.sin(y * 0.05 - t * 0.6 + x * 0.008), Math.cos(x * 0.017 - t * 0.7) + Math.sin(y * 0.043 + t * 0.9)];
   function draw(t, dt) {
     ctx.clearRect(0, 0, CW, CH);
-    ctx.fillStyle = ink;
     const A = g * 0.42, Rp = H * 0.62, P = g * 0.9;
     // the swell: every 7 seconds a band sweeps left to right, lifting and thickening the dots it passes
     const front = ((t % 7) / 7) * (W + 2 * PX) - PX, band = W * 0.13;
+    bands.forEach((list, bi) => {
+    ctx.fillStyle = colours[bi] || ink;
     ctx.beginPath();
-    for (const d of dots) {
+    for (const d of list) {
       let r = d.base;
       if (!reduced) {
         const [a, b] = field(d.x, d.y, t), sw = Math.max(0, 1 - Math.abs(d.x - front) / band), s2 = sw * sw * (3 - 2 * sw);
@@ -133,6 +148,8 @@ export async function mountWordmark(el, { size }) {
       ctx.moveTo(x + rr, y); ctx.arc(x, y, rr, 0, Math.PI * 2);
     }
     ctx.fill();
+    });
+    ctx.fillStyle = ink;
     kicks.forEach(k => (k.done = true)); kicks = [];
     for (const p of dust) {
       const [a, b] = field(p.x, p.y, t * 0.6);
