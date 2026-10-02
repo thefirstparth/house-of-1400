@@ -257,11 +257,12 @@ function markWeather() {
   return inkState({ code: c.current.code, temp: c.current.temp, wind: c.current.wind, lat: c.lat ?? h.lat, lon: c.lon ?? h.lon });
 }
 
-// The day line (Parth, 3 Oct, of design/sunline: "let's go ahead with B"): the whole day, midnight to midnight where
-// the reader is, as one band in the sky's own colours, worked out minute by minute from the sun's height: deep blue
-// night with its stars, violet and rose twilight, amber golden hours, pale day. A needle marks now, carrying the sun or
-// the moon in its phase; a fine line above the band is the moon's hours in the sky, from its real position. Over it,
-// the time left to sunset (or sunrise) and one more fact: the golden hour by day, the moon by night.
+// The day line (Parth, 3 Oct, of design/weather-v3: "let's go with 3, the day's own band"; the midnight-to-midnight
+// ribbon before it was "slightly too complex"): only the span you are in, sunrise to sunset or sunset to sunrise, as one
+// short band in the sky's own colours for the sun's height through it (worked out minute by minute), the part still to
+// come a shade paler; the two times as figures at its ends; the sun on it, or by night the moon in its phase while it is
+// up (from its real position, v2/ink.js moonAt), else a plain night dot. Under it, the time left and one fact more: the
+// golden hour by day, the moon by night.
 const SKYC = [[-18, "#1f2747", "#12172b"], [-12, "#2c3766", "#1b2242"], [-6, "#5b4f88", "#2e2852"], [-2, "#c47478", "#6e3c4b"], [1, "#ee9d50", "#9c5b22"], [6, "#f3c071", "#a87628"], [15, "#f2dca5", "#6f6342"], [35, "#d3e2ea", "#3a5264"], [90, "#bcd6e8", "#33506a"]];
 function skyColour(deg, k) {
   const hex = s => [1, 3, 5].map(i => parseInt(s.slice(i, i + 2), 16));
@@ -273,30 +274,21 @@ function skyColour(deg, k) {
   return SKYC.at(-1)[k];
 }
 function dayRibbon(c, away, n) {
-  const h = homeAt(), lat = c.lat ?? h.lat, lon = c.lon ?? h.lon, off = (c.utc_offset_seconds ?? 19800) * 1000, D = 864e5, M = 6e4, deg = 180 / Math.PI;
-  const d0 = Math.floor((n + off) / D) * D - off, pc = t => +((t - d0) / D * 100).toFixed(2), alt = t => sunAt(lat, lon, t).alt * deg, moon = t => moonAt(lat, lon, t) * deg;
-  // the first time f crosses thr between a and b, rising (up) or setting
-  const cross = (f, a, b, thr, up) => { let p = f(a); for (let t = a + 2 * M; t <= b; t += 2 * M) { const v = f(t); if (up ? p < thr && v >= thr : p >= thr && v < thr) return t; p = v; } return null; };
-  const H0 = -0.833, day = alt(n) > H0, rise = cross(alt, d0, d0 + D, H0, true), set = cross(alt, d0, d0 + D, H0, false);
-  const to = day ? cross(alt, n, n + D, H0, false) : cross(alt, n, n + D, H0, true); if (!to || !rise || !set) return "";
-  const stops = k => [...Array(97)].map((_, i) => `${skyColour(alt(d0 + i * 15 * M), k)} ${(i / 0.96).toFixed(2)}%`).join(",");
-  // stars where the sky is dark enough, always in the same places
-  let seed = 11; const rnd = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
-  const stars = [...Array(44)].map(() => [rnd(), rnd(), rnd()]).filter(([x]) => alt(d0 + x * D) < -10).map(([x, y, s]) => `<i style="left:${(x * 100).toFixed(1)}%;top:${(15 + y * 70).toFixed(0)}%;--s:${(1.4 + s * 1.1).toFixed(1)}px;animation-delay:${(s * 3).toFixed(1)}s"></i>`).join("");
-  // the moon's hours, from its real place
-  const ups = []; let on = null; for (let t = d0; t <= d0 + D; t += 10 * M) { const up = moon(t) > 0; if (up && on == null) on = t; if (on != null && (!up || t > d0 + D - 10 * M)) { ups.push([on, t]); on = null; } }
+  const h = homeAt(), lat = c.lat ?? h.lat, lon = c.lon ?? h.lon, M = 6e4, D = 864e5, deg = 180 / Math.PI;
+  const alt = t => sunAt(lat, lon, t).alt * deg, moon = t => moonAt(lat, lon, t) * deg, H0 = -0.833, day = alt(n) > H0;
+  // the first time f crosses thr from t (forwards, or backwards with step < 0)
+  const edge = (f, t, step, thr) => { const side = f(t) > thr; for (let k = 1; k <= D / Math.abs(step); k++) { const u = t + k * step; if ((f(u) > thr) !== side) return u; } return null; };
+  const from = edge(alt, n, -2 * M, H0), to = edge(alt, n, 2 * M, H0); if (!from || !to) return "";
+  const pc = +((n - from) / (to - from) * 100).toFixed(2), stops = k => [...Array(25)].map((_, i) => `${skyColour(alt(from + (to - from) * i / 24), k)} ${(i / 0.24).toFixed(1)}%`).join(",");
   const moonG = (r, m = moonNow(n)) => { const rx = (r * Math.abs(1 - 2 * m.lit)).toFixed(2), sweep = m.lit > 0.5 ? 1 : 0; return `<g${m.waxing ? "" : ' transform="scale(-1 1)"'}><circle r="${r}" fill="var(--mdark)"/><path d="M0 ${-r} A${r} ${r} 0 0 1 0 ${r} A${rx} ${r} 0 0 ${sweep} 0 ${-r}Z" fill="var(--moon)"/></g>`; };
-  const mline = ups.map(([a, b]) => `<span class="mup" style="left:${pc(a)}%;width:${Math.max(0, pc(b) - pc(a))}%"><svg viewBox="-4 -4 8 8" aria-hidden="true">${moonG(3.2)}</svg></span>`).join("");
-  const edge = p => (p < 9 ? " s" : p > 91 ? " e" : "");
-  const label = (t, w) => `<span class="rt${edge(pc(t))}" style="left:${pc(t)}%">${w} <b class="tnum">${istTime(new Date(t).toISOString())}</b></span>`;
-  const mark = day ? `<svg viewBox="-10 -10 20 20" aria-hidden="true"><circle r="9" fill="var(--paper)"/><circle r="6.5" fill="var(--sun)"/></svg>` : `<svg viewBox="-10 -10 20 20" aria-hidden="true"><circle r="9" fill="var(--paper)"/>${moonG(6.5)}</svg>`;
+  const up = moon(n) > 0, mark = day ? `<circle r="9.5" fill="var(--halo)"/><circle r="5.5" fill="var(--sun)"/>`
+    : up ? `<circle r="9" fill="var(--mhalo)"/>${moonG(6)}` : `<circle r="7.5" fill="var(--mhalo)"/><circle r="4.5" fill="var(--night)"/>`;
   let x;
-  if (day) { const g = cross(alt, Math.max(n, to - 3 * 36e5), to, 6, false); x = g ? `Golden hour ${istTime(new Date(g).toISOString())}` : alt(n) < 6 && n > (rise + set) / 2 ? "Golden hour now" : `${hm(set - rise)} of daylight`; }
-  else { const up = moon(n) > 0, lit = Math.round(moonNow(n).lit * 100), nx = cross(moon, n, to + 36e5, 0, !up);
-    x = up ? `Moon ${lit}% · up till ${nx ? istTime(new Date(nx).toISOString()) : "dawn"}` : nx && nx < to ? `Moon ${lit}% · rises ${istTime(new Date(nx).toISOString())}` : `Moon ${lit}%, down tonight`; }
-  const said = `${day ? "Sunset" : "Sunrise"} at ${istTime(new Date(to).toISOString())}, ${hm(to - n)} from now`;
-  return `<div class="ribbon ${day ? "day" : "night"}" style="--rib-l:linear-gradient(90deg,${stops(1)});--rib-d:linear-gradient(90deg,${stops(2)})"><p class="rtop"><b><em class="tnum">${hm(to - n)}</em> to ${day ? "sunset" : "sunrise"}</b><span>${esc(x)}</span></p>
-<div class="rwrap" role="img" aria-label="${esc(said)}"><div class="moons">${mline}</div><div class="band">${stars}</div><span class="needle" style="left:${pc(n)}%">${mark}</span>${label(rise, "Sunrise")}${label(set, "Sunset")}</div></div>`;
+  if (day) { const g = edge(alt, Math.max(n, to - 3 * 36e5), 2 * M, 6); x = alt(n) < 6 && n > (from + to) / 2 ? "Golden hour now" : g && g < to ? `Golden hour ${istTime(new Date(g).toISOString())}` : ""; }
+  else { const lit = Math.round(moonNow(n).lit * 100), nx = edge(moon, n, 2 * M, 0); x = up ? `Moon ${lit}%, up till ${nx && nx < to + 36e5 ? istTime(new Date(nx).toISOString()) : "dawn"}` : nx && nx < to ? `Moon ${lit}%, rises ${istTime(new Date(nx).toISOString())}` : `Moon ${lit}%`; }
+  const t0 = istTime(new Date(from).toISOString()), t1 = istTime(new Date(to).toISOString()), w0 = day ? "Sunrise" : "Sunset", w1 = day ? "Sunset" : "Sunrise";
+  return `<div class="dband ${day ? "day" : "night"}" style="--b-l:linear-gradient(90deg,${stops(1)});--b-d:linear-gradient(90deg,${stops(2)})"><span class="end"><i>${w0}</i><b class="tnum">${t0}</b></span><span class="bar" role="img" aria-label="${w0} ${t0}, ${w1.toLowerCase()} ${t1}, ${hm(to - n)} to go"><span class="sky"><span class="ahead" style="left:${pc}%"></span></span><svg viewBox="-10 -10 20 20" style="left:${pc}%" aria-hidden="true">${mark}</svg></span><span class="end r"><i>${w1}</i><b class="tnum">${t1}</b></span>
+<p class="under"><b><em class="tnum">${hm(to - n)}</em> to ${w1.toLowerCase()}</b>${x ? `<span>· ${esc(x)}</span>` : ""}</p></div>`;
 }
 // The Weather block (Parth, 2 Oct: "since we added Where I am, this section has become too data-heavy, too cluttered,
 // with no real structure"): four tiers, each one line or close to it. Now (the place when away, the temperature, the

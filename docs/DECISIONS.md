@@ -729,3 +729,7 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 3 Oct 2026: "The HOUSE OF" never moves (Parth: "The position/placement of 'The House of' should never change. Why is it changing based on every click?")
 - The 2 Oct alignment moved the words to each tapped shape: sideways to keep the gap to its first stroke, up or down to its middle. Replaced (Parth chose option 1 of three): the words are placed once, against 1400, and stay. Every tapped shape starts where the ink of 1400 starts, on its baseline, and fits inside 1400's box as before, so it grows to the right and never runs past 1400's width. A short shape ("24°") leaves space after it; the nameplate's width and the words' place do not change.
+
+## 3 Oct 2026: the day line is the day's own band (Parth, of design/weather-v3: "let's go with 3"; the ribbon was "slightly too complex, while it is still beautiful")
+- Replaces the midnight-to-midnight ribbon (same day). Only the span you are in, sunrise to sunset or sunset to sunrise, as one short band (8px) in the sky's colours for the sun's height through it, the part still to come a shade paler; the times at its ends ("SUNRISE 06:07", "SUNSET 18:09", the figure bold); the sun on the band, by night the moon in its phase while it is up, else a plain night dot. Under it: "3h 54m to sunset · Golden hour 17:41", by night "7h 40m to sunrise · Moon 64%, rises 22:58". No stars, no moon line.
+- Checked on five screens (MacBook Air, 1366x657, iPad landscape, iPhone 17, a 360px phone), day and night: Page One fits as before.
