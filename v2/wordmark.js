@@ -120,6 +120,19 @@ export async function stillWordmark(el, { size, shares = [] }) {
   return () => { mo.disconnect(); mq.removeEventListener?.("change", draw); removeEventListener("resize", draw); };
 }
 
+// The "°" glyph's top, in ems above the baseline (negative), measured once
+let supTop = null;
+function supBox() {
+  if (supTop == null) { const B = inkBox(200, 200, x => { x.setTransform(100, 0, 0, 100, 20, 150); x.fill(new Path2D(GLYPHS["°"][1])); }); supTop = (B.y0 - 150) / 100; }
+  return { top: supTop };
+}
+// The box a drawing's ink takes on a canvas of w x h (alpha over half)
+function inkBox(w, h, draw) {
+  const c = document.createElement("canvas"); c.width = w; c.height = h; const x = c.getContext("2d", { willReadFrequently: true }); draw(x);
+  const d = x.getImageData(0, 0, w, h).data; let x0 = w, y0 = h, x1 = 0, y1 = 0;
+  for (let y = 0; y < h; y++) for (let i = 0; i < w; i++) if (d[(y * w + i) * 4 + 3] > 127) { if (i < x0) x0 = i; if (i > x1) x1 = i; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  return { x0, y0, x1, y1 };
+}
 // Any short text in the same face, for the shapes a tap cycles through (v2/glyphs.json, embedded by the build as
 // GLYPHS): it is set to fit the width of "1400" at most, on the same baseline.
 const shapeCache = new Map();
@@ -129,10 +142,20 @@ async function textDots(text, size, W, H, g) {
   if (text === "1400" || typeof GLYPHS === "undefined") dots = (await screenFor(size, g)).dots;
   else {
     const chars = [...text].filter(ch => GLYPHS[ch] || ch === " "), adv = chars.reduce((a, ch) => a + (GLYPHS[ch]?.[0] ?? 0.28), 0) || 1;
-    const sz = Math.min(size * 1.05, (size * ADV) / adv), c = document.createElement("canvas"); c.width = W; c.height = H;
+    // every shape sits inside the box "1400" itself takes (2 Oct: the "°" of "21°" rose into "HOUSE OF"). The letters
+    // and figures are measured on a tall scratch canvas and fitted to that box's height and width on the same baseline;
+    // a "°" is set as a small superscript level with the top of the figures, as a typesetter would.
+    const SUP = new Set(["°"]), base0 = H + size * 0.36;
+    const set = (x, sz, ox, base, top) => { let at = ox; for (const ch of chars) { const G = GLYPHS[ch];
+      if (G) { if (SUP.has(ch) && top != null) { const k = sz * 0.72, g0 = supBox(); x.setTransform(k, 0, 0, k, at, top - g0.top * k); } else x.setTransform(sz, 0, 0, sz, at, base); x.fill(new Path2D(G[1])); }
+      at += (G?.[0] ?? 0.28) * sz * (SUP.has(ch) && top != null ? 0.8 : 1); } };
+    const plain = chars.filter(ch => !SUP.has(ch)), advOf = sz => chars.reduce((a, ch) => a + (GLYPHS[ch]?.[0] ?? 0.28) * (SUP.has(ch) ? 0.8 : 1), 0) * sz;
+    const T = inkBox(W, H * 2, x => { x.setTransform(size, 0, 0, size, W / 2 - (ADV * size) / 2, base0); x.fill(new Path2D(PATH)); });
+    const B = inkBox(W, H * 2, x => { let at = 0; for (const ch of plain) { const G = GLYPHS[ch]; if (G) { x.setTransform(size, 0, 0, size, 10 + at, base0); x.fill(new Path2D(G[1])); } at += (G?.[0] ?? 0.28) * size; } });
+    const hf = (T.y1 - T.y0) / Math.max(1, B.y1 - B.y0), sz = Math.min(size * hf, (size * ADV) / (advOf(1) || 1)), topY = H / 2 + size * 0.36 - (base0 - B.y0) * (sz / size);
+    const c = document.createElement("canvas"); c.width = W; c.height = H;
     const x = c.getContext("2d", { willReadFrequently: true });
-    let at = W / 2 - (adv * sz) / 2;
-    for (const ch of chars) { const G = GLYPHS[ch]; if (G) { x.setTransform(sz, 0, 0, sz, at, H / 2 + size * 0.36); x.fill(new Path2D(G[1])); } at += (G?.[0] ?? 0.28) * sz; }
+    set(x, sz, W / 2 - advOf(sz) / 2, H / 2 + size * 0.36, topY);
     const d = x.getImageData(0, 0, W, H).data, I = new Float32Array((W + 1) * (H + 1)), W1 = W + 1;
     for (let y = 0; y < H; y++) { let r = 0; for (let i = 0; i < W; i++) { r += d[(y * W + i) * 4 + 3] / 255; I[(y + 1) * W1 + i + 1] = I[y * W1 + i + 1] + r; } }
     const cover = (cx, cy, h) => { const x0 = Math.max(0, Math.floor(cx - h)), x1 = Math.min(W, Math.ceil(cx + h)), y0 = Math.max(0, Math.floor(cy - h)), y1 = Math.min(H, Math.ceil(cy + h)); if (x1 <= x0 || y1 <= y0) return 0; return (I[y1 * W1 + x1] - I[y0 * W1 + x1] - I[y1 * W1 + x0] + I[y0 * W1 + x0]) / ((x1 - x0) * (y1 - y0)); };
