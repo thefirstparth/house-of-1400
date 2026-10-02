@@ -361,10 +361,11 @@
       }
     ],
     "wordmark": {
-      "note": "Page One's wordmark (Parth, 2 Oct): a tap re-forms the dots into the next of these, then it returns to 1400 after home_after_s. temperature = Bengaluru now, sky = the sky in one word, time = the time in IST; anything else prints as written.",
+      "note": "Page One's wordmark (Parth, 2 Oct): a tap re-forms the dots into the next of these, then it returns to 1400 after home_after_s. temperature = the temperature now (where the reader is when they have shared it, else Bengaluru), feels = what it feels like (left out when it is the same), sky = the sky in one word, time = the time in IST; anything else prints as written.",
       "cycle": [
         "1400",
         "temperature",
+        "feels",
         "sky",
         "time",
         "Bhatia"

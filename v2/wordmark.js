@@ -202,6 +202,9 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
     bands.forEach((list, bi) => list.forEach(d => { d.bi = bi; d.wx = 0; d.wy = 0; d.wr = 1; d.wa = 1; d.inkv = 0.62 + Math.random() * 0.38; }));
     wink?.parts(parts);
   };
+  // the tapped words (the temperature, the sky, the time, a name) are printed on a finer screen than 1400, with dots to
+  // match, so their thinner strokes stay readable; 1400 keeps its own screen
+  let RS = R, shapeText = "1400"; const gOf = text => (text === "1400" ? g : g * 0.72);
   place(await textDots("1400", size, W, H, g));
   const dust = [...Array(reduced ? 0 : Math.round(CW * CH / 1500))].map(() => ({ x: Math.random() * CW, y: Math.random() * CH, r: 0.45 + Math.random() * 0.85, a: Math.random() < 0.3, vx: 0, vy: 0 }));
   let pointer = null, quietTill = 0, lastMove = 0, morphAt = -1e9, swellAt = -1e9, energy = 0, raf = 0, alive = true, shown = true, last = 0, swellT = 0, homeT = 0, idx = 0;
@@ -251,7 +254,8 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
     energy += ((busy ? 1 : 0) - energy) * Math.min(1, 0.06 * dt);
     ctx.clearRect(0, 0, CW, CH);
     const inked = !!wink?.on(), stamping = stampOn(t), ss = stamping ? t - ST.at - ST.down : 0;
-    if (inked) { wink.apply(t, dt / 60); wink.under(ctx, t, look); }
+    // the sun's shadow and the mirage are drawn under 1400 only: under a word they double its thin strokes
+    if (inked) { wink.apply(t, dt / 60); if (shapeText === "1400") wink.under(ctx, t, look); }
     if (stamping) { stampShadow(t); stampEmboss(t); }
     const A = g * 0.42 * energy, Rp = H * 0.62, P = g * 0.9;
     const front = swell >= 0 ? swell * (W + 2 * PX) - PX : -1e9, band = W * 0.13;
@@ -271,13 +275,15 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
           const wave = 0.5 + 0.5 * Math.sin(d.x * 0.035 - t * 1.6 + d.y * 0.012), moved = Math.min(1, Math.hypot(d.vx, d.vy) / g);
           r = d.base * (1 + energy * (0.32 * wave - 0.2) + 0.25 * s2) * (1 - 0.25 * moved);
         } else { d.px = 0; d.py = 0; }
-        let x = PX + d.x + d.px + d.wx, y = PY + d.y + d.py + d.wy, rr = Math.min(r * d.wr, 1.3) * R;
+        // a dot never grows past 1.15 of its size, in motion or in weather, so neighbours never run into each other (2 Oct:
+        // at 1.3 a tapped word's thin strokes ran into blobs)
+        let x = PX + d.x + d.px + d.wx, y = PY + d.y + d.py + d.wy, rr = Math.min(r * d.wr, 1.15) * RS;
         if (rr < 0.25) continue;
         if (stamping) {
           if (ss < 0) continue; // the forme has not come down yet
           const settle = Math.min(1, ss / 1.3), a = 1 - (1 - d.inkv) * (1 - settle * settle * (3 - 2 * settle));
           rr *= 1 + 0.5 * Math.exp(-ss * 4.2); if (ss < 0.12) { x += (Math.random() - 0.5) * 0.9; y += (Math.random() - 0.5) * 0.9; }
-          if (a < 0.97) { const k = Math.round(a * 20) / 20; (faint || (faint = new Map())); if (!faint.has(k)) faint.set(k, []); faint.get(k).push(x, y, Math.min(rr, 1.6 * R)); continue; }
+          if (a < 0.97) { const k = Math.round(a * 20) / 20; (faint || (faint = new Map())); if (!faint.has(k)) faint.set(k, []); faint.get(k).push(x, y, Math.min(rr, 1.45 * RS)); continue; }
         }
         if (faint && d.wa < 0.97) { const k = Math.round(d.wa * 20) / 20; if (!faint.has(k)) faint.set(k, []); faint.get(k).push(x, y, rr); continue; }
         ctx.moveTo(x + rr, y); ctx.arc(x, y, rr, 0, Math.PI * 2);
@@ -314,7 +320,7 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
   const wake = () => { if (!reduced && !raf && alive && shown && !document.hidden) raf = requestAnimationFrame(frame); };
   // one swell every 7 seconds, while the figure is on screen
   const swellLoop = () => { clearTimeout(swellT); if (!alive) return; if (shown && !document.hidden && !reduced) { swellAt = performance.now() / 1000; wake(); } swellT = setTimeout(swellLoop, 7000); };
-  const reform = async text => { const homes = await textDots(text, size, W, H, g); place(homes, parts); morphAt = performance.now(); el.setAttribute("aria-label", text); if (reduced) draw(performance.now()); else wake(); };
+  const reform = async text => { const gs = gOf(text), homes = await textDots(text, size, W, H, gs); RS = gs * 0.6; shapeText = text; place(homes, parts); morphAt = performance.now(); el.setAttribute("aria-label", text); if (reduced) draw(performance.now()); else wake(); };
   const onMove = e => { if (e.pointerType === "mouse") { pointer = at(e); lastMove = performance.now(); wake(); } };
   const onLeave = () => { pointer = null; };
   const onDown = () => {

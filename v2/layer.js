@@ -489,6 +489,8 @@ function markCycle() {
   const away = awayCity(), w = (away || LIVE.weather?.value?.cities?.[0])?.current, hh = Number(istTime(new Date().toISOString()).slice(0, 2));
   return (CFG.desks_v2?.wordmark?.cycle || ["1400"]).map(x => {
     if (x === "temperature") return w ? `${Math.round(w.temp)}°` : "";
+    // what it feels like, when that differs from the reading (Parth, 2 Oct: "can we also not show what it feels like?")
+    if (x === "feels") return w && Number.isFinite(w.feels) && Math.round(w.feels) !== Math.round(w.temp) ? `Feels ${Math.round(w.feels)}°` : "";
     if (x === "sky") { if (!w) return ""; const k = SKY1(w.code); return k === "sun" ? ((away ? sunAt(away.lat, away.lon, Date.now()).alt <= 0 : isNight(hh)) ? "Clear" : "Sunny") : k; }
     if (x === "time") return istTime(new Date().toISOString());
     return String(x);
