@@ -644,7 +644,7 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 ## 2 Oct 2026: Page One arranges its blocks to the screen, and keeps its type size on a laptop (Parth, on a MacBook Air: "why is there so much white space, and what happened to the font size?")
 - Page One scaled until its tallest column fitted the screen. Weather with Sport this week made the middle column tallest, so on a MacBook Air's window (1470x830) the page shrank to 0.81 and the other two columns ended half way down.
 - The blocks now find their columns on every laptop and monitor. The day in a minute keeps the first column. Weather, Sport this week, Money, The market expects and the evening pick (last in its column, as the 1 Oct spec said) can each go in any column, in that order within it. The news column is tried at three widths, and its lines in one column or two. The page then scales. Phones and windows up to 1100px keep the usual order.
-- Supersedes part of 1 Oct's "Page One fills one screen": on a laptop the type is not made smaller than its own size just to bring the House Note and the foot onto the screen. The three columns stay on the screen, and the House Note and foot may sit a short scroll below. Larger screens still fit everything and scale up to 2.2. Nothing prints below 0.85.
+- (Withdrawn the same day, Parth: "I am having to scroll here, the first page logic was specifically to not have to scroll". Letting the House Note and foot fall below the screen is undone; see the next entry.)
 - Page-only (v2/layer.js, v2/v2.css); v1 and the daily run are unchanged.
 
 
@@ -653,3 +653,10 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 - From 3 Oct a reprinted thread leads with what changed in its headline, day in a minute line and first sentence, carries `update: {since, new}`, and stays in its section unless `update.front` says why what changed is front-page news on its own. The validator checks each (scripts/validate.mjs; tests/followup.test.mjs). Replayed over 25 Sep to 2 Oct it flags only the Ronaldo story and one Ola Electric brief that repeated its headline. The first-sentence check only asks for one new word, because a real result opens with names already printed ("Alcaraz beat Fritz").
 - The page prints "Update" beside the kicker and in the day in a minute, in both designs.
 - The 2 Oct edition was corrected in place: "Portugal win 4–2 in Denmark without Ronaldo", with the result first.
+
+## 2 Oct 2026: Page One never scrolls on a laptop; the type stays large by making the fixed parts compact (Parth: "the first page logic was specifically to not have to scroll")
+- One screen stands, as decided on 1 Oct. At 1470x830 (a MacBook Air's window) the page at full size needed about 940px, 990px with the Since strip.
+- The House Note and the foot share one row on laptops (the note wraps before the foot drops a line).
+- On laptops the Since strip is one more block, last in whichever column is shortest. On phones it stays a strip across the top, one line on wider screens.
+- With the blocks balanced, the Air prints at 0.95 day and evening (0.81 before), 1440x900 at 1.02, 1920x1080 at 1.24; every laptop and monitor size from 1280x720 to 3440x1240 fits with no scroll.
+

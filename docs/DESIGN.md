@@ -152,7 +152,7 @@ Four faces, each with one job, all self-hosted (v2/fonts), never loaded from Goo
 ## Layout
 
 - **Width follows the screen.** On laptops and monitors the masthead, the tabs and the page scale together and take the screen's full width (layout up to 1920px on desk pages, 2600px on Page One), so there are no empty margins on a wide screen. Phones and small tablets keep the plain layout with a 16px gutter.
-- **Page One is one screen** on any laptop or monitor where the type can keep its own size: every line of the day in a minute prints, and the blocks find the columns that leave the tallest one shortest (the day in a minute keeps the first; the evening pick goes last in whichever it joins). Then the page scales to fill the height at full width, up to 2.2. On a shorter laptop (a MacBook Air's window) the type is not shrunk below its own size just to fit the House Note and the foot. The three columns stay on the screen and the foot sits a short scroll below. Nothing prints below 0.85.
+- **Page One is one screen** on every laptop and monitor, and never scrolls there. Every line of the day in a minute prints. The blocks find the columns that leave the tallest one shortest: the day in a minute keeps the first; the evening pick and the Since strip go last in whichever they join. The fixed parts are compact (the House Note and the foot share one row). Then the page scales to fill the height at full width, from 0.62 to 2.2. On a phone the Since strip runs across the top.
 - **Desks**: the desk's name, the jump list, then the sections, each opening with a 2px rule in the desk colour and its name. The day's lead prints at the top of its own section, and that section opens its desk.
 - **A drawing is never taller than about 60% of the screen.** On a landscape screen the lead's 16:9 drawing sits beside its story (headline across, drawing left, text right); on a phone it runs across the column.
 - **Tables never push past their column** and nothing is ever wider than a phone's screen.
@@ -172,7 +172,7 @@ Corners are 4px at most ({rounded.md}); small marks 3px. Pills, round cards and 
 - **Forecasts** (the market's view, the Betting Window, Page One's "The market expects", a market's sheet) sit in a dashed box marked "Forecast", so a price is never read as a result.
 - **Live figures** show their age when stale ("as of"), and flash once in ink when they change. Charts and bars draw themselves in once, the first time they are seen.
 - **The sheet** rises from the bottom on a phone and opens in the middle on a laptop: sharing a story (the paper's own card, with its drawing), a market's detail.
-- **Since the paper went out**: on Page One, a timestamped strip of what changed after print (a market close, a result, sunset, a moved forecast), only when something did.
+- **Since the paper went out**: on Page One, a timestamped list of what changed after print (a market close, a result, sunset, a moved forecast), only when something did; a block in the shortest column on a laptop, a strip across the top on a phone.
 - **The archive** is a calendar: each printed day a tile with its lead, its item count, the Sensex's close as a dot, and the day's paper by desk as a strip of desk colours.
 
 ## Motion

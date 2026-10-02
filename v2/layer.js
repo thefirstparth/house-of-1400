@@ -310,7 +310,7 @@ function sinceHTML() {
 
 const blk = (id, desk, title, link, to, body) => (body ? `<section class="blk" id="p1-${id}" style="--c:var(--d-${desk})"><div class="bh"><h2>${title}</h2><a href="${deskHref(desk)}" data-desk="${desk}" data-to="${to}">${link} →</a></div><div data-p1="${id}">${body}</div></section>` : "");
 function pageOne() {
-  return `<div class="p1"><div data-p1="since">${sinceHTML()}</div><div class="p1body"><div class="stack c1"><section class="news" id="p1-minute"><div class="bh" style="--c:var(--d-one)"><h2>The day in a minute</h2><a href="${deskHref("news")}" data-desk="news">All the news →</a></div><div data-p1="minute">${minuteHTML(p1lines)}</div></section><div class="eve" id="p1-eve" data-p1="evening">${eveningHTML()}</div></div>
+  return `<div class="p1"><div id="p1-since" data-p1="since">${sinceHTML()}</div><div class="p1body"><div class="stack c1"><section class="news" id="p1-minute"><div class="bh" style="--c:var(--d-one)"><h2>The day in a minute</h2><a href="${deskHref("news")}" data-desk="news">All the news →</a></div><div data-p1="minute">${minuteHTML(p1lines)}</div></section><div class="eve" id="p1-eve" data-p1="evening">${eveningHTML()}</div></div>
 <div class="stack c2">${blk("weather", "home", "Weather", "Sky &amp; Streets", "sky", weatherHTML())}${blk("sport", "sport", "Sport this week", "Sport", "fixtures", sportHTML(6))}</div>
 <div class="stack c3">${blk("money", "money", "Money", "The Ledger", "ledger", moneyHTML())}${blk("bets", "news", "The market expects", "Betting Window", "betting", betsHTML(3))}</div></div></div>`;
 }
@@ -348,8 +348,9 @@ function fitDesk() {
 // which goes last in whichever column it joins) may sit in any column, in that order within it. The news column is
 // tried at three widths, its lines in one column or two, and the layout with the shortest tallest column wins (the
 // usual one unless another is clearly shorter). Each block is measured once in each column, so every arrangement is
-// worked out, not laid out. Phones and narrow windows keep the usual order.
-const P1BLOCKS = ["weather", "sport", "money", "bets", "eve"], P1HOME = [1, 1, 2, 2, 0], P1WIDE = [1.5, 1.25, 1];
+// worked out, not laid out. Phones and narrow windows keep the usual order, with the Since strip across the top.
+// On a laptop the Since strip is one more block, last in its column (on a phone it runs across the top).
+const P1BLOCKS = ["weather", "sport", "money", "bets", "eve", "since"], P1HOME = [1, 1, 2, 2, 0, 0], P1WIDE = [1.5, 1.25, 1];
 function balanceOne() {
   const body = document.querySelector(".p1body"), news = document.getElementById("p1-minute"), cols = [...document.querySelectorAll(".p1body > .stack")];
   if (!body || !news || cols.length !== 3) return;
@@ -360,7 +361,8 @@ function balanceOne() {
     blocks.forEach((b, i) => b && cols[a[i]].append(b));
   };
   layout(P1HOME);
-  if (innerWidth <= 1100) return;
+  const since = document.getElementById("p1-since");
+  if (innerWidth <= 1100) { if (since) body.before(since); return; }
   const gap = parseFloat(getComputedStyle(cols[0]).rowGap) || 0, hOf = el => (el && el.childElementCount ? el.getBoundingClientRect().height : 0);
   const stackH = hs => { const on = hs.filter(h => h > 0); return on.reduce((x, h) => x + h, 0) + gap * Math.max(0, on.length - 1); };
   const options = [];
@@ -382,9 +384,9 @@ function balanceOne() {
 }
 // Page One: one screen. Every one of the editor's lines prints; the page takes the full width and scales (0.62 to
 // 2.2) until it fills the height. Only on a screen too short even then does it drop lines, never below five.
-// The type is not made smaller than its own size just to bring the House Note and the foot onto the screen (Parth, 2
-// Oct, on a MacBook Air: "what happened to the font size?"): on a shorter laptop the page scales as far towards 1 as
-// keeps all three columns on the screen, and the House Note and the foot sit a short scroll below.
+// It never scrolls on a laptop (Parth, 2 Oct: "the first page logic was specifically to not have to scroll"); the type
+// stays large because the blocks balance (balanceOne) and the fixed parts are compact: the House Note and the foot share
+// one row, the Since strip is one line.
 function fitOne() {
   setZoom(1, 0);
   if (DESK.id !== "one" || !document.querySelector(".p1end")) return;
@@ -403,8 +405,7 @@ function fitOne() {
     for (let k = 0; k < 14; k++) { const z = (lo + hi) / 2; if (at(z, s)) lo = z; else hi = z; }
     return lo;
   };
-  // and never below 0.85, whatever the window: a window too short for even that scrolls
-  const scale = () => Math.max(0.85, search(".p1end", Math.min(W / 1100, 2.2)), search(".p1body", Math.min(1, W / 1100)));
+  const scale = () => search(".p1end", Math.min(W / 1100, 2.2));
   // the page's width changes with its scale, so arrange again at the scale found, then scale once more
   at(scale()); balanceOne(); at(scale());
 }

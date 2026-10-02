@@ -494,3 +494,26 @@ html.vs-open{overflow:hidden}
 .after14 .w{display:block;font:700 11.5px var(--sans);letter-spacing:.04em;color:var(--c)}
 .after14 .w span{color:var(--muted);font-weight:600;margin-left:6px;letter-spacing:.08em;text-transform:uppercase;font-size:10.5px}
 @media (max-width:760px){.after14{grid-template-columns:1fr}.after14 .lab{flex-direction:row;gap:8px;align-items:baseline;border-right:0;border-bottom:1px solid var(--rule2);padding:8px 0}.after14 ol{grid-auto-flow:row;grid-auto-columns:auto}.after14 li{border-left:0;border-top:1px solid var(--rule2);padding:8px 0}.after14 li:first-child{border-top:0}.after14 li[data-bet]{margin:6px 0;padding:8px 10px}}
+
+/* ---------- Page One on a laptop: one screen at a large type size (Parth, 2 Oct, on a MacBook Air) ---------- */
+@media (min-width:761px){
+ /* the House Note and the foot share one row; the note wraps before the foot drops to a line of its own */
+ .p1end{display:flex;flex-wrap:wrap;align-items:center;column-gap:32px;border-top:3px double var(--rule)}
+ .p1end .hn{flex:1 1 420px;border-top:0}
+ .p1end .foot{flex:0 1 auto;border-top:0;padding:9px 0;margin:0}
+ /* the Since strip is one line: the label alone, each change with its time inline */
+ .after14 .lab{flex-direction:row;align-items:center;padding:6px 16px 6px 0}
+ .after14 .lab small{display:none}
+ .after14 li{padding:6px 14px}
+ .after14 li[data-bet]{margin:3px 0 3px 8px;padding:4px 12px}
+ .after14 .w{display:inline;margin-right:8px}
+}
+/* the Since strip as a block in a column (laptops; balanceOne puts it in the shortest) */
+.p1 #p1-since:empty{display:none}
+.p1 .stack .after14{grid-template-columns:1fr;margin:0}
+.p1 .stack .after14 .lab{justify-content:flex-start;border-right:0;border-bottom:1px solid var(--rule2);padding:7px 0}
+.p1 .stack .after14 ol{grid-auto-flow:row;grid-auto-columns:auto}
+.p1 .stack .after14 li{border-left:0;border-top:1px solid var(--rule2);padding:6px 0}
+.p1 .stack .after14 li:first-child{border-top:0}
+.p1 .stack .after14 li[data-bet]{margin:5px 0;padding:6px 10px}
+
