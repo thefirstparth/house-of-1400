@@ -413,6 +413,7 @@ sup.calc{font-size:.72em;color:var(--muted);margin-left:1px}
 /* A match already played today stays until midnight IST, quieter, with its result (Parth, 1 Oct). */
 .agenda li.done .t,.agenda li.done .what{color:var(--muted)}
 .agenda li .res{display:inline-block;margin-left:4px;font-weight:600;color:var(--ink2)}
+.agenda li a.res{color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
 /* after the row rules, so a narrow day column wins: the time above the match */
 @container (max-width:250px){.agenda li{grid-template-columns:1fr;gap:2px}.agenda li.on{padding-inline:8px}}
 @container (max-width:160px){.agenda li{font-size:13.5px}.agenda .day h3{font-size:11px;letter-spacing:.08em}}

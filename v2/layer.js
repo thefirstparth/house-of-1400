@@ -122,14 +122,17 @@ function desksHTML(S) {
   }).join("");
 }
 
-// ---------------------------------------------------------------- The Fixture List, by sport (Parth, 1 Oct)
-// Each day's fixtures in sport groups, in this order, each under a small label; times stay in order inside a group.
+// ---------------------------------------------------------------- The Fixture List, by time, labelled by sport
+// Each day's fixtures in time order (Parth, 2 Oct: "this needs to be in ascending order, no?"), with the sport's small
+// label above a row whenever the sport changes, so cricket, tennis, football and F1 still read apart (Parth, 1 Oct).
 const SPORTS = [["Cricket", /cricket/], ["Football", /madrid|football|soccer/], ["F1", /^f1/], ["Tennis", /tennis/], ["Basketball", /nba|warriors/]];
 const sportOf = f => (SPORTS.find(([, re]) => re.test(f.entity || "")) || ["More sport"])[0];
 function sportGroups(list) {
-  const by = new Map(), rank = sp => { const i = SPORTS.findIndex(x => x[0] === sp); return i < 0 ? SPORTS.length : i; };
-  for (const f of list) { const sp = sportOf(f); if (!by.has(sp)) by.set(sp, []); by.get(sp).push(f); }
-  return [...by].sort((a, b) => rank(a[0]) - rank(b[0])).flatMap(([sp, l]) => [{ sp }, ...l]);
+  const out = []; let last = null;
+  for (const f of [...list].sort((a, b) => String(a.when_utc).localeCompare(String(b.when_utc)))) {
+    const sp = sportOf(f); if (sp !== last) out.push({ sp }); last = sp; out.push(f);
+  }
+  return out;
 }
 
 // ---------------------------------------------------------------- Page One (variant B, design/page-one/README.md FINAL)
@@ -626,3 +629,49 @@ document.addEventListener("error", e => {
   if (top && facts && col && col !== left) { const unit = facts.parentElement !== left ? facts.parentElement : facts; unit.style.marginTop = ""; col.append(unit); }
   else if (top && col && !col.children.length) { col.remove(); top.classList.remove("cols2"); }
 }, true);
+
+// ---------------------------------------------------------------- Sky & Streets' chart, drawn for the new design
+// Parth, 2 Oct, on Ranchi and Prayagraj: "what has happened to the charts here? This was our redesign?" The chart
+// approved on 1 Oct (design/weather, round three) was still drawn in the old style: gradient pills, pill-shaped air
+// chips, a black outline round this week, and a legend that ran into "MONTH TO MONTH". Same figures, same two panels
+// on one scale, drawn as the rest of the paper is: a flat bar from the night's low to the day's high with a warm tick
+// at the top and a cool one at the foot, the usual month as a pale band behind its bar, this week as a tinted column,
+// the air as a figure beside a small square of its colour. No gradients, no pills.
+function skyChart(o, { w = 640, compact = false } = {}) {
+  const W = o.weeks.map((x, i) => ({ l: ["Last week", "This week", "Next week"][i], s: i ? `from ${dmShort(x.from)}` : "measured", hi: x.hi, lo: x.lo, aq: x.aqi, now: i === 1 }));
+  const M = o.months.map(x => ({ l: MONL[+x.month.slice(5) - 1], s: "", hi: x.hi, lo: x.lo, uhi: x.usual_hi, ulo: x.usual_lo, aq: x.usual_aqi, au: 1 }));
+  const P = [...W, ...M], all = P.flatMap(p => [p.hi, p.lo, p.uhi, p.ulo]).filter(x => x != null);
+  if (!all.length) return "";
+  const nW = W.length, t0 = Math.floor(Math.min(...all) - 2), t1 = Math.ceil(Math.max(...all) + 2);
+  // the legend sits right of "MONTH TO MONTH" when there is room, else on a line of its own
+  const ax = 30, gap = 26, colw = (w - ax - gap) / P.length, mx = ax + gap + nW * colw, legW = 104, legOne = mx + 112 + 16 <= w - legW;
+  const top = legOne || !M.length ? 46 : 62, h = (compact ? 216 : 262) + top - 46, bot = 66;
+  const y = t => top + (1 - (t - t0) / (t1 - t0)) * (h - top - bot), X = i => ax + (i < nW ? 0 : gap) + i * colw + colw / 2;
+  const bw = compact ? 8 : 10, band = bw + (compact ? 14 : 18), lab = 'font-size="10.5" font-weight="700" letter-spacing=".08em" fill="var(--muted)"';
+  let s = `<svg class="sky-chart v2c" viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="${esc(o.name)}: day and night temperatures and the air, week to week and month to month">`;
+  // this week's column, tinted
+  P.forEach((p, i) => { if (p.now) s += `<rect x="${X(i) - colw / 2 + 4}" y="${top - 26}" width="${colw - 8}" height="${h - top + 24}" fill="color-mix(in srgb, var(--d-home) 7%, transparent)"/>`; });
+  s += `<text x="${ax}" y="13" ${lab}>WEEK TO WEEK</text>`;
+  if (M.length) {
+    s += `<text x="${mx}" y="13" ${lab}>MONTH TO MONTH</text>`;
+    const lx = legOne ? w - legW : mx, ly = legOne ? 4 : 22;
+    s += `<rect x="${lx}" y="${ly}" width="14" height="11" fill="var(--rule2)"/><text x="${lx + 19}" y="${ly + 9.5}" font-size="10.5" fill="var(--muted)">30-year average</text>`;
+  }
+  for (let t = Math.ceil(t0 / 5) * 5; t <= t1; t += 5) s += `<line x1="${ax}" x2="${w}" y1="${y(t)}" y2="${y(t)}" stroke="var(--rule2)" stroke-width="1"/><text x="${ax - 6}" y="${y(t) + 3.5}" text-anchor="end" font-size="10.5" fill="var(--muted)">${t}°</text>`;
+  if (M.length) s += `<line x1="${ax + nW * colw + gap / 2}" x2="${ax + nW * colw + gap / 2}" y1="${top - 22}" y2="${h - 6}" stroke="var(--rule)"/>`;
+  P.forEach((p, i) => {
+    if (p.hi == null || p.lo == null) return;
+    const cx = X(i), yh = y(p.hi), yl = y(p.lo);
+    if (p.uhi != null && p.ulo != null) s += `<rect x="${cx - band / 2}" y="${y(p.uhi)}" width="${band}" height="${Math.max(2, y(p.ulo) - y(p.uhi))}" fill="var(--rule2)"><title>A usual ${esc(p.l)}: ${Math.round(p.uhi)}° by day, ${Math.round(p.ulo)}° at night</title></rect>`;
+    s += `<rect class="bar" x="${cx - bw / 2}" y="${yh}" width="${bw}" height="${Math.max(2, yl - yh)}" fill="var(--ink2)"><title>${esc(p.l)}: ${Math.round(p.hi)}° by day, ${Math.round(p.lo)}° at night</title></rect>`;
+    s += `<rect x="${cx - bw / 2 - 3}" y="${yh - 1.5}" width="${bw + 6}" height="3" fill="var(--warm)"/><rect x="${cx - bw / 2 - 3}" y="${yl - 1.5}" width="${bw + 6}" height="3" fill="var(--cool)"/>`;
+    // labels outside both the bar and the band, never on them (Parth, 1 Oct)
+    const topY = y(Math.max(p.hi, p.uhi ?? -99)), botY = y(Math.min(p.lo, p.ulo ?? 99));
+    s += `<text x="${cx}" y="${topY - 7}" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--warm)">${Math.round(p.hi)}°</text><text x="${cx}" y="${botY + 16}" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--cool)">${Math.round(p.lo)}°</text>`;
+    const short = colw < 70;
+    s += `<text x="${cx}" y="${h - bot + 20}" text-anchor="middle" font-size="${short ? 10.5 : 12}" font-weight="${p.now ? 800 : 600}" fill="var(--ink)">${short ? p.l.replace(" week", " wk").replace(/^(\w{3})\w+$/, "$1") : p.l}</text>${p.s && !short ? `<text x="${cx}" y="${h - bot + 33}" text-anchor="middle" font-size="10" fill="var(--muted)">${p.s}</text>` : ""}`;
+    if (p.aq != null) { const [k, word] = aqWord(p.aq), tw = String(p.aq).length * 6.6; s += `<g><title>Air ${p.aq}, ${word}${p.au ? " (a usual month)" : ""}</title><rect x="${cx - (tw + 11) / 2}" y="${h - bot + 45}" width="7" height="7" fill="var(--aq${k})"/><text x="${cx - (tw + 11) / 2 + 11}" y="${h - bot + 52}" font-size="11.5" font-weight="700" fill="var(--ink)">${p.aq}</text></g>`; }
+  });
+  s += `<text x="${ax - 6}" y="${h - bot + 52}" text-anchor="end" font-size="10" font-weight="700" fill="var(--muted)">AIR</text>`;
+  return s + `</svg>`;
+}

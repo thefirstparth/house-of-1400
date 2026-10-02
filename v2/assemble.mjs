@@ -52,6 +52,9 @@ export function assemble({ app = read("public/app.js"), styles = read("public/st
   rep('  const modules = $$("#main [data-live]").length;', '  const modules = Object.values(S).join("").split("data-live=").length - 1;');
   // the Betting Window's slips open their market in a sheet
   rep('return `<li class="slip${n === 0 ? " lead" : ""}">', 'return `<li class="slip${n === 0 ? " lead" : ""}" data-bet="${esc(b.id || "")}" tabindex="0">');
+  // Sky & Streets' chart is drawn in the new design's style (layer.js skyChart)
+  rep("function skyChart(o, {", "function skyChart_v1(o, {");
+  rep("the dashed outline is the same month's 30-year average", "the pale band behind it is the same month's 30-year average");
   // the archive is a calendar in the new design
   rep('  if (ROUTE.kind === "archive") return renderArchive();', '  if (ROUTE.kind === "archive") return archiveV2();');
   // The Week Ahead in seven columns, Monday to Sunday

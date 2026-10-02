@@ -1207,6 +1207,9 @@ function resultOf(f) {
   if (/madrid|football/.test(f.entity || "") && L?.score && near(L.date)) return `${L.winner === "us" ? "Won" : L.winner === "them" ? "Lost" : "Drew"} ${L.score.us}–${L.score.them}`;
   return "";
 }
+// A finished match with no live source for its result (India at the Asian Games, say; Parth, 2 Oct: "were we not able
+// to add the result here?"): the row says it has finished and links to the news of it, so nothing is guessed.
+const resultLink = f => { const q = `${f.label.replace(/ · /g, " ").replace(/\b(gold|bronze)-medal match\b/i, "$1 medal")} result`; return ` <a class="res" href="https://news.google.com/search?q=${encodeURIComponent(q)}&hl=en-IN&gl=IN&ceid=IN:en" target="_blank" rel="noopener">Finished · the result ↗</a>`; };
 function fixturesBlock() {
   const n = Date.now(), horizon = n + 7 * 864e5;
   const rows = allFixtures().slice().sort((a, b) => a.when_utc.localeCompare(b.when_utc)).filter(f => {
@@ -1227,7 +1230,7 @@ function fixturesBlock() {
     const when = f.time_tbc ? "Time TBC" : f.until_utc ? `Runs to ${sparkLabel(istDate(new Date(f.until_utc)))}` : istTime(f.when_utc);
     const extra = f.source === "ESPN" ? `${f.court ? ` <small>· ${esc(f.court)}</small>` : ""}${f.other ? ` <small>· another listing says ${esc(f.other)}</small>` : ""}` : "";
     const res = st === "done" ? resultOf(f) : "";
-    const tag = st === "done" ? ` <span class="res">${esc(res || "Finished")}</span>` : st === "on" ? ` <span class="live"><i></i>On now, go watch</span> <button class="refresh" data-refresh="fixtures">Refresh</button>` : st === "due" || (st === "next" && f.held) ? ` <span class="due">${esc(dueWhy(f))}</span>` : "";
+    const tag = st === "done" ? (res ? ` <span class="res">${esc(res)}</span>` : resultLink(f)) : st === "on" ? ` <span class="live"><i></i>On now, go watch</span> <button class="refresh" data-refresh="fixtures">Refresh</button>` : st === "due" || (st === "next" && f.held) ? ` <span class="due">${esc(dueWhy(f))}</span>` : "";
     return `<li class="${st === "span" ? "next" : st === "due" ? "next" : st}"><span class="t tnum">${esc(when)}</span><span class="what">${esc(f.label)}${watchTag(f)}${extra}${tag}</span></li>`;
   }).join("")}</ul></div>`).join("")}</div>`;
 }
