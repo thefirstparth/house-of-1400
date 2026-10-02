@@ -234,7 +234,7 @@ function hereHead() {
   const away = awayCity(), on = hereOn() && HERE;
   if (hereBusy) return `<span class="here busy">Finding you…</span>`;
   if (hereNote) { const n = hereNote; setTimeout(() => { if (hereNote === n) { hereNote = ""; hereRepaint(); } }, 4000); return `<span class="here note">${esc(n)}</span>`; }
-  return on ? `<button type="button" class="here on" data-here="off" aria-pressed="true" title="Back to ${esc(CFG.paper.home_city || "Bengaluru")}">${away ? `${esc(away.name)} · ` : ""}where I am</button>`
+  return on ? `<button type="button" class="here on" data-here="off" aria-pressed="true" title="Show ${esc(CFG.paper.home_city || "Bengaluru")} again">${away ? `Back to ${esc(CFG.paper.home_city || "Bengaluru")}` : "Where I am"}</button>`
     : `<button type="button" class="here" data-here="on" aria-pressed="false" title="Show the weather where you are (your browser asks first)">Where I am</button>`;
 }
 document.addEventListener("click", e => { const b = e.target.closest("[data-here]"); if (!b) return; e.preventDefault(); if (b.dataset.here === "on") locate(true); else { try { localStorage.removeItem(HERE_KEY); } catch {} HERE = null; hereRepaint(); } });
@@ -245,6 +245,11 @@ function markWeather() {
   return inkState({ code: c.current.code, temp: c.current.temp, wind: c.current.wind, lat: c.lat ?? h.lat, lon: c.lon ?? h.lon });
 }
 
+// The Weather block (Parth, 2 Oct: "since we added Where I am, this section has become too data-heavy, too cluttered,
+// with no real structure"): four tiers, each one line or close to it. Now (the place when away, the temperature, the
+// sky, feels, high and low); the day as a slim line from sunrise to sunset (or sunset to sunrise) with the sun or the
+// moon where it is; three readings on one line (rain today or the moon at night, the air, humidity); and elsewhere, one
+// quiet line of the other cities. The city shown is never repeated in that line.
 function weatherHTML() {
   const W = LIVE.weather?.value?.cities, away = awayCity(), c = away || W?.[0]; if (!c?.current) return "";
   const d0 = (c.daily || [])[0] || {}, off = c.utc_offset_seconds ?? 19800, n = Date.now();
@@ -252,38 +257,33 @@ function weatherHTML() {
   let sun = "";
   if (Number.isFinite(rise) && Number.isFinite(set)) {
     const day = n >= rise && n < set, from = day ? rise : n >= set ? set : set - DAY, to = day ? set : n >= set ? rise + DAY : rise;
-    const f = Math.max(0, Math.min(1, (n - from) / (to - from)));
-    const X = t => 10 + 200 * (0.5 - 0.5 * Math.cos(Math.PI * t)), Y = t => 36 - 28 * Math.sin(Math.PI * t), pts = k => [...Array(k + 1)].map((_, i) => `${X(i / k * f).toFixed(1)},${Y(i / k * f).toFixed(1)}`).join(" ");
-    const full = [...Array(41)].map((_, i) => `${X(i / 40).toFixed(1)},${Y(i / 40).toFixed(1)}`).join(" "), x = X(f).toFixed(1), y = Y(f).toFixed(1);
-    let body;
-    if (day) body = `<circle cx="${x}" cy="${y}" r="7" fill="var(--halo)"/><circle cx="${x}" cy="${y}" r="4.2" fill="var(--sun)"/>`;
-    else { const mm = moonNow(n), r = 4.6, rx = (r * Math.abs(1 - 2 * mm.lit)).toFixed(2), sweep = mm.lit > 0.5 ? 1 : 0;
-      body = `<circle cx="${x}" cy="${y}" r="7" fill="var(--mhalo)"/><g transform="translate(${x} ${y})${mm.waxing ? "" : " scale(-1 1)"}"><circle r="${r}" fill="var(--mdark)"/><path d="M0 ${-r} A${r} ${r} 0 0 1 0 ${r} A${rx} ${r} 0 0 ${sweep} 0 ${-r}Z" fill="var(--moon)"/></g>`; }
-    const t0 = istTime(new Date(from).toISOString()), t1 = istTime(new Date(to).toISOString());
-    sun = `<div class="sun ${day ? "day" : "night"}"><svg class="arc ${day ? "day" : "night"}" viewBox="0 0 220 40" preserveAspectRatio="xMidYMax meet" role="img" aria-label="${day ? "Sunrise" : "Sunset"} ${t0}, ${day ? "sunset" : "sunrise"} ${t1}, ${hm(to - n)} to go"><polyline class="track" points="${full}"/><polyline class="done" points="${pts(30)}"/><line class="hz" x1="2" x2="218" y1="36.5" y2="36.5"/>${body}</svg>
-<p class="left tnum"><b>${hm(to - n)}</b> to ${day ? "sunset" : "sunrise"}</p><p class="ends tnum"><span>${day ? "Sunrise" : "Sunset"} ${t0}</span><span>${day ? "Sunset" : "Sunrise"} ${t1}</span></p></div>`;
+    const f = Math.max(0, Math.min(1, (n - from) / (to - from))), t0 = istTime(new Date(from).toISOString()), t1 = istTime(new Date(to).toISOString());
+    const mm = day ? null : moonNow(n), x = (4 + 212 * f).toFixed(1);
+    const body = day ? `<circle cx="${x}" cy="7" r="6.5" fill="var(--halo)"/><circle cx="${x}" cy="7" r="3.8" fill="var(--sun)"/>`
+      : (() => { const r = 4.2, rx = (r * Math.abs(1 - 2 * mm.lit)).toFixed(2), sweep = mm.lit > 0.5 ? 1 : 0; return `<circle cx="${x}" cy="7" r="6.5" fill="var(--mhalo)"/><g transform="translate(${x} 7)${mm.waxing ? "" : " scale(-1 1)"}"><circle r="${r}" fill="var(--mdark)"/><path d="M0 ${-r} A${r} ${r} 0 0 1 0 ${r} A${rx} ${r} 0 0 ${sweep} 0 ${-r}Z" fill="var(--moon)"/></g>`; })();
+    sun = `<div class="dayline ${day ? "day" : "night"}"><span class="tnum">${day ? "Sunrise" : "Sunset"} ${t0}</span><svg viewBox="0 0 220 14" preserveAspectRatio="none" role="img" aria-label="${day ? "Sunrise" : "Sunset"} ${t0}, ${day ? "sunset" : "sunrise"} ${t1}, ${hm(to - n)} to go"><line class="track" x1="4" x2="216" y1="7" y2="7"/><line class="done" x1="4" x2="${x}" y1="7" y2="7"/>${body}</svg><span class="tnum">${day ? "Sunset" : "Sunrise"} ${t1}</span><b class="tnum"><em>${hm(to - n)}</em> to ${day ? "sunset" : "sunrise"}</b></div>`;
   }
   const O = away ? null : LIVE.outlook?.value?.cities?.[0], head = (O && skyHeadline(O)) || wx(c.current.code)[1];
   const air = c.air?.now, day = away ? sunAt(c.lat, c.lon, n).alt > 0 : !isNight(Number(istTime(new Date(n).toISOString()).slice(0, 2)));
-  const cell = (k, v, sub = "") => `<div><span class="k">${k}</span><b class="tnum">${v}</b>${sub ? `<small>${esc(sub)}</small>` : ""}</div>`;
-  const reads = [day && d0.rain_prob != null ? cell("Rain", `${d0.rain_prob}%`, "chance today") : cell("Moon", `${Math.round(moonNow(n).lit * 100)}%`, "lit"),
-    air != null ? cell("Air", String(air), airWord(air)) : "", c.current.humidity != null ? cell("Humidity", `${c.current.humidity}%`) : ""].join("");
-  const fam = (W || []).slice(away ? 0 : 1).filter(x => x.current).map(x => cell(esc(x.name), `${Math.round(x.current.temp)}°`, wx(x.current.code)[1].toLowerCase())).join("");
-  return `<div class="wx2${away ? " away" : ""}">${away ? `<p class="wxplace">${esc(away.name)}${away.region && away.region !== away.name ? `<span>, ${esc(away.region)}</span>` : ""}<small>where you are</small></p>` : ""}<div class="now"><span class="t tnum">${Math.round(c.current.temp)}°</span><div class="c"><b>${esc(head)}</b><span class="tnum">Feels ${Math.round(c.current.feels)}° · High ${Math.round(d0.max)}° · Low ${Math.round(d0.min)}°</span></div></div>
-${sun}<div class="cells">${reads}</div>${fam ? `<div class="cells kin">${fam}</div>` : ""}</div>${staleNote("weather")}`;
+  const read = (k, v, w = "") => `<span><i>${k}</i><b class="tnum">${v}</b>${w ? ` ${esc(w)}` : ""}</span>`;
+  const reads = [day && d0.rain_prob != null ? read("Rain", `${d0.rain_prob}%`, "today") : read("Moon", `${Math.round(moonNow(n).lit * 100)}%`, "lit"),
+    air != null ? read("Air", String(air), airWord(air)) : "", c.current.humidity != null ? read("Humidity", `${c.current.humidity}%`) : ""].join("");
+  const others = (W || []).filter(x => x.current && x.name !== c.name).map(x => `<span><b>${esc(x.name)}</b> <span class="tnum">${Math.round(x.current.temp)}°</span> ${esc(wx(x.current.code)[1].toLowerCase())}</span>`).join("");
+  return `<div class="wx3${away ? " away" : ""}">${away ? `<p class="wxplace">${esc(away.name)}${away.region && away.region !== away.name ? `<span>, ${esc(away.region)}</span>` : ""}</p>` : ""}<div class="now"><span class="t tnum">${Math.round(c.current.temp)}°</span><div class="c"><b>${esc(head)}</b><span class="tnum">Feels ${Math.round(c.current.feels)}° · High ${Math.round(d0.max)}° · Low ${Math.round(d0.min)}°</span></div></div>
+${sun}<p class="reads">${reads}</p>${others ? `<p class="elsewhere">${others}</p>` : ""}</div>${staleNote("weather")}`;
 }
 // Money (Parth, 1 Oct: "The % change is 1 day change? What do you show on a weekend?"): each figure's change on its
 // latest session, headed 1D; a dot and a line say whether the market is live or closed, and which session's close
 // the figure is when it is closed (Friday's on a weekend).
 function moneyHTML() {
   const M = LIVE.markets?.value; if (!M?.indices?.length) return "";
-  const q = n => M.indices.find(x => x.name === n), sx = q("Sensex"), sp = q("S&P 500"), br = (M.cross || []).find(x => /brent/i.test(x.name)), G = LIVE.gold_in?.value;
+  const q = n => M.indices.find(x => x.name === n), sx = q("Sensex"), nf = q("Nifty 50"), sp = q("S&P 500"), br = (M.cross || []).find(x => /brent/i.test(x.name)), fx = (M.cross || []).find(x => /USD\/INR/i.test(x.name)), G = LIVE.gold_in?.value;
   const closeOf = x => (x?.live ? "" : x?.session_date && x.session_date !== istDate() ? ` <small>${esc(fmt(x.session_date + "T12:00:00Z", { weekday: "short" }))}</small>` : "");
   const dot = x => `<i class="mdot ${x?.live ? "on" : ""}" title="${esc(x ? hoursLine(x) : "")}"></i>`;
   const row = (nm, v, c, x) => `<tr><td class="l">${x ? dot(x) : ""}${nm}</td><td class="v tnum">${v}</td><td class="r tnum ${dir(c)}">${pct(c)}${closeOf(x)}</td></tr>`;
   const mood = m => (m ? `<span>${esc(m.region)} mood<b class="${m.score < 45 ? "dn" : m.score > 55 ? "up" : ""}">${m.score} · ${esc(String(m.word || moodWord(m.score)).toLowerCase())}</b></span>` : "");
   return `<div class="mny">${sx ? `<div class="sx"><span class="k">Sensex</span><b class="tnum">${inr(sx.price)}</b><span class="tnum ${dir(sx.change_pct)}">${pct(sx.change_pct)}</span><span class="k">1D</span></div><p class="mst">${dot(sx)}${esc(hoursLine(sx))}</p>` : ""}
-<table><thead><tr><th></th><th></th><th class="r">1D</th></tr></thead><tbody>${sp ? row("S&P 500", inr(sp.price), sp.change_pct, sp) : ""}${br ? row("Brent", "$" + br.price.toFixed(2), br.change_pct, br.live != null ? br : null) : ""}${G?.per_10g_24k ? row("Gold 24K", "₹" + inr(G.per_10g_24k), G.change_pct) : ""}</tbody></table>
+<table><thead><tr><th></th><th></th><th class="r">1D</th></tr></thead><tbody>${nf ? row("Nifty 50", inr(nf.price), nf.change_pct, nf) : ""}${sp ? row("S&P 500", inr(sp.price), sp.change_pct, sp) : ""}${fx ? `<tr><td class="l">USD/INR</td><td class="v tnum">₹${fx.price.toFixed(2)}</td><td class="r tnum">${pct(fx.change_pct)}</td></tr>` : ""}${br ? row("Brent", "$" + br.price.toFixed(2), br.change_pct, br.live != null ? br : null) : ""}${G?.per_10g_24k ? row("Gold 24K", "₹" + inr(G.per_10g_24k), G.change_pct) : ""}</tbody></table>
 <div class="fear">${mood(M.mood?.India)}${mood(M.mood?.US)}</div></div>${staleNote("markets")}`;
 }
 // The market expects (Parth, 1 Oct: "How is Brazil important?"): the busiest markets that touch what he follows
@@ -370,8 +370,8 @@ function sinceHTML() {
 const blk = (id, desk, title, link, to, body, extra = "") => (body ? `<section class="blk" id="p1-${id}" style="--c:var(--d-${desk})"><div class="bh"><h2>${title}</h2>${extra}<a href="${deskHref(desk)}" data-desk="${desk}" data-to="${to}">${link} →</a></div><div data-p1="${id}">${body}</div></section>` : "");
 function pageOne() {
   return `<div class="p1"><div id="p1-since" data-p1="since">${sinceHTML()}</div><div class="p1body"><div class="stack c1"><section class="news" id="p1-minute"><div class="bh" style="--c:var(--d-one)"><h2>The day in a minute</h2><a href="${deskHref("news")}" data-desk="news">All the news →</a></div><div data-p1="minute">${minuteHTML(p1lines)}</div></section><div class="eve" id="p1-eve" data-p1="evening">${eveningHTML()}</div></div>
-<div class="stack c2">${blk("weather", "home", "Weather", "Sky &amp; Streets", "sky", weatherHTML(), `<span class="bhx" data-p1="wxhead">${hereHead()}</span>`)}${blk("sport", "sport", "Sport this week", "Sport", "fixtures", sportHTML(6))}</div>
-<div class="stack c3">${blk("money", "money", "Money", "The Ledger", "ledger", moneyHTML())}${blk("bets", "news", "The market expects", "Betting Window", "betting", betsHTML(3))}</div></div></div>`;
+<div class="stack c2">${blk("money", "money", "Money", "The Ledger", "ledger", moneyHTML())}${blk("sport", "sport", "Sport this week", "Sport", "fixtures", sportHTML(6))}</div>
+<div class="stack c3">${blk("weather", "home", "Weather", "Sky &amp; Streets", "sky", weatherHTML(), `<span class="bhx" data-p1="wxhead">${hereHead()}</span>`)}${blk("bets", "news", "The market expects", "Betting Window", "betting", betsHTML(3))}</div></div></div>`;
 }
 function oneFoot() {
   const nx = NEWDESKS[1] || NEWDESKS[0];
@@ -409,7 +409,9 @@ function fitDesk() {
 // usual one unless another is clearly shorter). Each block is measured once in each column, so every arrangement is
 // worked out, not laid out. Phones and narrow windows keep the usual order, with the Since strip across the top.
 // On a laptop the Since strip is one more block, last in its column (on a phone it runs across the top).
-const P1BLOCKS = ["weather", "sport", "money", "bets", "eve", "since"], P1HOME = [1, 1, 2, 2, 0, 0], P1WIDE = [1.5, 1.25, 1];
+// Money ranks above Weather (Parth, 2 Oct: "at least for the front page, let's make money more important than
+// weather"): it opens the middle column, and wherever the two share a column Money comes first.
+const P1BLOCKS = ["money", "weather", "sport", "bets", "eve", "since"], P1HOME = [1, 2, 1, 2, 0, 0], P1WIDE = [1.5, 1.25, 1];
 function balanceOne() {
   const body = document.querySelector(".p1body"), news = document.getElementById("p1-minute"), cols = [...document.querySelectorAll(".p1body > .stack")];
   if (!body || !news || cols.length !== 3) return;
@@ -496,6 +498,10 @@ function mountMark() {
   unmountMark(); unmountMark = () => {};
   const n = document.querySelector("#bigplate .n"); if (!n || DESK.id !== "one") return;
   const size = parseFloat(getComputedStyle(document.querySelector("#bigplate")).getPropertyValue("--np")) || 96;
+  // the figure's canvas carries room for the swell and the weather round the ink; take it back so 1400 sits on the line
+  // close to "HOUSE OF" (the ink runs from 0.028 to 2.294 em of the outline's advance, wordmark.js)
+  const W0 = Math.ceil(ADV * size + size * 0.5), PX0 = Math.round(W0 * 0.2), pad = (W0 - ADV * size) / 2;
+  n.style.margin = `0 ${-(PX0 + pad + (ADV - 2.294) * size).toFixed(1)}px 0 ${-(PX0 + pad + 0.028 * size).toFixed(1)}px`;
   const shares = dayShares();
   n.setAttribute("aria-label", sharesLabel(shares));
   // the stamp prints the figure once per visit (a browser session), the first time Page One shows
