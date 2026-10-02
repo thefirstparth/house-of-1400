@@ -164,27 +164,36 @@ function sportHTML(max = 5) {
   }
   return rows.length ? `<ul class="rows">${rows.slice(0, max).map(([l, t, s]) => `<li><span class="lab">${l}</span><span><b>${esc(t)}</b>${s}</span></li>`).join("")}</ul>` : "";
 }
+// Weather (Parth, 2 Oct: "too cluttered; present it better without removing any of the data"): three calm parts.
+// The temperature with the outlook and the day's range; the sun's arc, flatter, holding the time left until sunset
+// (or sunrise) with the two times at its ends; then every reading as a label over a figure, in one grid, and the
+// family's cities in the same grid below.
 function weatherHTML() {
   const W = LIVE.weather?.value?.cities, c = W?.[0]; if (!c?.current) return "";
   const d0 = (c.daily || [])[0] || {}, off = c.utc_offset_seconds ?? 19800, n = Date.now();
   const rise = localMs(d0.sunrise, off), set = localMs(d0.sunset, off), DAY = 864e5;
-  let arc = "";
+  let sun = "";
   if (Number.isFinite(rise) && Number.isFinite(set)) {
     const day = n >= rise && n < set, from = day ? rise : n >= set ? set : set - DAY, to = day ? set : n >= set ? rise + DAY : rise;
     const f = Math.max(0, Math.min(1, (n - from) / (to - from)));
-    const X = t => 14 + 192 * (0.5 - 0.5 * Math.cos(Math.PI * t)), Y = t => 52 - 40 * Math.sin(Math.PI * t), pts = k => [...Array(k + 1)].map((_, i) => `${X(i / k * f).toFixed(1)},${Y(i / k * f).toFixed(1)}`).join(" ");
+    const X = t => 10 + 200 * (0.5 - 0.5 * Math.cos(Math.PI * t)), Y = t => 36 - 28 * Math.sin(Math.PI * t), pts = k => [...Array(k + 1)].map((_, i) => `${X(i / k * f).toFixed(1)},${Y(i / k * f).toFixed(1)}`).join(" ");
     const full = [...Array(41)].map((_, i) => `${X(i / 40).toFixed(1)},${Y(i / 40).toFixed(1)}`).join(" "), x = X(f).toFixed(1), y = Y(f).toFixed(1);
     let body;
-    if (day) body = `<circle cx="${x}" cy="${y}" r="9" fill="var(--halo)"/><circle cx="${x}" cy="${y}" r="5.5" fill="var(--sun)"/>`;
-    else { const mm = moonNow(n), r = 6, rx = (r * Math.abs(1 - 2 * mm.lit)).toFixed(2), sweep = mm.lit > 0.5 ? 1 : 0;
-      body = `<circle cx="${x}" cy="${y}" r="9" fill="var(--mhalo)"/><g transform="translate(${x} ${y})${mm.waxing ? "" : " scale(-1 1)"}"><circle r="${r}" fill="var(--mdark)"/><path d="M0 ${-r} A${r} ${r} 0 0 1 0 ${r} A${rx} ${r} 0 0 ${sweep} 0 ${-r}Z" fill="var(--moon)"/></g>`; }
-    arc = `<svg class="arc ${day ? "day" : "night"}" viewBox="0 0 220 72" role="img" aria-label="${hm(to - n)} to ${day ? "sunset" : "sunrise"}"><polyline class="track" points="${full}"/><polyline class="done" points="${pts(30)}"/><line class="hz" x1="6" x2="214" y1="52.5" y2="52.5"/>${body}<text x="6" y="68">${day ? "↑" : "↓"} ${istTime(new Date(from).toISOString())}</text><text x="110" y="68" text-anchor="middle">${hm(to - n)} to ${day ? "sunset" : "sunrise"}</text><text x="214" y="68" text-anchor="end">${istTime(new Date(to).toISOString())} ${day ? "↓" : "↑"}</text></svg>`;
+    if (day) body = `<circle cx="${x}" cy="${y}" r="7" fill="var(--halo)"/><circle cx="${x}" cy="${y}" r="4.2" fill="var(--sun)"/>`;
+    else { const mm = moonNow(n), r = 4.6, rx = (r * Math.abs(1 - 2 * mm.lit)).toFixed(2), sweep = mm.lit > 0.5 ? 1 : 0;
+      body = `<circle cx="${x}" cy="${y}" r="7" fill="var(--mhalo)"/><g transform="translate(${x} ${y})${mm.waxing ? "" : " scale(-1 1)"}"><circle r="${r}" fill="var(--mdark)"/><path d="M0 ${-r} A${r} ${r} 0 0 1 0 ${r} A${rx} ${r} 0 0 ${sweep} 0 ${-r}Z" fill="var(--moon)"/></g>`; }
+    const t0 = istTime(new Date(from).toISOString()), t1 = istTime(new Date(to).toISOString());
+    sun = `<div class="sun ${day ? "day" : "night"}"><svg class="arc ${day ? "day" : "night"}" viewBox="0 0 220 40" preserveAspectRatio="xMidYMax meet" role="img" aria-label="${day ? "Sunrise" : "Sunset"} ${t0}, ${day ? "sunset" : "sunrise"} ${t1}, ${hm(to - n)} to go"><polyline class="track" points="${full}"/><polyline class="done" points="${pts(30)}"/><line class="hz" x1="2" x2="218" y1="36.5" y2="36.5"/>${body}</svg>
+<p class="left tnum"><b>${hm(to - n)}</b> to ${day ? "sunset" : "sunrise"}</p><p class="ends tnum"><span>${day ? "Sunrise" : "Sunset"} ${t0}</span><span>${day ? "Sunset" : "Sunrise"} ${t1}</span></p></div>`;
   }
   const O = LIVE.outlook?.value?.cities?.[0], head = (O && skyHeadline(O)) || wx(c.current.code)[1];
-  const air = c.air?.now, day = isNight(Number(istTime(new Date(n).toISOString()).slice(0, 2))) ? false : true;
-  const fam = (W || []).slice(1).filter(x => x.current).map(x => `<b>${esc(x.name)}</b> ${Math.round(x.current.temp)}° ${esc(wx(x.current.code)[1].toLowerCase())}`).join(" · ");
-  return `<div class="wx"><div class="t tnum">${Math.round(c.current.temp)}°</div><div class="c"><b>${esc(head)}</b>Feels ${Math.round(c.current.feels)}° · ${Math.round(d0.max)}°/${Math.round(d0.min)}°</div>${arc}</div>
-<div class="wxs">${day && d0.rain_prob != null ? `<span>Rain <b>${d0.rain_prob}%</b></span>` : `<span>Moon <b>${Math.round(moonNow(n).lit * 100)}%</b> lit</span>`}${air != null ? `<span>Air <b>${air}</b> ${esc(airWord(air))}</span>` : ""}${c.current.humidity != null ? `<span>Humidity <b>${c.current.humidity}%</b></span>` : ""}</div>${fam ? `<p class="fam1">${fam}</p>` : ""}${staleNote("weather")}`;
+  const air = c.air?.now, day = !isNight(Number(istTime(new Date(n).toISOString()).slice(0, 2)));
+  const cell = (k, v, sub = "") => `<div><span class="k">${k}</span><b class="tnum">${v}</b>${sub ? `<small>${esc(sub)}</small>` : ""}</div>`;
+  const reads = [day && d0.rain_prob != null ? cell("Rain", `${d0.rain_prob}%`, "chance today") : cell("Moon", `${Math.round(moonNow(n).lit * 100)}%`, "lit"),
+    air != null ? cell("Air", String(air), airWord(air)) : "", c.current.humidity != null ? cell("Humidity", `${c.current.humidity}%`) : ""].join("");
+  const fam = (W || []).slice(1).filter(x => x.current).map(x => cell(esc(x.name), `${Math.round(x.current.temp)}°`, wx(x.current.code)[1].toLowerCase())).join("");
+  return `<div class="wx2"><div class="now"><span class="t tnum">${Math.round(c.current.temp)}°</span><div class="c"><b>${esc(head)}</b><span class="tnum">Feels ${Math.round(c.current.feels)}° · High ${Math.round(d0.max)}° · Low ${Math.round(d0.min)}°</span></div></div>
+${sun}<div class="cells">${reads}</div>${fam ? `<div class="cells kin">${fam}</div>` : ""}</div>${staleNote("weather")}`;
 }
 // Money (Parth, 1 Oct: "The % change is 1 day change? What do you show on a weekend?"): each figure's change on its
 // latest session, headed 1D; a dot and a line say whether the market is live or closed, and which session's close

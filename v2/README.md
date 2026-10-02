@@ -56,6 +56,7 @@ Live on the real site since 1 Oct 2026, beside the old design (v1), until Parth 
 | The Week Ahead in seven columns | Monday to Sunday; an empty day is a short rule. |
 | docs/DESIGN.md | Google's DESIGN.md format; `npm run design:lint` (0 errors). |
 | "Since 14:00" strip | Mocked only, for Parth to decide. |
+| Page One's weather "too cluttered" (2 Oct) | Same readings, three calm parts: the temperature with the outlook and "Feels · High · Low"; a flatter sun arc holding the time left, with sunrise and sunset at its ends; then rain (or the moon at night), air and humidity as label-over-figure cells, and the family's cities as a matching row. |
 
 ## QA
 **Phones (Parth reads half the time on a phone: Nothing Phone 2, iPhone 17, 16 Pro and other iPhones):** `PHONES=nothing2,iphone17,iphone16pro,iphone16,iphone17promax,iphone16plus,iphone13,iphonemini,iphonese,iphone17land,nothing2land node v2/shot.mjs <tag> v2` shoots every desk on each at its own width and pixel density, with the height left by the browser's bars, light and dark. Phone checks measure against the screen's own width (a phone browser widens the page silently to fit anything that overflows), type under 11px, and links or buttons under 32px tall. 2 Oct: 154 pages, no errors, nothing wider than the screen, no clipped tables, no overlapping text; every small link has a hit area of about 40px (the masthead's two rows 30px, so they never overlap). Chromium only: Safari itself is not in this sandbox, which is one reason the wordmark no longer depends on font loading.
