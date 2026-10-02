@@ -56,6 +56,11 @@ Tennis: if no match is confirmed, print NEXT EVENT (tournament, dates, "match TB
 - Every story belongs to a thread (`thread_id`) in `ledger/story-ledger.json`.
 - Before selection, load the ledger. A thread only reprints if a key fact changed or a new fact was added ("what changed since we last printed this?"). The model judges whether the change matters; the validator checks that the recorded facts actually differ.
 - One editorial home per development. Utility lines (fixtures, countdowns, tables) may repeat.
+- **A follow-up leads with what changed (from 3 Oct 2026; Parth, 2 Oct, on the Ronaldo walk-out printed again: "did we not run this story yesterday already?").** Parth read the last one. When a thread reprints:
+  - The headline, the day in a minute line and the first sentence say what is new. The story he already knows comes after, in one clause or one sentence ("…, a day after he walked out of the camp"). Wrong: "Ronaldo walks out of the national camp" a day later. Right: "Portugal win 4–2 in Denmark without Ronaldo".
+  - Record `update: {since, new}` on the story or brief: `since` is the date the thread last printed (the ledger's `last_printed`), `new` one line on what changed. The page prints "Update" beside the kicker and in the day in a minute.
+  - A follow-up stays in its section. It goes on the Front Page only when what changed is front-page news on its own (he retires; the case is decided), with `update.front` saying why. A story owed from a miss (`ledger/lessons.json`) is not front-page news because it is owed.
+  - The validator checks all of this: `update` present and dated, the headline, first sentence and day in a minute line not opening with what was printed last time, `update.front` on the Front Page.
 - After all sections are written, run one dedup pass across the whole paper, in code, including Talk of the Day and The Betting Window. Remove duplicates and move the next candidate up (refill).
 - Keep 30 days of threads plus anything still active.
 

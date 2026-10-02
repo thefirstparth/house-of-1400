@@ -162,6 +162,7 @@ nav.idx a.cur .seal .shape{fill:var(--sheet)}
 .src{font:500 13px var(--sans);color:var(--muted);margin-top:6px}
 .src a{color:var(--muted);text-decoration-color:var(--rule);text-underline-offset:3px}
 .src a:hover{color:var(--f,var(--ink))}
+.upd{display:inline-block;font:700 10.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;padding:3px 6px;border:1px solid currentColor;border-radius:3px;margin-left:8px;vertical-align:1px}
 .newfor{display:inline-block;font:700 10.5px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:999px;background:var(--f,var(--ink));color:var(--paper);margin-left:8px;vertical-align:2px}
 .verdictline{font:700 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
 .tools{display:flex;flex-wrap:wrap;gap:4px 20px;align-items:center;margin-top:12px}

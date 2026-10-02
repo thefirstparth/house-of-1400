@@ -35,6 +35,12 @@ const STOP = new Set("a an the of in on at to for and or but with from by as is 
 const toks = s => new Set(String(s).toLowerCase().replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter(w => w && !STOP.has(w)));
 const jaccard = (a, b) => { const A = toks(a), B = toks(b); const i = [...A].filter(x => B.has(x)).length; return i / (A.size + B.size - i || 1); };
 
+// The opening words of a headline or line bring too little that was not printed last time (under a third of them new;
+// the names in the story always repeat): a retelling, not news. A first sentence names more people and places, so it
+// is held only to bring one new word in its first eight (need 1).
+const opens = (text, printed, n = 6, need = 0) => { const P = toks(printed), A = [...toks(text)].slice(0, n); return A.length >= 3 && A.filter(w => !P.has(w)).length < (need || Math.ceil(A.length / 3)); };
+const prevEdition = date => { try { return read(`content/editions/${date}.json`); } catch { return null; } };
+
 export function allItems(E) {
   const items = [];
   if (E.front) {
@@ -485,6 +491,29 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
       if (!s.facts || !Object.keys(s.facts).length) { errors.push(`ledger: ${s._where} reprints thread ${s.thread_id} (last ${t.last_printed}) without facts`); continue; }
       const changed = Object.entries(s.facts).some(([k, v]) => String(t.facts?.[k]) !== String(v));
       if (!changed) errors.push(`ledger: ${s._where} reprints thread ${s.thread_id} with no changed or new fact`);
+    }
+    // A follow-up leads with what changed (from 3 Oct 2026; Parth, 2 Oct: "Ronaldo walks out of the national camp: did
+    // we not run this yesterday?"). The 2 Oct paper reprinted the walk-out with one new fact (Portugal won 4-2 without
+    // him) but its headline, its day-in-a-minute line and its first sentence all told the walk-out again, on Page One.
+    if (E.date > "2026-10-02") for (const s of items) {
+      const t = byId.get(s.thread_id);
+      if (!t || !t.last_printed || t.last_printed >= E.date) continue;
+      const before = prevEdition(t.last_printed), was = before ? allItems(before).find(x => x.thread_id === s.thread_id) : null;
+      // what was printed last time: the headline and day-in-a-minute line, and for the opening sentence also the old one
+      const lead1 = x => String(x || "").split(/(?<=[.!?])\s+/)[0];
+      const oldLines = (before?.glance || []).filter(g => g.target === was?.id).map(g => g.line);
+      const old = [t.title, was?.headline, ...oldLines].filter(Boolean).join(" ");
+      if (s._kind !== "line") {
+        if (!s.update?.new) errors.push(`follow-up: ${s._where} continues thread ${s.thread_id} (last printed ${t.last_printed}); add update {since: "${t.last_printed}", new: what changed since then}`);
+        else if (s.update.since !== t.last_printed) errors.push(`follow-up: ${s._where} update.since should be ${t.last_printed}, when the thread last printed`);
+        if (s._where.startsWith("front.") && !s.update?.front) errors.push(`follow-up: ${s._where} is a follow-up on the Front Page; put it in its section, or say in update.front why what changed is front-page news on its own`);
+      }
+      if (opens(s.headline, old) || jaccard(s.headline, t.title) >= 0.6) errors.push(`follow-up: ${s._where} headline opens with what was printed on ${t.last_printed} ("${t.title}"); lead with what changed`);
+      const first = lead1(s.short || s.text);
+      if (first && opens(first, `${old} ${lead1(was?.short || was?.text)}`, 8, 1)) errors.push(`follow-up: ${s._where} first sentence retells the ${t.last_printed} story; open with what changed, background after`);
+      (E.glance || []).filter(g => g.target === s.id).forEach(g => {
+        if (opens(g.line, old) || oldLines.some(l => jaccard(g.line, l) >= 0.5)) errors.push(`follow-up: the day-in-a-minute line "${g.line}" repeats what was printed on ${t.last_printed}; say what changed`);
+      });
     }
   }
   return { errors, warnings };

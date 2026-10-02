@@ -141,7 +141,7 @@ function minuteHTML(n) {
   const items = (E.glance || []).filter(g => g.target !== L.id).slice(0, n);
   const note = E.editor_note ? `<div class="ednote"><b>From the editor</b>${esc(E.editor_note)}<i>${esc(CFG.paper.editor.signature.replace(", Editor", ""))}</i></div>` : "";
   return `<a class="leadh" href="${deskHref(ld)}" data-desk="${ld}" data-to="s-${esc(L.id)}" style="--c:var(--d-${ld})"><span class="lab">${esc(L.kicker || "Lead")}</span><h3>${esc(L.headline)}</h3></a>${note}
-<ol class="min">${items.map(g => { const d = storyDesk(g.target) || "news"; return `<li><a href="${deskHref(d)}" data-desk="${d}" data-to="s-${esc(g.target)}" style="--c:var(--d-${d})"><span class="lab">${esc(g.section)}</span><b>${esc(g.line)}</b></a></li>`; }).join("")}</ol>`;
+<ol class="min">${items.map(g => { const d = storyDesk(g.target) || "news"; return `<li><a href="${deskHref(d)}" data-desk="${d}" data-to="s-${esc(g.target)}" style="--c:var(--d-${d})"><span class="lab">${esc(g.section)}${allStories().find(x => x.id === g.target)?.update ? " · Update" : ""}</span><b>${esc(g.line)}</b></a></li>`; }).join("")}</ol>`;
 }
 function eveningHTML() {
   const s = (E.screen || []).find(x => x.verdict === "must" && !x.coming_soon); if (!s) return "";

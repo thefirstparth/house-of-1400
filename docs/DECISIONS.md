@@ -647,3 +647,9 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 - Supersedes part of 1 Oct's "Page One fills one screen": on a laptop the type is not made smaller than its own size just to bring the House Note and the foot onto the screen. The three columns stay on the screen, and the House Note and foot may sit a short scroll below. Larger screens still fit everything and scale up to 2.2. Nothing prints below 0.85.
 - Page-only (v2/layer.js, v2/v2.css); v1 and the daily run are unchanged.
 
+
+## 2 Oct 2026: A follow-up leads with what changed and says "Update" (Parth: "Ronaldo walks out of the national camp: did we not run this story yesterday already?")
+- The walk-out was added to the 1 Oct paper after Parth reported the miss, and the lesson owed a follow-up. On 2 Oct the follow-up had one new fact (Portugal won 4–2 in Denmark without him) but its headline, its day in a minute line and its first sentence told the walk-out again, and it sat on the Front Page. The ledger rule only checked that a fact had changed.
+- From 3 Oct a reprinted thread leads with what changed in its headline, day in a minute line and first sentence, carries `update: {since, new}`, and stays in its section unless `update.front` says why what changed is front-page news on its own. The validator checks each (scripts/validate.mjs; tests/followup.test.mjs). Replayed over 25 Sep to 2 Oct it flags only the Ronaldo story and one Ola Electric brief that repeated its headline. The first-sentence check only asks for one new word, because a real result opens with names already printed ("Alcaraz beat Fritz").
+- The page prints "Update" beside the kicker and in the day in a minute, in both designs.
+- The 2 Oct edition was corrected in place: "Portugal win 4–2 in Denmark without Ronaldo", with the result first.

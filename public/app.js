@@ -273,7 +273,10 @@ const sourcesLine = srcs => {
   const a = (u, t) => `<a href="${esc(u)}" target="_blank" rel="noopener">${t}</a>`;
   return `<div class="src">${[...by].map(([l, us]) => us.length === 1 ? a(us[0], esc(l)) : `${a(us[0], esc(l))} ${us.slice(1).map((u, i) => a(u, i + 2)).join(" ")}`).join(" · ")}</div>`;
 };
-const newFor = x => (x.new_for_you ? `<span class="newfor">New for you</span>` : "");
+// A follow-up (a thread printed before, with something new) says so beside its kicker (Parth, 2 Oct: "did we not run
+// this story yesterday already?"); the new part leads its headline (EDITORIAL.md, Repetition)
+const updFor = x => (x.update?.since ? `<span class="upd" title="Follows our story of ${esc(new Date(x.update.since + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "long", timeZone: "UTC" }))}">Update</span>` : "");
+const newFor = x => updFor(x) + (x.new_for_you ? `<span class="newfor">New for you</span>` : "");
 
 function tools(st, withMore) {
   const link = st.sources?.[0]?.url;
@@ -1420,7 +1423,7 @@ const face = (sz = 28) => `<img class="face" src="/bhide.svg" alt="" width="${sz
 const editorNote = () => (E.editor_note ? `<div class="editor"><span class="eh">From the editor</span>${esc(E.editor_note)}<div class="sig"><img src="/bhide.svg" alt="" width="34" height="34"><a href="/editor">${esc(CFG.paper.editor.signature)}</a></div></div>` : "");
 function frontHTML() {
   const F = E.front;
-  const minute = E.glance?.length ? `<div class="minute"><h3>The day in a minute</h3><div class="gd">${esc(longDate(E.date))}</div><ol>${E.glance.map(g => `<li data-fam="${(s => (s ? fam(s.section) : famOfColor(g.color)))(allStories().find(x => x.id === g.target))}"><span>${esc(g.section)}</span><button data-go="${esc(g.target)}">${esc(g.line)}</button></li>`).join("")}</ol></div>` : "";
+  const minute = E.glance?.length ? `<div class="minute"><h3>The day in a minute</h3><div class="gd">${esc(longDate(E.date))}</div><ol>${E.glance.map(g => `<li data-fam="${(s => (s ? fam(s.section) : famOfColor(g.color)))(allStories().find(x => x.id === g.target))}"><span>${esc(g.section)}${allStories().find(x => x.id === g.target)?.update ? " · Update" : ""}</span><button data-go="${esc(g.target)}">${esc(g.line)}</button></li>`).join("")}</ol></div>` : "";
   return `<div class="front" id="front" style="scroll-margin-top:60px">
 <div class="col fa">${storyHTML({ ...F.lead, kicker: `Front Page · ${F.lead.kicker}` }, { lead: true })}<div class="ftail"></div></div>
 <div class="col fb"><div class="ftail">${F.seconds.map(x => storyHTML(x)).join("")}${F.briefs.length ? `<div class="briefs">${F.briefs.map(b => briefHTML(b, "brief")).join("")}</div>` : ""}</div></div>

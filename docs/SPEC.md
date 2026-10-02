@@ -105,7 +105,7 @@ Full screen via the Fullscreen API and a screen wake lock where allowed. For a r
   "snapshot": {"<live_key>": {"value", "as_of", "source"}}
 }
 Story = {"id", "thread_id", "section", "kicker", "headline", "deck"?, "short", "more"?, 
-         "why": {"text", "personal": true|false}, "sources": [{"label", "url"}], "new_for_you": bool}
-Brief = {"id", "thread_id", "section", "headline", "text", "sources"?, "new_for_you"?}
+         "why": {"text", "personal": true|false}, "sources": [{"label", "url"}], "new_for_you": bool, "update"?: {"since": "YYYY-MM-DD", "new", "front"?}}
+Brief = {"id", "thread_id", "section", "headline", "text", "sources"?, "new_for_you"?, "update"?}
 ```
 Ship `content/schema.json` (JSON Schema) and validate every edition against it before publishing.
