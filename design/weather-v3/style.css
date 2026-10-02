@@ -1,0 +1,32 @@
+main{max-width:2260px}
+section.var{padding:20px 0 16px;border-bottom:1px solid var(--rule)}
+section.var h2{margin:0;font:600 22px/1.2 var(--hl)}
+.var .note{margin:4px 0 12px;font:500 13.5px/1.45 var(--sans);color:var(--muted);max-width:110ch;min-height:0}
+.row{display:grid;grid-template-columns:repeat(4,515px);gap:26px;overflow-x:auto;padding-bottom:6px}
+.phone .row{grid-template-columns:repeat(4,370px)}
+.cell .when{margin:0 0 4px;font:700 11px var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.card{max-width:none;border-top:2px solid var(--c);padding-top:8px}
+.card .lab{font:600 22px/1.2 var(--hl);letter-spacing:0;text-transform:none;color:var(--c);display:flex;justify-content:space-between;align-items:baseline}
+.card .lab .r{display:flex;gap:16px;font:600 12.5px var(--sans);color:var(--muted)}
+.wx3 .wxplace{margin:6px 0 4px;font:700 11px var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--c)}
+.dl{position:relative;margin:12px 0 0;font:500 11.5px var(--sans);color:var(--muted)}
+.dl b{font-weight:600;color:var(--ink2)}
+.dl .over,.dl .top,.dl .under{margin:0;font:500 12px var(--sans);color:var(--muted)}
+.dl .over b,.dl .top b,.dl .under b{font-weight:500;color:var(--muted)}
+.dl em{font-style:normal;font-weight:700;color:var(--ink)}
+.dl .fx{margin-left:8px;color:var(--muted)}
+.dl.lr{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto auto;align-items:center;column-gap:10px}
+.dl.lr .over{grid-column:1/-1;grid-row:1;justify-self:center;margin-bottom:2px}
+.dl.lr .end,.dl.lr .mid{grid-row:2}
+.dl .mid svg{display:block}
+.dl .top{display:flex;justify-content:space-between;margin-bottom:2px}
+.dl .top .fx{margin:0}
+.dl .ends{display:flex;justify-content:space-between;margin:0}
+.dl.row3{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;column-gap:10px}
+.dl.row3 .end{display:flex;flex-direction:column;line-height:1.2}
+.dl.row3 .end i{font:600 9.5px var(--sans);font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.dl.row3 .end b{font:700 15px var(--sans);color:var(--ink)}
+.dl.row3 .end.r{text-align:right}
+.dl.row3 .under{grid-column:1/-1;justify-self:center;margin-top:2px}
+:root{--night:#5b6b8c}
+:root[data-theme="dark"]{--night:#9fb0d0}
