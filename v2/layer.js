@@ -342,6 +342,30 @@ function dayRibbon(c, away, n) {
 // sky, feels, high and low); the day as a slim line from sunrise to sunset (or sunset to sunrise) with the sun or the
 // moon where it is; three readings on one line (rain today or the moon at night, the air, humidity); and elsewhere, one
 // quiet line of the other cities. The city shown is never repeated in that line.
+// UV in the WHO's words (Parth, 3 Oct: "UV, we should add this to page 1"): shown by day, when it is 3 or more, in place
+// of the humidity; the reading now, never the day's peak passed off as now (The Daily Index's mistake).
+const uvWord = u => (u >= 11 ? "extreme" : u >= 8 ? "very high" : u >= 6 ? "high" : u >= 3 ? "moderate" : "low");
+// The rest of the day, chance of rain (Parth, 3 Oct: "this, I felt, was genuinely good"): the parts of today still
+// ahead, each with the highest hourly chance in it, from the hourly forecast we already fetch. Morning 06 to 12,
+// afternoon 12 to 17, evening 17 to 21, night 21 to 06.
+const PARTS = [["Morning", 6, 12], ["Afternoon", 12, 17], ["Evening", 17, 21], ["Night", 21, 30]];
+function restOfDay(c, n = Date.now()) {
+  const H = c.hourly; if (!H?.length) return "";
+  const today = istDate(new Date(n)), hourNow = Number(istTime(new Date(n).toISOString()).slice(0, 2)), base = Date.parse(today + "T00:00:00+05:30");
+  const hourOf = h => (Date.parse(h.time + ":00+05:30") - base) / 36e5; // hours from today's midnight, IST
+  const parts = PARTS.map(([name, a, b]) => {
+    const from = Math.max(a, hourNow), hs = H.filter(h => h.rain_prob != null && hourOf(h) >= from && hourOf(h) < b);
+    return b > hourNow && hs.length ? { name, p: Math.max(...hs.map(h => h.rain_prob)) } : null;
+  }).filter(Boolean);
+  if (!parts.length) return "";
+  return `<div class="rest" style="--n:${parts.length}"><i>Rain chance</i>${parts.map(x => `<span class="pn">${x.name}</span>`).join("")}${parts.map(x => `<span class="pv"><em style="--p:${x.p}%"></em><b class="tnum">${x.p}%</b></span>`).join("")}</div>`;
+}
+// Today's low to high, with where the temperature is now on it (Parth, 3 Oct, after The Daily Index)
+function rangeBar(now, lo, hi) {
+  if (![now, lo, hi].every(Number.isFinite) || hi <= lo) return "";
+  const at = Math.max(0, Math.min(100, ((now - lo) / (hi - lo)) * 100));
+  return `<span class="rng" title="Today's low, high, and now"><span class="tnum">${Math.round(lo)}°</span><span class="rb"><i style="left:${at.toFixed(1)}%"></i></span><span class="tnum">${Math.round(hi)}°</span></span>`;
+}
 function weatherHTML() {
   const W = LIVE.weather?.value?.cities, away = awayCity(), c = away || W?.[0]; if (!c?.current) return "";
   const d0 = (c.daily || [])[0] || {}, n = Date.now(), sun = dayRibbon(c, away, n);
@@ -350,13 +374,15 @@ function weatherHTML() {
   const read = (k, v, w = "") => `<span><i>${k}</i><b class="tnum">${v}</b>${w ? ` ${esc(w)}` : ""}</span>`;
   // by night the day line already gives the moon, so the readings do not repeat it
   const gauge = away ? "" : rainRead(); // Weather Union's gauges, when it is raining or has rained today
-  const reads = [gauge || (day && d0.rain_prob != null ? read("Rain", `${d0.rain_prob}%`, "today") : sun ? "" : read("Moon", `${Math.round(moonNow(n).lit * 100)}%`, "lit")),
-    air != null ? read("Air", String(air), airWord(air)) : "", c.current.humidity != null ? read("Humidity", `${c.current.humidity}%`) : ""].join("");
+  const rest = day ? restOfDay(c, n) : "", uv = c.current.uv;
+  const reads = [gauge || (rest ? "" : day && d0.rain_prob != null ? read("Rain", `${d0.rain_prob}%`, "today") : sun ? "" : read("Moon", `${Math.round(moonNow(n).lit * 100)}%`, "lit")),
+    air != null ? read("Air", String(air), airWord(air)) : "",
+    day && uv >= 3 ? read("UV", String(Math.round(uv)), uvWord(uv)) : c.current.humidity != null ? read("Humidity", `${c.current.humidity}%`) : ""].join("");
   const others = (W || []).filter(x => x.current && x.name !== c.name).map(x => `<span><b>${esc(x.name)}</b> <span class="tnum">${Math.round(x.current.temp)}°</span> ${esc(wx(x.current.code)[1].toLowerCase())}</span>`).join("");
   // the place is always named, home too (Parth, 3 Oct: "the weather does not mention that it is by default for
   // Bengaluru; that is very confusing")
-  return `<div class="wx3${away ? " away" : ""}">${away ? `<p class="wxplace">${esc(away.name)}${away.region && away.region !== away.name ? `<span>, ${esc(away.region)}</span>` : ""}</p>` : `<p class="wxplace">${esc(c.name || CFG.paper.home_city || "Bengaluru")}${c.current.measured ? `<span class="ms" title="${esc(c.current.measured.source === "IMD" ? `IMD, ${c.current.measured.station}` : `${c.current.measured.station} airport report`)}">measured ${esc(istTime(c.current.measured.at))}</span>` : ""}</p>`}<div class="now"><span class="t tnum">${Math.round(c.current.temp)}°</span><div class="c"><b>${esc(head)}</b><span class="tnum">Feels ${Math.round(c.current.feels)}° · High ${Math.round(d0.max)}° · Low ${Math.round(d0.min)}°</span></div></div>
-${sun}<p class="reads">${reads}</p>${alertLine()}${others ? `<p class="elsewhere">${others}</p>` : ""}</div>${staleNote("weather")}`;
+  return `<div class="wx3${away ? " away" : ""}">${away ? `<p class="wxplace">${esc(away.name)}${away.region && away.region !== away.name ? `<span>, ${esc(away.region)}</span>` : ""}</p>` : `<p class="wxplace">${esc(c.name || CFG.paper.home_city || "Bengaluru")}${c.current.measured ? `<span class="ms" title="${esc(c.current.measured.source === "IMD" ? `IMD, ${c.current.measured.station}` : `${c.current.measured.station} airport report`)}">measured ${esc(istTime(c.current.measured.at))}</span>` : ""}</p>`}<div class="now"><span class="t tnum">${Math.round(c.current.temp)}°</span><div class="c"><b>${esc(head)}</b><span class="tnum fr">Feels ${Math.round(c.current.feels)}°${rangeBar(c.current.temp, d0.min, d0.max) || ` · High ${Math.round(d0.max)}° · Low ${Math.round(d0.min)}°`}</span></div></div>
+${sun}<p class="reads">${reads}</p>${rest}${alertLine()}${others ? `<p class="elsewhere">${others}</p>` : ""}</div>${staleNote("weather")}`;
 }
 // Money (Parth, 1 Oct: "The % change is 1 day change? What do you show on a weekend?"): each figure's change on its
 // latest session, headed 1D; a dot and a line say whether the market is live or closed, and which session's close

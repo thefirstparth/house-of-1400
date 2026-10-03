@@ -780,3 +780,8 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 3 Oct 2026: weather alerts (Parth: "Let's add weather alerts", after The Daily Index)
 - NDMA and IMD warnings from Sachet (the trial key, now on the page): a banner in the alert's colour at the top of Sky & Streets, and one line under Page One's weather readings, only while a yellow, orange or red warning runs within 60 km of Bengaluru, Ranchi or Prayagraj. Light-rain notices and ended alerts are dropped. Nothing on a quiet day.
+
+## 3 Oct 2026: Page One weather gains today's range, UV and the rest of the day's rain chance (Parth, after The Daily Index)
+- "Feels 31°" is followed by today's low and high with a dot where the temperature is now, in place of "High 29° · Low 21°".
+- UV (Open-Meteo `current.uv_index`), by day only and only at 3 or more, in the WHO's words, in place of the humidity. It is the reading now, never the day's peak shown as now. For Bengaluru, or the reader's own place when "Where I am" is on (the block shows one place, so its UV is that place's).
+- "Rain chance" for the parts of today still ahead (morning, afternoon, evening, night), each the highest hourly chance in it, with a small fill; it replaces "Rain 4% today". Parth chose only this from The Daily Index's "rest of the day" to keep Page One uncluttered. The block is one line taller; on a 1366x657 window Page One now scrolls about 20px (it was 5px).
