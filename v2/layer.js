@@ -803,7 +803,10 @@ function liveFx() {
   const count = new Map(), keyOf = (el, kind) => { const box = el.closest("[data-live],[data-p1],section.sec"), b = box?.dataset.live || box?.dataset.p1 || box?.id || "page", c = `${b}|${kind}`, n = count.get(c) || 0; count.set(c, n + 1); return `${c}|${n}`; };
   const lines = [...document.querySelectorAll('#main svg path[fill="none"], #main .arc polyline.done')].filter(el => getComputedStyle(el).strokeDasharray === "none");
   const bars = [...document.querySelectorAll('#main [style*="width:"]')].filter(el => !el.textContent.trim() && !el.querySelector("img,svg,canvas") && el.offsetHeight > 0 && el.offsetHeight <= 16);
-  for (const [el, kind] of [...lines.map(el => [el, "line"]), ...bars.map(el => [el, "bar"])]) {
+  // and, gently (Parth, 3 Oct: "charts and the day band that draw in gently"): the Sky & Streets chart's columns grow
+  // from their middle, and the day band's sun and today's range dot slide in from the left to where they stand
+  const cols = [...document.querySelectorAll("#main svg rect.bar")], slides = [...document.querySelectorAll("#main .dband .bar svg, #main .rng .rb i")];
+  for (const [el, kind] of [...lines.map(el => [el, "line"]), ...bars.map(el => [el, "bar"]), ...cols.map(el => [el, "col"]), ...slides.map(el => [el, "slide"])]) {
     const key = keyOf(el, kind); if (FX.drawn.has(key)) continue;
     el.dataset.draw = kind; FX.wait.set(el, key); FX.io.observe(el);
   }
@@ -813,10 +816,17 @@ function drawIn(el) {
   if (el.dataset.draw === "line") {
     let L = 0; try { L = el.getTotalLength?.() || 0; } catch { return; } if (!L) return;
     el.style.strokeDasharray = L;
-    el.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 300, easing: ease }).onfinish = () => { el.style.strokeDasharray = ""; };
+    el.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 500, easing: ease }).onfinish = () => { el.style.strokeDasharray = ""; };
+  } else if (el.dataset.draw === "col") {
+    const i = [...el.ownerSVGElement.querySelectorAll("rect.bar")].indexOf(el);
+    el.style.transformBox = "fill-box"; el.style.transformOrigin = "center";
+    el.animate([{ transform: "scaleY(0)" }, { transform: "scaleY(1)" }], { duration: 600, delay: Math.max(0, i) * 50, easing: ease, fill: "backwards" });
+  } else if (el.dataset.draw === "slide") {
+    const to = el.style.left; if (!to) return;
+    el.animate([{ left: "0%" }, { left: to }], { duration: 900, easing: ease });
   } else {
     el.style.transformOrigin = "left center";
-    el.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { duration: 300, easing: ease });
+    el.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { duration: 500, easing: ease });
   }
 }
 

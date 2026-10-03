@@ -790,3 +790,6 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 - The lead prints when and where its event happened, under the byline, in IBM Plex Mono (OFL, self-hosted; the record's face, used for nothing else): "3 October 2026 · ca. 09:40 IST · Ahmedabad". From the run's `stamp`; absent when the story has no single moment and place.
 - A story may mark the key phrase of a quote from a named source (`highlight`); the page sweeps a highlighter in the desk's colour over it once as it comes into view (shown whole, without the sweep, for a reader who prefers less motion). Four a day at most; the validator checks the phrase is in the text.
 - Not taken from Fern: the "where" map (Parth: skip), the dark look and the 3D.
+
+## 3 Oct 2026: charts and the day band draw in gently (Parth: "Sure, go ahead logically")
+- Once, the first time each comes into view: Sky & Streets' columns grow from their middle one after another (0.6 s, 50 ms apart), the day band's sun and Page One's range dot slide in from the left to where they stand (0.9 s), and the existing lines and thin bars (Talk of the Day's volume bars among them) draw a little slower than before (0.5 s, was 0.3 s). Nothing moves for a reader who prefers reduced motion, and nothing repeats on a live refresh.
