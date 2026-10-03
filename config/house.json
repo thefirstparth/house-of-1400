@@ -485,19 +485,19 @@
         "name": "Nifty 50",
         "yahoo": "^NSEI",
         "exchange": "India",
-        "published": "in;NSX"
+        "nse": "NIFTY 50"
       },
       {
         "name": "Nifty Bank",
         "yahoo": "^NSEBANK",
         "exchange": "India",
-        "published": "in;nbx"
+        "nse": "NIFTY BANK"
       },
       {
         "name": "Nifty IT",
         "yahoo": "^CNXIT",
         "exchange": "India",
-        "published": "in;cnit"
+        "nse": "NIFTY IT"
       },
       {
         "name": "S&P 500",
@@ -716,7 +716,7 @@
       },
       "method": "Published readings, never our own calculation. India: Tickertape's Market Mood Index, from foreign investors' flows, volatility (India VIX), momentum, market breadth, price strength and demand for gold, updated through the trading day. US: CNN's Fear & Greed Index, from seven readings (stock momentum and strength, breadth, put and call options, junk-bond demand, volatility and safe-haven demand), updated through the US trading day. Each gauge uses its publisher's own bands and words. If a publisher cannot be reached, the gauge keeps its last reading with that reading's time."
     },
-    "returns_note": "7D and 1M are Moneycontrol's published figures where it publishes them (its Indian figures agree with NSE's own). Where no reliable source publishes them (Nasdaq-100, Brent, the rupee, gold and Bitcoin today), they are worked out from official daily closes and marked as calculated."
+    "returns_note": "7D and 1M are published figures: NSE's own for the Nifty indices (nseindia.com allIndices, from 3 Oct 2026; Parth: NSE instead of the Moneycontrol scrape), Moneycontrol's only where NSE cannot publish them (the Sensex is BSE's; the S&P 500). Where no reliable source publishes them (Nasdaq-100, Brent, the rupee, gold and Bitcoin today), they are worked out from official daily closes and marked as calculated."
   },
   "weather": {
     "imd": {

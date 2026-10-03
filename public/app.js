@@ -822,7 +822,7 @@ function mondayLedger(D) {
 
 // The Ledger's board, one table in the config's order: India's indices, the US indices, then oil, the rupee, gold
 // and Bitcoin. Each row: level (and the day's move in points), 1D, 7D, 1M and a 30-day line.
-// 7D and 1M are the publisher's own figures (Moneycontrol) where published; otherwise worked out from daily
+// 7D and 1M are published figures (NSE's for the Nifty indices, Moneycontrol's for the Sensex and the S&P 500); otherwise worked out from daily
 // closes and marked with a dagger. Hover shows the comparison date and where the figure came from.
 const retCell = (q, v, from, extra = "") => {
   const src = q.returns_calc ? "Worked out from daily closes (no source we can reach publishes this)" : q.returns_source || "";
