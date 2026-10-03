@@ -116,9 +116,11 @@ const lastDesk = () => NEWDESKS.at(-1)?.id || "off";
 const footNav = () => `<nav>${E?.desk?.length ? `<a href="${deskHref(lastDesk())}" data-desk="${lastDesk()}" data-to="desk" data-open="desk">${esc(sec("desk")?.name || "Your Desk")}</a>` : ""}<a href="/editor">The editor and letters</a><a href="/archive">Archive</a><a href="?v1" data-v1>The old design</a></nav>`;
 const footLine = () => `<footer class="dfoot">${footNav()}<span>${esc(`The House of 1400 · ${longDate(E.date)} · No. ${E.edition_no}`)}</span></footer>`;
 // The desk's sections in order, with the lead's section first when the lead is on this desk
+// (a desk can keep one section first whatever the lead, config desks_v2 "first": Close to Home's weather)
 function deskOrder() {
-  const L = leadSec(), at = DESK.sections.indexOf(L);
-  return at > 0 ? [L, ...DESK.sections.filter(x => x !== L)] : DESK.sections;
+  const L = leadSec(), at = DESK.sections.indexOf(L), F = DESK.first && DESK.sections.includes(DESK.first) ? DESK.first : null;
+  const o = at > 0 ? [L, ...DESK.sections.filter(x => x !== L)] : DESK.sections;
+  return F ? [F, ...o.filter(x => x !== F)] : o;
 }
 function desksHTML(S) {
   const L = E.front?.lead;

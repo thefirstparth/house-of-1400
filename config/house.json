@@ -315,10 +315,12 @@
         "id": "home",
         "name": "Close to Home",
         "sections": [
+          "sky",
           "namma",
-          "back",
-          "sky"
-        ]
+          "back"
+        ],
+        "first": "sky",
+        "first_note": "Sky & Streets opens Close to Home whatever the day's lead (Parth, 3 Oct: 'In the Close to Home section, weather should be on top now')."
       },
       {
         "id": "sport",

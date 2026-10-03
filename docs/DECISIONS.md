@@ -749,3 +749,6 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 ## 3 Oct 2026: every rotation of the nameplate at one size (Parth: "the font size of all the rotations should be the same, right?")
 - Each tapped shape used to be squeezed into 1400's box, height and width, so a long word ("Feels 31°") or one with a descender ("Sunny") came out smaller than a short one. Now every rotation is set in the same face at the size of 1400 itself, from where 1400 starts, on its baseline, and a longer word runs on to the right (the canvas reaches further right and gives the width back in its margin, so the words beside it do not move).
 - Where the screen is too narrow for the widest of the day's rotations (a phone: "Feels 31°"), all the rotations share one smaller size that fits it; 1400 keeps its own size. On a laptop they are all exactly 1400's size.
+
+## 3 Oct 2026: Close to Home opens with the weather (Parth: "In the Close to Home section, weather should be on top now")
+- Sky & Streets comes first on Close to Home, then Namma Beat, then Back Home, whatever the day's lead (config desks_v2 "first"; a lead on this desk still prints in its own section, under the weather). How the rest of the desk is placed is with Parth as a proposal.

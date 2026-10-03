@@ -1,0 +1,12 @@
+import { chromium } from "playwright-core";
+import { writeFileSync } from "node:fs";
+const [src, out, stripH = 1700, cols = 4, scale = 0.4] = process.argv.slice(2);
+const b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
+const p = await b.newPage({ viewport: { width: 400, height: 400 } });
+await p.goto("file://" + src);
+const [W, Hh] = await p.evaluate(() => [document.images[0].naturalWidth, document.images[0].naturalHeight]);
+const n = Math.ceil(Hh / stripH), c = Math.min(+cols, n), rows = Math.ceil(n / c), sw = W * scale, sh = stripH * scale;
+writeFileSync(out + ".html", `<body style="margin:0;background:#888;display:grid;grid-template-columns:repeat(${c},${sw}px);gap:6px;width:${c * (sw + 6)}px">${[...Array(n)].map((_, i) => `<div style="width:${sw}px;height:${sh}px;overflow:hidden;position:relative;background:#fff"><img src="file://${src}" style="position:absolute;left:0;top:${-i * sh}px;width:${sw}px"></div>`).join("")}</body>`);
+await p.setViewportSize({ width: Math.ceil(c * (sw + 6)), height: Math.ceil(rows * (sh + 6)) });
+await p.goto("file://" + out + ".html"); await p.waitForTimeout(400);
+await p.screenshot({ path: out, fullPage: true }); await b.close();
