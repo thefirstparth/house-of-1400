@@ -1231,3 +1231,51 @@ table.ko td.r{text-align:right;white-space:nowrap}
 td .odds{font-size:12px}
 .cz-strip .odds{margin-top:6px;font-size:12px}
 .cz-strip .odds small{display:block;margin-left:0}
+
+/* A fold: a block behind one line with what is in it and its headline figure (Parth, 3 Oct) */
+details.fold{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin:14px 0}
+details.fold>summary{list-style:none;display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:12px 0;cursor:pointer;font:400 14px/1.4 var(--sans);color:var(--ink2)}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold .fh{min-width:0}
+details.fold .fh b{font:800 12.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-right:10px}
+details.fold .fs{color:var(--muted)}
+details.fold .fs b{font:inherit;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink2);margin:0}
+details.fold .fgo{flex:none;font:600 12.5px var(--sans);color:var(--f,var(--acc))}
+details.fold .fgo::after{content:" ↓"}
+details.fold[open] .fgo{font-size:0}details.fold[open] .fgo::after{content:"Hide ↑";font-size:12.5px}
+details.fold>summary:hover .fgo{text-decoration:underline}
+details.fold[open]>summary{border-bottom:1px solid var(--rule);margin-bottom:12px}
+details.fold .fbody{padding-bottom:14px}
+.cz-series:has(>details.fold){margin-top:0}.cz-series>details.fold{margin:0}
+.cz-series+.cz-series>details.fold{border-top:0}
+.cz-next+.cz-series>details.fold,.cz-today+.cz-series>details.fold{margin-top:14px}
+
+/* Your Desk, 3 Oct: the folded line says how many and what is next; inside, the date first */
+details.desk>summary{list-style:none;display:flex;align-items:baseline;justify-content:space-between;gap:16px;letter-spacing:0;text-transform:none;font:400 14px/1.4 var(--sans)}
+details.desk>summary::-webkit-details-marker{display:none}
+details.desk .yd-h{min-width:0}
+details.desk .yd-h b{font:800 12.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;margin-right:10px}
+details.desk .yd-s{color:var(--muted)}
+details.desk .yd-go{flex:none;font:600 12.5px var(--sans);color:var(--ink2)}
+details.desk .yd-go::after{content:" ↓"}
+details.desk[open] .yd-go{font-size:0}details.desk[open] .yd-go::after{content:"Close ↑";font-size:12.5px}
+details.desk .yd{margin-top:10px}
+details.desk .yd h5{margin:12px 0 2px;font:700 10.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+details.desk .yd ol{list-style:none;margin:0;padding:0}
+details.desk .yd li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:14px;padding:8px 0;border-bottom:1px solid var(--rule);font:14.5px/1.45 var(--sans)}
+details.desk .yd li:last-child{border-bottom:0}
+details.desk .yd-w{font-weight:600;font-variant-numeric:tabular-nums}
+details.desk .yd-a{display:inline-block;margin-left:6px;padding:0 6px;border-radius:3px;font:700 10px/18px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--bad);border:1px solid color-mix(in srgb,var(--bad) 45%,transparent)}
+@media (max-width:600px){details.desk .yd li{grid-template-columns:1fr;gap:1px}}
+
+/* Rain gauges (Weather Union, 3 Oct): home, the office and the centre, now and today */
+.rain{margin:18px 0 6px}
+.rain h5{margin:0 0 6px;font:700 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.rain h5 span{margin-left:8px;font-weight:500;letter-spacing:.02em;text-transform:none;color:var(--muted)}
+.rain ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 24px}
+.rain li{display:flex;flex-direction:column;gap:1px;padding:8px 0;border-top:1px solid var(--rule);font:14px/1.4 var(--sans)}
+.rain .rp b{font-weight:700}.rain .rp{color:var(--muted)}.rain .rp b{color:var(--ink)}
+.rain .rs{color:var(--ink2)}.rain li.wet .rs{color:var(--sky,#0a72a8);font-weight:600}
+.rain .rs small{font-weight:400;color:var(--muted);margin-left:4px}
+.rain .rt{font-size:12.5px;color:var(--muted)}
+.sky-top+.rain,.rain{margin-top:22px}

@@ -59,7 +59,7 @@ export function assemble({ app = read("public/app.js"), styles = read("public/st
   rep('  if (ROUTE.kind === "archive") return renderArchive();', '  if (ROUTE.kind === "archive") return archiveV2();');
   // The Week Ahead in seven columns, Monday to Sunday
   rep('S.week = secWrap("week", weekBlock(),', 'S.week = secWrap("week", weekV2(),');
-  rep("  paintSignals();\n", "  paintSignals(); paintJump(); liveFx();\n");
+  rep("  paintSignals();\n", "  paintSignals(); paintJump(); liveFx(); flowAgenda();\n");
   // Page One fits one screen and desk pages fill the width, with their masthead and tabs (layer.js, fitOne, fitDesk)
   rep("function fitMonitor() {", "function fitMonitor() {\n  return E && DESK.id === \"one\" ? fitOne() : fitDesk();");
   rep("  render();\n  loadArt();", "  render();\n  loadArt(); showDesk(DESK.id); followSun(); dthemeLabel(); hereBoot();");
@@ -69,7 +69,8 @@ export function assemble({ app = read("public/app.js"), styles = read("public/st
   if (!js.includes('<b>Next tour:</b> <span class="nw">')) throw new Error("v2: next tour anchor missing");
   // The Fixture List (Parth, 1 Oct: "separate cricket from tennis from football from F1 cleanly"): each day's
   // fixtures in sport groups under a small label, in a fixed order
-  rep("<ul>${list.map(f => {\n    const st = f.time_tbc", '<ul>${sportGroups(list).map(f => {\n    if (f.sp) return `<li class="sp">${esc(f.sp)}</li>`;\n    const st = f.time_tbc');
+  rep("<ul>${list.map(f => {\n    const st = f.time_tbc", '<ul>${sportGroups(list).map(f => {\n    const st = f.time_tbc');
+  rep('<span class="t tnum">${esc(when)}</span><span class="what">', '<span class="t tnum">${esc(when)}${f._sp ? `<i class="spt">${esc(f._sp)}</i>` : ""}</span><span class="what">');
   const css = styles.replace(/border-radius:([^;}]+)/g, (m, v) => "border-radius:" + v.replace(/(\d+(?:\.\d+)?)px/g, (x, n) => (Number(n) >= 99 ? "3px" : Number(n) > 4 ? "4px" : x)))
     + "\n" + FONTS() + "\n" + read("v2/v2.css");
   return { js, css, head: read("v2/head.html") };

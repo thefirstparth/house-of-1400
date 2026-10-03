@@ -10,12 +10,12 @@ ensureProxy();
 
 const REMOTE = useRemote(process.argv.slice(2));
 
-const KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "nba", "tennis", "markets", "fx", "crypto", "gold_in", "trends", "betting", "movers", "signals", "intl_football", "tennis_players", "flows", "crease", "club_stats", "f1_market", "outlook", "club_knockouts", "odds"];
+const KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "nba", "tennis", "markets", "fx", "crypto", "gold_in", "trends", "betting", "movers", "signals", "intl_football", "tennis_players", "flows", "crease", "club_stats", "f1_market", "outlook", "club_knockouts", "odds", "rain"];
 
 // Local mode: every module the /api/live route serves, not only lib/live.js.
 async function localGetters() {
-  const [a, b, c, d, e] = await Promise.all(["live.js", "money.js", "crease-live.js", "football.js", "odds.js"].map(f => import(`../lib/${f}`)));
-  return { ...a.LIVE, ...b.MONEY, ...c.CREASE, ...d.FOOTBALL, ...e.ODDS };
+  const [a, b, c, d, e, f] = await Promise.all(["live.js", "money.js", "crease-live.js", "football.js", "odds.js", "rain.js"].map(x => import(`../lib/${x}`)));
+  return { ...a.LIVE, ...b.MONEY, ...c.CREASE, ...d.FOOTBALL, ...e.ODDS, ...f.RAIN };
 }
 
 export async function snapshot() {

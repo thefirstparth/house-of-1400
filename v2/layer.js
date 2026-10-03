@@ -141,12 +141,63 @@ function desksHTML(S) {
 // label above a row whenever the sport changes, so cricket, tennis, football and F1 still read apart (Parth, 1 Oct).
 const SPORTS = [["Cricket", /cricket/], ["Football", /madrid|football|soccer/], ["F1", /^f1/], ["Tennis", /tennis/], ["Basketball", /nba|warriors/]];
 const sportOf = f => (SPORTS.find(([, re]) => re.test(f.entity || "")) || ["More sport"])[0];
+// From 3 Oct (Parth: "reduce some pixels ... a slight redesign") the label sits under the time on every row instead of
+// on a row of its own, and the days flow down and across the columns like a listings page (flowAgenda).
 function sportGroups(list) {
-  const out = []; let last = null;
-  for (const f of [...list].sort((a, b) => String(a.when_utc).localeCompare(String(b.when_utc)))) {
-    const sp = sportOf(f); if (sp !== last) out.push({ sp }); last = sp; out.push(f);
+  return [...list].sort((a, b) => String(a.when_utc).localeCompare(String(b.when_utc))).map(f => ({ ...f, _sp: sportOf(f) }));
+}
+
+// The days flow like a listings page: down a column and on into the next, so a busy day no longer stretches one
+// column while the quiet days leave theirs empty. A day that runs on into the next column repeats its heading there,
+// marked "continued". The columns are packed as evenly as the rows allow (the shortest height that fits, by halving).
+// One column on a phone, as before. Re-flowed when the list or the width changes.
+const AGENDA_RO = typeof ResizeObserver === "function" ? new ResizeObserver(() => flowAgenda()) : null;
+function flowAgenda() {
+  for (const ag of document.querySelectorAll("#fixtures .agenda")) {
+    const host = ag.parentElement; if (!host) continue;
+    if (AGENDA_RO && !host._ro) { host._ro = 1; AGENDA_RO.observe(host); }
+    const W = host.clientWidth; if (!W) continue;
+    const C = W >= 1700 ? 5 : W >= 1240 ? 4 : W >= 820 ? 3 : W >= 560 ? 2 : 1;
+    if (!ag.classList.contains("flowed")) ag._orig = ag.innerHTML; // a fresh list from the page
+    const key = `${C}:${W}:${ag._orig.length}`;
+    if (ag.dataset.flow === key) continue;
+    ag.innerHTML = ag._orig; ag.classList.remove("flowed"); ag.dataset.flow = key;
+    if (C < 2) continue;
+    const gap = parseFloat(getComputedStyle(ag).columnGap) || 36, colW = (W - gap * (C - 1)) / C;
+    const m = ag.cloneNode(true);
+    m.style.cssText = `position:absolute;left:0;top:0;width:${colW}px;display:block;visibility:hidden;pointer-events:none`;
+    host.style.position ||= "relative"; host.append(m);
+    const outer = el => { const cs = getComputedStyle(el); return el.getBoundingClientRect().height + parseFloat(cs.marginTop) + parseFloat(cs.marginBottom); };
+    const days = [...m.querySelectorAll(":scope > .day")].map(d => ({ h3: d.querySelector("h3"), hh: outer(d.querySelector("h3")), items: [...d.querySelectorAll("li")].map(li => ({ html: li.outerHTML, h: outer(li) })) }));
+    m.remove();
+    // Fill columns up to height H; a day split across columns gets its heading again. Null when C columns are not enough.
+    const pack = H => {
+      const cols = [[]]; let used = 0;
+      const room = h => { if (used + h <= H || !used) return true; if (cols.length === C) return false; cols.push([]); used = 0; return true; };
+      for (const [di, d] of days.entries()) {
+        if (!room(d.hh + (d.items[0]?.h || 0))) return null;
+        cols.at(-1).push({ day: di, head: true, cont: false }); used += d.hh;
+        for (const it of d.items) {
+          if (used + it.h > H && used) { if (cols.length === C) return null; cols.push([{ day: di, head: true, cont: true }]); used = d.hh; }
+          cols.at(-1).push({ day: di, html: it.html }); used += it.h;
+        }
+      }
+      return cols;
+    };
+    const total = days.reduce((t, d) => t + d.hh + d.items.reduce((a, i) => a + i.h, 0), 0);
+    let lo = Math.max(...days.map(d => d.hh + Math.max(0, ...d.items.map(i => i.h)))), hi = total + days.length * 60, best = pack(hi);
+    for (let k = 0; k < 18 && hi - lo > 2; k++) { const mid = (lo + hi) / 2, p = pack(mid); if (p) { best = p; hi = mid; } else lo = mid; }
+    if (!best) continue;
+    ag.classList.add("flowed"); ag.style.setProperty("--n", C);
+    ag.innerHTML = best.map(col => {
+      let h = "", open = false;
+      for (const e of col) {
+        if (e.head) { if (open) h += "</ul></div>"; const t = days[e.day].h3; h += `<div class="day"><h3${e.cont ? ' class="cont"' : ""}>${t.innerHTML}${e.cont ? " <em>continued</em>" : ""}</h3><ul>`; open = true; }
+        else h += e.html;
+      }
+      return `<div class="col">${h}${open ? "</ul></div>" : ""}</div>`;
+    }).join("");
   }
-  return out;
 }
 
 // ---------------------------------------------------------------- Page One (variant B, design/page-one/README.md FINAL)
@@ -256,7 +307,10 @@ document.addEventListener("click", e => { const b = e.target.closest("[data-here
 function markWeather() {
   const away = awayCity(), c = away || LIVE.weather?.value?.cities?.[0], h = homeAt();
   if (!c?.current) return null;
-  return inkState({ code: c.current.code, temp: c.current.temp, wind: c.current.wind, lat: c.lat ?? h.lat, lon: c.lon ?? h.lon });
+  // at home, a gauge reading rain at home or in the centre wins over the model's sky (Weather Union, lib/rain.js)
+  const wet = !away && (rainNow() || []).filter(p => p.raining && p.id !== "office").sort((a, b) => b.rate_mm_h - a.rate_mm_h)[0];
+  const code = wet && !(c.current.code >= 51 && c.current.code <= 99) ? (wet.rate_mm_h >= 10 ? 65 : wet.rate_mm_h >= 2.5 ? 63 : 61) : c.current.code;
+  return inkState({ code, temp: c.current.temp, wind: c.current.wind, lat: c.lat ?? h.lat, lon: c.lon ?? h.lon });
 }
 
 // The day line (Parth, 3 Oct, of design/weather-v3: "let's go with 3, the day's own band"; the midnight-to-midnight
@@ -304,7 +358,8 @@ function weatherHTML() {
   const air = c.air?.now, day = away ? sunAt(c.lat, c.lon, n).alt > 0 : !isNight(Number(istTime(new Date(n).toISOString()).slice(0, 2)));
   const read = (k, v, w = "") => `<span><i>${k}</i><b class="tnum">${v}</b>${w ? ` ${esc(w)}` : ""}</span>`;
   // by night the day line already gives the moon, so the readings do not repeat it
-  const reads = [day && d0.rain_prob != null ? read("Rain", `${d0.rain_prob}%`, "today") : sun ? "" : read("Moon", `${Math.round(moonNow(n).lit * 100)}%`, "lit"),
+  const gauge = away ? "" : rainRead(); // Weather Union's gauges, when it is raining or has rained today
+  const reads = [gauge || (day && d0.rain_prob != null ? read("Rain", `${d0.rain_prob}%`, "today") : sun ? "" : read("Moon", `${Math.round(moonNow(n).lit * 100)}%`, "lit")),
     air != null ? read("Air", String(air), airWord(air)) : "", c.current.humidity != null ? read("Humidity", `${c.current.humidity}%`) : ""].join("");
   const others = (W || []).filter(x => x.current && x.name !== c.name).map(x => `<span><b>${esc(x.name)}</b> <span class="tnum">${Math.round(x.current.temp)}°</span> ${esc(wx(x.current.code)[1].toLowerCase())}</span>`).join("");
   // the place is always named, home too (Parth, 3 Oct: "the weather does not mention that it is by default for

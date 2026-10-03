@@ -84,7 +84,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where", "outlook", "club_knockouts", "odds"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where", "outlook", "club_knockouts", "odds", "rain"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -131,6 +131,16 @@ function staleNote(k) {
   // Say "from the snapshot" only once a live fetch has failed, or on a past edition.
   return L?.stale && (liveTried || ROUTE.kind === "edition") ? `<div class="asof stale">From the ${esc(L.source || "edition")} snapshot, ${agoIST(L.as_of)}</div>` : "";
 }
+
+// A fold (Parth, 3 Oct: "less scrolling", "I don't want any data gone"): a block behind one line that says what is in
+// it and the headline figure, opened with a tap. Whether it is open survives the live refreshes and a reload in the tab.
+const FOLDS = new Set((() => { try { return JSON.parse(sessionStorage.getItem("h1400-folds") || "[]"); } catch { return []; } })());
+const fold = (id, title, summary, body) => (body ? `<details class="fold" data-fold="${esc(id)}"${FOLDS.has(id) ? " open" : ""}><summary><span class="fh"><b>${esc(title)}</b>${summary ? `<span class="fs">${summary}</span>` : ""}</span><span class="fgo">Show</span></summary><div class="fbody">${body}</div></details>` : "");
+document.addEventListener("toggle", e => {
+  const d = e.target; if (!d.matches?.("details.fold")) return;
+  d.open ? FOLDS.add(d.dataset.fold) : FOLDS.delete(d.dataset.fold);
+  try { sessionStorage.setItem("h1400-folds", JSON.stringify([...FOLDS])); } catch {}
+}, true);
 
 // ------------------------------------------------------------------ events (countdowns, on now)
 // Tennis matches move all day (a court runs late, a match is pulled), so the followed players' next matches come
@@ -561,7 +571,9 @@ function madridBlock() {
     panel = `<div class="comps">${tabs}${comps.map(c => `<div class="cpan" role="tabpanel" id="cpan-${esc(c.key)}" aria-labelledby="ctab-${esc(c.key)}"${c.key === cur ? "" : " hidden"}>${body(c)}</div>`).join("")}${staleNote("club_stats")}</div>`;
   }
   if (!table && !lines.length && !panel) return "";
-  return `${table || lines.length ? `<div class="cols2"><div>${table}</div><div class="facts">${facts}</div></div>` : ""}${panel}`;
+  const where = comps.map(c => { const rm = c.rows?.find(isUs); return rm ? `${esc(c.label)} ${ordinal(rm.rank)}, ${rm.points} pts` : ""; }).filter(Boolean).join(" · ");
+  const parts = ["table", ...(comps.some(c => c.goals?.length) ? ["scorers"] : []), ...(comps.some(c => c.assists?.length) ? ["assists"] : []), ...(comps.some(c => c.ratings?.length) ? ["ratings"] : [])];
+  return `${table || lines.length ? `<div class="cols2"><div>${table}</div><div class="facts">${facts}</div></div>` : ""}${fold("madrid-comps", comps.map(c => c.label).join(" and "), `${where ? `${where} · ` : ""}${parts.join(", ").replace(/, ([^,]*)$/, " and $1")}`, panel)}`;
 }
 function pickComp(key) {
   MX.comp = key; store.set("h1400-comp", key);
@@ -644,7 +656,10 @@ function paddockBlock() {
     : track ? `<div class="cols2 f1top"><div>${facts}</div><div>${track}</div></div>` : facts;
   const stories = storiesBlock("paddock");
   return top + preview + (stories ? `<div class="f1-stories">${stories}</div>` : "") +
-    (champ || last ? `<div class="cols2 gap-top f1">${champ ? `<div>${champ}</div>` : "<div></div>"}${last ? `<div>${last}</div>` : "<div></div>"}</div>` : "") + calendar;
+    fold("f1-tables", [champ && "Championship", last && "Last race"].filter(Boolean).join(" and "), [
+      max ? `${esc(lastName(f1Name(max)))} ${ordinal(max.pos)} on ${max.points}${lead && lead !== max ? `, ${esc(lastName(f1Name(lead)))} leads on ${lead.points}` : ""}` : "",
+      Lr?.results?.[0] ? `${esc(lastName(f1Name(Lr.results[0])))} won ${Lr.name ? `the ${esc(Lr.name)}` : "the last race"}` : ""].filter(Boolean).join(" · "),
+      champ || last ? `<div class="cols2 gap-top f1">${champ ? `<div>${champ}</div>` : "<div></div>"}${last ? `<div>${last}</div>` : "<div></div>"}</div>` : "") + calendar;
 }
 
 // ---------------------------------------------------------------- Paddock Notes, in F1's own look (Parth, 1 Oct)
@@ -1143,10 +1158,29 @@ function skyOutlook() {
   let h = `<div class="sky-top"><div><p class="kick">${esc(B.name)}</p>${head ? `<h3 class="sky-h">${esc(head)}</h3>` : ""}<p class="sky-dek">${esc(skyDek(B, today(B.name)))}</p></div>
 <figure class="sky-fig">${skyChart(B, { w: phone ? cw : 640 })}<figcaption>Each bar runs from the night's low to the day's high. For the months, the bar is this year's forecast and the dashed outline is the same month's 30-year average at the city's weather station. Air is the US AQI: the week's average, and for the months what that month is usually like.</figcaption></figure></div>
 <details class="more sky-more"><summary>Week to week and month to month, in figures</summary>${skyFigures(B, { sunset: true })}</details>`;
+  h += rainHTML(); // Bengaluru's rain gauges, under Bengaluru
   if (F.length) h += `<h3 class="subhd famhead">${esc(F.map(x => x.name).join(" and "))} <span>where the family is</span></h3><div class="sky-fam">${F.map(c => { const t = today(c.name), k = cur(c.name);
     return `<div><h4>${esc(c.name)}${k ? `<small>${Math.round(k.temp)}° now${t?.feels_max != null ? ` · feels ${Math.round(t.feels_max)}° by day` : ""}</small>` : ""}</h4>${skyHeadline(c) ? `<p class="l">${esc(skyHeadline(c))}</p>` : ""}<p class="s">${esc(skyDek(c, t, true))}</p>
 <details class="more"><summary>Chart and figures</summary><figure class="sky-fig">${skyChart(c, { w: phone ? cw : 560, compact: true })}</figure>${skyFigures(c)}</details></div>`; }).join("")}</div>`;
   return h + aboutFig(`Forecasts from Open-Meteo; the months from ECMWF's seasonal forecast (51 runs), corrected by how far it was off last month. A usual month: each city's weather station, 1991 to 2020 (${O.map(c => c.station).filter(Boolean).map(esc).join("; ")}); usual air from Copernicus, 2022 to 2025. Rainy days: 2.5 mm or more, or a 60% chance.`) + staleNote("outlook");
+}
+// Rain at home, the office and central Bengaluru, from Weather Union's gauges (lib/rain.js; Parth, 3 Oct). Live
+// readings only: one more than 45 minutes old says nothing about now, so it is not shown.
+const rainNow = () => { const R = LIVE.rain; return R?.value?.places?.length && R.as_of && Date.now() - Date.parse(R.as_of) < 45 * 6e4 ? R.value.places : null; };
+const mm = v => `${v >= 10 ? Math.round(v) : Math.round(v * 10) / 10} mm`;
+function rainHTML() {
+  const P = rainNow(); if (!P) return "";
+  const cell = p => `<li class="${p.raining ? "wet" : ""}"><span class="rp"><b>${esc(p.name)}</b> ${esc(p.area)}</span><span class="rs">${p.raining ? `Raining, ${esc(p.word)} <small class="tnum">${mm(p.rate_mm_h)} an hour</small>` : "Dry now"}</span><span class="rt tnum">${p.today_mm > 0 ? `${mm(p.today_mm)} today` : "No rain today"}</span></li>`;
+  return `<div class="rain"><h5>Rain gauges <span>${esc(LIVE.rain.source || "Weather Union")} · ${esc(istTime(LIVE.rain.as_of))} IST</span></h5><ul>${P.map(cell).join("")}</ul></div>`;
+}
+// Page One's "Rain" reading, from the gauges when they have something to say: raining now (where, how hard), else
+// the day's total so far; otherwise the forecast's chance stays (layer.js weatherHTML)
+function rainRead() {
+  const P = rainNow(); if (!P) return "";
+  const wet = P.filter(p => p.raining).sort((a, b) => b.rate_mm_h - a.rate_mm_h);
+  if (wet.length) return `<span><i>Rain</i><b>now</b> ${esc(wet[0].word)}, ${esc(wet.map(p => p.name.toLowerCase()).join(" and ").replace(/^./, c => c.toUpperCase()))}</span>`;
+  const top = [...P].sort((a, b) => b.today_mm - a.today_mm)[0];
+  return top.today_mm > 0 ? `<span><i>Rain</i><b class="tnum">${mm(top.today_mm)}</b> today, ${esc(top.name.toLowerCase())}</span>` : "";
 }
 function skyBlock() {
   const o = skyOutlook();
@@ -1280,7 +1314,14 @@ function creaseLive() {
     return `<div class="cz-ko"><h5>The knockouts</h5><table class="compact"><tbody>${S.knockouts.map(k => `<tr class="${k.india ? "on" : ""}"><td class="sub" title="${esc(k.stage)}">${esc(k.stage.replace(/^(\d)\w* Quarter-?Final$/i, "QF $1").replace(/^(\d)\w* Semi-?Final$/i, "SF $1"))}</td><td>${esc(k.teams.join(" v "))}</td><td class="r">${st(k)}</td></tr>`).join("")}</tbody></table></div>`;
   };
   // In a tournament whose knockouts are listed, India's own knockout matches are already in that table.
-  const block = (S, first) => `<div class="cz-series"><h4 class="subhd">${esc(S.name.replace(/,? \d{4}$/, ""))}</h4>${S.formats.filter(f => !(S.knockouts?.length && f.matches.every(m => /final/i.test(m.desc || "")))).map((f, i) => strip(f, first && (i === 0 || f.matches.some(m => N && m.id === N.id)))).join("")}${ko(S)}</div>`;
+  // Each series folds to one line: its formats with the score, and the next match in it (Parth, 3 Oct).
+  const seriesLine = S => {
+    const nx = S.formats.flatMap(f => f.matches).filter(m => m.state === "live" || (m.state !== "done" && m.state !== "off")).sort((a, b) => String(a.start).localeCompare(String(b.start)))[0];
+    return [S.formats.map(f => `${esc(f.label)}${f.score ? ` <b>${esc(f.score)}</b>` : f.total ? ` (${f.total})` : ""}`).join(", "),
+      nx ? `${nx.state === "live" ? "in play" : "next"}: ${esc(nx.desc)} v ${esc(nx.opponent || "TBC")}, ${esc(playedDay(nx.start) === "Today" ? "today" : day(nx.start))}` : "",
+      S.knockouts?.length ? "the knockouts" : ""].filter(Boolean).join(" · ");
+  };
+  const block = (S, first) => `<div class="cz-series">${fold(`cz-${S.id || S.name}`, S.name.replace(/,? \d{4}$/, ""), seriesLine(S), `${S.formats.filter(f => !(S.knockouts?.length && f.matches.every(m => /final/i.test(m.desc || "")))).map((f, i) => strip(f, first && (i === 0 || f.matches.some(m => N && m.id === N.id)))).join("")}${ko(S)}`)}</div>`;
   for (const [i, S] of [C.main, ...(C.also || [])].filter(Boolean).entries()) h += block(S, i === 0);
   const T = C.after;
   if (T) h += `<p class="cz-line"><b>Next tour:</b> ${esc(T.name.replace(/,? \d{4}$/, ""))} · from ${esc(day(T.first))} · ${esc(T.formats.map(f => `${f.total || f.matches.length} ${f.label}`).join(", "))}</p>`;
@@ -1480,10 +1521,17 @@ function byeBlock() {
   return (b.watch?.length ? `<p><b>Watch:</b> ${b.watch.map(esc).join(" ")}</p>` : "") + (b.do?.length ? `<p><b>Do:</b> ${b.do.map(esc).join(" ")}</p>` : "");
 }
 
+// Your Desk (Parth, 3 Oct: "let's see how we can do this better"): the folded line says how many things there are and
+// the next one; inside, each thing with its date first, by when (Next 72 hours, Days 4 to 7, Week 2), and the red
+// "Action" mark only on a thing he has to do something about.
 function deskBlock() {
   if (!E.desk?.length) return "";
-  const G = { "72h": "Next 72h", "4-7": "Days 4 to 7", week2: "Week 2" };
-  return `<details class="desk" id="desk"><summary>${esc(sec("desk").name)} · tap to open</summary><table style="margin-top:8px"><tbody>${E.desk.map(d => `<tr><td>${esc(d.group ? G[d.group] : d.when)}</td><td>${d.group ? `<b style="font-weight:600">${esc(d.when)}</b> · ` : ""}${esc(d.text)}${d.kind === "action" ? ` <span class="newfor" style="--acc:var(--bad)">Action</span>` : ""}</td></tr>`).join("")}</tbody></table></details>`;
+  const G = { "72h": "Next 72 hours", "4-7": "Days 4 to 7", week2: "Week 2" }, n = E.desk.length, first = E.desk[0];
+  const short = t => { t = String(t).replace(/\.$/, ""); return t.length > 70 ? t.slice(0, 68).replace(/\s+\S*$/, "") + "…" : t; };
+  const groups = [...new Set(E.desk.map(d => d.group || ""))];
+  const li = d => `<li${d.kind === "action" ? ' class="act"' : ""}><span class="yd-w">${esc(d.when)}</span><span class="yd-t">${esc(d.text)}${d.kind === "action" ? ` <span class="yd-a">Action</span>` : ""}</span></li>`;
+  return `<details class="desk" id="desk"><summary><span class="yd-h"><b>${esc(sec("desk").name)}</b><span class="yd-s">${n} thing${n === 1 ? "" : "s"} · next: ${esc(short(first.text))}, ${esc(first.when)}</span></span><span class="yd-go">Open</span></summary>
+<div class="yd">${groups.map(g => `${g ? `<h5>${esc(G[g] || g)}</h5>` : ""}<ol>${E.desk.filter(d => (d.group || "") === g).map(li).join("")}</ol>`).join("")}</div></details>`;
 }
 
 // ------------------------------------------------------------------ page
