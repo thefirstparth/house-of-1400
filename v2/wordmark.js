@@ -139,10 +139,13 @@ function inkBox(w, h, draw) {
   return { x0, y0, x1, y1 };
 }
 // Any short text in the same face, for the shapes a tap cycles through (v2/glyphs.json, embedded by the build as
-// GLYPHS): it is set to fit the width of "1400" at most, on the same baseline.
+// GLYPHS). Every one is set at the size of "1400" itself (Parth, 3 Oct: "the font size of all the rotations should be
+// the same"), times k when the screen is too narrow for the widest of them (one k for them all), on 1400's baseline,
+// starting where 1400 starts; a longer word runs on to the right, into WM, the mask's wider width.
 const shapeCache = new Map();
-async function textDots(text, size, W, H, g) {
-  const key = `${text}|${size}|${g}`; if (shapeCache.has(key)) return shapeCache.get(key);
+export const textAdv = text => [...text].reduce((a, ch) => a + (typeof GLYPHS !== "undefined" ? (GLYPHS[ch]?.[0] ?? (ch === " " ? 0.28 : 0)) : 0.6) * (ch === "°" ? 0.8 : 1), 0);
+async function textDots(text, size, W, H, g, k = 1, WM = W) {
+  const key = `${text}|${size}|${g}|${k.toFixed(4)}|${WM}`; if (shapeCache.has(key)) return shapeCache.get(key);
   let dots;
   if (text === "1400" || typeof GLYPHS === "undefined") dots = (await screenFor(size, g)).dots;
   else {
@@ -157,19 +160,20 @@ async function textDots(text, size, W, H, g) {
     const plain = chars.filter(ch => !SUP.has(ch)), advOf = sz => chars.reduce((a, ch) => a + (GLYPHS[ch]?.[0] ?? 0.28) * (SUP.has(ch) ? 0.8 : 1), 0) * sz;
     const T = inkBox(W, H * 2, x => { x.setTransform(size, 0, 0, size, W / 2 - (ADV * size) / 2, base0); x.fill(new Path2D(PATH)); });
     const B = inkBox(W, H * 2, x => { let at = 0; for (const ch of plain) { const G = GLYPHS[ch]; if (G) { x.setTransform(size, 0, 0, size, 10 + at, base0); x.fill(new Path2D(G[1])); } at += (G?.[0] ?? 0.28) * size; } });
-    const hf = (T.y1 - T.y0) / Math.max(1, B.y1 - B.y0), sz = Math.min(size * hf, (size * ADV) / (advOf(1) || 1)), topY = H / 2 + size * 0.36 - (base0 - B.y0) * (sz / size);
-    const c = document.createElement("canvas"); c.width = W; c.height = H;
+    // the same face at the same size as 1400 (times k on a narrow screen), and never wider than the mask
+    const sz = size * Math.min(k, (WM - T.x0 - 2 * g) / Math.max(1, advOf(1) * size)), topY = H / 2 + size * 0.36 - (base0 - B.y0) * (sz / size);
+    const c = document.createElement("canvas"); c.width = WM; c.height = H;
     const x = c.getContext("2d", { willReadFrequently: true });
     // every shape starts where the ink of "1400" starts and grows to the right (Parth, 3 Oct: "the position of 'The
     // House of' should never change"): the words stay put and the shapes come and go beside them
     set(x, sz, T.x0 - (B.x0 - 10) * (sz / size), H / 2 + size * 0.36, topY);
-    const d = x.getImageData(0, 0, W, H).data, I = new Float32Array((W + 1) * (H + 1)), W1 = W + 1;
-    for (let y = 0; y < H; y++) { let r = 0; for (let i = 0; i < W; i++) { r += d[(y * W + i) * 4 + 3] / 255; I[(y + 1) * W1 + i + 1] = I[y * W1 + i + 1] + r; } }
-    const cover = (cx, cy, h) => { const x0 = Math.max(0, Math.floor(cx - h)), x1 = Math.min(W, Math.ceil(cx + h)), y0 = Math.max(0, Math.floor(cy - h)), y1 = Math.min(H, Math.ceil(cy + h)); if (x1 <= x0 || y1 <= y0) return 0; return (I[y1 * W1 + x1] - I[y0 * W1 + x1] - I[y1 * W1 + x0] + I[y0 * W1 + x0]) / ((x1 - x0) * (y1 - y0)); };
-    dots = []; const span = Math.hypot(W, H), ca = Math.SQRT1_2;
+    const d = x.getImageData(0, 0, WM, H).data, I = new Float32Array((WM + 1) * (H + 1)), W1 = WM + 1;
+    for (let y = 0; y < H; y++) { let r = 0; for (let i = 0; i < WM; i++) { r += d[(y * WM + i) * 4 + 3] / 255; I[(y + 1) * W1 + i + 1] = I[y * W1 + i + 1] + r; } }
+    const cover = (cx, cy, h) => { const x0 = Math.max(0, Math.floor(cx - h)), x1 = Math.min(WM, Math.ceil(cx + h)), y0 = Math.max(0, Math.floor(cy - h)), y1 = Math.min(H, Math.ceil(cy + h)); if (x1 <= x0 || y1 <= y0) return 0; return (I[y1 * W1 + x1] - I[y0 * W1 + x1] - I[y1 * W1 + x0] + I[y0 * W1 + x0]) / ((x1 - x0) * (y1 - y0)); };
+    dots = []; const span = Math.hypot(WM, H) + WM, ca = Math.SQRT1_2;
     for (let j = -span / g; j < span / g; j++) for (let i = -span / g; i < span / g; i++) {
       const u = i * g, v = j * g, px = W / 2 + u * ca - v * ca, py = H / 2 + u * ca + v * ca;
-      if (px < -g || py < -g || px > W + g || py > H + g) continue;
+      if (px < -g || py < -g || px > WM + g || py > H + g) continue;
       const base = Math.sqrt(cover(px, py, g / 2)); if (base > 0.04) dots.push({ x: px, y: py, base });
     }
   }
@@ -180,13 +184,18 @@ async function textDots(text, size, W, H, g) {
 // At rest the figure is still and crisp. Every 7 seconds one swell sweeps across it; the pointer parts the dots while
 // it moves; a tap or click re-forms the dots into the next shape of the cycle, and the figure comes back to 1400 by
 // itself after a few seconds. It stops drawing whenever nothing moves, off screen, or in a hidden tab.
-export async function mountWordmark(el, { size, shares = [], cycle = () => ["1400"], homeAfter = 6, weather = null, press = false, onShape = null }) {
+export async function mountWordmark(el, { size, shares = [], cycle = () => ["1400"], homeAfter = 6, weather = null, press = false, onShape = null, room = null }) {
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const { W, H, g } = await screenFor(size), R = g * 0.6;
-  const PX = Math.round(W * 0.2), PY = Math.round(H * 0.3), CW = W + 2 * PX, CH = H + 2 * PY;
+  // the rotations at 1400's own size; where the screen (room: the width from 1400's first stroke to the edge) cannot
+  // take the widest of today's, all of them share one smaller size. The canvas runs on to the right by E for the longer
+  // words, and gives that back in its margin, so nothing beside it moves.
+  const inkL = (W - ADV * size) / 2 + 0.028 * size, widest = Math.max(0, ...cycle().filter(t => t && t !== "1400").map(t => textAdv(String(t)) * size));
+  const KR = room && widest ? Math.min(1, (room - g) / widest) : 1, E = Math.max(0, Math.ceil(inkL + widest * KR + 2 * g - W)), WM = W + E;
+  const PX = Math.round(W * 0.2), PY = Math.round(H * 0.3), CW = WM + 2 * PX, CH = H + 2 * PY;
   const c = document.createElement("canvas");
   c.setAttribute("aria-hidden", "true");
-  c.style.cssText = `display:block;width:${CW}px;height:${CH}px;margin:${-PY}px auto;pointer-events:none;flex:none`;
+  c.style.cssText = `display:block;width:${CW}px;height:${CH}px;margin:${-PY}px ${-E}px ${-PY}px 0;pointer-events:none;flex:none`;
   el.replaceChildren(c);
   el.style.touchAction = "manipulation";
   const ctx = c.getContext("2d");
@@ -372,7 +381,7 @@ export async function mountWordmark(el, { size, shares = [], cycle = () => ["140
     }
     swellT = setTimeout(swellLoop, 4000);
   };
-  const reform = async text => { const gs = gOf(text), homes = await textDots(text, size, W, H, gs); RS = gs * 0.6; shapeText = text; place(homes, parts); onShape?.(inkOf(homes, gs), text); morphAt = performance.now(); el.setAttribute("aria-label", text); if (reduced) draw(performance.now()); else wake(); };
+  const reform = async text => { const gs = gOf(text), homes = await textDots(text, size, W, H, gs, KR, WM); RS = gs * 0.6; shapeText = text; place(homes, parts); onShape?.(inkOf(homes, gs), text); morphAt = performance.now(); el.setAttribute("aria-label", text); if (reduced) draw(performance.now()); else wake(); };
   const onMove = e => { if (e.pointerType === "mouse") { pointer = at(e); lastMove = performance.now(); wake(); } };
   const onLeave = () => { pointer = null; };
   const onDown = () => {

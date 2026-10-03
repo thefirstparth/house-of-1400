@@ -606,9 +606,19 @@ function mountMark() {
   n.setAttribute("aria-label", sharesLabel(shares));
   // the stamp prints the figure once per visit (a browser session), the first time Page One shows
   let press = false; try { press = !sessionStorage.getItem("h1400-pressed"); sessionStorage.setItem("h1400-pressed", "1"); } catch {}
-  mountWordmark(n, { size, shares, cycle: markCycle, homeAfter: CFG.desks_v2?.wordmark?.home_after_s || 6, weather: markWeather, press }).then(u => { unmountMark = u; alignPlate(); }).catch(() => {});
+  // the width from 1400's first stroke to the plate's edge, for the longer rotations (wordmark.js: all at 1400's size,
+  // or one smaller size for all of them when the screen cannot take the widest)
+  // (measured once the words have their own fonts and width, so the figure's place is final)
+  const tok = ++markTok;
   alignPlate();
+  Promise.all([document.fonts?.load(`400 ${Math.round(size * 0.56)}px UnifrakturMaguntia`), document.fonts?.load(`600 ${Math.round(size * 0.15)}px "Libre Franklin"`)]).catch(() => {}).then(() => {
+    if (tok !== markTok || DESK.id !== "one") return;
+    alignPlate();
+    const z = zoomOf(), pr = document.getElementById("bigplate").getBoundingClientRect(), room = (Math.min(innerWidth, pr.right) - 10 - n.getBoundingClientRect().left) / z;
+    mountWordmark(n, { size, room, shares, cycle: markCycle, homeAfter: CFG.desks_v2?.wordmark?.home_after_s || 6, weather: markWeather, press }).then(u => { if (tok !== markTok) { u(); return; } unmountMark = u; alignPlate(); }).catch(() => {});
+  });
 }
+let markTok = 0;
 // The pinned tab bar: once the masthead is off the screen, Page One's tab shows the day in dots instead of its name.
 let tabObs = null;
 function tabMark() {
