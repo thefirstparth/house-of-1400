@@ -812,6 +812,25 @@
       "min_move_pts": 5,
       "rule": "A market printed in the previous edition carries over while it is open, undecided (favourite under 99%), and still trending: inside the top max_rank markets by 24-hour volume after the exclusions, or its favourite moved min_move_pts points or more since it was printed. A market that ends or is decided hands over to the next market in the same line (next month's edition of the same question). At most max carries, busiest first, so new markets always have room. Nothing is carried because it is named anywhere."
     },
+    "odds": {
+      "rule": "Every upcoming match the paper follows, priced (Parth, 3 Oct: \"every upcoming match, found automatically\"): the open match markets on Kalshi (these series) and Polymarket (these tags) whose sides include a team or player in follows, from yesterday to days ahead. When both list a match the one with more traded wins. The page matches them to its own fixtures by the two sides, the sport and the date; nothing is named in code. Markets under min_volume traded are left out.",
+      "days": 15,
+      "min_volume": 1000,
+      "kalshi": {
+        "cricket": ["KXT20MATCH", "KXODIMATCH", "KXTESTMATCH", "KXCRICKETT20IMATCH", "KXCRICKETODIMATCH"],
+        "football": ["KXLALIGAGAME", "KXUCLGAME", "KXCOPADELREYGAME", "KXUEFASCGAME", "KXCLUBWCGAME", "KXUEFANLGAME", "KXINTLFRIENDLYGAME", "KXWCQUALGAME"],
+        "tennis": ["KXATPMATCH"],
+        "basketball": ["KXNBAGAME"],
+        "f1": ["KXF1RACE", "KXF1QUALIFY"]
+      },
+      "polymarket": {
+        "cricket": ["cricket"],
+        "football": ["la-liga", "ucl", "soccer"],
+        "tennis": ["tennis"],
+        "basketball": ["nba"],
+        "f1": ["f1"]
+      }
+    },
     "signals": {
       "min_volume": 1000,
       "tags": {

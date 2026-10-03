@@ -84,7 +84,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where", "outlook", "club_knockouts"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where", "outlook", "club_knockouts", "odds"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -506,7 +506,7 @@ function madridBlock() {
   const ourPlayer = p => (p.team_id != null && String(p.team_id) === String(club.espn_id)) || p.team === club.name;
   let table = "";
   if (F?.next?.length) {
-    table = `<div class="tbl"><table><thead><tr><th>Next</th><th>Competition</th><th class="r">IST</th></tr></thead><tbody>${F.next.slice(0, 4).map((e, i) => `<tr class="${i === 0 ? "on" : ""}"><td class="club">${crest(e.opponent_id, "")}${esc(e.opponent)} <small>${e.home ? "home" : "away"}</small></td><td>${esc(e.competition || "")}${watchTag({ competition: e.competition })}</td><td class="r tnum">${e.time_confirmed ? esc(istFull(e.date)) : esc(istDay(e.date)) + ", time TBC"}</td></tr>`).join("")}</tbody></table></div>`;
+    table = `<div class="tbl"><table><thead><tr><th>Next</th><th>Competition</th><th class="r">IST</th></tr></thead><tbody>${F.next.slice(0, 4).map((e, i) => `<tr class="${i === 0 ? "on" : ""}"><td class="club">${crest(e.opponent_id, "")}${esc(e.opponent)} <small>${e.home ? "home" : "away"}</small>${oddsHTML(oddsFor("football", [club.name, e.opponent], e.date))}</td><td>${esc(e.competition || "")}${watchTag({ competition: e.competition })}</td><td class="r tnum">${e.time_confirmed ? esc(istFull(e.date)) : esc(istDay(e.date)) + ", time TBC"}</td></tr>`).join("")}</tbody></table></div>`;
   }
   const lines = [];
   if (F?.last) {
@@ -701,7 +701,7 @@ function warriorsBlock() {
   if (!B?.in_season) return "";
   const bits = [];
   if (B.last) bits.push(`Last: ${B.last.winner === "us" ? "beat" : "lost to"} ${esc(B.last.opponent)} ${esc(B.last.score?.us)}–${esc(B.last.score?.them)}.`);
-  if (B.next?.length) bits.push(`Next: ${B.next.map(g => `${g.home ? "v" : "at"} ${esc(g.opponent)}, ${esc(istFull(g.date))} IST`).join("; ")}.`);
+  if (B.next?.length) bits.push(`Next: ${B.next.map(g => `${g.home ? "v" : "at"} ${esc(g.opponent)}, ${esc(istFull(g.date))} IST${oddsHTML(oddsFor("basketball", [CFG.follows.nba_team.name, g.opponent], g.date), { short: true })}`).join("; ")}.`);
   const ours = r => r.team === CFG.follows.nba_team.name || r.team === B.team, pos = B.west?.find(ours);
   if (pos) bits.push(`${ordinal(pos.rank)} in the West.`);
   const west = B.west?.length ? `<table class="compact"><thead><tr><th>#</th><th>NBA West</th><th class="r">W</th><th class="r">L</th><th class="r">GB</th></tr></thead><tbody>${B.west.slice(0, 8).map(r => `<tr class="${ours(r) ? "on" : ""}"><td class="tnum">${r.rank}</td><td>${esc(r.team)}</td><td class="r tnum">${r.wins}</td><td class="r tnum">${r.losses}</td><td class="r tnum">${esc(r.gb ?? "")}</td></tr>`).join("")}</tbody></table>` : "";
@@ -1202,7 +1202,7 @@ function intlBlock() {
       if (!m) continue;
       const key = `${m.home}|${m.away}|${m.when_utc}`; if (used.has(key)) continue; used.add(key);
       const [h, a] = String(m.score || "").split("-");
-      const teamsHTML = kind === "next" ? `${esc(m.home)} v ${esc(m.away)}` : `${esc(m.home)} <b class="tnum">${esc(h)}–${esc(a)}</b> ${esc(m.away)}`;
+      const teamsHTML = kind === "next" ? `${esc(m.home)} v ${esc(m.away)}${oddsHTML(oddsFor("football", [m.home, m.away], m.when_utc))}` : `${esc(m.home)} <b class="tnum">${esc(h)}–${esc(a)}</b> ${esc(m.away)}`;
       rows.push({ t: m.when_utc, html: `<tr><td class="sub">${kind === "next" ? "Next" : kind === "live" ? "Live" : "Result"}</td><td>${teamsHTML}</td><td class="sub">${esc(LEAGUE[m.league] || "")}</td><td class="sub r">${esc(kind === "next" ? istFull(m.when_utc) + " IST" : istDay(m.when_utc))}</td></tr>` });
     }
   }
@@ -1250,7 +1250,7 @@ function fixturesBlock() {
     const extra = f.source === "ESPN" ? `${f.court ? ` <small>· ${esc(f.court)}</small>` : ""}${f.other ? ` <small>· another listing says ${esc(f.other)}</small>` : ""}` : "";
     const res = st === "done" ? resultOf(f) : "";
     const tag = st === "done" ? (res ? ` <span class="res">${esc(res)}</span>` : resultLink(f)) : st === "on" ? ` <span class="live"><i></i>On now, go watch</span> <button class="refresh" data-refresh="fixtures">Refresh</button>` : st === "due" || (st === "next" && f.held) ? ` <span class="due">${esc(dueWhy(f))}</span>` : "";
-    return `<li class="${st === "span" ? "next" : st === "due" ? "next" : st}"><span class="t tnum">${esc(when)}</span><span class="what">${esc(f.label)}${watchTag(f)}${extra}${tag}</span></li>`;
+    return `<li class="${st === "span" ? "next" : st === "due" ? "next" : st}"><span class="t tnum">${esc(when)}</span><span class="what">${esc(f.label)}${watchTag(f)}${extra}${tag}${st !== "done" ? fixtureOdds(f) : ""}</span></li>`;
   }).join("")}</ul></div>`).join("")}</div>`;
 }
 
@@ -1272,7 +1272,7 @@ function creaseLive() {
   if (N) h += `<div class="cz-next"><div class="cz-k">${N.state === "live" ? "In play" : "Next match"}</div><h3>India v ${esc(N.opponent)}</h3><p>${esc(N.desc)} · ${esc(place(N))}</p><p class="cz-when">${N.state === "live" ? res(N).replace(/<em class="cz-live"><i><\/i>In play<\/em>/, "") : `${esc(when(N))}${N.time_announced ? ` · <span data-until="${esc(N.start)}" data-min="480" data-done="">--</span>` : ""}${watchTag({ entity: "india_cricket", when_utc: N.start, label: `India v ${N.opponent}` })}`}</p>${N.state === "live" ? card(N).replace("</p>", `<small class="cz-asof">${asOf.replace(/^ · /, "")}</small></p>`) : ""}</div>`;
   const strip = (f, big) => `<div class="cz-f"><h5>${esc(f.label)}${f.total ? ` · ${f.total} matches` : ""}${f.score ? ` · <b>${esc(f.score)}</b>` : ""}</h5><ol class="cz-strip${big ? "" : " small"}" style="--n:${f.matches.length}">${f.matches.map(m => {
     const isNext = N && m.id === N.id;
-    return `<li class="${m.state}${isNext ? " is-next" : ""}${m.won === true ? " won" : m.won === false ? " lost" : ""}"><b>${esc(m.n ? m.desc.replace(/ (ODI|T20I|Test)$/i, "") : m.desc)}</b><span>${esc(day(m.start))}</span><span>${esc(m.city || "")}</span>${res(m)}${m.score ? `<span class="cz-ts tnum">${m.score.replace(/ \([^)]*ov\)/g, "").split(" · ").map(x => `<span>${esc(x)}</span>`).join("")}</span>` : ""}</li>`;
+    return `<li class="${m.state}${isNext ? " is-next" : ""}${m.won === true ? " won" : m.won === false ? " lost" : ""}"><b>${esc(m.n ? m.desc.replace(/ (ODI|T20I|Test)$/i, "") : m.desc)}</b><span>${esc(day(m.start))}</span><span>${esc(m.city || "")}</span>${res(m)}${m.state !== "done" && m.state !== "off" ? oddsHTML(oddsFor("cricket", ["India", m.opponent], m.start), { fav: true }) : ""}${m.score ? `<span class="cz-ts tnum">${m.score.replace(/ \([^)]*ov\)/g, "").split(" · ").map(x => `<span>${esc(x)}</span>`).join("")}</span>` : ""}</li>`;
   }).join("")}</ol></div>`;
   const ko = S => {
     if (!S.knockouts?.length) return "";
@@ -1304,7 +1304,7 @@ function deuceData() {
     const lv = LT.find(t => t.player === p.name && !t.final), done = LT.find(t => t.player === p.name && t.final), n = Date.now(), st = lv && fixState(lv, n);
     const won = done && /^Won/.test(done.result), sc = done ? done.result.replace(/^(Won|Lost)\s*/, "") : "";
     const todayLine = done ? `<p style="margin:6px 0 4px"><b>${playedDay(done.when_utc)}:</b> <span class="${won ? "up" : "dn"}">${won ? "Beat" : "Lost to"} ${esc(done.opponent || "")}${sc ? " " + esc(sc) : ""}</span> · ${esc([done.event, done.round].filter(Boolean).join(", "))}</p>` : "";
-    const nextLine = lv ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc([lv.round, `v ${lv.opponent || "TBC"}`].filter(Boolean).join(" "))} · ${esc(lv.event)} · ${esc(istFull(lv.when_utc))} IST${lv.court ? ` · ${esc(lv.court)}` : ""}${watchTag({ entity: "tennis", event: lv.event, label: lv.label })}.${st === "on" ? ` <span class="live"><i></i>On court now</span>` : st === "due" || (st === "next" && lv.held) ? ` <span class="due">${esc(dueWhy(lv))}</span>` : ""}</p>${lv.other ? `<p class="note">Another listing (Tennis Explorer) has it at ${esc(lv.other)} IST, so worth a look nearer the time.</p>` : ""}`
+    const nextLine = lv ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc([lv.round, `v ${lv.opponent || "TBC"}`].filter(Boolean).join(" "))} · ${esc(lv.event)} · ${esc(istFull(lv.when_utc))} IST${lv.court ? ` · ${esc(lv.court)}` : ""}${watchTag({ entity: "tennis", event: lv.event, label: lv.label })}.${oddsHTML(oddsFor("tennis", [p.name, lv.opponent], lv.when_utc))}${st === "on" ? ` <span class="live"><i></i>On court now</span>` : st === "due" || (st === "next" && lv.held) ? ` <span class="due">${esc(dueWhy(lv))}</span>` : ""}</p>${lv.other ? `<p class="note">Another listing (Tennis Explorer) has it at ${esc(lv.other)} IST, so worth a look nearer the time.</p>` : ""}`
       : p.next_match ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc(p.next_match.text)}</p>` : "";
     // With a live match, the live match says where the player plays next; the edition's line may be out of date.
     const ev = p.next_event && !lv ? `<p style="margin:6px 0 4px"><b>${p.next_match ? "Event" : "Next event"}:</b> ${esc(p.next_event.text)}${p.next_match || /TBD/i.test(p.next_event.text) ? "" : " Match TBD."}</p>` : "";
@@ -1378,6 +1378,54 @@ function paintSignals() {
     const html = signalHTML(G[id], LIVE.signals?.as_of);
     if (el.dataset.html !== html) { el.innerHTML = html; el.dataset.html = html; }
   }
+}
+
+// ---- The odds on every upcoming match (Parth, 3 Oct: "every upcoming match, found automatically"; from the 3 Oct
+// edition). /api/live/odds (lib/odds.js) lists the open match markets on Kalshi and Polymarket for everything the
+// paper follows; each row finds its own by sport, the two sides and the date (a day either way: Kalshi dates a match
+// by New York's day). Names are compared as lib/odds.js sameSide does. Nothing shows when no market fits.
+const ODDS_FROM = "2026-10-03";
+const ODD_FILLER = new Set(["fc", "cf", "club", "de", "del", "the", "sc", "ac", "afc", "cd", "rcd", "ud", "sd", "ssc", "as", "calcio"]);
+const ODD_QUAL = new Set(["women", "womens", "w", "a", "b", "u19", "u21", "u23", "legends", "champions", "xi", "2nd"]);
+const oddWords = t => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\(.*?\)/g, " ").replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter(w => w && !ODD_FILLER.has(w));
+function sameSide(x, y) {
+  const a = oddWords(x), b = oddWords(y);
+  if (a.filter(w => ODD_QUAL.has(w)).sort().join(" ") !== b.filter(w => ODD_QUAL.has(w)).sort().join(" ")) return false;
+  const ca = a.filter(w => !ODD_QUAL.has(w)), cb = b.filter(w => !ODD_QUAL.has(w));
+  if (!ca.length || !cb.length) return false;
+  const [sh, lg] = ca.length <= cb.length ? [ca, cb] : [cb, ca];
+  return sh.some(w => w.length >= 3) && sh.every(w => lg.includes(w));
+}
+const sportOfEntity = e => (/cricket/.test(e || "") ? "cricket" : /madrid|football|soccer|intl/.test(e || "") ? "football" : /^f1/.test(e || "") ? "f1" : /tennis/.test(e || "") ? "tennis" : /nba|warriors/.test(e || "") ? "basketball" : "");
+// sides: the row's two names; kind: "match", or "race" / "qualifying" for F1
+function oddsFor(sport, sides, iso, kind = "match") {
+  if (!E || E.date < ODDS_FROM || !sport || !iso) return null;
+  const d = Date.parse(istDate(new Date(iso)));
+  const M = (LIVE.odds?.value?.matches || []).filter(m => m.sport === sport && m.kind === kind && Math.abs(Date.parse(m.date) - d) <= 864e5);
+  if (kind !== "match") return M[0] || null;
+  if (sides?.length !== 2) return null;
+  const both = M.find(m => (sameSide(m.sides[0], sides[0]) && sameSide(m.sides[1], sides[1])) || (sameSide(m.sides[0], sides[1]) && sameSide(m.sides[1], sides[0])));
+  if (both) return both;
+  // A club side plays at most once in two days, so one side and the day are enough where names differ between books
+  // ("LA Clippers", "Los Angeles C"); never in cricket or tennis, where India or a player can play twice in two days.
+  if (!["football", "basketball"].includes(sport)) return null;
+  const one = M.filter(m => m.sides.some(a => sides.some(b => sameSide(a, b))));
+  return one.length === 1 ? one[0] : null;
+}
+// "80% India · 20% Pakistan · Kalshi 16:40", favourite first; `fav` keeps only the favourite (a narrow card)
+function oddsHTML(m, { fav = false, short = false } = {}) {
+  if (!m?.outcomes?.length) return "";
+  const nm = n => (short || m.sport === "tennis" || m.sport === "f1" ? (n === "Draw" ? n : lastName(n)) : n);
+  const o = [...m.outcomes].sort((a, b) => b.prob - a.prob).slice(0, fav ? 1 : 3), at = LIVE.odds?.as_of;
+  const when = at ? (istDate(new Date(at)) === istDate() ? istTime(at) : `${fmt(at, { day: "numeric", month: "short" })}, ${istTime(at)}`) : "";
+  return `<a class="odds" href="${esc(m.url)}" target="_blank" rel="noopener" title="${esc(`${m.source}${at ? ` · as of ${when} IST` : ""}`)}">${o.map((x, i) => `<span${i === 0 ? ' class="fav"' : ""}><b class="tnum">${Math.round(x.prob)}%</b> ${esc(nm(x.name))}</span>`).join(" ")} <small>${esc(m.source)}${when ? ` ${esc(when)}` : ""}</small></a>`;
+}
+// a row's two sides from its label: "Asian Games cricket · India v Pakistan · gold-medal match" -> India, Pakistan
+const sidesOfLabel = l => { const seg = String(l || "").split(" · ").find(x => / v /.test(x)); return seg ? seg.split(" v ").map(x => x.trim()) : null; };
+function fixtureOdds(f) {
+  const sp = sportOfEntity(f.entity);
+  if (sp === "f1") { const k = /qualif/i.test(f.label) ? "qualifying" : /grand prix|race\b/i.test(f.label) && !/sprint|practice/i.test(f.label) ? "race" : null; return k ? oddsHTML(oddsFor("f1", null, f.when_utc, k)) : ""; }
+  return oddsHTML(oddsFor(sp, sidesOfLabel(f.label), f.when_utc));
 }
 
 // Each market as a line of the paper: the likeliest outcome's price large, the title, how the money splits in one

@@ -3,9 +3,10 @@ import { TRIAL, TRIAL_CACHE } from "../../lib/trial.js";
 import { MONEY, MONEY_CACHE } from "../../lib/money.js";
 import { CREASE, CREASE_CACHE } from "../../lib/crease-live.js";
 import { FOOTBALL, FOOTBALL_CACHE } from "../../lib/football.js";
+import { ODDS, ODDS_CACHE } from "../../lib/odds.js";
 
-// The paper's keys, The Ledger's extra blocks (lib/money.js), Madridismo's competitions (lib/football.js) and the trial's keys (lib/trial.js).
-const LIVE = { ...PAPER, ...MONEY, ...CREASE, ...FOOTBALL, ...TRIAL }, CACHE = { ...PAPER_CACHE, ...MONEY_CACHE, ...CREASE_CACHE, ...FOOTBALL_CACHE, ...TRIAL_CACHE };
+// The paper's keys, The Ledger's extra blocks (lib/money.js), Madridismo's competitions (lib/football.js), the odds on every followed match (lib/odds.js) and the trial's keys (lib/trial.js).
+const LIVE = { ...PAPER, ...MONEY, ...CREASE, ...FOOTBALL, ...ODDS, ...TRIAL }, CACHE = { ...PAPER_CACHE, ...MONEY_CACHE, ...CREASE_CACHE, ...FOOTBALL_CACHE, ...ODDS_CACHE, ...TRIAL_CACHE };
 
 // GET /api/live/<key>. Returns {ok, value, source, as_of, stale}.
 export async function GET(request) {

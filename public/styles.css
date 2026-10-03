@@ -1217,3 +1217,17 @@ table.ko td.r{text-align:right;white-space:nowrap}
 /* The Crease at full width (no stories beside it): the match on top, then each series side by side (1 Oct 2026) */
 @media (min-width:1000px){.full-data .cz{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 40px;align-items:start}
 .full-data .cz>.cz-next,.full-data .cz>.cz-line,.full-data .cz>.figsrc,.full-data .cz>.asof{grid-column:1/-1}}
+
+/* The odds on an upcoming match, one slim line under it (Parth, 3 Oct: every upcoming match, found automatically):
+   the favourite first, the source and the time small; the whole line links to the market */
+.odds{display:block;margin-top:4px;font:400 12.5px/1.4 var(--sans);color:var(--muted);text-decoration:none;font-variant-numeric:tabular-nums;white-space:normal}
+.odds span{white-space:nowrap}
+.odds span+span::before{content:"· ";color:var(--muted)}
+.odds b{font-weight:600;color:var(--muted)}
+.odds .fav,.odds .fav b{color:var(--ink)}
+.odds .fav b{color:var(--odds)}
+.odds small{margin-left:4px;font-size:11px;letter-spacing:.02em;white-space:nowrap}
+.odds:hover small{text-decoration:underline}
+td .odds{font-size:12px}
+.cz-strip .odds{margin-top:6px;font-size:12px}
+.cz-strip .odds small{display:block;margin-left:0}

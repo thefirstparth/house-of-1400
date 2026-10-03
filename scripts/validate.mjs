@@ -265,6 +265,10 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     const filed = [...items.filter(x => x.section === old), ...(E.sections?.[old]?.lines || [])];
     if (filed.length || Object.keys(E.sections?.[old] || {}).length) errors.push(`sections: ${name} is retired from 2 Oct 2026; file each story in ${now}${filed.length ? ` (${filed.map(x => x.id).join(", ")})` : ""}`);
   }
+  // From the 4 Oct 2026 edition (Parth, 3 Oct: odds on "every upcoming match, found automatically", live from the next
+  // edition): the snapshot carries /api/live/odds so a past edition shows the prices of its day. A warning, never a
+  // block: when neither Kalshi nor Polymarket answers, the page simply shows no odds.
+  if (E.date > "2026-10-03" && E.snapshot && !E.snapshot.odds?.value) warnings.push("snapshot: odds is missing (Kalshi and Polymarket both failed, or the snapshot was not re-run); the page shows no odds for past readers");
   // From the 3 Oct 2026 edition (Parth, 3 Oct: "I don't want any credit card upcoming bill updates here, only things
   // that are important"): Your Desk carries no routine bills (EDITORIAL.md, Your Desk), and Before You Go is retired.
   if (E.date >= "2026-10-03") {
