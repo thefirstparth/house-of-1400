@@ -151,16 +151,18 @@ body{background:var(--paper);color:var(--ink)}
 /* ---------- the header: on Page One the full nameplate, on a desk the one-line masthead ---------- */
 /* The nameplate on one line (Parth, 2 Oct: variant A of design/nameplate-oneline, "with the existing font for The House
    of"): "The" in blackletter and "HOUSE OF" in spaced capitals, as before, on the line of a larger 1400 */
-#bigplate{display:none;padding:6px 0 12px;--np:128px;user-select:none;-webkit-user-select:none}
+#bigplate{display:none;padding:2px 0 8px;--np:128px;user-select:none;-webkit-user-select:none}
 /* "The" and "HOUSE OF" share a baseline; together they sit on the centre line of whatever the dots form, the gap after
    "OF" always the same (layer.js alignPlate measures both and moves the words, gliding as the dots re-form) */
-#bigplate .words{display:flex;align-items:baseline;flex:none;transition:transform .45s cubic-bezier(.2,0,0,1)}
-#bigplate .the{display:block;flex:none;font:400 calc(var(--np) * .42)/1 var(--black);margin-right:calc(var(--np) * .12)}
-#bigplate .hof{display:block;flex:none;font:600 calc(var(--np) * .13)/1 var(--sans);letter-spacing:.42em;text-transform:uppercase;margin-right:calc(var(--np) * .065)}
+/* "The" over "HOUSE OF", set flush right against the figure, fixed to the box of 1400 (Parth, 3 Oct, design/nameplate-stack A):
+   layer.js stackPlate puts the top of "The" on the top of the figures and "HOUSE OF" on their baseline */
+#bigplate .words{position:relative;display:block;flex:none;height:calc(var(--np) * 1.02);margin-right:calc(var(--np) * .12)}
+#bigplate .the{position:absolute;right:0;top:0;display:block;font:400 calc(var(--np) * .56)/1 var(--black);white-space:nowrap}
+#bigplate .hof{position:absolute;right:0;top:0;display:block;font:600 calc(var(--np) * .15)/1 var(--sans);letter-spacing:.36em;margin-right:-.36em;text-transform:uppercase;white-space:nowrap}
 #bigplate .n{display:flex;flex:none;justify-content:center;align-items:center;height:calc(var(--np) * 1.02);font:900 var(--np)/1 var(--head);font-variant-numeric:lining-nums}
-@media (max-width:760px){#bigplate{--np:76px}}
-@media (max-width:380px){#bigplate{--np:66px}}
-body.on-one #bigplate{display:flex;justify-content:center;align-items:center;overflow-x:clip;overflow-clip-margin:0}
+/* on a phone the stack is narrow, so 1400 can be bigger than it was on one line: as wide as the screen allows */
+@media (max-width:760px){#bigplate{--np:min(110px, calc((100vw - 40px) / 3.62))}}
+body.on-one #bigplate{display:flex;justify-content:center;align-items:flex-start;overflow-x:clip;overflow-clip-margin:0}
 body.on-one .dbar{display:none}
 
 /* ---------- Page One B ---------- */

@@ -551,11 +551,11 @@ function markCycle() {
     return String(x);
   });
 }
-// "The HOUSE OF" on the centre line of 1400 (Parth, 2 Oct: "shouldn't the house of be vertically centre-aligned with
-// 24 here?"), set once and never moved (3 Oct: "the position of 'The House of' should never change; why is it changing
-// on every click?"). Measured, not guessed: the middle of the capitals of HOUSE OF (the font's own measure, at its
-// baseline) against the middle of the ink of 1400, and a fixed gap from "OF" to its first stroke. The shapes a tap
-// brings start where 1400 starts, on its baseline, and fit its box (wordmark.js textDots), so the words stay put.
+// The words of the nameplate (Parth, 3 Oct: "the house in two lines and the animated text on the right"; option A of
+// design/nameplate-stack): "The" over "HOUSE OF", flush right against the figure, set to the box of 1400 itself: the
+// top of "The" on the top of the figures (0.722 of the size above the baseline) and "HOUSE OF" on their baseline.
+// Every shape a tap brings starts where 1400 starts, on that baseline, inside that box (wordmark.js textDots), so the
+// words never measure the shape and never move. (capsMid is kept for the desk pages' small one-line nameplate.)
 function capsMid(hof, z) {
   const p = document.createElement("span"); p.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
   hof.append(p); const base = p.getBoundingClientRect().top; p.remove();
@@ -564,19 +564,19 @@ function capsMid(hof, z) {
   return base - z * (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2;
 }
 const zoomOf = () => parseFloat(document.getElementById("dtop")?.style.zoom) || 1;
-let plateInk = null, plateGeom = null;
-function alignPlate(b = plateInk) {
-  plateInk = b;
-  const plate = document.getElementById("bigplate"), w = plate?.querySelector(".words"), hof = w?.querySelector(".hof"), n = plate?.querySelector(".n");
-  if (!b || !plateGeom || !w || !hof || !n || !plate.offsetParent) return;
-  const z = zoomOf(), first = !w.style.transform;
-  const was = w.style.transform; w.style.transition = "none"; w.style.transform = "none";
-  const nr = n.getBoundingClientRect(), hr = hof.getBoundingClientRect(), ls = parseFloat(getComputedStyle(hof).letterSpacing) || 0;
-  const mid = nr.top + z * (b.y0 + b.y1) / 2, left = nr.left + z * (plateGeom.px + b.x0), cm = capsMid(hof, z);
-  const dx = (left - z * plateGeom.size * 0.12 - (hr.right - z * ls)) / z, dy = (mid - cm) / z;
-  w.style.transform = was; void w.offsetWidth; if (!first) w.style.transition = "";
-  w.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)`;
-  if (first) requestAnimationFrame(() => { w.style.transition = ""; });
+let plateGeom = null;
+function alignPlate() {
+  const plate = document.getElementById("bigplate"), w = plate?.querySelector(".words"), the = w?.querySelector(".the"), hof = w?.querySelector(".hof");
+  if (!plateGeom || !the || !hof || !plate.offsetParent) return;
+  const s = plateGeom.size, H = Math.ceil(s * 1.02), base = H / 2 + s * 0.36, top = base - s * 0.722;
+  // where each line's baseline falls inside its own box, read from the page; the ink top of "The" from the font
+  const baseIn = el => { el.style.top = "0px"; const p = document.createElement("span"); p.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline"; el.append(p); const y = p.getBoundingClientRect().top - el.getBoundingClientRect().top; p.remove(); return y / zoomOf(); };
+  const c = document.createElement("canvas").getContext("2d"), cs = getComputedStyle(the); c.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+  const a = c.measureText("The").actualBoundingBoxAscent;
+  the.style.top = `${(top + a - baseIn(the)).toFixed(1)}px`;
+  hof.style.top = `${(base - baseIn(hof)).toFixed(1)}px`;
+  // the block is as wide as its wider line ("HOUSE OF" carries its letter-spacing out past the F, taken back by its margin)
+  w.style.width = `${Math.ceil(Math.max(the.offsetWidth, hof.offsetWidth - parseFloat(getComputedStyle(hof).letterSpacing || 0)))}px`;
 }
 // the desk pages' small nameplate: the same centre line, on the still figure (its ink's middle is 0.006 of the size
 // below the middle of its canvas: the outline runs from 0.722 above the baseline to 0.014 below, wordmark.js)
@@ -595,7 +595,8 @@ document.fonts?.ready.then(() => { alignPlate(); alignMini(); });
 function mountMark() {
   unmountMark(); unmountMark = () => {};
   const n = document.querySelector("#bigplate .n"); if (!n || DESK.id !== "one") return;
-  const size = parseFloat(getComputedStyle(document.querySelector("#bigplate")).getPropertyValue("--np")) || 96;
+  // the size as the page resolved it (on a phone --np is a min() of the screen's width, which only layout knows)
+  const size = Math.round((parseFloat(getComputedStyle(n).height) || 98) / 1.02);
   // the figure's canvas carries room for the swell and the weather round the ink; take it back so 1400 sits on the line
   // close to "HOUSE OF" (the ink runs from 0.028 to 2.294 em of the outline's advance, wordmark.js)
   const W0 = Math.ceil(ADV * size + size * 0.5), PX0 = Math.round(W0 * 0.2), pad = (W0 - ADV * size) / 2;
@@ -605,7 +606,8 @@ function mountMark() {
   n.setAttribute("aria-label", sharesLabel(shares));
   // the stamp prints the figure once per visit (a browser session), the first time Page One shows
   let press = false; try { press = !sessionStorage.getItem("h1400-pressed"); sessionStorage.setItem("h1400-pressed", "1"); } catch {}
-  mountWordmark(n, { size, shares, cycle: markCycle, homeAfter: CFG.desks_v2?.wordmark?.home_after_s || 6, weather: markWeather, press, onShape: (b, text) => { if (text === "1400") alignPlate(b); } }).then(u => { unmountMark = u; alignPlate(); }).catch(() => {});
+  mountWordmark(n, { size, shares, cycle: markCycle, homeAfter: CFG.desks_v2?.wordmark?.home_after_s || 6, weather: markWeather, press }).then(u => { unmountMark = u; alignPlate(); }).catch(() => {});
+  alignPlate();
 }
 // The pinned tab bar: once the masthead is off the screen, Page One's tab shows the day in dots instead of its name.
 let tabObs = null;
