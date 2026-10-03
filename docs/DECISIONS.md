@@ -777,3 +777,6 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 ## 3 Oct 2026: Talk of the Day from Google's Trending-now list, numbered, with a volume bar and each World row's country (Parth, after Kylo's "What people are searching")
 - The terms come from the list trends.google.com/trending itself shows (last 24 hours, up to 25 a country, with volumes), not the RSS feed's 10 newest, mostly tiny terms; the RSS is the backup (DATA.md). On 2 Oct our World column printed Starbucks at 200+ while 100K+ searches were missed.
 - Each column is in order of volume, numbered, with a thin bar for the volume on one log scale for both columns; World rows name their country (`geo`, required from 4 Oct). Kylo's template "why" lines, its script filter and its visitor logging were not copied.
+
+## 3 Oct 2026: weather alerts (Parth: "Let's add weather alerts", after The Daily Index)
+- NDMA and IMD warnings from Sachet (the trial key, now on the page): a banner in the alert's colour at the top of Sky & Streets, and one line under Page One's weather readings, only while a yellow, orange or red warning runs within 60 km of Bengaluru, Ranchi or Prayagraj. Light-rain notices and ended alerts are dropped. Nothing on a quiet day.

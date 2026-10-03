@@ -84,7 +84,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where", "outlook", "club_knockouts", "odds", "rain"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where", "outlook", "club_knockouts", "odds", "rain", "alerts"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -1155,7 +1155,7 @@ function skyOutlook() {
   const today = n => Wx.find(c => c.name === n)?.daily?.find(d => d.date === istDate()), cur = n => Wx.find(c => c.name === n)?.current;
   const [B, ...rest] = O, F = rest.filter(c => c.family), head = skyHeadline(B);
   const phone = innerWidth < 720, cw = Math.min(640, innerWidth - 32);
-  let h = `<div class="sky-top"><div><p class="kick">${esc(B.name)}</p>${head ? `<h3 class="sky-h">${esc(head)}</h3>` : ""}<p class="sky-dek">${esc(skyDek(B, today(B.name)))}</p></div>
+  let h = alertsHTML() + `<div class="sky-top"><div><p class="kick">${esc(B.name)}</p>${head ? `<h3 class="sky-h">${esc(head)}</h3>` : ""}<p class="sky-dek">${esc(skyDek(B, today(B.name)))}</p></div>
 <figure class="sky-fig">${skyChart(B, { w: phone ? cw : 640 })}<figcaption>Each bar runs from the night's low to the day's high. For the months, the bar is this year's forecast and the dashed outline is the same month's 30-year average at the city's weather station. Air is the US AQI: the week's average, and for the months what that month is usually like.</figcaption></figure></div>
 <details class="more sky-more"><summary>Week to week and month to month, in figures</summary>${skyFigures(B, { sunset: true })}</details>`;
   h += rainHTML(); // Bengaluru's rain gauges, under Bengaluru
@@ -1163,6 +1163,20 @@ function skyOutlook() {
     return `<div><h4>${esc(c.name)}${k ? `<small>${Math.round(k.temp)}° now${t?.feels_max != null ? ` · feels ${Math.round(t.feels_max)}° by day` : ""}</small>` : ""}</h4>${skyHeadline(c) ? `<p class="l">${esc(skyHeadline(c))}</p>` : ""}<p class="s">${esc(skyDek(c, t, true))}</p>
 <details class="more"><summary>Chart and figures</summary><figure class="sky-fig">${skyChart(c, { w: phone ? cw : 560, compact: true })}</figure>${skyFigures(c)}</details></div>`; }).join("")}</div>`;
   return h + aboutFig(`Forecasts from Open-Meteo; the months from ECMWF's seasonal forecast (51 runs), corrected by how far it was off last month. A usual month: each city's weather station, 1991 to 2020 (${O.map(c => c.station).filter(Boolean).map(esc).join("; ")}); usual air from Copernicus, 2022 to 2025. Rainy days: 2.5 mm or more, or a 60% chance.`) + staleNote("outlook");
+}
+// Weather alerts (Parth, 3 Oct: "Let's add weather alerts"): NDMA and IMD warnings from Sachet within 60 km of
+// Bengaluru, Ranchi or Prayagraj, only while they run (lib/trial.js keepAlerts). Nothing shows on a quiet day.
+const alertsNow = () => (LIVE.alerts?.value?.near || []).filter(a => !(a.until_ms && a.until_ms < Date.now()));
+const alertUntil = a => (a.until_ms ? `until ${istDate(new Date(a.until_ms)) === istDate() ? istTime(new Date(a.until_ms).toISOString()) : `${fmt(new Date(a.until_ms).toISOString(), { weekday: "short" })} ${istTime(new Date(a.until_ms).toISOString())}`}` : "");
+const alertWord = a => `${String(a.colour).replace(/^./, c => c.toUpperCase())} ${/warning/i.test(a.severity) ? "warning" : "alert"}`;
+function alertsHTML() {
+  const A = alertsNow(); if (!A.length) return "";
+  return `<div class="wxalerts">${A.map(a => `<div class="wxal" data-c="${esc(String(a.colour).toLowerCase())}"><p class="wa-h"><b>${esc(alertWord(a))}</b> ${esc(a.type)} · ${esc(a.city)}${alertUntil(a) ? ` · ${esc(alertUntil(a))} IST` : ""}</p>${a.message ? `<p class="wa-m">${esc(a.message)}</p>` : ""}<p class="wa-s">${esc(a.source || "NDMA")} via Sachet</p></div>`).join("")}</div>`;
+}
+// Page One: one line, the most severe alert
+function alertLine() {
+  const a = alertsNow()[0]; if (!a) return "";
+  return `<p class="wxal-line" data-c="${esc(String(a.colour).toLowerCase())}"><b>${esc(alertWord(a))}</b> ${esc(a.type.toLowerCase())} in ${esc(a.city)}${alertUntil(a) ? `, ${esc(alertUntil(a))}` : ""}</p>`;
 }
 // Rain at home, the office and central Bengaluru, from Weather Union's gauges (lib/rain.js; Parth, 3 Oct). Live
 // readings only: one more than 45 minutes old says nothing about now, so it is not shown.

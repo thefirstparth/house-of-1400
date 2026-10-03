@@ -356,7 +356,7 @@ function weatherHTML() {
   // the place is always named, home too (Parth, 3 Oct: "the weather does not mention that it is by default for
   // Bengaluru; that is very confusing")
   return `<div class="wx3${away ? " away" : ""}">${away ? `<p class="wxplace">${esc(away.name)}${away.region && away.region !== away.name ? `<span>, ${esc(away.region)}</span>` : ""}</p>` : `<p class="wxplace">${esc(c.name || CFG.paper.home_city || "Bengaluru")}${c.current.measured ? `<span class="ms" title="${esc(c.current.measured.source === "IMD" ? `IMD, ${c.current.measured.station}` : `${c.current.measured.station} airport report`)}">measured ${esc(istTime(c.current.measured.at))}</span>` : ""}</p>`}<div class="now"><span class="t tnum">${Math.round(c.current.temp)}°</span><div class="c"><b>${esc(head)}</b><span class="tnum">Feels ${Math.round(c.current.feels)}° · High ${Math.round(d0.max)}° · Low ${Math.round(d0.min)}°</span></div></div>
-${sun}<p class="reads">${reads}</p>${others ? `<p class="elsewhere">${others}</p>` : ""}</div>${staleNote("weather")}`;
+${sun}<p class="reads">${reads}</p>${alertLine()}${others ? `<p class="elsewhere">${others}</p>` : ""}</div>${staleNote("weather")}`;
 }
 // Money (Parth, 1 Oct: "The % change is 1 day change? What do you show on a weekend?"): each figure's change on its
 // latest session, headed 1D; a dot and a line say whether the market is live or closed, and which session's close

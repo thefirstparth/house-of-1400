@@ -1292,3 +1292,14 @@ details.desk .yd-a{display:inline-block;margin-left:6px;padding:0 6px;border-rad
 .talk .tbar>i{display:block;height:100%;background:var(--d,var(--ink));opacity:.75}
 .talk .tw{margin:0}
 .talk .tw a{color:inherit;text-decoration:none}.talk .tw a:hover{text-decoration:underline}
+
+/* Weather alerts (Sachet), 3 Oct: a stripe in the alert's own colour, only while one runs */
+.wxalerts{display:grid;gap:8px;margin:0 0 18px}
+.wxal{border-left:4px solid var(--wa);background:color-mix(in srgb,var(--wa) 10%,transparent);padding:10px 14px;border-radius:0 4px 4px 0}
+.wxal[data-c="yellow"],.wxal-line[data-c="yellow"]{--wa:#c99a00}.wxal[data-c="orange"],.wxal-line[data-c="orange"]{--wa:#e06a00}.wxal[data-c="red"],.wxal-line[data-c="red"]{--wa:#c62828}
+.wxal p{margin:0;max-width:none}
+.wa-h{font:14.5px/1.4 var(--sans)}.wa-h b{font-weight:800;color:var(--wa)}
+.wa-m{margin-top:3px!important;font:15px/1.45 var(--serif);color:var(--ink2)}
+.wa-s{margin-top:4px!important;font:11.5px var(--sans);color:var(--muted)}
+.wxal-line{margin:6px 0 0;font:13px/1.4 var(--sans);color:var(--ink2);padding-left:8px;border-left:3px solid var(--wa)}
+.wxal-line b{color:var(--wa);font-weight:800}
