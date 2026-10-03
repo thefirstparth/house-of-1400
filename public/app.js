@@ -84,7 +84,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where", "outlook", "club_knockouts", "odds", "rain", "alerts"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where", "outlook", "club_knockouts", "odds", "rain", "alerts", "nowcast", "air_forecast"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -1170,10 +1170,11 @@ function skyOutlook() {
   const today = n => Wx.find(c => c.name === n)?.daily?.find(d => d.date === istDate()), cur = n => Wx.find(c => c.name === n)?.current;
   const [B, ...rest] = O, F = rest.filter(c => c.family), head = skyHeadline(B);
   const phone = innerWidth < 720, cw = Math.min(640, innerWidth - 32);
-  let h = alertsHTML() + `<div class="sky-top"><div><p class="kick">${esc(B.name)}</p>${head ? `<h3 class="sky-h">${esc(head)}</h3>` : ""}<p class="sky-dek">${esc(skyDek(B, today(B.name)))}</p></div>
+  const nc = nowcastHTML(), al = alertsHTML();
+  let h = (nc && !al ? `<div class="wxalerts">${nc}</div>` : al.replace('<div class="wxalerts">', `<div class="wxalerts">${nc}`)) + `<div class="sky-top"><div><p class="kick">${esc(B.name)}</p>${head ? `<h3 class="sky-h">${esc(head)}</h3>` : ""}<p class="sky-dek">${esc(skyDek(B, today(B.name)))}</p></div>
 <figure class="sky-fig">${skyChart(B, { w: phone ? cw : 640 })}<figcaption>Each bar runs from the night's low to the day's high. For the months, the bar is this year's forecast and the dashed outline is the same month's 30-year average at the city's weather station. Air is the US AQI: the week's average, and for the months what that month is usually like.</figcaption></figure></div>
 <details class="more sky-more"><summary>Week to week and month to month, in figures</summary>${skyFigures(B, { sunset: true })}</details>`;
-  h += rainHTML(); // Bengaluru's rain gauges, under Bengaluru
+  h += rainHTML() + airOutlookHTML(); // Bengaluru's rain gauges, under Bengaluru; IMD's air outlook
   if (F.length) h += `<h3 class="subhd famhead">${esc(F.map(x => x.name).join(" and "))} <span>where the family is</span></h3><div class="sky-fam">${F.map(c => { const t = today(c.name), k = cur(c.name);
     return `<div><h4>${esc(c.name)}${k ? `<small>${Math.round(k.temp)}° now${t?.feels_max != null ? ` · feels ${Math.round(t.feels_max)}° by day` : ""}</small>` : ""}</h4>${skyHeadline(c) ? `<p class="l">${esc(skyHeadline(c))}</p>` : ""}<p class="s">${esc(skyDek(c, t, true))}</p>
 <details class="more"><summary>Chart and figures</summary><figure class="sky-fig">${skyChart(c, { w: phone ? cw : 560, compact: true })}</figure>${skyFigures(c)}</details></div>`; }).join("")}</div>`;
@@ -1188,9 +1189,29 @@ function alertsHTML() {
   const A = alertsNow(); if (!A.length) return "";
   return `<div class="wxalerts">${A.map(a => `<div class="wxal" data-c="${esc(String(a.colour).toLowerCase())}"><p class="wa-h"><b>${esc(alertWord(a))}</b> ${esc(a.type)} · ${esc(a.city)}${alertUntil(a) ? ` · ${esc(alertUntil(a))} IST` : ""}</p>${a.message ? `<p class="wa-m">${esc(a.message)}</p>` : ""}<p class="wa-s">${esc(a.source || "NDMA")} via Sachet</p></div>`).join("")}</div>`;
 }
+// IMD's nowcast (Parth, 3 Oct): what IMD expects at a city in the next three hours, while it holds; nothing when IMD
+// expects nothing. Its strength sets the stripe: a light shower is plain, a thunderstorm amber, severe red.
+const nowcastNow = () => (LIVE.nowcast?.value?.cities || []).filter(c => c.warning && Date.parse(c.warning.until) > Date.now());
+const ncColour = l => (l >= 4 ? "red" : l >= 3 ? "orange" : l >= 2 ? "yellow" : "plain");
+const ncWhat = w => { const x = w.what.slice(0, 2); return x.length > 1 ? `${x[0]} and ${x[1]}` : x[0]; };
+const ncUntil = w => `until ${istTime(w.until)}`;
+function nowcastHTML() {
+  const N = nowcastNow(); if (!N.length) return "";
+  return N.map(c => `<div class="wxal" data-c="${ncColour(c.warning.level)}"><p class="wa-h"><b>Next three hours</b> ${esc(c.city)}: ${esc(ncWhat(c.warning).replace(/^./, x => x.toUpperCase()))}, ${esc(ncUntil(c.warning))} IST</p><p class="wa-s">IMD nowcast, issued ${esc(istTime(c.warning.from))}</p></div>`).join("");
+}
+// IMD's air outlook (SILAM), on India's own AQI scale (Parth, 3 Oct): Sky & Streets only, since Page One's air figure is
+// the US scale and the two would read as a contradiction side by side
+function airOutlookHTML() {
+  const C = LIVE.air_forecast?.value?.cities || []; if (!C.length) return "";
+  const dayW = d => (d === istDate() ? "today" : new Date(d + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "long", timeZone: "UTC" }));
+  const city = c => { const D = c.days.slice(0, 2); const same = D.every(x => x.category === D[0].category);
+    return `<span><b>${esc(c.city)}</b> ${same ? `${esc(D[0].category.toLowerCase())} ${D.map(x => dayW(x.date)).join(" and ")}` : D.map(x => `${esc(x.category.toLowerCase())} ${dayW(x.date)}`).join(", ")}</span>`; };
+  return `<p class="airout"><i>Air outlook</i>${C.map(city).join("")}<small>IMD SILAM, on India's AQI scale</small></p>`;
+}
 // Page One: one line, the most severe alert
 function alertLine() {
-  const a = alertsNow()[0]; if (!a) return "";
+  const a = alertsNow()[0];
+  if (!a) { const n = nowcastNow().find(c => c.city === (CFG.paper.home_city || "Bengaluru")); return n ? `<p class="wxal-line" data-c="${ncColour(n.warning.level)}"><b>Next three hours</b> ${esc(ncWhat(n.warning))}, ${esc(ncUntil(n.warning).replace("until", "till"))} <small>IMD</small></p>` : ""; }
   return `<p class="wxal-line" data-c="${esc(String(a.colour).toLowerCase())}"><b>${esc(alertWord(a))}</b> ${esc(a.type.toLowerCase())} in ${esc(a.city)}${alertUntil(a) ? `, ${esc(alertUntil(a))}` : ""}</p>`;
 }
 // Rain at home, the office and central Bengaluru, from Weather Union's gauges (lib/rain.js; Parth, 3 Oct). Read about

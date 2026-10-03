@@ -719,6 +719,11 @@
     "returns_note": "7D and 1M are Moneycontrol's published figures where it publishes them (its Indian figures agree with NSE's own). Where no reliable source publishes them (Nasdaq-100, Brent, the rupee, gold and Bitcoin today), they are worked out from official daily closes and marked as calculated."
   },
   "weather": {
+    "imd": {
+      "note": "IMD's nowcast stations and SILAM air-quality cities for the paper's places (lib/imd.js; Parth, 3 Oct). Bengaluru's nowcast is the stronger of the city and HAL stations (the airport at BIAL is 30 km north). SILAM has no Ranchi; its nearest city, Dhanbad, is 150 km away, so Ranchi has no air outlook.",
+      "nowcast_stations": { "Bengaluru": ["Bengaluru City", "Bengaluru HAL"], "Ranchi": ["Ranchi"], "Prayagraj": ["Prayagraj"] },
+      "silam_cities": { "Bengaluru": "Bengaluru (Karnataka)", "Prayagraj": "Prayagraj (UP)" }
+    },
     "rain": {
       "note": "Rain now and today in Bengaluru from Weather Union's gauges (Zomato's network, live, no forecast; Parth, 3 Oct: \"use the rain data from Weather Union\", \"I think the data is accurate\"). Each place reads its gauges as they are; a place is raining when any of its gauges reads rain now. The key is the Vercel env var WU, never in the repo. Six calls a refresh, one refresh in 15 minutes at most (the free key allows 1,000 a day).",
       "source": "Weather Union",
