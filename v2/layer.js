@@ -147,9 +147,10 @@ function sportGroups(list) {
   return [...list].sort((a, b) => String(a.when_utc).localeCompare(String(b.when_utc))).map(f => ({ ...f, _sp: sportOf(f) }));
 }
 
-// The days flow like a listings page: down a column and on into the next, so a busy day no longer stretches one
-// column while the quiet days leave theirs empty. A day that runs on into the next column repeats its heading there,
-// marked "continued". The columns are packed as evenly as the rows allow (the shortest height that fits, by halving).
+// The days flow like a listings page: down a column and on into the next, so the quiet days share a column instead of
+// each leaving one mostly empty. A day is never split across columns (Parth, 3 Oct: "I HATE the continued part";
+// splitting a day made it harder to read). The columns are packed as evenly as whole days allow (the shortest height
+// that fits, by halving).
 // One column on a phone, as before. Re-flowed when the list or the width changes.
 const AGENDA_RO = typeof ResizeObserver === "function" ? new ResizeObserver(() => flowAgenda()) : null;
 function flowAgenda() {
@@ -170,33 +171,23 @@ function flowAgenda() {
     const outer = el => { const cs = getComputedStyle(el); return el.getBoundingClientRect().height + parseFloat(cs.marginTop) + parseFloat(cs.marginBottom); };
     const days = [...m.querySelectorAll(":scope > .day")].map(d => ({ h3: d.querySelector("h3"), hh: outer(d.querySelector("h3")), items: [...d.querySelectorAll("li")].map(li => ({ html: li.outerHTML, h: outer(li) })) }));
     m.remove();
-    // Fill columns up to height H; a day split across columns gets its heading again. Null when C columns are not enough.
+    // Fill columns up to height H with whole days, in date order; a day is never split. Null when C columns are not
+    // enough. A day taller than H takes a column of its own.
     const pack = H => {
       const cols = [[]]; let used = 0;
-      const room = h => { if (used + h <= H || !used) return true; if (cols.length === C) return false; cols.push([]); used = 0; return true; };
       for (const [di, d] of days.entries()) {
-        if (!room(d.hh + (d.items[0]?.h || 0))) return null;
-        cols.at(-1).push({ day: di, head: true, cont: false }); used += d.hh;
-        for (const it of d.items) {
-          if (used + it.h > H && used) { if (cols.length === C) return null; cols.push([{ day: di, head: true, cont: true }]); used = d.hh; }
-          cols.at(-1).push({ day: di, html: it.html }); used += it.h;
-        }
+        const h = d.hh + d.items.reduce((t, i) => t + i.h, 0), gap = 18; // 18: the space above a day under another
+        if (used && used + gap + h > H) { if (cols.length === C) return null; cols.push([]); used = 0; }
+        cols.at(-1).push(di); used += (used ? gap : 0) + h;
       }
       return cols;
     };
     const total = days.reduce((t, d) => t + d.hh + d.items.reduce((a, i) => a + i.h, 0), 0);
-    let lo = Math.max(...days.map(d => d.hh + Math.max(0, ...d.items.map(i => i.h)))), hi = total + days.length * 60, best = pack(hi);
+    let lo = Math.max(...days.map(d => d.hh + d.items.reduce((t, i) => t + i.h, 0))), hi = total + days.length * 60, best = pack(hi);
     for (let k = 0; k < 18 && hi - lo > 2; k++) { const mid = (lo + hi) / 2, p = pack(mid); if (p) { best = p; hi = mid; } else lo = mid; }
     if (!best) continue;
-    ag.classList.add("flowed"); ag.style.setProperty("--n", C);
-    ag.innerHTML = best.map(col => {
-      let h = "", open = false;
-      for (const e of col) {
-        if (e.head) { if (open) h += "</ul></div>"; const t = days[e.day].h3; h += `<div class="day"><h3${e.cont ? ' class="cont"' : ""}>${t.innerHTML}${e.cont ? " <em>continued</em>" : ""}</h3><ul>`; open = true; }
-        else h += e.html;
-      }
-      return `<div class="col">${h}${open ? "</ul></div>" : ""}</div>`;
-    }).join("");
+    ag.classList.add("flowed"); ag.style.setProperty("--n", best.length); // as many columns as the days need, each wider
+    ag.innerHTML = best.map(col => `<div class="col">${col.map(di => `<div class="day"><h3>${days[di].h3.innerHTML}</h3><ul>${days[di].items.map(i => i.html).join("")}</ul></div>`).join("")}</div>`).join("");
   }
 }
 

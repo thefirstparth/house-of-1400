@@ -624,4 +624,3 @@ html.vs-open{overflow:hidden}
 .agenda.flowed{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:0 clamp(18px,2.4vw,36px);align-items:start}
 .agenda.flowed .col{min-width:0}
 .agenda.flowed .col>.day+.day h3{margin-top:18px}
-.agenda .day h3.cont em{font:italic 500 12px var(--serif,Georgia,serif);letter-spacing:0;text-transform:none;color:var(--muted);margin-left:6px}
