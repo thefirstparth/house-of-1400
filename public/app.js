@@ -1194,9 +1194,9 @@ function alertLine() {
   return `<p class="wxal-line" data-c="${esc(String(a.colour).toLowerCase())}"><b>${esc(alertWord(a))}</b> ${esc(a.type.toLowerCase())} in ${esc(a.city)}${alertUntil(a) ? `, ${esc(alertUntil(a))}` : ""}</p>`;
 }
 // Rain at home, the office and central Bengaluru, from Weather Union's gauges (lib/rain.js; Parth, 3 Oct). Read about
-// every 45 minutes from 06:00 to midnight IST and not overnight (the key's 60,000 a year), so a reading counts as now
-// for an hour; older than that (overnight, or a failed reading), it is not shown.
-const rainNow = () => { const R = LIVE.rain; return R?.value?.places?.length && R.as_of && Date.now() - Date.parse(R.as_of) < 60 * 6e4 ? R.value.places : null; };
+// every 53 minutes from 07:00 to 04:00 IST (the key's 60,000 a year; Parth gets home at 2 to 3 am), so a reading counts
+// as now for its slot and a quarter of an hour (the reading says how long); older than that, it is not shown.
+const rainNow = () => { const R = LIVE.rain; return R?.value?.places?.length && R.as_of && Date.now() - Date.parse(R.as_of) < (R.value.fresh_min || 60) * 6e4 ? R.value.places : null; };
 const mm = v => `${v >= 10 ? Math.round(v) : Math.round(v * 10) / 10} mm`;
 function rainHTML() {
   const P = rainNow(); if (!P) return "";

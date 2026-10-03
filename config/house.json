@@ -723,11 +723,12 @@
       "note": "Rain now and today in Bengaluru from Weather Union's gauges (Zomato's network, live, no forecast; Parth, 3 Oct: \"use the rain data from Weather Union\", \"I think the data is accurate\"). Each place reads its gauges as they are; a place is raining when any of its gauges reads rain now. The key is the Vercel env var WU, never in the repo. Six calls a refresh, one refresh in 15 minutes at most (the free key allows 1,000 a day).",
       "source": "Weather Union",
       "budget": {
-        "note": "Weather Union's limits (Terms, clause vii, and the dashboard): 60,000 calls a financial year (April to March) and 1,000 a day per key. Parth, 3 Oct: stay under 60,000 every financial year, decided once. The schedule is worked out from these numbers in lib/rain.js (rainPlan), never set by hand: (fy_cap - reserve) / 366 calls a day (a leap year, to be safe), less one reading a day for the 14:00 snapshot, divided by the gauges a reading calls, gives the readings a day; spread evenly over the reading window (IST hours) that gives the minutes between readings. With 6 gauges: 155 a day, 24 readings, one every 45 minutes from 06:00 to midnight, none overnight; at most 56,730 a year. The reserve covers the odd extra reading (another region's cache, a cold function) and checks by hand. Add a gauge and the readings simply space out.",
+        "note": "Weather Union's limits (Terms, clause vii, and the dashboard): 60,000 calls a financial year (April to March) and 1,000 a day per key. Parth, 3 Oct: stay under 60,000 every financial year, decided once. The schedule is worked out from these numbers in lib/rain.js (rainPlan), never set by hand: (fy_cap - reserve) / 366 calls a day (a leap year, to be safe), less one reading a day for the 14:00 snapshot, divided by the gauges a reading calls, gives the readings a day; spread evenly over the reading window (IST hours) that gives the minutes between readings. With 6 gauges: 155 a day, 24 readings, one every 53 minutes from 07:00 to 04:00, none 04:00 to 07:00; at most 54,900 a year. The reserve covers the odd extra reading (another region's cache, a cold function) and checks by hand. Add a gauge and the readings simply space out.",
         "fy_cap": 60000,
         "reserve": 3000,
         "day_cap": 1000,
-        "window": [6, 24]
+        "window": [7, 28],
+        "window_note": "IST hours, the second past midnight: 07:00 to 04:00 the next morning (Parth, 3 Oct: he gets home from the office between 2 and 3 am). No readings 04:00 to 07:00."
       },
       "places": [
         { "id": "home", "name": "Home", "area": "Hoodi", "gauges": [["ZWL007643", "Mahadevapura"], ["ZWL006369", "KR Puram"], ["ZWL004341", "Brookefields"]] },

@@ -28,14 +28,15 @@ test("rainPlan: under 60,000 in any financial year, a leap year included, and un
   }
   assert.deepEqual(rainPlan(6, B), { perDay: 155, reads: 24, slot: 45, window: [6, 24], perYear: 54900 });
 });
-test("rainTtl: every 45 minutes from 06:00, none overnight, never two readings across a boundary", () => {
-  const p = rainPlan(6, { fy_cap: 60000, reserve: 3000, window: [6, 24] });
-  assert.equal(rainTtl(at("2026-10-03T06:10:00+05:30"), p), 35 * 60);
-  assert.equal(rainTtl(at("2026-10-03T06:44:30+05:30"), p), 45.5 * 60); // held to the end of the next slot
-  assert.equal(rainTtl(at("2026-10-04T02:00:00+05:30"), p), 4 * 3600);  // overnight: held to 06:00
-  assert.equal(rainTtl(at("2026-10-03T23:30:00+05:30"), p), 6.5 * 3600); // the last slot runs to 06:00
-  assert.equal(inWindow(at("2026-10-04T02:00:00+05:30"), p), false);
-  let n = 0; for (let ms = at("2026-10-03T00:00:00+05:30"); ms < at("2026-10-04T00:00:00+05:30");) { if (inWindow(ms, p)) n++; ms += rainTtl(ms, p) * 1000 + 1; }
+test("rainTtl: every 53 minutes from 07:00 to 04:00 (past midnight), none 04:00 to 07:00, never two readings across a boundary", () => {
+  const p = rainPlan(6, { fy_cap: 60000, reserve: 3000, window: [7, 28] });
+  assert.equal(p.slot, 53);
+  assert.equal(rainTtl(at("2026-10-03T07:10:00+05:30"), p), 43 * 60);
+  assert.equal(inWindow(at("2026-10-04T02:30:00+05:30"), p), true);   // on the way home
+  assert.equal(inWindow(at("2026-10-04T05:00:00+05:30"), p), false);
+  assert.equal(rainTtl(at("2026-10-04T05:00:00+05:30"), p), 2 * 3600); // held to 07:00
+  assert.equal(rainTtl(at("2026-10-03T07:52:30+05:30"), p), 53.5 * 60); // held to the end of the next slot
+  let n = 0; for (let ms = at("2026-10-03T07:00:00+05:30"); ms < at("2026-10-04T07:00:00+05:30");) { if (inWindow(ms, p)) n++; ms += rainTtl(ms, p) * 1000 + 1; }
   assert.ok(n <= p.reads, `${n} readings`);
 });
 test("fyOf: April to March", () => { assert.equal(fyOf(at("2027-03-31T23:00:00+05:30")), "2026-27"); assert.equal(fyOf(at("2027-04-01T00:30:00+05:30")), "2027-28"); });
