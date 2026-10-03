@@ -197,10 +197,50 @@ function watchOn(x) {
   return null;
 }
 const watchTag = x => { const w = watchOn(x); return w ? ` <span class="watch">on ${esc(w)}</span>` : ""; };
+// The Fixture List's rows for everything a live feed covers are built here, from the feeds (Parth, 3 Oct: "change
+// it"): India's cricket (The Crease, Cricbuzz or ESPNcricinfo), Real Madrid (ESPN or football-data.org), the F1
+// weekend's qualifying, sprint and race (Jolpica) and the followed tennis players (ESPN, liveTennis): the same rows
+// the editor used to copy in, so the list reads as before. National sides and the Warriors stay in their own sections,
+// as before. The edition adds only what no feed covers: India in other sports at a multi-nation event (`india_other`)
+// and any tennis line for a player ESPN does not list. Where a feed has nothing (both sources down and no snapshot),
+// the edition's own rows for it are kept.
+function feedFixtures() {
+  const out = [], have = new Set(), n = Date.now();
+  // India's cricket
+  const C = LIVE.crease?.value;
+  if (C) {
+    have.add("india_cricket");
+    const short = s => (/asian games/i.test(s) ? "Asian Games cricket" : String(s || "").replace(/,?\s*\d{4}(\/\d{2})?$/, ""));
+    const all = [C.today, C.next, ...[C.main, ...(C.also || [])].filter(Boolean).flatMap(S => S.formats.flatMap(f => f.matches))].filter(Boolean);
+    for (const m of [...new Map(all.map(m => [m.id, m])).values()]) {
+      const bilateral = m.n && !/games|cup|trophy|championship/i.test(m.series || "");
+      const label = bilateral ? `India v ${m.opponent} · ${m.desc}${m.city ? ` · ${m.city}` : ""}` : `${short(m.series)} · India v ${m.opponent} · ${m.desc}`;
+      out.push({ when_utc: m.start, label, entity: "india_cricket", source: LIVE.crease.source || "Cricbuzz", time_tbc: m.time_announced === false,
+        ...(m.format === "TEST" ? { until_utc: new Date(Date.parse(m.start) + 4.4 * 864e5).toISOString() } : { minutes: m.format === "ODI" ? 480 : 240 }) });
+    }
+  }
+  // Real Madrid
+  const F = LIVE.football?.value, club = CFG.follows.football_club?.name || "Real Madrid";
+  if (F) {
+    have.add("madrid");
+    for (const m of [...(F.next || []), ...(F.last ? [F.last] : [])])
+      out.push({ when_utc: new Date(Date.parse(m.date)).toISOString(), label: `${m.home ? `${club} v ${m.opponent}` : `${m.opponent} v ${club}`} · ${m.competition || "Football"}`, entity: "madrid", competition: m.competition, minutes: 120, source: LIVE.football.source || "ESPN", time_tbc: m.time_confirmed === false });
+  }
+  // F1: qualifying, sprint and race
+  const R = LIVE.f1_next?.value?.race;
+  if (R?.sessions?.length) {
+    have.add("f1");
+    const place = String(R.circuit || R.locality || "").replace(/\s+(International\s+)?(Street\s+)?Circuit.*$/i, "").replace(/^Autodromo\s+/i, "") || R.locality || "";
+    const gp = String(R.name || "").replace(/\s+in\s+.*$/, "");
+    for (const x of R.sessions.filter(x => /^(qualifying|sprint|sprint qualifying|race)$/i.test(x.name)))
+      out.push({ when_utc: new Date(Date.parse(x.start)).toISOString(), label: /^race$/i.test(x.name) ? `F1 · ${gp}${place ? ` at ${place}` : ""}` : `F1 · ${place || gp} · ${x.name}`, entity: "f1", minutes: x.minutes || 60, source: LIVE.f1_next.source || "Jolpica", time_tbc: x.time_confirmed === false });
+  }
+  return { rows: out, have };
+}
 function allFixtures() {
-  const T = liveTennis(), names = T.map(t => lastName(t.player));
-  const keep = (E.fixtures || []).filter(f => f.until_utc || f.entity !== "tennis" || !names.some(nm => f.label.includes(nm)));
-  return [...keep, ...T];
+  const T = liveTennis(), names = T.map(t => lastName(t.player)), { rows, have } = feedFixtures();
+  const keep = (E.fixtures || []).filter(f => !have.has(f.entity) && (f.until_utc || f.entity !== "tennis" || !names.some(nm => f.label.includes(nm))));
+  return [...keep, ...rows, ...T];
 }
 // Why a due match has not started, in a few plain words: ESPN's postponement or delay, else the match still on the same
 // court (with its score so far) and how many more come first, else simply not started yet.
@@ -1588,6 +1628,9 @@ function byeBlock() {
 // the next one; inside, each thing with its date first, by when (Next 72 hours, Days 4 to 7, Week 2), and the red
 // "Action" mark only on a thing he has to do something about.
 function deskBlock() {
+  // Retired 3 Oct 2026 (Parth: "I think we can just remove it now"): Your Desk is no longer printed, in either design or
+  // in older editions. The markup below stays for reference only.
+  return "";
   if (!E.desk?.length) return "";
   const G = { "72h": "Next 72 hours", "4-7": "Days 4 to 7", week2: "Week 2" }, n = E.desk.length, first = E.desk[0];
   const short = t => { t = String(t).replace(/\.$/, ""); return t.length > 70 ? t.slice(0, 68).replace(/\s+\S*$/, "") + "…" : t; };

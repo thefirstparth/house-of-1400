@@ -97,6 +97,7 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
           const t = k.when_utc ? Date.parse(k.when_utc) : NaN;
           if (k.result) { if (!k.covered_by || !printedIds.has(k.covered_by)) errors.push(`checks.india_knockouts: India's ${k.sport} ${k.round} v ${k.opponent} (${k.result}) needs covered_by, an item in this edition`); continue; }
           if (!Number.isNaN(t) && t - cut > 7 * 864e5) continue;
+          if (E.date >= "2026-10-03" && /cricket/i.test(k.sport || "")) continue; // the page builds India's cricket rows from The Crease's feed
           const hit = (E.fixtures || []).some(f => (!Number.isNaN(t) && !k.time_tbc) ? Math.abs(Date.parse(f.when_utc) - t) <= 30 * 6e4 : new RegExp(k.opponent.split(" ")[0], "i").test(f.label) && (!k.when_utc || dayOf(f.when_utc) === dayOf(k.when_utc)));
           if (!hit) errors.push(`fixtures: India's ${k.team ? k.team + "'s " : ""}${k.sport} ${k.round} v ${k.opponent}${k.when_utc ? ` at ${k.when_utc}` : ""} is not in The Fixture List`);
         }
@@ -106,7 +107,14 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
 
   // The Fixture List carries every Real Madrid match and every F1 qualifying and race in the next seven days, from the
   // edition's own snapshot (from 2 Oct 2026, after India's 3rd ODI went missing on 1 Oct).
-  if (E.date > "2026-10-01" && E.snapshot) {
+  // From the 3 Oct 2026 edition the page builds these rows itself from the live feeds (Parth, 3 Oct): India's cricket,
+  // Real Madrid, F1 and the followed tennis players. The edition writes only what no feed covers (india_other), and a
+  // row of its own for those is not needed (the page ignores it while the feed answers).
+  if (E.date >= "2026-10-03") {
+    const dup = (E.fixtures || []).filter(f => ["india_cricket", "madrid", "f1"].includes(f.entity));
+    if (dup.length) warnings.push(`fixtures: ${dup.length} row(s) for India's cricket, Real Madrid or F1; the page builds these from the live feeds now, leave them out`);
+  }
+  if (E.date > "2026-10-01" && E.date < "2026-10-03" && E.snapshot) {
     const cut = Date.parse(`${E.date}T${E.cut_ist || "14:00"}:00+05:30`), week = t => t > cut && t - cut < 7 * 864e5;
     const has = (ent, t) => (E.fixtures || []).some(f => f.entity === ent && Math.abs(Date.parse(f.when_utc) - t) <= 30 * 6e4);
     for (const m of E.snapshot.football?.value?.next || []) { const t = Date.parse(m.date); if (week(t) && !has("madrid", t)) errors.push(`fixtures: Real Madrid ${m.home ? "v" : "at"} ${m.opponent} (${m.competition}) at ${m.date} is in the next seven days but not in The Fixture List`); }
@@ -288,6 +296,7 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     const BILL = /\b(card|credit card)\b[^.]*\b(bill|statement|due|dues|payment)\b|\bminimum (amount )?due\b|\bauto-?pay\b|\bauto-?debit\b|\bmaintenance bill\b|\b(electricity|water|gas|broadband|phone|mobile) bill\b/i;
     for (const d of E.desk || []) if (BILL.test(d.text || "") && !/\b(failed|declined|bounced|late fee|penalty|overcharged|wrong charge|fraud|dispute)/i.test(d.text || "")) errors.push(`desk: routine bills stay out of Your Desk (from 3 Oct 2026): "${d.text}"`);
     if (E.before_you_go) warnings.push("before_you_go: Before You Go is retired from 3 Oct 2026 and is not printed; leave it out");
+    if (E.desk?.length) warnings.push("desk: Your Desk is retired from 3 Oct 2026 and is not printed; leave it out (and leave Gmail and Calendar alone)");
   }
   over("screen", (E.screen || []).filter(x => !x.coming_soon).length, weekend ? RG.screen?.max_weekend : RG.screen?.max_weekday, "current titles");
   over("screen", (E.screen || []).filter(x => x.coming_soon).length, RG.screen?.max_coming_soon, "Coming soon titles");
@@ -343,7 +352,7 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
           if (first.time_announced && nx.time_tbc) errors.push(`chronology.india_cricket.next: marked time TBC, but Cricbuzz has ${first.desc} v ${first.opponent} at ${first.ist} IST`);
           if (!nx.time_tbc && Math.abs(Date.parse(nx.when_utc) - Date.parse(first.start)) > 30 * 6e4) errors.push(`chronology.india_cricket.next: ${nx.when_utc} does not match Cricbuzz's ${first.desc} v ${first.opponent} at ${first.start}`);
         }
-        for (const f of E.fixtures || []) {
+        for (const f of E.date >= "2026-10-03" ? [] : E.fixtures || []) {
           if (f.entity !== "india_cricket") continue;
           // the closest of India's matches, not the first within 18 hours: two on one day (1 Oct: Asian Games final at
           // 10:00, 3rd ODI at 14:00) made the ODI look four hours wrong, and the run dropped it
@@ -354,7 +363,7 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
         }
         // From 2 Oct 2026 (Parth, 1 Oct: the 3rd ODI was left out because the Asian Games final fell the same morning):
         // every India match in the next seven days is in The Fixture List, not only the next one.
-        if (E.date > "2026-10-01") for (const m of ahead.filter(x => Date.parse(x.start) - cut < 7 * 864e5)) {
+        if (E.date > "2026-10-01" && E.date < "2026-10-03") for (const m of ahead.filter(x => Date.parse(x.start) - cut < 7 * 864e5)) {
           if (!(E.fixtures || []).some(f => f.entity === "india_cricket" && Math.abs(Date.parse(f.when_utc) - Date.parse(m.start)) <= 30 * 6e4))
             errors.push(`fixtures: India's ${m.desc} v ${m.opponent} (${m.series}) at ${m.ist} IST is in the next seven days but not in The Fixture List`);
         }

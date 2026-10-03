@@ -108,12 +108,11 @@ function paintJump() {
 function deskFoot() {
   if (DESK.id === "one") return oneFoot();
   const i = NEWDESKS.indexOf(DESK), nx = NEWDESKS[(i + 1) % NEWDESKS.length];
-  // Your Desk (Gmail and Calendar, folded) closes the last desk, as it closed the old paper
-  return (i === NEWDESKS.length - 1 ? `<div class="ydesk">${deskBlock()}</div>` : "") +
-    `<div class="nextdesk"><a href="${deskHref(nx.id)}" data-desk="${nx.id}" style="--c:var(--d-${nx.id})">Next: <b>${esc(nx.name)}</b> →</a></div>` + footLine();
+  // (Your Desk, which closed the last desk, was retired on 3 Oct 2026)
+  return `<div class="nextdesk"><a href="${deskHref(nx.id)}" data-desk="${nx.id}" style="--c:var(--d-${nx.id})">Next: <b>${esc(nx.name)}</b> →</a></div>` + footLine();
 }
 const lastDesk = () => NEWDESKS.at(-1)?.id || "off";
-const footNav = () => `<nav>${E?.desk?.length ? `<a href="${deskHref(lastDesk())}" data-desk="${lastDesk()}" data-to="desk" data-open="desk">${esc(sec("desk")?.name || "Your Desk")}</a>` : ""}<a href="/editor">The editor and letters</a><a href="/archive">Archive</a><a href="?v1" data-v1>The old design</a></nav>`;
+const footNav = () => `<nav><a href="/editor">The editor and letters</a><a href="/archive">Archive</a><a href="?v1" data-v1>The old design</a></nav>`;
 const footLine = () => `<footer class="dfoot">${footNav()}<span>${esc(`The House of 1400 · ${longDate(E.date)} · No. ${E.edition_no}`)}</span></footer>`;
 // The desk's sections in order, with the lead's section first when the lead is on this desk
 // (a desk can keep one section first whatever the lead, config desks_v2 "first": Close to Home's weather)

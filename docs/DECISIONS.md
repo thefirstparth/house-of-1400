@@ -814,3 +814,7 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 ## 3 Oct 2026: declined, not to be re-proposed without Parth
 - From the Fern study: dated corrections under stories, one big number of the day, one dot per person for human counts, the "where" map (Parth: "Skip").
 - The three code fixes found in the source inventory (the always-failing checks in `npm test`, the RUN_KEY lock the docs describe but no endpoint applies, the ESPN F1 and Twelve Data backups the docs promise): Parth, "changing this will not make anything better for me". Left as they are; the docs still describe the lock and the two backups.
+
+## 3 Oct 2026: the Fixture List's feed rows built by the page; Your Desk retired (Parth: "change it"; "I think we can just remove it now")
+- The page builds the Fixture List rows for India's cricket (The Crease's feed: Cricbuzz, else ESPNcricinfo), Real Madrid (ESPN, else football-data.org), F1 qualifying, sprint and race (Jolpica) and the followed tennis players (ESPN), the same rows the editor used to copy in. National sides and the Warriors stay in their own sections, as before (adding them would have put about eight more football rows a week in the list). The editor writes rows only for what no feed covers: India in other sports at a multi-nation event. The validator stops requiring the copied rows from the 3 Oct edition and warns if they are written.
+- Your Desk is no longer printed, in any edition; the run no longer reads Gmail or Calendar (it could not anyway: the scheduled routines carry no connectors).

@@ -3,7 +3,7 @@
 ## Stack
 - Plain static site (HTML, CSS, vanilla JS modules) in `public/`, plus Vercel serverless functions in `api/`. No framework unless a real need appears.
 - Vercel Hobby plan. Deploys on every push to `main`.
-- No password (removed 25 Sep at Parth's request). The site is `noindex` and the link stays private with Parth. Your Desk is shown, folded, at his request.
+- No password (removed 25 Sep at Parth's request). The site is `noindex` and the link stays private with Parth. Your Desk was retired on 3 Oct 2026 at his request.
 - `/api/health` returns just `{"edition": "YYYY-MM-DD"}` so scheduled runs can verify a deploy. `/api/notify` and `/api/votes` require the `RUN_KEY` header.
 
 ## Pages
@@ -53,7 +53,7 @@ IDs are stable. Names come from `config/house.json`.
 18. Talk of the Day: Google Trends India and world, each with a one-line "what happened", deduplicated against the whole paper
 19. The Betting Window: world trends from prediction markets, filtered (see EDITORIAL)
 20. Before You Go: retired 3 Oct 2026 (Parth); `before_you_go` is optional and not printed
-21. Your Desk: folded by default. Only what matters: travel, bookings, birthdays, deadlines with a penalty, security alerts; never routine bills (EDITORIAL.md). Only if Gmail/Calendar are available to the run.
+21. Your Desk: retired 3 Oct 2026 (Parth); `desk` is not printed
 22. Editor's note (signed "T. A. Bhide, Editor") on big days only, as defined in config `paper.editor.big_days` and named in the edition's hidden `big_day`
 23. House Note, then footer
 
