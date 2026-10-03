@@ -200,8 +200,8 @@ const watchTag = x => { const w = watchOn(x); return w ? ` <span class="watch">o
 // The Fixture List's rows for everything a live feed covers are built here, from the feeds (Parth, 3 Oct: "change
 // it"): India's cricket (The Crease, Cricbuzz or ESPNcricinfo), Real Madrid (ESPN or football-data.org), the F1
 // weekend's qualifying, sprint and race (Jolpica) and the followed tennis players (ESPN, liveTennis): the same rows
-// the editor used to copy in, so the list reads as before. National sides and the Warriors stay in their own sections,
-// as before. The edition adds only what no feed covers: India in other sports at a multi-nation event (`india_other`)
+// the editor used to copy in, so the list reads as before; and the Warriors' games (Parth, 3 Oct). National sides stay
+// in their own sections. The edition adds only what no feed covers: India in other sports at a multi-nation event (`india_other`)
 // and any tennis line for a player ESPN does not list. Where a feed has nothing (both sources down and no snapshot),
 // the edition's own rows for it are kept.
 function feedFixtures() {
@@ -234,6 +234,16 @@ function feedFixtures() {
     const gp = String(R.name || "").replace(/\s+in\s+.*$/, "");
     for (const x of R.sessions.filter(x => /^(qualifying|sprint|sprint qualifying|race)$/i.test(x.name)))
       out.push({ when_utc: new Date(Date.parse(x.start)).toISOString(), label: /^race$/i.test(x.name) ? `F1 · ${gp}${place ? ` at ${place}` : ""}` : `F1 · ${place || gp} · ${x.name}`, entity: "f1", minutes: x.minutes || 60, source: LIVE.f1_next.source || "Jolpica", time_tbc: x.time_confirmed === false });
+  }
+  // The Warriors (Parth, 3 Oct: "Golden State Warriors NBA games should make it to the fixture list"), preseason games
+  // marked as such; a game finished today keeps its result
+  const B = LIVE.nba?.value, team = CFG.follows.nba_team?.name || "Golden State Warriors";
+  if (B) {
+    have.add("nba");
+    for (const g of [...(B.next || []), ...(B.last ? [B.last] : [])]) {
+      const sc = g.score && g.score.us != null ? `${g.winner === "us" ? "Won" : "Lost"} ${g.score.us}–${g.score.them}` : null;
+      out.push({ when_utc: new Date(Date.parse(g.date)).toISOString(), label: `${g.home ? `${team} v ${g.opponent}` : `${g.opponent} v ${team}`}${g.preseason ? " · preseason" : ""}`, entity: "nba", minutes: 150, source: LIVE.nba.source || "ESPN", ...(g.completed && sc ? { result: sc } : {}) });
+    }
   }
   return { rows: out, have };
 }
