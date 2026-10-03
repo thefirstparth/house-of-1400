@@ -806,3 +806,7 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 3 Oct 2026: NSE's own figures in place of the Moneycontrol scrape (Parth: "NSE official source, we should use it instead of the Moneycontrol scrape")
 - The Ledger's 7D and 1M for Nifty 50, Nifty Bank and Nifty IT now come from NSE (allIndices), the index's own publisher. Moneycontrol stays only for the Sensex (BSE's index; BSE's API refuses us) and the S&P 500, which NSE does not publish; if Parth would rather not have Moneycontrol at all, those two would show figures worked out from closes, marked.
+
+## 3 Oct 2026: backups for football and cricket; OpenAQ checked and not used yet (Parth approved football-data.org, ESPN cricket and OpenAQ)
+- Madrid's matches and the La Liga table fall back to football-data.org when ESPN fails (Parth's free token, as football-data asked, in the X-Auth-Token header). The Crease falls back to ESPN's cricket API (ESPNcricinfo's data) when Cricbuzz fails. Both checked on the live site the day they were added.
+- OpenAQ (Parth's key): Bengaluru's CPCB stations are there, but their newest readings were 18 hours old at 07:55 IST. "Air now" from them would be wrong, so the page keeps the model's figure and the check stays available (`/api/live/aqi_now?debug=1`) to look again.
