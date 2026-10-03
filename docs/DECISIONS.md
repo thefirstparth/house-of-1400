@@ -785,3 +785,8 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 - "Feels 31°" is followed by today's low and high with a dot where the temperature is now, in place of "High 29° · Low 21°".
 - UV (Open-Meteo `current.uv_index`), by day only and only at 3 or more, in the WHO's words, in place of the humidity. It is the reading now, never the day's peak shown as now. For Bengaluru, or the reader's own place when "Where I am" is on (the block shows one place, so its UV is that place's).
 - "Rain chance" for the parts of today still ahead (morning, afternoon, evening, night), each the highest hourly chance in it, with a small fill; it replaces "Rain 4% today". Parth chose only this from The Daily Index's "rest of the day" to keep Page One uncluttered. The block is one line taller; on a 1366x657 window Page One now scrolls about 20px (it was 5px).
+
+## 3 Oct 2026: the lead's time-and-place stamp and a highlighter on a quoted phrase (Parth, after Fern: "add cleanly", "add")
+- The lead prints when and where its event happened, under the byline, in IBM Plex Mono (OFL, self-hosted; the record's face, used for nothing else): "3 October 2026 · ca. 09:40 IST · Ahmedabad". From the run's `stamp`; absent when the story has no single moment and place.
+- A story may mark the key phrase of a quote from a named source (`highlight`); the page sweeps a highlighter in the desk's colour over it once as it comes into view (shown whole, without the sweep, for a reader who prefers less motion). Four a day at most; the validator checks the phrase is in the text.
+- Not taken from Fern: the "where" map (Parth: skip), the dark look and the 3D.

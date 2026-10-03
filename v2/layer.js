@@ -147,6 +147,13 @@ function sportGroups(list) {
   return [...list].sort((a, b) => String(a.when_utc).localeCompare(String(b.when_utc))).map(f => ({ ...f, _sp: sportOf(f) }));
 }
 
+// The highlighter sweeps over a quoted phrase once, when it first comes into view (straight away for a reader who
+// prefers less motion: the CSS shows it whole)
+const MARK_IO = typeof IntersectionObserver === "function" ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("on"); MARK_IO.unobserve(e.target); } }), { rootMargin: "0px 0px -15% 0px" }) : null;
+function paintMarks() {
+  for (const m of document.querySelectorAll("mark.hl:not([data-w])")) { m.dataset.w = 1; if (MARK_IO) MARK_IO.observe(m); else m.classList.add("on"); }
+}
+
 // The days flow like a listings page: down a column and on into the next, so the quiet days share a column instead of
 // each leaving one mostly empty. A day is never split across columns (Parth, 3 Oct: "I HATE the continued part";
 // splitting a day made it harder to read). The columns are packed as evenly as whole days allow (the shortest height

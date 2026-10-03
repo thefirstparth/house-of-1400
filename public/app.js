@@ -340,14 +340,29 @@ async function loadArt(tries = 0) {
   if (ROUTE?.kind !== "edition" && E.date === istDate() && hm < "17:00" && tries < 60) setTimeout(() => loadArt(tries + 1), LIVE_EVERY);
 }
 
+// The lead's time-and-place stamp (Parth, 3 Oct, after Fern: "add cleanly"): when and where the event happened, in the
+// record's face, one line under the byline.
+const stampHTML = st => {
+  const S = st.stamp; if (!S?.date || !S.place) return "";
+  const d = new Date(S.date + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+  return `<p class="stamp">${esc([d, S.time ? `${S.approx ? "ca. " : ""}${S.time} IST` : "", S.place].filter(Boolean).join(" · "))}</p>`;
+};
+// The key phrase of a quoted source, highlighted (Parth, 3 Oct): `highlight`, found exactly in the story's text; the
+// first place it appears is marked, and the page sweeps the highlighter over it once (layer.js paintMarks).
+const markIn = (st, text, seen) => {
+  const t = esc(text); if (!st.highlight || seen.done) return t;
+  const h = esc(st.highlight), i = t.indexOf(h); if (i < 0) return t;
+  seen.done = true; return `${t.slice(0, i)}<mark class="hl">${h}</mark>${t.slice(i + h.length)}`;
+};
 function storyHTML(st, { lead = false, kickerPrefix = "" } = {}) {
-  const more = st.more?.length;
-  const H = lead ? "h2" : "h3";
+  const more = st.more?.length, seen = {};
+  const H = lead ? "h2" : "h3", stamp = lead ? stampHTML(st) : "";
+  const fig = artFig(st.id);
   return `<article class="${lead ? "lead-story" : "story"}" id="s-${esc(st.id)}" style="--acc:${accent(st.section)}" data-fam="${fam(st.section)}" data-title="${esc(st.headline)}" data-thread="${esc(st.thread_id)}" data-section="${esc(st.section)}">
 <div class="kick">${esc(kickerPrefix + st.kicker)}${newFor(st)}</div><${H}><button data-head="${esc(st.id)}">${esc(st.headline)}</button></${H}>
-${st.deck ? `<p class="deck">${esc(st.deck)}</p>` : ""}${byline(st)}${artFig(st.id)}
-<div class="body"><p class="${lead ? "first" : ""}">${esc(st.short)}</p>
-${more ? `<div class="more" id="more-${esc(st.id)}" hidden>${st.more.map(p => `<p>${esc(p)}</p>`).join("")}</div>` : ""}
+${st.deck ? `<p class="deck">${esc(st.deck)}</p>` : ""}${byline(st)}${stamp}${fig}
+<div class="body"><p class="${lead ? "first" : ""}">${markIn(st, st.short, seen)}</p>
+${more ? `<div class="more" id="more-${esc(st.id)}" hidden>${st.more.map(p => `<p>${markIn(st, p, seen)}</p>`).join("")}</div>` : ""}
 ${st.verdict ? `<div class="verdictline" style="color:var(--acc)">${VERDICT_TWI[st.verdict]}</div>` : ""}
 ${why(st.why, st.tone)}</div>${tools(st, more)}</article>`;
 }

@@ -265,6 +265,16 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     const filed = [...items.filter(x => x.section === old), ...(E.sections?.[old]?.lines || [])];
     if (filed.length || Object.keys(E.sections?.[old] || {}).length) errors.push(`sections: ${name} is retired from 2 Oct 2026; file each story in ${now}${filed.length ? ` (${filed.map(x => x.id).join(", ")})` : ""}`);
   }
+  // From the 3 Oct 2026 edition (Parth, after Fern): the lead's stamp is the lead's only, and a highlight is a phrase
+  // found exactly in its story's text, on at most four stories (EDITORIAL.md, The lead's stamp and the highlighter).
+  if (E.date >= "2026-10-03") {
+    const all = [E.front?.lead, ...(E.front?.seconds || []), ...Object.values(E.sections || {}).flatMap(x => x?.stories || [])].filter(Boolean);
+    for (const x of all) {
+      if (x.stamp && x !== E.front?.lead) warnings.push(`stamp: only the lead carries a stamp (${x.id})`);
+      if (x.highlight && ![x.short, ...(x.more || [])].some(t => String(t || "").includes(x.highlight))) errors.push(`highlight: "${x.highlight}" is not in the text of ${x.id}; copy it exactly from short or more`);
+    }
+    const n = all.filter(x => x.highlight).length; if (n > 4) errors.push(`highlight: ${n} stories carry a highlight; four at most`);
+  }
   // From the 3 Oct 2026 edition (Parth: "label world rows by country"): every World trend names its country (`geo`).
   // A warning on 3 Oct while the run learns it, an error from 4 Oct.
   if (E.date >= "2026-10-03") for (const t of E.trends?.world || []) if (!t.geo) (E.date >= "2026-10-04" ? errors : warnings).push(`trends: World row "${t.term}" has no geo (the country it trends in)`);

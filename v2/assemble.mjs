@@ -24,6 +24,8 @@ export const FONTS = () => [
   face("Playfair Display", "playfair-display-latin-wght-normal.woff2", { weight: "400 900" }),
   face("UnifrakturMaguntia", "unifrakturmaguntia-latin-400-normal.woff2", { weight: "400" }),
   ...[400, 600, 700, 900].map(w => face("Titillium Web", `titillium-web-latin-${w}-normal.woff2`, { weight: String(w) })),
+  // the record's face: the lead story's time-and-place stamp (3 Oct 2026, after Fern), and nothing else
+  face("IBM Plex Mono", "ibm-plex-mono-latin-500-normal.woff2", { weight: "500" }),
 ].join("\n");
 
 export function assemble({ app = read("public/app.js"), styles = read("public/styles.css") } = {}) {
@@ -59,7 +61,7 @@ export function assemble({ app = read("public/app.js"), styles = read("public/st
   rep('  if (ROUTE.kind === "archive") return renderArchive();', '  if (ROUTE.kind === "archive") return archiveV2();');
   // The Week Ahead in seven columns, Monday to Sunday
   rep('S.week = secWrap("week", weekBlock(),', 'S.week = secWrap("week", weekV2(),');
-  rep("  paintSignals();\n", "  paintSignals(); paintJump(); liveFx(); flowAgenda();\n");
+  rep("  paintSignals();\n", "  paintSignals(); paintJump(); liveFx(); flowAgenda(); paintMarks();\n");
   // Page One fits one screen and desk pages fill the width, with their masthead and tabs (layer.js, fitOne, fitDesk)
   rep("function fitMonitor() {", "function fitMonitor() {\n  return E && DESK.id === \"one\" ? fitOne() : fitDesk();");
   rep("  render();\n  loadArt();", "  render();\n  loadArt(); showDesk(DESK.id); followSun(); dthemeLabel(); hereBoot();");
