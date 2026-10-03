@@ -810,3 +810,7 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 ## 3 Oct 2026: backups for football and cricket; OpenAQ checked and not used yet (Parth approved football-data.org, ESPN cricket and OpenAQ)
 - Madrid's matches and the La Liga table fall back to football-data.org when ESPN fails (Parth's free token, as football-data asked, in the X-Auth-Token header). The Crease falls back to ESPN's cricket API (ESPNcricinfo's data) when Cricbuzz fails. Both checked on the live site the day they were added.
 - OpenAQ (Parth's key): Bengaluru's CPCB stations are there, but their newest readings were 18 hours old at 07:55 IST. "Air now" from them would be wrong, so the page keeps the model's figure and the check stays available (`/api/live/aqi_now?debug=1`) to look again.
+
+## 3 Oct 2026: declined, not to be re-proposed without Parth
+- From the Fern study: dated corrections under stories, one big number of the day, one dot per person for human counts, the "where" map (Parth: "Skip").
+- The three code fixes found in the source inventory (the always-failing checks in `npm test`, the RUN_KEY lock the docs describe but no endpoint applies, the ESPN F1 and Twelve Data backups the docs promise): Parth, "changing this will not make anything better for me". Left as they are; the docs still describe the lock and the two backups.
