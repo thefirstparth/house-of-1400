@@ -29,7 +29,7 @@ export const FONTS = () => [
 export function assemble({ app = read("public/app.js"), styles = read("public/styles.css") } = {}) {
   let js = app;
   const rep = (a, b) => { if (!js.includes(a)) throw new Error("v2: app.js anchor missing: " + a.slice(0, 80)); js = js.replace(a, () => b); };
-  const layer = `const GLYPHS = ${read("v2/glyphs.json").trim()};\n` + read("v2/sun.js") + "\n" + read("v2/layer.js") + "\n" + read("v2/sheet.js") + "\n" + read("v2/ink.js").replace(/^export /gm, "") + "\n" + read("v2/wordmark.js").replace(/^export /gm, "");
+  const layer = `const GLYPHS = ${read("v2/glyphs.json").trim()};\n` + read("v2/sun.js") + "\n" + read("v2/layer.js") + "\n" + read("v2/sheet.js") + "\n" + read("v2/ink.js").replace(/^export /gm, "") + "\n" + read("v2/wordmark.js").replace(/^export /gm, "") + "\n" + read("v2/sport-b.js");
   rep("function render() {", layer + "\nfunction render() {");
   // the desks: v2's own (config desks_v2), one desk to a page
   rep("function desksHTML(S) {", "function desksHTML_v1(S) {");
@@ -71,7 +71,7 @@ export function assemble({ app = read("public/app.js"), styles = read("public/st
   // fixtures in sport groups under a small label, in a fixed order
   rep("<ul>${list.map(f => {\n    const st = f.time_tbc", '<ul>${sportGroups(list).map(f => {\n    if (f.sp) return `<li class="sp">${esc(f.sp)}</li>`;\n    const st = f.time_tbc');
   const css = styles.replace(/border-radius:([^;}]+)/g, (m, v) => "border-radius:" + v.replace(/(\d+(?:\.\d+)?)px/g, (x, n) => (Number(n) >= 99 ? "3px" : Number(n) > 4 ? "4px" : x)))
-    + "\n" + FONTS() + "\n" + read("v2/v2.css");
+    + "\n" + FONTS() + "\n" + read("v2/v2.css") + "\n" + read("v2/sport-b.css");
   return { js, css, head: read("v2/head.html") };
 }
 
