@@ -4,7 +4,7 @@ import { MONEY, MONEY_CACHE } from "../../lib/money.js";
 import { CREASE, CREASE_CACHE } from "../../lib/crease-live.js";
 import { FOOTBALL, FOOTBALL_CACHE } from "../../lib/football.js";
 import { ODDS, ODDS_CACHE } from "../../lib/odds.js";
-import { RAIN, RAIN_CACHE } from "../../lib/rain.js";
+import { RAIN, RAIN_CACHE, rainTtl } from "../../lib/rain.js";
 
 // The paper's keys, The Ledger's extra blocks (lib/money.js), Madridismo's competitions (lib/football.js), the odds on every followed match (lib/odds.js), Bengaluru's rain gauges (lib/rain.js) and the trial's keys (lib/trial.js).
 const LIVE = { ...PAPER, ...MONEY, ...CREASE, ...FOOTBALL, ...ODDS, ...RAIN, ...TRIAL }, CACHE = { ...PAPER_CACHE, ...MONEY_CACHE, ...CREASE_CACHE, ...FOOTBALL_CACHE, ...ODDS_CACHE, ...RAIN_CACHE, ...TRIAL_CACHE };
@@ -23,6 +23,8 @@ export async function GET(request) {
   if (key === "markets" && out.ok && !(out.value?.indices || []).some(i => i.live)) [s, swr] = [1800, 3600];
   // A match in play: The Crease's score is held for a minute, not ten (Parth, 1 Oct: "Live now" showed a stale score).
   if (key === "crease" && out.ok && [out.value?.next, ...(out.value?.main?.formats || []).flatMap(f => f.matches)].some(m => m?.state === "live")) [s, swr] = [60, 60];
+  // Weather Union's gauges are read once a slot (every 30 minutes by day, 2 hours at night): held until the next slot
+  if (key === "rain" && out.ok) { [s, swr] = [out.hold_s || rainTtl(), 60]; delete out.hold_s; }
   const personal = url.searchParams.has("lat");
   return Response.json(out, {
     headers: { "cache-control": out.ok && !personal ? `public, s-maxage=${s}, stale-while-revalidate=${swr}` : "no-store" },

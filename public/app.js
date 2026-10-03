@@ -1193,9 +1193,14 @@ function alertLine() {
   const a = alertsNow()[0]; if (!a) return "";
   return `<p class="wxal-line" data-c="${esc(String(a.colour).toLowerCase())}"><b>${esc(alertWord(a))}</b> ${esc(a.type.toLowerCase())} in ${esc(a.city)}${alertUntil(a) ? `, ${esc(alertUntil(a))}` : ""}</p>`;
 }
-// Rain at home, the office and central Bengaluru, from Weather Union's gauges (lib/rain.js; Parth, 3 Oct). Live
-// readings only: one more than 45 minutes old says nothing about now, so it is not shown.
-const rainNow = () => { const R = LIVE.rain; return R?.value?.places?.length && R.as_of && Date.now() - Date.parse(R.as_of) < 45 * 6e4 ? R.value.places : null; };
+// Rain at home, the office and central Bengaluru, from Weather Union's gauges (lib/rain.js; Parth, 3 Oct). Read every
+// 30 minutes by day and every 2 hours at night (the key's limits), so a reading counts as now for 45 minutes by day and
+// 135 at night; older than that, it is not shown.
+const rainNow = () => {
+  const R = LIVE.rain; if (!R?.value?.places?.length || !R.as_of) return null;
+  const h = Number(istTime(new Date().toISOString()).slice(0, 2));
+  return Date.now() - Date.parse(R.as_of) < (h < 6 ? 135 : 45) * 6e4 ? R.value.places : null;
+};
 const mm = v => `${v >= 10 ? Math.round(v) : Math.round(v * 10) / 10} mm`;
 function rainHTML() {
   const P = rainNow(); if (!P) return "";

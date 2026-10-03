@@ -793,3 +793,7 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 3 Oct 2026: charts and the day band draw in gently (Parth: "Sure, go ahead logically")
 - Once, the first time each comes into view: Sky & Streets' columns grow from their middle one after another (0.6 s, 50 ms apart), the day band's sun and Page One's range dot slide in from the left to where they stand (0.9 s), and the existing lines and thin bars (Talk of the Day's volume bars among them) draw a little slower than before (0.5 s, was 0.3 s). Nothing moves for a reader who prefers reduced motion, and nothing repeats on a live refresh.
+
+## 3 Oct 2026: Weather Union read to its limits (Parth: "keep the 60,000 number in mind, as well as the 1,000 daily, and redo the limits of how often we refresh")
+- Its Terms cap a free key at 60,000 calls a financial year as well as 1,000 a day (131 were used by 07:30 on 3 Oct, mostly by testing). The first plan (6 calls every 15 minutes, up to 576 a day) would have run out of the year by January.
+- Now the six gauges are read every 30 minutes from 06:00 to midnight and every 2 hours overnight: 234 calls a day at most, about 42,000 to 31 March. The CDN holds a reading to the end of its slot and the function keeps the slot's reading, so more visitors, more tabs or a refresh never add calls. A counter in Vercel Blob was considered and dropped: on the Hobby plan its writes would use most of the month's Blob allowance that letters and votes need.
