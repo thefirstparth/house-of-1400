@@ -773,3 +773,7 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 - The Crease on a wide screen: the next match and the section's stories side by side, the series and the next tour across the full width under them. The empty column beside the series is gone. Phones unchanged.
 - Your Desk: the folded line says how many things and the next one; inside, the date first, under Next 72 hours, Days 4 to 7, Week 2, with "Action" only on things to do.
 - Rain: Weather Union's gauges for home (Hoodi), the office (Koramangala) and central Bengaluru, now and today (DATA.md). A gauge's reading is taken as it is, without a second gauge to confirm it (Parth's call, against my suggestion).
+
+## 3 Oct 2026: Talk of the Day from Google's Trending-now list, numbered, with a volume bar and each World row's country (Parth, after Kylo's "What people are searching")
+- The terms come from the list trends.google.com/trending itself shows (last 24 hours, up to 25 a country, with volumes), not the RSS feed's 10 newest, mostly tiny terms; the RSS is the backup (DATA.md). On 2 Oct our World column printed Starbucks at 200+ while 100K+ searches were missed.
+- Each column is in order of volume, numbered, with a thin bar for the volume on one log scale for both columns; World rows name their country (`geo`, required from 4 Oct). Kylo's template "why" lines, its script filter and its visitor logging were not copied.

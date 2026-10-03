@@ -1378,18 +1378,30 @@ function liveTrends() {
     const k = t.term.toLowerCase(), news = t.news?.find(n => english(n.title));
     if (!english(t.term) || !news || seen.has(k) || (k.length >= 5 && heads.some(h => h.includes(k)))) return false;
     seen.add(k); t._news = news; return true;
-  }).slice(0, CFG.trends.target_each || 6).map(t => ({ term: t.term, traffic: t.traffic, what: t._news.title.slice(0, CFG.trends.max_what_chars || 140), url: t._news.url }));
+  }).slice(0, CFG.trends.target_each || 6).map(t => ({ term: t.term, traffic: t.traffic, geo: t._geo, what: t._news.title.slice(0, CFG.trends.max_what_chars || 140), url: t._news.url }))
+    .sort((a, b) => volumeOf(b.traffic) - volumeOf(a.traffic));
   const geos = CFG.trends.world_geos.filter(g => G[g]?.length);
   const mixed = [];
-  for (let i = 0; i < 20; i++) for (const g of geos) if (G[g][i]) mixed.push(G[g][i]);
+  for (let i = 0; i < 20; i++) for (const g of geos) if (G[g][i]) mixed.push({ ...G[g][i], _geo: g });
   return { india: pick(G[CFG.trends.india_geo]), world: pick(mixed), live: true };
 }
 
+// Talk of the Day (3 Oct, after Kylo's "What people are searching"; Parth: "label world rows by country", "a rank number
+// and a thin volume bar on each row"): each column in order of search volume, a row's number its place there, a thin
+// bar for its volume on one scale for both columns (log, since volumes run from 200 to 2M), and each World row named by
+// its country.
+const COUNTRY = { US: "US", GB: "UK", ES: "Spain", IN: "India", AU: "Australia", BR: "Brazil", PT: "Portugal", FR: "France", DE: "Germany", IT: "Italy", AE: "UAE", JP: "Japan" };
+const countryName = g => COUNTRY[g] || (() => { try { return new Intl.DisplayNames(["en"], { type: "region" }).of(g); } catch { return g; } })();
+const volumeOf = t => { const m = String(t ?? "").replace(/,/g, "").match(/([\d.]+)\s*([KM])?/i); return m ? Number(m[1]) * (m[2] ? (/m/i.test(m[2]) ? 1e6 : 1e3) : 1) : 0; };
 function talkBlock() {
   const T = E.trends?.india?.length || E.trends?.world?.length ? E.trends : liveTrends();
   if (!T || (!T.india?.length && !T.world?.length)) return "";
-  const col = (label, list) => (list?.length ? `<div><h3 class="subhd colhead">${esc(label)}</h3>${list.map(t => `<p class="trend"><b>${esc(t.term)}</b>${t.traffic ? ` <span class="traffic">· ${esc(String(t.traffic).replace(/\d{4,}/, n => Number(n).toLocaleString("en-US")))}</span>` : ""} <span class="tdash">–</span> ${t.url ? `<a href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.what)}</a>` : esc(t.what)}</p>`).join("")}</div>` : "");
-  return `<div class="cols2 talk">${col("India", T.india)}${col("World", T.world)}</div>${T.live ? (LIVE.trends?.stale ? `<p class="asof" style="margin-top:8px">Google Trends ${esc(agoIST(LIVE.trends.as_of))}</p>` : "") + aboutFig("Google Trends, with the top English headline for each search.") : ""}`;
+  const vols = [...(T.india || []), ...(T.world || [])].map(t => volumeOf(t.traffic)).filter(v => v > 0);
+  const lo = Math.log10(100), hi = Math.log10(Math.max(1000, ...vols));
+  const bar = v => (v > 0 ? `<i class="tbar"><i style="width:${Math.max(6, Math.min(100, ((Math.log10(Math.max(v, 100)) - lo) / (hi - lo)) * 100)).toFixed(1)}%"></i></i>` : "");
+  const fmtT = t => String(t).replace(/\d{4,}/, n => Number(n).toLocaleString("en-US"));
+  const col = (label, list) => (list?.length ? `<div><h3 class="subhd colhead">${esc(label)}</h3><ol class="trends">${list.map((t, i) => `<li class="trend"><span class="trk tnum">${i + 1}</span><div class="tb"><p class="tl"><b>${esc(t.term)}</b>${t.geo && label !== "India" ? `<span class="tg">${esc(countryName(t.geo))}</span>` : ""}${t.traffic ? `<span class="traffic tnum">${esc(fmtT(t.traffic))}</span>` : ""}</p>${bar(volumeOf(t.traffic))}<p class="tw">${t.url ? `<a href="${esc(t.url)}" target="_blank" rel="noopener">${esc(t.what)}</a>` : esc(t.what)}</p></div></li>`).join("")}</ol></div>` : "");
+  return `<div class="cols2 talk">${col("India", T.india)}${col("World", T.world)}</div>${T.live ? (LIVE.trends?.stale ? `<p class="asof" style="margin-top:8px">Google Trends ${esc(agoIST(LIVE.trends.as_of))}</p>` : "") + aboutFig("Google Trends, with the top English headline for each search.") : aboutFig("Searches from Google Trends, the last 24 hours; the bar is the search volume, on one scale for both columns.")}`;
 }
 
 // Compact: one row per market, top outcomes inline with a thin bar for the favourite. Up to ten.

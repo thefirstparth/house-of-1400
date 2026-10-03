@@ -265,6 +265,9 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     const filed = [...items.filter(x => x.section === old), ...(E.sections?.[old]?.lines || [])];
     if (filed.length || Object.keys(E.sections?.[old] || {}).length) errors.push(`sections: ${name} is retired from 2 Oct 2026; file each story in ${now}${filed.length ? ` (${filed.map(x => x.id).join(", ")})` : ""}`);
   }
+  // From the 3 Oct 2026 edition (Parth: "label world rows by country"): every World trend names its country (`geo`).
+  // A warning on 3 Oct while the run learns it, an error from 4 Oct.
+  if (E.date >= "2026-10-03") for (const t of E.trends?.world || []) if (!t.geo) (E.date >= "2026-10-04" ? errors : warnings).push(`trends: World row "${t.term}" has no geo (the country it trends in)`);
   // From the 4 Oct 2026 edition (Parth, 3 Oct: odds on "every upcoming match, found automatically", live from the next
   // edition): the snapshot carries /api/live/odds so a past edition shows the prices of its day. A warning, never a
   // block: when neither Kalshi nor Polymarket answers, the page simply shows no odds.

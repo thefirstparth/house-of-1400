@@ -324,6 +324,11 @@
         },
         "traffic": {
           "type": "string"
+        },
+        "geo": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$",
+          "description": "the country it trends in (ISO code); every World row from 3 Oct 2026"
         }
       }
     },
