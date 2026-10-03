@@ -52,8 +52,8 @@ IDs are stable. Names come from `config/house.json`.
 17. Screen & Stage: new releases this week (English and Hindi, theatre and OTT, no regional) with verdicts; coming soon
 18. Talk of the Day: Google Trends India and world, each with a one-line "what happened", deduplicated against the whole paper
 19. The Betting Window: world trends from prediction markets, filtered (see EDITORIAL)
-20. Before You Go: Watch and Do lines only
-21. Your Desk: folded by default. Birthdays, upcoming bookings, travel, important alerts. Only if Gmail/Calendar are available to the run.
+20. Before You Go: retired 3 Oct 2026 (Parth); `before_you_go` is optional and not printed
+21. Your Desk: folded by default. Only what matters: travel, bookings, birthdays, deadlines with a penalty, security alerts; never routine bills (EDITORIAL.md). Only if Gmail/Calendar are available to the run.
 22. Editor's note (signed "T. A. Bhide, Editor") on big days only, as defined in config `paper.editor.big_days` and named in the edition's hidden `big_day`
 23. House Note, then footer
 
@@ -101,7 +101,7 @@ Full screen via the Fullscreen API and a screen wake lock where allowed. For a r
   "trends": {"india": [{"term", "what", "url"}], "world": [...]},
   "betting": [{"title", "category", "outcomes": [{"name", "prob"}], "source", "url"}],
   "desk": null | [{"when", "kind": "action|watch|fyi", "text"}],
-  "before_you_go": {"watch": ["..."], "do": ["..."]},
+  "before_you_go": {"watch": ["..."], "do": ["..."]},  // retired 3 Oct 2026: optional, not printed
   "snapshot": {"<live_key>": {"value", "as_of", "source"}}
 }
 Story = {"id", "thread_id", "section", "kicker", "headline", "deck"?, "short", "more"?, 

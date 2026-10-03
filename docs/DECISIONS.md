@@ -752,3 +752,11 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 3 Oct 2026: Close to Home opens with the weather (Parth: "In the Close to Home section, weather should be on top now")
 - Sky & Streets comes first on Close to Home, then Namma Beat, then Back Home, whatever the day's lead (config desks_v2 "first"; a lead on this desk still prints in its own section, under the weather). How the rest of the desk is placed is with Parth as a proposal.
+- Parth, 3 Oct: the order Sky & Streets, Namma Beat, Back Home stays; nothing else on the desk moves.
+
+## 3 Oct 2026: the Fixture List keeps the edition's own date (Parth: "it should never remove the published date from the fixture list")
+- While an edition is the current paper (until 02:00 IST two days after its date), every match from its own date on stays on the Fixture List with its result, under its weekday. Before, a finished match went at midnight IST (or 12 hours after it started), so at 06:00 on 3 Oct the 2 Oct paper showed no 2 Oct. The same rule keeps the day's finished tennis and The Crease's match of the day.
+
+## 3 Oct 2026: Before You Go retired; Your Desk only for what matters (Parth: "I don't want any credit card upcoming bill updates here, only things that are important")
+- Before You Go is no longer printed (Off Duty is Screen & Stage, then Your Desk). `before_you_go` is optional in the schema; the validator warns if a run still writes it.
+- Your Desk keeps travel, dated bookings, birthdays of family and close friends, deliveries that need him in, stuck refunds, deadlines with a penalty and security alerts. No routine bill (card bills, statements, minimum dues, autopay, maintenance, utilities) unless something went wrong; no reminders to watch something; no line that sends him to an app for the date. The validator refuses a routine bill from the 3 Oct edition.

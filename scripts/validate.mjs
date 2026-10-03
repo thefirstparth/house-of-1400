@@ -265,6 +265,13 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     const filed = [...items.filter(x => x.section === old), ...(E.sections?.[old]?.lines || [])];
     if (filed.length || Object.keys(E.sections?.[old] || {}).length) errors.push(`sections: ${name} is retired from 2 Oct 2026; file each story in ${now}${filed.length ? ` (${filed.map(x => x.id).join(", ")})` : ""}`);
   }
+  // From the 3 Oct 2026 edition (Parth, 3 Oct: "I don't want any credit card upcoming bill updates here, only things
+  // that are important"): Your Desk carries no routine bills (EDITORIAL.md, Your Desk), and Before You Go is retired.
+  if (E.date >= "2026-10-03") {
+    const BILL = /\b(card|credit card)\b[^.]*\b(bill|statement|due|dues|payment)\b|\bminimum (amount )?due\b|\bauto-?pay\b|\bauto-?debit\b|\bmaintenance bill\b|\b(electricity|water|gas|broadband|phone|mobile) bill\b/i;
+    for (const d of E.desk || []) if (BILL.test(d.text || "") && !/\b(failed|declined|bounced|late fee|penalty|overcharged|wrong charge|fraud|dispute)/i.test(d.text || "")) errors.push(`desk: routine bills stay out of Your Desk (from 3 Oct 2026): "${d.text}"`);
+    if (E.before_you_go) warnings.push("before_you_go: Before You Go is retired from 3 Oct 2026 and is not printed; leave it out");
+  }
   over("screen", (E.screen || []).filter(x => !x.coming_soon).length, weekend ? RG.screen?.max_weekend : RG.screen?.max_weekday, "current titles");
   over("screen", (E.screen || []).filter(x => x.coming_soon).length, RG.screen?.max_coming_soon, "Coming soon titles");
   for (const g of ["india", "world"]) over("talk", E.trends?.[g]?.length || 0, RG.talk?.max_each, `${g} trends`);

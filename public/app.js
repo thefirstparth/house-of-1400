@@ -142,7 +142,10 @@ const lastName = n => String(n || "").split(" ").pop();
 // (Parth, 1 Oct: the day's ODI and Djokovic's match vanished the moment they ended).
 // What to call the day of a match kept from the last 12 hours: "Today" only on the same IST date (after midnight it is "Wed").
 const playedDay = iso => (istDate(new Date(iso)) === istDate() ? "Today" : new Date(iso).toLocaleDateString("en-GB", { weekday: "short", timeZone: TZ }));
-const keptToday = (start, n = Date.now()) => start <= n && (istDate(new Date(start)) === istDate() || start > n - 12 * 36e5);
+// And while an edition is the current paper (until 02:00 IST two days after its date) every match from its own date on
+// stays (Parth, 3 Oct: "it should never remove the published date from the fixture list"; 2 Oct vanished at midnight).
+const edFloor = n => (E?.date && n - Date.parse(`${E.date}T08:30:00Z`) < 36 * 36e5 ? E.date : "");
+const keptToday = (start, n = Date.now()) => start <= n && (istDate(new Date(start)) === istDate() || start > n - 12 * 36e5 || (!!edFloor(n) && istDate(new Date(start)) >= edFloor(n)));
 // A tennis score from ESPN's note ("(6) Novak Djokovic (SER) bt Nuno Borges (POR) 6-3 7-6 (7-2)"): the sets only.
 const setScore = note => (String(note || "").match(/\)\s*((?:\d+-\d+(?:\s*\(\d+-\d+\))?[\s,]*)+(?:\s*(?:ret\.?|retired|w\/o|walkover))?)\s*$/i)?.[1] || "").trim().replace(/(\d)-(\d)/g, "$1–$2");
 function doneTennis() {
@@ -1625,7 +1628,7 @@ function render() {
   // table or chart (the Ledger, fixtures, weather, the slips).
   const heads = (E.glance || []).reduce((a, g) => a + words(g.line), 0) + all.reduce((a, s) => a + words(s.headline) + words(s.deck), 0);
   const text = all.reduce((a, s) => a + words(s.headline) + words(s.deck) + words(s.short || s.text) + words((s.more || []).join(" ")) + words(s.why?.text), 0)
-    + words(JSON.stringify([(E.screen || []).map(x => `${x.title} ${x.reason}`), E.trends?.india?.map(t => `${t.term} ${t.what}`), E.trends?.world?.map(t => `${t.term} ${t.what}`), (E.betting || []).map(b => b.title), E.before_you_go, E.editor_note, E.house_note, E.tennis, Object.values(E.sections || {}).map(x => x.data)]).replace(/[{}\[\]",:]/g, " "));
+    + words(JSON.stringify([(E.screen || []).map(x => `${x.title} ${x.reason}`), E.trends?.india?.map(t => `${t.term} ${t.what}`), E.trends?.world?.map(t => `${t.term} ${t.what}`), (E.betting || []).map(b => b.title), E.editor_note, E.house_note, E.tennis, Object.values(E.sections || {}).map(x => x.data)]).replace(/[{}\[\]",:]/g, " "));
   const modules = $$("#main [data-live]").length;
   $("#readtime").textContent = `Headlines: ${Math.max(1, Math.round(heads / 300))} min · Everything: ${Math.max(2, Math.round(text / 238 + modules / 3))} min`;
 
