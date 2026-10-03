@@ -377,6 +377,7 @@
     "football_club": {
       "name": "Real Madrid",
       "espn_id": 86,
+      "fd_id": 86,
       "league": "esp.1",
       "show": {
         "table_rows": 7,
