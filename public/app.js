@@ -197,6 +197,12 @@ function watchOn(x) {
   return null;
 }
 const watchTag = x => { const w = watchOn(x); return w ? ` <span class="watch">on ${esc(w)}</span>` : ""; };
+// A match under way (Parth, 3 Oct: "just mention that the match is live", never "go watch"): "Live", and the score
+// with the time it was read when a feed has one ("we need to mention when the live score was updated").
+const scoreAt = k => (LIVE[k]?.as_of ? `score at ${istTime(LIVE[k].as_of)} IST` : "");
+const liveTag = (score, k) => ` <span class="live"><i></i>Live</span>${score ? ` <b class="tnum">${esc(score)}</b>${scoreAt(k) ? ` <small class="nw">· ${esc(scoreAt(k))}</small>` : ""}` : ""}`;
+// Two sides' score in the order the row names them (home first): "1–0 · 63'"
+const pairScore = (g, clock) => (g.score?.us != null && g.score?.them != null ? `${g.home ? `${g.score.us}–${g.score.them}` : `${g.score.them}–${g.score.us}`}${clock ? ` · ${clock}` : ""}` : null);
 // The Fixture List's rows for everything a live feed covers are built here, from the feeds (Parth, 3 Oct: "change
 // it"): India's cricket (The Crease, Cricbuzz or ESPNcricinfo), Real Madrid (ESPN or football-data.org), the F1
 // weekend's qualifying, sprint and race (Jolpica) and the followed tennis players (ESPN, liveTennis): the same rows
@@ -216,6 +222,7 @@ function feedFixtures() {
       const bilateral = m.n && !/games|cup|trophy|championship/i.test(m.series || "");
       const label = bilateral ? `India v ${m.opponent} · ${m.desc}${m.city ? ` · ${m.city}` : ""}` : `${short(m.series)} · India v ${m.opponent} · ${m.desc}`;
       out.push({ when_utc: m.start, label, entity: "india_cricket", source: LIVE.crease.source || "Cricbuzz", time_tbc: m.time_announced === false,
+        ...(m.state === "live" ? { live: true, score: m.score || null, scoreKey: "crease" } : {}),
         ...(m.format === "TEST" ? { until_utc: new Date(Date.parse(m.start) + 4.4 * 864e5).toISOString() } : { minutes: m.format === "ODI" ? 480 : 240 }) });
     }
   }
@@ -224,7 +231,9 @@ function feedFixtures() {
   if (F) {
     have.add("madrid");
     for (const m of [...(F.next || []), ...(F.last ? [F.last] : [])])
-      out.push({ when_utc: new Date(Date.parse(m.date)).toISOString(), label: `${m.home ? `${club} v ${m.opponent}` : `${m.opponent} v ${club}`} · ${m.competition || "Football"}`, entity: "madrid", competition: m.competition, minutes: 120, source: LIVE.football.source || "ESPN", time_tbc: m.time_confirmed === false });
+      out.push({ when_utc: new Date(Date.parse(m.date)).toISOString(), label: `${m.home ? `${club} v ${m.opponent}` : `${m.opponent} v ${club}`} · ${m.competition || "Football"}`, entity: "madrid", competition: m.competition, minutes: 120, source: LIVE.football.source || "ESPN", time_tbc: m.time_confirmed === false,
+        ...(m.state === "in" ? { live: true, score: pairScore(m, m.clock), scoreKey: "football" } : {}),
+        ...(m.completed && m.score?.us != null ? { result: `${m.winner === "us" ? "Won" : m.winner === "them" ? "Lost" : "Drew"} ${m.score.us}–${m.score.them}` } : {}) });
   }
   // F1: qualifying, sprint and race
   const R = LIVE.f1_next?.value?.race;
@@ -241,8 +250,9 @@ function feedFixtures() {
   if (B) {
     have.add("nba");
     for (const g of [...(B.next || []), ...(B.last ? [B.last] : [])]) {
-      const sc = g.score && g.score.us != null ? `${g.winner === "us" ? "Won" : "Lost"} ${g.score.us}–${g.score.them}` : null;
-      out.push({ when_utc: new Date(Date.parse(g.date)).toISOString(), label: `${g.home ? `${team} v ${g.opponent}` : `${g.opponent} v ${team}`}${g.preseason ? " · preseason" : ""}`, entity: "nba", minutes: 150, source: LIVE.nba.source || "ESPN", ...(g.completed && sc ? { result: sc } : {}) });
+      const sc = g.completed && g.score && g.score.us != null ? `${g.winner === "us" ? "Won" : "Lost"} ${g.score.us}–${g.score.them}` : null;
+      out.push({ when_utc: new Date(Date.parse(g.date)).toISOString(), label: `${g.home ? `${team} v ${g.opponent}` : `${g.opponent} v ${team}`}${g.preseason ? " · preseason" : ""}`, entity: "nba", minutes: 150, source: LIVE.nba.source || "ESPN", ...(g.completed && sc ? { result: sc } : {}),
+        ...(g.live ? { live: true, score: pairScore(g, g.clock), scoreKey: "nba" } : {}) });
     }
   }
   return { rows: out, have };
@@ -265,10 +275,11 @@ const dueWhy = f => {
   return "Not started yet";
 };
 const fixState = (f, n) => {
-  if (f.final) return "done";
+  if (f.final || (f.result && !f.live)) return "done";
+  if (f.live) return "on";
   const start = Date.parse(f.when_utc), end = f.until_utc ? Date.parse(f.until_utc) : start + (f.minutes || 120) * 6e4;
   if (f.until_utc) return n >= end ? "done" : n >= start ? "span" : "next";
-  if (f.source === "ESPN") return f.live ? "on" : n < start ? "next" : n < end ? "due" : "done";
+  if (f.entity === "tennis" && f.source === "ESPN") return n < start ? "next" : n < end ? "due" : "done";
   return stateOf({ start, end }, n);
 };
 function events() {
@@ -294,11 +305,11 @@ function tick() {
   const n = Date.now(), ev = events();
   const nx = ev.find(e => stateOf(e, n) !== "done");
   const sn = nx && stateOf(nx, n);
-  $$('[data-cd="sess"]').forEach(el => (el.textContent = !nx ? "All clear" : sn === "on" ? "On now" : sn === "due" ? "Due now" : cd(Math.max(0, nx.start - n))));
-  $$('[data-cd="sessname"]').forEach(el => (el.textContent = !nx ? "" : sn === "on" ? `${nx.label} · go watch` : sn === "due" ? `${nx.label} · ${dueWhy(nx.f || {}).replace(/^./, c => c.toLowerCase())}` : `${nx.label} · ${istFull(new Date(nx.start).toISOString())} IST`));
+  $$('[data-cd="sess"]').forEach(el => (el.textContent = !nx ? "All clear" : sn === "on" ? "Live" : sn === "due" ? "Due now" : cd(Math.max(0, nx.start - n))));
+  $$('[data-cd="sessname"]').forEach(el => (el.textContent = !nx ? "" : sn === "on" ? `${nx.label}${nx.f?.score ? ` · ${nx.f.score} · ${scoreAt(nx.f.scoreKey)}` : ""}` : sn === "due" ? `${nx.label} · ${dueWhy(nx.f || {}).replace(/^./, c => c.toLowerCase())}` : `${nx.label} · ${istFull(new Date(nx.start).toISOString())} IST`));
   $$("[data-until]").forEach(el => {
     const t = Date.parse(el.dataset.until), dur = Number(el.dataset.min || 120) * 6e4;
-    el.textContent = n < t ? cd(t - n) : n < t + dur ? "On now, go watch" : el.dataset.done || "Done";
+    el.textContent = n < t ? cd(t - n) : n < t + dur ? "Live" : el.dataset.done || "Done";
   });
   $$("[data-clock]").forEach(el => (el.textContent = new Date().toLocaleTimeString("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit" })));
 }
@@ -695,7 +706,7 @@ function paddockBlock() {
     const soon = first && Date.parse(first) - n < 7 * 864e5;
     sessions = `<div class="tbl"><table class="compact sessions"><thead><tr><th>${soon ? "This weekend" : "Race weekend"}${span ? ` · ${esc(span)}` : ""}${watchTag({ entity: "f1" })}</th>${tz ? `<th class="r">Local</th>` : ""}<th class="r">IST</th></tr></thead><tbody>${N.race.sessions.map(s => {
       const st = stateOf({ start: Date.parse(s.start), end: Date.parse(s.start) + s.minutes * 6e4 }, n);
-      return `<tr class="${st === "on" ? "on" : st === "done" ? "done" : ""}"><td>${esc(s.name)}${st === "on" ? ` <span class="live"><i></i>On now, go watch</span> <button class="refresh" data-refresh="f1_next">Refresh</button>` : st === "done" ? ` <small>done</small>` : ""}</td>${tz ? `<td class="r tnum">${s.time_confirmed ? t(s.start, tz) : "TBC"}</td>` : ""}<td class="r tnum">${s.time_confirmed ? t(s.start) : "TBC"}</td></tr>`;
+      return `<tr class="${st === "on" ? "on" : st === "done" ? "done" : ""}"><td>${esc(s.name)}${st === "on" ? ` <span class="live"><i></i>Live</span>` : st === "done" ? ` <small>done</small>` : ""}</td>${tz ? `<td class="r tnum">${s.time_confirmed ? t(s.start, tz) : "TBC"}</td>` : ""}<td class="r tnum">${s.time_confirmed ? t(s.start) : "TBC"}</td></tr>`;
     }).join("")}</tbody></table></div>`;
   }
   const bits = [], who = CFG.follows.f1_driver.name, isMax = d => d?.name === who || d?.shown === who;
@@ -781,7 +792,10 @@ function warriorsBlock() {
   if (!B?.in_season) return "";
   const bits = [];
   if (B.last) bits.push(`Last: ${B.last.winner === "us" ? "beat" : "lost to"} ${esc(B.last.opponent)} ${esc(B.last.score?.us)}–${esc(B.last.score?.them)}.`);
-  if (B.next?.length) bits.push(`Next: ${B.next.map(g => `${g.home ? "v" : "at"} ${esc(g.opponent)}, ${esc(istFull(g.date))} IST${oddsHTML(oddsFor("basketball", [CFG.follows.nba_team.name, g.opponent], g.date), { short: true })}`).join("; ")}.`);
+  const now = B.next?.find(g => g.live);
+  if (now) bits.push(`<span class="live"><i></i>Live</span> ${now.home ? "v" : "at"} ${esc(now.opponent)}${now.score?.us != null ? ` <b class="tnum">${esc(now.score.us)}–${esc(now.score.them)}</b>${now.clock ? ` · ${esc(now.clock)}` : ""} <small class="nw">· ${esc(scoreAt("nba"))}</small>` : ""}.`);
+  const ahead = (B.next || []).filter(g => g !== now);
+  if (ahead.length) bits.push(`Next: ${ahead.map(g => `${g.home ? "v" : "at"} ${esc(g.opponent)}, ${esc(istFull(g.date))} IST${oddsHTML(oddsFor("basketball", [CFG.follows.nba_team.name, g.opponent], g.date), { short: true })}`).join("; ")}.`);
   const ours = r => r.team === CFG.follows.nba_team.name || r.team === B.team, pos = B.west?.find(ours);
   if (pos) bits.push(`${ordinal(pos.rank)} in the West.`);
   const west = B.west?.length ? `<table class="compact"><thead><tr><th>#</th><th>NBA West</th><th class="r">W</th><th class="r">L</th><th class="r">GB</th></tr></thead><tbody>${B.west.slice(0, 8).map(r => `<tr class="${ours(r) ? "on" : ""}"><td class="tnum">${r.rank}</td><td>${esc(r.team)}</td><td class="r tnum">${r.wins}</td><td class="r tnum">${r.losses}</td><td class="r tnum">${esc(r.gb ?? "")}</td></tr>`).join("")}</tbody></table>` : "";
@@ -1320,7 +1334,7 @@ function clubKnockouts() {
   const R = LIVE.club_knockouts?.value?.rounds || []; if (!R.length) return "";
   const club = CFG.follows.football_club.name;
   const legs = t => t.legs.map(l => l.score ? `${esc(l.home)} ${esc(l.score)}` : `${esc(istDay(l.date))}${l.state === "pre" ? `, ${esc(istTime(l.date))} IST` : ""}`).join(" · ");
-  const res = t => t.state === "done" && t.through ? `<b>${esc(t.through)} through</b>${t.agg ? `<small class="tnum">${Object.entries(t.agg).map(([k, v]) => `${esc(k)} ${v}`).join(", ")} on aggregate</small>` : ""}` : t.state === "live" ? `<em class="cz-live"><i></i>In play</em>` : t.next ? `${esc(istFull(t.next))} IST` : "";
+  const res = t => t.state === "done" && t.through ? `<b>${esc(t.through)} through</b>${t.agg ? `<small class="tnum">${Object.entries(t.agg).map(([k, v]) => `${esc(k)} ${v}`).join(", ")} on aggregate</small>` : ""}` : t.state === "live" ? `<em class="cz-live"><i></i>Live</em>` : t.next ? `${esc(istFull(t.next))} IST` : "";
   return R.map(r => `<h4 class="subhd" style="margin-top:0">${esc(r.cup)} · ${esc(r.round)} <span>${esc(istDay(r.from))} to ${esc(istDay(r.to))}</span></h4><div class="tbl" style="margin-bottom:14px"><table class="compact ko"><tbody>${r.ties.map(t => `<tr class="${t.ours ? "on" : ""}"><td>${t.teams.map(x => `${crest(x.id, "")}${esc(x.name)}`).join(" v ")}<small>${legs(t)}</small></td><td class="r">${res(t)}</td></tr>`).join("")}</tbody></table></div>`).join("") + staleNote("club_knockouts");
 }
 function intlBlock() {
@@ -1384,7 +1398,7 @@ function fixturesBlock() {
     const when = f.time_tbc ? "Time TBC" : f.until_utc ? `Runs to ${sparkLabel(istDate(new Date(f.until_utc)))}` : istTime(f.when_utc);
     const extra = f.source === "ESPN" ? `${f.court ? ` <small>· ${esc(f.court)}</small>` : ""}${f.other ? ` <small>· another listing says ${esc(f.other)}</small>` : ""}` : "";
     const res = st === "done" ? resultOf(f) : "";
-    const tag = st === "done" ? (res ? ` <span class="res">${esc(res)}</span>` : resultLink(f)) : st === "on" ? ` <span class="live"><i></i>On now, go watch</span> <button class="refresh" data-refresh="fixtures">Refresh</button>` : st === "due" || (st === "next" && f.held) ? ` <span class="due">${esc(dueWhy(f))}</span>` : "";
+    const tag = st === "done" ? (res ? ` <span class="res">${esc(res)}</span>` : resultLink(f)) : st === "on" ? liveTag(f.score, f.scoreKey) : st === "due" || (st === "next" && f.held) ? ` <span class="due">${esc(dueWhy(f))}</span>` : "";
     return `<li class="${st === "span" ? "next" : st === "due" ? "next" : st}"><span class="t tnum">${esc(when)}</span><span class="what">${esc(f.label)}${watchTag(f)}${extra}${tag}${st !== "done" ? fixtureOdds(f) : ""}</span></li>`;
   }).join("")}</ul></div>`).join("")}</div>`;
 }
@@ -1398,20 +1412,20 @@ function creaseLive() {
   const when = m => `${day(m.start)}${m.time_announced ? `, ${istTime(m.start)} IST` : ", time TBC"}`;
   const place = m => [m.ground, m.city].filter(Boolean).join(", ");
   const asOf = LIVE.crease?.as_of ? ` · score at ${esc(istTime(LIVE.crease.as_of))} IST` : "";
-  const res = m => m.state === "live" ? `<em class="cz-live"><i></i>In play${/opt|elected|won the toss/i.test(m.status || "") ? "" : m.status ? ` · ${esc(m.status)}` : ""}</em>` : m.state === "done" ? `<em class="${m.won === true ? "up" : m.won === false ? "dn" : ""}">${esc((m.status || "").replace(/^India won/i, "Won").replace(/ due to .*$/i, "") || "Result")}</em>` : "";
+  const res = m => m.state === "live" ? `<em class="cz-live"><i></i>Live${/opt|elected|won the toss/i.test(m.status || "") ? "" : m.status ? ` · ${esc(m.status)}` : ""}</em>` : m.state === "done" ? `<em class="${m.won === true ? "up" : m.won === false ? "dn" : ""}">${esc((m.status || "").replace(/^India won/i, "Won").replace(/ due to .*$/i, "") || "Result")}</em>` : "";
   let h = "";
   const N = C.next, D = C.today && keptToday(Date.parse(C.today.start)) ? C.today : null;
   // The scorecard in a line (Parth, 1 Oct: tennis had its score, cricket only its result).
   const card = m => m.score ? `<p class="cz-sc tnum">${esc(m.score)}</p>` : "";
   if (D) h += `<div class="cz-next cz-today"><div class="cz-k">${playedDay(D.start)}</div><h3>India v ${esc(D.opponent)}</h3><p>${esc(D.desc)} · ${esc(place(D))}</p><p class="cz-when">${res(D)}</p>${card(D)}</div>`;
-  if (N) h += `<div class="cz-next"><div class="cz-k">${N.state === "live" ? "In play" : "Next match"}</div><h3>India v ${esc(N.opponent)}</h3><p>${esc(N.desc)} · ${esc(place(N))}</p><p class="cz-when">${N.state === "live" ? res(N).replace(/<em class="cz-live"><i><\/i>In play<\/em>/, "") : `${esc(when(N))}${N.time_announced ? ` · <span data-until="${esc(N.start)}" data-min="480" data-done="">--</span>` : ""}${watchTag({ entity: "india_cricket", when_utc: N.start, label: `India v ${N.opponent}` })}`}</p>${N.state === "live" ? card(N).replace("</p>", `<small class="cz-asof">${asOf.replace(/^ · /, "")}</small></p>`) : ""}</div>`;
+  if (N) h += `<div class="cz-next"><div class="cz-k">${N.state === "live" ? "Live" : "Next match"}</div><h3>India v ${esc(N.opponent)}</h3><p>${esc(N.desc)} · ${esc(place(N))}</p><p class="cz-when">${N.state === "live" ? res(N).replace(/<em class="cz-live"><i><\/i>Live<\/em>/, "") : `${esc(when(N))}${N.time_announced ? ` · <span data-until="${esc(N.start)}" data-min="480" data-done="">--</span>` : ""}${watchTag({ entity: "india_cricket", when_utc: N.start, label: `India v ${N.opponent}` })}`}</p>${N.state === "live" ? card(N).replace("</p>", `<small class="cz-asof">${asOf.replace(/^ · /, "")}</small></p>`) : ""}</div>`;
   const strip = (f, big) => `<div class="cz-f"><h5>${esc(f.label)}${f.total ? ` · ${f.total} matches` : ""}${f.score ? ` · <b>${esc(f.score)}</b>` : ""}</h5><ol class="cz-strip${big ? "" : " small"}" style="--n:${f.matches.length}">${f.matches.map(m => {
     const isNext = N && m.id === N.id;
-    return `<li class="${m.state}${isNext ? " is-next" : ""}${m.won === true ? " won" : m.won === false ? " lost" : ""}"><b>${esc(m.n ? m.desc.replace(/ (ODI|T20I|Test)$/i, "") : m.desc)}</b><span>${esc(day(m.start))}</span><span>${esc(m.city || "")}</span>${res(m)}${m.state !== "done" && m.state !== "off" ? oddsHTML(oddsFor("cricket", ["India", m.opponent], m.start), { fav: true }) : ""}${m.score ? `<span class="cz-ts tnum">${m.score.replace(/ \([^)]*ov\)/g, "").split(" · ").map(x => `<span>${esc(x)}</span>`).join("")}</span>` : ""}</li>`;
+    return `<li class="${m.state}${isNext ? " is-next" : ""}${m.won === true ? " won" : m.won === false ? " lost" : ""}"><b>${esc(m.n ? m.desc.replace(/ (ODI|T20I|Test)$/i, "") : m.desc)}</b><span>${esc(day(m.start))}</span><span>${esc(m.city || "")}</span>${res(m)}${m.state !== "done" && m.state !== "off" ? oddsHTML(oddsFor("cricket", ["India", m.opponent], m.start), { fav: true }) : ""}${m.score ? `<span class="cz-ts tnum">${m.score.replace(/ \([^)]*ov\)/g, "").split(" · ").map(x => `<span>${esc(x)}</span>`).join("")}${m.state === "live" && asOf ? `<small>${asOf.replace(/^ · /, "")}</small>` : ""}</span>` : ""}</li>`;
   }).join("")}</ol></div>`;
   const ko = S => {
     if (!S.knockouts?.length) return "";
-    const st = k => k.state === "done" ? `<b>${esc(k.status)}</b>${k.score ? `<small class="tnum">${esc(k.score)}</small>` : ""}` : k.state === "live" ? `<em class="cz-live"><i></i>In play</em>${k.score ? `<small class="tnum">${esc(k.score)}</small>` : ""}` : k.state === "off" ? esc(k.status || "No result") : `${esc(day(k.start))}, ${esc(istTime(k.start))} IST`;
+    const st = k => k.state === "done" ? `<b>${esc(k.status)}</b>${k.score ? `<small class="tnum">${esc(k.score)}</small>` : ""}` : k.state === "live" ? `<em class="cz-live"><i></i>Live</em>${k.score ? `<small class="tnum">${esc(k.score)}</small><small class="nw">${asOf.replace(/^ · /, "")}</small>` : ""}` : k.state === "off" ? esc(k.status || "No result") : `${esc(day(k.start))}, ${esc(istTime(k.start))} IST`;
     return `<div class="cz-ko"><h5>The knockouts</h5><table class="compact"><tbody>${S.knockouts.map(k => `<tr class="${k.india ? "on" : ""}"><td class="sub" title="${esc(k.stage)}">${esc(k.stage.replace(/^(\d)\w* Quarter-?Final$/i, "QF $1").replace(/^(\d)\w* Semi-?Final$/i, "SF $1"))}</td><td>${esc(k.teams.join(" v "))}</td><td class="r">${st(k)}</td></tr>`).join("")}</tbody></table></div>`;
   };
   // In a tournament whose knockouts are listed, India's own knockout matches are already in that table.
@@ -1419,7 +1433,7 @@ function creaseLive() {
   const seriesLine = S => {
     const nx = S.formats.flatMap(f => f.matches).filter(m => m.state === "live" || (m.state !== "done" && m.state !== "off")).sort((a, b) => String(a.start).localeCompare(String(b.start)))[0];
     return [S.formats.map(f => `${esc(f.label)}${f.score ? ` <b>${esc(f.score)}</b>` : f.total ? ` (${f.total})` : ""}`).join(", "),
-      nx ? `${nx.state === "live" ? "in play" : "next"}: ${esc(nx.desc)} v ${esc(nx.opponent || "TBC")}, ${esc(playedDay(nx.start) === "Today" ? "today" : day(nx.start))}` : "",
+      nx ? `${nx.state === "live" ? "live" : "next"}: ${esc(nx.desc)} v ${esc(nx.opponent || "TBC")}, ${esc(playedDay(nx.start) === "Today" ? "today" : day(nx.start))}` : "",
       S.knockouts?.length ? "the knockouts" : ""].filter(Boolean).join(" · ");
   };
   const block = (S, first) => `<div class="cz-series">${fold(`cz-${S.id || S.name}`, S.name.replace(/,? \d{4}$/, ""), seriesLine(S), `${S.formats.filter(f => !(S.knockouts?.length && f.matches.every(m => /final/i.test(m.desc || "")))).map((f, i) => strip(f, first && (i === 0 || f.matches.some(m => N && m.id === N.id)))).join("")}${ko(S)}`)}</div>`;
@@ -1446,7 +1460,7 @@ function deuceData() {
     const lv = LT.find(t => t.player === p.name && !t.final), done = LT.find(t => t.player === p.name && t.final), n = Date.now(), st = lv && fixState(lv, n);
     const won = done && /^Won/.test(done.result), sc = done ? done.result.replace(/^(Won|Lost)\s*/, "") : "";
     const todayLine = done ? `<p style="margin:6px 0 4px"><b>${playedDay(done.when_utc)}:</b> <span class="${won ? "up" : "dn"}">${won ? "Beat" : "Lost to"} ${esc(done.opponent || "")}${sc ? " " + esc(sc) : ""}</span> · ${esc([done.event, done.round].filter(Boolean).join(", "))}</p>` : "";
-    const nextLine = lv ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc([lv.round, `v ${lv.opponent || "TBC"}`].filter(Boolean).join(" "))} · ${esc(lv.event)} · ${esc(istFull(lv.when_utc))} IST${lv.court ? ` · ${esc(lv.court)}` : ""}${watchTag({ entity: "tennis", event: lv.event, label: lv.label })}.${oddsHTML(oddsFor("tennis", [p.name, lv.opponent], lv.when_utc))}${st === "on" ? ` <span class="live"><i></i>On court now</span>` : st === "due" || (st === "next" && lv.held) ? ` <span class="due">${esc(dueWhy(lv))}</span>` : ""}</p>${lv.other ? `<p class="note">Another listing (Tennis Explorer) has it at ${esc(lv.other)} IST, so worth a look nearer the time.</p>` : ""}`
+    const nextLine = lv ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc([lv.round, `v ${lv.opponent || "TBC"}`].filter(Boolean).join(" "))} · ${esc(lv.event)} · ${esc(istFull(lv.when_utc))} IST${lv.court ? ` · ${esc(lv.court)}` : ""}${watchTag({ entity: "tennis", event: lv.event, label: lv.label })}.${oddsHTML(oddsFor("tennis", [p.name, lv.opponent], lv.when_utc))}${st === "on" ? ` <span class="live"><i></i>Live</span>` : st === "due" || (st === "next" && lv.held) ? ` <span class="due">${esc(dueWhy(lv))}</span>` : ""}</p>${lv.other ? `<p class="note">Another listing (Tennis Explorer) has it at ${esc(lv.other)} IST, so worth a look nearer the time.</p>` : ""}`
       : p.next_match ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc(p.next_match.text)}</p>` : "";
     // With a live match, the live match says where the player plays next; the edition's line may be out of date.
     const ev = p.next_event && !lv ? `<p style="margin:6px 0 4px"><b>${p.next_match ? "Event" : "Next event"}:</b> ${esc(p.next_event.text)}${p.next_match || /TBD/i.test(p.next_event.text) ? "" : " Match TBD."}</p>` : "";
@@ -2024,7 +2038,7 @@ document.addEventListener("click", e => {
   if (t.id === "locBtn") { myLocation(true); return; }
   if (t.dataset.refresh) {
     const k = t.dataset.refresh;
-    (k === "fixtures" ? Promise.all(["f1_next", "football"].map(x => live(x))) : live(k)).then(() => { paintLive(); toast("Refreshed."); });
+    live(k).then(() => { paintLive(); toast("Refreshed."); });
     return;
   }
   if (t.id === "posterBtn") { const m = $("#pmenu"); m.hidden = !m.hidden; t.setAttribute("aria-expanded", !m.hidden); return; }
@@ -2401,8 +2415,17 @@ async function boot() {
       try { const p = await navigator.permissions?.query({ name: "geolocation" }); if (p?.state === "granted") myLocation(false); } catch {}
     }
     liveTimer = setInterval(() => { if (!document.hidden) refreshLive(); }, LIVE_EVERY);
-    // India in play: the score every minute, not every five (the server holds it for a minute while a match is live).
-    setInterval(() => { const C = LIVE.crease?.value; if (!document.hidden && [C?.next, ...(C?.main?.formats || []).flatMap(f => f.matches)].some(m => m?.state === "live")) live("crease").then(paintSoon); }, 60 * 1000);
+    // A match under way: its score every minute, not every five (the server holds it for a minute while a match is
+    // live): India's cricket, and Madrid or the Warriors from their start until the feed has the result.
+    const under = (g, h) => !g.completed && Date.parse(g.date) <= Date.now() && Date.parse(g.date) > Date.now() - h * 36e5;
+    setInterval(() => {
+      if (document.hidden) return;
+      const C = LIVE.crease?.value, keys = [];
+      if ([C?.next, ...(C?.main?.formats || []).flatMap(f => f.matches)].some(m => m?.state === "live")) keys.push("crease");
+      if ((LIVE.football?.value?.next || []).some(g => g.state === "in" || under(g, 2.5))) keys.push("football");
+      if ((LIVE.nba?.value?.next || []).some(g => g.live || under(g, 3.5))) keys.push("nba");
+      if (keys.length) Promise.all(keys.map(k => live(k))).then(paintSoon);
+    }, 60 * 1000);
     document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshLive(); });
   }
 }

@@ -1315,3 +1315,4 @@ mark.hl.on{background-size:100% 100%}
 .airout i{font:700 11px var(--sans);font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
 .airout b{font-weight:700;color:var(--ink)}
 .airout small{font-size:11.5px;color:var(--muted)}
+.nw{white-space:nowrap}

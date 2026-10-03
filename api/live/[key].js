@@ -25,6 +25,13 @@ export async function GET(request) {
   if (key === "markets" && out.ok && !(out.value?.indices || []).some(i => i.live)) [s, swr] = [1800, 3600];
   // A match in play: The Crease's score is held for a minute, not ten (Parth, 1 Oct: "Live now" showed a stale score).
   if (key === "crease" && out.ok && [out.value?.next, ...(out.value?.main?.formats || []).flatMap(f => f.matches)].some(m => m?.state === "live")) [s, swr] = [60, 60];
+  // Madrid or the Warriors playing: the score held for a minute (Parth, 3 Oct: "the match is live and the score"); a
+  // game about to start: held only until its start, so the first live score is not an hour late.
+  if ((key === "football" || key === "nba") && out.ok) {
+    const games = out.value?.next || [], now = Date.now();
+    if (games.some(g => g.state === "in" || g.live)) [s, swr] = [60, 60];
+    else { const t = games.map(g => (Date.parse(g.date) - now) / 1000).filter(x => x > 0).sort((a, b) => a - b)[0]; if (t < s) [s, swr] = [Math.max(60, Math.round(t)), 60]; }
+  }
   // Weather Union's gauges are read once a slot (every 30 minutes by day, 2 hours at night): held until the next slot
   if (key === "rain" && out.ok) { [s, swr] = [out.hold_s || rainTtl(), 60]; delete out.hold_s; }
   const personal = url.searchParams.has("lat");

@@ -227,17 +227,19 @@ function sportHTML(max = 5) {
   for (const m of [C?.today, C?.next, ...series.flatMap(x => (x.formats || []).flatMap(f => f.matches || []))]) {
     if (!m?.start || seen.has(m.id ?? m.start)) continue; seen.add(m.id ?? m.start);
     const t = Date.parse(m.start); if (m.state === "done" || (m.state !== "live" && t < n - 6 * 36e5)) continue;
-    all.push({ sport: "Cricket", key: `cz:${m.series_id ?? m.series ?? series.find(x => (x.formats || []).some(f => (f.matches || []).includes(m)))?.label ?? "india"}`, t, title: `India v ${m.opponent} · ${m.desc}`, sub: m.state === "live" ? `${live("In play")}${m.score ? ` ${esc(m.score)}` : ""}` : `${m.time_announced === false ? `${istDay(m.start)}, time TBC` : when1(m.start)}${on(watchOn({ entity: "cricket", label: `India v ${m.opponent}`, when_utc: m.start }))}`, live: m.state === "live" });
+    all.push({ sport: "Cricket", key: `cz:${m.series_id ?? m.series ?? series.find(x => (x.formats || []).some(f => (f.matches || []).includes(m)))?.label ?? "india"}`, t, title: `India v ${m.opponent} · ${m.desc}`, sub: m.state === "live" ? `${live("Live")}${m.score ? ` ${esc(m.score)}${scoreAt("crease") ? ` <span class="nw">· ${esc(scoreAt("crease"))}</span>` : ""}` : ""}` : `${m.time_announced === false ? `${istDay(m.start)}, time TBC` : when1(m.start)}${on(watchOn({ entity: "cricket", label: `India v ${m.opponent}`, when_utc: m.start }))}`, live: m.state === "live" });
   }
   for (const m of F?.next || []) {
     const t = Date.parse(m.date); if (!Number.isFinite(t) || t < n - 3 * 36e5) continue;
-    all.push({ sport: "Madrid", key: "madrid", t, title: `${m.home ? "v" : "at"} ${m.opponent}`, sub: `${esc(m.competition)} · ${m.time_confirmed ? when1(m.date) : istDay(m.date)}${on(watchOn({ competition: m.competition, label: m.name }))}` });
+    // under way: "Live", Madrid's score first, and when it was read
+    const sc = m.state === "in" && m.score?.us != null ? `${m.score.us}–${m.score.them}${m.clock ? ` · ${m.clock}` : ""}` : "";
+    all.push({ sport: "Madrid", key: "madrid", t, title: `${m.home ? "v" : "at"} ${m.opponent}`, sub: m.state === "in" ? `${live("Live")}${sc ? ` ${esc(sc)}${scoreAt("football") ? ` <span class="nw">· ${esc(scoreAt("football"))}</span>` : ""}` : ""}${on(watchOn({ competition: m.competition, label: m.name }))}` : `${esc(m.competition)} · ${m.time_confirmed ? when1(m.date) : istDay(m.date)}${on(watchOn({ competition: m.competition, label: m.name }))}`, live: m.state === "in" });
   }
   const race = f1?.sessions?.at(-1);
   if (race && Date.parse(race.start) + race.minutes * 6e4 > n) all.push({ sport: "F1", key: "f1", t: Date.parse(race.start), title: `${f1.name.replace(/ in [A-Z][a-z]+$/, "")}${f1.locality ? `, ${f1.locality}` : ""}`, sub: `Race ${when1(race.start)}${on(watchOn({ entity: "f1" }))}` });
   for (const p of T) {
     const nx = p.next, nm = lastName(p.name); if (!nx?.when_utc || (!nx.live && Date.parse(nx.when_utc) < n - 3 * 36e5)) continue;
-    all.push({ sport: "Tennis", key: `tn:${p.name}`, t: Date.parse(nx.when_utc), title: `${nm} v ${nx.opponent || "TBC"}`, sub: `${nx.live ? live("On court") : when1(nx.when_utc)}${on(watchOn({ entity: "tennis", label: `${nm} v ${nx.opponent}`, event: nx.event }))}`, live: !!nx.live });
+    all.push({ sport: "Tennis", key: `tn:${p.name}`, t: Date.parse(nx.when_utc), title: `${nm} v ${nx.opponent || "TBC"}`, sub: `${nx.live ? live("Live") : when1(nx.when_utc)}${on(watchOn({ entity: "tennis", label: `${nm} v ${nx.opponent}`, event: nx.event }))}`, live: !!nx.live });
   }
   all.sort((a, b) => a.t - b.t);
   const pick = new Set(), keys = new Set(), within = d => x => x.t - n < d * 864e5;
