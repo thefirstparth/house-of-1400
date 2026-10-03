@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-02T08:45:19.313Z",
-  "last_edition": "2026-10-02",
+  "last_updated": "2026-10-03T08:44:34.653Z",
+  "last_edition": "2026-10-03",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -202,7 +202,7 @@
     },
     {
       "thread_id": "asian-games-2026-india",
-      "title": "Lovlina wins boxing gold on her birthday; hockey team beat Pakistan 4–3 to reach the final",
+      "title": "Women's hockey team end a 44-year wait for gold; Parveen and Ankush complete a boxing treble",
       "entities": [],
       "facts": {
         "hockey_men": "beat South Korea 8-2",
@@ -213,15 +213,17 @@
         "shooting": "Neeru Dhanda trap gold; team silver",
         "golds": "10",
         "archery": "women's recurve team gold, men's silver",
-        "boxing": "Lovlina 75kg gold",
+        "boxing": "Parveen 65kg and Ankush 80kg gold",
         "day12": "sailing silver, squash team bronze, archery bronze",
         "hockey_sf": "beat Pakistan 4-3",
         "hockey_finals": "women v China 2 Oct, men v Malaysia 3 Oct, 15:30 IST",
-        "wrestling": "Nitesh 97kg Greco silver"
+        "wrestling": "Nitesh 97kg Greco silver",
+        "women_hockey": "gold, beat China 1-0",
+        "tally": "81"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-02",
-      "last_change": "2026-10-02",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -529,7 +531,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Over 500 detained at Jantar Mantar as protesters demand the Chief Election Commissioner resign",
+      "title": "A 75-year-old dies at the Mumbai rally as protests against the CEC continue",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -543,11 +545,12 @@
         "extended": "Andhra Pradesh, Meghalaya",
         "detained": "500+",
         "internet": "suspended near Jantar Mantar",
-        "karnataka": "Form 7 probe ordered"
+        "karnataka": "Form 7 probe ordered",
+        "mumbai": "one death at rally"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-02",
-      "last_change": "2026-10-02",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -557,18 +560,19 @@
     },
     {
       "thread_id": "man-city-115-charges",
-      "title": "Manchester City plan their appeal as MPs urge HMRC to look at the ruling's findings",
+      "title": "Manchester City lodge their appeal, saying the ruling has errors of law and fact",
       "entities": [],
       "facts": {
         "verdict": "guilty on 114 of 115",
         "sanction": "not set",
-        "appeal": "being prepared",
+        "appeal": "lodged 1 Oct",
         "club_response": "chairman confident of innocence",
-        "inflated": "830m pounds disguised funding"
+        "inflated": "830m pounds disguised funding",
+        "pinto": "losing witness protection"
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-10-02",
-      "last_change": "2026-10-02",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1121,16 +1125,18 @@
     },
     {
       "thread_id": "asian-games-cricket-2026",
-      "title": "India bowl Sri Lanka out for 45 and meet Pakistan for gold on Saturday",
+      "title": "India beat Pakistan by 19 runs to keep the Asian Games cricket gold",
       "entities": [],
       "facts": {
         "qf": "washed out, India through",
         "sf": "beat Sri Lanka by 124 runs",
-        "final": "v Pakistan, 2026-10-03 10:00 IST"
+        "final": "beat Pakistan by 19 runs",
+        "scores": "IND 211/6, PAK 192/6",
+        "medal": "gold"
       },
       "first_printed": "2026-09-28",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1584,18 +1590,22 @@
     },
     {
       "thread_id": "dubai-tel-aviv-diversion",
-      "title": "The Indian captain describes the cockpit attack: 'I was not going to let others die'",
+      "title": "UAE calls the cockpit attack terrorism; the co-pilot had been flagged as a security risk by Oman Air",
       "entities": [],
       "facts": {
         "cause": "co-pilot stabbed captain in apparent crash attempt",
         "captain": "moved to Abu Dhabi",
         "attacker": "arrested",
         "people_on_board": "174",
-        "probe": "initial Saudi finding of assault"
+        "probe": "initial Saudi finding of assault",
+        "uae": "attempted terrorist act",
+        "weapon": "crash axe",
+        "landing": "reserve pilot landed",
+        "suspect": "flagged by Oman Air in 2024"
       },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-10-02",
-      "last_change": "2026-10-02",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1878,15 +1888,16 @@
     },
     {
       "thread_id": "negreira-case",
-      "title": "UEFA presses on with its Barcelona investigation after Madrid hand over a 50,000-page dossier",
+      "title": "Madrid's dossier asks UEFA to strip Barcelona of nine league titles, reports say",
       "entities": [],
       "facts": {
         "uefa": "investigation continues",
-        "madrid": "dossier filed, asks for urgency"
+        "madrid": "dossier filed, asks for urgency",
+        "demand": "nine La Liga titles 2001-2018 stripped (reported)"
       },
       "first_printed": "2026-10-02",
-      "last_printed": "2026-10-02",
-      "last_change": "2026-10-02",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1929,15 +1940,16 @@
     },
     {
       "thread_id": "f1-bahrain-gp-2026",
-      "title": "Verstappen fastest in Sepang's first practice, 0.383s clear of Russell",
+      "title": "Antonelli fastest in final practice; Verstappen second, qualifying under way at the cut",
       "entities": [],
       "facts": {
         "fp1": "Verstappen P1, 1m37.520s",
-        "penalties": "Hadjar, Lindblad, Colapinto"
+        "penalties": "Hadjar, Lindblad, Colapinto",
+        "fp3": "Antonelli P1, Verstappen P2"
       },
       "first_printed": "2026-10-02",
-      "last_printed": "2026-10-02",
-      "last_change": "2026-10-02",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1947,12 +1959,15 @@
     },
     {
       "thread_id": "alcaraz-tokyo-2026",
-      "title": "Alcaraz saves three set points and beats Michelsen in Tokyo",
+      "title": "Alcaraz and Djokovic both into Sunday's quarter-finals",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "alcaraz": "beat Arnaldi, QF v Shapovalov",
+        "djokovic": "beat Bu, QF on 4 Oct"
+      },
       "first_printed": "2026-10-02",
-      "last_printed": "2026-10-02",
-      "last_change": "2026-10-02",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2049,6 +2064,159 @@
         "down": 0
       },
       "section": "back"
+    },
+    {
+      "thread_id": "g7-oil-release-2026",
+      "title": "G7 nations agree to release 100 million barrels of oil and diesel after Trump's export threat",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-03",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "nayara-fuel-prices-2026",
+      "title": "Nayara Energy raises petrol by ₹5 and diesel by ₹3 a litre at its pumps",
+      "entities": [],
+      "facts": {
+        "petrol": "+5",
+        "diesel": "+3"
+      },
+      "first_printed": "2026-10-03",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "us-jobs-2026",
+      "title": "US adds just 29,000 jobs in September; unemployment rises to 4.2%",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-03",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "india-brazil-football-2026",
+      "title": "India play Brazil for the first time, at Salt Lake Stadium tonight",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-03",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "pretorius-record-2026",
+      "title": "Lhuan-dre Pretorius makes 188 not out, the highest score in T20 history",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-03",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "sri-city-blast-2026",
+      "title": "Boiler explosion at a Sri City pharma plant kills five and injures ten",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-03",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "hormuz-shipping-2026",
+      "title": "Five Indian sailors rescued after a projectile hits a Kuwaiti tanker in Hormuz",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-03",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "us-temple-attack-2026",
+      "title": "A Swaminarayan temple in the US is attacked with bricks while devotees are inside",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-03",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "apple-mac-ai-agents",
+      "title": "Apple tightens Mac disk access because AI agents are reading too much",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-03",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "karnataka-drought-2026",
+      "title": "Karnataka seeks ₹3,705 crore in drought relief; losses may reach ₹60,000 crore",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-03",
+      "last_printed": "2026-10-03",
+      "last_change": "2026-10-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
     }
   ]
 }

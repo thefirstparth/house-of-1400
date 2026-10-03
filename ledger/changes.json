@@ -95,6 +95,19 @@
       "section": "ledger",
       "found_by": "daily run 2026-10-01 (wider net)",
       "printed_on": "2026-10-01"
+    },
+    {
+      "id": "nayara-fuel-oct-2026",
+      "what": "Nayara Energy raises petrol by Rs 5 and diesel by Rs 3 a litre at its pumps",
+      "who": "Nayara Energy",
+      "announced": "2026-10-02",
+      "effective": "2026-10-02",
+      "sources": [
+        "https://www.thehindubusinessline.com/markets/commodities/nayara-energy-hikes-petrol-by-5-diesel-by-3/article71539877.ece"
+      ],
+      "section": "ledger",
+      "found_by": "daily run 2026-10-03 (desk check)",
+      "printed_on": "2026-10-03"
     }
   ]
 }
