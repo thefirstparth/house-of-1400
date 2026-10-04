@@ -1,8 +1,8 @@
-# The new design (v2), behind a switch
+# The new design (v2), the default
 
-Live on the real site since 1 Oct 2026, beside the old design (v1), until Parth switches over.
+Live on the real site since 1 Oct 2026; **the default for everyone since 4 Oct 2026** (Parth: "can we now push it to main now?"). The old design (v1) stays one tap away for a while.
 
-- **Open it:** add `?v2` to the paper's address once (`/?v2`). The phone or browser remembers it; plain `/` then opens v2 there. **Go back:** `/?v1`, or "The old design" in any v2 footer. Each device chooses for itself.
+- **Open it:** plain `/` opens v2. **The old design:** `/?v1`, or "The old design" in any v2 footer; the device remembers it until `/?v2`. Poster links (`/?poster=...`, the 16:00 poster run) stay in v1, so the posters do not change.
 - **Where it applies:** the edition pages only (`/`, `/today`, `/e/<date>`). Archive, the editor's page and posters stay in v1. Desks are addressed `#d-news`, `#d-sport` and so on.
 - **v1 is untouched.** `public/app.js` and `public/styles.css` are not changed by v2. The build (`scripts/build.mjs`) assembles `/v2.js` and `/v2.css` from them (`v2/assemble.mjs`), and `index.html` writes either v1's own tags, unchanged, or v2's (tests/v2.test.mjs). If a v2 patch no longer finds its anchor in `app.js` (after a change to the renderer), the build warns and ships v1 alone: the paper never fails to build because of v2.
 - **Same paper, same data:** every section is drawn by the paper's own renderer from the same edition and the same live functions, with the same fallbacks and "as of" lines. Nothing the daily run writes changes.
@@ -67,5 +67,5 @@ Live on the real site since 1 Oct 2026, beside the old design (v1), until Parth 
 
 `npm run build`, then `node v2/shot.mjs <tag> v2` (every desk) or `node v2/shot.mjs <tag> v1`, optionally with a path (`/e/2026-09-25`) and `SIZES=1440x900-light,390x844-dark`. It serves `dist/`, answers the live calls from the edition's press-time snapshot and holds the clock at 15:00 IST; it reports page errors, sideways scroll, overlapping text, tables wider than their column and whether Page One fits one screen. On 1 Oct: v1 before and after these changes identical except the pulsing live dots; v2 clean on all desks at 390, 1280, 1440 and 1920, light and dark. On 2 Oct also at 1470x830 (a MacBook Air's window), 2560x1440 and 3440x1440: Page One one screen with all seven lines at each.
 
-## Switching over (when Parth says so)
-Make v2 the default in `withV2` (v1 behind `?v1` for a while), then retire v1: fold the layer into `app.js`, `v2.css` into `styles.css`, drop the old section colours and the patch list. Log it in DECISIONS.md and SPEC.md.
+## Switching over
+Done on 4 Oct 2026: v2 is the default in `withV2`, v1 behind `?v1`. Still to do, later: retire v1: fold the layer into `app.js`, `v2.css` into `styles.css`, drop the old section colours and the patch list. Log it in DECISIONS.md and SPEC.md.

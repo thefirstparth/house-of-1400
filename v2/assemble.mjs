@@ -82,7 +82,7 @@ export function assemble({ app = read("public/app.js"), styles = read("public/st
 // reader of v1 the page loads exactly the files it always did.
 export function withV2(html, head, js, css, home = null) {
   const tag = s => JSON.stringify(s).replace(/<\//g, "<\\/");
-  const decide = `<script>(function(){var q=location.search,on=/[?&]v2(=|&|$)/.test(q),off=/[?&]v1(=|&|$)/.test(q),k="h1400-design",V=false;try{if(on)localStorage.setItem(k,"v2");if(off)localStorage.removeItem(k);V=!off&&(on||localStorage.getItem(k)==="v2")}catch(e){V=on}var p=location.pathname.replace(/\\/+$/,"")||"/";window.H1400V2=V&&(p==="/"||p==="/today"||p==="/archive"||/^\\/e\\/\\d{4}-\\d\\d-\\d\\d$/.test(p))})()</script>`;
+  const decide = `<script>(function(){var q=location.search,on=/[?&]v2(=|&|$)/.test(q),off=/[?&]v1(=|&|$)/.test(q),k="h1400-design",V=false;try{if(on)localStorage.removeItem(k);if(off)localStorage.setItem(k,"v1");V=on||(!off&&localStorage.getItem(k)!=="v1")}catch(e){V=!off}var p=location.pathname.replace(/\\/+$/,"")||"/";window.H1400V2=V&&!/[?&]poster=/.test(q)&&(p==="/"||p==="/today"||p==="/archive"||/^\\/e\\/\\d{4}-\\d\\d-\\d\\d$/.test(p))})()</script>`;
   const a = html.indexOf('<link rel="preconnect" href="https://fonts.googleapis.com">'), m = html.match(/<link rel="stylesheet" href="\/styles\.css[^"]*">/);
   if (a < 0 || !m || m.index < a) throw new Error("index.html: the stylesheet links are not where v2 expects them");
   const v1head = html.slice(a, m.index + m[0].length), app = html.match(/<script type="module" src="\/app\.js[^"]*"><\/script>/);

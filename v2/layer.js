@@ -1,4 +1,4 @@
-// ================================================================ THE NEW DESIGN (v2, behind ?v2; v2/README.md)
+// ================================================================ THE NEW DESIGN (v2, the default since 4 Oct 2026; v2/README.md)
 // The paper's own renderer (public/app.js) draws every section from the edition and the live figures; this layer adds
 // the page around them as agreed with Parth on 1 Oct: Page One with the halftone wordmark, six desk pages behind one
 // row of tabs (config desks_v2), the day's lead at the top of its own section, which opens its desk. The build
@@ -849,8 +849,9 @@ document.addEventListener("click", e => {
   if (!E) { location.href = "/" + deskHref(a.dataset.desk); return; } // the archive has no edition: go to today's paper
   showDesk(a.dataset.desk, a.dataset.to, !!a.dataset.open);
 }, true);
-// The old design stays one tap away until Parth switches (?v1 forgets the choice on this device)
-document.addEventListener("click", e => { if (e.target.closest("[data-v1]")) { try { localStorage.removeItem("h1400-design"); } catch {} } }, true);
+// v2 is the default since 4 Oct 2026 (Parth: "push it to main"); the old design stays one tap away for a while
+// (?v1, remembered on this device; ?v2 forgets it)
+document.addEventListener("click", e => { if (e.target.closest("[data-v1]")) { try { localStorage.setItem("h1400-design", "v1"); } catch {} } }, true);
 // Day and night, in the run line (the old masthead's switch is not on this page). By default the page follows the sun
 // in the home city (Parth, 2 Oct): night from sunset to sunrise, checked every minute. Night or Day chosen by hand is
 // kept on this device (h1400-theme) until "Auto" hands it back to the sun.

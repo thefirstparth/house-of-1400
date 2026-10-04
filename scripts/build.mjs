@@ -74,8 +74,8 @@ for (const f of ["app.js", "styles.css"]) {
   const v = createHash("sha256").update(readFileSync(`dist/${f}`)).digest("hex").slice(0, 10);
   html = html.replace(`"/${f}"`, `"/${f}?v=${v}"`);
 }
-// The new design (v2), behind a switch until Parth turns it on (1 Oct 2026; v2/README.md): /?v2 shows it and remembers
-// it on that device, /?v1 goes back. It is assembled from app.js and styles.css (v2/assemble.mjs) without changing
+// The new design (v2; 1 Oct 2026, the default since 4 Oct 2026; v2/README.md): / shows it; /?v1 gives the old design
+// and the device remembers it until /?v2; poster links stay in the old design. It is assembled from app.js and styles.css (v2/assemble.mjs) without changing
 // them, and only the edition pages (/, /today, /e/<date>) use it. A v2 that cannot be built never fails the build:
 // the paper ships in the old design alone.
 try {
@@ -92,7 +92,7 @@ try {
   for (const f of readdirSync("v2/fonts")) cpSync(`v2/fonts/${f}`, `dist/fonts/${f}`);
   const ver = f => createHash("sha256").update(readFileSync(`dist/${f}`)).digest("hex").slice(0, 10);
   html = withV2(html, v2.head, `/v2.js?v=${ver("v2.js")}`, `/v2.css?v=${ver("v2.css")}`, fullConfig.weather?.always?.[0]);
-  console.log("build: v2 ready (behind ?v2)");
+  console.log("build: v2 ready (the default; ?v1 for the old design)");
 } catch (e) { console.warn(`build: v2 skipped, the paper ships in the old design only: ${e.message}`); }
 writeFileSync("dist/index.html", html);
 writeFileSync("dist/build.json", JSON.stringify({ built_at: new Date().toISOString() }));

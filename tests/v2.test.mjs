@@ -44,12 +44,15 @@ test("the switch: v1 readers get the very same tags; v2 its own; edition pages a
     new Function("location", "localStorage", "window", decide)({ pathname: path, search }, { getItem: k => store.get(k) ?? null, setItem: (k, v) => store.set(k, v), removeItem: k => store.delete(k) }, w);
     return [w.H1400V2, store.get("h1400-design") ?? null];
   };
-  assert.deepEqual(run("/", ""), [false, null]);
-  assert.deepEqual(run("/", "?v2"), [true, "v2"]);
-  assert.deepEqual(run("/", "", "v2"), [true, "v2"]);
-  assert.deepEqual(run("/e/2026-09-25", "", "v2"), [true, "v2"]);
-  assert.deepEqual(run("/archive", "", "v2"), [true, "v2"]); // the archive calendar is in the new design (2 Oct)
-  assert.deepEqual(run("/editor", "", "v2"), [false, "v2"]);
-  assert.deepEqual(run("/poster/today", "", "v2"), [false, "v2"]);
-  assert.deepEqual(run("/", "?v1", "v2"), [false, null]);
+  // v2 is the default since 4 Oct 2026; ?v1 chooses the old design on this device, ?v2 forgets that
+  assert.deepEqual(run("/", ""), [true, null]);
+  assert.deepEqual(run("/", "", "v2"), [true, "v2"]); // a device that opted in before the switch
+  assert.deepEqual(run("/e/2026-09-25", ""), [true, null]);
+  assert.deepEqual(run("/archive", ""), [true, null]); // the archive calendar is in the new design (2 Oct)
+  assert.deepEqual(run("/editor", ""), [false, null]);
+  assert.deepEqual(run("/poster/today", ""), [false, null]);
+  assert.deepEqual(run("/", "?v1"), [false, "v1"]);
+  assert.deepEqual(run("/", "", "v1"), [false, "v1"]);
+  assert.deepEqual(run("/", "?v2", "v1"), [true, null]);
+  assert.deepEqual(run("/", "?poster=front"), [false, null]); // the 16:00 poster run stays in the old design
 });
