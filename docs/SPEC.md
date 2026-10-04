@@ -47,9 +47,9 @@ IDs are stable. Names come from `config/house.json`.
 13. Tech (from 2 Oct): phones, apps, platforms, security, science and space. Try / Wait / Ignore when supported. Sales & SaaS (from 2 Oct): outbound, go-to-market, SaaS; only when useful. In editions up to 1 Oct, The Pipeline.
 14. The Ledger: Sensex, Nifty 50, Nasdaq-100 panels with sparklines; cross-asset table; then, live (from 30 Sep 2026): Who bought and sold (NSE and NSDL institutional flows) and Breadth (Nifty 500 up and down; the Nifty 100's five biggest risers and fallers; the five strongest and weakest industries); Cards & Points (India credit cards, top secondary beat)
 15. Sky & Streets: Bengaluru 7-day weather with humidity and air quality and what changed since last week; Ranchi and Prayagraj every day (config `weather.family`); reader's location if allowed
-16. Namma Beat: Bengaluru city (stand-up shows, food, metro, roads, airport). Weekdays only when important; fuller Fri to Sun.
+16. Namma Beat: Bengaluru city (food, metro, roads, airport; stand-up and concerts moved to Bengaluru Stage on 5 Oct 2026). Weekdays only when important; fuller Fri to Sun.
 16a. Back Home (from the 2 Oct 2026 edition): Ranchi and Prayagraj, where Parth's parents live: civic, safety, weather alerts and big local events. Briefs normally; hides when empty.
-17. Screen & Stage: new releases this week (English and Hindi, theatre and OTT, no regional) with verdicts; coming soon
+17. Off Duty (from 4 Oct 2026; Screen & Stage before): In Cinemas (the most-followed Hindi and English films in cinemas, with box office, scores, the critics read and the run's verdict), Streaming Top 10 (Netflix, Prime Video, JioHotstar, Apple TV: Netflix's own chart and JustWatch's together), Coming Up (films and series, the next three weeks and the big ones further out) and Bengaluru Stage (stand-up and Sufi or seated music, newly announced first). Only the verdicts are written by the run; the rest is live (DATA.md, cinema, streaming, upcoming, stage)
 18. Talk of the Day: Google Trends India and world, each with a one-line "what happened", deduplicated against the whole paper
 19. The Betting Window: world trends from prediction markets, filtered (see EDITORIAL)
 20. Before You Go: retired 3 Oct 2026 (Parth); `before_you_go` is optional and not printed
@@ -97,7 +97,7 @@ Full screen via the Fullscreen API and a screen wake lock where allowed. For a r
   "sections": {"<section_id>": {"stories": [Story], "briefs": [Brief], "data": {...}}},
   "fixtures": [{"when_utc": "...", "label": "...", "where": null | "...", "source": "..."}],
   "tennis": {"events": [...], "players": [{"name": "...", "next_match": null | {...}, "next_event": null | {...}}]},
-  "screen": [{"title", "type", "language", "where", "release", "verdict": "must|good|call|skip|early", "reason", "if_you_liked"}],
+  "screen": [{"title", "type", "language", "where", "release", "verdict": "must|good|call|skip|early", "reason", "if_you_liked", "tmdb_id", "critics": [{"outlet", "by", "rating", "stance": "+|~|-", "url"}], "trade": [{"outlet", "take"}], "audience"}],
   "trends": {"india": [{"term", "what", "url"}], "world": [...]},
   "betting": [{"title", "category", "outcomes": [{"name", "prob"}], "source", "url"}],
   "desk": null | [{"when", "kind": "action|watch|fyi", "text"}],

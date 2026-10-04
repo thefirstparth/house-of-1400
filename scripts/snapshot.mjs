@@ -10,19 +10,20 @@ ensureProxy();
 
 const REMOTE = useRemote(process.argv.slice(2));
 
-const KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "nba", "tennis", "markets", "fx", "crypto", "gold_in", "trends", "betting", "movers", "signals", "intl_football", "tennis_players", "flows", "crease", "club_stats", "f1_market", "outlook", "club_knockouts", "odds", "rain", "alerts", "nowcast", "air_forecast"];
+const KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "nba", "tennis", "markets", "fx", "crypto", "gold_in", "trends", "betting", "movers", "signals", "intl_football", "tennis_players", "flows", "crease", "club_stats", "f1_market", "outlook", "club_knockouts", "odds", "rain", "alerts", "nowcast", "air_forecast", "cinema", "streaming", "upcoming", "stage"];
 
 // Local mode: every module the /api/live route serves, not only lib/live.js.
 async function localGetters() {
-  const [a, b, c, d, e, f, g, h] = await Promise.all(["live.js", "money.js", "crease-live.js", "football.js", "odds.js", "rain.js", "trial.js", "imd.js"].map(x => import(`../lib/${x}`)));
-  return { ...a.LIVE, ...b.MONEY, ...c.CREASE, ...d.FOOTBALL, ...e.ODDS, ...f.RAIN, ...g.TRIAL, ...h.IMD };
+  const [a, b, c, d, e, f, g, h, o] = await Promise.all(["live.js", "money.js", "crease-live.js", "football.js", "odds.js", "rain.js", "trial.js", "imd.js", "offduty.js"].map(x => import(`../lib/${x}`)));
+  return { ...a.LIVE, ...b.MONEY, ...c.CREASE, ...d.FOOTBALL, ...e.ODDS, ...f.RAIN, ...g.TRIAL, ...h.IMD, ...o.OFFDUTY };
 }
 
 export async function snapshot() {
   const out = {};
   await Promise.all(KEYS.map(async k => {
     try {
-      const r = REMOTE ? await remoteLive(k) : await (await localGetters())[k](new URLSearchParams());
+      // Off Duty crawls (cinema, stage) can take most of a minute when their cache is cold
+      const r = REMOTE ? await remoteLive(k, "", ["cinema", "streaming", "upcoming", "stage"].includes(k) ? 62000 : 25000) : await (await localGetters())[k](new URLSearchParams());
       out[k] = r.ok ? { value: r.value, as_of: r.as_of, source: r.source } : { value: null, as_of: null, source: null, error: r.error || "failed" };
     } catch (e) { out[k] = { value: null, as_of: null, source: null, error: String(e?.message || e) }; }
   }));

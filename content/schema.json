@@ -782,6 +782,62 @@
           },
           "url": {
             "$ref": "#/definitions/url"
+          },
+          "tmdb_id": {
+            "type": "integer"
+          },
+          "critics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "outlet"
+              ],
+              "properties": {
+                "outlet": {
+                  "$ref": "#/definitions/text"
+                },
+                "by": {
+                  "$ref": "#/definitions/text"
+                },
+                "rating": {
+                  "$ref": "#/definitions/text"
+                },
+                "stance": {
+                  "type": "string",
+                  "enum": [
+                    "+",
+                    "~",
+                    "-"
+                  ]
+                },
+                "url": {
+                  "$ref": "#/definitions/url"
+                }
+              }
+            }
+          },
+          "trade": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "outlet"
+              ],
+              "properties": {
+                "outlet": {
+                  "$ref": "#/definitions/text"
+                },
+                "take": {
+                  "$ref": "#/definitions/text"
+                }
+              }
+            }
+          },
+          "audience": {
+            "$ref": "#/definitions/text"
           }
         }
       }

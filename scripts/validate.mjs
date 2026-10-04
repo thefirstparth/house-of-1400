@@ -6,6 +6,7 @@ import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { matchItem } from "../lib/trial.js";
 import { MAX_ORDERS } from "../lib/art.js";
+import { sameTitle as sameFilm } from "../lib/offduty.js";
 
 export const BANNED_WORDS = ["pivotal", "crucial", "landmark", "testament", "underscores", "underscore", "highlights", "showcases", "delve", "delves", "landscape", "navigate", "navigates", "robust", "seamless", "seamlessly", "notably", "quietly", "amid", "amidst"];
 const BANNED_PATTERNS = [
@@ -236,13 +237,25 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   // Coverage minimums from Parth's review of 25 Sep. Each can be waived only with a written reason in
   // coverage_waivers.<key> (never printed), so a thin section is a decision, not an accident.
   const weekend = ["fri", "sat", "sun"].includes(E.weekday);
+  const OD = E.date >= "2026-10-05", OD_FILMS = E.snapshot?.cinema?.value?.films || [];
+  if (OD) {
+    if (!E.snapshot?.cinema) warnings.push("snapshot: cinema is missing; In Cinemas shows only the edition's verdicts");
+    for (const s of E.screen || []) {
+      if (s.coming_soon) errors.push(`screen: "${s.title}" is coming_soon; from 5 Oct 2026 Coming Up is found by code, so screen carries only films in cinemas`);
+      else if (OD_FILMS.length && !OD_FILMS.some(f => (s.tmdb_id && s.tmdb_id === f.tmdb_id) || sameFilm(s.title, f.title))) warnings.push(`screen: "${s.title}" is not in snapshot.cinema; it prints after the listed films`);
+      if (s.critics && !s.critics.length) errors.push(`screen: "${s.title}" has an empty critics list; leave it out`);
+    }
+  }
   const count = id => (E.sections?.[id]?.stories?.length || 0) + (E.sections?.[id]?.briefs?.length || 0);
   const need = [
     ["pitch", count("pitch") >= 2, "The Wider Pitch needs at least 2 items"],
     ["sidelines", count("sidelines") >= 2, "The Sidelines needs at least 2 items"],
-    ["screen", (E.screen || []).filter(x => !x.coming_soon).length >= (weekend ? 5 : 3), `Screen & Stage needs at least ${weekend ? 5 : 3} current titles`],
-    // From 29 Sep 2026 (Parth, 28 Sep): 2 to 4 Coming soon titles every day.
-    ["screen_soon", E.date <= "2026-09-28" || (E.screen || []).filter(x => x.coming_soon).length >= 2, "Screen & Stage needs at least 2 Coming soon titles (coming_soon: true)"],
+    // From the 5 Oct 2026 edition (Off Duty, Parth 3-4 Oct): `screen` is the verdicts on the films in cinemas that
+    // /api/live/cinema lists (in the snapshot); Coming Up, Streaming and Stage are found by code, so no coming_soon.
+    ...(OD ? [["screen", (E.screen || []).filter(x => !x.coming_soon).length >= Math.min(3, OD_FILMS.length), `In Cinemas needs a verdict on at least ${Math.min(3, OD_FILMS.length)} of the films in snapshot.cinema`]]
+      : [["screen", (E.screen || []).filter(x => !x.coming_soon).length >= (weekend ? 5 : 3), `Screen & Stage needs at least ${weekend ? 5 : 3} current titles`],
+        // From 29 Sep 2026 (Parth, 28 Sep): 2 to 4 Coming soon titles every day.
+        ["screen_soon", E.date <= "2026-09-28" || (E.screen || []).filter(x => x.coming_soon).length >= 2, "Screen & Stage needs at least 2 Coming soon titles (coming_soon: true)"]]),
     ["talk", (E.trends?.india?.length || 0) >= 5 && (E.trends?.world?.length || 0) >= 5, "Talk of the Day needs at least 5 India and 5 world trends"],
     ["betting", (E.betting?.length || 0) >= 8, "The Betting Window needs 8 to 10 markets"],
     ["ledger_notes", ["Sensex", "Nifty 50", "Nasdaq-100"].some(n => E.sections?.ledger?.data?.notes?.[n]), "The Ledger needs driver notes (sections.ledger.data.notes) for the indices"],
@@ -300,7 +313,8 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     if (E.before_you_go) warnings.push("before_you_go: Before You Go is retired from 3 Oct 2026 and is not printed; leave it out");
     if (E.desk?.length) warnings.push("desk: Your Desk is retired from 3 Oct 2026 and is not printed; leave it out (and leave Gmail and Calendar alone)");
   }
-  over("screen", (E.screen || []).filter(x => !x.coming_soon).length, weekend ? RG.screen?.max_weekend : RG.screen?.max_weekday, "current titles");
+  if (OD) { let M = 8; try { M = read("config/house.json").offduty?.cinema?.max || 8; } catch {} over("screen", (E.screen || []).length, M, "films in cinemas"); }
+  else over("screen", (E.screen || []).filter(x => !x.coming_soon).length, weekend ? RG.screen?.max_weekend : RG.screen?.max_weekday, "current titles");
   over("screen", (E.screen || []).filter(x => x.coming_soon).length, RG.screen?.max_coming_soon, "Coming soon titles");
   for (const g of ["india", "world"]) over("talk", E.trends?.[g]?.length || 0, RG.talk?.max_each, `${g} trends`);
   over("week_ahead", E.week_ahead?.length || 0, RG.week_ahead?.max_items, "items");

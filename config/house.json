@@ -186,6 +186,34 @@
       "palette": "screen"
     },
     {
+      "id": "cinema",
+      "name": "In Cinemas",
+      "short": "In Cinemas",
+      "accent": "--acc-en",
+      "palette": "screen"
+    },
+    {
+      "id": "streaming",
+      "name": "Streaming Top 10",
+      "short": "Streaming",
+      "accent": "--acc-en",
+      "palette": "screen"
+    },
+    {
+      "id": "coming",
+      "name": "Coming Up",
+      "short": "Coming Up",
+      "accent": "--acc-en",
+      "palette": "screen"
+    },
+    {
+      "id": "stage",
+      "name": "Bengaluru Stage",
+      "short": "Stage",
+      "accent": "--acc-en",
+      "palette": "screen"
+    },
+    {
       "id": "talk",
       "name": "Talk of the Day",
       "short": "Talk of the Day",
@@ -284,6 +312,10 @@
       "name": "Life",
       "sections": [
         "screen",
+        "cinema",
+        "streaming",
+        "coming",
+        "stage",
         "sky",
         "talk",
         "betting"
@@ -356,7 +388,11 @@
         "id": "off",
         "name": "Off Duty",
         "sections": [
-          "screen"
+          "screen",
+          "cinema",
+          "streaming",
+          "coming",
+          "stage"
         ]
       }
     ],
@@ -2186,5 +2222,264 @@
         "until": "2026-10-04"
       }
     ]
+  },
+  "offduty": {
+    "note": "Off Duty (Parth, 3-4 Oct 2026): the code finds and ranks (lib/offduty.js, /api/live/cinema, streaming, upcoming, stage); the daily run only reads reviews and writes each film's verdict and line (EDITORIAL.md, Off Duty). English and Hindi only. Everything here can be edited without touching code.",
+    "services": [
+      {
+        "id": "netflix",
+        "name": "Netflix",
+        "jw": "nfx"
+      },
+      {
+        "id": "prime",
+        "name": "Prime Video",
+        "jw": "prv"
+      },
+      {
+        "id": "jiohotstar",
+        "name": "JioHotstar",
+        "jw": "jhs"
+      },
+      {
+        "id": "appletv",
+        "name": "Apple TV",
+        "jw": "atp"
+      }
+    ],
+    "upcoming_services": {
+      "nfx": "Netflix",
+      "prv": "Prime Video",
+      "jhs": "JioHotstar",
+      "atp": "Apple TV",
+      "snl": "SonyLIV",
+      "zee": "Zee5"
+    },
+    "upcoming": {
+      "days": 21,
+      "further_days": 90,
+      "min_popularity": 20,
+      "min_votes": 20000,
+      "further_min_popularity": 30,
+      "cinema_rank": 4
+    },
+    "watching": [
+      "The Diplomat"
+    ],
+    "watching_note": "Shows Parth is watching (4 Oct: 'I am watching The Diplomat'): a new season is flagged 'You're watching' in Coming Up. Add or remove titles here.",
+    "cinema": {
+      "days_back": 35,
+      "per_language": 8,
+      "max": 8,
+      "min_verdicts": 3
+    },
+    "critics": {
+      "note": "Independent critics count towards the verdict; trade and fan sites are shown but never counted (Parth, 3 Oct: 'reliable websites that are not paid reviews'). Matched against the outlet name Google News gives.",
+      "independent": [
+        "The Indian Express",
+        "Indian Express",
+        "The Hindu",
+        "Hindustan Times",
+        "Scroll",
+        "Mint",
+        "livemint",
+        "The Hollywood Reporter India",
+        "Rediff",
+        "New Indian Express",
+        "newindianexpress",
+        "India Today",
+        "NDTV",
+        "Film Companion",
+        "Firstpost",
+        "The Quint",
+        "Deccan Herald",
+        "The Wire",
+        "Galatta",
+        "Filmfare",
+        "Mid-Day",
+        "The Guardian",
+        "Variety",
+        "The New York Times",
+        "IndieWire",
+        "RogerEbert",
+        "Empire",
+        "The Atlantic",
+        "Vulture",
+        "Los Angeles Times",
+        "The Independent",
+        "The Telegraph"
+      ],
+      "trade": [
+        "Koimoi",
+        "Bollywood Hungama",
+        "Pinkvilla",
+        "Times Now",
+        "News18",
+        "Zoom",
+        "BollywoodLife",
+        "Filmibeat",
+        "Taran Adarsh",
+        "Box Office India",
+        "iDiva",
+        "Free Press Journal"
+      ]
+    },
+    "stage": {
+      "days": 150,
+      "new_days": 7,
+      "district_max": 160,
+      "allevents": [
+        "comedy",
+        "music",
+        "concerts"
+      ],
+      "allevents_pages": 12,
+      "comedians_follow": [
+        "Samay Raina",
+        "Manik Mahna",
+        "Anubhav Singh Bassi",
+        "Anubhav Bassi",
+        "Rahul Dua",
+        "Ravi Gupta",
+        "Tarang Hardikar",
+        "Zakir Khan"
+      ],
+      "comedians": [
+        "Samay Raina",
+        "Manik Mahna",
+        "Anubhav Singh Bassi",
+        "Rahul Dua",
+        "Ravi Gupta",
+        "Tarang Hardikar",
+        "Zakir Khan",
+        "Abhishek Upmanyu",
+        "Biswa Kalyan Rath",
+        "Rahul Subramanian",
+        "Kunal Kamra",
+        "Anirban Dasgupta",
+        "Urooj Ashfaq",
+        "Sapan Verma",
+        "Munawar Faruqui",
+        "Aakash Gupta",
+        "Gaurav Kapoor",
+        "Ashish Solanki",
+        "Aashish Solanki",
+        "Rajat Chauhan",
+        "Kanan Gill",
+        "Vipul Goyal",
+        "Prashasti Singh",
+        "Gaurav Gupta",
+        "Appurv Gupta",
+        "Nishant Tanwar",
+        "Jaspreet Singh",
+        "Sundeep Sharma",
+        "Angad Singh Ranyal",
+        "Varun Grover",
+        "Abijit Ganguly",
+        "Daniel Fernandes",
+        "Rohan Joshi"
+      ],
+      "never": [
+        "Harsh Gujral",
+        "Amit Tandon",
+        "Kenny Sebastian"
+      ],
+      "never_note": "Parth, 3 Oct: 'I hate Harsh Gujral. I also don't want to go and watch Amit Tandon or Kenny Sebastian.'",
+      "sufi_words": [
+        "sufi",
+        "sufiana",
+        "qawwali",
+        "qawwal",
+        "ghazal",
+        "ghazals",
+        "baithak",
+        "mehfil",
+        "sukoon",
+        "kabir",
+        "nusrat",
+        "rumi",
+        "khusrau",
+        "bulleh",
+        "faiz",
+        "nazm",
+        "shayari",
+        "dastangoi",
+        "mushaira"
+      ],
+      "sufi_artists": [
+        "Wadali",
+        "Lakhwinder Wadali",
+        "Puranchand Wadali",
+        "Amrit Wadali",
+        "Nooran Sisters",
+        "Satinder Sartaaj",
+        "Kailash Kher",
+        "Rahat Fateh Ali Khan",
+        "Abida Parveen",
+        "Kavita Seth",
+        "Mame Khan",
+        "Hans Raj Hans",
+        "Harshdeep Kaur",
+        "Sonam Kalra",
+        "Sufi Gospel Project",
+        "Abi Sampa",
+        "Orchestral Qawwali Project",
+        "Ruhbaru",
+        "Bhuwin",
+        "Khursija",
+        "Once Upon India",
+        "Nizami Brothers",
+        "Warsi Brothers",
+        "Chand Nizami",
+        "Dhruv Sangari",
+        "Rekha Bhardwaj",
+        "Javed Ali",
+        "Kabir Cafe",
+        "Neeraj Arya",
+        "Rooh Band",
+        "Jashn-e-Rekhta"
+      ],
+      "sufi_note": "Parth, 3 Oct: Sufi is his primary taste, seated shows (the Wadalis, Bhuwin Khursija, what Once Upon India does), not limited to a list: any show with these words is found too.",
+      "skip_words": [
+        "board game",
+        "boardgames",
+        "board games",
+        "meetup",
+        "quiz",
+        "open mic",
+        "open-mic",
+        "line-up",
+        "lineup",
+        "line up",
+        "all star",
+        "all-star",
+        "showcase",
+        "workshop",
+        "late night",
+        "midnight",
+        "dirty jokes",
+        "adult jokes",
+        "comedy night",
+        "comedy circus",
+        "roast battle",
+        "jam",
+        "jamming",
+        "karaoke",
+        "dandiya",
+        "garba",
+        "kids"
+      ],
+      "regional_words": [
+        "telugu",
+        "tamil",
+        "kannada",
+        "malayalam",
+        "bengali",
+        "bangla",
+        "marathi",
+        "odia",
+        "punjabi comedy"
+      ]
+    }
   }
 }

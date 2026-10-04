@@ -84,7 +84,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where", "outlook", "club_knockouts", "odds", "rain", "alerts", "nowcast", "air_forecast"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where", "outlook", "club_knockouts", "odds", "rain", "alerts", "nowcast", "air_forecast", "cinema", "streaming", "upcoming", "stage"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -1473,6 +1473,79 @@ function deuceData() {
 }
 
 const VERDICT = { must: ["v-must", "Must watch"], good: ["v-good", "Good watch"], call: ["v-call", "Your call"], skip: ["v-skip", "Skip"], early: ["v-early", "Too early"] };
+
+// ---------------------------------------------------------------- Off Duty (from the 4 Oct 2026 edition)
+// Parth, 3-4 Oct: four parts, found and ranked by code (lib/offduty.js), the run writing only each film's verdict, its
+// line and the critics it read. In Cinemas (live cinema + the edition's `screen` verdicts), Streaming Top 10 (live
+// streaming), Coming Up (live upcoming) and Bengaluru Stage (live stage). Editions before OD_FROM keep Screen & Stage.
+const OD_FROM = "2026-10-04";
+const odOn = () => (E?.date || "") >= OD_FROM;
+const odWords = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9 ]+/g, " ").split(/\s+/).filter(w => w && !["the", "a", "an", "and", "of"].includes(w));
+const odSame = (a, b) => { const x = odWords(a), y = odWords(b); if (!x.length || !y.length) return false; const [s, l] = x.length <= y.length ? [x, y] : [y, x]; return s.every(w => l.includes(w)) && s.length >= Math.min(2, l.length); };
+// "2026-10-15" or "2026-10-15T19:30" (IST) -> "Thu 15 Oct"; several dates of one show -> "Fri 19 & Sat 20 Feb"
+const odDay = d => istDay(`${String(d).slice(0, 10)}T12:00:00+05:30`);
+const odDays = ds => { const u = [...new Set(ds.map(d => String(d).slice(0, 10)))]; if (u.length === 1) return odDay(u[0]); const a = odDay(u[0]).split(" "), b = odDay(u.at(-1)).split(" "); return a[2] === b[2] && u.length === 2 ? `${a[0]} ${a[1]} & ${b[0]} ${b[1]} ${b[2]}` : `${odDay(u[0])} to ${odDay(u.at(-1))}`; };
+const odCr = n => `₹${n >= 10 ? n.toFixed(1).replace(/\.0$/, "") : n.toFixed(2).replace(/0$/, "")} cr`;
+const odKey = '<div class="od-key">Critics: <i class="p">▲</i> positive · <i>◆</i> mixed · <i class="n">▼</i> negative, or their stars. The verdict comes from independent critics and audiences; trade and fan sites are shown but never counted.</div>';
+// the edition's verdict for a live film (the same TMDB film, else the same title)
+const odVerdictFor = f => (E.screen || []).find(s => !s.coming_soon && ((s.tmdb_id && s.tmdb_id === f.tmdb_id) || odSame(s.title, f.title)));
+function odCritic(c) {
+  const st = String(c.stance || c.rating || ""), sign = { "+": ["p", "▲"], "~": ["", "◆"], "-": ["n", "▼"], "−": ["n", "▼"] }[st];
+  return `<span class="od-cr"><i class="${sign ? sign[0] : ""}">${sign ? sign[1] : esc(c.rating || st)}</i>${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.outlet)}</a>` : esc(c.outlet)}${c.by ? ` <small>${esc(c.by)}</small>` : ""}</span>`;
+}
+function odFilm(f, v) {
+  const rt = f?.rt, cr = rt?.critics, au = rt?.audience, bo = f?.box_office;
+  const rtLine = cr ? (cr.score != null && cr.count ? `${cr.score}% of ${cr.count} critics` : cr.count && cr.liked != null ? `${cr.liked} of ${cr.count} critics positive (too few for a score)` : "") : "";
+  const aud = [au?.score != null && au.count >= 50 ? `Rotten Tomatoes audience ${au.score}%` : "", f?.imdb?.votes >= 1000 ? `IMDb ${f.imdb.rating} (${f.imdb.votes.toLocaleString("en-IN")} votes)` : "",
+    v?.audience ? esc(v.audience) : "", f?.reddit ? `<a href="${esc(f.reddit.url)}" target="_blank" rel="noopener">${esc(f.reddit.sub)} review thread</a>` : ""].filter(Boolean);
+  const title = v?.title && !f ? v.title : f.title, lang = f?.language || v?.language, since = f?.release || null;
+  const meta = [lang, since ? `in cinemas since ${odDay(since)}` : v?.release ? `in cinemas ${esc(v.release)}` : "", bo?.net_cr ? `<b>${odCr(bo.net_cr)}${bo.days ? ` in ${bo.days} day${bo.days > 1 ? "s" : ""}` : ""}</b>` : ""].filter(Boolean);
+  return `<article class="od-film"><div class="od-fh"><div><h3>${esc(title)}</h3><div class="od-meta">${meta.join(" · ")}</div></div>${v?.verdict && VERDICT[v.verdict] ? `<span class="verdict ${VERDICT[v.verdict][0]}">${VERDICT[v.verdict][1]}</span>` : ""}</div>
+${v?.reason ? `<p class="od-line">${esc(v.reason)}${v.if_you_liked ? ` If you liked ${esc(v.if_you_liked)}.` : ""}</p>` : rt?.consensus ? `<p class="od-line">${esc(rt.consensus)}</p>` : ""}<dl class="od-ev">
+${v?.critics?.length ? `<dt>Critics</dt><dd>${v.critics.map(odCritic).join("")}</dd>` : ""}${rtLine ? `<dt>RT critics</dt><dd>${rt.url ? `<a href="${esc(rt.url)}" target="_blank" rel="noopener">${esc(rtLine)}</a>` : esc(rtLine)}</dd>` : ""}
+${aud.length ? `<dt>Audience</dt><dd>${aud.join(" · ")}</dd>` : ""}${v?.trade?.length ? `<dt>Trade sites</dt><dd class="trade">${v.trade.map(t => `${esc(t.outlet)}${t.take ? ` ${esc(t.take)}` : ""}`).join(" · ")} <small>(shown, not counted)</small></dd>` : ""}</dl></article>`;
+}
+function cinemaBlock() {
+  const L = LIVE.cinema?.value?.films || [], used = new Set();
+  const cards = L.map(f => { const v = odVerdictFor(f); if (v) used.add(v); return odFilm(f, v); });
+  // a verdict for a film the live list does not have (in cinemas, from the edition)
+  for (const v of (E.screen || []).filter(s => !s.coming_soon && !used.has(s) && /theat|cinema/i.test(s.where || ""))) cards.push(odFilm(null, v));
+  if (!cards.length) return "";
+  return `<div class="od-films">${cards.slice(0, CFG.offduty?.cinema?.max || 8).join("")}</div>${odKey}${aboutFig("Most-followed first (Wikipedia page views this week, else TMDB). Box office: Sacnilk, India net. Scores: Rotten Tomatoes and IMDb; Reddit's review thread. Verdicts and critics: the editor, from the reviews.")}${staleNote("cinema")}`;
+}
+function streamingBlock() {
+  const S = LIVE.streaming?.value?.services || []; if (!S.length) return "";
+  const verdictOf = t => (E.screen || []).find(s => !s.coming_soon && odSame(s.title, t.replace(/, season \d+$/, "")));
+  const row = r => { const v = verdictOf(r.title); return `<li><span class="od-t">${esc(r.title)}${v && VERDICT[v.verdict] ? ` <span class="verdict ${VERDICT[v.verdict][0]}">${VERDICT[v.verdict][1]}</span>` : ""}</span><span class="${r.kind === "Stand-up" ? "su" : ""}">${esc(r.kind)}</span></li>`; };
+  const col = (s, i) => `<div class="od-col${i ? "" : " on"}"><h4>${esc(s.name)}</h4><ol>${s.rows.slice(0, 5).map(row).join("")}</ol>${s.rows.length > 5 ? `<details><summary>Show 6 to ${s.rows.length}</summary><ol start="6" style="counter-reset:r 5">${s.rows.slice(5).map(row).join("")}</ol></details>` : ""}<div class="od-src">${esc(s.source)}</div></div>`;
+  return `<div class="od-tabs" role="tablist">${S.map((s, i) => `<button type="button" data-svc="${i}" class="${i ? "" : "on"}">${esc(s.name)}</button>`).join("")}</div><div class="od-svc">${S.map(col).join("")}</div>${staleNote("streaming")}`;
+}
+function comingBlock() {
+  const U = LIVE.upcoming?.value; if (!U?.items?.length) return "";
+  const today = istDate(), near = istDate(new Date(Date.now() + (U.near_days || 21) * 864e5));
+  const items = U.items.filter(x => x.date >= today);
+  const soon = items.filter(x => x.date <= near).slice(0, 14);
+  const later = items.filter(x => x.date > near && (x.watching || x.pop >= (U.further_min_popularity || 30) || (x.where === "Cinemas" && x.rank <= 2))).slice(0, 6);
+  const row = x => `<li><span class="od-d">${esc(odDay(x.date))}</span><span class="od-w"><b>${esc(x.title)}</b><small><span class="chip${x.where === "Cinemas" ? " cin" : ""}">${esc(x.where)}</span>${x.watching ? '<span class="chip you">You\'re watching</span>' : ""}${esc(`${x.lang} · ${x.kind}`)}</small></span></li>`;
+  if (!soon.length && !later.length) return "";
+  return `<div class="od-soon">${soon.length ? `<div><ul class="od-rows">${soon.map(row).join("")}</ul></div>` : ""}${later.length ? `<div><h5 class="od-h5">Further out</h5><ul class="od-rows">${later.map(row).join("")}</ul></div>` : ""}</div>${aboutFig("JustWatch India's release calendar for Netflix, Prime Video, JioHotstar, Apple TV, SonyLIV and Zee5, and TMDB for Indian cinema dates and Hindi series. A series' new season counts; dates not yet known are left out.")}${staleNote("upcoming")}`;
+}
+function stageBlock() {
+  const I = LIVE.stage?.value?.items; if (!I?.length) return "";
+  const today = istDate(), near = istDate(new Date(Date.now() + 21 * 864e5));
+  const up = I.filter(x => x.dates.some(d => d.slice(0, 10) >= today));
+  const extra = x => [x.price_from ? `from ₹${Number(x.price_from).toLocaleString("en-IN")}` : "", x.seated ? "seated" : ""].filter(Boolean).join(" · ");
+  const row = x => `<li><span class="od-d">${esc(odDays(x.dates.filter(d => d.slice(0, 10) >= today)))}</span><span class="od-w"><b>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>` : esc(x.title)}</b><small>${x.follow ? '<span class="chip you">You follow</span>' : ""}${esc([x.venue, extra(x)].filter(Boolean).join(" · "))}</small></span></li>`;
+  const fresh = up.filter(x => x.new).slice(0, 4);
+  const sufi = up.filter(x => x.kind === "sufi").slice(0, 10);
+  const comedy = up.filter(x => x.kind === "comedy"), soon = comedy.filter(x => x.dates[0].slice(0, 10) <= near), later = comedy.filter(x => x.dates[0].slice(0, 10) > near);
+  let h = "";
+  if (fresh.length) h += `<h5 class="od-h5">Just announced</h5><div class="od-new">${fresh.map(x => `<div class="od-newc"><span class="tag">New${x.listed ? ` · listed ${esc(odDay(x.listed))}` : ""}</span><b>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>` : esc(x.title)}</b><small>${esc([odDays(x.dates), x.venue].filter(Boolean).join(" · "))}</small>${extra(x) ? `<small>${esc(extra(x))}</small>` : ""}</div>`).join("")}</div>`;
+  if (sufi.length) h += `<h5 class="od-h5">Sufi, qawwali and ghazal</h5><ul class="od-rows two">${sufi.map(row).join("")}</ul>`;
+  if (soon.length || later.length) h += `<h5 class="od-h5"${sufi.length ? ' style="margin-top:30px"' : ""}>Stand-up${soon.length ? " · next three weeks" : ""}</h5>${soon.length ? `<ul class="od-rows two">${soon.map(row).join("")}</ul>` : ""}${later.length ? `<details class="od-later"${soon.length ? "" : " open"}><summary>Later: ${later.length} more show${later.length > 1 ? "s" : ""}, to ${esc(odDay(later.at(-1).dates[0]).split(" ").pop())}</summary><ul class="od-rows two">${later.map(row).join("")}</ul></details>` : ""}`;
+  return h ? h + aboutFig("District and allevents.in, read as tickets open. A show is new for a week after it is listed. English and Hindi stand-up by named comedians (no open mics or line-ups); Sufi, qawwali and ghazal evenings of any artist.") + staleNote("stage") : "";
+}
+
 const screenId = s => "scr-" + String(s.title).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
 function screenBlock() {
   const all = E.screen || [];
@@ -1835,7 +1908,12 @@ function render() {
   S.sky = secWrap("sky", `<div data-live="sky">${skyBlock()}</div>` + storiesBlock("sky"), [CFG.paper.home_city, ...(CFG.weather.family || []).map(c => c.name)].join(", ").replace(/, ([^,]*)$/, " and $1") + " · the weeks and months ahead");
   S.namma = secWrap("namma", storiesBlock("namma"), `${CFG.paper.home_city} · fuller on Fri, Sat, Sun`);
   S.back = secWrap("back", storiesBlock("back"), "Ranchi and Prayagraj");
-  S.screen = secWrap("screen", screenBlock(), "English and Hindi · theatre and OTT");
+  // Off Duty: four sections from the 4 Oct 2026 edition (live, data-live so they fill in as the feeds arrive); Screen & Stage before
+  S.screen = odOn() ? "" : secWrap("screen", screenBlock(), "English and Hindi · theatre and OTT");
+  S.cinema = odOn() ? secWrap("cinema", `<div data-live="cinema">${cinemaBlock()}</div>`, "Hindi and English, out now, the most-followed first") : "";
+  S.streaming = odOn() ? secWrap("streaming", `<div data-live="streaming">${streamingBlock()}</div>`, "What India is watching this week · English and Hindi") : "";
+  S.coming = odOn() ? secWrap("coming", `<div data-live="coming">${comingBlock()}</div>`, "Films and series, the next three weeks") : "";
+  S.stage = odOn() ? secWrap("stage", `<div data-live="stage">${stageBlock()}</div>`, "Stand-up and Sufi evenings, as tickets open") : "";
   S.talk = secWrap("talk", `<div data-live="talk">${talkBlock()}</div>`, "What people are searching for");
   const markets = [...new Set((E.betting || []).map(b => b.source || "Polymarket"))].join(" and ") || "Polymarket";
   S.betting = secWrap("betting", `<div data-live="betting">${bettingBlock()}</div>`, `What the world is betting on · ${markets}`);
@@ -1868,7 +1946,7 @@ function paintLive() {
   const rail = railHTML(); if ($("#rail").dataset.html !== rail) { $("#rail").innerHTML = rail; $("#rail").dataset.html = rail; }
   const [eL, eR] = earsHTML(); $("#earL").innerHTML = eL; $("#earR").innerHTML = eR;
   $("#mkts").innerHTML = marketDots();
-  const map = { crease: () => { const rows = E.sections?.crease?.data?.rows || []; return creaseLive() || (rows.length ? `<table class="kv"><tbody>${rows.map(r => `<tr class="${r.on ? "on" : ""}"><th scope="row">${esc(r.label)}</th><td>${esc(r.text)}</td></tr>`).join("")}</tbody></table>` : ""); }, deuce: deuceData, intl: () => clubKnockouts() + intlBlock(), ledgerx: ledgerExtras, talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
+  const map = { crease: () => { const rows = E.sections?.crease?.data?.rows || []; return creaseLive() || (rows.length ? `<table class="kv"><tbody>${rows.map(r => `<tr class="${r.on ? "on" : ""}"><th scope="row">${esc(r.label)}</th><td>${esc(r.text)}</td></tr>`).join("")}</tbody></table>` : ""); }, deuce: deuceData, cinema: () => (odOn() ? cinemaBlock() : ""), streaming: () => (odOn() ? streamingBlock() : ""), coming: () => (odOn() ? comingBlock() : ""), stage: () => (odOn() ? stageBlock() : ""), intl: () => clubKnockouts() + intlBlock(), ledgerx: ledgerExtras, talk: talkBlock, fixtures: fixturesBlock, madrid: madridBlock, paddock: paddockBlock, ledger: ledgerBlock, sky: skyBlock, warriors: warriorsBlock, betting: bettingBlock };
   for (const [k, fn] of Object.entries(map)) {
     const el = document.querySelector(`[data-live="${k}"]`);
     if (!el) continue;
@@ -2034,6 +2112,8 @@ document.addEventListener("click", e => {
   if (t.dataset.tmore) { toggleTable(t.dataset.tmore, t); return; }
   if (t.dataset.f1more) { f1Toggle(t.dataset.f1more, t); return; }
   if (t.dataset.f1board) { f1Board(t.dataset.f1board); return; }
+  // Streaming Top 10 on a phone: one service at a time
+  if (t.dataset.svc != null && t.closest(".od-tabs")) { const box = t.closest("section"); box.querySelectorAll(".od-tabs button").forEach(b => b.classList.toggle("on", b === t)); box.querySelectorAll(".od-col").forEach((c, i) => c.classList.toggle("on", String(i) === t.dataset.svc)); return; }
   if (t.dataset.more) { toggleMore(t.dataset.more); return; }
   if (t.dataset.head) { if (!toggleMore(t.dataset.head)) toast("Short story. The full text is already shown."); return; }
   if (t.dataset.clip) { clip(t.dataset.clip); return; }

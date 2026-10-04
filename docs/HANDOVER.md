@@ -125,7 +125,7 @@ the same edition JSON; the redesign renders it differently.
   Page One · News (Desh = India, Videsh = the world, Talk of the Day, The Betting Window) · Close to Home (Namma Beat =
   Bengaluru, Back Home = Ranchi and Prayagraj, Sky & Streets) · Sport (Madridismo, Paddock Notes, The Crease, Deuce,
   The Wider Pitch, The Sidelines; the Fixture List first, Parth 1 Oct) · Tech & AI (AI, Tech, Sales & SaaS: Parth's
-  names, 1 Oct, in place of The Lab, The Stack, The Funnel) · Money (The Ledger, one section) · Off Duty (Screen & Stage; Before You Go retired 3 Oct).
+  names, 1 Oct, in place of The Lab, The Stack, The Funnel) · Money (The Ledger, one section) · Off Duty (Screen & Stage; Before You Go retired 3 Oct; from 4 Oct: In Cinemas, Streaming Top 10, Coming Up, Bengaluru Stage, lib/offduty.js).
   Your Desk, Letters, the editor's page, Archive and the House Note move to the footer area.
 - **Page One is variant B** (`design/page-one/page-one-variants.html?v=B`; spec in `design/page-one/README.md`, FINAL):
   run line; nameplate with the desk strip as navigation; three columns: the day in a minute (lead headline, no deck,
