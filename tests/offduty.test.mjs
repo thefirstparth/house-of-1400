@@ -2,7 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { sameTitle, languageOf, isStandup, netflixRows, rankService, jwUpcomingRows, parseSacnilkList, parseSacnilkFilm, parseRT, classifyReviews,
+import { sameTitle, looseTitle, languageOf, isStandup, netflixRows, rankService, jwUpcomingRows, parseSacnilkList, parseSacnilkFilm, parseRT, classifyReviews,
   parseAllevents, parseDistrict, classify, inBengaluru, cleanTitle, mergeStage, districtCandidates } from "../lib/offduty.js";
 
 const S = {
@@ -15,6 +15,9 @@ test("sameTitle: one title's words inside the other's, never on one shared word"
   assert.ok(sameTitle("The Diplomat", "Diplomat"));
   assert.ok(!sameTitle("The Diplomat", "The Diplomat's Wife and Other Stories"));
   assert.ok(!sameTitle("", "Anything"));
+  // the language check on TMDB: romanised spellings differ
+  assert.ok(looseTitle("Mahendragiri Varahi", "Mahendragiri Vaaraahi"));
+  assert.ok(!sameTitle("Mahendragiri Varahi", "Mahendragiri Vaaraahi"));
 });
 
 test("languageOf: English and Hindi only; an Indian title in Latin letters is checked", () => {
@@ -67,9 +70,14 @@ test("jwUpcomingRows: a new season is named with its number; undated rows droppe
   assert.deepEqual(jwUpcomingRows(edges, "nfx", "Netflix"), [{ title: "The Diplomat, season 4", kind: "series", date: "2026-10-20", where: "Netflix", lang: "English", pop: 42, votes: 90000 }]);
 });
 
-test("Sacnilk: the list's films and languages; a film's India net and days", () => {
-  const list = `<a href="https://www.sacnilk.com/news/Haiwaan_Box_Office_Collection_Day_Wise_Worldwide"><img alt="Haiwaan Box Office Collection" src="x"></a><p>Here is the Hindi movie Haiwaan</p>`;
-  assert.deepEqual(parseSacnilkList(list), [{ url: "https://www.sacnilk.com/news/Haiwaan_Box_Office_Collection_Day_Wise_Worldwide", title: "Haiwaan", language: "Hindi" }]);
+test("Sacnilk: the list's films and languages (the 4 Oct 2026 layout); a film's India net and days", () => {
+  const list = `<a href="https://www.sacnilk.com/news/drishyam_3_hindi_2026_Box_Office_Collection_Day_Wise_Worldwide" class="group"><h3><span>Drishyam 3: The Conclusion Box Office Collection | All Language</span></h3>
+<p class="text-gray-600">
+   Here is the Hindi movie Drishyam 3: The Conclusion box office collection which is a Crime film.</p></a>
+<a href="https://www.sacnilk.com/news/Dont_Trouble_The_Trouble_2026_Box_Office_Collection_Day_Wise_Worldwide"><p>Here is the Telugu movie Don&#039;t Trouble The Trouble box office collection</p></a>`;
+  assert.deepEqual(parseSacnilkList(list), [
+    { url: "https://www.sacnilk.com/news/drishyam_3_hindi_2026_Box_Office_Collection_Day_Wise_Worldwide", title: "Drishyam 3: The Conclusion", language: "Hindi" },
+    { url: "https://www.sacnilk.com/news/Dont_Trouble_The_Trouble_2026_Box_Office_Collection_Day_Wise_Worldwide", title: "Don't Trouble The Trouble", language: "Telugu" }]);
   const film = `<table><tr><td>Day 1</td><td>[1st Fri]</td><td>x</td><td>₹ 5.2 Cr</td></tr><tr><td>Day 2</td><td>[1st Sat]</td><td>x</td><td>₹ 7.1 Cr</td></tr></table><div>Total Collection (Net)</div><div>₹ 12.30 Cr</div>`;
   assert.deepEqual(parseSacnilkFilm(film), { net_cr: 12.3, days: 2 });
   assert.equal(parseSacnilkFilm("<p>nothing</p>"), null);
