@@ -372,7 +372,7 @@ function byline(st) {
 function artFig(id) {
   const a = ART[id];
   if (!a) return "";
-  return `<figure class="art art-${esc(a.slot)}"><img src="${esc(a.src)}" width="${a.w}" height="${a.h}" alt="${esc(a.alt)}" loading="lazy" decoding="async"><figcaption>${esc(a.credit || "Illustration")}</figcaption></figure>`;
+  return `<figure class="art art-${esc(a.slot)}${a.brief ? " art-brief" : ""}"><img src="${esc(a.src)}" width="${a.w}" height="${a.h}" alt="${esc(a.alt)}" loading="lazy" decoding="async"><figcaption>${esc(a.credit || "Illustration")}</figcaption></figure>`;
 }
 // Today's illustrations can land after the paper, and Bunty may add or redraw some later: an open page checks the
 // manifest every five minutes until 17:00 IST, and adds, replaces or removes each story's image to match it.
@@ -390,7 +390,9 @@ async function loadArt(tries = 0) {
         const el = document.getElementById(`s-${id}`); if (!el) continue;
         ART[id] = now; if (!now) delete ART[id];
         el.querySelector(":scope > figure.art")?.remove();
-        if (now) el.querySelector(":scope > .body")?.insertAdjacentHTML("beforebegin", artFig(id));
+        // a story's drawing sits above its body; a brief's (a thin day's, lib/art.js) under its headline, beside the text
+        const body = el.querySelector(":scope > .body");
+        if (now) body ? body.insertAdjacentHTML("beforebegin", artFig(id)) : el.querySelector(":scope > h4")?.insertAdjacentHTML("afterend", artFig(id));
         changed = true;
       }
       ART = next;
@@ -428,8 +430,9 @@ ${st.verdict ? `<div class="verdictline" style="color:var(--acc)">${VERDICT_TWI[
 ${why(st.why, st.tone)}</div>${tools(st, more)}</article>`;
 }
 
+// A brief's drawing (only on a thin day, lib/art.js pickArt) floats small beside its text, under the headline.
 function briefHTML(b, cls = "item") {
-  return `<div class="${cls}" id="s-${esc(b.id)}" style="--acc:${accent(b.section)}" data-fam="${fam(b.section)}" data-title="${esc(b.headline)}" data-thread="${esc(b.thread_id)}">${b.kicker ? `<div class="${cls === "brief" ? "kick" : "tag"}">${esc(b.kicker)}${newFor(b)}</div>` : newFor(b)}<h4>${esc(b.headline)}</h4>${esc(b.text)}${sourcesLine(b.sources)}</div>`;
+  return `<div class="${cls}" id="s-${esc(b.id)}" style="--acc:${accent(b.section)}" data-fam="${fam(b.section)}" data-title="${esc(b.headline)}" data-thread="${esc(b.thread_id)}">${b.kicker ? `<div class="${cls === "brief" ? "kick" : "tag"}">${esc(b.kicker)}${newFor(b)}</div>` : newFor(b)}<h4>${esc(b.headline)}</h4>${artFig(b.id)}${esc(b.text)}${sourcesLine(b.sources)}</div>`;
 }
 
 function secWrap(id, body, sub) {

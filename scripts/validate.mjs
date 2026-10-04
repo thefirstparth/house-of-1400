@@ -67,14 +67,16 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   // Art (lib/art.js; Parth, 1 Oct 2026): Bhide scores every printed story (art_scores) and publish.mjs picks the orders.
   // Never an error: nothing about art stops the paper from printing. Warnings say what is missing.
   {
-    const stories = allItems(E).filter(i => i._kind === "story"), ids = new Set(stories.map(i => i.id));
-    for (const o of E.art_orders || []) if (!ids.has(o.story_id)) warnings.push(`art_orders: ${o.story_id} is not a printed story (briefs get no art)`);
+    // From the 5 Oct 2026 edition briefs are scored too and the strongest fill a thin day (Parth, 4 Oct: "go with option 1").
+    const withBriefs = E.date >= "2026-10-05";
+    const stories = allItems(E).filter(i => i._kind === "story" || (withBriefs && i._kind === "brief")), ids = new Set(stories.map(i => i.id));
+    for (const o of E.art_orders || []) if (!ids.has(o.story_id)) warnings.push(`art_orders: ${o.story_id} is not a printed story${withBriefs ? " or brief" : " (briefs get no art)"}`);
     if (E.date > "2026-10-01") {
       const scored = new Set((E.art_scores || []).map(x => x.story_id));
-      const unscored = stories.filter(st => !scored.has(st.id) && st.section !== "sky");
+      const unscored = [...new Map(stories.map(st => [st.id, st])).values()].filter(st => !scored.has(st.id) && st.section !== "sky");
       if (!E.art_scores?.length) warnings.push("art_scores: score every printed story (importance, relevance, drawable) so the art orders can be picked (EDITORIAL.md, Art orders)");
-      else if (unscored.length) warnings.push(`art_scores: ${unscored.length} printed ${unscored.length > 1 ? "stories are" : "story is"} not scored (${unscored.slice(0, 4).map(x => x.id).join(", ")})`);
-      for (const x of E.art_scores || []) if (!ids.has(x.story_id)) warnings.push(`art_scores: ${x.story_id} is not a printed story`);
+      else if (unscored.length) warnings.push(`art_scores: ${unscored.length} printed ${unscored.length > 1 ? `${withBriefs ? "stories and briefs" : "stories"} are` : `${withBriefs ? "item" : "story"} is`} not scored (${unscored.slice(0, 4).map(x => x.id).join(", ")})`);
+      for (const x of E.art_scores || []) if (!ids.has(x.story_id)) warnings.push(`art_scores: ${x.story_id} is not a printed story${withBriefs ? " or brief" : ""}`);
     }
   }
 

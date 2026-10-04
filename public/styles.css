@@ -144,6 +144,10 @@ nav.idx a.cur .seal .shape{fill:var(--sheet)}
 .art img{display:block;width:100%;height:auto;border-radius:3px;background:var(--rule)}
 .art-wide img{aspect-ratio:16/9}.art-standard img{aspect-ratio:4/3}
 .art figcaption{font:500 12px/1.3 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+/* A brief's drawing (a thin day, lib/art.js): small, under the headline and beside the text; the credit wraps */
+figure.art.art-brief{float:right;width:min(40%,200px);margin:4px 0 8px 14px}
+figure.art.art-brief figcaption{font-size:9.5px;line-height:1.3;letter-spacing:.04em}
+.item:has(>figure.art-brief),.brief:has(>figure.art-brief){display:flow-root}
 .lead-story .body{font-size:18.5px}
 .story{padding:20px 0;border-bottom:1px solid var(--rule)}
 .brief{padding:14px 0;border-bottom:1px solid var(--rule);font-size:16.5px;line-height:1.55}

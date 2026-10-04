@@ -6,7 +6,7 @@ The paper publishes at about 14:15 IST. While writing it, the editor, T. A. Bhid
 
 1. **Read the brief:** `https://house14.vercel.app/art/brief.json`. Check that its `date` is today's date in India (IST). If it is yesterday's, the paper is not out yet: try again in 10 minutes, and stop at 16:00 IST. If `orders` is empty, there is no art today.
 2. **For each order,** read the story (`headline`, `deck`, `short`, `more`) and open its `sources` for the full story. `theme` describes the paper's look and the styles the editor likes, and each order carries its section's colour: use them as inspiration, not rules. Follow any design instructions Parth has given you.
-3. **Make one image per order** in the order's `shape` and `size`: 16:9 (1600 x 900) for the front-page lead, 4:3 (1200 x 900) for every other story. WebP, PNG, JPEG or GIF; still or animated; at most 600 KB each. These are about the page, not the drawing: the image fills its story's space exactly, and the paper is mostly read on a phone.
+3. **Make one image per order** in the order's `shape` and `size`: 16:9 (1600 x 900) for the front-page lead, 4:3 (1200 x 900) for every other story. On a thin day some orders are short briefs (the order says `"brief": true`): same 4:3 size, but the page shows them small (about 200 px wide) beside the brief, so one bold, simple idea reads best. WebP, PNG, JPEG or GIF; still or animated; at most 600 KB each. These are about the page, not the drawing: the image fills its story's space exactly, and the paper is mostly read on a phone.
 4. **Save the files** in this repository at `public/art/YYYY-MM-DD/` (today's date), for example as each order's `file`.
 5. **Write `public/art/YYYY-MM-DD/manifest.json`:**
    ```json

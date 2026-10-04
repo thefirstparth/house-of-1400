@@ -19,14 +19,16 @@ const E = { date: "2026-09-29", edition_no: 5,
   sections: { sidelines: { stories: [{ id: "trophy", headline: "India win the kabaddi gold", short: "Ninth title.", section: "sidelines" }] } },
   art_orders: [{ story_id: "lead-1" }, { story_id: "trophy" }, { story_id: "s-2" }, { story_id: "b-1" }] };
 
-test("orders: Bhide's picks from any section, with the full story, sources and section colour; briefs dropped", () => {
+test("orders: Bhide's picks from any section, with the full story, sources and section colour; a brief is served small (4 Oct)", () => {
   const cfg = { sections: [{ id: "paddock", name: "Paddock Notes", palette: "f1" }], art: { section_colours: { f1: "#d0021b" }, styles_the_editor_likes: ["Pen and ink"] } };
   const { slots, skipped } = artSlots(E, cfg);
-  assert.deepEqual(slots.map(s => `${s.kind}:${s.story_id}`), ["wide:lead-1", "standard:trophy", "standard:s-2"]);
+  assert.deepEqual(slots.map(s => `${s.kind}:${s.story_id}`), ["wide:lead-1", "standard:trophy", "standard:s-2", "standard:b-1"]);
+  assert.equal(slots[3].brief, true);
   assert.equal(slots[0].section, "Paddock Notes"); assert.equal(slots[0].section_colour, "#d0021b");
   assert.deepEqual(brief(E, cfg).theme.styles_the_editor_likes, ["Pen and ink"]);
   assert.deepEqual(slots[0].sources, [{ label: "Formula 1", url: "https://formula1.com/a" }]);
-  assert.deepEqual(skipped.map(s => s.story_id), ["b-1"]);
+  assert.deepEqual(skipped.map(s => s.story_id), []);
+  assert.deepEqual(artSlots({ ...E, art_orders: [{ story_id: "nope" }] }).skipped.map(s => s.story_id), ["nope"]);
   assert.equal(brief(E).folder, "public/art/2026-09-29/");
   assert.equal(brief({ ...E, art_orders: undefined }).orders.length, 0);
 });
@@ -86,4 +88,28 @@ test("pickArt: lead first unless in poor taste, every group, caps, thin days, ov
   assert.deepEqual(pickArt(E, cfg), ["s1"]);
   E.art_overrides = [{ story_id: "s1", action: "remove", why: "testing a removal" }, { story_id: "d1", action: "add", why: "testing an addition" }];
   assert.deepEqual(pickArt(E, cfg), ["d1"]);
+});
+
+// 4 Oct (Parth: "go with option 1"): on a thin day the strongest briefs fill up to min, drawn small beside the brief.
+test("pickArt: briefs scored drawable 3 fill a thin day up to min, after the stories; the brief and the check carry them", () => {
+  const cfg = { desks: [{ id: "news", sections: ["dateline", "desh"] }, { id: "sport", sections: ["pitch"] }, { id: "life", sections: ["sky"] }],
+    art: { selection: { min: 5, max: 9, candidate_drawable: 2, brief_drawable: 3, groups: { news: ["news"], sport: ["sport"], other: ["life"] }, never_sections: ["sky"] } } };
+  const st = (id, section) => ({ id, section, headline: id, short: "x" }), br = (id, section) => ({ id, section, headline: id, text: "a brief" });
+  const sc = (id, i, r, d) => ({ story_id: id, importance: i, relevance: r, drawable: d });
+  const E = { date: "2026-10-05", front: { lead: st("lead", "dateline"), seconds: [st("s1", "pitch")], briefs: [br("fb1", "desh")] },
+    sections: { desh: { briefs: [br("b1", "desh"), br("b2", "desh"), br("b3", "desh")] }, sky: { briefs: [br("skyb", "sky")] } },
+    art_scores: [sc("lead", 3, 1, 3), sc("s1", 2, 2, 2), sc("fb1", 3, 1, 3), sc("b1", 1, 1, 3), sc("b2", 3, 2, 2), sc("b3", 2, 2, 3), sc("skyb", 3, 2, 3)] };
+  const o = pickArt(E, cfg);
+  assert.deepEqual(o.slice(0, 2), ["lead", "s1"], "stories first");
+  assert.deepEqual(o.slice(2), ["fb1", "b3", "b1"], "then briefs at drawable 3, most important first; drawable 2 and never-sections left out");
+  // a full day: no briefs
+  E.art_scores.push(sc("x", 0, 0, 0));
+  const full = { ...E, sections: { ...E.sections, pitch: { stories: ["p1", "p2", "p3"].map(id => st(id, "pitch")) } }, art_scores: [...E.art_scores, sc("p1", 2, 2, 3), sc("p2", 2, 1, 3), sc("p3", 1, 1, 3)] };
+  assert.ok(!pickArt(full, cfg).some(id => id.startsWith("b") || id === "fb1"));
+  // the brief for the illustrator marks them, with the brief's text as its short version
+  E.art_orders = o.map(story_id => ({ story_id }));
+  const { slots } = artSlots(E);
+  const b = slots.find(s => s.story_id === "fb1");
+  assert.equal(b.brief, true); assert.equal(b.shape, "4:3"); assert.equal(b.short, "a brief");
+  assert.equal(slots.find(s => s.story_id === "s1").brief, undefined);
 });

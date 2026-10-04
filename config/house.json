@@ -1967,6 +1967,8 @@
     "selection": {
       "note": "How the paper chooses what Bunty draws (Parth, 1 Oct 2026). Bhide scores every printed story in the edition's hidden art_scores; scripts/publish.mjs picks the orders from the scores with these settings and writes art_orders, most important first. The brief Bunty reads (/art/brief.json) is unchanged. Nothing here ever stops the paper from printing.",
       "min": 5,
+      "brief_drawable": 3,
+      "brief_note": "A thin day (fewer than min orders from the stories; Parth, 4 Oct 2026: 'go with option 1'): briefs scored drawable brief_drawable or more fill up to min, most important first, drawn small beside the brief. One-line items never get art.",
       "max": 9,
       "candidate_drawable": 2,
       "weights": {
