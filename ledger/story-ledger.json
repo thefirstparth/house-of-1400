@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-03T08:44:34.653Z",
-  "last_edition": "2026-10-03",
+  "last_updated": "2026-10-04T08:45:08.325Z",
+  "last_edition": "2026-10-04",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -202,7 +202,7 @@
     },
     {
       "thread_id": "asian-games-2026-india",
-      "title": "Women's hockey team end a 44-year wait for gold; Parveen and Ankush complete a boxing treble",
+      "title": "Men's hockey team beat Malaysia 5–1 for India's first hockey double; the Games end with India fourth on 85 medals",
       "entities": [],
       "facts": {
         "hockey_men": "beat South Korea 8-2",
@@ -219,11 +219,14 @@
         "hockey_finals": "women v China 2 Oct, men v Malaysia 3 Oct, 15:30 IST",
         "wrestling": "Nitesh 97kg Greco silver",
         "women_hockey": "gold, beat China 1-0",
-        "tally": "81"
+        "tally": "81",
+        "men_hockey": "gold, beat Malaysia 5-1",
+        "final_tally": "85 (21-27-37)",
+        "rank": "4th"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
+      "last_printed": "2026-10-04",
+      "last_change": "2026-10-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -531,7 +534,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "A 75-year-old dies at the Mumbai rally as protests against the CEC continue",
+      "title": "Kerala orders a vigilance probe into the Chief Election Commissioner over a 2006 case",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -546,11 +549,12 @@
         "detained": "500+",
         "internet": "suspended near Jantar Mantar",
         "karnataka": "Form 7 probe ordered",
-        "mumbai": "one death at rally"
+        "mumbai": "Thackeray march",
+        "kerala": "vigilance probe"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
+      "last_printed": "2026-10-04",
+      "last_change": "2026-10-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -788,7 +792,7 @@
     },
     {
       "thread_id": "openai-rogue-agents",
-      "title": "OpenAI fires three safety researchers over information shared with an outside group",
+      "title": "An OpenAI safety employee quits, saying the company's culture is broken",
       "entities": [],
       "facts": {
         "agencies": "SEC, Census Bureau, Education",
@@ -796,11 +800,12 @@
         "user_images_leaked": 53,
         "new_target": "UN website",
         "astra": "release cancelled",
-        "fired": "three safety staff"
+        "fired": "three safety staff",
+        "resignation": "safety employee"
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-10-02",
-      "last_change": "2026-10-02",
+      "last_printed": "2026-10-04",
+      "last_change": "2026-10-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1491,17 +1496,17 @@
     },
     {
       "thread_id": "ind-wi-odis-2026",
-      "title": "Kamboj replaces the injured Prasidh for Saturday's last ODI",
+      "title": "Shai Hope's 162 not out beats KL Rahul's 129 as West Indies chase 352; India take the series 2–1",
       "entities": [],
       "facts": {
-        "result": "won 2nd ODI by 8 wickets",
-        "series": "India lead 2-0",
+        "result": "lost 3rd ODI by 5 wickets",
+        "series": "won 2-1",
         "gill": "223* off 133",
         "squad": "Kamboj in for Prasidh"
       },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-10-02",
-      "last_change": "2026-10-02",
+      "last_printed": "2026-10-04",
+      "last_change": "2026-10-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1940,16 +1945,18 @@
     },
     {
       "thread_id": "f1-bahrain-gp-2026",
-      "title": "Antonelli fastest in final practice; Verstappen second, qualifying under way at the cut",
+      "title": "Verstappen on his first pole of the year, then rain and software failures halt the Sepang start",
       "entities": [],
       "facts": {
         "fp1": "Verstappen P1, 1m37.520s",
         "penalties": "Hadjar, Lindblad, Colapinto",
-        "fp3": "Antonelli P1, Verstappen P2"
+        "fp3": "Antonelli P1, Verstappen P2",
+        "pole": "Verstappen",
+        "start": "abandoned after rain and software failures"
       },
       "first_printed": "2026-10-02",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
+      "last_printed": "2026-10-04",
+      "last_change": "2026-10-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1959,15 +1966,15 @@
     },
     {
       "thread_id": "alcaraz-tokyo-2026",
-      "title": "Alcaraz and Djokovic both into Sunday's quarter-finals",
+      "title": "Alcaraz into the Tokyo semi-finals after Shapovalov retires injured",
       "entities": [],
       "facts": {
-        "alcaraz": "beat Arnaldi, QF v Shapovalov",
-        "djokovic": "beat Bu, QF on 4 Oct"
+        "alcaraz": "SF v Munar",
+        "djokovic": "QF v Zverev today"
       },
       "first_printed": "2026-10-02",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
+      "last_printed": "2026-10-04",
+      "last_change": "2026-10-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2115,12 +2122,14 @@
     },
     {
       "thread_id": "india-brazil-football-2026",
-      "title": "India play Brazil for the first time, at Salt Lake Stadium tonight",
+      "title": "Brazil beat India 4–0 in Kolkata after Gurpreet held Vinícius out for 27 minutes",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "result": "lost 0-4"
+      },
       "first_printed": "2026-10-03",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
+      "last_printed": "2026-10-04",
+      "last_change": "2026-10-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2217,6 +2226,126 @@
         "down": 0
       },
       "section": "namma"
+    },
+    {
+      "thread_id": "india-pak-border-2026",
+      "title": "India and Pakistan summon each other's diplomats after two Pakistanis are shot dead at the Punjab border",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-04",
+      "last_printed": "2026-10-04",
+      "last_change": "2026-10-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "saudi-houthi-2026",
+      "title": "Fire near an Aramco site in Riyadh after the Houthis claim a missile and drone strike",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-04",
+      "last_printed": "2026-10-04",
+      "last_change": "2026-10-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "bitchat-india-2026",
+      "title": "Bitchat, Jack Dorsey's offline messaging app, is pulled from Indian app stores on a government order",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-04",
+      "last_printed": "2026-10-04",
+      "last_change": "2026-10-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "india-ukraine-peace-2026",
+      "title": "Ukraine says it will consider India's proposal for an energy and Black Sea truce",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-04",
+      "last_printed": "2026-10-04",
+      "last_change": "2026-10-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "gas-prices-oct-2026",
+      "title": "Centre raises the price ceiling for deepwater gas to $9.89; the cap for older fields stays at $7",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-04",
+      "last_printed": "2026-10-04",
+      "last_change": "2026-10-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "madrid-squad-oct-2026",
+      "title": "Konaté expected to miss the Villarreal game, reports say",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-04",
+      "last_printed": "2026-10-04",
+      "last_change": "2026-10-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "croatia-england-oct-2026",
+      "title": "England win 7–0 in Croatia, the heaviest defeat in Croatia's history",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-04",
+      "last_printed": "2026-10-04",
+      "last_change": "2026-10-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "jio-ipo-2026",
+      "title": "Jio Platforms' IPO likely by the end of October at a valuation above ₹12 trillion",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-04",
+      "last_printed": "2026-10-04",
+      "last_change": "2026-10-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
     }
   ]
 }

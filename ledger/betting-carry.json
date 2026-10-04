@@ -1,58 +1,63 @@
 {
-  "date": "2026-10-03",
-  "from": "2026-10-02",
+  "date": "2026-10-04",
+  "from": "2026-10-03",
   "carry": [
-    {
-      "id": "pm:brazil-presidential-election",
-      "title": "Brazil Presidential Election",
-      "since": "2026-09-25",
-      "reason": "#2 by 24h volume"
-    },
-    {
-      "id": "pm:ballon-dor-winner-2026",
-      "title": "Ballon d'Or Winner 2026",
-      "since": "2026-09-25",
-      "reason": "#4 by 24h volume; Lamine Yamal moved 9.6 pts since printed"
-    },
     {
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
       "title": "UEFA Champions League: 2027 Champion",
       "since": "2026-09-25",
-      "reason": "#6 by 24h volume"
-    },
-    {
-      "id": "pm:which-company-has-the-best-ai-model-end-of-october",
-      "title": "Which company has the best AI model end of October?",
-      "since": "2026-09-30",
-      "reason": "#17 by 24h volume"
+      "reason": "#4 by 24h volume"
     },
     {
       "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
       "title": "US announces end of Iranian blockade by...?",
       "since": "2026-09-25",
-      "reason": "#19 by 24h volume"
+      "reason": "#5 by 24h volume"
+    },
+    {
+      "id": "pm:ballon-dor-winner-2026",
+      "title": "Ballon d'Or Winner 2026",
+      "since": "2026-09-25",
+      "reason": "#6 by 24h volume"
+    },
+    {
+      "id": "pm:nobel-peace-prize-winner-2026-139",
+      "title": "Nobel Peace Prize Winner 2026",
+      "since": "2026-10-03",
+      "reason": "#13 by 24h volume"
+    },
+    {
+      "id": "pm:which-company-has-the-best-ai-model-end-of-october",
+      "title": "Which company has the best AI model end of October?",
+      "since": "2026-09-30",
+      "reason": "#20 by 24h volume"
     }
   ],
   "dropped": [
     {
-      "id": "pm:nobel-peace-prize-winner-2026-139",
-      "title": "Nobel Peace Prize Winner 2026",
-      "why": "cooled: #23 by volume, moved 0.3 pts"
+      "id": "pm:brazil-presidential-election",
+      "title": "Brazil Presidential Election",
+      "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:f1-constructors-champion",
-      "title": "F1 Constructors' Champion",
-      "why": "cooled: outside the ranking by volume, moved 0.6 pts"
+      "id": "pm:fif-ind-bra-2026-10-03",
+      "title": "India vs. Brazil",
+      "why": "ended or decided, no next market in the same line"
+    },
+    {
+      "id": "pm:unl-hrv-eng-2026-10-03",
+      "title": "Croatia vs. England",
+      "why": "ended or decided, no next market in the same line"
+    },
+    {
+      "id": "pm:unl-esp-cze-2026-10-03",
+      "title": "Spain vs. Czechia",
+      "why": "ended or decided, no next market in the same line"
     },
     {
       "id": "pm:largest-ipo-by-market-cap-in-2026-287",
       "title": "Largest IPO by market cap in 2026?",
-      "why": "cooled: #21 by volume, moved 1.1 pts"
-    },
-    {
-      "id": "pm:unl-fra-ita-2026-10-02",
-      "title": "France vs. Italy",
-      "why": "ended or decided, no next market in the same line"
+      "why": "cooled: outside the ranking by volume, moved 1.5 pts"
     }
   ]
 }
