@@ -839,3 +839,6 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 - Streaming is ranked by both charts together: Netflix's own India Top 10 and JustWatch India's chart per service. English and Hindi only, stand-up specials such as Papa Yaar included.
 - Bengaluru Stage lists stand-up and Sufi or seated music, newly announced first, from District and allevents. It covers any Sufi act, not a fixed list. Parth's comedians are marked; Harsh Gujral, Amit Tandon and Kenny Sebastian are never listed (config `offduty.stage.never`). Stand-up leaves Namma Beat.
 - Editions up to 3 Oct keep Screen & Stage as printed.
+
+## 4 Oct 2026: the art brief can be made from GitHub alone
+- Bunty could not read `/art/brief.json` on 3 and 4 Oct: Codex fetched it through a Vercel connector, which has no access to this project and answered 403, although the page itself is public. No art came either day. `node scripts/art-brief.mjs` now makes the same brief, byte for byte, from `content/latest.json` and config, with no install and no network, and public/art/README.md tells Bunty to use the plain URL or, failing that, the script.
