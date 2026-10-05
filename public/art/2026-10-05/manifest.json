@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-05",
+  "made_by": "Bunty Brushwala",
+  "items": [
+    {
+      "story_id": "verstappen-wins-sepang",
+      "file": "verstappen-wins-sepang.webp",
+      "alt": "Max Verstappen sits calmly on a chair amid rain, puddles and Formula 1 cars on a soaked Sepang grid."
+    },
+    {
+      "story_id": "sc-declines-to-suspend-cec",
+      "file": "sc-declines-to-suspend-cec.webp",
+      "alt": "India's election chief stands before Supreme Court judges as a magnifying glass examines voter records and official papers."
+    },
+    {
+      "story_id": "claude-india-inference",
+      "file": "claude-india-inference.webp",
+      "alt": "A friendly AI robot walks beside a server rack shaped like India, connected to Indian institutions and a security shield."
+    },
+    {
+      "story_id": "brazil-runoff",
+      "file": "brazil-runoff.webp",
+      "alt": "Flávio Bolsonaro and Lula pull opposite ends of a Brazilian ballot box as 47 percent and 45 percent results loom above."
+    }
+  ]
+}
