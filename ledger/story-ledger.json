@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-04T08:45:08.325Z",
-  "last_edition": "2026-10-04",
+  "last_updated": "2026-10-05T08:42:46.294Z",
+  "last_edition": "2026-10-05",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -534,7 +534,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Kerala orders a vigilance probe into the Chief Election Commissioner over a 2006 case",
+      "title": "Supreme Court declines to suspend the Chief Election Commissioner but issues notice to the Centre and the Commission",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -542,7 +542,7 @@
         "ec_response": "decisions unanimous",
         "status": "SC to hear suspension plea next week",
         "ec_meeting": "2026-09-26",
-        "form6": "extra declaration withdrawn",
+        "form6": "court wants to know who modified it",
         "opposition": "INDIA bloc seeks ballot papers",
         "meetings": "second in four days",
         "extended": "Andhra Pradesh, Meghalaya",
@@ -550,11 +550,12 @@
         "internet": "suspended near Jantar Mantar",
         "karnataka": "Form 7 probe ordered",
         "mumbai": "Thackeray march",
-        "kerala": "vigilance probe"
+        "kerala": "vigilance probe",
+        "sc": "no suspension; notice to Centre and ECI"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-04",
-      "last_change": "2026-10-04",
+      "last_printed": "2026-10-05",
+      "last_change": "2026-10-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1516,12 +1517,15 @@
     },
     {
       "thread_id": "madrid-internationals-2026",
-      "title": "Vinícius scores and Endrick assists as Brazil beat Australia 4–2",
+      "title": "Vinícius kept out by Gurpreet in Kolkata; Madrid's women lose the Clásico 7–0",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "vinicius": "no goal v India",
+        "women": "lost 0-7 to Barcelona"
+      },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-09-30",
-      "last_change": "2026-09-30",
+      "last_printed": "2026-10-05",
+      "last_change": "2026-10-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1635,18 +1639,21 @@
     },
     {
       "thread_id": "us-ai-policy-2026",
-      "title": "Trump orders US agencies to say \"Super Intelligence\" instead of AI",
+      "title": "Trump sets up a 'Super Intelligence Force' of officials, led by intelligence chief Jay Clayton",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "force": "Super Intelligence Force",
+        "czar": "Jay Clayton"
+      },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-09-30",
-      "last_change": "2026-09-30",
+      "last_printed": "2026-10-05",
+      "last_change": "2026-10-05",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "workshop"
+      "section": "ai"
     },
     {
       "thread_id": "apple-security-2026",
@@ -1852,7 +1859,7 @@
     },
     {
       "thread_id": "ronaldo-portugal-2026",
-      "title": "Portugal win 4–2 in Denmark without Ronaldo, who has still not said why he left",
+      "title": "Portugal beat Norway without Ronaldo, and the coach says the door is open for his return",
       "entities": [],
       "facts": {
         "left": "30 Sep, Copenhagen",
@@ -1861,11 +1868,12 @@
         "next": "Denmark v Portugal, 1 Oct",
         "denmark_portugal": "2-4",
         "statement": "not yet given",
-        "future": "unclear"
+        "future": "unclear",
+        "jesus": "door open"
       },
       "first_printed": "2026-10-01",
-      "last_printed": "2026-10-02",
-      "last_change": "2026-10-02",
+      "last_printed": "2026-10-05",
+      "last_change": "2026-10-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1945,18 +1953,22 @@
     },
     {
       "thread_id": "f1-bahrain-gp-2026",
-      "title": "Verstappen on his first pole of the year, then rain and software failures halt the Sepang start",
+      "title": "Verstappen wins at Sepang, his first victory of the season, after a 90-minute delay",
       "entities": [],
       "facts": {
         "fp1": "Verstappen P1, 1m37.520s",
         "penalties": "Hadjar, Lindblad, Colapinto",
         "fp3": "Antonelli P1, Verstappen P2",
         "pole": "Verstappen",
-        "start": "abandoned after rain and software failures"
+        "start": "abandoned after rain and software failures",
+        "winner": "Verstappen",
+        "p2": "Antonelli",
+        "p3": "Hamilton",
+        "russell": "retired"
       },
       "first_printed": "2026-10-02",
-      "last_printed": "2026-10-04",
-      "last_change": "2026-10-04",
+      "last_printed": "2026-10-05",
+      "last_change": "2026-10-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1966,15 +1978,15 @@
     },
     {
       "thread_id": "alcaraz-tokyo-2026",
-      "title": "Alcaraz into the Tokyo semi-finals after Shapovalov retires injured",
+      "title": "Djokovic beats top seed Zverev in Beijing and plays Medvedev in the semi-final today",
       "entities": [],
       "facts": {
-        "alcaraz": "SF v Munar",
-        "djokovic": "QF v Zverev today"
+        "alcaraz": "SF v Munar in progress",
+        "djokovic": "beat Zverev 4-6 6-4 6-4, SF v Medvedev"
       },
       "first_printed": "2026-10-02",
-      "last_printed": "2026-10-04",
-      "last_change": "2026-10-04",
+      "last_printed": "2026-10-05",
+      "last_change": "2026-10-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2346,6 +2358,81 @@
         "down": 0
       },
       "section": "ledger"
+    },
+    {
+      "thread_id": "brazil-election-2026",
+      "title": "Flávio Bolsonaro tops Brazil's first round with 47%; he faces Lula in a runoff on 25 October",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-05",
+      "last_printed": "2026-10-05",
+      "last_change": "2026-10-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "anthropic-india-2026",
+      "title": "Claude can now run on servers in India through Amazon Bedrock",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-05",
+      "last_printed": "2026-10-05",
+      "last_change": "2026-10-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "indigo-fuel-charge-2026",
+      "title": "IndiGo raises its fuel charge on domestic and international tickets",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-05",
+      "last_printed": "2026-10-05",
+      "last_change": "2026-10-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "everest-recall-2026",
+      "title": "FSSAI orders Everest to recall its cumin powder over unsafe pesticide levels",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-05",
+      "last_printed": "2026-10-05",
+      "last_change": "2026-10-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "spain-election-2026",
+      "title": "Spain's Pedro Sánchez calls a snap election for 29 November after housing protests",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-05",
+      "last_printed": "2026-10-05",
+      "last_change": "2026-10-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
     }
   ]
 }
