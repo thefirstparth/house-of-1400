@@ -108,6 +108,20 @@
       "section": "ledger",
       "found_by": "daily run 2026-10-03 (desk check)",
       "printed_on": "2026-10-03"
+    },
+    {
+      "id": "upi-mdr-oct-2026",
+      "what": "UPI merchant charge: 0.4% on person-to-merchant payments above Rs 2,000 (capped at Rs 300), Rs 5 flat for railways, telecom, insurance, fuel and utilities; payments up to Rs 2,000 and all person-to-person payments stay free; the merchant pays",
+      "who": "NPCI",
+      "announced": "2026-09-15",
+      "effective": "2026-10-15",
+      "sources": [
+        "https://www.scconline.com/blog/post/2026/09/16/npci-released-upi-mdr-faqs-explained/",
+        "https://www.deccanchronicle.com/business/npci-announces-04-merchant-charge-on-upi-payments-above-2000-1987634"
+      ],
+      "section": "ledger",
+      "found_by": "daily run, 6 Oct 2026 (wider net)",
+      "printed_on": "2026-09-28"
     }
   ]
 }

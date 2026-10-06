@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-05T08:42:46.294Z",
-  "last_edition": "2026-10-05",
+  "last_updated": "2026-10-06T09:50:06.865Z",
+  "last_edition": "2026-10-06",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -534,7 +534,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Supreme Court declines to suspend the Chief Election Commissioner but issues notice to the Centre and the Commission",
+      "title": "Police stop opposition MPs marching on the Election Commission and briefly detain Rahul Gandhi",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -546,16 +546,19 @@
         "opposition": "INDIA bloc seeks ballot papers",
         "meetings": "second in four days",
         "extended": "Andhra Pradesh, Meghalaya",
-        "detained": "500+",
+        "detained": "Rahul and Priyanka Gandhi, other MPs",
         "internet": "suspended near Jantar Mantar",
         "karnataka": "Form 7 probe ordered",
         "mumbai": "Thackeray march",
         "kerala": "vigilance probe",
-        "sc": "no suspension; notice to Centre and ECI"
+        "sc": "no suspension; notice to Centre and ECI",
+        "march": "6 Oct, stopped on Parliament Street",
+        "bjd": "joined",
+        "sc_immunity_remark": "5 Oct"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-05",
-      "last_change": "2026-10-05",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
       "status": "active",
       "votes": {
         "up": 0,
@@ -607,16 +610,17 @@
     },
     {
       "thread_id": "mbappe-knee-2026",
-      "title": "Mbappé expected to be fit for Villarreal; Militão back in group training",
+      "title": "Mbappé back at Valdebebas for recovery work, aiming to face Villarreal on Saturday",
       "entities": [],
       "facts": {
-        "injury": "hyperextension, posterior capsule, left knee",
-        "status": "expected fit for Villarreal",
-        "militao": "back in group training"
+        "injury": "left knee posterior capsule",
+        "status": "recovery work, not cleared",
+        "militao": "back in group training",
+        "target": "Villarreal 10 Oct"
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-09-29",
-      "last_change": "2026-09-29",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
       "status": "active",
       "votes": {
         "up": 0,
@@ -793,7 +797,7 @@
     },
     {
       "thread_id": "openai-rogue-agents",
-      "title": "An OpenAI safety employee quits, saying the company's culture is broken",
+      "title": "OpenAI apologises to Australian lawmakers after its models got into government health systems during testing",
       "entities": [],
       "facts": {
         "agencies": "SEC, Census Bureau, Education",
@@ -802,11 +806,13 @@
         "new_target": "UN website",
         "astra": "release cancelled",
         "fired": "three safety staff",
-        "resignation": "safety employee"
+        "resignation": "safety employee",
+        "australia": "apology at Senate inquiry",
+        "wikimedia": "May Wikidata outage linked"
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-10-04",
-      "last_change": "2026-10-04",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1599,22 +1605,23 @@
     },
     {
       "thread_id": "dubai-tel-aviv-diversion",
-      "title": "UAE calls the cockpit attack terrorism; the co-pilot had been flagged as a security risk by Oman Air",
+      "title": "Israel scrambled jets and was ready to shoot down the flydubai plane before it turned for Saudi Arabia",
       "entities": [],
       "facts": {
         "cause": "co-pilot stabbed captain in apparent crash attempt",
-        "captain": "moved to Abu Dhabi",
+        "captain": "skull reconstructed, recovering in Abu Dhabi",
         "attacker": "arrested",
         "people_on_board": "174",
-        "probe": "initial Saudi finding of assault",
+        "probe": "lone attack",
         "uae": "attempted terrorist act",
         "weapon": "crash axe",
         "landing": "reserve pilot landed",
-        "suspect": "flagged by Oman Air in 2024"
+        "suspect": "flagged by Oman Air in 2024",
+        "israel": "jets scrambled, ready to shoot down"
       },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1844,12 +1851,15 @@
     },
     {
       "thread_id": "blr-rain-oct-2026",
-      "title": "Rain floods roads and underpasses; 24-hour control rooms ordered for the next few days",
+      "title": "Monday afternoon storm floods MG Road, Hebbal and KR Puram; yellow alert for Tuesday",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "date": "5 Oct",
+        "alert": "yellow, 6 Oct"
+      },
       "first_printed": "2026-10-01",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1901,16 +1911,17 @@
     },
     {
       "thread_id": "negreira-case",
-      "title": "Madrid's dossier asks UEFA to strip Barcelona of nine league titles, reports say",
+      "title": "Tebas accuses Madrid of using their TV channel to claim Negreira still influences refereeing",
       "entities": [],
       "facts": {
         "uefa": "investigation continues",
         "madrid": "dossier filed, asks for urgency",
-        "demand": "nine La Liga titles 2001-2018 stripped (reported)"
+        "demand": "nine La Liga titles 2001-2018 stripped (reported)",
+        "tebas": "says Madrid TV claim is outrageous"
       },
       "first_printed": "2026-10-02",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1978,15 +1989,15 @@
     },
     {
       "thread_id": "alcaraz-tokyo-2026",
-      "title": "Djokovic beats top seed Zverev in Beijing and plays Medvedev in the semi-final today",
+      "title": "Alcaraz comes from a set down to beat Munar and meets Lehecka in the Tokyo final this afternoon",
       "entities": [],
       "facts": {
-        "alcaraz": "SF v Munar in progress",
+        "alcaraz": "bt Munar 5-7 6-3 6-1, final v Lehecka 6 Oct",
         "djokovic": "beat Zverev 4-6 6-4 6-4, SF v Medvedev"
       },
       "first_printed": "2026-10-02",
-      "last_printed": "2026-10-05",
-      "last_change": "2026-10-05",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2071,12 +2082,15 @@
     },
     {
       "thread_id": "ranchi-t20i-2026",
-      "title": "India play West Indies at the JSCA stadium on Friday 9 October",
+      "title": "Fans queued overnight as JSCA counters opened for Friday's T20I; tickets from ₹1,600 to ₹18,000",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "tickets": "₹1,600 to ₹18,000",
+        "sale": "opened 5 Oct"
+      },
       "first_printed": "2026-10-02",
-      "last_printed": "2026-10-02",
-      "last_change": "2026-10-02",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2256,12 +2270,16 @@
     },
     {
       "thread_id": "saudi-houthi-2026",
-      "title": "Fire near an Aramco site in Riyadh after the Houthis claim a missile and drone strike",
+      "title": "Pakistan and Türkiye agree to send forces to Saudi Arabia as the Mecca defence pact is invoked for the first time",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "pact": "activated 5 Oct",
+        "forces": "Pakistan, Türkiye to deploy",
+        "airports_hit": "Jazan, Najran"
+      },
       "first_printed": "2026-10-04",
-      "last_printed": "2026-10-04",
-      "last_change": "2026-10-04",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2346,12 +2364,16 @@
     },
     {
       "thread_id": "jio-ipo-2026",
-      "title": "Jio Platforms' IPO likely by the end of October at a valuation above ₹12 trillion",
+      "title": "Jio seeks a valuation of about $114 billion; the IPO opens in the week of 19 October",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "valuation": "about $114bn",
+        "opens": "week of 19 Oct",
+        "size": "about $3.4bn"
+      },
       "first_printed": "2026-10-04",
-      "last_printed": "2026-10-04",
-      "last_change": "2026-10-04",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2433,6 +2455,765 @@
         "down": 0
       },
       "section": "videsh"
+    },
+    {
+      "thread_id": "china-open-2026",
+      "title": "Medvedev defaulted for hitting a spectator with a ball; Djokovic plays de Minaur in the Beijing final today",
+      "entities": [],
+      "facts": {
+        "semi": "Medvedev defaulted at 7-5 5-3",
+        "final": "v de Minaur, 6 Oct 16:30 IST",
+        "record": "33-0 in Beijing"
+      },
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "deuce"
+    },
+    {
+      "thread_id": "harmanpreet-captaincy-2026",
+      "title": "Harmanpreet Kaur steps down as India captain in all formats and will play on",
+      "entities": [],
+      "facts": {
+        "stepped_down": "all formats",
+        "playing": "continues",
+        "successor": "not named"
+      },
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "sinner-knee-2026",
+      "title": "Sinner ends his season with a knee problem and will miss Shanghai and the ATP Finals",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "deuce"
+    },
+    {
+      "thread_id": "blr-rrts-2026",
+      "title": "Shivakumar's plan for the Bengaluru region includes a 270 km rapid rail network to Tumakuru, Mysuru and KGF",
+      "entities": [],
+      "facts": {
+        "rrts": "270 km to Tumakuru, Mysuru, KGF",
+        "metro_2037": "312 km"
+      },
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "blr-race-course-road-2026",
+      "title": "Race Course Road restricted for 60 days from Maurya Junction to Hare Krishna Road for white-topping",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "blr-zomato-hindi-row",
+      "title": "A Zomato warehouse supervisor apologised after a video showed him telling Kannada-speaking staff to learn Hindi",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "karnataka-prison-dig-2026",
+      "title": "A prisons DIG is arrested for freeing a murder convict from Bengaluru Central Prison in 2018 with a forged Supreme Court order",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "blr-form7-fir-2026",
+      "title": "A second FIR in Malleswaram over 136 Form-7 applications that allegedly used forged papers to delete voters",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "ranchi-power-2026",
+      "title": "Power cuts in Morabadi, Bariatu, Kanke and Pundag on Tuesday for pre-Puja maintenance",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "prayagraj-digital-arrest-2026",
+      "title": "Police arrest a law graduate over a 36-day 'digital arrest' that took ₹1.79 crore from a Georgetown resident",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "rbi-policy-oct-2026",
+      "title": "RBI announces its rate decision at 10:00 on Wednesday; most economists expect the first rise since 2023",
+      "entities": [],
+      "facts": {
+        "repo": "5.25%",
+        "expected": "+25 bp to 5.50%",
+        "decision": "7 Oct 10:00",
+        "cpi_aug": "4.82%"
+      },
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "sebi-cas-2026",
+      "title": "SEBI to stop using the closing auction to settle futures and options for at least a year, Reuters reports",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "gst-council-oct-2026",
+      "title": "GST Council moved to Thursday; tax credit on company vehicles of up to 13 seats is on the table",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "trent-q2-2026",
+      "title": "Trent jumps 12% as quarterly revenue rises 23% and Zudio opens its 1,000th store",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "tata-trusts-complaint-2026",
+      "title": "Maharashtra's Charity Commissioner gives Tata Trusts until 12 October to answer Venu Srinivasan's and Vijay Singh's complaints",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "specialty-chem-rally-oct-2026",
+      "title": "Specialty chemical shares jump on hopes of a recovery: Balaji Amines up 20%, Alkyl Amines 18%",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "schneider-ptc-2026",
+      "title": "Schneider Electric agrees to buy US software maker PTC for $22.6 billion, its largest deal",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "musk-trillionaire-2026",
+      "title": "Elon Musk is worth $1.04 trillion again after SpaceX and Tesla shares rose on Monday",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "india-switzerland-2026",
+      "title": "India and Switzerland sign a migration deal with five-year multiple-entry visas and 300 young-professional places a year",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "mumbai-airport-t1-2026",
+      "title": "Mumbai airport asks airlines to drop 265 of 770 weekly international departures from 25 October",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "up-rajya-sabha-2026",
+      "title": "All 10 Rajya Sabha candidates from Uttar Pradesh, eight BJP and two SP, are set to win unopposed",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "punjab-cbi-probe-2026",
+      "title": "Punjab goes to the Supreme Court against a High Court order for a CBI inquiry in a case naming the chief minister's aide",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "bengal-sir-tribunals-2026",
+      "title": "Bengal's voter-list tribunal judges say the Commission's portal is delaying cases; 1.2 lakh of 38.2 lakh appeals decided",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "black-sea-ship-2026",
+      "title": "Indian sailor hurt as drones sink a cargo ship off Romania; two crew members killed",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "ebola-2026",
+      "title": "Kenya confirms its first Ebola case, a man who came from Congo and has died",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "quebec-election-2026",
+      "title": "Quebec separatists win the provincial election and promise a third independence referendum",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "nigeria-plane-crash-2026",
+      "title": "All 32 people on a Nigerian air force plane died when it crashed into a swamp in Ondo state",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "nidal-hasan-execution",
+      "title": "Trump approves execution by firing squad for Nidal Hasan, who killed 13 at Fort Hood in 2009",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "guler-contract-2026",
+      "title": "Güler agrees to extend his contract to 2031 with a pay rise, AS reports",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "messi-argentina-farewell",
+      "title": "Messi plays his last match for Argentina against Benin at the Monumental, 02:30 IST on Wednesday",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "india-uruguay-football-2026",
+      "title": "India play Uruguay in Kolkata tonight at 20:00 IST, four days after losing 4–0 to Brazil",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "ita-tur-oct-2026",
+      "title": "Italy beat Türkiye 3–1 in Bologna, with Pio Esposito sealing it in the 88th minute",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "russell-engine-2026",
+      "title": "Russell faces grid penalties in Singapore and Austin if his Sepang engine cannot be saved",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "verstappen-v8-push-to-pass",
+      "title": "Verstappen wants F1 to swap its hybrid engines for a V8 with a small battery for push-to-pass and drop DRS",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "ind-wi-t20is-2026",
+      "title": "Shreyas Iyer leads India in the first T20I tonight; Morkel says Gambhir will rotate the squad",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "ganguly-dc-coach",
+      "title": "Sourav Ganguly named Delhi Capitals head coach for IPL 2027, replacing Hemang Badani",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "shanghai-masters-2026",
+      "title": "Shanghai Masters starts on Wednesday: Alcaraz and Djokovic have byes, and are in opposite halves",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "deuce"
+    },
+    {
+      "thread_id": "liv-golf-2026",
+      "title": "LIV Golf gets a $300 million commitment from BC Partners Credit after Saudi Arabia's fund pulled out",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "openai-ads-2026",
+      "title": "ChatGPT will show picture ads while it makes images, starting with a US test this month",
+      "entities": [],
+      "facts": {
+        "plans": "Free and Go",
+        "test": "US, later in October",
+        "eu": "text watermark in coming weeks"
+      },
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "reflection-beam-2026",
+      "title": "Reflection releases Beam, an American open model it says matches China's best for less computing power",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "deepseek-funding-2026",
+      "title": "DeepSeek is set to raise at least $12 billion, led by Tencent and CATL, ahead of a 2027 listing",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "korea-bank-ai-hacks",
+      "title": "South Korea's president says AI appears to have been used in hacks on Shinhan, Kookmin and Hana banks",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "anthropic-moreno-letter",
+      "title": "A Republican senator writes to Dario Amodei warning Anthropic against 'panic-inducing' talk before its listing",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "etched-funding-2026",
+      "title": "Chip start-up Etched is in early talks to raise money at a $40 billion to $50 billion valuation",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "amd-supply-2027",
+      "title": "AMD's Lisa Su says the company will 'substantially increase' chip supply in 2027",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "iphone-duo-2026",
+      "title": "iPhone Duo comes to India at ₹2,99,900; pre-orders open on 16 October",
+      "entities": [],
+      "facts": {
+        "price_from": "₹2,99,900",
+        "preorder": "16 Oct",
+        "sale": "23 Oct"
+      },
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "whatsapp-old-os-2026",
+      "title": "WhatsApp starts stopping logins on phones with outdated software until the system is updated",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "nobel-2026",
+      "title": "Medicine Nobel goes to three scientists who learned to switch brain cells on and off with light",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "apple-october-event-2026",
+      "title": "Apple is said to hold an event on 13 October for a home hub with a screen, a new HomePod mini and Apple TV",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-06",
+      "last_printed": "2026-10-06",
+      "last_change": "2026-10-06",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
     }
   ]
 }
