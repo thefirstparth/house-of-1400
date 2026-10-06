@@ -1,5 +1,7 @@
 # The House of 1400
 
+Built by Parth Bhatia (https://bhatia.page).
+
 Private afternoon newspaper for Parth. Static news written daily, live widgets refreshed in the browser. Built and run by Claude Code, hosted on Vercel.
 
 Start with `CLAUDE.md`.

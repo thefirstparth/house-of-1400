@@ -87,6 +87,8 @@ section.sec:first-of-type{margin-top:26px}
 .dfoot nav{display:flex;gap:6px 22px;flex-wrap:wrap}
 .dfoot a{color:var(--ink2);text-decoration:none}
 .dfoot a:hover{text-decoration:underline}
+.dfoot .credit{flex-basis:100%}
+.dfoot .credit a{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
 @media (max-width:720px){
  .drun .tag{display:none}
  .dbar{padding-bottom:8px}

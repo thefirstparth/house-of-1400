@@ -1921,7 +1921,7 @@ function render() {
   h += desksHTML(S);
   h += deskBlock();
   h += `<div class="house" id="house"><b>${esc(sec("house").name)}</b><p>${esc(E.house_note)}</p></div>`;
-  h += `<div class="foot">${esc(`THE HOUSE OF 1400 · ${longDate(E.date).toUpperCase()} · NO. ${n} · EDITED BY ${CFG.paper.editor.signature.replace(", Editor", "").toUpperCase()}`)}<br><a href="/editor">About the editor</a> · <a href="/archive">The Archive</a></div>`;
+  h += `<div class="foot">${esc(`THE HOUSE OF 1400 · ${longDate(E.date).toUpperCase()} · NO. ${n} · EDITED BY ${CFG.paper.editor.signature.replace(", Editor", "").toUpperCase()}`)}<br><a href="/editor">About the editor</a> · <a href="/archive">The Archive</a><br>Built by <a href="https://bhatia.page/projects/house-of-1400" target="_blank">Parth Bhatia</a></div>`;
   $("#main").innerHTML = h;
   balanceFront(true); balanceStories();
   document.fonts?.ready.then(() => balanceFront(true));
