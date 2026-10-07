@@ -1,20 +1,8 @@
 {
-  "date": "2026-10-06",
+  "date": "2026-10-07",
   "source": "Cricbuzz",
-  "checked_at": "2026-10-06T09:30:18.718Z",
+  "checked_at": "2026-10-07T08:38:33.551Z",
   "matches": [
-    {
-      "desc": "1st T20I",
-      "format": "T20",
-      "series": "West Indies tour of India, 2026",
-      "opponent": "West Indies",
-      "start": "2026-10-06T13:30:00.000Z",
-      "ist": "Tue 6 Oct, 19:00",
-      "time_announced": true,
-      "ground": "Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium",
-      "city": "Lucknow",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/151565"
-    },
     {
       "desc": "2nd T20I",
       "format": "T20",
@@ -100,6 +88,18 @@
       "url": "https://www.cricbuzz.com/live-cricket-scores/161212"
     },
     {
+      "desc": "Group C",
+      "format": "T20",
+      "series": "Hong Kong Sixes 2026",
+      "opponent": "Pakistan",
+      "start": "2026-10-30T06:15:00.000Z",
+      "ist": "Fri 30 Oct, 11:45",
+      "time_announced": true,
+      "ground": "Mission Road Ground",
+      "city": "Mong Kok",
+      "url": "https://www.cricbuzz.com/live-cricket-scores/175120"
+    },
+    {
       "desc": "4th T20I",
       "format": "T20",
       "series": "India tour of New Zealand 2026",
@@ -110,6 +110,18 @@
       "ground": "Eden Park",
       "city": "Auckland",
       "url": "https://www.cricbuzz.com/live-cricket-scores/161223"
+    },
+    {
+      "desc": "Group C",
+      "format": "T20",
+      "series": "Hong Kong Sixes 2026",
+      "opponent": "United Arab Emirates",
+      "start": "2026-10-31T02:35:00.000Z",
+      "ist": "Sat 31 Oct, 08:05",
+      "time_announced": true,
+      "ground": "Mission Road Ground",
+      "city": "Mong Kok",
+      "url": "https://www.cricbuzz.com/live-cricket-scores/175153"
     },
     {
       "desc": "5th T20I",
@@ -440,12 +452,12 @@
     {
       "name": "West Indies tour of India, 2026",
       "opponent": "West Indies",
-      "from": "2026-10-06",
+      "from": "2026-10-09",
       "parts": [
         {
           "format": "T20",
           "total": 5,
-          "played": 0
+          "played": 1
         }
       ],
       "now": true

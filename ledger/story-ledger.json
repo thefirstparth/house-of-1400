@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-06T09:50:06.865Z",
-  "last_edition": "2026-10-06",
+  "last_updated": "2026-10-07T08:47:07.171Z",
+  "last_edition": "2026-10-07",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -534,7 +534,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Police stop opposition MPs marching on the Election Commission and briefly detain Rahul Gandhi",
+      "title": "Rahul and Priyanka Gandhi booked for trespass; the Chief Justice will consider recalling the split verdict on the CEC law",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -554,11 +554,13 @@
         "sc": "no suspension; notice to Centre and ECI",
         "march": "6 Oct, stopped on Parliament Street",
         "bjd": "joined",
-        "sc_immunity_remark": "5 Oct"
+        "sc_immunity_remark": "5 Oct",
+        "fir": "trespass, Parliament Street police station",
+        "cji": "will examine recall plea"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1869,7 +1871,7 @@
     },
     {
       "thread_id": "ronaldo-portugal-2026",
-      "title": "Portugal beat Norway without Ronaldo, and the coach says the door is open for his return",
+      "title": "Ronaldo says Jorge Jesus twice broke his word, apologises to his teammates, and is not retiring",
       "entities": [],
       "facts": {
         "left": "30 Sep, Copenhagen",
@@ -1879,11 +1881,12 @@
         "denmark_portugal": "2-4",
         "statement": "not yet given",
         "future": "unclear",
-        "jesus": "door open"
+        "jesus": "door open",
+        "retiring": "no"
       },
       "first_printed": "2026-10-01",
-      "last_printed": "2026-10-05",
-      "last_change": "2026-10-05",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1989,15 +1992,16 @@
     },
     {
       "thread_id": "alcaraz-tokyo-2026",
-      "title": "Alcaraz comes from a set down to beat Munar and meets Lehecka in the Tokyo final this afternoon",
+      "title": "Alcaraz beats Lehecka 7–6 6–4 to keep his Tokyo title, his first since February",
       "entities": [],
       "facts": {
         "alcaraz": "bt Munar 5-7 6-3 6-1, final v Lehecka 6 Oct",
-        "djokovic": "beat Zverev 4-6 6-4 6-4, SF v Medvedev"
+        "djokovic": "beat Zverev 4-6 6-4 6-4, SF v Medvedev",
+        "score": "7-6(4) 6-4"
       },
       "first_printed": "2026-10-02",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2458,16 +2462,19 @@
     },
     {
       "thread_id": "china-open-2026",
-      "title": "Medvedev defaulted for hitting a spectator with a ball; Djokovic plays de Minaur in the Beijing final today",
+      "title": "Djokovic wins a seventh Beijing title at 39, the 102nd of his career, when de Minaur retires",
       "entities": [],
       "facts": {
         "semi": "Medvedev defaulted at 7-5 5-3",
         "final": "v de Minaur, 6 Oct 16:30 IST",
-        "record": "33-0 in Beijing"
+        "record": "33-0 in Beijing",
+        "score": "7-6(3) 0-1 ret",
+        "titles": 102,
+        "beijing": "34-0"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2619,17 +2626,21 @@
     },
     {
       "thread_id": "rbi-policy-oct-2026",
-      "title": "RBI announces its rate decision at 10:00 on Wednesday; most economists expect the first rise since 2023",
+      "title": "RBI raises the repo rate to 5.5%, its first rise since 2023, and shuts the door on cuts for now",
       "entities": [],
       "facts": {
-        "repo": "5.25%",
+        "repo": "5.50% from 5.25%",
         "expected": "+25 bp to 5.50%",
         "decision": "7 Oct 10:00",
-        "cpi_aug": "4.82%"
+        "cpi_aug": "4.82%",
+        "vote": "unanimous",
+        "stance": "calibrated tightening",
+        "cpi_fy27": "5.2%",
+        "gdp_fy27": "7.1%"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2909,12 +2920,16 @@
     },
     {
       "thread_id": "messi-argentina-farewell",
-      "title": "Messi plays his last match for Argentina against Benin at the Monumental, 02:30 IST on Wednesday",
+      "title": "Messi scores in his last match for Argentina, a 3–0 win over Benin, and leaves in tears",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "score": "3-0",
+        "goals": 126,
+        "caps": 208
+      },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2924,12 +2939,14 @@
     },
     {
       "thread_id": "india-uruguay-football-2026",
-      "title": "India play Uruguay in Kolkata tonight at 20:00 IST, four days after losing 4–0 to Brazil",
+      "title": "India lose 6–1 to Uruguay in Kolkata, four days after a 4–0 defeat by Brazil",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "score": "1-6"
+      },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2954,12 +2971,14 @@
     },
     {
       "thread_id": "russell-engine-2026",
-      "title": "Russell faces grid penalties in Singapore and Austin if his Sepang engine cannot be saved",
+      "title": "Russell will start the Singapore Grand Prix from the back of the grid",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "start": "back of grid"
+      },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2984,12 +3003,16 @@
     },
     {
       "thread_id": "ind-wi-t20is-2026",
-      "title": "Shreyas Iyer leads India in the first T20I tonight; Morkel says Gambhir will rotate the squad",
+      "title": "Shreyas Iyer's 102 not out from 43 balls wins the first T20I by eight wickets",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "wi": "171 (19.1)",
+        "ind": "172/2 (14.4)",
+        "iyer": "102* (43)"
+      },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3214,6 +3237,159 @@
         "down": 0
       },
       "section": "tech"
+    },
+    {
+      "thread_id": "telecom-tariffs-2026",
+      "title": "Airtel raises postpaid plans by ₹50 from Thursday, adding one free roaming pack a year",
+      "entities": [],
+      "facts": {
+        "rise": "₹50",
+        "effective": "2026-10-08"
+      },
+      "first_printed": "2026-10-07",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "madrid-injuries-oct-2026",
+      "title": "Konaté and Militão train with the group before Villarreal",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-07",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "india-nz-tour-2026",
+      "title": "Bhuvneshwar Kumar recalled for the New Zealand T20Is after four years; Bumrah rested",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-07",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "sc-bench-2026",
+      "title": "Three new Supreme Court judges sworn in; the court is one short of its full strength of 38",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-07",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "ukraine-war-2026",
+      "title": "Russia fires about 70 missiles and drones at Kyiv and other regions; at least 11 dead",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-07",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "russia-plague-2026",
+      "title": "WHO asks Russia for details after a worker at a Siberian plague laboratory dies",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-07",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "ai-math-2026",
+      "title": "OpenAI publishes 722 papers of maths results from an unreleased model",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-07",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "ai-watermark-2026",
+      "title": "ChatGPT text will carry a hidden watermark by default in the EU",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-07",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "nobel-physics-2026",
+      "title": "Physics Nobel goes to Francis Halzen, who built IceCube to catch neutrinos in Antarctic ice",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-07",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "blr-police-2026",
+      "title": "Cabinet splits Bengaluru police into five commissionerates under a chief commissioner",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-07",
+      "last_printed": "2026-10-07",
+      "last_change": "2026-10-07",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
     }
   ]
 }

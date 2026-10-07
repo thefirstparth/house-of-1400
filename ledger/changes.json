@@ -122,6 +122,32 @@
       "section": "ledger",
       "found_by": "daily run, 6 Oct 2026 (wider net)",
       "printed_on": "2026-09-28"
+    },
+    {
+      "id": "airtel-postpaid-oct-2026",
+      "what": "Airtel postpaid plans up Rs 50, with one free five-day international roaming pack a year; existing users move to the nearest higher plan within a month",
+      "who": "Bharti Airtel",
+      "announced": "2026-10-07",
+      "effective": "2026-10-08",
+      "sources": [
+        "https://www.thehindubusinessline.com/markets/stock-markets/bharti-airtel-shares-rise-over-2-after-postpaid-tariff-hike-motilal-oswal-retains-buy/article71554810.ece"
+      ],
+      "section": "ledger",
+      "found_by": "daily run 2026-10-07 (money sweep)",
+      "printed_on": "2026-10-07"
+    },
+    {
+      "id": "repo-rate-oct-2026",
+      "what": "RBI repo rate raised 25 basis points to 5.50%; stance changed to calibrated tightening",
+      "who": "RBI",
+      "announced": "2026-10-07",
+      "effective": "2026-10-07",
+      "sources": [
+        "https://www.livemint.com/money/personal-finance/rbi-repo-rate-hike-how-will-the-25-bps-increase-affect-your-home-loan-emi-experts-explain-11791352919630.html"
+      ],
+      "section": "ledger",
+      "found_by": "daily run 2026-10-07",
+      "printed_on": "2026-10-07"
     }
   ]
 }

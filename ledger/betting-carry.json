@@ -1,18 +1,12 @@
 {
-  "date": "2026-10-06",
-  "from": "2026-10-05",
+  "date": "2026-10-07",
+  "from": "2026-10-06",
   "carry": [
     {
-      "id": "pm:brazil-presidential-election-second-round-margin-of-victory",
-      "title": "Brazil Presidential Election Second Round: Margin of Victory",
-      "since": "2026-10-05",
-      "reason": "next in line; #1 by 24h volume"
-    },
-    {
-      "id": "pm:ballon-dor-winner-2026",
-      "title": "Ballon d'Or Winner 2026",
+      "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
+      "title": "UEFA Champions League: 2027 Champion",
       "since": "2026-09-25",
-      "reason": "#3 by 24h volume"
+      "reason": "#2 by 24h volume"
     },
     {
       "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
@@ -21,44 +15,50 @@
       "reason": "#4 by 24h volume"
     },
     {
-      "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
-      "title": "UEFA Champions League: 2027 Champion",
-      "since": "2026-09-25",
-      "reason": "#7 by 24h volume"
+      "id": "pm:brazil-presidential-election-second-round-margin-of-victory",
+      "title": "Brazil Presidential Election Second Round: Margin of Victory",
+      "since": "2026-10-05",
+      "reason": "#5 by 24h volume"
     },
     {
-      "id": "pm:atp-alcaraz-lehecka-2026-10-06",
-      "title": "Japan Open Tennis Championships: Carlos Alcaraz vs Jiri Lehecka",
-      "since": "2026-10-05",
-      "reason": "next in line; #9 by 24h volume; Carlos Alcaraz moved 10.0 pts since printed"
+      "id": "pm:ballon-dor-winner-2026",
+      "title": "Ballon d'Or Winner 2026",
+      "since": "2026-09-25",
+      "reason": "#6 by 24h volume"
     },
     {
       "id": "pm:nobel-peace-prize-winner-2026-139",
       "title": "Nobel Peace Prize Winner 2026",
       "since": "2026-10-03",
-      "reason": "#14 by 24h volume"
+      "reason": "#10 by 24h volume"
+    },
+    {
+      "id": "pm:strait-of-hormuz-traffic-returns-to-normal-by-december-31",
+      "title": "Strait of Hormuz traffic returns to normal by December 31?",
+      "since": "2026-10-06",
+      "reason": "#18 by 24h volume"
     }
   ],
   "dropped": [
     {
-      "id": "pm:2026-f1-drivers-champion",
-      "title": "F1 Drivers' Champion",
-      "why": "cooled: outside the ranking by volume, moved 0.1 pts"
-    },
-    {
-      "id": "pm:unl-hrv-esp-2026-10-06",
-      "title": "Croatia vs. Spain",
+      "id": "pm:atp-alcaraz-lehecka-2026-10-06",
+      "title": "Japan Open Tennis Championships: Carlos Alcaraz vs Jiri Lehecka",
       "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:which-company-has-best-ai-model-end-of-2026",
-      "title": "Which company has best AI model end of 2026?",
-      "why": "cooled: #21 by volume, moved 1.5 pts"
+      "id": "pm:atp-djokovi-minaur-2026-10-06",
+      "title": "China Open: Novak Djokovic vs Alex de Minaur",
+      "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:unl-ita-tur-2026-10-05",
-      "title": "Italy vs. Türkiye",
+      "id": "pm:fif-ind-ury-2026-10-06",
+      "title": "India vs. Uruguay",
       "why": "ended or decided, no next market in the same line"
+    },
+    {
+      "id": "pm:gemini-4pt0-released-by-june-30-2026",
+      "title": "Gemini 4.0 released by...?",
+      "why": "carry cap of 6"
     }
   ]
 }
