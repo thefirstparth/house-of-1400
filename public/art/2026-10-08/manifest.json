@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-08",
+  "made_by": "Codex",
+  "items": [
+    {
+      "story_id": "sensex-1000-oil-102",
+      "file": "sensex-1000-oil-102.webp",
+      "alt": "A hand-drawn editorial cartoon shows the Sensex tipping downward under Brent oil above $102, rising U.S. bond yields and foreign-investor selling."
+    },
+    {
+      "story_id": "nana-patekar-dies",
+      "file": "nana-patekar-dies.webp",
+      "alt": "A watercolor-and-ink tribute portrays Nana Patekar seated on a Goa terrace, surrounded by film reels, posters, awards and an empty director's chair."
+    },
+    {
+      "story_id": "gpt6-chatgpt-free",
+      "file": "gpt6-chatgpt-free.webp",
+      "alt": "A cartoon shows a delighted ChatGPT user beside GPT-6 signage and interactive chart, map and action panels marked Free plus Go."
+    },
+    {
+      "story_id": "rahul-three-firs",
+      "file": "rahul-three-firs.webp",
+      "alt": "A political cartoon shows Rahul and Priyanka Gandhi facing police barricades and a stack of three new FIR notices outside the Election Commission."
+    },
+    {
+      "story_id": "us-opt-70k-fee",
+      "file": "us-opt-70k-fee.webp",
+      "alt": "A graduate faces a proposed $70,000 OPT fee at a U.S. university checkpoint, with signs showing the later extension fee and comment period."
+    }
+  ]
+}
