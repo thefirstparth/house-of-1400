@@ -148,6 +148,19 @@
       "section": "ledger",
       "found_by": "daily run 2026-10-07",
       "printed_on": "2026-10-07"
+    },
+    {
+      "id": "bank-repo-linked-rates-oct-2026",
+      "what": "Repo-linked lending rates up 25 bps: PNB 8.35%, Bank of India 8.35%, Indian Bank 8.20%, Bank of Baroda 8.15%",
+      "who": "PNB, Bank of India, Indian Bank, Bank of Baroda",
+      "announced": "2026-10-08",
+      "effective": "2026-10-08",
+      "sources": [
+        "https://economictimes.indiatimes.com/wealth/borrow/higher-emis-ahead-pnb-bank-of-india-bank-of-baroda-and-indian-bank-raise-lending-rates-check-details/articleshow/134782736.cms"
+      ],
+      "section": "ledger",
+      "found_by": "daily run 2026-10-08 (money sweep)",
+      "printed_on": "2026-10-08"
     }
   ]
 }

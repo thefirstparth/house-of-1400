@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-07T08:47:07.171Z",
-  "last_edition": "2026-10-07",
+  "last_updated": "2026-10-08T08:42:51.451Z",
+  "last_edition": "2026-10-08",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -25,25 +25,28 @@
     },
     {
       "thread_id": "india-markets-daily",
-      "title": "Shares close an eighth straight losing week; markets shut for Gandhi Jayanti",
+      "title": "Sensex falls about 1,000 points as Brent tops $102 and US bond yields hit multi-year highs",
       "entities": [],
       "facts": {
         "sensex_close": "71909.7",
         "nifty_close": "22421.95",
         "date": "2026-10-01",
         "sensex_move": "down over 1,000 points intraday",
-        "nifty": "below 22,850",
+        "nifty": "22,261 (-1.51%)",
         "trigger": "Hormuz plan rejected, oil up",
         "level": "2026 low",
         "fii_sept": "20695 crore",
         "fpi_sept": "-35861 crore",
         "bofa": "100 bps hikes through H1 2027",
-        "us10y": "5.31%",
-        "weeks": "8"
+        "us10y": ">5.3%",
+        "weeks": "8",
+        "sensex": "71,670 (-968) at 13:25",
+        "brent": ">$102",
+        "fii_9d": "~₹57,000 cr"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-02",
-      "last_change": "2026-10-02",
+      "last_printed": "2026-10-08",
+      "last_change": "2026-10-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -507,7 +510,7 @@
     },
     {
       "thread_id": "upi-mdr-2026",
-      "title": "Supreme Court declines to pause the UPI merchant fee, asks the Centre to explain it",
+      "title": "The UPI merchant fee due on 15 October may be pushed to January",
       "entities": [],
       "facts": {
         "mdr": "0.4%",
@@ -520,11 +523,13 @@
         "sc_hearing": "2026-09-28",
         "flat_fee_sectors": "Rs 5",
         "sc_interim_stay": "refused",
-        "replies_due": "4 weeks"
+        "replies_due": "4 weeks",
+        "start": "15 Oct, may move to Jan",
+        "decided": "no"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-28",
-      "last_change": "2026-09-28",
+      "last_printed": "2026-10-08",
+      "last_change": "2026-10-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -534,7 +539,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Rahul and Priyanka Gandhi booked for trespass; the Chief Justice will consider recalling the split verdict on the CEC law",
+      "title": "Three more FIRs against Rahul and Priyanka Gandhi, this time for assaulting police; the CEC's security is raised",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -556,11 +561,14 @@
         "bjd": "joined",
         "sc_immunity_remark": "5 Oct",
         "fir": "trespass, Parliament Street police station",
-        "cji": "will examine recall plea"
+        "cji": "will examine recall plea",
+        "firs": 3,
+        "charges": "assault on police, obstruction",
+        "cec_security": "raised"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-07",
-      "last_change": "2026-10-07",
+      "last_printed": "2026-10-08",
+      "last_change": "2026-10-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -612,17 +620,18 @@
     },
     {
       "thread_id": "mbappe-knee-2026",
-      "title": "Mbappé back at Valdebebas for recovery work, aiming to face Villarreal on Saturday",
+      "title": "Mbappé expected to be fit for Villarreal, though Mourinho may save him for Roma",
       "entities": [],
       "facts": {
         "injury": "left knee posterior capsule",
         "status": "recovery work, not cleared",
         "militao": "back in group training",
-        "target": "Villarreal 10 Oct"
+        "target": "Villarreal 10 Oct",
+        "villarreal": "expected fit"
       },
       "first_printed": "2026-09-26",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-08",
+      "last_change": "2026-10-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1967,7 +1976,7 @@
     },
     {
       "thread_id": "f1-bahrain-gp-2026",
-      "title": "Verstappen wins at Sepang, his first victory of the season, after a 90-minute delay",
+      "title": "FIA finds the Sepang stall was a software bug in the wet-weather power cut, and changes the rule for Singapore",
       "entities": [],
       "facts": {
         "fp1": "Verstappen P1, 1m37.520s",
@@ -1978,11 +1987,13 @@
         "winner": "Verstappen",
         "p2": "Antonelli",
         "p3": "Hamilton",
-        "russell": "retired"
+        "russell": "retired",
+        "cause": "250kW wet power-cut software bug",
+        "singapore": "heat hazard"
       },
       "first_printed": "2026-10-02",
-      "last_printed": "2026-10-05",
-      "last_change": "2026-10-05",
+      "last_printed": "2026-10-08",
+      "last_change": "2026-10-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2274,16 +2285,19 @@
     },
     {
       "thread_id": "saudi-houthi-2026",
-      "title": "Pakistan and Türkiye agree to send forces to Saudi Arabia as the Mecca defence pact is invoked for the first time",
+      "title": "Houthi attacks on two Saudi airports kill three; India calls them unacceptable",
       "entities": [],
       "facts": {
         "pact": "activated 5 Oct",
         "forces": "Pakistan, Türkiye to deploy",
-        "airports_hit": "Jazan, Najran"
+        "airports_hit": "Jazan, Najran",
+        "dead": 3,
+        "injured": 36,
+        "airports": "Abha, King Khalid Riyadh"
       },
       "first_printed": "2026-10-04",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-08",
+      "last_change": "2026-10-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2626,7 +2640,7 @@
     },
     {
       "thread_id": "rbi-policy-oct-2026",
-      "title": "RBI raises the repo rate to 5.5%, its first rise since 2023, and shuts the door on cuts for now",
+      "title": "PNB, Bank of Baroda, Bank of India and Indian Bank pass on the rate rise to repo-linked loans",
       "entities": [],
       "facts": {
         "repo": "5.50% from 5.25%",
@@ -2636,11 +2650,15 @@
         "vote": "unanimous",
         "stance": "calibrated tightening",
         "cpi_fy27": "5.2%",
-        "gdp_fy27": "7.1%"
+        "gdp_fy27": "7.1%",
+        "pnb": "8.35%",
+        "boi": "8.35%",
+        "indian_bank": "8.20%",
+        "bob": "8.15%"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-07",
-      "last_change": "2026-10-07",
+      "last_printed": "2026-10-08",
+      "last_change": "2026-10-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3003,16 +3021,17 @@
     },
     {
       "thread_id": "ind-wi-t20is-2026",
-      "title": "Shreyas Iyer's 102 not out from 43 balls wins the first T20I by eight wickets",
+      "title": "Iyer climbs to No. 7 in the T20I batting rankings; the second match is in Ranchi on Friday",
       "entities": [],
       "facts": {
         "wi": "171 (19.1)",
         "ind": "172/2 (14.4)",
-        "iyer": "102* (43)"
+        "iyer": "102* (43)",
+        "rank": 7
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-07",
-      "last_change": "2026-10-07",
+      "last_printed": "2026-10-08",
+      "last_change": "2026-10-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3052,12 +3071,15 @@
     },
     {
       "thread_id": "liv-golf-2026",
-      "title": "LIV Golf gets a $300 million commitment from BC Partners Credit after Saudi Arabia's fund pulled out",
+      "title": "Jon Rahm will leave LIV Golf, calling the terms of its rescue unacceptable",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "rahm": "leaving LIV",
+        "settlement_hearing": "2026-11-05"
+      },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-08",
+      "last_change": "2026-10-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3384,6 +3406,109 @@
       "first_printed": "2026-10-07",
       "last_printed": "2026-10-07",
       "last_change": "2026-10-07",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "nana-patekar-2026",
+      "title": "Nana Patekar dies at 75 at his home in Goa",
+      "entities": [],
+      "facts": {
+        "age": 75,
+        "place": "Goa",
+        "cause": "suspected cardiac arrest"
+      },
+      "first_printed": "2026-10-08",
+      "last_printed": "2026-10-08",
+      "last_change": "2026-10-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "chatgpt-gpt6-2026",
+      "title": "GPT-6 reaches ChatGPT, free users included, with answers that can carry charts, maps and buttons",
+      "entities": [],
+      "facts": {
+        "paid": "GPT-6 Sol",
+        "free": "GPT-6 Luna from 8 Oct",
+        "feature": "Intelligent UI"
+      },
+      "first_printed": "2026-10-08",
+      "last_printed": "2026-10-08",
+      "last_change": "2026-10-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "us-student-work-fee-2026",
+      "title": "US proposes a $70,000 fee for each foreign student who works after graduating",
+      "entities": [],
+      "facts": {
+        "initial": "$70,000",
+        "later": "$30,000",
+        "payer": "schools",
+        "status": "proposed"
+      },
+      "first_printed": "2026-10-08",
+      "last_printed": "2026-10-08",
+      "last_change": "2026-10-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "starlink-india-2026",
+      "title": "Musk blames Indian 'oligarchs' for holding up Starlink; the government calls it baseless",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-08",
+      "last_printed": "2026-10-08",
+      "last_change": "2026-10-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "nobel-chemistry-2026",
+      "title": "Chemistry Nobel to Henri Kagan and Kenso Soai for reactions that make one mirror-image form of a molecule",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-08",
+      "last_printed": "2026-10-08",
+      "last_change": "2026-10-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "karnataka-hc-custody-2026",
+      "title": "Karnataka High Court tells courts to say 'parenting time', not 'visitation', in custody cases",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-08",
+      "last_printed": "2026-10-08",
+      "last_change": "2026-10-08",
       "status": "active",
       "votes": {
         "up": 0,
