@@ -161,6 +161,19 @@
       "section": "ledger",
       "found_by": "daily run 2026-10-08 (money sweep)",
       "printed_on": "2026-10-08"
+    },
+    {
+      "id": "gst-57th-council-2026",
+      "what": "GST Council recommends removing arrest powers (Section 69), prosecution threshold Rs 1 crore to Rs 5 crore, max general penalty Rs 10,000, ITC on employee health and life insurance; needs law changes",
+      "who": "GST Council",
+      "announced": "2026-10-08",
+      "effective": "pending amendments",
+      "sources": [
+        "https://www.livelawbiz.com/top-stories/57th-gst-council-meeting-recommends-removal-gst-arrest-offence-other-reforms-553781"
+      ],
+      "section": "ledger",
+      "found_by": "daily run 2026-10-09",
+      "printed_on": "2026-10-09"
     }
   ]
 }

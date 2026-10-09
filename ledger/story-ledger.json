@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-08T08:42:51.451Z",
-  "last_edition": "2026-10-08",
+  "last_updated": "2026-10-09T08:43:12.445Z",
+  "last_edition": "2026-10-09",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -25,7 +25,7 @@
     },
     {
       "thread_id": "india-markets-daily",
-      "title": "Sensex falls about 1,000 points as Brent tops $102 and US bond yields hit multi-year highs",
+      "title": "TCS profit up 15% with AI revenue past 10%; IT leads an 800-point Sensex rebound",
       "entities": [],
       "facts": {
         "sensex_close": "71909.7",
@@ -40,13 +40,16 @@
         "bofa": "100 bps hikes through H1 2027",
         "us10y": ">5.3%",
         "weeks": "8",
-        "sensex": "71,670 (-968) at 13:25",
+        "sensex": "72,399 (+806) at 13:05",
         "brent": ">$102",
-        "fii_9d": "~₹57,000 cr"
+        "fii_9d": "~₹57,000 cr",
+        "tcs_pat": "₹13,884 cr (+15%)",
+        "revenue": "₹73,188 cr",
+        "dividend": "₹12, record 14 Oct"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-08",
-      "last_change": "2026-10-08",
+      "last_printed": "2026-10-09",
+      "last_change": "2026-10-09",
       "status": "active",
       "votes": {
         "up": 0,
@@ -130,16 +133,17 @@
     },
     {
       "thread_id": "madrid-next-villarreal",
-      "title": "Break until Villarreal on 11 October",
+      "title": "Villarreal come to the Bernabéu with La Liga's third-best chance creation and without Tajon Buchanan",
       "entities": [],
       "facts": {
         "next": "Villarreal (H) 2026-10-10T19:00:00Z",
         "position": 4,
-        "points": 15
+        "points": 15,
+        "kickoff": "2026-10-10T19:00:00Z"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-25",
-      "last_change": "2026-09-25",
+      "last_printed": "2026-10-09",
+      "last_change": "2026-10-09",
       "status": "active",
       "votes": {
         "up": 0,
@@ -367,17 +371,18 @@
     },
     {
       "thread_id": "metro-pink-line",
-      "title": "Safety commissioner to inspect the Pink Line's elevated stretch from 6 to 8 October",
+      "title": "Safety commissioner finishes inspecting the Pink Line's elevated stretch; opening depends on BMRCL's fixes",
       "entities": [],
       "facts": {
         "expected": "mid-October",
-        "stretch": "Kalena Agrahara to Tavarekere",
+        "stretch": "Kalena Agrahara–Tavarekere 7.5 km",
         "protest": "symbolic opening by residents",
-        "cmrs": "6-8 Oct"
+        "cmrs": "6-8 Oct",
+        "status": "inspection complete"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-02",
-      "last_change": "2026-10-02",
+      "last_printed": "2026-10-09",
+      "last_change": "2026-10-09",
       "status": "active",
       "votes": {
         "up": 0,
@@ -539,7 +544,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Three more FIRs against Rahul and Priyanka Gandhi, this time for assaulting police; the CEC's security is raised",
+      "title": "President Murmu meets INDIA bloc leaders tonight; organisers say 10,000 held before Saturday's Delhi protest",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -551,7 +556,7 @@
         "opposition": "INDIA bloc seeks ballot papers",
         "meetings": "second in four days",
         "extended": "Andhra Pradesh, Meghalaya",
-        "detained": "Rahul and Priyanka Gandhi, other MPs",
+        "detained": "10,000 (CJP)",
         "internet": "suspended near Jantar Mantar",
         "karnataka": "Form 7 probe ordered",
         "mumbai": "Thackeray march",
@@ -562,13 +567,14 @@
         "sc_immunity_remark": "5 Oct",
         "fir": "trespass, Parliament Street police station",
         "cji": "will examine recall plea",
-        "firs": 3,
+        "firs": 25,
         "charges": "assault on police, obstruction",
-        "cec_security": "raised"
+        "cec_security": "raised",
+        "murmu": "8 pm Friday"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-08",
-      "last_change": "2026-10-08",
+      "last_printed": "2026-10-09",
+      "last_change": "2026-10-09",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2285,7 +2291,7 @@
     },
     {
       "thread_id": "saudi-houthi-2026",
-      "title": "Houthi attacks on two Saudi airports kill three; India calls them unacceptable",
+      "title": "A Saudia pilot was among the three killed when Riyadh's airport and a parked jet were hit",
       "entities": [],
       "facts": {
         "pact": "activated 5 Oct",
@@ -2293,11 +2299,13 @@
         "airports_hit": "Jazan, Najran",
         "dead": 3,
         "injured": 36,
-        "airports": "Abha, King Khalid Riyadh"
+        "airports": "Abha, King Khalid Riyadh",
+        "pilot": "killed",
+        "airport": "reopened"
       },
       "first_printed": "2026-10-04",
-      "last_printed": "2026-10-08",
-      "last_change": "2026-10-08",
+      "last_printed": "2026-10-09",
+      "last_change": "2026-10-09",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2683,12 +2691,17 @@
     },
     {
       "thread_id": "gst-council-oct-2026",
-      "title": "GST Council moved to Thursday; tax credit on company vehicles of up to 13 seats is on the table",
+      "title": "GST Council drops arrest powers, raises the prosecution threshold to ₹5 crore and allows tax credit on staff insurance",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "arrest": "Section 69 to go",
+        "prosecution": "₹5 crore",
+        "penalty": "₹10,000 max",
+        "itc": "employee insurance"
+      },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-09",
+      "last_change": "2026-10-09",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3325,12 +3338,15 @@
     },
     {
       "thread_id": "ukraine-war-2026",
-      "title": "Russia fires about 70 missiles and drones at Kyiv and other regions; at least 11 dead",
+      "title": "Russian glide bombs hit two buses in Kramatorsk, killing at least 30",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "dead": 30,
+        "place": "Kramatorsk"
+      },
       "first_printed": "2026-10-07",
-      "last_printed": "2026-10-07",
-      "last_change": "2026-10-07",
+      "last_printed": "2026-10-09",
+      "last_change": "2026-10-09",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3515,6 +3531,55 @@
         "down": 0
       },
       "section": "namma"
+    },
+    {
+      "thread_id": "us-perm-suspension-2026",
+      "title": "US bars TCS, Infosys, Wipro, HCL and four others from sponsoring green cards; India calls Vance's 'indentured servants' jibe deeply offensive",
+      "entities": [],
+      "facts": {
+        "firms": "Cognizant, Infosys, Capgemini, TCS, Wipro, HCL, Microsoft, Adobe",
+        "programme": "PERM",
+        "h1b_valid": "unaffected"
+      },
+      "first_printed": "2026-10-09",
+      "last_printed": "2026-10-09",
+      "last_change": "2026-10-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "noida-airport-2026",
+      "title": "Noida's Jewar airport to be named Narendra Modi International Airport",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-09",
+      "last_printed": "2026-10-09",
+      "last_change": "2026-10-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "openai-influence-2026",
+      "title": "OpenAI says it caught Russian and Iranian groups using ChatGPT for influence campaigns",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-09",
+      "last_printed": "2026-10-09",
+      "last_change": "2026-10-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
     }
   ]
 }

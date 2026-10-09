@@ -1,63 +1,63 @@
 {
-  "date": "2026-10-08",
-  "from": "2026-10-07",
+  "date": "2026-10-09",
+  "from": "2026-10-08",
   "carry": [
-    {
-      "id": "pm:brazil-presidential-election-second-round-margin-of-victory",
-      "title": "Brazil Presidential Election Second Round: Margin of Victory",
-      "since": "2026-10-05",
-      "reason": "#1 by 24h volume; Flávio Bolsonaro 4-8% moved 12.5 pts since printed"
-    },
     {
       "id": "pm:nobel-peace-prize-winner-2026-139",
       "title": "Nobel Peace Prize Winner 2026",
       "since": "2026-10-03",
-      "reason": "#2 by 24h volume"
+      "reason": "#1 by 24h volume"
     },
     {
-      "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
-      "title": "US announces end of Iranian blockade by...?",
-      "since": "2026-09-25",
-      "reason": "#4 by 24h volume"
+      "id": "pm:brazil-presidential-election-second-round-margin-of-victory",
+      "title": "Brazil Presidential Election Second Round: Margin of Victory",
+      "since": "2026-10-05",
+      "reason": "#2 by 24h volume"
     },
     {
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
       "title": "UEFA Champions League: 2027 Champion",
       "since": "2026-09-25",
+      "reason": "#3 by 24h volume"
+    },
+    {
+      "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
+      "title": "US announces end of Iranian blockade by...?",
+      "since": "2026-09-25",
+      "reason": "#5 by 24h volume"
+    },
+    {
+      "id": "pm:us-iran-ceasefire-continues-throughptptpt",
+      "title": "US-Iran ceasefire continues through...?",
+      "since": "2026-10-08",
       "reason": "#6 by 24h volume"
     },
     {
       "id": "pm:ballon-dor-winner-2026",
       "title": "Ballon d'Or Winner 2026",
       "since": "2026-09-25",
-      "reason": "#10 by 24h volume"
-    },
-    {
-      "id": "pm:which-company-has-the-best-ai-model-end-of-october",
-      "title": "Which company has the best AI model end of October?",
-      "since": "2026-10-07",
-      "reason": "#20 by 24h volume"
+      "reason": "#7 by 24h volume"
     }
   ],
   "dropped": [
     {
+      "id": "pm:which-company-has-the-best-ai-model-end-of-october",
+      "title": "Which company has the best AI model end of October?",
+      "why": "cooled: outside the ranking by volume, moved 0.5 pts"
+    },
+    {
+      "id": "pm:saudi-arabia-military-action-against-yemen-on-october-2026",
+      "title": "Saudi Arabia military action against Yemen on...?",
+      "why": "carry cap of 6"
+    },
+    {
       "id": "pm:strait-of-hormuz-traffic-returns-to-normal-by-december-31",
       "title": "Strait of Hormuz traffic returns to normal by December 31?",
-      "why": "cooled: #22 by volume, moved 1.0 pts"
+      "why": "carry cap of 6"
     },
     {
-      "id": "pm:spain-general-election-winner",
-      "title": "Spain General Election Winner",
-      "why": "cooled: outside the ranking by volume, moved 2.5 pts"
-    },
-    {
-      "id": "pm:epl-mun-tot-2026-10-10",
-      "title": "Manchester United FC vs. Tottenham Hotspur FC",
-      "why": "cooled: outside the ranking by volume, moved 0.0 pts"
-    },
-    {
-      "id": "pm:ecb-interest-rates-october-2026-20260723225848778",
-      "title": "ECB Interest Rates: October 2026",
+      "id": "pm:next-fable-model-5pt2-released-byptptpt",
+      "title": "Next Fable Model (5.2+) released by...?",
       "why": "carry cap of 6"
     }
   ]
