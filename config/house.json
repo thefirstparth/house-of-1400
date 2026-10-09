@@ -880,7 +880,7 @@
         "football": ["KXLALIGAGAME", "KXUCLGAME", "KXCOPADELREYGAME", "KXUEFASCGAME", "KXCLUBWCGAME", "KXUEFANLGAME", "KXINTLFRIENDLYGAME", "KXWCQUALGAME"],
         "tennis": ["KXATPMATCH"],
         "basketball": ["KXNBAGAME"],
-        "f1": ["KXF1RACE", "KXF1QUALIFY"]
+        "f1": ["KXF1RACE", "KXF1QUALIFY", "KXF1RACESPRINT", "KXF1SPRINTPOLE"]
       },
       "polymarket": {
         "cricket": ["cricket"],

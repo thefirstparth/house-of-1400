@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { sameSide, sidesOf, kalshiWhen, merge, fair } from "../lib/odds.js";
+import { sameSide, sidesOf, kalshiWhen, merge, fair, f1Kind } from "../lib/odds.js";
 
 test("sameSide: the same team or player under two books' names", () => {
   assert.ok(sameSide("Alcaraz", "Carlos Alcaraz"));
@@ -43,4 +43,10 @@ test("fair: a match's chances add up to 100; a race is left as priced", () => {
   assert.equal(Math.round(m.outcomes.reduce((t, o) => t + o.prob, 0)), 100);
   const r = { kind: "race", outcomes: [{ name: "A", prob: 29 }, { name: "B", prob: 26 }] };
   assert.deepEqual(fair(r), r);
+});
+
+// Each F1 session's own market (9 Oct 2026: the sprint had none, and sprint qualifying borrowed qualifying's)
+test("f1Kind: race, qualifying, sprint and sprint qualifying from Kalshi series and Polymarket titles", () => {
+  assert.deepEqual(["KXF1RACE", "KXF1QUALIFY", "KXF1RACESPRINT", "KXF1SPRINTPOLE"].map(f1Kind), ["race", "qualifying", "sprint", "sprint_qualifying"]);
+  assert.deepEqual(["Driver Winner", "Driver Pole Position", "Sprint Winner", "Sprint Qualifying Pole Winner"].map(f1Kind), ["race", "qualifying", "sprint", "sprint_qualifying"]);
 });

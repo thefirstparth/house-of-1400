@@ -1646,7 +1646,7 @@ function sameSide(x, y) {
   return sh.some(w => w.length >= 3) && sh.every(w => lg.includes(w));
 }
 const sportOfEntity = e => (/cricket/.test(e || "") ? "cricket" : /madrid|football|soccer|intl/.test(e || "") ? "football" : /^f1/.test(e || "") ? "f1" : /tennis/.test(e || "") ? "tennis" : /nba|warriors/.test(e || "") ? "basketball" : "");
-// sides: the row's two names; kind: "match", or "race" / "qualifying" for F1
+// sides: the row's two names; kind: "match", or "race" / "qualifying" / "sprint" / "sprint_qualifying" for F1
 function oddsFor(sport, sides, iso, kind = "match") {
   if (!E || E.date < ODDS_FROM || !sport || !iso) return null;
   const d = Date.parse(istDate(new Date(iso)));
@@ -1673,7 +1673,7 @@ function oddsHTML(m, { fav = false, short = false } = {}) {
 const sidesOfLabel = l => { const seg = String(l || "").split(" · ").find(x => / v /.test(x)); return seg ? seg.split(" v ").map(x => x.trim()) : null; };
 function fixtureOdds(f) {
   const sp = sportOfEntity(f.entity);
-  if (sp === "f1") { const k = /qualif/i.test(f.label) ? "qualifying" : /grand prix|race\b/i.test(f.label) && !/sprint|practice/i.test(f.label) ? "race" : null; return k ? oddsHTML(oddsFor("f1", null, f.when_utc, k)) : ""; }
+  if (sp === "f1") { const k = /practice/i.test(f.label) ? null : /sprint qualif/i.test(f.label) ? "sprint_qualifying" : /sprint/i.test(f.label) ? "sprint" : /qualif/i.test(f.label) ? "qualifying" : /grand prix|race\b/i.test(f.label) ? "race" : null; return k ? oddsHTML(oddsFor("f1", null, f.when_utc, k)) : ""; }
   return oddsHTML(oddsFor(sp, sidesOfLabel(f.label), f.when_utc));
 }
 
