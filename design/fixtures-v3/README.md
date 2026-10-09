@@ -10,3 +10,8 @@ favourite as a filled pill, a FINAL stamp); 3 · the day's line (a rail per day,
 sport, ticked once over). Laptop or phone width, day or night page.
 
 `node design/fixtures-v3/build.mjs` bakes `index.html`.
+
+Round 2, same day. Parth: "i hate 2, like 1, 3 looks okay but slightly complicated. Try building more around 1? Give 3
+more variants." So 2 and 3 are gone and the page shows 1 beside three variations on it: 1a · quieter (the market as one
+line of names and prices, no bar); 1b · sport colours and big dates (the two light touches from 3, without its rail);
+1c · today up front (1a with today on a lighter panel with a NOW line, and finished fixtures cut to one line each).
