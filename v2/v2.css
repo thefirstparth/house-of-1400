@@ -621,11 +621,12 @@ html.vs-open{overflow:hidden}
 /* The Fixture List, 3 Oct (Parth: "reduce some pixels ... without it getting too cramped"): the sport under the
    time, and the days flowing across the columns (layer.js flowAgenda) */
 .agenda li .t{display:flex;flex-direction:column;gap:3px}
-.agenda li .t .spt{font:700 10px/1.2 var(--sans);font-style:normal;letter-spacing:.09em;text-transform:uppercase;color:var(--d)}
+.agenda li .t .spt{font:700 10px/1.2 var(--sans);font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:var(--d)}
 .agenda li.done .t .spt{color:var(--muted)}
 .agenda.flowed{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:0 clamp(18px,2.4vw,36px);align-items:start}
 .agenda.flowed .col{min-width:0}
 .agenda.flowed .col>.day+.day h3{margin-top:18px}
+@media (max-width:720px){.agenda li:has(.spt){grid-template-columns:76px 1fr}}
 
 /* Page One weather, 3 Oct: today's low to high with now on it; the rest of the day's rain chance */
 .p1 .wx3 .c span.fr{display:flex;align-items:center;gap:10px}
