@@ -84,7 +84,7 @@ async function getJSON(url) {
 // ------------------------------------------------------------------ live layer
 // Primary and backup live in /api/live. Then the edition snapshot, with its time. Otherwise hide.
 // Keep in step with the list in index.html's <head>.
-const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where", "outlook", "club_knockouts", "odds", "rain", "alerts", "nowcast", "air_forecast", "cinema", "streaming", "upcoming", "stage"];
+const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "f1_sessions", "football", "laliga_table", "markets", "gold_in", "nba", "signals", "intl_football", "flows", "movers", "tennis_players", "crease", "club_stats", "cricket_where", "outlook", "club_knockouts", "odds", "rain", "alerts", "nowcast", "air_forecast", "cinema", "streaming", "upcoming", "stage"];
 const PRE = {}; // requests started at boot, before the config and edition arrive
 async function live(key, qs = "") {
   const past = ROUTE.kind === "edition";
@@ -235,14 +235,16 @@ function feedFixtures() {
         ...(m.state === "in" ? { live: true, score: pairScore(m, m.clock), scoreKey: "football" } : {}),
         ...(m.completed && m.score?.us != null ? { result: `${m.winner === "us" ? "Won" : m.winner === "them" ? "Lost" : "Drew"} ${m.score.us}–${m.score.them}` } : {}) });
   }
-  // F1: qualifying, sprint and race
-  const R = LIVE.f1_next?.value?.race;
-  if (R?.sessions?.length) {
+  // F1: qualifying, sprint and race; the weekend just run stays for the rest of its race day, when the F1 box has moved
+  // on to the next one, so its result is still on the list
+  const R0 = LIVE.f1_next?.value?.race, W = LIVE.f1_sessions?.value?.race;
+  for (const R of [R0, W && W.round !== R0?.round ? W : null]) {
+    if (!R?.sessions?.length) continue;
     have.add("f1");
     const place = String(R.circuit || R.locality || "").replace(/\s+(International\s+)?(Street\s+)?Circuit.*$/i, "").replace(/^Autodromo\s+/i, "") || R.locality || "";
     const gp = String(R.name || "").replace(/\s+in\s+.*$/, "");
     for (const x of R.sessions.filter(x => /^(qualifying|sprint|sprint qualifying|race)$/i.test(x.name)))
-      out.push({ when_utc: new Date(Date.parse(x.start)).toISOString(), label: /^race$/i.test(x.name) ? `F1 · ${gp}${place ? ` at ${place}` : ""}` : `F1 · ${place || gp} · ${x.name}`, entity: "f1", minutes: x.minutes || 60, source: LIVE.f1_next.source || "Jolpica", time_tbc: x.time_confirmed === false });
+      out.push({ when_utc: new Date(Date.parse(x.start)).toISOString(), label: /^race$/i.test(x.name) ? `F1 · ${gp}${place ? ` at ${place}` : ""}` : `F1 · ${place || gp} · ${x.name}`, entity: "f1", minutes: x.minutes || 60, source: LIVE.f1_next?.source || "Jolpica", time_tbc: x.time_confirmed === false });
   }
   // The Warriors (Parth, 3 Oct: "Golden State Warriors NBA games should make it to the fixture list"), preseason games
   // marked as such; a game finished today keeps its result
@@ -1364,7 +1366,7 @@ function intlBlock() {
 }
 
 // What happened in a finished match on the fixture list: tennis from ESPN, India's cricket from The Crease (Cricbuzz),
-// Madrid from ESPN. Matched by sport and start time; nothing is guessed.
+// Madrid from ESPN, F1 from two of OpenF1, ESPN and Jolpica. Matched by sport and start time; nothing is guessed.
 function resultOf(f) {
   if (f.result) return f.result;
   const t = Date.parse(f.when_utc), near = iso => iso && Math.abs(Date.parse(iso) - t) < 45 * 6e4;
@@ -1374,6 +1376,9 @@ function resultOf(f) {
     const m = all.find(x => x && x.state === "done" && near(x.start));
     if (m) return [(m.status || "").replace(/ due to .*$/i, ""), m.score].filter(Boolean).join(" · ");
   }
+  // F1's top three, where two sources agree on them (lib/live.js f1_sessions)
+  const F = /^f1$/.test(f.entity || "") && (LIVE.f1_sessions?.value?.results || []).find(x => near(x.start));
+  if (F) return F.top.map((n, i) => `P${i + 1} ${n}`).join(" · ");
   const L = LIVE.football?.value?.last;
   if (/madrid|football/.test(f.entity || "") && L?.score && near(L.date)) return `${L.winner === "us" ? "Won" : L.winner === "them" ? "Lost" : "Drew"} ${L.score.us}–${L.score.them}`;
   return "";

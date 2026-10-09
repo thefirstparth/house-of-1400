@@ -16,6 +16,7 @@ const checks = {
   f1_next: v => v.season_over || (v.race && v.race.sessions.length >= 3),
   f1_standings: v => v.drivers.length >= 18 && v.drivers[0].points > 0,
   f1_last: v => v.results.length >= 10,
+  f1_sessions: v => Array.isArray(v.results) && v.results.every(r => r.top.length === 3 && r.sources.length === 2),
   football: v => (v.next.length || v.last) && (!v.next[0] || Date.parse(v.next[0].date) > Date.now() - 3 * H),
   laliga_table: v => v.rows.length === 20,
   nba: v => typeof v.in_season === "boolean",

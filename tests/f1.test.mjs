@@ -54,3 +54,27 @@ test("January: last season's final table and finale until the new season's first
   assert.equal(L.value.season, "2026");
   assert.deepEqual(L.value.results.map(r => [r.code, r.time, r.status]), [["VER", "1:30:00.000", "Finished"], ["ANT", null, "+1 Lap"]]);
 });
+
+// The fixture list's F1 results (9 Oct 2026): a session's top three only where two sources agree on them.
+test("f1_sessions: a finished session's top three where two sources agree; none where they differ", async () => {
+  const { LIVE, agreedTop } = await import("../lib/live.js");
+  const at = ms => new Date(ms).toISOString(), sq = now - 3 * 36e5, q = now - 1 * 36e5, rc = now + day;
+  const weekend = { season: "2026", round: "17", raceName: "Singapore Grand Prix", Circuit: { circuitName: "Marina Bay Street Circuit", Location: { locality: "Marina Bay", country: "Singapore" } },
+    date: d(rc), time: at(rc).slice(11, 19) + "Z", FirstPractice: { date: d(sq - day), time: at(sq - day).slice(11, 19) + "Z" },
+    SprintQualifying: { date: d(sq), time: at(sq).slice(11, 19) + "Z" }, Qualifying: { date: d(q), time: at(q).slice(11, 19) + "Z" } };
+  const drv = [[3, "Verstappen"], [63, "Russell"], [16, "Leclerc"], [12, "Antonelli"]].map(([n, l]) => ({ driver_number: n, last_name: l }));
+  const routes = [
+    [/current\.json/, { MRData: { RaceTable: { Races: [weekend] } } }],
+    [/openf1\.org\/v1\/sessions/, [{ session_key: 1, meeting_key: 9, session_name: "Sprint Qualifying", date_start: at(sq) }, { session_key: 2, meeting_key: 9, session_name: "Qualifying", date_start: at(q) }]],
+    [/openf1\.org\/v1\/session_result/, [[1, 3, 1], [1, 63, 2], [1, 16, 3], [2, 3, 1], [2, 63, 2], [2, 16, 3]].map(([s, n, p]) => ({ session_key: s, driver_number: n, position: p }))],
+    [/openf1\.org\/v1\/drivers/, drv],
+    [/racing\/f1\/scoreboard/, { events: [{ competitions: [
+      { date: at(sq), type: { abbreviation: "SS" }, status: { type: { completed: true } }, competitors: ["Max Verstappen", "George Russell", "Charles Leclerc"].map((n, i) => ({ order: i + 1, athlete: { displayName: n } })) },
+      { date: at(q), type: { abbreviation: "Qual" }, status: { type: { completed: true } }, competitors: ["Max Verstappen", "Kimi Antonelli", "Charles Leclerc"].map((n, i) => ({ order: i + 1, athlete: { displayName: n } })) }] }] }],
+    [/2026\/17\/qualifying/, { MRData: { RaceTable: { Races: [] } } }],
+  ];
+  const r = await withRoutes(routes, () => LIVE.f1_sessions());
+  assert.equal(r.value.race.round, 17);
+  assert.deepEqual(r.value.results.map(x => [x.name, x.top, x.sources]), [["Sprint Qualifying", ["Verstappen", "Russell", "Leclerc"], ["OpenF1", "ESPN"]]], "qualifying: OpenF1 and ESPN differ, Jolpica has nothing yet");
+  assert.deepEqual(agreedTop([null, { top: ["Hülkenberg", "Kimi Antonelli", "Norris"], source: "Jolpica" }, { top: ["HULKENBERG", "Antonelli", "Norris"], source: "OpenF1" }]).sources, ["Jolpica", "OpenF1"]);
+});

@@ -842,3 +842,8 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 
 ## 4 Oct 2026: the art brief can be made from GitHub alone
 - Bunty could not read `/art/brief.json` on 3 and 4 Oct: Codex fetched it through a Vercel connector, which has no access to this project and answered 403, although the page itself is public. No art came either day. `node scripts/art-brief.mjs` now makes the same brief, byte for byte, from `content/latest.json` and config, with no install and no network, and public/art/README.md tells Bunty to use the plain URL or, failing that, the script.
+
+## 9 Oct 2026: F1 results on the fixture list
+- Parth asked why tennis, cricket, football and the NBA showed results on the fixture list and F1 did not. F1 rows only linked to the news, because the site read just the last Grand Prix (Jolpica) and nothing for sprint qualifying, sprint or qualifying.
+- New live key `f1_sessions`: each finished session's top three, printed as "P1 Verstappen · P2 Russell · P3 Leclerc". It prints only when two of OpenF1, ESPN and Jolpica agree on all three in order; otherwise the link stays.
+- The weekend just run stays on the fixture list for the rest of its race day, even after the F1 box moves on to the next race (three hours after lights out), so the race result is not lost.
