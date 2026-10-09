@@ -848,3 +848,9 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 - New live key `f1_sessions`: each finished session's top three, printed as "P1 Verstappen · P2 Russell · P3 Leclerc". It prints only when two of OpenF1, ESPN and Jolpica agree on all three in order; otherwise the link stays.
 - The weekend just run stays on the fixture list for the rest of its race day, even after the F1 box moves on to the next race (three hours after lights out), so the race result is not lost.
 - The sprint and sprint qualifying rows get their own market prices too (Kalshi `KXF1RACESPRINT`, `KXF1SPRINTPOLE`; Polymarket "Sprint Winner", "Sprint Qualifying Pole Winner"). Before, the sprint had none and sprint qualifying could show Saturday's pole market.
+
+## 10 Oct 2026: the Fixture List redrawn (v2)
+- Parth asked for a cleaner, easier, slightly more fun Fixture List, "newspaper, yes, but slightly modern". Three rounds of mocks (`design/fixtures-v3`); he chose 3b.
+- Each sport has its own colour and a small drawing; each day opens with a big date; each fixture reads sport, then the fixture, then round, place and channel. The next fixture is counted down ("Next up · in 9 h"); a finished one is tagged Final.
+- A result is drawn the way its sport prints one: F1's top three with team colours and codes (no gaps: only OpenF1 has them), a cricket scorecard, a tennis set board, a two-line score for Madrid and the Warriors. A result the drawing cannot read keeps its line of text or link. Each market is a small ranked chart.
+- Same rows, results, prices and "as of" times as before (`allFixtures`, `resultOf`, `oddsFor`); only the drawing changed. v1 is untouched.

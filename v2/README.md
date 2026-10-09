@@ -8,6 +8,7 @@ Live on the real site since 1 Oct 2026; **the default for everyone since 4 Oct 2
 - **Same paper, same data:** every section is drawn by the paper's own renderer from the same edition and the same live functions, with the same fallbacks and "as of" lines. Nothing the daily run writes changes.
 
 ## Files
+- `layer.js` also draws the Fixture List (`fixturesV2`, from 10 Oct: design/fixtures-v3, 3b).
 - `layer.js`: the page around the sections: Page One, the desks (config `desks_v2`), the masthead, tabs, footers, the lead in its section, The market expects (config `betting.page_one`), Money's 1D and open/closed line, the Fixture List's sport groups.
 - `wordmark.js`: the halftone "1400" with the day in dots (design/page-one/README.md, FINAL).
 - `v2.css`: over the live stylesheet, from the desk mocks (design/desks) and the reviewed sample (design/sample).

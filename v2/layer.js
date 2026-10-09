@@ -147,6 +147,117 @@ function sportGroups(list) {
   return [...list].sort((a, b) => String(a.when_utc).localeCompare(String(b.when_utc))).map(f => ({ ...f, _sp: sportOf(f) }));
 }
 
+// From 10 Oct (Parth chose 3b of design/fixtures-v3): each sport in its own colour with a small drawing, a big date
+// opening each day, the fixture in three steps (sport, the fixture, round and place and channel), the next fixture
+// counted down, a result drawn the way its sport prints one (F1's top three with team colours, a cricket scorecard, a
+// tennis set board, a two-line score), and each market as a small ranked chart. The rows, results, prices and their
+// times are the paper's own (allFixtures, resultOf, oddsFor); only the drawing is new. A result the drawing cannot read
+// keeps its line of text.
+const FX_ICON = {
+  cricket: '<path d="M10.5 1.5l4 4-7.2 7.2-4-4z"/><path d="M3.3 8.7L1.5 13l1.5 1.5 4.3-1.8"/><circle cx="12.5" cy="12.5" r="1.6"/>',
+  football: '<circle cx="8" cy="8" r="6.5"/><path d="M8 4.6l3 2.2-1.1 3.5H6.1L5 6.8z"/><path d="M8 1.5v3.1M11 6.8l3-1M9.9 10.3l1.8 2.6M6.1 10.3l-1.8 2.6M5 6.8l-3-1"/>',
+  f1: '<path d="M3 14.5V1.5"/><path d="M3 2h10v7H3"/><path class="fill" d="M3 2h2.5v2.3H3zM8 2h2.5v2.3H8zM5.5 4.3H8v2.4H5.5zM10.5 4.3H13v2.4h-2.5zM3 6.7h2.5V9H3zM8 6.7h2.5V9H8z"/>',
+  tennis: '<circle cx="8" cy="8" r="6.5"/><path d="M2.6 4.4c2.6 1.2 3.6 4.4 2.4 7.4M13.4 4.4c-2.6 1.2-3.6 4.4-2.4 7.4"/>',
+  basketball: '<circle cx="8" cy="8" r="6.5"/><path d="M1.5 8h13M8 1.5v13M3.4 3.4c2.3 2.6 2.3 6.6 0 9.2M12.6 3.4c-2.3 2.6-2.3 6.6 0 9.2"/>',
+};
+const FX_TV = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3" width="13" height="9" rx="1.5"/><path d="M5.5 14.5h5"/><path class="fill" d="M7 5.8v3.4l2.8-1.7z"/></svg>';
+const fxIcon = sp => (FX_ICON[sp] ? `<svg class="fxi" viewBox="0 0 16 16" aria-hidden="true">${FX_ICON[sp]}</svg>` : "");
+// "in 14 h", "in 25 min", "in 3 days"
+const fxUntil = ms => { const m = Math.round((ms - Date.now()) / 6e4); return m < 1 ? "now" : m < 60 ? `in ${m} min` : m < 36 * 60 ? `in ${Math.round(m / 60)} h` : `in ${Math.round(m / 1440)} days`; };
+// The row's name and its line under it: "India v West Indies" / "2nd T20I · Ranchi"; for F1 the session, then the place
+function fxTitle(f) {
+  const parts = String(f.label || "").split(" · ");
+  if (/^f1/.test(f.entity || "") && parts[0] === "F1") {
+    const rest = parts.slice(1);
+    return rest.length > 1 ? { title: rest.at(-1), sub: rest.slice(0, -1).join(" · ") } : { title: rest[0] || f.label, sub: "Race" };
+  }
+  return { title: parts[0], sub: parts.slice(1).join(" · ").replace(/^./, c => c.toUpperCase()) };
+}
+// Results, drawn. Each returns "" when it cannot read its sport's result, and the row keeps the line of text.
+function fxF1(f) {
+  const R = (LIVE.f1_sessions?.value?.results || []).find(x => Math.abs(Date.parse(x.start) - Date.parse(f.when_utc)) < 45 * 6e4);
+  if (!R?.top?.length) return "";
+  const D = LIVE.f1_standings?.value?.drivers || [], key = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const cap = /sprint qualifying|sprint shootout/i.test(R.name) ? "Sprint pole" : /^qualifying$/i.test(R.name) ? "Pole" : /^sprint$/i.test(R.name) ? "Sprint" : "Race";
+  return `<div class="fxr f1"><div class="cap">${cap}</div>${R.top.map((n, i) => {
+    const d = D.find(x => key(lastName(x.shown || x.name)) === key(lastName(n)));
+    return `<div class="gr"><span class="p">${i + 1}</span><i class="team"${d?.colour ? ` style="background:${esc(d.colour)}"` : ""}></i><b class="code">${esc(d?.code || "")}</b><span class="nm">${esc(n)}</span></div>`;
+  }).join("")}</div>`;
+}
+function fxCricket(f) {
+  const C = LIVE.crease?.value; if (!C) return "";
+  const all = [C.today, C.next, ...[C.main, ...(C.also || [])].filter(Boolean).flatMap(S => S.formats?.flatMap(x => x.matches) || [])].filter(Boolean);
+  const m = all.find(x => x.state === "done" && Math.abs(Date.parse(x.start) - Date.parse(f.when_utc)) < 45 * 6e4);
+  if (!m?.score) return "";
+  const inn = String(m.score).split(" · ").map(s => s.match(/^([A-Z]{2,4})\s+(\d+(?:\/\d+)?)(?:\s*\(([\d.]+) ov\))?$/));
+  if (inn.length !== 2 || inn.some(x => !x)) return ""; // a Test's innings, or anything else, keeps its line of text
+  const win = code => m.won === true ? code === "IND" : m.won === false ? code !== "IND" : false;
+  return `<div class="fxr ck">${inn.map(([, code, runs, ov]) => `<div class="cr${win(code) ? " won" : ""}"><span class="nm">${esc(code)}</span><b class="tnum">${esc(runs)}</b><span class="ov tnum">${ov ? `${esc(ov)} ov` : ""}</span></div>`).join("")}<div class="cap2">${esc(String(m.status || "").replace(/ due to .*$/i, ""))}</div></div>`;
+}
+function fxTennis(f) {
+  const r = String(f.result || "").match(/^(Won|Lost)\s+(.+)$/); if (!r || !f.player || !f.opponent) return "";
+  const sets = [...r[2].matchAll(/(\d+)–(\d+)(?:\s*\((\d+)–(\d+)\))?/g)].map(x => [Number(x[1]), Number(x[2])]);
+  if (!sets.length) return "";
+  const me = lastName(f.player), them = lastName(f.opponent), won = r[1] === "Won";
+  const rows = [[won ? me : them, sets.map(s => s[0]), true], [won ? them : me, sets.map(s => s[1]), false]];
+  return `<div class="fxr tn">${rows.map(([n, g, w]) => `<div class="tr${w ? " won" : ""}"><span class="nm">${esc(n)}</span>${g.map(x => `<b class="set tnum">${x}</b>`).join("")}</div>`).join("")}<div class="cap2">${esc(f.result)}</div></div>`;
+}
+function fxPair(f) {
+  const r = String(f.result || "").match(/^(Won|Lost|Drew)\s+(\d+)–(\d+)$/), sides = String(f.label).split(" · ")[0].split(" v ");
+  if (!r || sides.length !== 2) return "";
+  const us = /nba/.test(f.entity) ? CFG.follows.nba_team?.name : CFG.follows.football_club?.name, home = sides[0] === us;
+  const sc = home ? [r[2], r[3]] : [r[3], r[2]], won = r[1] === "Drew" ? -1 : (r[1] === "Won") === home ? 0 : 1;
+  return `<div class="fxr pr">${sides.map((s, i) => `<div class="cr${won === i ? " won" : ""}"><span class="nm">${esc(s)}</span><b class="tnum">${esc(sc[i])}</b></div>`).join("")}<div class="cap2">${esc(f.result)}</div></div>`;
+}
+function fxResult(f) {
+  const sp = sportOfEntity(f.entity);
+  const drawn = sp === "f1" ? fxF1(f) : sp === "cricket" ? fxCricket(f) : sp === "tennis" ? fxTennis(f) : sp === "football" || sp === "basketball" ? fxPair(f) : "";
+  if (drawn) return drawn;
+  const res = resultOf(f);
+  return res ? `<div class="fxres">${esc(res)}</div>` : `<div class="fxres">${resultLink(f)}</div>`;
+}
+// A market as a small ranked chart: name, its share as a bar, the price; the favourite in the sport's colour
+function fxOdds(f) {
+  const sp = sportOfEntity(f.entity);
+  const k = sp !== "f1" ? "match" : /practice/i.test(f.label) ? null : /sprint qualif/i.test(f.label) ? "sprint_qualifying" : /sprint/i.test(f.label) ? "sprint" : /qualif/i.test(f.label) ? "qualifying" : /grand prix|race\b/i.test(f.label) ? "race" : null;
+  const m = k && (k === "match" ? oddsFor(sp, sidesOfLabel(f.label), f.when_utc) : oddsFor("f1", null, f.when_utc, k));
+  if (!m?.outcomes?.length) return "";
+  const nm = n => (sp === "tennis" || sp === "f1" ? (n === "Draw" ? n : lastName(n)) : n), at = LIVE.odds?.as_of;
+  const when = at ? (istDate(new Date(at)) === istDate() ? istTime(at) : `${fmt(at, { day: "numeric", month: "short" })}, ${istTime(at)}`) : "";
+  const o = [...m.outcomes].sort((a, b) => b.prob - a.prob).slice(0, 3);
+  return `<div class="fxm"><div class="rows">${o.map((x, i) => `<span class="n${i ? "" : " fav"}">${esc(nm(x.name))}</span><span class="track"><i${i ? "" : ' class="on"'} style="width:${Math.max(1, Math.min(100, Math.round(x.prob)))}%"></i></span><b class="pc tnum${i ? "" : " fav"}">${Math.round(x.prob)}%</b>`).join("")}</div><a class="src" href="${esc(m.url)}" target="_blank" rel="noopener">${esc(m.source)}${when ? ` · ${esc(when)}` : ""}</a></div>`;
+}
+function fixturesV2() {
+  const n = Date.now(), horizon = n + 7 * 864e5;
+  const rows = allFixtures().slice().sort((a, b) => a.when_utc.localeCompare(b.when_utc)).filter(f => {
+    const start = Date.parse(f.when_utc), end = f.until_utc ? Date.parse(f.until_utc) : start + (f.minutes || 120) * 6e4;
+    return (end > n || keptToday(start, n)) && start < horizon;
+  });
+  if (!rows.length) return "";
+  const byDay = new Map();
+  for (const f of rows) {
+    const start = Date.parse(f.when_utc), key = start < n && fixState(f, n) !== "done" ? istDate() : istDate(new Date(start));
+    if (!byDay.has(key)) byDay.set(key, []);
+    byDay.get(key).push(f);
+  }
+  const next = rows.find(f => !f.time_tbc && fixState(f, n) === "next" && Date.parse(f.when_utc) > n);
+  return `<div class="agenda fx3" style="--n:${byDay.size}">${[...byDay].map(([day, list]) => {
+    const [d, mon] = sparkLabel(day).split(" "), past = day < istDate(), today = day === istDate();
+    return `<div class="day${today ? " today" : ""}${past ? " past" : ""}"><h3 class="big"><span class="dn">${esc(d)}</span><span class="dw"><b>${esc(dayName(day).replace(/^./, c => c.toUpperCase()))}</b>${esc(mon)}</span></h3><ul>${list.map(f => {
+      const st = f.time_tbc ? "next" : fixState(f, n), sp = sportOfEntity(f.entity), { title, sub } = fxTitle(f), w = watchOn(f);
+      const when = f.time_tbc ? "TBC" : f.until_utc ? `to ${sparkLabel(istDate(new Date(f.until_utc)))}` : istTime(f.when_utc);
+      const extra = f.source === "ESPN" ? [f.court, f.other && `another listing says ${f.other}`].filter(Boolean) : [];
+      const tag = st === "done" ? '<span class="tg fin">Final</span>' : st === "on" ? '<span class="tg on"><i></i>Live</span>' : f === next ? `<span class="tg nx">Next up · ${esc(fxUntil(Date.parse(f.when_utc)))}</span>` : "";
+      const live = st === "on" && f.score ? `<div class="fxlive"><b class="tnum">${esc(f.score)}</b>${scoreAt(f.scoreKey) ? ` <small>${esc(scoreAt(f.scoreKey))}</small>` : ""}</div>` : "";
+      const due = st === "due" || (st === "next" && f.held) ? `<div class="fxdue">${esc(dueWhy(f))}</div>` : "";
+      return `<li class="fx sp-${sp || "more"} ${st === "span" || st === "due" ? "next" : st}${f === next ? " nxt" : ""}"><span class="t tnum">${esc(when)}</span><div class="what">
+        <div class="kick">${fxIcon(sp)}${esc(sportOf(f))}${tag}</div>
+        <div class="ti">${esc(title)}</div>${sub || w || extra.length ? `<div class="meta">${[sub, ...extra].filter(Boolean).map(esc).join(" · ")}${w ? `<span class="tv">${FX_TV}${esc(w)}</span>` : ""}</div>` : ""}
+        ${live}${due}${st === "done" ? fxResult(f) : fxOdds(f)}</div></li>`;
+    }).join("")}</ul></div>`;
+  }).join("")}</div>`;
+}
+
 // The highlighter sweeps over a quoted phrase once, when it first comes into view (straight away for a reader who
 // prefers less motion: the CSS shows it whole)
 const MARK_IO = typeof IntersectionObserver === "function" ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("on"); MARK_IO.unobserve(e.target); } }), { rootMargin: "0px 0px -15% 0px" }) : null;
@@ -176,7 +287,7 @@ function flowAgenda() {
     m.style.cssText = `position:absolute;left:0;top:0;width:${colW}px;display:block;visibility:hidden;pointer-events:none`;
     host.style.position ||= "relative"; host.append(m);
     const outer = el => { const cs = getComputedStyle(el); return el.getBoundingClientRect().height + parseFloat(cs.marginTop) + parseFloat(cs.marginBottom); };
-    const days = [...m.querySelectorAll(":scope > .day")].map(d => ({ h3: d.querySelector("h3"), hh: outer(d.querySelector("h3")), items: [...d.querySelectorAll("li")].map(li => ({ html: li.outerHTML, h: outer(li) })) }));
+    const days = [...m.querySelectorAll(":scope > .day")].map(d => ({ cls: d.className, h3: d.querySelector("h3"), hh: outer(d.querySelector("h3")), items: [...d.querySelectorAll("li")].map(li => ({ html: li.outerHTML, h: outer(li) })) }));
     m.remove();
     // Fill columns up to height H with whole days, in date order; a day is never split. Null when C columns are not
     // enough. A day taller than H takes a column of its own.
@@ -194,7 +305,7 @@ function flowAgenda() {
     for (let k = 0; k < 18 && hi - lo > 2; k++) { const mid = (lo + hi) / 2, p = pack(mid); if (p) { best = p; hi = mid; } else lo = mid; }
     if (!best) continue;
     ag.classList.add("flowed"); ag.style.setProperty("--n", best.length); // as many columns as the days need, each wider
-    ag.innerHTML = best.map(col => `<div class="col">${col.map(di => `<div class="day"><h3>${days[di].h3.innerHTML}</h3><ul>${days[di].items.map(i => i.html).join("")}</ul></div>`).join("")}</div>`).join("");
+    ag.innerHTML = best.map(col => `<div class="col">${col.map(di => `<div class="${days[di].cls}">${days[di].h3.outerHTML}<ul>${days[di].items.map(i => i.html).join("")}</ul></div>`).join("")}</div>`).join("");
   }
 }
 

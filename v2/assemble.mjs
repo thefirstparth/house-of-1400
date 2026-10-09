@@ -73,6 +73,10 @@ export function assemble({ app = read("public/app.js"), styles = read("public/st
   // fixtures in sport groups under a small label, in a fixed order
   rep("<ul>${list.map(f => {\n    const st = f.time_tbc", '<ul>${sportGroups(list).map(f => {\n    const st = f.time_tbc');
   rep('<span class="t tnum">${esc(when)}</span><span class="what">', '<span class="t tnum">${esc(when)}${f._sp ? `<i class="spt">${esc(f._sp)}</i>` : ""}</span><span class="what">');
+  // From 10 Oct the Fixture List is drawn by layer.js fixturesV2 (design/fixtures-v3, 3b): sport colours, big dates,
+  // results drawn the way each sport prints one, markets as small ranked charts
+  rep('${fixturesBlock()}</div>`, "Next 7 days · IST")', '${fixturesV2()}</div>`, "Next 7 days · IST")');
+  rep("fixtures: fixturesBlock,", "fixtures: fixturesV2,");
   const css = styles.replace(/border-radius:([^;}]+)/g, (m, v) => "border-radius:" + v.replace(/(\d+(?:\.\d+)?)px/g, (x, n) => (Number(n) >= 99 ? "3px" : Number(n) > 4 ? "4px" : x)))
     + "\n" + FONTS() + "\n" + read("v2/v2.css");
   return { js, css, head: read("v2/head.html") };
