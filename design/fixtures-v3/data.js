@@ -2,9 +2,9 @@
 // every field kept: time, sport, the fixture, its round and place, where to watch, the market and its source, the result.
 const DAYS = [
   { day: "Friday", date: "9 Oct", past: true, items: [
-    { t: "15:40", sp: "tennis", title: "Djokovic v Hubert Hurkacz", sub: "Rolex Shanghai Masters, Round 2", done: { head: "Lost", score: "6–4 6–3" } },
-    { t: "18:00", sp: "f1", title: "Sprint Qualifying", sub: "Singapore Grand Prix · Marina Bay", tv: "FanCode", done: { podium: ["Verstappen", "Russell", "Leclerc"] } },
-    { t: "19:00", sp: "cricket", title: "India v West Indies", sub: "2nd T20I · Ranchi", tv: "JioHotstar", done: { head: "West Indies won by 6 wkts", score: "IND 249/5 (20 ov) · WI 252/4 (18.3 ov)" } },
+    { t: "15:40", sp: "tennis", title: "Djokovic v Hubert Hurkacz", sub: "Rolex Shanghai Masters, Round 2", done: { head: "Lost", score: "6–4 6–3", tennis: [["Hurkacz", [6, 6], true], ["Djokovic", [4, 3], false]] } },
+    { t: "18:00", sp: "f1", title: "Sprint Qualifying", sub: "Singapore Grand Prix · Marina Bay", tv: "FanCode", done: { podium: ["Verstappen", "Russell", "Leclerc"], grid: [["VER", "Verstappen", "#4781D7", "1:31.156"], ["RUS", "Russell", "#00D7B6", "+0.120"], ["LEC", "Leclerc", "#ED1131", "+0.243"]], label: "Sprint pole" } },
+    { t: "19:00", sp: "cricket", title: "India v West Indies", sub: "2nd T20I · Ranchi", tv: "JioHotstar", done: { head: "West Indies won by 6 wkts", score: "IND 249/5 (20 ov) · WI 252/4 (18.3 ov)", card: [["India", "249/5", "20 ov", false], ["West Indies", "252/4", "18.3 ov", true]] } },
   ] },
   { day: "Today", date: "10 Oct", today: true, items: [
     { t: "14:30", sp: "f1", title: "Sprint", sub: "Singapore Grand Prix · Marina Bay", tv: "FanCode", odds: { src: "Polymarket", field: true, o: [["Verstappen", 67], ["Russell", 23], ["Leclerc", 10]] } },
@@ -25,7 +25,7 @@ const DAYS = [
     { t: "00:30", sp: "football", title: "AS Roma v Real Madrid", sub: "Champions League", tv: "SonyLIV", odds: { src: "Kalshi", o: [["Real Madrid", 52], ["Roma", 24], ["Draw", 23]] } },
   ] },
 ];
-const ASOF = "00:32";
+const ASOF = "00:32", NOW = "2026-10-10T00:32+05:30";
 const SPORT = { cricket: "Cricket", football: "Football", f1: "F1", tennis: "Tennis", basketball: "Basketball" };
 // Small line drawings, one per sport, in currentColor
 const ICON = {
