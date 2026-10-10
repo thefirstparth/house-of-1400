@@ -861,3 +861,10 @@ Parth asked for a full audit of the paper's design and consistency. Six things w
 - It reads the paper's live feeds and four new ones in `lib/sportapp.js`: `madrid_hub` (results, fixtures, the XI: official from ESPN's line-up, else the last starting XI, labelled so; the next match's form and meetings), `f1_hub` (the circuit's winners and poles by year, Verstappen's record there, every driver's last five), `intl_hub` (Brazil, Spain, Portugal, England; ESPN ids in config `follows.national_team_espn_ids`), `tennis_hub` (ATP rankings with photos and flags).
 - The paper's rules hold: a figure from its source with its time; a failed feed falls back to the phone's last copy, then the edition snapshot, marked; otherwise the block is left out. Times IST.
 - Fixed in the shared feeds while building it: an abandoned India match is "off", never "live"; a finished chase that Cricbuzz gives as a whole number of overs short of the allotment loses its overs rather than printing them wrong (41 for 41.4); the NBA feed carries the opponent's abbreviation (for logos).
+
+## Polymarket runners without a real price are left out (10 Oct 2026)
+A many-runner Polymarket market (an F1 winner or pole market, a tournament) lists every runner, and a runner nobody
+trades still shows a price (seen 10 Oct: Lindblad at 12% for pole with no bid and $5 traded). `shapePolymarket` now
+drops a runner with no bid or more than 5 cents between bid and ask, the rule Kalshi's prices already follow. Applies
+to the paper and the Sport app. The Sport app shows a market only on the weekend it belongs to (a race later in the
+season gets its times and calendar entries, never this weekend's prices).

@@ -30,3 +30,10 @@ test("a date ladder skips a rung closing within a day, unless nothing is later",
   const last = { ...e, markets: [rung("September 30", 6, 0.02), rung("October 1", 20, 0.05)] };
   assert.deepEqual(shapePolymarket(last).outcomes.map(o => o.name), ["Through September 30", "Through October 1"]);
 });
+
+test("Polymarket: a runner with no bid or a wide book is left out of a many-runner market", async () => {
+  const { shapePolymarket } = await import("../lib/live.js");
+  const m = (name, p, bid, ask) => ({ groupItemTitle: name, outcomePrices: JSON.stringify([String(p), String(1 - p)]), active: true, closed: false, ...(bid != null ? { bestBid: bid } : {}), ...(ask != null ? { bestAsk: ask } : {}) });
+  const e = { slug: "f1-x-driver-pole-position-2026-10-10", title: "X Grand Prix: Driver Pole Position", markets: [m("Max Verstappen", 0.475, 0.47, 0.48), m("Arvid Lindblad", 0.12, null, 0.2), m("Yuki Tsunoda", 0.08, null, 0.16), m("Lewis Hamilton", 0.1, 0.09, 0.11), m("Lando Norris", 0.11, 0.02, 0.2)] };
+  assert.deepEqual(shapePolymarket(e).outcomes.map(o => o.name), ["Max Verstappen", "Lewis Hamilton"]);
+});

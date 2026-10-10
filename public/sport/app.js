@@ -37,7 +37,7 @@ const same = (a, b) => { const x = norm(a), y = norm(b); return !!x && !!y && (x
 // and particles stay with the name: "de Jong", "van Dijk"
 const last = n => {
   const w = String(n || "").split(" ").filter(Boolean); let i = w.length > 1 && /^(J[uú]nior|Jr\.?|Neto|Filho)$/i.test(w.at(-1)) ? w.length - 2 : w.length - 1;
-  const end = i; while (i > 1 && /^(de|da|di|do|dos|das|du|del|della|van|von|der|den|ter|le|la)$/.test(w[i - 1])) i--;
+  const end = i; while (i > 1 && /^(de|da|di|do|dos|das|du|del|della|van|von|der|den|ter|le|la)$/i.test(w[i - 1])) i--;
   return w.slice(i, end + 1).join(" ");
 };
 // "IND", "WI", "NZ", "JMC": a one-word name gives its first three letters, longer names their initials
@@ -77,8 +77,8 @@ function player(name, size = "lg") {
   const r = atp(name);
   const path = r?.photo ? new URL(r.photo).pathname : r?.id ? `/i/headshots/tennis/players/full/${r.id}.png` : null;
   const flag = r?.flag ? `<img class="pf" src="${esc(r.flag)}" alt="" loading="lazy">` : "";
-  if (path) return `<span class="ph ${size}">${logo(`https://a.espncdn.com/combiner/i?img=${encodeURIComponent(path)}&w=${size === "lg" ? 160 : 80}&h=${size === "lg" ? 160 : 80}`, name, size, r.alt_photo || "")}${flag}</span>`;
-  if (r?.alt_photo) return `<span class="ph ${size}">${logo(r.alt_photo, name, size).replace('class="crest', 'class="crest wp')}${flag}</span>`;
+  if (path) return `<span class="ph ${size}"><span class="phc">${logo(`https://a.espncdn.com/combiner/i?img=${encodeURIComponent(path)}&w=${size === "lg" ? 160 : 80}&h=${size === "lg" ? 160 : 80}`, name, size, r.alt_photo || "")}</span>${flag}</span>`;
+  if (r?.alt_photo) return `<span class="ph ${size}"><span class="phc">${logo(r.alt_photo, name, size).replace('class="crest', 'class="crest wp')}</span>${flag}</span>`;
   return monoHTML(name, size);
 }
 const rankTxt = name => { const r = atp(name); return r?.rank ? `No. ${r.rank}` : ""; };
@@ -229,7 +229,7 @@ function events(all = false) {
     const st = t(s.start), end = st + (s.minutes || 60) * 6e4, res = R.find(r => Math.abs(t(r.start) - st) < 45 * 6e4);
     out.push({ sp: "f1", id: "f1" + s.start, start: s.start, state: now >= end ? "done" : now >= st ? "live" : "next", title: /^race$/i.test(s.name) ? gpName(N.name) : s.name, sub: /^race$/i.test(s.name) ? N.circuit : gpName(N.name), flag: N.flag, session: s.name, top: res?.top || null, who: "F1", href: "#f1" });
   }
-  if (all) for (const u of val("f1_next")?.upcoming || []) out.push({ sp: "f1", id: "gp" + u.round, start: u.date, state: "next", title: gpName(u.name), sub: `Round ${u.round}${/ in /.test(u.name) ? `, held in ${u.name.replace(/^.* in /, "")}` : ""}`, flag: u.flag, session: "Race", who: "F1", href: "#f1/calendar" });
+  if (all) for (const u of val("f1_next")?.upcoming || []) out.push({ sp: "f1", id: "gp" + u.round, start: u.date, state: "next", title: gpName(u.name), sub: `Round ${u.round}${/ in /.test(u.name) ? `, held in ${u.name.replace(/^.* in /, "")}` : ""}`, flag: u.flag, session: "Race", who: "F1", href: "#f1/calendar", sessions: u.sessions || [] });
   // Tennis
   for (const p of val("tennis_players")?.players || []) {
     if (p.next) out.push({ sp: "tennis", id: "tn" + p.name + p.next.when_utc, start: p.next.when_utc, state: p.next.live ? "live" : "next", title: `${last(p.name)} v ${last(p.next.opponent) || "TBC"}`, a: p.name, b: p.next.opponent, la: player(p.name), lb: player(p.next.opponent), comp: [p.next.event, p.next.round].filter(Boolean).join(", "), venue: p.next.court, player: p.name, who: last(p.name), href: "#tennis" });
@@ -251,6 +251,7 @@ const followKey = e => (e.sp === "tennis" ? "tn:" + e.player : e.sp === "intl" ?
 // The followed side's price for an event, for the Up next rows
 function evOdds(e) {
   if (e.sp === "f1") {
+    if (!String(e.id).startsWith("f1")) return null; // markets are this weekend's only
     const m = sessionMarket(e.session, e.start); if (!m) return null;
     const fav = favDriver(), o = m.outcomes.find(x => same(x.name, fav));
     return o ? { label: last(fav), prob: Math.round(o.prob) } : null;
@@ -284,7 +285,7 @@ function nextCard(e, { odds = true } = {}) {
     const qline = qi >= 0 ? `${fpos({ pos: qi + 1, finished: true })}${esc(last(fav))} qualified ${ordinal(qi + 1)}` : q ? `${esc(last(fav))} qualified outside the top three` : "";
     const st = t(e.start), dur = ((val("f1_next")?.race?.sessions || []).find(x => x.start === e.start)?.minutes || 60) * 6e4;
     const prog = e.state === "live" ? `<div class="prog" role="progressbar" aria-label="Session under way" aria-valuenow="${Math.round(Math.min(1, (Date.now() - st) / dur) * 100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.min(100, ((Date.now() - st) / dur) * 100)}%"></i></div>` : "";
-    return `<a class="card next one sp-f1" href="${e.href}">${prog}${head}<div class="title">${e.flag ? `<span class="fl">${esc(e.flag)}</span> ` : ""}${esc(e.title)}<small>${esc(e.sub || "")}</small></div><div class="clock tnum">${hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>${o || qline ? `<div class="pill-row"><span class="pill${qline ? " res" : ""}"><span class="nw">${qline || esc(o.label)}${o && qline ? " ·" : ""}</span>${o ? `<span class="nw"><b class="tnum">${o.prob}%</b> to win</span>` : ""}</span></div>` : ""}</a>`;
+    return `<a class="card next one sp-f1" href="${e.href}">${prog}${head}<div class="title">${e.flag ? `<span class="fl">${esc(e.flag)}</span> ` : ""}${esc(e.title)}<small>${esc(e.sub || "")}</small></div><div class="clock tnum">${hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>${o || qline ? `<div class="pill-row"><span class="pill${qline ? " res" : ""}"><span class="nw">${qline || esc(o.label)}${o && qline ? " ·" : ""}</span>${o ? `<span class="nw"><b class="tnum">${o.prob}%</b> ${/qualif|shootout/i.test(e.session) ? "for pole" : "to win"}</span>` : ""}</span></div>` : ""}</a>`;
   }
   const side = (name, lg) => `<div class="side">${lg || monoHTML(name, "lg")}<b>${esc(e.sp === "tennis" || e.sp === "nba" ? last(name) : name)}</b></div>`;
   const live = e.state === "live" && e.sa != null;
@@ -366,21 +367,23 @@ const icsHref = e => `/api/ics?${new URLSearchParams({ t: e.sp === "f1" ? (/^rac
 function matchSheet(e) {
   const done = e.state === "done";
   const hero = done ? `<div class="card res-card sp-${e.sp}">${e.sp === "f1" ? `<div class="cap">${esc(e.title)}${e.sub ? ` · ${esc(gpName(e.sub))}` : ""}</div>` : ""}${scoreboard(e) || ""}${e.ev ? scorers(e.ev, e) : ""}</div>`
-    : nextCard(e).replace(/^<a ([^>]*?) href="[^"]*"/, "<div $1").replace(/<\/a>$/, "</div>");
+    : nextCard(e.sp === "f1" ? { ...e, title: String(e.title).replace(/Grand Prix/, "GP") } : e).replace(/^<a ([^>]*?) href="[^"]*"/, "<div $1").replace(/<\/a>$/, "</div>");
   const rows = [
     ["When", e.tbc ? `${fmt(e.start, { weekday: "short", day: "numeric", month: "short" })}, time to be confirmed` : `${fmt(e.start, { weekday: "short", day: "numeric", month: "short" })}, ${hm(e.start)}\u00a0IST`],
     // the hero card already shows the venue and competition of one still to come
     ["Where", done ? e.venue : ""],
-    [e.sp === "f1" ? "Event" : "Competition", !done ? "" : e.sp === "f1" ? (/^race$/i.test(e.session) ? e.title : gpName(e.sub || "")) : e.comp],
+    ["Competition", done && e.sp !== "f1" ? e.comp : ""],
     ["Result", done && e.sp === "cricket" ? e.status : ""],
   ].filter(([, v]) => v);
   // Extras: an F1 session's winner market (this weekend's only); Madrid's next match, both sides' form and the meetings
   const mk = e.sp === "f1" && !done && e.id.startsWith("f1") ? sessionMarket(e.session, e.start) : null;
   const PV = e.sp === "football" && !done ? val("madrid_hub")?.preview : null, pv = PV && String(PV.match_id) === e.mid ? PV : null, rec = pv && meetRecord(pv);
-  const extra = (mk ? `<div class="card sp-f1 ms-x"><div class="sub-h">Who the market expects</div>${rankList(mk.outcomes, "f1", { max: 5, mark: favDriver(), nameFn: n => { const d = (val("f1_standings")?.drivers || []).find(x => same(x.name, n)); return d?.shown || n; } })}<p class="foot">${esc(mk.source || "")}</p></div>` : "")
+  // A race to come: each of its sessions that count, with its own calendar entry (IST qualifying is often after midnight)
+  const gs = e.id.startsWith("gp") && e.sessions?.length > 1 ? `<div class="list ms-x">${e.sessions.map(x => `<div class="row"><div class="grow"><div class="t1">${esc(x.name)}</div><div class="t2">${esc(fmt(x.start, { weekday: "short", day: "numeric", month: "short" }))}, ${hm(x.start)}\u00a0IST</div></div><a class="cal" href="${esc(icsHref({ sp: "f1", session: x.name, title: e.title, sub: e.title, start: x.start, id: e.id + x.name.replace(/\W/g, "") }))}" aria-label="Add ${esc(x.name)} to calendar"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16M12 13v5M9.5 15.5h5"/></svg></a></div>`).join("")}</div>` : "";
+  const extra = gs + (mk ? `<div class="card sp-f1 ms-x"><div class="sub-h">Who the market expects</div>${rankList(mk.outcomes, "f1", { max: 5, mark: favDriver(), nameFn: n => { const d = (val("f1_standings")?.drivers || []).find(x => same(x.name, n)); return d?.shown || n; } })}<p class="foot">${esc(mk.source || "")}</p></div>` : "")
     + (pv ? `<div class="card pv ms-x">${formStrips(pv)}${rec.w + rec.d + rec.l ? `<p class="foot" style="margin:6px 0 0">Last ${rec.w + rec.d + rec.l} meetings: Madrid ${rec.w}W ${rec.d}D ${rec.l}L</p>` : ""}</div>` : "");
-  const acts = `${e.state === "next" && !e.tbc ? `<a class="btn" href="${esc(icsHref(e))}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16M12 13v5M9.5 15.5h5"/></svg>Add to calendar</a>` : ""}<a class="btn ghost" href="${esc(e.href)}">Open ${esc(TAB_NAME[e.sp])}</a>`;
-  const label = e.sp === "f1" ? `F1 · ${/^race$/i.test(e.session) ? e.title : e.session}` : e.a && e.b ? `${e.sp === "tennis" || e.sp === "nba" ? last(e.a) : e.a} v ${e.sp === "tennis" || e.sp === "nba" ? last(e.b) : e.b}` : e.title;
+  const acts = `${e.state === "next" && !e.tbc ? `<a class="btn" href="${esc(icsHref(e))}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16M12 13v5M9.5 15.5h5"/></svg><span class="long">Add to calendar</span><span class="short">Calendar</span></a>` : ""}<a class="btn ghost" href="${esc(e.href)}">Open ${esc(TAB_NAME[e.sp])}</a>`;
+  const label = e.sp === "f1" ? (/^race$/i.test(e.session) ? String(e.title).replace(/Grand Prix/, "GP") : `F1 · ${e.session}`) : e.a && e.b ? `${e.sp === "tennis" || e.sp === "nba" ? last(e.a) : e.a} v ${e.sp === "tennis" || e.sp === "nba" ? last(e.b) : e.b}` : e.title;
   return `<div class="sheet-bg" data-close="match"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t"><div class="grab" aria-hidden="true"></div><div class="sheet-h"><b id="sheet-t" tabindex="-1">${esc(label)}</b><button type="button" class="x" data-close="match" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="ms">${hero}${extra}<dl class="ms-d">${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl><div class="acts">${acts}</div></div></div>`;
 }
@@ -395,7 +398,7 @@ function weekStrip(E) {
     const ev = by(d), dt = new Date(d + "T12:00:00+05:30");
     const sps = [...new Set(ev.map(e => e.sp))];
     return `<button type="button" class="wd${i === 0 ? " today" : ""}${d === sel ? " on" : ""}" data-ui="day" data-v="${d}" aria-pressed="${d === sel}" aria-label="${i === 0 ? "Today, " : ""}${esc(fmt(dt.toISOString(), { weekday: "long", day: "numeric", month: "long" }))}: ${ev.length} fixture${ev.length === 1 ? "" : "s"}"${ev.length ? "" : " disabled"}>
-      <span class="wdn">${esc(fmt(dt.toISOString(), { weekday: "short" }))}</span><b class="tnum">${esc(fmt(dt.toISOString(), { day: "numeric" }))}</b>
+      <span class="wdn">${i === 0 ? `<span class="long">Today</span><span class="short">${esc(fmt(dt.toISOString(), { weekday: "short" }))}</span>` : esc(fmt(dt.toISOString(), { weekday: "short" }))}</span><b class="tnum">${esc(fmt(dt.toISOString(), { day: "numeric" }))}</b>
       <span class="dots">${(sps.length > 4 ? sps.slice(0, 3) : sps).map(sp => `<i class="sp-${sp}"></i>`).join("")}${sps.length > 4 ? `<em>+${sps.length - 3}</em>` : ""}</span></button>`;
   }).join("");
   const list = sel ? by(sel).map(e => {
@@ -585,8 +588,8 @@ function viewF1() {
     nx = sess.find(s => s.state !== "done");
     const rows = sess.map(s => {
       const m = s.state !== "done" ? sessionMarket(s.name, s.start) : null, top = m && [...m.outcomes].sort((a, b) => b.prob - a.prob)[0];
-      const line = s.res ? s.res.top.map((n, i) => `${i + 1} ${nameOf(n)}`).join("  ·  ") : top ? `Favourite ${nameOf(top.name)} ${Math.round(top.prob)}%` : s.state === "done" ? "" : esc(dayLabel(s.start));
-      return `<a class="row ${s.state}${s === nx ? " is-next" : ""}" href="#f1" data-match="f1${esc(s.start)}"><span class="dot"></span><div class="grow"><div class="t1">${esc(s.name)}</div>${line ? `<div class="t2">${esc(line)}</div>` : ""}</div><div class="end">${s.state === "now" ? `<span class="chip live"><i></i>On now</span>` : s.state === "done" ? `<span class="t2">${esc(dayLabel(s.start))}</span>` : `<div class="t1 tnum">${hm(s.start)}</div><div class="t2">${s === nx ? countdown(s.start) : esc(dayLabel(s.start))}</div>`}</div></a>`;
+      const line = s.res ? s.res.top.map((n, i) => `${i + 1} ${nameOf(n)}`).join("  ·  ") : top ? `${nameOf(top.name)} ${Math.round(top.prob)}%` : s.state === "done" ? "" : esc(dayLabel(s.start));
+      return `<a class="row ${s.state}${s === nx ? " is-next" : ""}" href="#f1"${f1Kind(s.name) || s.state !== "done" ? ` data-match="f1${esc(s.start)}"` : ""}><span class="dot"></span><div class="grow"><div class="t1">${esc(s.name)}</div>${line ? `<div class="t2">${esc(line)}</div>` : ""}</div><div class="end">${s.state === "now" ? `<span class="chip live"><i></i>On now</span>` : s.state === "done" ? `<span class="t2">${esc(dayLabel(s.start))}</span>` : `<div class="t1 tnum">${hm(s.start)}</div><div class="t2">${s === nx ? countdown(s.start) : esc(dayLabel(s.start))}</div>`}</div></a>`;
     }).join("");
     weekend = blk("This weekend", `<div class="card sp-f1 wk"><div class="wk-h"><div><div class="wk-t">${R.flag ? `<span class="fl">${esc(R.flag)}</span> ` : ""}${esc(gpName(R.name))}</div><div class="src">${esc(R.circuit || "")}${R.locality ? `, ${esc(R.locality)}` : ""} · Round ${R.round}</div></div>${R.track?.image ? `<img class="track" src="${esc(R.track.image)}" alt="${esc(R.circuit || "")} layout" loading="lazy">` : ""}</div></div><div class="list sess sp-f1" style="margin-top:12px">${rows}</div>`, nx ? `<span class="note">${esc(nx.name)} ${countdown(nx.start)}</span>` : "", "weekend");
   }
@@ -604,7 +607,7 @@ function viewF1() {
       return `<div class="step${s.res ? " got" : ""}"><span>${esc(SHORT[s.name] || s.name)}</span>${v}</div>`;
     }).join("");
     watch = blk(esc(label), `<div class="card sp-f1"><div class="who"><i style="background:${esc(me?.colour || "var(--line)")}"></i><div><div class="who-n">${esc(fav)}</div><div class="src">${esc(me?.team || "")}${me ? ` · ${me.wins} win${me.wins === 1 ? "" : "s"} this season` : ""}</div></div></div>
-      ${me ? `<div class="stats"><div class="stat"><b class="tnum">${ordinal(me.pos)}</b><span>In the championship</span></div><div class="stat"><b class="tnum">${me.points}</b><span>Points</span></div><div class="stat"><b class="tnum">${me === lead ? "Lead" : `${lead.points - me.points}`}</b><span>${me === lead ? "Top of the table" : `Behind ${esc(last(lead.shown || lead.name))}`}</span></div></div>` : ""}
+      ${me ? `<div class="stats"><div class="stat"><b class="tnum">${ordinal(me.pos)}</b><span>Standing</span></div><div class="stat"><b class="tnum">${me.points}</b><span>Points</span></div><div class="stat"><b class="tnum">${me === lead ? "Lead" : `${lead.points - me.points}`}</b><span>${me === lead ? "Top of the table" : `Behind ${esc(last(lead.shown || lead.name))}`}</span></div></div>` : ""}
       ${wk ? `<div class="sub-h">This weekend</div><div class="steps">${wk}</div>` : ""}
       ${here.length ? `<div class="sub-h">At ${esc(HB.race?.circuit || "this track")}${best ? ` <span>best ${ordinal(best.pos)}, in ${esc(here.filter(r => r.pos === best.pos).map(r => r.season).join(", "))}</span>` : ""}</div><div class="fgrid yrs">${here.map(r => `<span class="yr">${fpos({ pos: r.pos, finished: /^\d+$/.test(r.text), text: r.text }, `${r.season}: from ${ordinal(r.grid || 0)} on the grid, ${r.status}`)}<small class="tnum">'${String(r.season).slice(2)}</small></span>`).join("")}</div>` : ""}</div>`, "", "max");
   }
@@ -711,7 +714,7 @@ function viewTennis() {
   return `<div class="page">${header("Tennis", "", ["tennis_players", "tennis"])}
     ${!TP.length ? `<div class="skel"></div><div class="skel"></div>` : ""}
     ${cards}
-    ${tours ? blk("Tournaments", `<div class="list">${tours}</div>`) : ""}
+    ${tours ? blk("Tournaments", `<div class="list tours">${tours}</div>`) : ""}
     ${rankings}
     ${sources("tennis_players", "tennis", "tennis_hub", "odds")}</div>`;
 }
@@ -725,7 +728,7 @@ function viewNba() {
   return `<div class="page">${header(`<span class="ttl">${nbaLogo(follows().nba_team?.espn_abbr || "gs", nbaTeam(), "sm")}Warriors</span>`, `<b>${B?.in_season ? "Regular season" : "Preseason"}</b>`, ["nba"])}
     ${!B ? `<div class="skel"></div>` : ""}
     ${next ? blk("Next game", nextCard(next)) : ""}
-    ${B?.opener ? blk("Opening night", `<div class="list"><div class="row">${nbaLogo(B.opener.opponent_abbr, B.opener.opponent, "sm")}<div class="grow"><div class="t1">${B.opener.home ? "v" : "at"} ${esc(B.opener.opponent)}</div><div class="t2">${esc(when(B.opener.date))}</div><div class="t2">First game of the regular season</div></div><div class="end"><div class="pc tnum">${countdown(B.opener.date).replace("in ", "")}</div></div></div></div>`) : ""}
+    ${B?.opener ? blk("Opening night", `<div class="list"><div class="row">${nbaLogo(B.opener.opponent_abbr, B.opener.opponent, "sm")}<div class="grow"><div class="t1">${B.opener.home ? "v" : "at"} ${esc(B.opener.opponent)}</div><div class="t2">${esc(when(B.opener.date))}</div><div class="t2">Regular-season opener</div></div><div class="end"><div class="pc tnum">${countdown(B.opener.date).replace("in ", "")}</div></div></div></div>`) : ""}
     ${done ? blk("Last result", resultCard(done)) : ""}
     ${rows ? blk("Schedule", `<div class="list">${rows}</div>`) : ""}
     ${W}
