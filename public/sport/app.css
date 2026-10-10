@@ -507,3 +507,9 @@ a.mr:active,a.li:active{transition:none}
   body:has(.jump) .top{animation-name:topsolid2}
   @keyframes topsolid2{from{background:transparent}to{background:var(--bg)}}
 }
+/* numerals on four sizes: small 1rem, row 1.12rem, stat 1.45rem, hero/clock (form chips stay at the caption size) */
+.rkn,.yr,.pod span,.tbl td,.fpos,.bar-row b,.rank .p,.mkt .lab b,.line b,.order li b,.tl .tl-r b,.num{font-size:1rem}
+.day b,.step .pct,.step .lvp,.vsw,.st b,.ln .sc,.st b.w.l{font-size:var(--n-row)}
+.stat b,.crs span,.mid .nums.sm,.mid.cr span{font-size:1.45rem}
+.st b.w.l{font-size:.92rem}
+.sheet .hero .tag{display:none}
