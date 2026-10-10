@@ -50,17 +50,23 @@ const pages = {};
 let fromHome = false;
 const parse = () => { const [r, sec] = location.hash.replace(/^#\/?/, "").split("/"); return { r: VIEWS[r] ? r : "home", sec: sec || null }; };
 const stateSig = () => events().map(e => `${e.id}:${e.state}:${e.late ? 1 : 0}${e.starting ? 1 : 0}:${e.sa ?? ""}-${e.sb ?? ""}:${(e.liveTop || []).join(",")}`).join("|");
-// a tab change: the pill glides from the tap; the page fades out (90ms), is swapped, and fades in (160ms); with
-// reduced motion a 120ms fade only
+// a tab change: the pill glides from the tap; the page fades out (90ms) while the next page is built, is swapped, and
+// fades in (160ms); with reduced motion a 60ms fade each way. One change in flight: a tap during the fade only moves the
+// pill and the end of the fade draws the latest route.
+let tabFx = null, pre = null;
 function render(navigated) {
   if (held && S.loading) return;
   const to = parse().r;
-  if (!(navigated && S.route && to !== S.route) || !view.animate) return draw(navigated);
+  if (!(navigated && S.route && to !== S.route) || !view.animate) { if (!tabFx) draw(navigated); return; }
   pill(to);
-  const out = view.animate([{ opacity: 1 }, { opacity: 0 }], { duration: RM() ? 60 : 90, easing: "ease-in" });
-  out.finished.catch(() => {}).then(() => {
-    draw(navigated);
+  if (tabFx) return;
+  const from = parseFloat(getComputedStyle(view).opacity);
+  tabFx = view.animate([{ opacity: isNaN(from) ? 1 : from }, { opacity: 0 }], { duration: RM() ? 60 : 90, easing: "ease-in", fill: "forwards" });
+  setTimeout(() => { const r = parse().r; try { pre = { r, html: VIEWS[r]() }; } catch { pre = null; } }, 0); // built while it fades
+  tabFx.finished.catch(() => {}).then(() => {
+    draw(true);
     view.animate(RM() ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: RM() ? 60 : 160, easing: "cubic-bezier(.2,0,0,1)" });
+    tabFx.cancel(); tabFx = null;
   });
 }
 function pill(r) {
@@ -80,7 +86,8 @@ function draw(navigated) {
   $("#tabs").style.setProperty("--ti", Math.max(0, shown.findIndex(a => a.dataset.tab === r)));
   for (const a of tabs) a.toggleAttribute("aria-current", a.dataset.tab === r) && a.setAttribute("aria-current", "page");
   $("#topTitle").textContent = TITLES[r];
-  const html = !Object.keys(D).length && S.lastLoad && !S.loading ? failed(r) : VIEWS[r]();
+  const html = !Object.keys(D).length && S.lastLoad && !S.loading ? failed(r) : pre && pre.r === r ? pre.html : VIEWS[r]();
+  pre = null;
   if (changed && prev && view.firstElementChild) pages[prev] = view.firstElementChild;
   if (changed && pages[r]) { pages[r].style.animation = "none"; view.replaceChildren(pages[r]); morph(view, html); view.firstElementChild?.style.setProperty("animation", "none"); }
   else if (changed || !view.firstChild) { view.innerHTML = html; if (prev) view.querySelector(".page")?.style.setProperty("animation", "none"); }
