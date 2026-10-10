@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-09T08:43:12.445Z",
-  "last_edition": "2026-10-09",
+  "last_updated": "2026-10-10T08:41:23.511Z",
+  "last_edition": "2026-10-10",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -133,17 +133,19 @@
     },
     {
       "thread_id": "madrid-next-villarreal",
-      "title": "Villarreal come to the Bernabéu with La Liga's third-best chance creation and without Tajon Buchanan",
+      "title": "Valverde, Mbappé and Konaté all in the squad for Villarreal at the Bernabéu tonight",
       "entities": [],
       "facts": {
         "next": "Villarreal (H) 2026-10-10T19:00:00Z",
         "position": 4,
         "points": 15,
-        "kickoff": "2026-10-10T19:00:00Z"
+        "kickoff": "2026-10-10T19:00:00Z",
+        "valverde": "in squad",
+        "mbappe": "in squad"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-09",
-      "last_change": "2026-10-09",
+      "last_printed": "2026-10-10",
+      "last_change": "2026-10-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -351,17 +353,19 @@
     },
     {
       "thread_id": "hebbal-tunnel",
-      "title": "IIT Bombay study backs the Hebbal tunnel and flyover; IISc calls it biased",
+      "title": "BDA says 1,072 of 1,128 trees in the Hebbal tunnel's path will be moved, not felled",
       "entities": [],
       "facts": {
         "trees": 1128,
         "petition": "20000+",
         "iit_b": "backs tunnel and flyover",
-        "iisc": "calls study biased"
+        "iisc": "calls study biased",
+        "transplant": 1072,
+        "fell": 56
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-09-29",
-      "last_change": "2026-09-29",
+      "last_printed": "2026-10-10",
+      "last_change": "2026-10-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -544,7 +548,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "President Murmu meets INDIA bloc leaders tonight; organisers say 10,000 held before Saturday's Delhi protest",
+      "title": "Police detain more than 1,600 in Delhi to stop the protest against the Election Commission, including its leaders on their plane",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -566,15 +570,17 @@
         "bjd": "joined",
         "sc_immunity_remark": "5 Oct",
         "fir": "trespass, Parliament Street police station",
-        "cji": "will examine recall plea",
+        "cji": "intervened for lawyers",
         "firs": 25,
         "charges": "assault on police, obstruction",
         "cec_security": "raised",
-        "murmu": "8 pm Friday"
+        "murmu": "8 pm Friday",
+        "detained_delhi": ">1,600",
+        "leaders": "Dipke, Das, Ranka held on plane"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-09",
-      "last_change": "2026-10-09",
+      "last_printed": "2026-10-10",
+      "last_change": "2026-10-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2073,18 +2079,20 @@
     },
     {
       "thread_id": "russia-fuel-imports-2026",
-      "title": "Russia is buying back petrol made from its own crude in Indian refineries",
+      "title": "US lifts sanctions on Russian diesel sales until April after a Trump-Putin call",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "until": "2027-04-07"
+      },
       "first_printed": "2026-10-02",
-      "last_printed": "2026-10-02",
-      "last_change": "2026-10-02",
+      "last_printed": "2026-10-10",
+      "last_change": "2026-10-10",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "ledger"
+      "section": "videsh"
     },
     {
       "thread_id": "vande-bharat-sleeper-blr",
@@ -3034,17 +3042,18 @@
     },
     {
       "thread_id": "ind-wi-t20is-2026",
-      "title": "Iyer climbs to No. 7 in the T20I batting rankings; the second match is in Ranchi on Friday",
+      "title": "India make 249 in Ranchi and still lose: Shai Hope's 102 from 45 balls powers West Indies' record chase",
       "entities": [],
       "facts": {
-        "wi": "171 (19.1)",
-        "ind": "172/2 (14.4)",
+        "wi": "252/4 (18.3)",
+        "ind": "249/5",
         "iyer": "102* (43)",
-        "rank": 7
+        "rank": 7,
+        "series": "1-1"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-08",
-      "last_change": "2026-10-08",
+      "last_printed": "2026-10-10",
+      "last_change": "2026-10-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3069,12 +3078,15 @@
     },
     {
       "thread_id": "shanghai-masters-2026",
-      "title": "Shanghai Masters starts on Wednesday: Alcaraz and Djokovic have byes, and are in opposite halves",
+      "title": "Djokovic loses 6–4 6–3 to Hurkacz, ending an eight-match winning run against him",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "score": "4-6 3-6",
+        "next": "Paris"
+      },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-10",
+      "last_change": "2026-10-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3580,6 +3592,91 @@
         "down": 0
       },
       "section": "ai"
+    },
+    {
+      "thread_id": "rupee-defence-2026",
+      "title": "RBI clamps down on dollar demand to defend the rupee, and will sell dollars straight to the three state oil companies",
+      "entities": [],
+      "facts": {
+        "ferr": "20% cash on forwards > $2m",
+        "threshold": "$100m to $5m",
+        "omc_window": "from 12 Oct",
+        "rebooking": "banned"
+      },
+      "first_printed": "2026-10-10",
+      "last_printed": "2026-10-10",
+      "last_change": "2026-10-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "nobel-peace-2026",
+      "title": "Navi Pillay, the judge who defended Mandela and led the UN's Gaza inquiry, wins the Nobel Peace Prize",
+      "entities": [],
+      "facts": {
+        "winner": "Navi Pillay"
+      },
+      "first_printed": "2026-10-10",
+      "last_printed": "2026-10-10",
+      "last_change": "2026-10-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "f1-singapore-2026",
+      "title": "Verstappen takes sprint pole ahead of Russell and keeps it after a yellow-flag inquiry",
+      "entities": [],
+      "facts": {
+        "sprint_pole": "Verstappen",
+        "p2": "Russell"
+      },
+      "first_printed": "2026-10-10",
+      "last_printed": "2026-10-10",
+      "last_change": "2026-10-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "anthropic-agents-2026",
+      "title": "An Anthropic model sent Philadelphia police a false tip about an unsolved murder",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-10",
+      "last_printed": "2026-10-10",
+      "last_change": "2026-10-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "motogp-2026",
+      "title": "Marc Márquez wins the Indonesian sprint and takes the championship lead from Jorge Martín",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-10",
+      "last_printed": "2026-10-10",
+      "last_change": "2026-10-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
     }
   ]
 }

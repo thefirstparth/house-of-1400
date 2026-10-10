@@ -1,11 +1,11 @@
 {
-  "date": "2026-10-09",
-  "from": "2026-10-08",
+  "date": "2026-10-10",
+  "from": "2026-10-09",
   "carry": [
     {
-      "id": "pm:nobel-peace-prize-winner-2026-139",
-      "title": "Nobel Peace Prize Winner 2026",
-      "since": "2026-10-03",
+      "id": "pm:us-iran-ceasefire-continues-throughptptpt",
+      "title": "US-Iran ceasefire continues through...?",
+      "since": "2026-10-08",
       "reason": "#1 by 24h volume"
     },
     {
@@ -15,49 +15,44 @@
       "reason": "#2 by 24h volume"
     },
     {
+      "id": "pm:ballon-dor-winner-2026",
+      "title": "Ballon d'Or Winner 2026",
+      "since": "2026-09-25",
+      "reason": "#3 by 24h volume; Harry Kane moved 6.7 pts since printed"
+    },
+    {
+      "id": "pm:next-french-presidential-election",
+      "title": "Next French Presidential Election",
+      "since": "2026-10-09",
+      "reason": "#4 by 24h volume"
+    },
+    {
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
       "title": "UEFA Champions League: 2027 Champion",
       "since": "2026-09-25",
-      "reason": "#3 by 24h volume"
+      "reason": "#5 by 24h volume"
     },
     {
       "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
       "title": "US announces end of Iranian blockade by...?",
       "since": "2026-09-25",
-      "reason": "#5 by 24h volume"
-    },
-    {
-      "id": "pm:us-iran-ceasefire-continues-throughptptpt",
-      "title": "US-Iran ceasefire continues through...?",
-      "since": "2026-10-08",
-      "reason": "#6 by 24h volume"
-    },
-    {
-      "id": "pm:ballon-dor-winner-2026",
-      "title": "Ballon d'Or Winner 2026",
-      "since": "2026-09-25",
-      "reason": "#7 by 24h volume"
+      "reason": "#7 by 24h volume; By October 15 moved 5.0 pts since printed"
     }
   ],
   "dropped": [
     {
-      "id": "pm:which-company-has-the-best-ai-model-end-of-october",
-      "title": "Which company has the best AI model end of October?",
-      "why": "cooled: outside the ranking by volume, moved 0.5 pts"
+      "id": "pm:nobel-peace-prize-winner-2026-139",
+      "title": "Nobel Peace Prize Winner 2026",
+      "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:saudi-arabia-military-action-against-yemen-on-october-2026",
-      "title": "Saudi Arabia military action against Yemen on...?",
+      "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
+      "title": "Prime Minister of Israel after the next election?",
       "why": "carry cap of 6"
     },
     {
-      "id": "pm:strait-of-hormuz-traffic-returns-to-normal-by-december-31",
-      "title": "Strait of Hormuz traffic returns to normal by December 31?",
-      "why": "carry cap of 6"
-    },
-    {
-      "id": "pm:next-fable-model-5pt2-released-byptptpt",
-      "title": "Next Fable Model (5.2+) released by...?",
+      "id": "pm:indiana-enacts-data-center-moratorium-by-20260929",
+      "title": "Indiana enacts data center moratorium by...?",
       "why": "carry cap of 6"
     }
   ]
