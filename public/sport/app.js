@@ -249,15 +249,19 @@ function header(title, sub, stalekeys = []) {
 const blk = (title, body, extra = "", id = "") => (body ? `<section class="blk"${id ? ` id="${id}"` : ""}><div class="blk-h"><h2>${title}</h2>${extra}</div>${body}</section>` : "");
 const countdown = iso => `<span data-cd="${esc(iso)}">${esc(rel(iso))}</span>`;
 // Jump bar: the page's sections as chips under the title, for long pages
-const jump = items => { const it = items.filter(([id]) => id); return it.length > 2 ? `<nav class="jump" aria-label="On this page">${it.map(([id, n]) => `<a href="#${route}/${id}" data-jump="${id}">${esc(n)}</a>`).join("")}</nav>` : ""; };
+const jump = items => { const it = items.filter(([id]) => id); return it.length > 2 ? `<nav class="jump" aria-label="On this page"><div class="jump-in">${it.map(([id, n]) => `<a href="#${route}/${id}" data-jump="${id}">${esc(n)}</a>`).join("")}</div></nav>` : ""; };
 
 // The hero for an event: two sides and the time (or the score), or one title for F1
 function nextCard(e, { odds = true } = {}) {
   if (!e) return "";
   const head = `<div class="when">${chip(e.sp, e.sp === "f1" ? "F1" : e.comp || SPORT_NAME[e.sp])}${e.state === "live" ? `<span class="chip live"><i></i>Live</span>` : `<span class="count">${e.tbc ? "Time to be confirmed" : countdown(e.start)}</span>`}</div>`;
   if (e.sp === "f1") {
-    const o = odds ? evOdds(e) : null;
-    return `<a class="card next one sp-f1" href="${e.href}">${head}<div class="title">${e.flag ? `<span class="fl">${esc(e.flag)}</span> ` : ""}${esc(e.title)}<small>${esc(e.sub || "")}</small></div><div class="clock tnum">${hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>${o ? `<div class="pill-row"><span class="pill">${esc(o.label)} <b class="tnum">${o.prob}%</b> in the markets</span></div>` : ""}</a>`;
+    const o = odds ? evOdds(e) : null, fav = favDriver();
+    const qs = /^sprint$/i.test(e.session) ? /sprint (qualifying|shootout)/i : /^race$/i.test(e.session) ? /^qualifying$/i : null;
+    const q = qs && (val("f1_sessions")?.results || []).find(r => qs.test(r.name) && dayKey(t(r.start)) >= dayKey(t(e.start) - 3 * 864e5));
+    const qi = q ? q.top.findIndex(n => same(n, last(fav))) : -1;
+    const qline = qi >= 0 ? `<span class="pill res">${fpos({ pos: qi + 1, finished: true })}${esc(last(fav))} qualified ${ordinal(qi + 1)}</span>` : "";
+    return `<a class="card next one sp-f1" href="${e.href}">${head}<div class="title">${e.flag ? `<span class="fl">${esc(e.flag)}</span> ` : ""}${esc(e.title)}<small>${esc(e.sub || "")}</small></div><div class="clock tnum">${hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>${o || qline ? `<div class="pill-row">${qline}${o ? `<span class="pill">${esc(o.label)} <b class="tnum">${o.prob}%</b> to win, in the markets</span>` : ""}</div>` : ""}</a>`;
   }
   const side = (name, lg) => `<div class="side">${lg || monoHTML(name, "lg")}<b>${esc(e.sp === "tennis" || e.sp === "nba" ? last(name) : name)}</b></div>`;
   const live = e.state === "live" && e.sa != null;
@@ -309,14 +313,15 @@ function weekStrip(E) {
     const sps = [...new Set(ev.map(e => e.sp))];
     return `<button type="button" class="wd${i === 0 ? " today" : ""}${d === sel ? " on" : ""}" data-ui="day" data-v="${d}" aria-pressed="${d === sel}" aria-label="${esc(fmt(dt.toISOString(), { weekday: "long", day: "numeric", month: "long" }))}: ${ev.length} fixture${ev.length === 1 ? "" : "s"}"${ev.length ? "" : " disabled"}>
       <span class="wdn">${i === 0 ? "Today" : esc(fmt(dt.toISOString(), { weekday: "short" }))}</span><b class="tnum">${esc(fmt(dt.toISOString(), { day: "numeric" }))}</b>
-      <span class="dots">${sps.slice(0, 3).map(sp => `<i class="sp-${sp}"></i>`).join("")}${sps.length > 3 ? `<em>+${sps.length - 3}</em>` : ""}</span></button>`;
+      <span class="dots">${(sps.length > 3 ? sps.slice(0, 2) : sps).map(sp => `<i class="sp-${sp}"></i>`).join("")}${sps.length > 3 ? `<em>+${sps.length - 2}</em>` : ""}</span></button>`;
   }).join("");
   const list = sel ? by(sel).map(e => {
     const res = e.state === "done" ? (e.sa != null ? `${e.sa}–${e.sb}` : e.sp === "f1" && e.top ? `1 ${e.top[0]}` : e.sp === "tennis" ? (e.won === "a" ? "Won" : "Lost") : e.sp === "cricket" && e.status ? resultWord({ status: e.status, won: e.won === "a" ? true : e.won === "b" ? false : null }) : "Final") : null;
-    return `<a class="row" href="${e.href}">${tile(e.sp)}<div class="grow"><div class="t1">${esc(e.title)}</div><div class="t2">${esc(e.tbc ? "Time TBC" : hm(e.start))}${e.comp && e.sp !== "f1" ? ` · ${esc(e.comp)}` : e.sp === "f1" && e.sub ? ` · ${esc(e.sub)}` : ""}</div></div><div class="end">${e.state === "live" ? `<span class="chip live"><i></i>Live</span>` : res ? `<span class="t2">${esc(res)}</span>` : `<span class="t2">${countdown(e.start)}</span>`}</div></a>`;
+    return `<a class="row" href="${e.href}">${tile(e.sp)}<div class="grow"><div class="t1">${esc(e.title)}</div><div class="t2">${esc(e.tbc ? "Time TBC" : hm(e.start))}${e.comp && e.sp !== "f1" ? ` · ${esc(e.comp)}` : e.sp === "f1" && e.sub ? ` · ${esc(e.sub)}` : ""}</div></div><div class="end">${e.state === "live" ? `<span class="chip live"><i></i>Live</span>` : res ? `<span class="t2">${esc(res)}</span>` : t(e.start) - Date.now() < 12 * 36e5 ? `<span class="t2">${countdown(e.start)}</span>` : ""}</div></a>`;
   }).join("") : "";
   const selDt = sel && new Date(sel + "T12:00:00+05:30").toISOString();
-  return `<section class="week" aria-label="The week ahead"><div class="wk7">${cells}</div></section>${list ? `<div class="sheet-bg" data-close="day"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(fmt(selDt, { weekday: "long", day: "numeric", month: "long" }))}"><div class="sheet-h"><b>${esc(sel === dayKey(Date.now()) ? "Today" : fmt(selDt, { weekday: "long", day: "numeric", month: "long" }))}</b><button type="button" class="x" data-close="day" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="list">${list}</div></div>` : ""}`;
+  SHEET = list ? `<div class="sheet-bg" data-close="day"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t"><div class="grab" aria-hidden="true"></div><div class="sheet-h"><b id="sheet-t" tabindex="-1">${esc(sel === dayKey(Date.now()) ? "Today" : fmt(selDt, { weekday: "long", day: "numeric", month: "long" }))}</b><button type="button" class="x" data-close="day" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="list">${list}</div></div>` : "";
+  return `<section class="week" aria-label="The week ahead"><div class="wk7">${cells}</div></section>`;
 }
 function viewHome() {
   const E = events(), now = Date.now();
@@ -374,7 +379,7 @@ function viewHome() {
     ${ready ? weekStrip(E) : ""}
     ${!ready ? `<div class="skel"></div><div class="skel"></div>` : ""}
     ${live.length ? blk("Live now", live.map(e => nextCard(e)).join("")) : ""}
-    ${hero ? blk("Up next", nextCard(hero) + (rows || later.length ? `<div class="list" style="margin-top:12px">${rows}${later.length ? moreBox(`<span class="later">${later.every(e => e.sp === "intl") ? `${later.length} national teams` : `${later.length} more`}, later</span>`, later.map(e => `<a class="row" href="${e.href}">${tile(e.sp)}<div class="grow"><div class="t1">${esc(e.title)}</div><div class="t2">${esc(when(e.start))}${e.comp ? ` · ${esc(e.comp)}` : ""}</div></div><div class="end"><div class="t2">${countdown(e.start)}</div></div></a>`).join("")) : ""}</div>` : "")) : ""}
+    ${hero ? blk("Up next", nextCard(hero) + (rows || later.length ? `<div class="list" style="margin-top:12px">${rows}${later.length ? moreBox(`<span class="later">Later · ${esc(later.map(e => e.who).join(", "))}</span>`, later.map(e => `<a class="row" href="${e.href}">${tile(e.sp)}<div class="grow"><div class="t1">${esc(e.title)}</div><div class="t2">${esc(when(e.start))}${e.comp ? ` · ${esc(e.comp)}` : ""}</div></div><div class="end"><div class="t2">${countdown(e.start)}</div></div></a>`).join("")) : ""}</div>` : "")) : ""}
     ${results ? blk("Latest results", `<div class="shelf">${results}</div>`) : ""}
     ${tours.length ? blk("Tournaments and tables", `<div class="list">${tours.join("")}</div>`) : ""}
     ${ready ? sources("football", "madrid_hub", "intl_hub", "crease", "f1_next", "f1_sessions", "tennis_players", "nba", "odds") : ""}</div>`;
@@ -395,7 +400,7 @@ function pitch(xi) {
   const L = lines.length, dots = lines.map((l, li) => {
     const y = 91 - (li / Math.max(L - 1, 1)) * 79;
     const sorted = [...l].sort((a, b) => side(a) - side(b));
-    return sorted.map((p, i) => `<div class="pl${li === 0 ? " gk" : ""}" style="left:${((i + 1) / (sorted.length + 1)) * 100}%;top:${y}%"><b class="tnum">${esc(p.shirt || "")}</b><span>${esc(String(p.short || p.name).replace(/^[A-Z]\. /, "").replace(/ Júnior$/, " Jr."))}</span></div>`).join("");
+    return sorted.map((p, i) => `<div class="pl${li === 0 ? " gk" : ""}" style="left:${((i + 1) / (sorted.length + 1)) * 100}%;top:${y}%"><b class="tnum">${esc(p.shirt || "")}</b>${(nm => `<span${nm.length > 10 ? ' class="lg"' : ""}>${esc(nm)}</span>`)(String(p.short || p.name).replace(/^[A-Z]\. /, "").replace(/ Júnior$/, " Jr."))}</div>`).join("");
   }).join("");
   return `<div class="pitch" role="img" aria-label="${esc(xi.formation || "")}: ${esc(xi.players.map(p => p.name).join(", "))}"><svg class="lines" viewBox="0 0 68 80" preserveAspectRatio="none" aria-hidden="true"><rect x="2" y="2" width="64" height="76" rx="1"/><path d="M2 40h64"/><circle cx="34" cy="40" r="7"/><rect x="18" y="66" width="32" height="12"/><rect x="26" y="73" width="16" height="5"/><rect x="18" y="2" width="32" height="12"/><rect x="26" y="2" width="16" height="5"/></svg>${dots}</div>`;
 }
@@ -454,7 +459,7 @@ function viewFootball() {
     const lk = kinds.find(([k]) => k === UI.leaders)?.[0] || kinds[0]?.[0];
     if (lk) {
       const L = cur[lk].slice(0, 8), top = Math.max(...L.map(x => x.value));
-      leaders = blk(`Leaders`, `<div class="seg" role="group" aria-label="Leader board">${kinds.map(([k, n]) => `<button type="button" data-ui="leaders" data-v="${k}" aria-pressed="${k === lk}">${n}</button>`).join("")}</div><div class="list sp-football">${(rows => rows.slice(0, 5).join("") + (rows.length > 5 ? moreBox(`${rows.length - 5} more`, rows.slice(5).join("")) : ""))(L.map(x => barRow(x.name, x.value, top, { me: same(x.team, cname), sub: x.team, pos: x.rank, label: lk === "ratings" ? Number(x.value).toFixed(2) : x.value })))}</div><p class="foot">${esc(cur.label)}</p>`, "", "leaders");
+      leaders = blk(`Leaders`, `<div class="seg" role="group" aria-label="Leader board">${kinds.map(([k, n]) => `<button type="button" data-ui="leaders" data-v="${k}" aria-pressed="${k === lk}">${n}</button>`).join("")}</div><div class="list sp-football">${(rows => rows.slice(0, 5).join("") + (rows.length > 5 ? moreBox(`${rows.length - 5} more`, rows.slice(5).join("")) : ""))(L.map(x => barRow(x.name, x.value, top, { me: same(x.team, cname), sub: x.team, pos: x.rank, label: lk === "ratings" ? Number(x.value).toFixed(2) : x.value })))}</div>`, "", "leaders");
     }
   }
   // The national sides: each one's next match, and its last result
@@ -465,7 +470,7 @@ function viewFootball() {
     const o = n ? opp(n) : null, lr = l ? (+(same(l.home, T.name) ? l.hs : l.as) > +(same(l.home, T.name) ? l.as : l.hs) ? "W" : +(same(l.home, T.name) ? l.hs : l.as) < +(same(l.home, T.name) ? l.as : l.hs) ? "L" : "D") : null;
     const ls = l ? (same(l.home, T.name) ? `${l.hs}–${l.as}` : `${l.as}–${l.hs}`) : "";
     const away = n && !same(n.home, T.name);
-    return `<details class="row-d"><summary class="row">${crest(T.id, T.name, "sm")}<div class="grow"><div class="t1">${esc(T.name)}</div><div class="t2">${n ? `${away ? "at" : "v"} ${esc(o.name)} · ${esc(shortDate(n.date))}` : "No fixture listed"}</div></div>${l ? `<span class="score ${lr} tnum" aria-label="Last result">${esc(ls)}</span>` : ""}<svg class="chev dn" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2"/></svg></summary><div class="nt"><div class="grow">
+    return `<details class="row-d"><summary class="row">${crest(T.id, T.name, "sm")}<div class="grow"><div class="t1">${esc(T.name)}</div><div class="t2">Next ${n ? `${away ? "at" : "v"} ${esc(o.name)} · ${esc(shortDate(n.date))}` : "not listed"}</div></div>${l ? `<div class="end"><span class="score ${lr} tnum" aria-label="Last result">${lr} ${esc(ls)}</span><div class="t2">last, v ${esc(initials(same(l.home, T.name) ? l.away : l.home))}</div></div>` : ""}<svg class="chev dn" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2"/></svg></summary><div class="nt"><div class="grow">
       <div class="nl"><span class="k">Next</span>${n ? `<span>${away ? "at" : "v"} ${esc(o.name)} · ${esc(when(n.date))}<small>${esc([n.competition, n.venue].filter(Boolean).join(" · "))}</small></span>` : "<span>No fixture listed</span>"}</div>
       ${T.next[1] ? `<div class="nl"><span class="k">Then</span><span>${same(T.next[1].home, T.name) ? "v" : "at"} ${esc(same(T.next[1].home, T.name) ? T.next[1].away : T.next[1].home)} · ${esc(when(T.next[1].date))}<small>${esc(T.next[1].competition || "")}</small></span></div>` : ""}
       ${l ? `<div class="nl"><span class="k">Last</span><span><b class="score ${lr} tnum">${lr} ${esc(ls)}</b> v ${esc(same(l.home, T.name) ? l.away : l.home)}<small>${esc(shortDate(l.date))}</small></span></div>` : ""}</div></div></details>`;
@@ -509,15 +514,16 @@ function viewF1() {
     const form = HB?.form?.drivers?.find(d => same(d.name, fav))?.results || [];
     const here = [...(HB?.favourite_here || [])].sort((a, b) => a.season - b.season), best = here.filter(r => r.pos).sort((a, b) => a.pos - b.pos)[0];
     const label = follows().f1_driver?.label || `${last(fav)} watch`;
-    const wk = sess.map(s => {
-      if (s.res) { const i = s.res.top.findIndex(n => same(n, last(fav))); return i >= 0 ? `<span class="pill res">${fpos({ pos: i + 1, finished: true })}${ordinal(i + 1)} in ${esc(s.name)}</span>` : ""; }
-      if (s.state === "done" || !f1Kind(s.name)) return "";
-      const m = sessionMarket(s.name, s.start), o = m?.outcomes.find(x => same(x.name, fav));
-      return o ? `<span class="pill odds"><b class="tnum">${Math.round(o.prob)}%</b> chance in ${esc(s.name)}</span>` : "";
-    }).filter(Boolean).join("");
+    const SHORT = { "Sprint Qualifying": "Sprint quali", "Sprint Shootout": "Shootout", Qualifying: "Quali" };
+    const wk = sess.filter(s => f1Kind(s.name)).map(s => {
+      let v = "";
+      if (s.res) { const i = s.res.top.findIndex(n => same(n, last(fav))); v = i >= 0 ? fpos({ pos: i + 1, finished: true }) : `<span class="dim">Not top 3</span>`; }
+      else if (s.state !== "done") { const m = sessionMarket(s.name, s.start), o = m?.outcomes.find(x => same(x.name, fav)); v = o ? `<b class="pct tnum">${Math.round(o.prob)}%</b>` : `<span class="dim">·</span>`; }
+      return `<div class="step${s.res ? " got" : ""}"><span>${esc(SHORT[s.name] || s.name)}</span>${v}</div>`;
+    }).join("");
     watch = blk(esc(label), `<div class="card sp-f1"><div class="who"><i style="background:${esc(me?.colour || "var(--line)")}"></i><div><div class="who-n">${esc(fav)}</div><div class="src">${esc(me?.team || "")}${me ? ` · ${me.wins} win${me.wins === 1 ? "" : "s"} this season` : ""}</div></div></div>
       ${me ? `<div class="stats"><div class="stat"><b class="tnum">${ordinal(me.pos)}</b><span>In the championship</span></div><div class="stat"><b class="tnum">${me.points}</b><span>Points</span></div><div class="stat"><b class="tnum">${me === lead ? "Lead" : `${lead.points - me.points}`}</b><span>${me === lead ? "Top of the table" : `Behind ${esc(last(lead.shown || lead.name))}`}</span></div></div>` : ""}
-      ${wk ? `<div class="sub-h">This weekend</div><div class="pill-row">${wk}</div>` : ""}
+      ${wk ? `<div class="sub-h">This weekend <span>where he finished, then his chance</span></div><div class="steps">${wk}</div>` : ""}
       ${here.length ? `<div class="sub-h">At ${esc(HB.race?.circuit || "this track")}${best ? ` <span>best ${ordinal(best.pos)}, in ${esc(here.filter(r => r.pos === best.pos).map(r => r.season).join(", "))}</span>` : ""}</div><div class="fgrid yrs">${here.map(r => `<span class="yr">${fpos({ pos: r.pos, finished: /^\d+$/.test(r.text), text: r.text }, `${r.season}: from ${ordinal(r.grid || 0)} on the grid, ${r.status}`)}<small class="tnum">'${String(r.season).slice(2)}</small></span>`).join("")}</div>` : ""}</div>`, "", "max");
   }
   // Expectations: each session's winner market, the race first
@@ -534,13 +540,13 @@ function viewF1() {
     const rows = W.map(w => `<div class="row"><span class="yr tnum">${esc(w.season)}</span><div class="grow"><div class="t1">${esc(w.driver)}</div><div class="t2">${esc(w.team || "")}${w.grid ? ` · from ${ordinal(w.grid)} on the grid` : ""}</div></div></div>`);
     track = blk(`${esc(HB.race?.circuit || "This track")}`, `<div class="stats tiles"><div class="stat"><b class="tnum">${W.length}</b><span>Races held</span></div><div class="stat"><b class="tnum">${fromPole}</b><span>Won from pole</span></div><div class="stat"><b class="tnum">${new Set(W.map(w => w.driver)).size}</b><span>Different winners</span></div></div>
       <div class="sub-h out">Most wins here</div><div class="list sp-f1">${top.map(x => barRow(x.driver, x.wins, mx, { me: same(x.driver, fav) })).join("")}</div>
-      <div class="sub-h out">Winners, latest first</div><div class="list hist">${rows.slice(0, 5).join("")}${rows.length > 5 ? moreBox(`All ${rows.length} winners`, rows.slice(5).join("")) : ""}</div>`, "", "track");
+      <div class="sub-h out">Winners, latest first</div><div class="list hist">${rows.slice(0, 3).join("")}${rows.length > 3 ? moreBox(`All ${rows.length} winners`, rows.slice(3).join("")) : ""}</div>`, "", "track");
   }
   // Form: the top ten (and Verstappen) in each of the last five races, aligned by race
   let form = "";
   if (HB?.form?.drivers?.length && drivers.length) {
     const rounds = HB.form.rounds;
-    const pick = drivers.slice(0, 10);
+    const pick = drivers.slice(0, 6);
     if (me && !pick.includes(me)) pick.push(me);
     const rowsF = pick.map(d => ({ d, f: HB.form.drivers.find(x => x.code === d.code || same(x.name, d.name)) })).filter(x => x.f);
     form = blk("Form", `<div class="list formt"><div class="row hd"><span class="ps"></span><div class="grow"></div><div class="fgrid">${rounds.map(r => `<span class="fpos none rh" title="${esc(r.name)}">${esc(raceCode(r))}</span>`).join("")}</div></div>${rowsF.map(({ d, f }) => `<div class="row${d === me ? " me" : ""}"><span class="ps tnum">${d.pos}</span><i class="tstripe" style="background:${esc(d.colour || "var(--line)")}"></i><div class="grow"><div class="t1">${esc(last(d.shown || d.name))}</div></div><div class="fgrid">${rounds.map(r => fpos(f.results.find(x => x.round === r.round))).join("")}</div></div>`).join("")}</div><p class="foot">Finishing position in each race, oldest to latest: ${esc(rounds.map(r => `${raceCode(r)} ${r.name.replace(/ Grand Prix/, " GP")}`).join(", "))}. DNF: did not finish. A dot: not in the race.</p>`, "", "form");
@@ -550,7 +556,7 @@ function viewF1() {
   if (drivers.length) {
     const isD = UI.f1table !== "constructors", L = isD ? drivers : S.constructors || [], mx = L[0]?.points || 1;
     const rowOf = x => barRow(isD ? x.shown || x.name : x.name, x.points, mx, { me: isD && same(x.name, fav), pos: x.pos, colour: x.colour || "" });
-    table = blk("Standings", `<div class="seg" role="group" aria-label="Standings">${[["drivers", "Drivers"], ["constructors", "Teams"]].map(([k, n]) => `<button type="button" data-ui="f1table" data-v="${k}" aria-pressed="${(k === "drivers") === isD}">${n}</button>`).join("")}</div><div class="list">${L.slice(0, 10).map(rowOf).join("")}${L.length > 10 ? moreBox(`The other ${L.length - 10}`, L.slice(10).map(rowOf).join("")) : ""}</div><p class="foot">After round ${S.round}${S.prior ? ` of ${esc(S.season)} (final)` : ""}.</p>`, "", "standings");
+    table = blk("Standings", `<div class="seg" role="group" aria-label="Standings">${[["drivers", "Drivers"], ["constructors", "Teams"]].map(([k, n]) => `<button type="button" data-ui="f1table" data-v="${k}" aria-pressed="${(k === "drivers") === isD}">${n}</button>`).join("")}</div><div class="list">${(() => { const head = L.slice(0, 6), mine = isD && me && !head.includes(me) ? [me] : [], rest = L.filter(x => !head.includes(x) && !mine.includes(x)); return head.map(rowOf).join("") + mine.map(rowOf).join("") + (rest.length ? moreBox(`The other ${rest.length}`, rest.map(rowOf).join("")) : ""); })()}</div><p class="foot">After round ${S.round}${S.prior ? ` of ${esc(S.season)} (final)` : ""}.</p>`, "", "standings");
   }
   // Last race
   let lastRace = "";
@@ -644,7 +650,7 @@ function viewNba() {
 // ------------------------------------------------------------------ router and shell
 const VIEWS = { home: viewHome, football: viewFootball, f1: viewF1, cricket: viewCricket, tennis: viewTennis, nba: viewNba };
 const TITLES = { home: "Today", football: "Real Madrid", f1: "Formula 1", cricket: "India", tennis: "Tennis", nba: "Warriors" };
-let route = null, io = null, jio = null, jcur = null;
+let route = null, io = null, jio = null, jcur = null, onBottom = () => {}, SHEET = "", sheetFor = null;
 const parse = () => { const [r, sec] = location.hash.replace(/^#\/?/, "").split("/"); return { r: VIEWS[r] ? r : "home", sec: sec || null }; };
 function render(navigated) {
   const { r, sec } = parse(), changed = r !== route; route = r;
@@ -655,7 +661,14 @@ function render(navigated) {
   $("#tabs").style.setProperty("--n", [...document.querySelectorAll(".tabs a")].filter(a => !a.hidden).length);
   for (const a of document.querySelectorAll(".tabs a")) { if (a.dataset.tab === r) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); }
   $("#topTitle").textContent = TITLES[r];
+  SHEET = "";
   view.innerHTML = VIEWS[r]();
+  // The day sheet sits in its own layer above the app, which goes inert behind it
+  const root = $("#sheet-root"), opening = SHEET && !root.innerHTML;
+  root.innerHTML = r === "home" ? SHEET : "";
+  $("#app").inert = !!root.innerHTML;
+  if (opening) { sheetFor = UI.day; requestAnimationFrame(() => $("#sheet-t")?.focus()); dragSheet(root.querySelector(".sheet")); }
+  else if (!root.innerHTML && sheetFor) { const b = view.querySelector(`.wd[data-v="${sheetFor}"]`); sheetFor = null; b?.focus(); }
   if (!changed && !navigated) { view.querySelector(".page")?.style.setProperty("animation", "none"); window.scrollTo(0, y); }
   else if (sec && document.getElementById(sec)) requestAnimationFrame(() => document.getElementById(sec).scrollIntoView({ block: "start" }));
   else window.scrollTo(0, 0);
@@ -669,14 +682,22 @@ function render(navigated) {
       const cur = [...seen].filter(([, y]) => y != null).sort((a, b) => a[1] - b[1])[0]?.[0];
       if (cur === jcur) return; jcur = cur;
       for (const c of chips) { const on = c.dataset.jump === cur; c.toggleAttribute("aria-current", on); if (on) { const bar = c.parentElement; bar.scrollTo({ left: Math.max(0, c.offsetLeft - (bar.clientWidth - c.offsetWidth) / 2), behavior: "smooth" }); } }
-    }, { rootMargin: "-130px 0px -55% 0px" });
+    }, { rootMargin: "-110px 0px -55% 0px" });
     for (const c of chips) { const el = document.getElementById(c.dataset.jump); if (el) jio.observe(el); }
+    onBottom = () => { if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) { const lastC = chips.at(-1); if (jcur !== lastC.dataset.jump) { jcur = lastC.dataset.jump; for (const c of chips) c.toggleAttribute("aria-current", c === lastC); const bar = lastC.parentElement; bar.scrollTo({ left: bar.scrollWidth, behavior: "smooth" }); } } };
   }
   const h1 = $("#h1");
   if (h1 && "IntersectionObserver" in window) { io = new IntersectionObserver(([en]) => $("#top").classList.toggle("solid", !en.isIntersecting), { rootMargin: "-56px 0px 0px 0px" }); io.observe(h1); }
 }
 addEventListener("hashchange", () => { vibe(); const { r } = parse(); render(r !== route); });
 $("#refresh").addEventListener("click", () => { vibe(); loadAll(); });
+function dragSheet(el) {
+  if (!el) return; let y0 = null, dy = 0;
+  el.addEventListener("touchstart", e => { if (el.scrollTop > 0) return; y0 = e.touches[0].clientY; dy = 0; el.style.transition = "none"; }, { passive: true });
+  el.addEventListener("touchmove", e => { if (y0 == null) return; dy = Math.max(0, e.touches[0].clientY - y0); el.style.transform = `translateY(${dy}px)`; }, { passive: true });
+  el.addEventListener("touchend", () => { if (y0 == null) return; el.style.transition = ""; if (dy > 80) { UI.day = null; render(false); } else el.style.transform = ""; y0 = null; }, { passive: true });
+}
+$("#sheet-root").addEventListener("click", e => { const c = e.target.closest("[data-close]"); if (c) { UI[c.dataset.close] = null; render(false); } });
 view.addEventListener("click", e => {
   const b = e.target.closest("button[data-ui]");
   if (b) { UI[b.dataset.ui] = b.dataset.ui === "day" && UI.day === b.dataset.v ? null : b.dataset.v; vibe(); render(false); return; }
@@ -691,6 +712,7 @@ view.addEventListener("click", e => {
   addEventListener("touchmove", e => { if (y0 == null) return; pulled = Math.max(0, e.touches[0].clientY - y0); ind.style.setProperty("--p", Math.min(pulled / 70, 1)); ind.classList.toggle("on", pulled > 8); ind.classList.toggle("ready", pulled > 70); }, { passive: true });
   addEventListener("touchend", () => { if (y0 != null && pulled > 70) { vibe(); loadAll(); } y0 = null; ind.classList.remove("on", "ready"); }, { passive: true });
 }
+addEventListener("scroll", () => onBottom(), { passive: true });
 addEventListener("keydown", e => { if (e.key === "Escape" && UI.day) { UI.day = null; render(false); } });
 // Countdowns tick; the data refreshes every minute while something is live, else every five, and on return to the app
 setInterval(() => { for (const el of document.querySelectorAll("[data-cd]")) el.textContent = rel(el.dataset.cd); }, 20000);
