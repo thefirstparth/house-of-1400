@@ -6,7 +6,9 @@ import { D, S, esc, t, fmt, hm, dayKey, dayLabel, when, shortDate, longDate, rel
 // ------------------------------------------------------------------ marks
 const PX = { s: 24, m: 32, l: 56, xl: 72 };
 const CRIC = { India: 6, England: 1, Australia: 2, "South Africa": 3, "West Indies": 4, "New Zealand": 5, Pakistan: 7, "Sri Lanka": 8, Zimbabwe: 9, Bangladesh: 25, Ireland: 29, Afghanistan: 40 };
-const espnImg = (path, px) => `https://a.espncdn.com/combiner/i?img=${encodeURIComponent(path)}&w=${px * 2}&h=${px * 2}`;
+// ESPN's resizer stretches an image to any width and height given (its player headshots are 600x436: a square
+// request squashed every face, 10 Oct 2026), so only a width is ever asked for and the box crops with object-fit
+const espnImg = (path, px) => `https://a.espncdn.com/combiner/i?img=${encodeURIComponent(path)}&w=${Math.max(px * 3, 120)}`;
 const mono = (name, size) => `<span class="mk mono ${size}" aria-hidden="true">${esc(initials(name))}</span>`;
 function img(url, name, size, kind, alt = "") {
   const fb = esc(mono(name, size)).replace(/'/g, "");
@@ -76,15 +78,18 @@ export const sideName = (e, side) => { const n = side === "a" ? e.a : e.b; if (!
 export const sessionTitle = e => (e.id.startsWith("gp") ? gpShort(e.gp) : e.session);
 
 // ------------------------------------------------------------------ the right-hand status of a row
+// the live label: a stoppage by name, a saved copy with its time, else Live
+export const liveLabel = e => (e.pause ? e.pause : e.long ? "Live, running long" : "Live");
+const liveSub = e => (e.saved ? `Saved ${hm(e.saved)}` : e.clock || "");
 function status(e) {
-  if (e.state === "live") return `<div class="st">${live(e.long ? "Live, running long" : "Live")}${e.clock ? `<small>${esc(e.clock)}</small>` : ""}</div>`;
+  if (e.state === "live") return `<div class="st">${e.pause ? `<b class="fin">${esc(e.pause)}</b>` : live(liveLabel(e))}${liveSub(e) ? `<small>${esc(liveSub(e))}</small>` : ""}</div>`;
   if (e.state === "off") return `<div class="st"><b class="dim">Off</b><small>${esc(shortDate(e.start))}</small></div>`;
   if (e.state === "done") {
-    const w = e.sp === "cricket" ? resultWord(e) : e.sp === "f1" ? (e.provisional ? "Provisional" : "Final") : e.sp === "nba" ? "Final" : "FT";
+    const w = e.sp === "cricket" ? resultWord(e) : e.sp === "f1" ? (e.provisional ? "Provisional" : "Final") : e.sp === "football" || e.sp === "intl" ? "FT" : "Final";
     return `<div class="st"><b class="fin">${esc(w)}</b><small>${esc(dayLabel(e.start))}</small></div>`;
   }
   const c = myChance(e), soon = t(e.start) - Date.now() < 12 * 36e5;
-  return `<div class="st"><b class="tnum">${e.tbc ? "TBC" : hm(e.start)}</b><small>${e.late ? "Delayed" : soon ? countdown(e.start) : esc(dayLabel(e.start))}</small>${c ? `<span class="ch tnum">${c.prob}%<small> ${esc(c.who)}</small></span>` : ""}</div>`;
+  return `<div class="st"><b class="tnum">${e.tbc ? "TBC" : hm(e.start)}</b><small>${e.starting ? "Starting" : e.late ? "Delayed" : soon ? countdown(e.start) : esc(dayLabel(e.start))}</small>${c ? `<span class="ch tnum">${c.prob}%<small> ${esc(c.who)}</small></span>` : ""}</div>`;
 }
 
 // ------------------------------------------------------------------ the match row: both sides, always
@@ -113,7 +118,7 @@ export function sessionRow(e, { gp = true } = {}) {
 export function hero(e) {
   if (!e) return "";
   const lv = e.state === "live";
-  const top = `<div class="hh">${tag(e.sp, e.sp === "f1" ? `F1 · ${gpShort(e.gp)}` : e.comp || "")}${lv ? live(e.long ? "Live, running long" : "Live") : `<span class="cd">${e.tbc ? "Time to be confirmed" : e.late ? "Delayed" : countdown(e.start)}</span>`}</div>`;
+  const top = `<div class="hh">${tag(e.sp, e.sp === "f1" ? `F1 · ${gpShort(e.gp)}` : e.comp || "")}${lv ? (e.pause ? `<span class="cd">${esc(e.pause)}</span>` : live(e.long ? "Live · long" : "Live")) : `<span class="cd">${e.tbc ? "Time to be confirmed" : e.starting ? "Starting" : e.late ? "Delayed" : countdown(e.start)}</span>`}</div>`;
   if (e.sp === "f1") {
     const S2 = val("f1_standings")?.drivers || [], fav = favDriver();
     const drv = n => S2.find(d => same(last(d.name), last(n)) || same(d.shown, n));
@@ -128,8 +133,8 @@ export function hero(e) {
       ${lv ? order : `<div class="clock tnum">${hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>`}${pills.length ? `<div class="pills">${pills.map(p => `<span class="pill">${p}</span>`).join("")}</div>` : ""}</a>`;
   }
   const side = s => `<div class="side">${mark(s === "a" ? e.ma : e.mb, "l")}<b>${esc(sideName(e, s))}</b></div>`;
-  const mid = lv && e.sa != null ? `<div class="mid tnum">${esc(e.sa)}<span>–</span>${esc(e.sb)}${e.clock ? `<small>${esc(e.clock)}</small>` : ""}</div>`
-    : lv && e.score ? `<div class="mid sm"><small>${esc(e.score)}</small></div>` : `<div class="mid tnum">${e.tbc ? "TBC" : hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>`;
+  const mid = lv && e.sa != null && e.sp !== "cricket" ? `<div class="mid tnum">${esc(e.sa)}<span>–</span>${esc(e.sb)}${liveSub(e) ? `<small>${esc(liveSub(e))}</small>` : ""}</div>`
+    : lv && e.score ? `<div class="mid sm"><small>${esc(e.score).replace(" · ", "<br>")}</small>${e.saved ? `<small>Saved ${hm(e.saved)}</small>` : ""}</div>` : `<div class="mid tnum">${e.tbc ? "TBC" : hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>`;
   const sp = e.sp === "nba" ? "basketball" : e.sp === "intl" ? null : e.sp;
   const p = sp ? sideProbs(oddsFor(sp, [e.a, e.b], e.start), [e.a, e.b]) : null;
   const ev = e.sp === "football" && lv && e.ev ? scorers(e) : "";

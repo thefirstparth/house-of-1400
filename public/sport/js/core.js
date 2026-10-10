@@ -145,8 +145,8 @@ export function myChance(e) {
 // ESPN's live scoreboard first (pre, in, post, with the actual start); without it, live from the start until a result
 // is published or the session's length plus an hour and a half has passed (a red flag can stop the clock for long)
 export const F1MIN = { race: 120, qualifying: 60, sprint: 60, sprint_qualifying: 45 };
-export function f1State(s, res, now = Date.now()) {
-  const ES = (val("f1_sessions")?.status || []).find(x => x.name === s.name && Math.abs(t(x.start) - t(s.start)) < 6 * 36e5);
+export function f1State(s, res, now = Date.now(), sameWk = true) {
+  const ES = sameWk ? (val("f1_sessions")?.status || []).find(x => x.name === s.name && Math.abs(t(x.start) - t(s.start)) < 6 * 36e5) : null;
   const start = ES?.start || s.start, st = t(start), mins = s.minutes || F1MIN[f1Kind(s.name)] || 60;
   let state;
   // ESPN holds a finished session at "in" with "End of Session" for a while: that is over (older copies of the feed
@@ -166,7 +166,7 @@ export function f1State(s, res, now = Date.now()) {
 
 // A feed that says "in play" is believed only so long after the start: beyond it, a saved copy has gone stale and the
 // event is left out (state "off") rather than shown live, or finished with a score nobody published
-const LIVE_FOR = { football: 3, intl: 3, nba: 4, tennis: 6, cricket: 10 };
+const LIVE_FOR = { football: 4, intl: 4, nba: 4, tennis: 6, cricket: 10 };
 const sane = (sp, start, state, now) => (state === "live" && now - t(start) > LIVE_FOR[sp] * 36e5 ? "off" : state);
 // ------------------------------------------------------------------ every followed event, one shape
 // { sp, id, start, state: live|next|done|off, a, b, ma, mb (marks), sa, sb (scores), won: a|b|null, comp, venue,
@@ -182,10 +182,13 @@ export function events(all = false) {
   for (const m of fx.values()) {
     const home = m.home, a = home ? cname : m.opponent, b = home ? m.opponent : cname;
     const state = sane("football", m.date, m.state === "in" ? "live" : m.completed ? "done" : m.state === "post" ? "off" : "next", now);
+    // still "pre" after the kick-off time: about to start (the feed lags a minute or two), then late; kept on screen
+    const late = state === "next" && t(m.date) < now ? (now - t(m.date) < 15 * 6e4 ? "starting" : "late") : null;
     const LV = H?.live && String(H.live.match_id) === String(m.id) ? H.live : null;
     out.push({ sp: "football", id: "rm" + m.id, mid: String(m.id), start: m.date, state, a, b, ma: soccerMark(home ? cid : m.opponent_id, a), mb: soccerMark(home ? m.opponent_id : cid, b),
       comp: m.competition, venue: m.venue, sa: home ? m.us : m.them, sb: home ? m.them : m.us, clock: m.clock || LV?.detail || null,
-      won: m.winner === "us" ? (home ? "a" : "b") : m.winner === "them" ? (home ? "b" : "a") : null, who: "Madrid", key: "madrid", href: "#football",
+      won: m.winner === "us" ? (home ? "a" : "b") : m.winner === "them" ? (home ? "b" : "a") : null, who: "Madrid", key: "madrid", href: "#football", late: late === "late", starting: late === "starting",
+      saved: state === "live" && D.football?.stale ? D.football.as_of : null,
       ev: LV?.events?.length ? LV.events : m.events || (H?.recent && String(H.recent.match_id) === String(m.id) ? H.recent.events : null) });
   }
   // The national sides (this feed is cached for an hour: a match under way is live without a score)
@@ -204,17 +207,21 @@ export function events(all = false) {
       const state = /TEST/i.test(m.format || "") ? (m.state === "live" ? "live" : m.state === "done" ? "done" : m.state === "off" ? "off" : "next") : sane("cricket", m.start, m.state === "live" ? "live" : m.state === "done" ? "done" : m.state === "off" ? "off" : "next", now);
       const inn = String(m.score || "").split(" · ").map(x => x.match(/^([A-Z]{2,4})\s+(\d+(?:\/\d+)?d?(?: & \d+(?:\/\d+)?d?)?)(?:\s*\(([\d.]+) ov\))?$/)).filter(Boolean);
       const mine = inn.find(x => x[1] === "IND"), theirs = inn.find(x => x[1] !== "IND");
-      out.push({ sp: "cricket", id: "in" + m.id, start: m.start, state, a: "India", b: m.opponent, ma: { t: "cricket", name: "India" }, mb: { t: "cricket", name: m.opponent },
+      const pause = state === "live" && /stumps|innings break|tea|lunch|rain|bad light|delay|wet outfield|drinks/i.test(m.status || "") ? String(m.status).replace(/\s*\(.*$/, "") : null;
+      out.push({ sp: "cricket", id: "in" + m.id, start: m.start, state, pause, saved: state === "live" && D.crease?.stale ? D.crease.as_of : null, a: "India", b: m.opponent, ma: { t: "cricket", name: "India" }, mb: { t: "cricket", name: m.opponent },
         sa: mine ? mine[2] : null, sb: theirs ? theirs[2] : null, oa: mine?.[3] || null, ob: theirs?.[3] || null, score: m.score,
         comp: m.desc, venue: [m.ground, m.city].filter(Boolean).join(", "), city: m.city, status: m.status, won: m.won === true ? "a" : m.won === false ? "b" : null, tbc: m.time_announced === false,
         who: "India", key: "india", href: "#cricket", card: C.last_card && String(C.last_card.match_id) === String(m.id) ? C.last_card : null });
     }
   }
   // F1: the weekend's sessions (those that count unless all), with the state from ESPN's live scoreboard
-  const N = val("f1_next")?.race, R = val("f1_sessions")?.results || [];
+  // results and states only from the same weekend: f1_next moves on three hours after the flag, f1_sessions keeps the
+  // weekend just run for a day and a half (QA, 10 Oct: the next Grand Prix showed the last one's podium)
+  const N = val("f1_next")?.race, FS = val("f1_sessions"), sameWk = FS?.race && N && String(FS.race.round) === String(N.round) && String(FS.race.season || "") === String(N.season || FS.race.season || "");
+  const R = sameWk ? FS.results || [] : [];
   for (const s of N?.sessions || []) {
     if (!f1Kind(s.name) && !all) continue;
-    const res = R.find(r => r.name === s.name || Math.abs(t(r.start) - t(s.start)) < 45 * 6e4) || null, X = f1State(s, res, now);
+    const res = R.find(r => r.name === s.name && Math.abs(t(r.start) - t(s.start)) < 6 * 36e5) || null, X = f1State(s, res, now, sameWk);
     out.push({ sp: "f1", id: "f1" + s.start, start: X.start, state: X.state, late: X.late, long: X.long, liveTop: X.liveTop, mins: X.mins, session: s.name,
       gp: gpName(N.name), circuit: N.circuit, flag: N.flag, round: N.round, top: res?.top || X.prov || null, provisional: !res && !!X.prov, who: "F1", key: "f1", href: "#f1" });
   }

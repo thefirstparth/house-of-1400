@@ -20,5 +20,7 @@ export function GET(request) {
     "END:VCALENDAR",
   ].filter(Boolean);
   const name = String(q.get("t")).replace(/[^\w]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "fixture";
-  return new Response(lines.join("\r\n") + "\r\n", { headers: { "content-type": "text/calendar; charset=utf-8", "content-disposition": `inline; filename="${name}.ics"`, "cache-control": "public, max-age=3600", "x-robots-tag": "noindex" } });
+  // lines longer than 75 octets are folded: a CRLF and a space, as RFC 5545 asks
+  const fold = l => { const out = []; let cur = "", n = 0; for (const ch of l) { const b = new TextEncoder().encode(ch).length; if (n + b > (out.length ? 74 : 75)) { out.push(cur); cur = ""; n = 0; } cur += ch; n += b; } out.push(cur); return out.join("\r\n "); };
+  return new Response(lines.map(fold).join("\r\n") + "\r\n", { headers: { "content-type": "text/calendar; charset=utf-8", "content-disposition": `inline; filename="${name}.ics"`, "cache-control": "public, max-age=3600", "x-robots-tag": "noindex" } });
 }

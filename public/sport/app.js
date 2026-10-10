@@ -1,6 +1,6 @@
 // Sport V2 (/sport): everything Parth follows, in one app. The shell: routing, sheets, refresh, theme. Data in
 // js/core.js, components in js/ui.js, screens in js/views.js. No LLM anywhere.
-import { D, S, events, loadAll as load, rel } from "./js/core.js";
+import { D, S, events, loadAll as load, rel, nbaOn } from "./js/core.js";
 import { sheet } from "./js/ui.js";
 import { VIEWS, TITLES } from "./js/views.js";
 
@@ -27,6 +27,7 @@ function render(navigated) {
   const { r, sec } = parse(), changed = r !== S.route; S.route = r;
   const y = window.scrollY;
   document.body.dataset.tab = r;
+  const nbaTab = $('.tabs a[data-tab="nba"]'); if (nbaTab) nbaTab.hidden = !nbaOn() && r !== "nba";
   $("#tabs").style.setProperty("--n", [...document.querySelectorAll(".tabs a")].filter(a => !a.hidden).length);
   for (const a of document.querySelectorAll(".tabs a")) { if (a.dataset.tab === r) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); }
   $("#topTitle").textContent = TITLES[r];
@@ -61,7 +62,7 @@ function render(navigated) {
   const h1 = $("#h1");
   if (h1 && "IntersectionObserver" in window) { io = new IntersectionObserver(([en]) => $("#top").classList.toggle("solid", !en.isIntersecting), { rootMargin: "-56px 0px 0px 0px" }); io.observe(h1); }
 }
-addEventListener("hashchange", () => { vibe(); UI.match = null; render(true); });
+addEventListener("hashchange", () => { vibe(); UI.match = null; UI.day = null; render(true); });
 $("#refresh").addEventListener("click", () => { vibe(); loadAll(); });
 
 // ------------------------------------------------------------------ theme: light unless dark is chosen, kept on the phone

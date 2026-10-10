@@ -7,7 +7,8 @@ import { mark, tag, live, countdown, moreBox, blk, seg, header, jump, sources, f
 const list = (rows, n, what) => (rows.length ? `<div class="list">${rows.slice(0, n).join("")}${rows.length > n ? moreBox(`${rows.length - n} more ${what}`, rows.slice(n).join("")) : ""}</div>` : "");
 const li = (lead, title, subline, end = "", href = "", cls = "") => `<${href ? `a href="${href}"` : "div"} class="li${cls ? " " + cls : ""}">${lead}<div class="grow"><div class="t1">${title}</div>${subline ? `<div class="t2">${subline}</div>` : ""}</div>${end ? `<div class="end">${end}</div>` : ""}</${href ? "a" : "div"}>`;
 const skel = `<div class="skel"></div><div class="skel"></div>`;
-const firstLiveOrNext = E => E.find(e => e.state === "live") || E.find(e => e.state === "next" && t(e.start) > Date.now() - 6e4);
+// the live event, else the next (a delayed one, or one the feed has not yet marked as started, stays as next)
+const firstLiveOrNext = E => E.find(e => e.state === "live") || E.find(e => e.state === "next" && (t(e.start) > Date.now() - 6e4 || e.late || e.starting));
 
 // ------------------------------------------------------------------ Today
 function weekStrip(E) {
@@ -28,7 +29,7 @@ export function viewHome() {
   // the next fixture per thing followed (national sides inside ten days), the rest under Later
   const per = new Map(), later = new Map();
   for (const e of E) {
-    if (e.state !== "next" || t(e.start) < now - 6e4) continue;
+    if (e.state !== "next" || (t(e.start) < now - 6e4 && !e.late && !e.starting)) continue;
     if (per.has(e.key) || (e.sp === "intl" && t(e.start) - now > 10 * 864e5)) { if (!per.has(e.key) && !later.has(e.key)) later.set(e.key, e); continue; }
     per.set(e.key, e);
   }
@@ -53,7 +54,7 @@ export function viewHome() {
   const TB = (val("club_stats")?.comps || []).find(c => c.key === "liga")?.rows?.find(r => same(r.team, club()));
   if (TB) tours.push(li(`<span class="tile sp-football">${ICON.football}</span>`, "La Liga", esc(`Madrid ${ordinal(TB.rank)}, ${TB.points} points from ${TB.played}`), "", "#football/table"));
   const today = fmt(new Date(now).toISOString(), { weekday: "long", day: "numeric", month: "long" });
-  return `<div class="page">${header("Today", `<b>${esc(today)}</b>${S.lastLoad ? `<span>Updated ${hm(new Date(S.lastLoad).toISOString())}</span>` : ""}`)}
+  return `<div class="page">${header("Today", `<b>${esc(today)}</b>${S.lastLoad ? `<span>Updated ${hm(new Date(S.lastLoad).toISOString())}</span>` : ""}`, ["football", "madrid_hub", "f1_sessions", "crease", "tennis_players", "nba"])}
     ${ready ? weekStrip(E) : skel}
     ${lives.length ? blk(`Live now`, lives.map(hero).join(""), "", "live") : ""}
     ${top || rest.length ? blk("Up next", `${top ? hero(top) : ""}${rest.length || later.size ? `<div class="list">${rest.map(e => row(e)).join("")}${later.size ? moreBox(`Later · ${esc([...later.values()].map(e => e.who).join(", "))}`, [...later.values()].map(e => row(e)).join("")) : ""}</div>` : ""}`, "", "next") : ""}

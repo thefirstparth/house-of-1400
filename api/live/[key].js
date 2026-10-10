@@ -35,7 +35,7 @@ export async function GET(request) {
   if (key === "f1_sessions" && out.ok && (out.value?.status || []).some(x => x.state === "in" || (x.state === "pre" && Date.parse(x.start) - Date.now() < 15 * 6e4))) [s, swr] = [60, 60];
   if ((key === "football" || key === "nba") && out.ok) {
     const games = out.value?.next || [], now = Date.now();
-    if (games.some(g => g.state === "in" || g.live)) [s, swr] = [60, 60];
+    if (games.some(g => g.state === "in" || g.live || (g.state === "pre" && Date.parse(g.date) < now && now - Date.parse(g.date) < 3 * 36e5))) [s, swr] = [60, 60];
     else { const t = games.map(g => (Date.parse(g.date) - now) / 1000).filter(x => x > 0).sort((a, b) => a - b)[0]; if (t < s) [s, swr] = [Math.max(60, Math.round(t)), 60]; }
   }
   // Weather Union's gauges are read once a slot (every 30 minutes by day, 2 hours at night): held until the next slot
