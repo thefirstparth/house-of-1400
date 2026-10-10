@@ -836,6 +836,7 @@ const sizeCheck = () => {
   document.body.classList.toggle("big", px > 19);
 };
 sizeCheck(); addEventListener("resize", sizeCheck);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) sizeCheck(); }); // text size changed in Settings while the app was open
 render(true);
 loadAll();
 if ("serviceWorker" in navigator && location.hostname !== "localhost") navigator.serviceWorker.register("/sport-sw.js", { scope: "/sport" }).catch(() => {});
