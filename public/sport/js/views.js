@@ -12,7 +12,7 @@ const waitOr = (has, what) => (has ? "" : S.loading || !S.lastLoad ? skel : `<di
 const offRows = E => { const o = E.filter(e => e.state === "off" && (e.offWhy || e.seen) && Math.abs(Date.now() - t(e.start)) < 3 * 864e5); return o.length ? `<div class="list">${o.map(e => row(e)).join("")}</div>` : ""; };
 // rows in a list that all share one competition: the competition goes once in the heading, the rows lose the line
 const oneComp = E => { const c = [...new Set(E.map(e => e.comp).filter(Boolean))]; return c.length === 1 && E.length > 1 && E.every(e => e.comp) ? c[0] : null; };
-const firstLiveOrNext = E => E.find(e => e.state === "live") || E.find(e => e.state === "next" && (t(e.start) > Date.now() - 6e4 || e.late || e.starting));
+const firstLiveOrNext = E => E.find(e => e.state === "live") || E.find(e => e.state === "next" && (t(e.start) > Date.now() - 6e4 || e.late || e.starting || e.nolive));
 
 // why an item is in "Since you last looked", in the words of its sport
 function whyNow(e, kind) {
@@ -66,7 +66,7 @@ export function viewHome() {
   // the next fixture per thing followed (national sides inside ten days); the rest under Later
   const per = new Map(), later = new Map();
   for (const e of E) {
-    if (e.state !== "next" || (t(e.start) < now - 6e4 && !e.late && !e.starting && !e.due)) continue;
+    if (e.state !== "next" || (t(e.start) < now - 6e4 && !e.late && !e.starting && !e.due && !e.nolive)) continue;
     if (per.has(e.key) || (e.sp === "intl" && t(e.start) - now > 10 * 864e5)) { if (!per.has(e.key) && !later.has(e.key)) later.set(e.key, e); continue; }
     per.set(e.key, e);
   }

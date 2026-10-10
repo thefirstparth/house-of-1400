@@ -110,11 +110,11 @@ function status(e) {
     return `<span class="st"><b class="w">${esc(w)}</b><small>${esc(dayShort(e.start))}</small></span>`;
   }
   const soon = t(e.start) - Date.now() < 12 * 36e5;
-  return `<span class="st"><b class="tnum">${e.tbc ? "TBC" : hm(e.start)}</b><small>${e.due ? "On now" : e.nolive ? "No live score" : e.starting ? "Starting" : e.late ? "Delayed" : e.tbc ? esc(dayShort(e.start)) : soon ? countdown(e.start) : S.UI.day && dayKey(t(e.start)) === S.UI.day ? "" : esc(dayShort(e.start))}</small></span>`;
+  return `<span class="st"><b class="tnum">${e.tbc ? "TBC" : hm(e.start)}</b><small>${e.due ? "On now" : e.nolive ? "Kicked off" : e.starting ? "Starting" : e.late ? "Delayed" : e.tbc ? esc(dayShort(e.start)) : soon ? countdown(e.start) : S.UI.day && dayKey(t(e.start)) === S.UI.day ? "" : esc(dayShort(e.start))}</small></span>`;
 }
 // what a screen reader hears for a row
 export function said(e, { noWin = false } = {}) {
-  const when2 = e.state === "live" ? `live${e.pause ? `, ${e.pause}` : e.clock ? `, ${e.clock}` : ""}${e.saved ? `, saved copy from ${at(e.saved)}` : ""}` : e.state === "done" ? `finished ${dayLabel(e.start)}` : e.state === "off" ? (e.seen ? `live feed lost, last seen at ${at(e.seen)}` : String(e.offWhy || "not played").toLowerCase()) : e.tbc ? `${dayLabel(e.start)}, time to be confirmed` : e.late ? `due at ${hm(e.start)}, not yet started` : `${dayLabel(e.start)} at ${hm(e.start)}`;
+  const when2 = e.state === "live" ? `live${e.pause ? `, ${e.pause}` : e.clock ? `, ${e.clock}` : ""}${e.saved ? `, saved copy from ${at(e.saved)}` : ""}` : e.state === "done" ? `finished ${dayLabel(e.start)}` : e.state === "off" ? (e.seen ? `live feed lost, last seen at ${at(e.seen)}` : String(e.offWhy || "not played").toLowerCase()) : e.tbc ? `${dayLabel(e.start)}, time to be confirmed` : e.nolive ? `kicked off at ${hm(e.start)}, no live score` : e.late ? `due at ${hm(e.start)}, not yet started` : `${dayLabel(e.start)} at ${hm(e.start)}`;
   const order = e.state === "live" ? e.liveTop : e.state === "done" ? e.top : null;
   if (e.sp === "f1") return `${e.session}, ${gpName(e.gp)}, ${when2}${order ? `, ${e.provisional ? "provisional " : ""}${order.map((n, i) => `${i + 1} ${last(n)}`).join(", ")}` : ""}`;
   const done = e.state === "done";
