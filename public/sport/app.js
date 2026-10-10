@@ -33,9 +33,10 @@ const norm = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLow
 // Two names for the same side: equal, or one is the other with words added ("Golden State" / "Golden State Warriors").
 // Whole words only, so "Real Madrid" is never "Atlético Madrid" and "India" never "West Indies".
 const same = (a, b) => { const x = norm(a), y = norm(b); return !!x && !!y && (x === y || ` ${x} `.includes(` ${y} `) || ` ${y} `.includes(` ${x} `)); };
-const last = n => String(n || "").split(" ").pop();
+// A surname: the last word, except "Vinícius Júnior" (and the like) is "Vinícius"
+const last = n => { const w = String(n || "").split(" "); return w.length > 1 && /^(J[uú]nior|Jr\.?|Neto|Filho)$/i.test(w.at(-1)) ? w.at(-2) : w.at(-1); };
 // "IND", "WI", "NZ", "JMC": a one-word name gives its first three letters, longer names their initials
-const initials = n => { const w = String(n || "").split(/\s+/).filter(Boolean); return (w.length === 1 ? w[0].slice(0, 3) : w.map(x => x[0]).join("").slice(0, 3)).toUpperCase(); };
+const initials = n => { const w = String(n || "").split(/\s+/).filter(Boolean); return (w.length === 1 ? w[0].slice(0, 2) : w[0][0] + w.at(-1)[0]).toUpperCase(); };
 const ordinal = n => `${n}${n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th"}`;
 const gpName = n => String(n || "").replace(/ in .*$/, "");
 const val = k => D[k]?.value || null;
@@ -77,11 +78,13 @@ function player(name, size = "lg") {
 }
 const rankTxt = name => { const r = atp(name); return r?.rank ? `No. ${r.rank}` : ""; };
 const FLAG = { India: "🇮🇳", "New Zealand": "🇳🇿", Australia: "🇦🇺", "South Africa": "🇿🇦", Pakistan: "🇵🇰", "Sri Lanka": "🇱🇰", Bangladesh: "🇧🇩", Afghanistan: "🇦🇫", Zimbabwe: "🇿🇼", Ireland: "🇮🇪", Netherlands: "🇳🇱", Nepal: "🇳🇵", Scotland: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", USA: "🇺🇸", "United Arab Emirates": "🇦🇪", Oman: "🇴🇲" };
-const country = (name, size = "lg") => (FLAG[name] ? `<span class="mono ${size} flagm" aria-hidden="true">${FLAG[name]}</span>` : monoHTML(name, size));
+// A cricket country: ESPN's image (a flag; the crest for West Indies), else the emoji flag, else the initials
+const CRIC = { India: 6, England: 1, Australia: 2, "South Africa": 3, "West Indies": 4, "New Zealand": 5, Pakistan: 7, "Sri Lanka": 8, Zimbabwe: 9, Bangladesh: 25, Ireland: 29, Afghanistan: 40 };
+const country = (name, size = "lg") => (CRIC[name] ? logo(`https://a.espncdn.com/combiner/i?img=/i/teamlogos/cricket/500/${CRIC[name]}.png&w=${px(size)}&h=${px(size)}`, name, size).replace('class="crest', 'class="crest cflag') : FLAG[name] ? `<span class="mono ${size} flagm" aria-hidden="true">${FLAG[name]}</span>` : monoHTML(name, size));
 // Where the figures come from, folded away at the foot of a page
 function sources(...keys) {
   const parts = keys.filter(k => D[k]?.source).map(k => `<li>${esc(D[k].source)} · ${D[k].as_of ? (dayKey(t(D[k].as_of)) === dayKey(Date.now()) ? hm(D[k].as_of) : `${shortDate(D[k].as_of)}, ${hm(D[k].as_of)}`) : ""}${D[k].stale ? " · last saved copy" : ""}</li>`);
-  return parts.length ? `<details class="srcs"><summary>Sources and times</summary><ul>${[...new Set(parts)].join("")}</ul><p>The time beside each source is when the app last checked it. All times IST. Markets are Kalshi and Polymarket prices, not forecasts.</p></details>` : "";
+  return parts.length ? `<details class="srcs"><summary>Sources and times</summary><ul>${[...new Set(parts)].join("")}</ul><p>The time beside each source is when the app last checked it. All times IST. Markets are Kalshi and Polymarket prices, not forecasts, each rounded to a whole number, so a pair can add up to 99 or 101.</p></details>` : "";
 }
 
 // ------------------------------------------------------------------ data
@@ -169,7 +172,7 @@ function mktBar(p, names, sp) {
   return `<div class="mkt sp-${sp}" role="img" aria-label="Market: ${esc(names[0])} ${p.a}%, ${p.d != null ? `draw ${p.d}%, ` : ""}${esc(names[1])} ${p.b}%">
     <div class="bar">${seg(p.a, "")}${p.d != null ? seg(p.d, "draw") : ""}${seg(p.b, "")}</div>
     <div class="lab"><span class="${p.a === lead ? "lead" : ""}"><b class="tnum">${p.a}%</b> ${esc(names[0])}</span>${p.d != null ? `<span class="${p.d === lead ? "lead" : ""}">Draw <b class="tnum">${p.d}%</b></span>` : ""}<span class="${p.b === lead ? "lead" : ""}">${esc(names[1])} <b class="tnum">${p.b}%</b></span></div>
-    <div class="src">${esc(p.source)}${D.odds?.as_of ? ` · ${hm(D.odds.as_of)}` : ""}${p.a + p.b + (p.d ?? 0) !== 100 ? " · rounded" : ""}</div></div>`;
+    <div class="src">${esc(p.source)}${D.odds?.as_of ? ` · ${hm(D.odds.as_of)}` : ""}</div></div>`;
 }
 // A ranked chart: one row per outcome, bars on a common 0-100 scale so their lengths compare honestly
 function rankList(outcomes, sp, { max = 6, nameFn = x => x, mark = null } = {}) {
@@ -180,12 +183,12 @@ function rankList(outcomes, sp, { max = 6, nameFn = x => x, mark = null } = {}) 
 const barRow = (name, v, max, { me = false, sub = "", pos = "", colour = "", label = v } = {}) => `<div class="barrow${me ? " me" : ""}"${colour ? ` style="--c:${esc(colour)}"` : ""}><div class="nm">${pos !== "" ? `<span class="ps tnum">${esc(pos)}</span>` : ""}<span>${esc(name)}${sub ? `<small>${esc(sub)}</small>` : ""}</span></div><div class="bv"><span class="tk"><i style="width:${Math.max(2, (v / Math.max(max, 1e-9)) * 100)}%"></i></span><b class="tnum">${esc(label)}</b></div></div>`;
 
 // Every followed fixture as one shape: { sp, id, start, state: live|next|done|off, title, a, b, logos, score, href }
-function events() {
+function events(all = false) {
   const out = [], now = Date.now();
   // Real Madrid (football: live state and score; madrid_hub: the season)
   const F = val("football"), H = val("madrid_hub"), cname = club(), cid = H?.club_id || String(follows().football_club?.espn_id || 86);
   const fx = new Map();
-  for (const m of [...(H?.fixtures || []), ...(H?.results || []).slice(0, 4)]) fx.set(String(m.id), m);
+  for (const m of [...(H?.fixtures || []), ...(H?.results || []).slice(0, all ? 12 : 4)]) fx.set(String(m.id), m);
   for (const m of [...(F?.next || []), ...(F?.last ? [F.last] : [])]) { const o = fx.get(String(m.id)) || {}; fx.set(String(m.id), { ...o, ...m, us: m.score?.us ?? o.us, them: m.score?.them ?? o.them }); }
   for (const m of fx.values()) {
     const home = m.home, a = home ? cname : m.opponent, b = home ? m.opponent : cname;
@@ -193,7 +196,7 @@ function events() {
     out.push({ sp: "football", id: "rm" + m.id, mid: String(m.id), start: m.date, state, title: `${CLUB_SHORT(a)} v ${CLUB_SHORT(b)}`, a, b, la: crest(home ? cid : m.opponent_id, a), lb: crest(home ? m.opponent_id : cid, b),
       sla: crest(home ? cid : m.opponent_id, a, "sm"), slb: crest(home ? m.opponent_id : cid, b, "sm"), comp: m.competition, venue: m.venue, sa: home ? m.us : m.them, sb: home ? m.them : m.us, clock: m.clock,
       won: m.winner === "us" ? (home ? "a" : "b") : m.winner === "them" ? (home ? "b" : "a") : null, who: "Madrid", href: "#football",
-      liveDetail: H?.live && String(H.live.match_id) === String(m.id) ? H.live.detail : null });
+      liveDetail: H?.live && String(H.live.match_id) === String(m.id) ? H.live.detail : null, ev: m.events ? { events: m.events } : null });
   }
   // The national sides
   for (const T of val("intl_hub")?.teams || []) for (const m of [...T.next, ...(T.last ? [T.last] : [])]) {
@@ -209,7 +212,8 @@ function events() {
     const all = [C.today, C.next, ...[C.main, ...(C.also || []), C.after].filter(Boolean).flatMap(S => (S.formats || []).flatMap(f => f.matches || []))].filter(Boolean);
     for (const m of new Map(all.map(m => [m.id, m])).values()) {
       const state = m.state === "live" ? "live" : m.state === "done" ? "done" : m.state === "off" ? "off" : "next";
-      out.push({ sp: "cricket", id: "in" + m.id, start: m.start, state, title: `India v ${m.opponent}`, a: "India", b: m.opponent, la: country("India"), lb: country(m.opponent), comp: m.desc, venue: [m.ground, m.city].filter(Boolean).join(", "), status: m.status, score: m.score, won: m.won === true ? "a" : m.won === false ? "b" : null, tbc: m.time_announced === false, who: "India", href: "#cricket" });
+      out.push({ sp: "cricket", id: "in" + m.id, start: m.start, state, title: `India v ${m.opponent}`, a: "India", b: m.opponent, la: country("India"), lb: country(m.opponent), comp: m.desc, venue: [m.ground, m.city].filter(Boolean).join(", "), status: m.status, score: m.score, won: m.won === true ? "a" : m.won === false ? "b" : null, tbc: m.time_announced === false, who: "India", href: "#cricket",
+        card: C.last_card && String(C.last_card.match_id) === String(m.id) ? C.last_card : null });
     }
   }
   // F1: the weekend's sessions that count (qualifying, sprints, the race)
@@ -230,8 +234,10 @@ function events() {
     const a = g.home ? team : g.opponent, b = g.home ? g.opponent : team, me = follows().nba_team?.espn_abbr || "gs";
     out.push({ sp: "nba", id: "nb" + g.id, start: g.date, state: g.live ? "live" : g.completed ? "done" : t(g.date) < now - 6 * 36e5 ? "off" : "next", title: `${last(a)} v ${last(b)}`, a, b, la: nbaLogo(g.home ? me : g.opponent_abbr, a), lb: nbaLogo(g.home ? g.opponent_abbr : me, b),
       sla: nbaLogo(g.home ? me : g.opponent_abbr, a, "sm"), slb: nbaLogo(g.home ? g.opponent_abbr : me, b, "sm"), comp: g.preseason ? "Preseason" : "NBA", sa: g.score ? (g.home ? g.score.us : g.score.them) : null, sb: g.score ? (g.home ? g.score.them : g.score.us) : null,
-      won: g.winner === "us" ? (g.home ? "a" : "b") : g.winner === "them" ? (g.home ? "b" : "a") : null, clock: g.clock, who: "Warriors", href: "#nba" });
+      won: g.winner === "us" ? (g.home ? "a" : "b") : g.winner === "them" ? (g.home ? "b" : "a") : null, clock: g.clock, who: "Warriors", href: "#nba",
+      tops: g.top_scorers ? (g.home ? [g.top_scorers.us, g.top_scorers.them] : [g.top_scorers.them, g.top_scorers.us]) : null });
   }
+  for (const e of out) if (e.comp && e.sp !== "cricket") e.comp = sn(e.comp);
   return out.filter(e => e.start && !isNaN(t(e.start))).sort((x, y) => t(x.start) - t(y.start));
 }
 const followKey = e => (e.sp === "tennis" ? "tn:" + e.player : e.sp === "intl" ? "nt:" + e.who : e.sp);
@@ -269,9 +275,9 @@ function nextCard(e, { odds = true } = {}) {
     const q = qs && (val("f1_sessions")?.results || []).find(r => qs.test(r.name) && dayKey(t(r.start)) >= dayKey(t(e.start) - 3 * 864e5));
     const qi = q ? q.top.findIndex(n => same(n, last(fav))) : -1;
     const qline = qi >= 0 ? `${fpos({ pos: qi + 1, finished: true })}${esc(last(fav))} qualified ${ordinal(qi + 1)}` : "";
-    const trk = val("f1_next")?.race?.track?.image, st = t(e.start), dur = ((val("f1_next")?.race?.sessions || []).find(x => x.start === e.start)?.minutes || 60) * 6e4;
+    const st = t(e.start), dur = ((val("f1_next")?.race?.sessions || []).find(x => x.start === e.start)?.minutes || 60) * 6e4;
     const prog = e.state === "live" ? `<div class="prog" role="progressbar" aria-label="Session under way" aria-valuenow="${Math.round(Math.min(1, (Date.now() - st) / dur) * 100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.min(100, ((Date.now() - st) / dur) * 100)}%"></i></div>` : "";
-    return `<a class="card next one sp-f1${trk ? " has-trk" : ""}" href="${e.href}">${trk ? `<img class="hero-trk" src="${esc(trk)}" alt="" loading="lazy">` : ""}${prog}${head}<div class="title">${e.flag ? `<span class="fl">${esc(e.flag)}</span> ` : ""}${esc(e.title)}<small>${esc(e.sub || "")}</small></div><div class="clock tnum">${hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>${o || qline ? `<div class="pill-row"><span class="pill${qline ? " res" : ""}">${qline || esc(o.label)}${o ? `${qline ? " ·" : ""} <b class="tnum">${o.prob}%</b> to win` : ""}</span></div>` : ""}</a>`;
+    return `<a class="card next one sp-f1" href="${e.href}">${prog}${head}<div class="title">${e.flag ? `<span class="fl">${esc(e.flag)}</span> ` : ""}${esc(e.title)}<small>${esc(e.sub || "")}</small></div><div class="clock tnum">${hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>${o || qline ? `<div class="pill-row"><span class="pill${qline ? " res" : ""}"><span class="nw">${qline || esc(o.label)}${o && qline ? " ·" : ""}</span>${o ? `<span class="nw"><b class="tnum">${o.prob}%</b> to win</span>` : ""}</span></div>` : ""}</a>`;
   }
   const side = (name, lg) => `<div class="side">${lg || monoHTML(name, "lg")}<b>${esc(e.sp === "tennis" || e.sp === "nba" ? last(name) : name)}</b></div>`;
   const live = e.state === "live" && e.sa != null;
@@ -293,6 +299,12 @@ function scorers(ev, e) {
   const a = line(side(true)), b = line(side(false));
   return a || b ? `<div class="scorers"><div>${a}</div><div>${b}</div></div>` : "";
 }
+// Madrid's goals in one line, by scorer: "Mbappé 2, Bellingham, Dituro og"
+function goalsLine(events, cid) {
+  const by = new Map();
+  for (const x of events || []) if (x.kind !== "red" && x.team_id === String(cid)) { const k = last(x.player) + (x.kind === "og" ? " og" : ""); by.set(k, (by.get(k) || 0) + 1); }
+  return [...by].map(([k, n]) => (n > 1 ? `${k} ${n}` : k)).join(", ");
+}
 // A finished event as a small scoreboard
 function scoreboard(e) {
   if (e.sp === "f1") {
@@ -304,6 +316,12 @@ function scoreboard(e) {
     const inn = String(e.score || "").split(" · ").map(s => s.match(/^([A-Z]{2,4})\s+(\d+(?:\/\d+)?d?)(?:\s*\(([\d.]+) ov\))?$/));
     let body = inn.length === 2 && inn.every(Boolean) ? `<div class="sb">${inn.map(([, code, runs, ov]) => { const won = e.won === "a" ? code === "IND" : e.won === "b" ? code !== "IND" : false; return `<div class="ln${won ? " won" : ""}"><span class="nm">${esc(code)}</span>${won ? '<i class="w" aria-label="winner"></i>' : ""}<span class="v tnum">${esc(runs)}${ov ? `<small>${esc(ov)} ov</small>` : ""}</span></div>`; }).join("")}</div>` : e.score ? `<div class="cap tnum">${esc(e.score)}</div>` : "";
     if (e.status) body += `<div class="cap">${esc(String(e.status).replace(/ due to .*$/i, ""))}</div>`;
+    // Each side's top scorer and best bowler, then the player of the match (Cricbuzz's scorecard)
+    const K = e.card?.innings;
+    if (K?.length) {
+      const lines = K.map(x => { const bw = K.find(y => y.bowl?.team === x.team)?.bowl; return [x.team, [x.bat && `${last(x.bat.name)} ${x.bat.runs}${x.bat.out ? "" : "*"}${x.bat.balls != null ? ` (${x.bat.balls})` : ""}`, bw && `${last(bw.name)} ${bw.wickets}/${bw.runs}`].filter(Boolean).join(" · ")]; }).filter(([, l]) => l);
+      body += `<div class="perf">${lines.map(([tm, l]) => `<div><b>${esc(tm)}</b><span class="tnum">${esc(l)}</span></div>`).join("")}${e.card.potm?.length ? `<div class="potm">Player of the match: ${esc(e.card.potm.join(", "))}</div>` : ""}</div>`;
+    }
     return body;
   }
   if (e.sp === "tennis") {
@@ -315,14 +333,37 @@ function scoreboard(e) {
     return body;
   }
   if (e.sa == null) return "";
-  return `<div class="sb">${[[e.a, e.sa, e.won === "a", e.sla], [e.b, e.sb, e.won === "b", e.slb]].map(([n, v, w, lg]) => `<div class="ln${w ? " won" : ""}">${lg || ""}<span class="nm">${esc(e.sp === "nba" ? last(n) : n)}</span>${w ? '<i class="w" aria-label="winner"></i>' : ""}<span class="v tnum">${esc(v)}</span></div>`).join("")}</div>`;
+  const tops = e.sp === "nba" && e.tops?.every(Boolean) ? `<div class="scorers">${e.tops.map(x => `<div>${esc(last(x.name))} ${x.points} pts</div>`).join("")}</div>` : "";
+  return `<div class="sb">${[[e.a, e.sa, e.won === "a", e.sla], [e.b, e.sb, e.won === "b", e.slb]].map(([n, v, w, lg]) => `<div class="ln${w ? " won" : ""}">${lg || ""}<span class="nm">${esc(e.sp === "nba" ? last(n) : n)}</span>${w ? '<i class="w" aria-label="winner"></i>' : ""}<span class="v tnum">${esc(v)}</span></div>`).join("")}</div>` + tops;
 }
 function resultCard(e) {
   const body = scoreboard(e); if (!body) return "";
   const label = e.sp === "f1" ? e.session : e.sp === "intl" ? e.who : e.comp || SPORT_NAME[e.sp];
   const cap = e.sp === "f1" ? e.sub : e.sp === "cricket" ? e.title : e.sp === "intl" ? e.comp : "";
-  const RC = e.sp === "football" ? val("madrid_hub")?.recent : null, sc = RC && String(RC.match_id) === e.mid ? scorers(RC, e) : "";
-  return `<a class="card res-card sp-${e.sp}" href="${e.href}"><div class="hd">${chip(e.sp, label)}<time datetime="${esc(e.start)}">${esc(dayLabel(e.start))}</time></div>${cap ? `<div class="cap">${esc(cap)}</div>` : ""}${body}${sc}</a>`;
+  const RC = e.sp === "football" ? val("madrid_hub")?.recent : null, sc = RC && String(RC.match_id) === e.mid ? scorers(RC, e) : e.ev ? scorers(e.ev, e) : "";
+  return `<a class="card res-card sp-${e.sp}" href="${e.href}" data-match="${esc(e.id)}"><div class="hd">${chip(e.sp, label)}<time datetime="${esc(e.start)}">${esc(dayLabel(e.start))}</time></div>${cap ? `<div class="cap">${esc(cap)}</div>` : ""}${body}${sc}</a>`;
+}
+
+// One fixture or result, opened from a row or a result card: the score and scorers, or the market; when and where;
+// and, for one still to come, a calendar entry (IST in the app, the phone's own zone in the calendar)
+const TAB_NAME = { football: "Madrid", intl: "Madrid", f1: "F1", cricket: "India", tennis: "Tennis", nba: "NBA" };
+const durOf = e => (e.sp === "cricket" ? (/T20/i.test(e.comp || "") ? 210 : 480) : e.sp === "f1" ? (val("f1_next")?.race?.sessions || []).find(x => x.start === e.start)?.minutes || 120 : e.sp === "nba" || e.sp === "tennis" ? 150 : 120);
+const icsHref = e => `/api/ics?${new URLSearchParams({ t: e.sp === "f1" ? `F1 ${e.session}${e.sub ? ` · ${gpName(e.sub)}` : ""}` : e.sp === "cricket" ? `${e.title}, ${e.comp || ""}` : e.title, s: e.start, m: durOf(e), l: e.venue || "", d: e.sp === "f1" ? "" : e.comp || "", u: e.id })}`;
+function matchSheet(e) {
+  const done = e.state === "done";
+  const hero = done ? `<div class="card res-card sp-${e.sp}">${e.sp === "f1" ? `<div class="cap">${esc(e.title)}${e.sub ? ` · ${esc(gpName(e.sub))}` : ""}</div>` : ""}${scoreboard(e) || ""}${e.ev ? scorers(e.ev, e) : ""}</div>`
+    : nextCard(e).replace(/^<a ([^>]*?) href="[^"]*"/, "<div $1").replace(/<\/a>$/, "</div>");
+  const rows = [
+    ["When", e.tbc ? `${fmt(e.start, { weekday: "long", day: "numeric", month: "long" })}, time to be confirmed` : `${fmt(e.start, { weekday: "long", day: "numeric", month: "long" })}, ${hm(e.start)} IST`],
+    // the hero card already shows the venue and competition of one still to come
+    ["Where", done ? e.venue : ""],
+    [e.sp === "f1" ? "Event" : "Competition", !done ? "" : e.sp === "f1" ? gpName(e.sub || e.title) : e.comp],
+    ["Result", done && e.sp === "cricket" ? e.status : ""],
+  ].filter(([, v]) => v);
+  const acts = `${e.state === "next" && !e.tbc ? `<a class="btn" href="${esc(icsHref(e))}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16M12 13v5M9.5 15.5h5"/></svg>Add to calendar</a>` : ""}<a class="btn ghost" href="${esc(e.href)}">Open ${esc(TAB_NAME[e.sp])}</a>`;
+  const label = e.sp === "f1" ? `F1 · ${e.session}` : e.a && e.b ? `${e.sp === "tennis" || e.sp === "nba" ? last(e.a) : e.a} v ${e.sp === "tennis" || e.sp === "nba" ? last(e.b) : e.b}` : e.title;
+  return `<div class="sheet-bg" data-close="match"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t"><div class="grab" aria-hidden="true"></div><div class="sheet-h"><b id="sheet-t" tabindex="-1">${esc(label)}</b><button type="button" class="x" data-close="match" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="ms">${hero}<dl class="ms-d">${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl><div class="acts">${acts}</div></div></div>`;
 }
 
 // ------------------------------------------------------------------ Today
@@ -334,13 +375,13 @@ function weekStrip(E) {
   const cells = days.map((d, i) => {
     const ev = by(d), dt = new Date(d + "T12:00:00+05:30");
     const sps = [...new Set(ev.map(e => e.sp))];
-    return `<button type="button" class="wd${i === 0 ? " today" : ""}${d === sel ? " on" : ""}" data-ui="day" data-v="${d}" aria-pressed="${d === sel}" aria-label="${esc(fmt(dt.toISOString(), { weekday: "long", day: "numeric", month: "long" }))}: ${ev.length} fixture${ev.length === 1 ? "" : "s"}"${ev.length ? "" : " disabled"}>
-      <span class="wdn">${i === 0 ? "Today" : esc(fmt(dt.toISOString(), { weekday: "short" }))}</span><b class="tnum">${esc(fmt(dt.toISOString(), { day: "numeric" }))}</b>
+    return `<button type="button" class="wd${i === 0 ? " today" : ""}${d === sel ? " on" : ""}" data-ui="day" data-v="${d}" aria-pressed="${d === sel}" aria-label="${i === 0 ? "Today, " : ""}${esc(fmt(dt.toISOString(), { weekday: "long", day: "numeric", month: "long" }))}: ${ev.length} fixture${ev.length === 1 ? "" : "s"}"${ev.length ? "" : " disabled"}>
+      <span class="wdn">${esc(fmt(dt.toISOString(), { weekday: "short" }))}</span><b class="tnum">${esc(fmt(dt.toISOString(), { day: "numeric" }))}</b>
       <span class="dots">${(sps.length > 4 ? sps.slice(0, 3) : sps).map(sp => `<i class="sp-${sp}"></i>`).join("")}${sps.length > 4 ? `<em>+${sps.length - 3}</em>` : ""}</span></button>`;
   }).join("");
   const list = sel ? by(sel).map(e => {
     const res = e.state === "done" ? (e.sa != null ? `${e.sa}–${e.sb}` : e.sp === "f1" && e.top ? `1 ${e.top[0]}` : e.sp === "tennis" ? (e.won === "a" ? "Won" : "Lost") : e.sp === "cricket" && e.status ? resultWord({ status: e.status, won: e.won === "a" ? true : e.won === "b" ? false : null }) : "Final") : null;
-    return `<a class="row" href="${e.href}">${tile(e.sp)}<div class="grow"><div class="t1">${esc(e.title)}</div><div class="t2">${esc(e.tbc ? "Time TBC" : hm(e.start))}${e.comp && e.sp !== "f1" ? ` · ${esc(e.comp)}` : e.sp === "f1" && e.sub ? ` · ${esc(e.sub)}` : ""}</div></div><div class="end">${e.state === "live" ? `<span class="chip live"><i></i>Live</span>` : res ? `<span class="t2">${esc(res)}</span>` : t(e.start) - Date.now() < 12 * 36e5 ? `<span class="t2">${countdown(e.start)}</span>` : ""}</div></a>`;
+    return `<a class="row" href="${e.href}" data-match="${esc(e.id)}">${tile(e.sp)}<div class="grow"><div class="t1">${esc(e.title)}</div><div class="t2">${esc(e.tbc ? "Time TBC" : hm(e.start))}${e.comp && e.sp !== "f1" ? ` · ${esc(e.comp)}` : e.sp === "f1" && e.sub ? ` · ${esc(e.sub)}` : ""}</div></div><div class="end">${e.state === "live" ? `<span class="chip live"><i></i>Live</span>` : res ? `<span class="t2">${esc(res)}</span>` : t(e.start) - Date.now() < 12 * 36e5 ? `<span class="t2">${countdown(e.start)}</span>` : ""}</div></a>`;
   }).join("") : "";
   const selDt = sel && new Date(sel + "T12:00:00+05:30").toISOString();
   SHEET = list ? `<div class="sheet-bg" data-close="day"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t"><div class="grab" aria-hidden="true"></div><div class="sheet-h"><b id="sheet-t" tabindex="-1">${esc(sel === dayKey(Date.now()) ? "Today" : fmt(selDt, { weekday: "long", day: "numeric", month: "long" }))}</b><button type="button" class="x" data-close="day" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="list">${list}</div></div>` : "";
@@ -361,7 +402,7 @@ function viewHome() {
   const rows = ups.slice(1).map(e => {
     const o = evOdds(e);
     const title = e.sp === "f1" ? `${e.title}${e.session !== "Race" ? ` · ${e.sub.replace(/ Grand Prix$/, " GP")}` : ""}` : e.title;
-    return `<a class="row" href="${e.href}">${tile(e.sp)}<div class="grow"><div class="t1">${esc(title)}</div><div class="t2">${esc(e.tbc ? `${shortDate(e.start)}, time TBC` : when(e.start))}${e.comp && e.sp !== "f1" ? ` · ${esc(sn(e.comp))}` : ""}</div></div><div class="end">${o ? `<div class="pc tnum">${o.prob}%</div><div class="t2">${esc(o.label)}</div>` : `<div class="t2">${countdown(e.start)}</div>`}</div></a>`;
+    return `<a class="row" href="${e.href}" data-match="${esc(e.id)}">${tile(e.sp)}<div class="grow"><div class="t1">${esc(title)}</div><div class="t2">${esc(e.tbc ? `${shortDate(e.start)}, time TBC` : when(e.start))}${e.comp && e.sp !== "f1" ? ` · ${esc(sn(e.comp))}` : ""}</div></div><div class="end">${o ? `<div class="pc tnum">${o.prob}%</div><div class="t2">${esc(o.label)}</div>` : `<div class="t2">${countdown(e.start)}</div>`}</div></a>`;
   }).join("");
   // Latest results: the most recent finished event per follow in the last ten days
   const doneBy = new Map();
@@ -403,7 +444,7 @@ function viewHome() {
     ${!ready ? `<div class="skel"></div><div class="skel"></div>` : ""}
     ${live.length ? blk("Live now", live.map(e => nextCard(e)).join("")) : ""}
     ${hero ? blk("Up next", nextCard(hero) + (rows || later.length ? `<div class="list" style="margin-top:12px">${rows}${later.length ? moreBox(`<span class="later">Later · ${esc(later.map(e => e.who).join(", "))}</span>`, later.map(e => `<a class="row" href="${e.href}">${tile(e.sp)}<div class="grow"><div class="t1">${esc(e.title)}</div><div class="t2">${esc(when(e.start))}${e.comp ? ` · ${esc(e.comp)}` : ""}</div></div><div class="end"><div class="t2">${countdown(e.start)}</div></div></a>`).join("")) : ""}</div>` : "")) : ""}
-    ${results ? blk("Latest results", `<div class="shelf">${results}</div>`) : ""}
+    ${results ? blk("Latest results", `<div class="shelf">${results}</div>${(n => (n > 1 ? `<div class="sdots" aria-hidden="true">${"<i></i>".repeat(n)}</div>` : ""))((results.match(/class="card res-card/g) || []).length)}`) : ""}
     ${tours.length ? blk("Tournaments and tables", `<div class="list">${tours.join("")}</div>`) : ""}
     ${ready ? sources("football", "madrid_hub", "intl_hub", "crease", "f1_next", "f1_sessions", "tennis_players", "nba", "odds") : ""}</div>`;
 }
@@ -428,7 +469,7 @@ function pitch(xi) {
   return `<div class="pitch" role="img" aria-label="${esc(xi.formation || "")}: ${esc(xi.players.map(p => p.name).join(", "))}"><svg class="lines" viewBox="0 0 68 80" preserveAspectRatio="none" aria-hidden="true"><rect x="2" y="2" width="64" height="76" rx="1"/><path d="M2 40h64"/><circle cx="34" cy="40" r="7"/><rect x="18" y="66" width="32" height="12"/><rect x="26" y="73" width="16" height="5"/><rect x="18" y="2" width="32" height="12"/><rect x="26" y="2" width="16" height="5"/></svg>${dots}</div>`;
 }
 const ZONE = { "knockout phase playoffs": "#8fd3a8", "round of 16|top 8|automatic": "#1f8a4c", "champions league": "#1f8a4c", "europa league": "#f0a04b", "conference": "#4b8fe0", "relegation": "#d1342f", "eliminated": "#b0b0b8" };
-const UI = { day: null, table: "liga", leaders: "goals", f1table: "drivers", f1mkt: "race" }; // segmented controls, per visit
+const UI = { day: null, match: null, table: "liga", leaders: "goals", f1table: "drivers", f1mkt: "race" }; // segmented controls, per visit
 const formSquares = (rs, label) => `<span class="form" role="img" aria-label="${esc(label || "Form")}, oldest to latest: ${esc(rs.map(r => r.r).join(" "))}">${rs.map(r => `<i class="${esc(r.r)}" title="${esc(r.t || "")}">${esc(r.r)}</i>`).join("")}</span>`;
 function viewFootball() {
   const H = val("madrid_hub"), F = val("football"), CS = val("club_stats"), cname = club(), now = Date.now();
@@ -441,12 +482,12 @@ function viewFootball() {
   let preview = "";
   const PV = H?.preview;
   if (PV && next && next.mid === String(PV.match_id)) {
-    const fm = PV.form.map(tm => `<div class="pvf"><div class="pvt">${crest(tm.id, tm.team, "sm")}<b>${esc(tm.team)}</b></div>${formSquares(tm.games.map(g => ({ r: g.result || "D", t: `${g.result === "W" ? "Won" : g.result === "L" ? "Lost" : "Drew"} ${g.score || ""} ${g.at ? "at" : "v"} ${g.opponent}` })), `${tm.team} form`)}</div>`).join("");
+    const fm = PV.form.map(tm => `<div class="pvf"><div class="pvt">${crest(tm.id, tm.team, "sm")}<b>${esc(CLUB_SHORT(tm.team))}</b></div>${formSquares(tm.games.map(g => ({ r: g.result || "D", t: `${g.result === "W" ? "Won" : g.result === "L" ? "Lost" : "Drew"} ${g.score || ""} ${g.at ? "at" : "v"} ${g.opponent}` })), `${tm.team} form`)}</div>`).join("");
     let w = 0, d = 0, l = 0;
     for (const m of PV.meetings) { const us = same(m.home, cname) ? m.hs : same(m.away, cname) ? m.as : null, them = same(m.home, cname) ? m.as : m.hs; if (us == null) continue; if (+us > +them) w++; else if (+us < +them) l++; else d++; }
     const mtRows = PV.meetings.map(m => `<div class="row"><div class="grow"><div class="t1">${esc(CLUB_SHORT(m.home))} <b class="tnum">${esc(m.hs)}–${esc(m.as)}</b> ${esc(CLUB_SHORT(m.away))}</div><div class="t2">${esc(m.competition || "")} · ${esc(fmt(m.date, { day: "numeric", month: "short", year: "numeric" }))}</div></div></div>`), mt = mtRows.join("");
     const opp = PV.form.find(x => !same(x.team, cname))?.team || next.b;
-    preview = blk("Form and meetings", `${fm ? `<div class="card pv">${fm}<p class="foot" style="margin:2px 0 0">Each side's last five matches, oldest first.</p></div>` : ""}${mt ? `<div class="sub-h out">Last ${w + d + l} meetings${w + d + l ? ` <span>Madrid ${w}W ${d}D ${l}L v ${esc(opp)}</span>` : ""}</div><div class="list">${mtRows.slice(0, 3).join("")}${mtRows.length > 3 ? moreBox(`${mtRows.length - 3} more`, mtRows.slice(3).join("")) : ""}</div>` : ""}`, "", "preview");
+    preview = blk("Form and meetings", `${fm ? `<div class="card pv">${fm}</div>` : ""}${mt ? `<div class="sub-h out">Last ${w + d + l} meetings${w + d + l ? ` <span>Madrid ${w}W ${d}D ${l}L v ${esc(opp)}</span>` : ""}</div><div class="list">${mtRows.slice(0, 3).join("")}${mtRows.length > 3 ? moreBox(`${mtRows.length - 3} more`, mtRows.slice(3).join("")) : ""}</div>` : ""}`, "", "preview");
   }
   // The XI: the official one once announced, else the expected one (the last starting XI)
   let xi = "";
@@ -458,11 +499,12 @@ function viewFootball() {
   // Results and fixtures
   const resRows = (H?.results || []).map(m => {
     const r = m.winner === "us" ? "W" : m.winner === "them" ? "L" : "D", sc = `${m.us}–${m.them}`;
-    return `<div class="row">${crest(m.opponent_id, m.opponent, "sm")}<div class="grow"><div class="t1">${m.home ? "v" : "at"} ${esc(m.opponent)}</div><div class="t2">${esc(sn(m.competition))} · ${esc(shortDate(m.date))}</div></div><span class="score ${r} tnum" aria-label="${r === "W" ? "Won" : r === "L" ? "Lost" : "Drew"} ${esc(sc)}">${esc(sc)}</span></div>`;
+    const g = goalsLine(m.events, H?.club_id || "86");
+    return `<a class="row" href="#football" data-match="rm${esc(m.id)}">${crest(m.opponent_id, m.opponent, "sm")}<div class="grow"><div class="t1">${m.home ? "v" : "at"} ${esc(m.opponent)}</div><div class="t2">${esc(sn(m.competition))} · ${esc(shortDate(m.date))}</div>${g ? `<div class="t3">${esc(g)}</div>` : ""}</div><span class="score ${r} tnum" aria-label="${r === "W" ? "Won" : r === "L" ? "Lost" : "Drew"} ${esc(sc)}">${esc(sc)}</span></a>`;
   });
   const fxRows = (H?.fixtures || []).map(m => {
     const sides = m.home ? [cname, m.opponent] : [m.opponent, cname], p = sideProbs(oddsFor("football", sides, m.date), sides), mine = p ? (m.home ? p.a : p.b) : null;
-    return `<div class="row">${crest(m.opponent_id, m.opponent, "sm")}<div class="grow"><div class="t1">${m.home ? "v" : "at"} ${esc(m.opponent)}</div><div class="t2">${esc(when(m.date))} · ${esc(sn(m.competition))}</div></div>${mine != null ? `<div class="end"><div class="pc tnum">${mine}%</div><div class="t2">to win</div></div>` : ""}</div>`;
+    return `<a class="row" href="#football" data-match="rm${esc(m.id)}">${crest(m.opponent_id, m.opponent, "sm")}<div class="grow"><div class="t1">${m.home ? "v" : "at"} ${esc(m.opponent)}</div><div class="t2">${esc(when(m.date))} · ${esc(sn(m.competition))}</div></div>${mine != null ? `<div class="end"><div class="pc tnum">${mine}%</div><div class="t2">to win</div></div>` : ""}</a>`;
   });
   const list = (rows, n, what) => (rows.length ? `<div class="list">${rows.slice(0, n).join("")}${rows.length > n ? moreBox(`${rows.length - n} more ${what}`, rows.slice(n).join("")) : ""}</div>` : "");
   // Tables
@@ -476,7 +518,7 @@ function viewFootball() {
     const show = rows.length > 12 ? [...new Set([...rows.slice(0, 4), ...rows.slice(Math.max(0, mi - 2), mi + 3)])] : rows;
     const zc = z => ZONE[Object.keys(ZONE).find(k => new RegExp(k, "i").test(z?.name || ""))] || z?.color || "var(--muted)";
     const zones = []; for (const r of rows) if (r.zone?.name && !zones.some(([n]) => n === r.zone.name)) zones.push([r.zone.name, zc(r.zone)]);
-    const seg = comps.length > 1 ? `<div class="seg" role="group" aria-label="Competition">${comps.map(c => `<button type="button" data-ui="table" data-v="${esc(c.key)}" aria-pressed="${c === cur}">${esc(c.label)}</button>`).join("")}</div>` : "";
+    const seg = comps.length > 1 ? `<div class="seg" role="group" aria-label="Competition">${comps.map(c => `<button type="button" data-ui="table" data-v="${esc(c.key)}" aria-pressed="${c === cur}">${esc(sn(c.label))}</button>`).join("")}</div>` : "";
     table = blk("Table", `${seg}<div class="list sp-football"><table class="tbl">${head}<tbody>${show.map((r, i) => (i && r.rank - show[i - 1].rank > 1 ? `<tr class="gap"><td colspan="5">···</td></tr>` : "") + tr(r)).join("")}</tbody></table>${show.length < rows.length ? moreBox("Full table", `<table class="tbl">${head}<tbody>${rows.map(tr).join("")}</tbody></table>`) : ""}${zones.length ? `<div class="legend">${zones.map(([n, c]) => `<span><i style="background:${esc(c)}"></i>${esc(n)}</span>`).join("")}</div>` : ""}</div>`, "", "table");
     const kinds = [["goals", "Goals"], ["assists", "Assists"], ["ratings", "Rating"]].filter(([k]) => cur[k]?.length);
     const lk = kinds.find(([k]) => k === UI.leaders)?.[0] || kinds[0]?.[0];
@@ -546,7 +588,7 @@ function viewF1() {
     }).join("");
     watch = blk(esc(label), `<div class="card sp-f1"><div class="who"><i style="background:${esc(me?.colour || "var(--line)")}"></i><div><div class="who-n">${esc(fav)}</div><div class="src">${esc(me?.team || "")}${me ? ` · ${me.wins} win${me.wins === 1 ? "" : "s"} this season` : ""}</div></div></div>
       ${me ? `<div class="stats"><div class="stat"><b class="tnum">${ordinal(me.pos)}</b><span>In the championship</span></div><div class="stat"><b class="tnum">${me.points}</b><span>Points</span></div><div class="stat"><b class="tnum">${me === lead ? "Lead" : `${lead.points - me.points}`}</b><span>${me === lead ? "Top of the table" : `Behind ${esc(last(lead.shown || lead.name))}`}</span></div></div>` : ""}
-      ${wk ? `<div class="sub-h">This weekend <span>where he finished, then his chance</span></div><div class="steps">${wk}</div>` : ""}
+      ${wk ? `<div class="sub-h">This weekend</div><div class="steps">${wk}</div>` : ""}
       ${here.length ? `<div class="sub-h">At ${esc(HB.race?.circuit || "this track")}${best ? ` <span>best ${ordinal(best.pos)}, in ${esc(here.filter(r => r.pos === best.pos).map(r => r.season).join(", "))}</span>` : ""}</div><div class="fgrid yrs">${here.map(r => `<span class="yr">${fpos({ pos: r.pos, finished: /^\d+$/.test(r.text), text: r.text }, `${r.season}: from ${ordinal(r.grid || 0)} on the grid, ${r.status}`)}<small class="tnum">'${String(r.season).slice(2)}</small></span>`).join("")}</div>` : ""}</div>`, "", "max");
   }
   // Expectations: each session's winner market, the race first
@@ -585,9 +627,9 @@ function viewF1() {
   let lastRace = "";
   if (LR?.results?.length) {
     const rr = LR.results.map(r => `<div class="row"><span class="fpos ${r.pos <= 3 ? "p" + r.pos : ""} tnum">${r.pos}</span><i class="tstripe" style="background:${esc(r.colour || "var(--line)")}"></i><div class="grow"><div class="t1">${esc(r.shown || r.name)}</div><div class="t2">${esc(r.team || "")}</div></div><div class="end t2 tnum">${esc(r.time || r.status || "")}</div></div>`);
-    lastRace = blk(`Last race`, `<div class="list"><div class="row hdr"><div class="grow"><div class="t1">${LR.flag ? `${esc(LR.flag)} ` : ""}${esc(gpName(LR.name))}</div><div class="t2">${esc(shortDate(LR.date))}</div></div></div>${rr.slice(0, 3).join("")}${moreBox("Full result", rr.slice(3).join(""))}</div>`, "", "last");
+    lastRace = blk(`Last race`, `<div class="list"><div class="row hdr"><div class="grow"><div class="t1">${esc(gpName(LR.name))}</div><div class="t2">${LR.flag ? `${esc(LR.flag)} ` : ""}${/ in /.test(LR.name) ? `Held in ${esc(LR.name.replace(/^.* in /, ""))} · ` : ""}${esc(shortDate(LR.date))}</div></div></div>${rr.slice(0, 3).join("")}${moreBox("Full result", rr.slice(3).join(""))}</div>`, "", "last");
   }
-  const cal = (N?.upcoming || []).map(u => `<div class="row"><span class="fl lg">${esc(u.flag || "")}</span><div class="grow"><div class="t1">${esc(gpName(u.name))}</div><div class="t2">Round ${u.round} · ${esc(shortDate(u.date))}</div></div></div>`).join("");
+  const cal = (N?.upcoming || []).map(u => `<div class="row"><span class="fl lg">${esc(u.flag || "")}</span><div class="grow"><div class="t1">${esc(gpName(u.name))}</div><div class="t2">Round ${u.round}${/ in /.test(u.name) ? ` · held in ${esc(u.name.replace(/^.* in /, ""))}` : ""} · ${esc(shortDate(u.date))}</div></div></div>`).join("");
   return `<div class="page">${header("Formula 1", R ? `<b>Round ${R.round}</b><span>${esc(gpName(R.name))}</span>` : "", ["f1_next", "f1_standings", "f1_hub"])}
     ${jump([[R && "weekend", "Weekend"], [watch && "max", last(fav)], [expect && "markets", "Markets"], [track && "track", "Track"], [form && "form", "Form"], [table && "standings", "Standings"], [cal && "calendar", "Calendar"]])}
     ${!R && !S ? `<div class="skel"></div><div class="skel"></div>` : ""}
@@ -609,13 +651,13 @@ function viewCricket() {
   const seriesBlock = S => blk(esc(S.name.replace(/,? \d{4}$/, "")), (S.formats || []).map(f => {
     const rows = (f.matches || []).map(m => {
       const st = m.state === "done" ? (m.won === true ? "W" : m.won === false ? "L" : "D") : null;
-      return `<div class="row"><div class="grow"><div class="t1 wrap">${esc(m.desc)} <span class="dim">${esc(m.city || "")}</span></div><div class="t2 wrap">${m.state === "done" ? `${esc(shortDate(m.start))}${m.score ? ` · ${String(m.score).split(" · ").map(x => `<span class="inn">${esc(x)}</span>`).join(" · ")}` : ""}` : esc(m.time_announced === false ? `${shortDate(m.start)}, time TBC` : when(m.start))}</div></div><div class="end">${m.state === "done" ? `<span class="score txt ${st}">${esc(resultWord(m))}</span>` : m.state === "live" ? `<span class="chip live"><i></i>Live</span>` : m.state === "off" ? `<span class="chip done">${esc(m.status || "No result")}</span>` : `<span class="t2">${countdown(m.start)}</span>`}</div></div>`;
+      return `<div class="row"><div class="grow"><div class="t1">${esc(m.desc)}</div><div class="t2 wrap">${m.city ? `${esc(m.city)} · ` : ""}${m.state === "done" ? esc(shortDate(m.start)) : esc(m.time_announced === false ? `${shortDate(m.start)}, time TBC` : when(m.start))}</div>${m.state === "done" && m.score ? `<div class="inns">${String(m.score).split(" · ").map(x => `<span class="inn tnum">${esc(x)}</span>`).join("")}</div>` : ""}</div><div class="end">${m.state === "done" ? `<span class="score txt ${st}">${esc(resultWord(m))}</span>` : m.state === "live" ? `<span class="chip live"><i></i>Live</span>` : m.state === "off" ? `<span class="chip done">${esc(m.status || "No result")}</span>` : `<span class="t2">${countdown(m.start)}</span>`}</div></div>`;
     }).join("");
     return `<div class="sub-h out">${esc(f.label || f.format)}${f.score ? ` <span class="chip sp sp-cricket">${esc(f.score)}</span>` : ""}</div><div class="list">${rows}</div>`;
   }).join(""), `<span class="note">${esc(shortDate(S.first))} to ${esc(shortDate(S.last))}</span>`, "series");
   const series = [C?.main, ...(C?.also || [])].filter(Boolean).map(seriesBlock).join("");
   const A = C?.after;
-  const after = A?.formats ? blk(`Next: ${esc(A.name.replace(/,? \d{4}$/, ""))}`, `<div class="list">${A.formats.map(f => { const ms = f.matches || []; return `<details class="row-d"><summary class="row"><div class="grow"><div class="t1">${ms.length} ${esc(f.label || f.format)}</div><div class="t2">${ms[0] ? `${esc(shortDate(ms[0].start))} to ${esc(shortDate(ms.at(-1).start))} · ${esc([...new Set(ms.map(m => m.city).filter(Boolean))].slice(0, 3).join(", "))}` : ""}</div></div><svg class="chev dn" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2"/></svg></summary>${ms.map(m => `<div class="row sub"><div class="grow"><div class="t1">${esc(m.desc)} <span class="dim">${esc(m.city || "")}</span></div><div class="t2">${esc(m.time_announced === false ? `${shortDate(m.start)}, time TBC` : when(m.start))}</div></div></div>`).join("")}</details>`; }).join("")}</div>`, `<span class="note">From ${esc(shortDate(A.first))}</span>`, "after") : "";
+  const after = A?.formats ? blk(`Next: ${esc(A.name.replace(/,? \d{4}$/, ""))}`, `<div class="list">${A.formats.map(f => { const ms = f.matches || []; return `<details class="row-d"><summary class="row"><div class="grow"><div class="t1">${ms.length} ${esc(f.label || f.format)}</div><div class="t2 wrap">${ms[0] ? `${esc(shortDate(ms[0].start))} to ${esc(shortDate(ms.at(-1).start))} · ${esc([...new Set(ms.map(m => m.city).filter(Boolean))].slice(0, 3).join(", "))}` : ""}</div></div><svg class="chev dn" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2"/></svg></summary>${ms.map(m => `<div class="row sub"><div class="grow"><div class="t1">${esc(m.desc)} <span class="dim">${esc(m.city || "")}</span></div><div class="t2">${esc(m.time_announced === false ? `${shortDate(m.start)}, time TBC` : when(m.start))}</div></div></div>`).join("")}</details>`; }).join("")}</div>`, `<span class="note">From ${esc(shortDate(A.first))}</span>`, "after") : "";
   return `<div class="page">${header("India", C?.main ? `<b>${esc(C.main.name.replace(/,? \d{4}$/, ""))}</b>` : "", ["crease"])}
     ${!C ? `<div class="skel"></div><div class="skel"></div>` : ""}
     ${next ? blk(live ? "Live" : "Next match", nextCard(next)) : ""}
@@ -646,7 +688,7 @@ function viewTennis() {
   const TH = val("tennis_hub"), RK = (TH?.ranks || []).filter(r => r.rank), mine = (follows().tennis_players || []).map(atp).filter(r => r?.rank);
   const top = RK.slice(0, 10); for (const m of mine) if (!top.includes(m)) top.push(m);
   const rankings = top.length ? blk("ATP rankings", `<div class="list">${top.map(r => `<div class="row${mine.includes(r) ? " me" : ""}"><span class="rkn tnum">${r.rank}</span>${player(r.name, "sm")}<div class="grow"><div class="t1">${esc(r.name)}</div>${r.points ? `<div class="t2 tnum">${r.points.toLocaleString("en-IN")} points</div>` : ""}</div></div>`).join("")}</div>`, TH?.date ? `<span class="note">Official list of ${esc(fmt(TH.date + "T12:00:00Z", { day: "numeric", month: "short" }))}</span>` : `<span class="note">ESPN's order</span>`, "rankings") : "";
-  return `<div class="page">${header("Tennis", `<b>${esc((follows().tennis_players || []).join(" and "))}</b>`, ["tennis_players", "tennis"])}
+  return `<div class="page">${header("Tennis", "", ["tennis_players", "tennis"])}
     ${!TP.length ? `<div class="skel"></div><div class="skel"></div>` : ""}
     ${cards}
     ${tours ? blk("Tournaments", `<div class="list">${tours}</div>`) : ""}
@@ -663,7 +705,7 @@ function viewNba() {
   return `<div class="page">${header(`<span class="ttl">${nbaLogo(follows().nba_team?.espn_abbr || "gs", nbaTeam(), "sm")}Warriors</span>`, `<b>${B?.in_season ? "Regular season" : "Preseason"}</b>`, ["nba"])}
     ${!B ? `<div class="skel"></div>` : ""}
     ${next ? blk("Next game", nextCard(next)) : ""}
-    ${B?.opener ? blk("Opening night", `<div class="list"><div class="row">${nbaLogo(B.opener.opponent_abbr, B.opener.opponent, "sm")}<div class="grow"><div class="t1">${B.opener.home ? "v" : "at"} ${esc(B.opener.opponent)}</div><div class="t2">${esc(when(B.opener.date))} · regular season</div></div><div class="end"><div class="pc tnum">${countdown(B.opener.date).replace("in ", "")}</div></div></div></div>`) : ""}
+    ${B?.opener ? blk("Opening night", `<div class="list"><div class="row">${nbaLogo(B.opener.opponent_abbr, B.opener.opponent, "sm")}<div class="grow"><div class="t1">${B.opener.home ? "v" : "at"} ${esc(B.opener.opponent)}</div><div class="t2">${esc(when(B.opener.date))}</div><div class="t2">First game of the regular season</div></div><div class="end"><div class="pc tnum">${countdown(B.opener.date).replace("in ", "")}</div></div></div></div>`) : ""}
     ${done ? blk("Last result", resultCard(done)) : ""}
     ${rows ? blk("Schedule", `<div class="list">${rows}</div>`) : ""}
     ${W}
@@ -687,12 +729,14 @@ function render(navigated) {
   $("#topTitle").textContent = TITLES[r];
   SHEET = "";
   view.innerHTML = VIEWS[r]();
+  if (UI.match) { const ev = events(true).find(x => x.id === UI.match); if (ev) SHEET = matchSheet(ev); else UI.match = null; }
   // The day sheet sits in its own layer above the app, which goes inert behind it
   const root = $("#sheet-root"), opening = SHEET && !root.innerHTML;
-  root.innerHTML = r === "home" ? SHEET : "";
+  const was = root.innerHTML ? (UI.match ? "m" : "d") : "";
+  root.innerHTML = SHEET;
   $("#app").inert = !!root.innerHTML;
-  if (opening) { sheetFor = UI.day; requestAnimationFrame(() => $("#sheet-t")?.focus()); dragSheet(root.querySelector(".sheet")); }
-  else if (!root.innerHTML && sheetFor) { const b = view.querySelector(`.wd[data-v="${sheetFor}"]`); sheetFor = null; b?.focus(); }
+  if (opening || (SHEET && was && was !== (UI.match ? "m" : "d"))) { sheetFor = UI.match ? `[data-match="${CSS.escape(UI.match)}"]` : `.wd[data-v="${CSS.escape(UI.day || "")}"]`; requestAnimationFrame(() => $("#sheet-t")?.focus()); dragSheet(root.querySelector(".sheet")); }
+  else if (!root.innerHTML && sheetFor) { const b = view.querySelector(sheetFor); sheetFor = null; b?.focus({ preventScroll: true }); }
   if (!changed && !navigated) { view.querySelector(".page")?.style.setProperty("animation", "none"); window.scrollTo(0, y); }
   else if (sec && document.getElementById(sec)) requestAnimationFrame(() => document.getElementById(sec).scrollIntoView({ block: "start" }));
   else window.scrollTo(0, 0);
@@ -711,29 +755,37 @@ function render(navigated) {
     for (const c of chips) { const el = document.getElementById(c.dataset.jump); if (el) jio.observe(el); }
     onBottom = () => { if (atBottom()) { const lastC = chips.at(-1); if (jcur !== lastC.dataset.jump) { jcur = lastC.dataset.jump; for (const c of chips) c.toggleAttribute("aria-current", c === lastC); const bar = lastC.parentElement; bar.scrollTo({ left: bar.scrollWidth, behavior: "smooth" }); } } };
   }
+  // The results shelf: a dot per card, the one in view filled
+  const shelf = view.querySelector(".shelf"), sd = shelf && view.querySelectorAll(".sdots i");
+  if (sd?.length) { const mark = () => { const w = shelf.firstElementChild?.offsetWidth + 12 || 1, i = shelf.scrollLeft + shelf.clientWidth >= shelf.scrollWidth - 4 ? sd.length - 1 : Math.round(shelf.scrollLeft / w); sd.forEach((d, k) => d.classList.toggle("on", k === i)); }; mark(); shelf.addEventListener("scroll", mark, { passive: true }); }
   const h1 = $("#h1");
   if (h1 && "IntersectionObserver" in window) { io = new IntersectionObserver(([en]) => $("#top").classList.toggle("solid", !en.isIntersecting), { rootMargin: "-56px 0px 0px 0px" }); io.observe(h1); }
 }
-addEventListener("hashchange", () => { vibe(); const { r } = parse(); render(r !== route); });
+addEventListener("hashchange", () => { vibe(); UI.match = null; const { r } = parse(); render(r !== route); });
 $("#refresh").addEventListener("click", () => { vibe(); loadAll(); });
 function dragSheet(el) {
   if (!el) return; let y0 = null, dy = 0;
   el.addEventListener("touchstart", e => { if (el.scrollTop > 0) return; y0 = e.touches[0].clientY; dy = 0; el.style.transition = "none"; }, { passive: true });
   el.addEventListener("touchmove", e => { if (y0 == null) return; dy = Math.max(0, e.touches[0].clientY - y0); el.style.transform = `translateY(${dy}px)`; }, { passive: true });
-  el.addEventListener("touchend", () => { if (y0 == null) return; el.style.transition = ""; if (dy > 80) { UI.day = null; render(false); } else el.style.transform = ""; y0 = null; }, { passive: true });
+  el.addEventListener("touchend", () => { if (y0 == null) return; el.style.transition = ""; if (dy > 80) { if (UI.match) UI.match = null; else UI.day = null; render(false); } else el.style.transform = ""; y0 = null; }, { passive: true });
 }
-$("#sheet-root").addEventListener("click", e => { const c = e.target.closest("[data-close]"); if (c) { UI[c.dataset.close] = null; render(false); } });
+$("#sheet-root").addEventListener("click", e => {
+  const c = e.target.closest("[data-close]"); if (c) { UI[c.dataset.close] = null; render(false); return; }
+  const mt = e.target.closest("[data-match]"); if (mt) { e.preventDefault(); UI.match = mt.dataset.match; vibe(); render(false); }
+});
 view.addEventListener("click", e => {
   const b = e.target.closest("button[data-ui]");
   if (b) { UI[b.dataset.ui] = b.dataset.ui === "day" && UI.day === b.dataset.v ? null : b.dataset.v; vibe(); render(false); return; }
   if (e.target.closest("[data-close]")) { UI[e.target.closest("[data-close]").dataset.close] = null; render(false); return; }
+  const mt = e.target.closest("[data-match]");
+  if (mt) { e.preventDefault(); UI.match = mt.dataset.match; vibe(); render(false); return; }
   const j = e.target.closest("a[data-jump]");
   if (j) { e.preventDefault(); const el = document.getElementById(j.dataset.jump); if (el) { el.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); history.replaceState(null, "", j.getAttribute("href")); } }
 });
 // Pull to refresh (a home-screen web app on iPhone has none of its own): drag down from the top past 70px
 {
   let y0 = null, pulled = 0; const ind = document.createElement("div"); ind.className = "ptr"; ind.setAttribute("aria-hidden", "true"); document.body.append(ind);
-  addEventListener("touchstart", e => { y0 = window.scrollY <= 0 && !UI.day ? e.touches[0].clientY : null; pulled = 0; }, { passive: true });
+  addEventListener("touchstart", e => { y0 = window.scrollY <= 0 && !UI.day && !UI.match ? e.touches[0].clientY : null; pulled = 0; }, { passive: true });
   addEventListener("touchmove", e => { if (y0 == null) return; pulled = Math.max(0, e.touches[0].clientY - y0); ind.style.setProperty("--p", Math.min(pulled / 70, 1)); ind.classList.toggle("on", pulled > 8); ind.classList.toggle("ready", pulled > 70); }, { passive: true });
   addEventListener("touchend", () => { if (y0 != null && pulled > 70) { vibe(); loadAll(); } y0 = null; ind.classList.remove("on", "ready"); }, { passive: true });
 }
@@ -742,7 +794,7 @@ addEventListener("resize", () => onBottom());
 // Focus rings after keyboard use only, so a day tapped and closed never looks like a second "today"
 addEventListener("pointerdown", () => { document.body.dataset.input = "touch"; }, { passive: true });
 addEventListener("keydown", () => { delete document.body.dataset.input; });
-addEventListener("keydown", e => { if (e.key === "Escape" && UI.day) { UI.day = null; render(false); } });
+addEventListener("keydown", e => { if (e.key === "Escape" && (UI.day || UI.match)) { if (UI.match) UI.match = null; else UI.day = null; render(false); } });
 // Countdowns tick; the data refreshes every minute while something is live, else every five, and on return to the app
 setInterval(() => { for (const el of document.querySelectorAll("[data-cd]")) { const v = rel(el.dataset.cd); if (el.textContent !== v) { el.textContent = v; el.classList.remove("tick"); void el.offsetWidth; el.classList.add("tick"); } } }, 20000);
 setInterval(() => { if (document.hidden) return; const live = events().some(e => e.state === "live"); if (Date.now() - lastLoad > (live ? 60e3 : 300e3)) loadAll(); }, 30000);

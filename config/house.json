@@ -478,7 +478,7 @@
       "England"
     ],
   "national_team_espn_ids": {"Brazil": 205, "Spain": 164, "Portugal": 482, "England": 448},
-  "sport_app_short_names": {"Champions League": "UCL", "Rolex Shanghai Masters": "Shanghai", "Club World Cup": "CWC", "Copa del Rey": "Copa"}
+  "sport_app_short_names": {"Champions League": "UCL", "Rolex Shanghai Masters": "Shanghai", "Club World Cup": "CWC", "Copa del Rey": "Copa", "UEFA Nations League": "Nations League", "International Friendly": "Friendly"}
   },
   "beats": {
     "primary": [

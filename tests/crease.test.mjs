@@ -100,3 +100,19 @@ test("cricket scores: innings in batting order, overs as a reader writes them, a
   const cut = { ...odi, state: "In Progress", matchScore: { team1Score: { inngs1: { inningsId: 1, runs: 238, wickets: 10, overs: 41 } }, team2Score: { inngs1: { inningsId: 2, runs: 60, wickets: 1, overs: 12 } } } };
   assert.equal(inningsLine(cut), "WI 238 · IND 60/1 (12 ov)", "a finished first innings given as whole overs short of 50 drops its overs; the live one keeps them");
 });
+
+test("cricket card: each side's top scorer and best bowler, not-out marked, wicketless bowlers left out", async () => {
+  const { cardOf } = await import("../lib/cricket.js");
+  const inn = (bat, bowlTeam, bats, bowls) => ({ batTeamDetails: { batTeamShortName: bat, batsmenData: Object.fromEntries(bats.map((b, i) => ["bat_" + i, b])) }, bowlTeamDetails: { bowlTeamShortName: bowlTeam, bowlersData: Object.fromEntries(bowls.map((b, i) => ["bowl_" + i, b])) } });
+  const j = { scoreCard: [
+    inn("IND", "WI", [{ batName: "Sanju Samson", runs: 82, balls: 41, outDesc: "c Pooran b Springer" }, { batName: "Ishan Kishan", runs: 43, balls: 22, outDesc: "b Chase" }], [{ bowlName: "Roston Chase", wickets: 3, runs: 24 }, { bowlName: "Akeal Hosein", wickets: 0, runs: 46 }]),
+    inn("WI", "IND", [{ batName: "Shai Hope", runs: 102, balls: 45, outDesc: "not out" }], [{ bowlName: "Jasprit Bumrah", wickets: 0, runs: 30 }]),
+  ], matchHeader: { playersOfTheMatch: [{ fullName: "Shai Hope" }] } };
+  const c = cardOf(j, 1);
+  assert.deepEqual(c.innings[0].bat, { name: "Sanju Samson", runs: 82, balls: 41, out: true });
+  assert.deepEqual(c.innings[0].bowl, { name: "Roston Chase", wickets: 3, runs: 24, team: "WI" });
+  assert.equal(c.innings[1].bat.out, false);
+  assert.equal(c.innings[1].bowl, null, "a bowler with no wickets is not a best bowler");
+  assert.deepEqual(c.potm, ["Shai Hope"]);
+  assert.equal(cardOf({}, 1), null);
+});
