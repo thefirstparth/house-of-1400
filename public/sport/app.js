@@ -260,8 +260,10 @@ function nextCard(e, { odds = true } = {}) {
     const qs = /^sprint$/i.test(e.session) ? /sprint (qualifying|shootout)/i : /^race$/i.test(e.session) ? /^qualifying$/i : null;
     const q = qs && (val("f1_sessions")?.results || []).find(r => qs.test(r.name) && dayKey(t(r.start)) >= dayKey(t(e.start) - 3 * 864e5));
     const qi = q ? q.top.findIndex(n => same(n, last(fav))) : -1;
-    const qline = qi >= 0 ? `<span class="pill res">${fpos({ pos: qi + 1, finished: true })}${esc(last(fav))} qualified ${ordinal(qi + 1)}</span>` : "";
-    return `<a class="card next one sp-f1" href="${e.href}">${head}<div class="title">${e.flag ? `<span class="fl">${esc(e.flag)}</span> ` : ""}${esc(e.title)}<small>${esc(e.sub || "")}</small></div><div class="clock tnum">${hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>${o || qline ? `<div class="pill-row">${qline}${o ? `<span class="pill">${esc(o.label)} <b class="tnum">${o.prob}%</b> to win, in the markets</span>` : ""}</div>` : ""}</a>`;
+    const qline = qi >= 0 ? `${fpos({ pos: qi + 1, finished: true })}${esc(last(fav))} starts ${ordinal(qi + 1)}` : "";
+    const trk = val("f1_next")?.race?.track?.image, st = t(e.start), dur = ((val("f1_next")?.race?.sessions || []).find(x => x.start === e.start)?.minutes || 60) * 6e4;
+    const prog = e.state === "live" ? `<div class="prog" role="progressbar" aria-label="Session under way" aria-valuenow="${Math.round(Math.min(1, (Date.now() - st) / dur) * 100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.min(100, ((Date.now() - st) / dur) * 100)}%"></i></div>` : "";
+    return `<a class="card next one sp-f1${trk ? " has-trk" : ""}" href="${e.href}">${trk ? `<img class="hero-trk" src="${esc(trk)}" alt="" loading="lazy">` : ""}${prog}${head}<div class="title">${e.flag ? `<span class="fl">${esc(e.flag)}</span> ` : ""}${esc(e.title)}<small>${esc(e.sub || "")}</small></div><div class="clock tnum">${hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>${o || qline ? `<div class="pill-row"><span class="pill${qline ? " res" : ""}">${qline || esc(o.label)}${o ? `${qline ? " ·" : ""} <b class="tnum">${o.prob}%</b> to win` : ""}</span></div>` : ""}</a>`;
   }
   const side = (name, lg) => `<div class="side">${lg || monoHTML(name, "lg")}<b>${esc(e.sp === "tennis" || e.sp === "nba" ? last(name) : name)}</b></div>`;
   const live = e.state === "live" && e.sa != null;
@@ -269,7 +271,9 @@ function nextCard(e, { odds = true } = {}) {
   const sp = e.sp === "nba" ? "basketball" : e.sp === "intl" ? null : e.sp;
   const p = odds && sp && e.state !== "done" ? sideProbs(oddsFor(sp, [e.a, e.b], e.start), [e.a, e.b]) : null;
   const nm = n => (e.sp === "tennis" || e.sp === "nba" ? last(n) : CLUB_SHORT(n));
-  return `<a class="card next sp-${e.sp}" href="${e.href}">${head}<div class="vs">${side(e.a, e.la)}${mid}${side(e.b, e.lb)}</div>${e.venue ? `<div class="meta">${esc(e.venue)}</div>` : ""}${p ? mktBar(p, [nm(e.a), nm(e.b)], e.sp) : ""}</a>`;
+  const mins = live && e.sp === "football" ? parseInt(String(e.clock || "")) : NaN;
+  const prog = Number.isFinite(mins) ? `<div class="prog" role="progressbar" aria-label="Minute ${mins}" aria-valuenow="${mins}" aria-valuemin="0" aria-valuemax="90"><i style="width:${Math.min(100, (mins / 90) * 100)}%"></i></div>` : "";
+  return `<a class="card next sp-${e.sp}" href="${e.href}">${prog}${head}<div class="vs">${side(e.a, e.la)}${mid}${side(e.b, e.lb)}</div>${e.venue ? `<div class="meta">${esc(e.venue)}</div>` : ""}${p ? mktBar(p, [nm(e.a), nm(e.b)], e.sp) : ""}</a>`;
 }
 // A finished event as a small scoreboard
 function scoreboard(e) {
@@ -313,7 +317,7 @@ function weekStrip(E) {
     const sps = [...new Set(ev.map(e => e.sp))];
     return `<button type="button" class="wd${i === 0 ? " today" : ""}${d === sel ? " on" : ""}" data-ui="day" data-v="${d}" aria-pressed="${d === sel}" aria-label="${esc(fmt(dt.toISOString(), { weekday: "long", day: "numeric", month: "long" }))}: ${ev.length} fixture${ev.length === 1 ? "" : "s"}"${ev.length ? "" : " disabled"}>
       <span class="wdn">${i === 0 ? "Today" : esc(fmt(dt.toISOString(), { weekday: "short" }))}</span><b class="tnum">${esc(fmt(dt.toISOString(), { day: "numeric" }))}</b>
-      <span class="dots">${(sps.length > 3 ? sps.slice(0, 2) : sps).map(sp => `<i class="sp-${sp}"></i>`).join("")}${sps.length > 3 ? `<em>+${sps.length - 2}</em>` : ""}</span></button>`;
+      <span class="dots">${(sps.length > 4 ? sps.slice(0, 3) : sps).map(sp => `<i class="sp-${sp}"></i>`).join("")}${sps.length > 4 ? `<em>+${sps.length - 3}</em>` : ""}</span></button>`;
   }).join("");
   const list = sel ? by(sel).map(e => {
     const res = e.state === "done" ? (e.sa != null ? `${e.sa}–${e.sb}` : e.sp === "f1" && e.top ? `1 ${e.top[0]}` : e.sp === "tennis" ? (e.won === "a" ? "Won" : "Lost") : e.sp === "cricket" && e.status ? resultWord({ status: e.status, won: e.won === "a" ? true : e.won === "b" ? false : null }) : "Final") : null;
@@ -650,6 +654,7 @@ function viewNba() {
 // ------------------------------------------------------------------ router and shell
 const VIEWS = { home: viewHome, football: viewFootball, f1: viewF1, cricket: viewCricket, tennis: viewTennis, nba: viewNba };
 const TITLES = { home: "Today", football: "Real Madrid", f1: "Formula 1", cricket: "India", tennis: "Tennis", nba: "Warriors" };
+const atBottom = () => innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
 let route = null, io = null, jio = null, jcur = null, onBottom = () => {}, SHEET = "", sheetFor = null;
 const parse = () => { const [r, sec] = location.hash.replace(/^#\/?/, "").split("/"); return { r: VIEWS[r] ? r : "home", sec: sec || null }; };
 function render(navigated) {
@@ -679,12 +684,13 @@ function render(navigated) {
     const seen = new Map();
     jio = new IntersectionObserver(es => {
       for (const en of es) seen.set(en.target.id, en.isIntersecting ? en.boundingClientRect.top : null);
+      if (atBottom()) return onBottom();
       const cur = [...seen].filter(([, y]) => y != null).sort((a, b) => a[1] - b[1])[0]?.[0];
       if (cur === jcur) return; jcur = cur;
       for (const c of chips) { const on = c.dataset.jump === cur; c.toggleAttribute("aria-current", on); if (on) { const bar = c.parentElement; bar.scrollTo({ left: Math.max(0, c.offsetLeft - (bar.clientWidth - c.offsetWidth) / 2), behavior: "smooth" }); } }
     }, { rootMargin: "-110px 0px -55% 0px" });
     for (const c of chips) { const el = document.getElementById(c.dataset.jump); if (el) jio.observe(el); }
-    onBottom = () => { if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) { const lastC = chips.at(-1); if (jcur !== lastC.dataset.jump) { jcur = lastC.dataset.jump; for (const c of chips) c.toggleAttribute("aria-current", c === lastC); const bar = lastC.parentElement; bar.scrollTo({ left: bar.scrollWidth, behavior: "smooth" }); } } };
+    onBottom = () => { if (atBottom()) { const lastC = chips.at(-1); if (jcur !== lastC.dataset.jump) { jcur = lastC.dataset.jump; for (const c of chips) c.toggleAttribute("aria-current", c === lastC); const bar = lastC.parentElement; bar.scrollTo({ left: bar.scrollWidth, behavior: "smooth" }); } } };
   }
   const h1 = $("#h1");
   if (h1 && "IntersectionObserver" in window) { io = new IntersectionObserver(([en]) => $("#top").classList.toggle("solid", !en.isIntersecting), { rootMargin: "-56px 0px 0px 0px" }); io.observe(h1); }
@@ -713,9 +719,13 @@ view.addEventListener("click", e => {
   addEventListener("touchend", () => { if (y0 != null && pulled > 70) { vibe(); loadAll(); } y0 = null; ind.classList.remove("on", "ready"); }, { passive: true });
 }
 addEventListener("scroll", () => onBottom(), { passive: true });
+addEventListener("resize", () => onBottom());
+// Focus rings after keyboard use only, so a day tapped and closed never looks like a second "today"
+addEventListener("pointerdown", () => { document.body.dataset.input = "touch"; }, { passive: true });
+addEventListener("keydown", () => { delete document.body.dataset.input; });
 addEventListener("keydown", e => { if (e.key === "Escape" && UI.day) { UI.day = null; render(false); } });
 // Countdowns tick; the data refreshes every minute while something is live, else every five, and on return to the app
-setInterval(() => { for (const el of document.querySelectorAll("[data-cd]")) el.textContent = rel(el.dataset.cd); }, 20000);
+setInterval(() => { for (const el of document.querySelectorAll("[data-cd]")) { const v = rel(el.dataset.cd); if (el.textContent !== v) { el.textContent = v; el.classList.remove("tick"); void el.offsetWidth; el.classList.add("tick"); } } }, 20000);
 setInterval(() => { if (document.hidden) return; const live = events().some(e => e.state === "live"); if (Date.now() - lastLoad > (live ? 60e3 : 300e3)) loadAll(); }, 30000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - lastLoad > 60e3) loadAll(); });
 // Very large text (Dynamic Type, Android font size): the tab bar keeps its icons and drops the labels

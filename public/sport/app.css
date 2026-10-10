@@ -35,7 +35,9 @@ a{color:inherit;text-decoration:none}
 img{display:block}
 [hidden]{display:none!important}
 .tnum{font-variant-numeric:tabular-nums}
-:focus-visible{outline:2.5px solid var(--acc-ink);outline-offset:2px}
+:focus-visible{outline:2.5px solid var(--acc-ink);outline-offset:3px}
+body[data-input="touch"] :focus-visible{outline:none}
+.wd:focus-visible{outline-color:var(--f1-ink);outline-style:dashed}
 
 /* ---------- top bar: the small title appears once the large one scrolls away ---------- */
 .top{position:fixed;inset:0 0 auto;z-index:40;padding-top:var(--safe-t);background:var(--bg);border-bottom:1px solid transparent;transition:border-color .2s,background .2s}
@@ -127,6 +129,7 @@ a.row:active{background:var(--surface2)}
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:6px}
 .step{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px;border-radius:var(--r-tile);background:var(--surface2);text-align:center}
 .step>span{font-weight:600;font-size:.72rem;color:var(--muted)}
+.step .fpos{min-width:36px;height:30px;font-size:1.3rem;border-radius:8px}
 .step .pct{font-family:var(--board);font-weight:700;font-size:1.3rem;line-height:28px;color:var(--c-ink,var(--ink))}
 .step .dim{font-size:.72rem;line-height:28px;color:var(--muted)}
 .pill.odds{background:transparent;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c,var(--ink)) 45%,var(--line))}
@@ -153,6 +156,15 @@ a.row:active{background:var(--surface2)}
 .card.next.one .clock small{font-family:var(--sans);font-weight:600;font-size:.88rem;color:var(--muted);letter-spacing:0}
 .fl{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
 .fl.lg{font-size:1.6rem;line-height:1;width:32px;text-align:center}
+
+/* the F1 hero's track, and a live fixture's progress */
+.card.next.one.has-trk{isolation:isolate}
+.hero-trk{position:absolute;right:-6px;top:52px;width:50%;max-width:220px;height:auto;opacity:.16;z-index:-1;pointer-events:none}
+@media (prefers-color-scheme:light){.hero-trk{filter:invert(1) grayscale(1) contrast(3);mix-blend-mode:multiply;opacity:.12}}
+.prog{position:absolute;left:0;right:0;top:0;height:4px;background:color-mix(in srgb,var(--c) 18%,transparent)}
+.prog i{display:block;height:100%;background:var(--c);transition:width 1s var(--ease)}
+[data-cd].tick{display:inline-block;animation:tick .45s var(--spring)}
+@keyframes tick{from{transform:translateY(-6px);opacity:.2}}
 
 /* logos and monograms: a soft disc until the image arrives */
 .crest{object-fit:contain;flex:none;border-radius:50%;background:radial-gradient(circle,var(--surface2) 60%,transparent 61%)}
@@ -423,7 +435,7 @@ body[data-tab="tennis"]{--acc:var(--tennis);--acc-ink:var(--tennis-ink)}
 body[data-tab="nba"]{--acc:var(--nba);--acc-ink:var(--nba-ink)}
 
 /* pull to refresh */
-.ptr{position:fixed;z-index:45;left:50%;top:calc(var(--safe-t) + 56px);width:34px;height:34px;margin-left:-17px;border-radius:50%;background:var(--surface);box-shadow:0 4px 14px rgba(0,0,0,.14);opacity:0;transform:translateY(-20px) scale(.6);transition:opacity .15s,transform .3s var(--spring);pointer-events:none}
+.ptr{position:fixed;z-index:45;left:50%;top:calc(var(--safe-t) + 7px);width:34px;height:34px;margin-left:-17px;border-radius:50%;background:var(--surface);box-shadow:0 4px 14px rgba(0,0,0,.14);opacity:0;transform:translateY(-20px) scale(.6);transition:opacity .15s,transform .3s var(--spring);pointer-events:none}
 .ptr::after{content:"";position:absolute;inset:9px;border-radius:50%;border:2.5px solid var(--line);border-top-color:var(--ink);transform:rotate(calc(var(--p,0) * 300deg))}
 .ptr.on{opacity:1;transform:translateY(calc(var(--p,0) * 14px)) scale(calc(.7 + var(--p,0) * .3))}
 .ptr.ready::after{border-color:var(--ink)}
