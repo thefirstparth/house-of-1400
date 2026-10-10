@@ -59,7 +59,7 @@ const monoHTML = (name, size) => `<span class="mono ${size}" aria-hidden="true">
 function logo(url, name, size = "lg") {
   if (!url) return monoHTML(name, size);
   const fb = esc(`<span class="mono ${size}">${esc(initials(name))}</span>`).replace(/'/g, "");
-  return `<img class="crest ${size}" src="${esc(url)}" alt="" loading="lazy" decoding="async" onerror="this.outerHTML='${fb}'">`;
+  return `<img class="crest ${size}" src="${esc(url)}" alt="" loading="lazy" decoding="async" onload="this.classList.add('ok')" onerror="this.outerHTML='${fb}'">`;
 }
 const px = size => (size === "lg" ? 128 : 64);
 const crest = (id, name, size = "lg") => logo(id ? `https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/${encodeURIComponent(id)}.png&w=${px(size)}&h=${px(size)}` : null, name, size);
@@ -164,7 +164,7 @@ function mktBar(p, names, sp) {
   return `<div class="mkt sp-${sp}" role="img" aria-label="Market: ${esc(names[0])} ${p.a}%, ${p.d != null ? `draw ${p.d}%, ` : ""}${esc(names[1])} ${p.b}%">
     <div class="bar">${seg(p.a, "")}${p.d != null ? seg(p.d, "draw") : ""}${seg(p.b, "")}</div>
     <div class="lab"><span class="${p.a === lead ? "lead" : ""}"><b class="tnum">${p.a}%</b> ${esc(names[0])}</span>${p.d != null ? `<span class="${p.d === lead ? "lead" : ""}">Draw <b class="tnum">${p.d}%</b></span>` : ""}<span class="${p.b === lead ? "lead" : ""}">${esc(names[1])} <b class="tnum">${p.b}%</b></span></div>
-    <div class="src">${esc(p.source)} market${D.odds?.as_of ? ` · ${hm(D.odds.as_of)}` : ""}</div></div>`;
+    <div class="src">${esc(p.source)}${D.odds?.as_of ? ` · ${hm(D.odds.as_of)}` : ""}</div></div>`;
 }
 // A ranked chart: one row per outcome, bars on a common 0-100 scale so their lengths compare honestly
 function rankList(outcomes, sp, { max = 6, nameFn = x => x, mark = null } = {}) {
@@ -243,7 +243,7 @@ const isOn = () => { const B = val("nba"); return !!B && (B.in_season || (B.next
 // ------------------------------------------------------------------ shared pieces
 function header(title, sub, stalekeys = []) {
   const st = stalekeys.filter(k => D[k]?.stale);
-  return `<header class="hero-h"><h1 id="h1">${title}</h1>${sub || st.length ? `<div class="sub">${sub || ""}${st.length ? `<span class="stale">Saved copy from ${esc(when(D[st[0]].as_of))}${loading ? ", refreshing" : ""}</span>` : ""}</div>` : ""}</header>`;
+  return `<header class="hero-h"><h1 id="h1">${title}</h1>${sub || st.length ? `<div class="sub">${sub || ""}${st.length ? `<span class="stale"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5V8l2.5 1.5"/></svg>Saved copy from ${esc(when(D[st[0]].as_of))}${loading ? ", refreshing" : ""}</span>` : ""}</div>` : ""}</header>`;
 }
 const blk = (title, body, extra = "", id = "") => (body ? `<section class="blk"${id ? ` id="${id}"` : ""}><div class="blk-h"><h2>${title}</h2>${extra}</div>${body}</section>` : "");
 const countdown = iso => `<span data-cd="${esc(iso)}">${esc(rel(iso))}</span>`;
@@ -258,12 +258,12 @@ function nextCard(e, { odds = true } = {}) {
     const o = odds ? evOdds(e) : null;
     return `<a class="card next one sp-f1" href="${e.href}">${head}<div class="title">${e.flag ? `<span class="fl">${esc(e.flag)}</span> ` : ""}${esc(e.title)}<small>${esc(e.sub || "")}</small></div><div class="clock tnum">${hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>${o ? `<div class="pill-row"><span class="pill">${esc(o.label)} <b class="tnum">${o.prob}%</b> in the markets</span></div>` : ""}</a>`;
   }
-  const side = (name, lg) => `<div class="side">${lg || monoHTML(name, "lg")}<b>${esc(e.sp === "tennis" ? last(name) : name)}</b></div>`;
+  const side = (name, lg) => `<div class="side">${lg || monoHTML(name, "lg")}<b>${esc(e.sp === "tennis" || e.sp === "nba" ? last(name) : name)}</b></div>`;
   const live = e.state === "live" && e.sa != null;
   const mid = live ? `<div class="mid tnum">${esc(e.sa)}–${esc(e.sb)}${e.clock ? `<small>${esc(e.clock)}</small>` : ""}</div>` : e.state === "live" && e.score ? `<div class="mid time"><small class="sc">${esc(e.score)}</small></div>` : `<div class="mid time tnum">${e.tbc ? "TBC" : hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>`;
   const sp = e.sp === "nba" ? "basketball" : e.sp === "intl" ? null : e.sp;
   const p = odds && sp && e.state !== "done" ? sideProbs(oddsFor(sp, [e.a, e.b], e.start), [e.a, e.b]) : null;
-  const nm = n => (e.sp === "tennis" ? last(n) : e.sp === "nba" ? last(n) : CLUB_SHORT(n));
+  const nm = n => (e.sp === "tennis" || e.sp === "nba" ? last(n) : CLUB_SHORT(n));
   return `<a class="card next sp-${e.sp}" href="${e.href}">${head}<div class="vs">${side(e.a, e.la)}${mid}${side(e.b, e.lb)}</div>${e.venue ? `<div class="meta">${esc(e.venue)}</div>` : ""}${p ? mktBar(p, [nm(e.a), nm(e.b)], e.sp) : ""}</a>`;
 }
 // A finished event as a small scoreboard
@@ -394,7 +394,7 @@ function pitch(xi) {
   }).join("");
   return `<div class="pitch" role="img" aria-label="${esc(xi.formation || "")}: ${esc(xi.players.map(p => p.name).join(", "))}"><svg class="lines" viewBox="0 0 68 80" preserveAspectRatio="none" aria-hidden="true"><rect x="2" y="2" width="64" height="76" rx="1"/><path d="M2 40h64"/><circle cx="34" cy="40" r="7"/><rect x="18" y="66" width="32" height="12"/><rect x="26" y="73" width="16" height="5"/><rect x="18" y="2" width="32" height="12"/><rect x="26" y="2" width="16" height="5"/></svg>${dots}</div>`;
 }
-const ZONE = { "champions league": "#1f8a4c", "europa league": "#e08a00", "conference": "#3f7fd8", "relegation": "#d1342f", "knockout": "#7cc49a" };
+const ZONE = { "knockout phase playoffs": "#8fd3a8", "round of 16|top 8|automatic": "#1f8a4c", "champions league": "#1f8a4c", "europa league": "#f0a04b", "conference": "#4b8fe0", "relegation": "#d1342f", "eliminated": "#b0b0b8" };
 const UI = { day: null, table: "liga", leaders: "goals", f1table: "drivers", f1mkt: "race" }; // segmented controls, per visit
 const formSquares = (rs, label) => `<span class="form" role="img" aria-label="${esc(label || "Form")}, oldest to latest: ${esc(rs.map(r => r.r).join(" "))}">${rs.map(r => `<i class="${esc(r.r)}" title="${esc(r.t || "")}">${esc(r.r)}</i>`).join("")}</span>`;
 function viewFootball() {
@@ -441,7 +441,7 @@ function viewFootball() {
     const tr = r => `<tr class="${same(r.team, cname) ? "me" : ""}"><td class="pos tnum" style="--zone:${esc(r.zone ? (zones.find(([n]) => n === r.zone.name)?.[1] || "transparent") : "transparent")}">${r.rank}</td><td class="team l"><div>${crest(r.id, r.team, "xs")}<span>${esc(r.short || r.team)}</span></div></td><td class="tnum">${r.played}</td><td class="tnum">${r.gd > 0 ? "+" : ""}${r.gd}</td><td class="pts tnum">${r.points}</td></tr>`;
     const head = `<thead><tr><th class="l" scope="col">#</th><th class="l" scope="col">Team</th><th scope="col">P</th><th scope="col">GD</th><th scope="col">Pts</th></tr></thead>`;
     const show = rows.length > 12 ? [...new Set([...rows.slice(0, 4), ...rows.slice(Math.max(0, mi - 2), mi + 3)])] : rows;
-    const zc = z => z?.color || ZONE[Object.keys(ZONE).find(k => new RegExp(k, "i").test(z?.name || ""))] || "var(--muted)";
+    const zc = z => ZONE[Object.keys(ZONE).find(k => new RegExp(k, "i").test(z?.name || ""))] || z?.color || "var(--muted)";
     const zones = []; for (const r of rows) if (r.zone?.name && !zones.some(([n]) => n === r.zone.name)) zones.push([r.zone.name, zc(r.zone)]);
     const seg = comps.length > 1 ? `<div class="seg" role="group" aria-label="Competition">${comps.map(c => `<button type="button" data-ui="table" data-v="${esc(c.key)}" aria-pressed="${c === cur}">${esc(c.label)}</button>`).join("")}</div>` : "";
     table = blk("Table", `${seg}<div class="list sp-football"><table class="tbl">${head}<tbody>${show.map((r, i) => (i && r.rank - show[i - 1].rank > 1 ? `<tr class="gap"><td colspan="5">···</td></tr>` : "") + tr(r)).join("")}</tbody></table>${show.length < rows.length ? moreBox("Full table", `<table class="tbl">${head}<tbody>${rows.map(tr).join("")}</tbody></table>`) : ""}${zones.length ? `<div class="legend">${zones.map(([n, c]) => `<span><i style="background:${esc(c)}"></i>${esc(n)}</span>`).join("")}</div>` : ""}</div>`, "", "table");
@@ -508,7 +508,7 @@ function viewF1() {
       const m = sessionMarket(s.name, s.start), o = m?.outcomes.find(x => same(x.name, fav));
       return o ? `<span class="pill odds">${esc(s.name)} <b class="tnum">${Math.round(o.prob)}%</b><small>chance</small></span>` : "";
     }).filter(Boolean).join("");
-    watch = blk(esc(label), `<div class="card sp-f1"><div class="who"><i style="background:${esc(me?.colour || "var(--f1)")}"></i><div><div class="who-n">${esc(fav)}</div><div class="src">${esc(me?.team || "")}${me ? ` · ${me.wins} win${me.wins === 1 ? "" : "s"} this season` : ""}</div></div></div>
+    watch = blk(esc(label), `<div class="card sp-f1"><div class="who"><i style="background:${esc(me?.colour || "var(--line)")}"></i><div><div class="who-n">${esc(fav)}</div><div class="src">${esc(me?.team || "")}${me ? ` · ${me.wins} win${me.wins === 1 ? "" : "s"} this season` : ""}</div></div></div>
       ${me ? `<div class="stats"><div class="stat"><b class="tnum">${ordinal(me.pos)}</b><span>In the championship</span></div><div class="stat"><b class="tnum">${me.points}</b><span>Points</span></div><div class="stat"><b class="tnum">${me === lead ? "Lead" : `${lead.points - me.points}`}</b><span>${me === lead ? "Top of the table" : `Behind ${esc(last(lead.shown || lead.name))}`}</span></div></div>` : ""}
       ${wk ? `<div class="sub-h">This weekend</div><div class="pill-row">${wk}</div><p class="foot" style="margin:6px 0 0">Filled: where he finished. Outlined: his chance in the markets.</p>` : ""}
       ${here.length ? `<div class="sub-h">At ${esc(HB.race?.circuit || "this track")}${best ? ` <span>best ${ordinal(best.pos)}, in ${esc(here.filter(r => r.pos === best.pos).map(r => r.season).join(", "))}</span>` : ""}</div><div class="fgrid yrs">${here.map(r => `<span class="yr">${fpos({ pos: r.pos, finished: /^\d+$/.test(r.text), text: r.text }, `${r.season}: from ${ordinal(r.grid || 0)} on the grid, ${r.status}`)}<small class="tnum">'${String(r.season).slice(2)}</small></span>`).join("")}</div>` : ""}</div>`, "", "max");
@@ -573,7 +573,7 @@ function viewCricket() {
   const seriesBlock = S => blk(esc(S.name.replace(/,? \d{4}$/, "")), (S.formats || []).map(f => {
     const rows = (f.matches || []).map(m => {
       const st = m.state === "done" ? (m.won === true ? "W" : m.won === false ? "L" : "D") : null;
-      return `<div class="row"><div class="grow"><div class="t1">${esc(m.desc)} <span class="dim">${esc(m.city || "")}</span></div><div class="t2 wrap">${esc(m.state === "done" ? `${shortDate(m.start)}${m.score ? ` · ${m.score}` : ""}` : m.time_announced === false ? `${shortDate(m.start)}, time TBC` : when(m.start))}</div></div><div class="end">${m.state === "done" ? `<span class="score txt ${st}">${esc(resultWord(m))}</span>` : m.state === "live" ? `<span class="chip live"><i></i>Live</span>` : m.state === "off" ? `<span class="chip done">${esc(m.status || "No result")}</span>` : `<span class="t2">${countdown(m.start)}</span>`}</div></div>`;
+      return `<div class="row"><div class="grow"><div class="t1 wrap">${esc(m.desc)} <span class="dim">${esc(m.city || "")}</span></div><div class="t2 wrap">${m.state === "done" ? `${esc(shortDate(m.start))}${m.score ? ` · ${String(m.score).split(" · ").map(x => `<span class="inn">${esc(x)}</span>`).join(" · ")}` : ""}` : esc(m.time_announced === false ? `${shortDate(m.start)}, time TBC` : when(m.start))}</div></div><div class="end">${m.state === "done" ? `<span class="score txt ${st}">${esc(resultWord(m))}</span>` : m.state === "live" ? `<span class="chip live"><i></i>Live</span>` : m.state === "off" ? `<span class="chip done">${esc(m.status || "No result")}</span>` : `<span class="t2">${countdown(m.start)}</span>`}</div></div>`;
     }).join("");
     return `<div class="sub-h out">${esc(f.label || f.format)}${f.score ? ` <span class="chip sp sp-cricket">${esc(f.score)}</span>` : ""}</div><div class="list">${rows}</div>`;
   }).join(""), `<span class="note">${esc(shortDate(S.first))} to ${esc(shortDate(S.last))}</span>`, "series");
@@ -636,7 +636,7 @@ function viewNba() {
 // ------------------------------------------------------------------ router and shell
 const VIEWS = { home: viewHome, football: viewFootball, f1: viewF1, cricket: viewCricket, tennis: viewTennis, nba: viewNba };
 const TITLES = { home: "Today", football: "Real Madrid", f1: "Formula 1", cricket: "India", tennis: "Tennis", nba: "Warriors" };
-let route = null, io = null, jio = null;
+let route = null, io = null, jio = null, jcur = null;
 const parse = () => { const [r, sec] = location.hash.replace(/^#\/?/, "").split("/"); return { r: VIEWS[r] ? r : "home", sec: sec || null }; };
 function render(navigated) {
   const { r, sec } = parse(), changed = r !== route; route = r;
@@ -652,14 +652,15 @@ function render(navigated) {
   else if (sec && document.getElementById(sec)) requestAnimationFrame(() => document.getElementById(sec).scrollIntoView({ block: "start" }));
   else window.scrollTo(0, 0);
   document.title = `${TITLES[r]} · Sport`;
-  io?.disconnect(); jio?.disconnect();
+  io?.disconnect(); jio?.disconnect(); jcur = null;
   const chips = [...document.querySelectorAll(".jump a[data-jump]")];
   if (chips.length && "IntersectionObserver" in window) {
     const seen = new Map();
     jio = new IntersectionObserver(es => {
       for (const en of es) seen.set(en.target.id, en.isIntersecting ? en.boundingClientRect.top : null);
       const cur = [...seen].filter(([, y]) => y != null).sort((a, b) => a[1] - b[1])[0]?.[0];
-      for (const c of chips) { const on = c.dataset.jump === cur; c.toggleAttribute("aria-current", on); if (on) c.scrollIntoView({ inline: "nearest", block: "nearest" }); }
+      if (cur === jcur) return; jcur = cur;
+      for (const c of chips) { const on = c.dataset.jump === cur; c.toggleAttribute("aria-current", on); if (on) c.parentElement.scrollTo({ left: c.offsetLeft - 16, behavior: "smooth" }); }
     }, { rootMargin: "-130px 0px -55% 0px" });
     for (const c of chips) { const el = document.getElementById(c.dataset.jump); if (el) jio.observe(el); }
   }
@@ -679,7 +680,12 @@ setInterval(() => { for (const el of document.querySelectorAll("[data-cd]")) el.
 setInterval(() => { if (document.hidden) return; const live = events().some(e => e.state === "live"); if (Date.now() - lastLoad > (live ? 60e3 : 300e3)) loadAll(); }, 30000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - lastLoad > 60e3) loadAll(); });
 // Very large text (Dynamic Type, Android font size): the tab bar keeps its icons and drops the labels
-const sizeCheck = () => document.body.classList.toggle("big", parseFloat(getComputedStyle(document.documentElement).fontSize) > 21);
+const sizeCheck = () => {
+  const h = document.documentElement; h.style.fontSize = "";
+  const px = parseFloat(getComputedStyle(h).fontSize);
+  if (px > 21) h.style.fontSize = "21px";
+  document.body.classList.toggle("big", px > 19);
+};
 sizeCheck(); addEventListener("resize", sizeCheck);
 render(true);
 loadAll();
