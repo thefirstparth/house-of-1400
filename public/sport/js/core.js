@@ -180,7 +180,7 @@ export function f1State(s, res, now = Date.now(), sameWk = true) {
   const pause = state === "live" && /red flag|stopped/i.test(ES?.detail || "") ? "Red flag" : state === "live" && /suspend/i.test(ES?.detail || "") ? "Suspended" : state === "live" && /delay/i.test(ES?.detail || "") ? "Delayed" : null;
   // ESPN's order at the flag stands in, marked provisional, until two sources agree on the result
   const prov = state === "done" && !res && ended && ES?.top?.length ? ES.top : null;
-  return { state: state === "late" || state === "due" ? "next" : state, late: state === "late", due: state === "due", unconfirmed, pause, offWhy: seen ? null : (state === "off" && offW) || (state === "off" && !seen ? "Did not start" : null), seen, start, liveTop: state === "live" ? ES?.top || null : null, liveOrder: state === "live" ? ES?.order || null : null, mins, prov,
+  return { state: state === "late" || state === "due" ? "next" : state, late: state === "late", due: state === "due", unconfirmed, pause, offWhy: seen ? null : (state === "off" && offW) || null, seen, start, liveTop: state === "live" ? ES?.top || null : null, liveOrder: state === "live" ? ES?.order || null : null, mins, prov,
     saved: state === "live" && D.f1_sessions?.stale ? D.f1_sessions.as_of : null };
 }
 

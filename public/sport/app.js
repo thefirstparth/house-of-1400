@@ -2,7 +2,7 @@
 // Data in js/core.js, components in js/ui.js, screens in js/views.js. No LLM anywhere.
 // A redraw patches the page in place (js/morph.js): nodes that did not change are kept, so pills glide, images stay
 // painted, an open sheet stays put and a new score rolls in once. Only a change of tab swaps the page, with a cross-fade.
-import { D, S, events, loadAll as load, rel, nbaOn, markSeen, hm } from "./js/core.js";
+import { D, S, events, loadAll as load, rel, nbaOn, markSeen, hm, store, last } from "./js/core.js";
 import { sheet, header } from "./js/ui.js";
 import { VIEWS, TITLES } from "./js/views.js";
 import { morph } from "./js/morph.js";
@@ -24,7 +24,7 @@ async function loadAll(manual = false) {
   if (S.loading) return;
   $("#refresh").classList.add("spin");
   const got = new Set(), first = !S.lastLoad;
-  if (first) setTimeout(() => { if (held) { held = false; render(false); } }, 800);
+  if (first) setTimeout(() => { if (held) { held = false; render(false); } }, LEAD.some(k => store.get(k)) ? 800 : 2500);
   await load(k => {
     if (k) got.add(k);
     else if (held && first && LEAD.every(x => D[x])) { held = false; render(false); return; } // the phone's saved copy covers what leads Today
@@ -50,11 +50,22 @@ const pages = {};
 let fromHome = false;
 const parse = () => { const [r, sec] = location.hash.replace(/^#\/?/, "").split("/"); return { r: VIEWS[r] ? r : "home", sec: sec || null }; };
 const stateSig = () => events().map(e => `${e.id}:${e.state}:${e.late ? 1 : 0}${e.starting ? 1 : 0}:${e.sa ?? ""}-${e.sb ?? ""}:${(e.liveTop || []).join(",")}`).join("|");
+// a tab change: the pill glides from the tap; the page fades out (90ms), is swapped, and fades in (160ms); with
+// reduced motion a 120ms fade only
 function render(navigated) {
   if (held && S.loading) return;
-  const go = () => draw(navigated);
-  if (navigated && S.route && document.startViewTransition && !RM()) { vt = true; const tr = document.startViewTransition(go); tr.finished.finally(() => (vt = false)); }
-  else go();
+  const to = parse().r;
+  if (!(navigated && S.route && to !== S.route) || !view.animate) return draw(navigated);
+  pill(to);
+  const out = view.animate([{ opacity: 1 }, { opacity: 0 }], { duration: RM() ? 60 : 90, easing: "ease-in" });
+  out.finished.catch(() => {}).then(() => {
+    draw(navigated);
+    view.animate(RM() ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: RM() ? 60 : 160, easing: "cubic-bezier(.2,0,0,1)" });
+  });
+}
+function pill(r) {
+  const shown = [...document.querySelectorAll(".tabs a")].filter(a => !a.hidden);
+  $("#tabs").style.setProperty("--ti", Math.max(0, shown.findIndex(a => a.dataset.tab === r)));
 }
 const failed = r => `<div class="page">${header(TITLES[r])}<div class="empty"><b>The feeds did not answer.</b><span>Nothing is shown rather than something old.</span><button type="button" class="chip" data-act="retry">Try again</button></div></div>`;
 const lastScores = new Map();
@@ -72,13 +83,13 @@ function draw(navigated) {
   const html = !Object.keys(D).length && S.lastLoad && !S.loading ? failed(r) : VIEWS[r]();
   if (changed && prev && view.firstElementChild) pages[prev] = view.firstElementChild;
   if (changed && pages[r]) { pages[r].style.animation = "none"; view.replaceChildren(pages[r]); morph(view, html); view.firstElementChild?.style.setProperty("animation", "none"); }
-  else if (changed || !view.firstChild) { view.innerHTML = html; if (vt) view.querySelector(".page")?.style.setProperty("animation", "none"); }
+  else if (changed || !view.firstChild) { view.innerHTML = html; if (prev) view.querySelector(".page")?.style.setProperty("animation", "none"); }
   else morph(view, html);
   sig = stateSig();
   // a score that changed since the last draw rolls in (once: the patch keeps the class until the roll ends)
   for (const el of view.querySelectorAll("[data-sk]")) {
     const k = el.dataset.sk, v = el.dataset.v;
-    if (v && lastScores.has(k) && lastScores.get(k) !== v) { el.classList.add("bump"); el.addEventListener("animationend", () => el.classList.remove("bump"), { once: true }); const lab = el.closest("[aria-label]")?.getAttribute("aria-label"); if (lab) say(`Score: ${lab}`); }
+    if (v && lastScores.has(k) && lastScores.get(k) !== v) { el.classList.add("bump"); el.addEventListener("animationend", () => el.classList.remove("bump"), { once: true }); const lab = el.closest("[aria-label]")?.getAttribute("aria-label"), ev = events().find(x => k.startsWith(x.id)), g = ev?.ev?.filter(x => x.kind !== "red").at(-1); if (lab) say(`${g ? `Goal, ${last(g.player)} ${String(g.minute || "").replace(/'/g, "")} minutes. ` : "Score: "}${lab}`); }
     lastScores.set(k, v);
   }
   drawSheet();
@@ -208,6 +219,7 @@ view.addEventListener("click", e => {
   if (b) {
     const k = b.dataset.ui, v = b.dataset.v;
     if (k === "day") { setDay(v); if (!RM()) window.scrollTo({ top: 0, behavior: "smooth" }); else window.scrollTo(0, 0); return; }
+    const sg = b.closest(".seg"); if (sg) sg.style.setProperty("--i", [...sg.querySelectorAll("button")].indexOf(b));
     UI[k] = v; vibe(); draw(false); return;
   }
   const mt = e.target.closest("[data-match]");
@@ -276,7 +288,7 @@ const sizeCheck = () => {
   document.body.classList.toggle("big", px > 19);
 };
 sizeCheck(); addEventListener("resize", sizeCheck);
-{ const { sec } = parse(); if (sec) pendingSec = sec; }
+{ const { r, sec } = parse(); if (sec) pendingSec = sec; if (location.hash && r === "home" && !/^#\/?home/.test(location.hash)) history.replaceState(null, "", "#home"); }
 draw(true);
 loadAll();
 if ("serviceWorker" in navigator && location.hostname !== "localhost") navigator.serviceWorker.register("/sport-sw.js", { scope: "/sport" }).catch(() => {});

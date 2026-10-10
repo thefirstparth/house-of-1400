@@ -453,7 +453,7 @@ body.big .bar-row.np{grid-template-columns:minmax(0,1fr) 26% 2.6rem}
 html,body{overscroll-behavior-x:none}
 .rail-in{touch-action:pan-y}
 body[data-tab="home"] #view{touch-action:pan-y pinch-zoom;min-height:calc(100dvh - var(--tabh) - 46px)}
-.ph .sub{min-height:1.2em}
+.ph .sub{min-height:21px}
 @media (prefers-contrast:more){.tabs{box-shadow:0 0 0 1px var(--ink)!important}.tab-pill{box-shadow:inset 0 0 0 1.5px var(--ink)}}
 .why{color:var(--ink2);font-weight:650}
 .why::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--c);margin-right:6px;vertical-align:1px}
@@ -465,3 +465,13 @@ body[data-tab="home"] #view{touch-action:pan-y pinch-zoom;min-height:calc(100dvh
 .pf{width:32%;height:32%;right:-4px;bottom:-3px}
 @container (max-width:300px){.list>.mr+details::before,.list>details>.mr+.mr::before{left:14px}}
 .clock.uw{font-family:var(--sans);font-size:1.6rem;font-weight:800;letter-spacing:-.02em}
+/* round 4 */
+.seg button{overflow:visible}.seg button>span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.seg button::after{content:"";position:absolute;inset:-3px 0}
+.st.lv b .live{font-family:var(--num);font-size:var(--n-row);letter-spacing:.02em;font-weight:700;gap:6px}
+.st.lv b .live i{width:8px;height:8px}
+.hh{flex-wrap:wrap;row-gap:6px}
+
+.mk.flag.l{width:44px;height:44px}
+.miss{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:10px 2px 0;color:var(--muted);font-size:var(--t-meta)}
+body.big .tbl td.team span,body.big .pl span,body.big .bar-row .tx{white-space:normal;overflow-wrap:anywhere}

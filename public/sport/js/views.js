@@ -47,6 +47,9 @@ export function viewHome() {
   const selD = sel ? new Date(sel + "T12:00:00+05:30").toISOString() : null;
   const head = header("Today", `<b>${esc(sel ? `Showing ${fmt(selD, { weekday: "long" })} ${shortDate(selD)}` : today)}</b>${S.lastLoad && fresh ? `<span>Updated ${hm(new Date(S.lastLoad).toISOString())}</span>` : ""}`, ["football", "madrid_hub", "f1_sessions", "crease", "tennis_players", "nba"]);
   if (!ready) return `<div class="page">${head}${skel}</div>`;
+  const NAMES = [["Madrid", ["football", "madrid_hub"]], ["F1", ["f1_next", "f1_sessions"]], ["India", ["crease"]], ["Tennis", ["tennis_players"]], ["Warriors", ["nba"]]];
+  const miss = S.lastLoad && !S.loading ? NAMES.filter(([, ks]) => ks.every(k => !D[k])).map(([n]) => n) : [];
+  const missLine = miss.length ? `<p class="miss">No answer from the ${esc(miss.join(", ").replace(/, ([^,]*)$/, " and $1"))} feed${miss.length > 1 ? "s" : ""}. <button type="button" class="chip" data-act="retry">Try again</button></p>` : "";
   // another day: its events in place
   if (sel) {
     const list = all.filter(e => dayKey(t(e.start)) === sel && e.state !== "off" && !(e.sp === "f1" && !f1Kind(e.session) && e.id.startsWith("f1")));
@@ -88,7 +91,7 @@ export function viewHome() {
   if (ST?.drivers?.length) { const me = ST.drivers.find(d => same(d.name, favDriver())), lead = ST.drivers[0]; tours.push(li(`<span class="tile sp-f1">${ICON.f1}</span>`, "Drivers’ championship", esc(`${last(lead.shown || lead.name)} leads on ${lead.points}${me && me !== lead ? ` · ${last(favDriver())} ${ordinal(me.pos)}, ${lead.points - me.points} behind` : ""}`), "", "#f1/standings")); }
   const TB = (val("club_stats")?.comps || []).find(c => c.key === "liga")?.rows?.find(r => same(r.team, club()));
   if (TB) tours.push(li(`<span class="tile sp-football">${ICON.football}</span>`, "La Liga", esc(`Madrid ${ordinal(TB.rank)}, ${TB.points} points from ${TB.played}`), "", "#football/table"));
-  return `<div class="page">${head}${dayRail(all, null)}
+  return `<div class="page">${head}${missLine}${dayRail(all, null)}
     ${lives.length || odd.some(e => e.seen) ? blk(lives.length ? "Live now" : "Live feed lost", lives.slice(0, 2).map(e => hero(e)).join("") + (lives.length > 2 ? `<div class="list">${lives.slice(2).map(e => row(e)).join("")}</div>` : "") + (odd.some(e => e.seen) ? `<div class="list">${odd.filter(e => e.seen).map(e => row(e)).join("")}</div>` : ""), "", "live") : ""}
     ${slBlock}
     ${just.length ? blk("Just finished", `<div class="list">${just.map(e => row(e, { extra: e.sp === "football" && goalsLine(e) ? `<span class="gl">${esc(goalsLine(e))}</span>` : "" })).join("")}</div>`, "", "just") : ""}
@@ -276,7 +279,7 @@ export function viewTennis() {
     const status = p.next ? `${sn(p.next.event)} · ${p.next.round || ""}` : p.last ? `${sn(p.last.event)} · ${p.last.won ? "won" : "out in"} ${p.last.round || ""}` : "";
     const then = nx?.then ? `<div class="then"><span class="k">If he wins</span><span>${nx.then.round ? `${esc(nx.then.round)} v ` : "v "}${(nx.then.opponent ? [nx.then.opponent] : nx.then.from).map(n => `<span class="nw">${esc(n)}${atp(n)?.rank ? ` <span class="dim">(${atp(n).rank})</span>` : ""}</span>`).join(" or ")}</span></div>` : "";
     return `<section class="blk"><div class="who-h">${mark({ t: "player", name: p.name }, "l")}<div><h2>${esc(p.name)}</h2><div class="t2">${rk?.rank ? `<b class="tnum">No. ${rk.rank}</b>${rk.points ? ` · ${rk.points.toLocaleString("en-IN")} pts` : ""}${status ? " · " : ""}` : ""}${esc(status).replace(/(out in|won|Round) /g, "$1 ")}</div></div></div>
-      ${offT}${nx ? hero(nx) : ""}${then}${ls ? `<div class="list">${row(ls)}</div>` : ""}</section>`;
+      ${offT}${nx ? hero(nx) : ""}${then}${ls ? `<div class="list">${row(ls, { meta: false })}</div>` : ""}</section>`;
   }).join("");
   const inEv = ev => TP.some(p => (p.next && same(p.next.event, ev.name)) || (p.last && same(p.last.event, ev.name)));
   const tours = EV.filter(ev => t(ev.end) > now - 864e5 && (inEv(ev) || ev.major)).map(ev => {
@@ -301,7 +304,7 @@ export function viewNba() {
   const op = B?.opener;
   const opener = op ? blk("Opening night", `<div class="list">${row({ plain: true,  sp: "nba", id: "op" + op.id, start: op.date, state: "next", a: op.home ? nbaTeam() : op.opponent, b: op.home ? op.opponent : nbaTeam(), ma: { t: "nba", abbr: op.home ? nbaAbbr() : op.opponent_abbr, name: op.home ? nbaTeam() : op.opponent }, mb: { t: "nba", abbr: op.home ? op.opponent_abbr : nbaAbbr(), name: op.home ? op.opponent : nbaTeam() }, comp: "Regular-season opener", href: "#nba" })}</div>`) : "";
   const W = B?.west ? blk("Western Conference", `<div class="list"><table class="tbl"><thead><tr><th scope="col">#</th><th class="l" scope="col">Team</th><th scope="col">W</th><th scope="col">L</th><th scope="col">GB</th></tr></thead><tbody>${B.west.map(r => `<tr class="${same(r.team, nbaTeam()) ? "me" : ""}"><td class="pos tnum">${r.rank}</td><td class="team"><div>${mark({ t: "nba", abbr: r.abbr, name: r.team }, "s")}<span>${esc(r.team)}</span></div></td><td class="tnum">${r.wins}</td><td class="tnum">${r.losses}</td><td class="tnum">${esc(r.gb ?? "")}</td></tr>`).join("")}</tbody></table></div>`) : "";
-  return `<div class="page">${header(`<span class="ttl">${mark({ t: "nba", abbr: nbaAbbr(), name: nbaTeam() }, "m")}Warriors</span>`, `<b>${B?.in_season ? "Regular season" : "Preseason"}</b>`, ["nba"])}
+  return `<div class="page">${header(`<span class="ttl">${mark({ t: "nba", abbr: nbaAbbr(), name: nbaTeam() }, "m")}Warriors</span>`, B ? `<b>${B.in_season ? "Regular season" : "Preseason"}</b>` : "", ["nba"])}
     ${waitOr(B, "Warriors")}
     ${next || off ? blk(next?.state === "live" ? "Live" : "Next game", off + (next ? hero(next) : ""), "", "next") : ""}
     ${opener}
