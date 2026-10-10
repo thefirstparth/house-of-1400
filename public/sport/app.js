@@ -133,7 +133,11 @@ function oddsFor(sport, sides, iso, kind = "match") {
   return M.find(m => m.sides?.length === 2 && ((same(m.sides[0], sides[0]) && same(m.sides[1], sides[1])) || (same(m.sides[0], sides[1]) && same(m.sides[1], sides[0])))) || null;
 }
 // The race winner market: the better-traded of Kalshi and Polymarket in the paper's f1_market feed
-const raceMarket = () => [...(val("f1_market")?.markets || [])].sort((a, b) => (b.volume || 0) - (a.volume || 0))[0] || null;
+const raceMarket = () => {
+  const M = val("f1_market"), gp = gpName(val("f1_next")?.race?.name);
+  if (!M || (gp && M.race && !same(gpName(M.race), gp))) return null; // never another weekend's market
+  return [...(M.markets || [])].sort((a, b) => (b.volume || 0) - (a.volume || 0))[0] || null;
+};
 // A session's winner market: the race from f1_market; qualifying and sprints from the odds feed
 const sessionMarket = (name, start) => { const k = f1Kind(name); return k === "race" ? raceMarket() : k ? oddsFor("f1", null, start, k) : null; };
 const f1Kind = s => (/sprint qualif|shootout/i.test(s) ? "sprint_qualifying" : /sprint/i.test(s) ? "sprint" : /qualif/i.test(s) ? "qualifying" : /^race$/i.test(s) ? "race" : null);
@@ -187,7 +191,7 @@ function events() {
   }
   // The national sides
   for (const T of val("intl_hub")?.teams || []) for (const m of [...T.next, ...(T.last ? [T.last] : [])]) {
-    out.push({ sp: "intl", id: "nt" + m.id, start: m.date, state: m.completed ? "done" : "next", title: `${m.home} v ${m.away}`, a: m.home, b: m.away, la: crest(m.home_id, m.home), lb: crest(m.away_id, m.away),
+    out.push({ sp: "intl", id: "nt" + m.id, start: m.date, state: m.completed ? "done" : t(m.date) < now ? "off" : "next", title: `${m.home} v ${m.away}`, a: m.home, b: m.away, la: crest(m.home_id, m.home), lb: crest(m.away_id, m.away),
       sla: crest(m.home_id, m.home, "sm"), slb: crest(m.away_id, m.away, "sm"), comp: m.competition, venue: m.venue, sa: m.hs, sb: m.as, won: m.completed ? (+m.hs > +m.as ? "a" : +m.hs < +m.as ? "b" : null) : null, who: T.name, href: "#football/nations" });
   }
   // India (The Crease)
@@ -404,7 +408,7 @@ function viewFootball() {
   let preview = "";
   const PV = H?.preview;
   if (PV && next && next.mid === String(PV.match_id)) {
-    const fm = PV.form.map(tm => `<div class="pvf"><div class="pvt">${crest(tm.id, tm.team, "sm")}<b>${esc(tm.team)}</b></div>${formSquares(tm.games.map(g => ({ r: g.result || "D", t: `${g.at ? "at" : "v"} ${g.opponent} ${g.score || ""}` })), `${tm.team} form`)}</div>`).join("");
+    const fm = PV.form.map(tm => `<div class="pvf"><div class="pvt">${crest(tm.id, tm.team, "sm")}<b>${esc(tm.team)}</b></div>${formSquares(tm.games.map(g => ({ r: g.result || "D", t: `${g.result === "W" ? "Won" : g.result === "L" ? "Lost" : "Drew"} ${g.score || ""} ${g.at ? "at" : "v"} ${g.opponent}` })), `${tm.team} form`)}</div>`).join("");
     let w = 0, d = 0, l = 0;
     for (const m of PV.meetings) { const us = same(m.home, cname) ? m.hs : same(m.away, cname) ? m.as : null, them = same(m.home, cname) ? m.as : m.hs; if (us == null) continue; if (+us > +them) w++; else if (+us < +them) l++; else d++; }
     const mt = PV.meetings.map(m => `<div class="row"><div class="grow"><div class="t1">${esc(CLUB_SHORT(m.home))} <b class="tnum">${esc(m.hs)}–${esc(m.as)}</b> ${esc(CLUB_SHORT(m.away))}</div><div class="t2">${esc(m.competition || "")} · ${esc(fmt(m.date, { day: "numeric", month: "short", year: "numeric" }))}</div></div></div>`).join("");
@@ -416,7 +420,7 @@ function viewFootball() {
   const X = H?.xi;
   if (X?.players?.length === 11) {
     const official = X.kind === "official";
-    xi = blk(official ? "Starting XI" : "Expected XI", `<div class="card">${pitch(X)}<p class="foot">${official ? `${esc(X.formation || "")} · official XI v ${esc(X.opponent)}, from ESPN's line-up` : `${esc(X.formation || "")} · the XI that started v ${esc(X.opponent)} on ${esc(shortDate(X.date))}. The official XI replaces it here about an hour before kick-off.`}</p>${X.bench?.length ? moreBox(official ? "Bench" : "Rest of that squad", `<p class="foot" style="padding:4px 18px 12px">${esc(X.bench.slice(0, 14).join(", "))}</p>`) : ""}</div>`, official ? `<span class="chip ok">Official</span>` : `<span class="note">Not yet announced</span>`, "xi");
+    xi = blk(official ? "Starting XI" : "Last starting XI", `<div class="card">${pitch(X)}<p class="foot">${official ? `${esc(X.formation || "")} · official XI v ${esc(X.opponent)}, from ESPN's line-up` : `${esc(X.formation || "")} · the XI that started v ${esc(X.opponent)} on ${esc(shortDate(X.date))}. The official XI replaces it here about an hour before kick-off.`}</p>${X.bench?.length ? moreBox(official ? "Bench" : "Rest of that squad", `<p class="foot" style="padding:4px 18px 12px">${esc(X.bench.slice(0, 14).join(", "))}</p>`) : ""}</div>`, official ? `<span class="chip ok">Official</span>` : `<span class="note">Official XI not yet announced</span>`, "xi");
   }
   // Results and fixtures
   const resRows = (H?.results || []).map(m => {
@@ -451,12 +455,12 @@ function viewFootball() {
   // The national sides: each one's next match, and its last result
   const NT = val("intl_hub")?.teams || [];
   const nations = NT.length ? blk("National teams", `<div class="list">${NT.map(T => {
-    const n = T.next[0], l = T.last;
-    const opp = m => (same(m.home, T.name) ? { name: m.away, id: m.away_id, at: false } : { name: m.home, id: m.home_id, at: true });
+    const n = T.next.find(m => t(m.date) > Date.now()), l = T.last;
+    const opp = m => (same(m.home, T.name) ? { name: m.away, id: m.away_id } : { name: m.home, id: m.home_id });
     const o = n ? opp(n) : null, lr = l ? (+(same(l.home, T.name) ? l.hs : l.as) > +(same(l.home, T.name) ? l.as : l.hs) ? "W" : +(same(l.home, T.name) ? l.hs : l.as) < +(same(l.home, T.name) ? l.as : l.hs) ? "L" : "D") : null;
     const ls = l ? (same(l.home, T.name) ? `${l.hs}–${l.as}` : `${l.as}–${l.hs}`) : "";
     return `<div class="nt">${crest(T.id, T.name, "sm")}<div class="grow"><div class="t1">${esc(T.name)}</div>
-      <div class="nl"><span class="k">Next</span>${n ? `<span>${o.at ? "at" : "v"} ${esc(o.name)} · ${esc(when(n.date))}<small>${esc(n.competition || "")}</small></span>` : "<span>No fixture listed</span>"}</div>
+      <div class="nl"><span class="k">Next</span>${n ? `<span>v ${esc(o.name)} · ${esc(when(n.date))}<small>${esc([n.competition, n.venue].filter(Boolean).join(" · "))}</small></span>` : "<span>No fixture listed</span>"}</div>
       ${l ? `<div class="nl"><span class="k">Last</span><span><b class="score ${lr} tnum">${lr} ${esc(ls)}</b> v ${esc(same(l.home, T.name) ? l.away : l.home)}<small>${esc(shortDate(l.date))}</small></span></div>` : ""}</div></div>`;
   }).join("")}</div>`, "", "nations") : "";
   return `<div class="page">${header(`<span class="ttl">${crest(H?.club_id || "86", cname, "sm")}${esc(cname)}</span>`, sub, ["football", "madrid_hub", "club_stats"])}
@@ -472,7 +476,8 @@ function viewFootball() {
 
 // ------------------------------------------------------------------ F1
 const fposCls = r => (!r ? "none" : !r.finished ? "out" : r.pos === 1 ? "p1" : r.pos === 2 ? "p2" : r.pos === 3 ? "p3" : "");
-const fpos = (r, title = "") => `<span class="fpos ${fposCls(r)} tnum" title="${esc(title || r?.race || "")}">${!r ? "·" : r.finished ? r.pos : esc(/^(R|D|E|W|F|N)$/.test(r.text || "R") ? "DNF" : r.text)}</span>`;
+const CLASS = { R: "DNF", D: "DSQ", E: "EXC", W: "WD", F: "DNQ", N: "NC" };
+const fpos = (r, title = "") => `<span class="fpos ${fposCls(r)} tnum" title="${esc(title || r?.race || "")}">${!r ? "·" : r.finished ? r.pos : esc(CLASS[r.text] || r.text || "DNF")}</span>`;
 const CC = { Netherlands: "NED", Italy: "ITA", Spain: "ESP", Azerbaijan: "AZE", Malaysia: "MAS", Singapore: "SIN", USA: "USA", "United States": "USA", Mexico: "MEX", Brazil: "BRA", UK: "GBR", "United Kingdom": "GBR", Belgium: "BEL", Hungary: "HUN", Austria: "AUT", Canada: "CAN", Monaco: "MON", Japan: "JPN", China: "CHN", Bahrain: "BHR", "Saudi Arabia": "KSA", Australia: "AUS", Qatar: "QAT", UAE: "UAE", "United Arab Emirates": "UAE", Portugal: "POR", France: "FRA", Germany: "GER", Argentina: "ARG", Thailand: "THA", "South Africa": "RSA", Korea: "KOR" };
 const raceCode = r => CC[r.country] || String(r.country || r.name).slice(0, 3).toUpperCase();
 function viewF1() {
@@ -510,7 +515,7 @@ function viewF1() {
   }
   // Expectations: each session's winner market, the race first
   const segs = [["race", "Race"], ["qualifying", "Qualifying"], ["sprint", "Sprint"], ["sprint_qualifying", "Sprint quali"]].map(([k, n]) => {
-    if (k === "race") { const mk = [...(MK?.markets || [])].sort((a, b) => (b.volume || 0) - (a.volume || 0)); return mk[0] ? { k, n, m: mk[0], other: mk[1] } : null; }
+    if (k === "race") { const m = raceMarket(); return m ? { k, n, m, other: (MK?.markets || []).find(x => x !== m) } : null; }
     const s = sess.find(x => f1Kind(x.name) === k && x.state !== "done"); const m = s && oddsFor("f1", null, s.start, k); return m ? { k, n, m } : null;
   }).filter(Boolean);
   const cur = segs.find(x => x.k === UI.f1mkt) || segs[0];
@@ -531,7 +536,7 @@ function viewF1() {
     const pick = drivers.slice(0, 10);
     if (me && !pick.includes(me)) pick.push(me);
     const rowsF = pick.map(d => ({ d, f: HB.form.drivers.find(x => x.code === d.code || same(x.name, d.name)) })).filter(x => x.f);
-    form = blk("Form", `<div class="list formt"><div class="row hd"><span class="ps"></span><div class="grow"></div><div class="fgrid">${rounds.map(r => `<span class="fpos none rh" title="${esc(r.name)}">${esc(raceCode(r))}</span>`).join("")}</div></div>${rowsF.map(({ d, f }) => `<div class="row${d === me ? " me" : ""}"><span class="ps tnum">${d.pos}</span><i class="tstripe" style="background:${esc(d.colour || "var(--line)")}"></i><div class="grow"><div class="t1">${esc(last(d.shown || d.name))}</div></div><div class="fgrid">${rounds.map(r => fpos(f.results.find(x => x.round === r.round))).join("")}</div></div>`).join("")}</div><p class="foot">Finishing position in each race, oldest to latest: ${esc(rounds.map(r => `${raceCode(r)} ${r.name.replace(/ Grand Prix/, " GP")}`).join(", "))}. DNF: did not finish. A dot: did not take part.</p>`, "", "form");
+    form = blk("Form", `<div class="list formt"><div class="row hd"><span class="ps"></span><div class="grow"></div><div class="fgrid">${rounds.map(r => `<span class="fpos none rh" title="${esc(r.name)}">${esc(raceCode(r))}</span>`).join("")}</div></div>${rowsF.map(({ d, f }) => `<div class="row${d === me ? " me" : ""}"><span class="ps tnum">${d.pos}</span><i class="tstripe" style="background:${esc(d.colour || "var(--line)")}"></i><div class="grow"><div class="t1">${esc(last(d.shown || d.name))}</div></div><div class="fgrid">${rounds.map(r => fpos(f.results.find(x => x.round === r.round))).join("")}</div></div>`).join("")}</div><p class="foot">Finishing position in each race, oldest to latest: ${esc(rounds.map(r => `${raceCode(r)} ${r.name.replace(/ Grand Prix/, " GP")}`).join(", "))}. DNF: did not finish. A dot: not in the race.</p>`, "", "form");
   }
   // Standings
   let table = "";
