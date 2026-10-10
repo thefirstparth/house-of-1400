@@ -250,7 +250,12 @@ view.addEventListener("click", e => {
 {
   const days = () => [...cur().querySelectorAll(".rail .day:not(:disabled)")];
   let scrub = false;
-  view.addEventListener("pointerdown", e => { if (e.target.closest(".rail-in")) scrub = true; });
+  // the pill and the thumb start moving at the touch, not at the click
+  view.addEventListener("pointerdown", e => {
+    if (e.target.closest(".rail-in")) scrub = true;
+    const d = e.target.closest(".rail .day:not(:disabled)"); if (d) { const all = [...d.parentElement.querySelectorAll(".day")]; d.parentElement.style.setProperty("--di", all.indexOf(d)); }
+    const b = e.target.closest(".seg button"); if (b) b.parentElement.style.setProperty("--i", [...b.parentElement.querySelectorAll("button")].indexOf(b));
+  });
   view.addEventListener("pointermove", e => {
     if (!scrub || e.pointerType === "mouse" && !e.buttons) return;
     const d = days().find(b => { const r = b.getBoundingClientRect(); return e.clientX >= r.left && e.clientX < r.right; });

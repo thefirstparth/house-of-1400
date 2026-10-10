@@ -497,3 +497,13 @@ body.big .ln .mx{display:none}body.big .meta.alt{display:block}
 #view{position:relative}
 .pg.away{content-visibility:hidden;position:absolute;left:0;right:0;top:0;pointer-events:none}
 body.big .formt .nm,body.big .formt .fr.me .nm{white-space:normal;overflow:visible;overflow-wrap:anywhere}
+/* a row tints at once on press and fades out on release, as a list cell does */
+a.mr,a.li{transition:background .25s ease-out}
+a.mr:active,a.li:active{transition:none}
+/* the top bar goes solid with the scroll over its first 40px where the browser can tie it to scroll */
+@supports (animation-timeline: scroll()){
+  .top{animation:topsolid linear both;animation-timeline:scroll(root);animation-range:0 40px}
+  @keyframes topsolid{from{background:transparent;border-bottom-color:transparent}to{background:var(--bg);border-bottom-color:var(--line2)}}
+  body:has(.jump) .top{animation-name:topsolid2}
+  @keyframes topsolid2{from{background:transparent}to{background:var(--bg)}}
+}
