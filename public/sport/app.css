@@ -516,3 +516,5 @@ a.mr:active,a.li:active{transition:none}
 /* the side's name is never what gives way: the competition beside it shrinks first */
 .ln.nx{grid-template-columns:22px fit-content(100%) minmax(0,1fr)}
 .ln.nx .mx{min-width:0;max-width:none}
+.li .t2.num{font-size:1rem;color:var(--ink2)}
+.bar-row .ps,.formt .ps,.pl b{font-size:1rem}
