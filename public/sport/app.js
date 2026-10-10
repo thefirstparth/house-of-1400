@@ -166,7 +166,7 @@ function mktBar(p, names, sp) {
   return `<div class="mkt sp-${sp}" role="img" aria-label="Market: ${esc(names[0])} ${p.a}%, ${p.d != null ? `draw ${p.d}%, ` : ""}${esc(names[1])} ${p.b}%">
     <div class="bar">${seg(p.a, "")}${p.d != null ? seg(p.d, "draw") : ""}${seg(p.b, "")}</div>
     <div class="lab"><span class="${p.a === lead ? "lead" : ""}"><b class="tnum">${p.a}%</b> ${esc(names[0])}</span>${p.d != null ? `<span class="${p.d === lead ? "lead" : ""}">Draw <b class="tnum">${p.d}%</b></span>` : ""}<span class="${p.b === lead ? "lead" : ""}">${esc(names[1])} <b class="tnum">${p.b}%</b></span></div>
-    <div class="src">${esc(p.source)}${D.odds?.as_of ? ` · ${hm(D.odds.as_of)}` : ""}</div></div>`;
+    <div class="src">${esc(p.source)}${D.odds?.as_of ? ` · ${hm(D.odds.as_of)}` : ""}${p.a + p.b + (p.d ?? 0) !== 100 ? " · rounded" : ""}</div></div>`;
 }
 // A ranked chart: one row per outcome, bars on a common 0-100 scale so their lengths compare honestly
 function rankList(outcomes, sp, { max = 6, nameFn = x => x, mark = null } = {}) {
@@ -447,7 +447,7 @@ function viewFootball() {
   const X = H?.xi;
   if (X?.players?.length === 11) {
     const official = X.kind === "official";
-    xi = blk(official ? "Starting XI" : "Last starting XI", `<div class="card">${pitch(X)}<p class="foot">${official ? `${esc(X.formation || "")} · official XI v ${esc(X.opponent)}, from ESPN's line-up` : `${esc(X.formation || "")} · the XI that started v ${esc(X.opponent)} on ${esc(shortDate(X.date))}. The official XI replaces it here about an hour before kick-off.`}</p>${X.bench?.length ? moreBox(official ? "Bench" : "Rest of that squad", `<p class="foot" style="padding:4px 18px 12px">${esc(X.bench.slice(0, 14).join(", "))}</p>`) : ""}</div>`, official ? `<span class="chip ok">Official</span>` : `<span class="note">Official XI not yet announced</span>`, "xi");
+    xi = blk(official ? "Starting XI" : "Last starting XI", `<div class="card">${pitch(X)}<p class="foot">${official ? `${esc(X.formation || "")} · official XI v ${esc(X.opponent)}, from ESPN's line-up` : `${esc(X.formation || "")} · the XI that started v ${esc(X.opponent)} on ${esc(shortDate(X.date))}. Official XI about an hour before kick-off.`}</p>${X.bench?.length ? moreBox(official ? "Bench" : "Rest of that squad", `<p class="foot" style="padding:4px 18px 12px">${esc(X.bench.slice(0, 14).join(", "))}</p>`) : ""}</div>`, official ? `<span class="chip ok">Official</span>` : `<span class="note">Official XI not yet announced</span>`, "xi");
   }
   // Results and fixtures
   const resRows = (H?.results || []).map(m => {
