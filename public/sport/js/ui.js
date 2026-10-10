@@ -134,12 +134,14 @@ export function row(e, { meta = true, extra = "", why = "" } = {}) {
     const v = side === "a" ? e.sa : e.sb;
     return `<span class="sc tnum" data-sk="${esc(e.id + side)}" data-v="${esc(v ?? "")}">${v != null && (done || lv) ? esc(v) : ""}</span>`;
   };
-  const line = side => `<span class="ln${done && e.won === side ? " win" : done && e.won ? " lose" : ""}">${mark(side === "a" ? e.ma : e.mb, "s")}<span class="nm">${esc(sideName(e, side))}</span>${sc(side)}</span>`;
+  const inl = !done && !lv;
+  const line = side => `<span class="ln${done && e.won === side ? " win" : done && e.won ? " lose" : ""}${inl ? " nx" : ""}">${mark(side === "a" ? e.ma : e.mb, "s")}<span class="nm">${esc(sideName(e, side))}</span>${inl && side === "b" && m0() ? `<span class="mx">${esc(m0())}</span>` : sc(side)}</span>`;
   // cricket: the city before the match, the margin after it ("by 8 wkts"; Won or Lost is in the status track)
   const margin = e.sp === "cricket" && done ? (resultWord(e).match(/\bby .+$/)?.[0] || "") : "";
   const m = meta ? [e.comp, e.sp === "cricket" && !done && e.city ? e.city : "", margin].filter(Boolean).join(" · ") : "";
+  function m0() { return m; }
   const tagN = e.plain ? "div" : "a", link = e.plain ? "" : ` href="${e.href}" data-match="${esc(e.id)}"`;
-  return `<${tagN} class="mr sc-${e.sp}${lv ? " is-live" : ""}"${link} aria-label="${esc((why ? why + ". " : "") + said(e, { noWin: !!why }))}">${status(e)}<span class="sides">${line("a")}${line("b")}${m ? `<span class="meta">${esc(m)}</span>` : ""}${extra}</span></${tagN}>`;
+  return `<${tagN} class="mr sc-${e.sp}${lv ? " is-live" : ""}"${link} aria-label="${esc((why ? why + ". " : "") + said(e, { noWin: !!why }))}">${status(e)}<span class="sides">${line("a")}${line("b")}${m ? `<span class="meta${inl ? " alt" : ""}">${esc(m)}</span>` : ""}${extra}</span></${tagN}>`;
 }
 // an F1 session: the status, then flag, session, and the top three (live order, provisional or final)
 export function sessionRow(e, { gp = true, extra = "", why = "" } = {}) {
@@ -263,6 +265,7 @@ function sheetBody(e) {
   return parts.join("") + (acts ? `<div class="acts">${acts}</div>` : "");
 }
 export function sheet(e) {
-  const title = e.sp === "f1" ? (e.id.startsWith("gp") ? gpShort(e.gp) : `${e.session} · ${gpShort(e.gp)}`) : `${sideName(e, "a")} v ${sideName(e, "b")}`;
+  const heroLed = e.sp !== "f1" && (e.state === "next" || (e.state === "live" && e.sp !== "cricket"));
+  const title = e.sp === "f1" ? (e.id.startsWith("gp") ? gpShort(e.gp) : `${e.session} · ${gpShort(e.gp)}`) : heroLed ? `${e.comp || TAB_NAME[e.sp]} · ${e.state === "live" ? "Live" : "Next"}` : `${sideName(e, "a")} v ${sideName(e, "b")}`;
   return `<div class="sheet-bg" data-close="match"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t"><div class="grab" aria-hidden="true"></div><div class="sheet-h"><b id="sheet-t" tabindex="-1">${esc(title)}</b><button type="button" class="x" data-close="match" aria-label="Close">${ICON.x}</button></div><div class="sb">${sheetBody(e)}</div></div>`;
 }
