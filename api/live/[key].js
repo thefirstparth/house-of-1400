@@ -47,6 +47,8 @@ export async function GET(request) {
     if (games.some(g => g.state === "in" || g.live || (g.state === "pre" && Date.parse(g.date) < now && now - Date.parse(g.date) < 3 * 36e5))) [s, swr] = [60, 60];
     else { const t = games.map(g => (Date.parse(g.date) - now) / 1000).filter(x => x > 0).sort((a, b) => a - b)[0]; if (t < s) [s, swr] = [Math.max(60, Math.round(t)), 60]; }
   }
+  // The ATP list without ESPN's photos and ids (ESPN did not answer): held 10 minutes, not an hour, so photos come back
+  if (key === "tennis_hub" && out.ok && out.value?.espn === false) [s, swr] = [600, 600];
   // Weather Union's gauges are read once a slot (every 30 minutes by day, 2 hours at night): held until the next slot
   if (key === "rain" && out.ok) { [s, swr] = [out.hold_s || rainTtl(), 60]; delete out.hold_s; }
   const personal = url.searchParams.has("lat");

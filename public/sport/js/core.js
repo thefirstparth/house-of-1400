@@ -79,11 +79,19 @@ function keepF1(fresh, old) {
   for (const r of old.results || []) if (!results.some(x => x.start === r.start)) results.push(r);
   return { ...fresh, results: results.sort((a, b) => a.start.localeCompare(b.start)) };
 }
+function keepFaces(v) {
+  if (!v?.ranks) return v;
+  const F = store.get("faces") || {};
+  const ranks = v.ranks.map(r => { const f = F[r.name]; return f && (!r.id || !r.photo || !r.flag) ? { ...r, id: r.id || f.id, photo: r.photo || f.photo, flag: r.flag || f.flag } : r; });
+  for (const r of ranks) if (r.id || r.photo) F[r.name] = { id: r.id || null, photo: r.photo || null, flag: r.flag || null };
+  store.set("faces", F);
+  return { ...v, ranks };
+}
 async function loadKey(k) {
   try {
     const j = await getJSON(`/api/live/${k}`, /_hub$/.test(k) ? 45000 : 25000);
     if (j?.ok && j.value) {
-      const value = k === "f1_sessions" ? keepF1(j.value, store.get(k)?.value) : j.value;
+      const value = k === "f1_sessions" ? keepF1(j.value, store.get(k)?.value) : k === "tennis_hub" ? keepFaces(j.value) : j.value;
       D[k] = { value, as_of: j.as_of, source: j.source, stale: false }; store.set(k, D[k]); return;
     }
     throw new Error(j?.error || "empty");
@@ -312,7 +320,11 @@ export function meetRecord(PV) {
   for (const m of PV?.meetings || []) { const us = same(m.home, cname) ? m.hs : same(m.away, cname) ? m.as : null, them = same(m.home, cname) ? m.as : m.hs; if (us == null) continue; if (+us > +them) w++; else if (+us < +them) l++; else d++; }
   return { w, d, l };
 }
-export const atp = name => (val("tennis_hub")?.ranks || []).find(r => same(r.name, name)) || null;
+export const atp = name => {
+  const r = (val("tennis_hub")?.ranks || []).find(x => same(x.name, name)) || null, c = follows().tennis_espn?.[Object.keys(follows().tennis_espn || {}).find(n => same(n, name))];
+  if (!c || (r?.id && r?.photo)) return r;
+  return { ...(r || { name }), id: r?.id || c.id, photo: r?.photo || `https://a.espncdn.com/i/headshots/tennis/players/full/${c.id}.png`, flag: r?.flag || (c.flag ? `https://a.espncdn.com/i/teamlogos/countries/500/${c.flag}.png` : null) };
+};
 
 // ------------------------------------------------------------------ since you last looked
 // What changed since this phone last had the app open: results in, sessions finished, matches gone live. Worked out

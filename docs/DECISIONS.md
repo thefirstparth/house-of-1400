@@ -905,3 +905,10 @@ Parth: the player photos were "too narrow, not a real, realistic image". ESPN's 
 own width (600px, never a forced height), so a 64px circle still gets about four source pixels per screen pixel. A
 player without an ESPN headshot gets their initials in a circle. Wikipedia action photos cropped to a circle are no
 longer used (badly framed, with mixed backgrounds). An image that fails once is drawn as initials from then on.
+- (Same day, later) Production showed initials for every tennis player when ESPN's rankings call failed on Vercel and
+  the feed still answered "ok" for an hour. Now:
+  - The server asks ESPN twice. Without an answer it says so (`espn: false`), and the feed is held for 10 minutes,
+    not an hour.
+  - The phone keeps each player's last known ESPN id, photo and flag, and uses them when a fresh list lacks them.
+  - The followed players' ESPN ids are in config (`follows.tennis_espn`), so Alcaraz's and Djokovic's photos never
+    depend on the rankings at all.
