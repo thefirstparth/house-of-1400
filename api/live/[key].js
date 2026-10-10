@@ -29,6 +29,8 @@ export async function GET(request) {
   if (key === "crease" && out.ok && [out.value?.next, ...(out.value?.main?.formats || []).flatMap(f => f.matches)].some(m => m?.state === "live")) [s, swr] = [60, 60];
   // Madrid or the Warriors playing: the score held for a minute (Parth, 3 Oct: "the match is live and the score"); a
   // game about to start: held only until its start, so the first live score is not an hour late.
+  // The Sport app's Madrid hub: held for a minute while a match is on, so goals and cards arrive with the score
+  if (key === "madrid_hub" && out.ok && out.value?.live?.state === "in") [s, swr] = [60, 60];
   if ((key === "football" || key === "nba") && out.ok) {
     const games = out.value?.next || [], now = Date.now();
     if (games.some(g => g.state === "in" || g.live)) [s, swr] = [60, 60];

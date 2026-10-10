@@ -72,7 +72,7 @@ function player(name, size = "lg") {
   if (path) return `<span class="ph ${size}">${logo(`https://a.espncdn.com/combiner/i?img=${encodeURIComponent(path)}&w=${size === "lg" ? 160 : 80}&h=${size === "lg" ? 160 : 80}`, name, size)}${r.flag ? `<img class="pf" src="${esc(r.flag)}" alt="" loading="lazy">` : ""}</span>`;
   return monoHTML(name, size);
 }
-const rankTxt = name => { const r = atp(name); if (!r) return ""; const mv = r.previous ? r.previous - r.rank : 0; return `No. ${r.rank}${mv > 0 ? ` ▲${mv}` : mv < 0 ? ` ▼${-mv}` : ""}`; };
+const rankTxt = name => { const r = atp(name); return r?.rank ? `No. ${r.rank}` : ""; };
 const FLAG = { India: "🇮🇳", "New Zealand": "🇳🇿", Australia: "🇦🇺", "South Africa": "🇿🇦", Pakistan: "🇵🇰", "Sri Lanka": "🇱🇰", Bangladesh: "🇧🇩", Afghanistan: "🇦🇫", Zimbabwe: "🇿🇼", Ireland: "🇮🇪", Netherlands: "🇳🇱", Nepal: "🇳🇵", Scotland: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", USA: "🇺🇸", "United Arab Emirates": "🇦🇪", Oman: "🇴🇲" };
 const country = (name, size = "lg") => (FLAG[name] ? `<span class="mono ${size} flagm" aria-hidden="true">${FLAG[name]}</span>` : monoHTML(name, size));
 // Where the figures come from, folded away at the foot of a page
@@ -126,6 +126,7 @@ const follows = () => CFG?.follows || {};
 const club = () => follows().football_club?.name || "Real Madrid";
 const favDriver = () => follows().f1_driver?.name || "Max Verstappen";
 const nbaTeam = () => follows().nba_team?.name || "Golden State Warriors";
+const sn = x => { const M = follows().sport_app_short_names || {}; let v = String(x || ""); for (const [k, r] of Object.entries(M)) v = v.replace(k, r); return v; };
 const CLUB_SHORT = n => (same(n, club()) ? "Madrid" : n);
 // The markets for a match: Kalshi or Polymarket via the paper's odds feed, matched by sport, the two sides and the day
 function oddsFor(sport, sides, iso, kind = "match") {
@@ -155,8 +156,8 @@ function sideProbs(m, sides) {
   const find = s => m.outcomes.find(o => same(o.name, s));
   const a = find(sides[0]), b = find(sides[1]), d = m.outcomes.find(o => /^draw$/i.test(o.name));
   if (!a || !b) return null;
-  const [pa, pb, pd] = to100([a.prob, b.prob, ...(d ? [d.prob] : [])]);
-  return { a: pa, b: pb, d: d ? pd : null, source: m.source, url: m.url };
+  // Each price as the market gives it, rounded; the bar is drawn from the same figures
+  return { a: Math.round(a.prob), b: Math.round(b.prob), d: d ? Math.round(d.prob) : null, source: m.source, url: m.url };
 }
 function mktBar(p, names, sp) {
   if (!p) return "";
@@ -188,7 +189,8 @@ function events() {
     const state = m.state === "in" ? "live" : m.completed ? "done" : m.state === "post" ? "off" : "next"; // "post" unfinished: postponed or abandoned
     out.push({ sp: "football", id: "rm" + m.id, mid: String(m.id), start: m.date, state, title: `${CLUB_SHORT(a)} v ${CLUB_SHORT(b)}`, a, b, la: crest(home ? cid : m.opponent_id, a), lb: crest(home ? m.opponent_id : cid, b),
       sla: crest(home ? cid : m.opponent_id, a, "sm"), slb: crest(home ? m.opponent_id : cid, b, "sm"), comp: m.competition, venue: m.venue, sa: home ? m.us : m.them, sb: home ? m.them : m.us, clock: m.clock,
-      won: m.winner === "us" ? (home ? "a" : "b") : m.winner === "them" ? (home ? "b" : "a") : null, who: "Madrid", href: "#football" });
+      won: m.winner === "us" ? (home ? "a" : "b") : m.winner === "them" ? (home ? "b" : "a") : null, who: "Madrid", href: "#football",
+      liveDetail: H?.live && String(H.live.match_id) === String(m.id) ? H.live.detail : null });
   }
   // The national sides
   for (const T of val("intl_hub")?.teams || []) for (const m of [...T.next, ...(T.last ? [T.last] : [])]) {
@@ -267,13 +269,23 @@ function nextCard(e, { odds = true } = {}) {
   }
   const side = (name, lg) => `<div class="side">${lg || monoHTML(name, "lg")}<b>${esc(e.sp === "tennis" || e.sp === "nba" ? last(name) : name)}</b></div>`;
   const live = e.state === "live" && e.sa != null;
-  const mid = live ? `<div class="mid tnum">${esc(e.sa)}–${esc(e.sb)}${e.clock ? `<small>${esc(e.clock)}</small>` : ""}</div>` : e.state === "live" && e.score ? `<div class="mid time"><small class="sc">${esc(e.score)}</small></div>` : `<div class="mid time tnum">${e.tbc ? "TBC" : hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>`;
+  const mid = live ? `<div class="mid tnum">${esc(e.sa)}–${esc(e.sb)}${e.clock || e.liveDetail ? `<small>${esc(e.clock || e.liveDetail)}</small>` : ""}</div>` : e.state === "live" && e.score ? `<div class="mid time"><small class="sc">${esc(e.score)}</small></div>` : `<div class="mid time tnum">${e.tbc ? "TBC" : hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>`;
   const sp = e.sp === "nba" ? "basketball" : e.sp === "intl" ? null : e.sp;
   const p = odds && sp && e.state !== "done" ? sideProbs(oddsFor(sp, [e.a, e.b], e.start), [e.a, e.b]) : null;
   const nm = n => (e.sp === "tennis" || e.sp === "nba" ? last(n) : CLUB_SHORT(n));
-  const mins = live && e.sp === "football" ? parseInt(String(e.clock || "")) : NaN;
-  const prog = Number.isFinite(mins) ? `<div class="prog" role="progressbar" aria-label="Minute ${mins}" aria-valuenow="${mins}" aria-valuemin="0" aria-valuemax="90"><i style="width:${Math.min(100, (mins / 90) * 100)}%"></i></div>` : "";
-  return `<a class="card next sp-${e.sp}" href="${e.href}">${prog}${head}<div class="vs">${side(e.a, e.la)}${mid}${side(e.b, e.lb)}</div>${e.venue ? `<div class="meta">${esc(e.venue)}</div>` : ""}${p ? mktBar(p, [nm(e.a), nm(e.b)], e.sp) : ""}</a>`;
+  const LV = e.sp === "football" && e.state === "live" ? val("madrid_hub")?.live : null, lv = LV && String(LV.match_id) === e.mid ? LV : null;
+  const ht = lv && /^HT$|half/i.test(lv.detail || "");
+  const mins = live && e.sp === "football" ? parseInt(String(e.clock || lv?.detail || "")) : NaN;
+  const prog = Number.isFinite(mins) || ht ? `<div class="prog" role="progressbar" aria-label="${ht ? "Half-time" : `Minute ${mins}`}" aria-valuenow="${ht ? 45 : mins}" aria-valuemin="0" aria-valuemax="90"><i style="width:${Math.min(100, ((ht ? 45 : mins) / 90) * 100)}%"></i></div>` : "";
+  return `<a class="card next sp-${e.sp}" href="${e.href}">${head}${prog}<div class="vs">${side(e.a, e.la)}${mid}${side(e.b, e.lb)}</div>${lv ? scorers(lv, e) : ""}${e.venue ? `<div class="meta">${esc(e.venue)}</div>` : ""}${p ? mktBar(p, [nm(e.a), nm(e.b)], e.sp) : ""}</a>`;
+}
+// Goals and red cards under a football score, each side's under its name: "Mbappé 12', 48' (pen)"
+function scorers(ev, e) {
+  const H = val("madrid_hub"), cid = H?.club_id || "86", home = same(e.a, club());
+  const side = isHome => { const tid = isHome === home ? cid : null; return ev.events.filter(x => (tid ? x.team_id === tid : x.team_id !== cid)); };
+  const line = list => { const by = new Map(); for (const x of list) { const k = (x.kind === "red" ? "red:" : "") + x.player; if (!by.has(k)) by.set(k, []); by.get(k).push(`${x.minute || ""}${x.kind === "pen" ? " pen" : x.kind === "og" ? " og" : ""}`); } return [...by].map(([k, ms]) => k.startsWith("red:") ? `<span class="rc" aria-label="red card"></span>${esc(last(k.slice(4)))} ${esc(ms.join(", "))}` : `${esc(last(k))} ${esc(ms.join(", "))}`).join("<br>"); };
+  const a = line(side(true)), b = line(side(false));
+  return a || b ? `<div class="scorers"><div>${a}</div><div>${b}</div></div>` : "";
 }
 // A finished event as a small scoreboard
 function scoreboard(e) {
@@ -303,7 +315,8 @@ function resultCard(e) {
   const body = scoreboard(e); if (!body) return "";
   const label = e.sp === "f1" ? e.session : e.sp === "intl" ? e.who : e.comp || SPORT_NAME[e.sp];
   const cap = e.sp === "f1" ? e.sub : e.sp === "cricket" ? e.title : e.sp === "intl" ? e.comp : "";
-  return `<a class="card res-card sp-${e.sp}" href="${e.href}"><div class="hd">${chip(e.sp, label)}<time datetime="${esc(e.start)}">${esc(dayLabel(e.start))}</time></div>${cap ? `<div class="cap">${esc(cap)}</div>` : ""}${body}</a>`;
+  const RC = e.sp === "football" ? val("madrid_hub")?.recent : null, sc = RC && String(RC.match_id) === e.mid ? scorers(RC, e) : "";
+  return `<a class="card res-card sp-${e.sp}" href="${e.href}"><div class="hd">${chip(e.sp, label)}<time datetime="${esc(e.start)}">${esc(dayLabel(e.start))}</time></div>${cap ? `<div class="cap">${esc(cap)}</div>` : ""}${body}${sc}</a>`;
 }
 
 // ------------------------------------------------------------------ Today
@@ -342,14 +355,14 @@ function viewHome() {
   const rows = ups.slice(1).map(e => {
     const o = evOdds(e);
     const title = e.sp === "f1" ? `${e.title}${e.session !== "Race" ? ` · ${e.sub.replace(/ Grand Prix$/, " GP")}` : ""}` : e.title;
-    return `<a class="row" href="${e.href}">${tile(e.sp)}<div class="grow"><div class="t1">${esc(title)}</div><div class="t2">${esc(e.tbc ? `${shortDate(e.start)}, time TBC` : when(e.start))}${e.comp && e.sp !== "f1" ? ` · ${esc(e.comp)}` : ""}</div></div><div class="end">${o ? `<div class="pc tnum">${o.prob}%</div><div class="t2">${esc(o.label)}</div>` : `<div class="t2">${countdown(e.start)}</div>`}</div></a>`;
+    return `<a class="row" href="${e.href}">${tile(e.sp)}<div class="grow"><div class="t1">${esc(title)}</div><div class="t2">${esc(e.tbc ? `${shortDate(e.start)}, time TBC` : when(e.start))}${e.comp && e.sp !== "f1" ? ` · ${esc(sn(e.comp))}` : ""}</div></div><div class="end">${o ? `<div class="pc tnum">${o.prob}%</div><div class="t2">${esc(o.label)}</div>` : `<div class="t2">${countdown(e.start)}</div>`}</div></a>`;
   }).join("");
   // Latest results: the most recent finished event per follow in the last ten days
   const doneBy = new Map();
   for (const e of [...E].reverse()) { if (e.state !== "done" || now - t(e.start) > 10 * 864e5) continue; const k = followKey(e); if (!doneBy.has(k)) doneBy.set(k, e); }
   const done = [...doneBy.values()].sort((a, b) => t(b.start) - t(a.start));
   const nats = done.filter(e => e.sp === "intl");
-  const natCard = nats.length ? `<a class="card res-card sp-intl" href="#football/nations"><div class="hd">${chip("intl", "National teams")}<time>${esc(dayLabel(nats[0].start))}</time></div><div class="sb">${nats.map(e => { const us = same(e.a, e.who) ? "a" : "b", g = us === "a" ? [e.sa, e.sb] : [e.sb, e.sa], r = +g[0] > +g[1] ? "W" : +g[0] < +g[1] ? "L" : "D"; return `<div class="ln${r === "W" ? " won" : ""}">${us === "a" ? e.sla : e.slb}<span class="nm">${esc(e.who)} <span class="dim">v ${esc(us === "a" ? e.b : e.a)}</span></span><span class="v tnum">${esc(g[0])}–${esc(g[1])}</span></div>`; }).join("")}</div></a>` : "";
+  const natCard = nats.length ? `<a class="card res-card sp-intl" href="#football/nations"><div class="hd">${chip("intl", "National teams")}<time>Last results</time></div><div class="sb">${nats.map(e => { const us = same(e.a, e.who) ? "a" : "b", g = us === "a" ? [e.sa, e.sb] : [e.sb, e.sa], r = +g[0] > +g[1] ? "W" : +g[0] < +g[1] ? "L" : "D"; return `<div class="ln${r === "W" ? " won" : ""}">${us === "a" ? e.sla : e.slb}<span class="nm">${esc(e.who)} <span class="dim">${us === "a" ? "v" : "at"} ${esc(us === "a" ? e.b : e.a)} · ${esc(shortDate(e.start))}</span></span><span class="v tnum">${esc(g[0])}–${esc(g[1])}</span></div>`; }).join("")}</div></a>` : "";
   const results = [...done.filter(e => e.sp !== "intl").map(resultCard).filter(Boolean).slice(0, nats.length ? 4 : 5), natCard].filter(Boolean).join("");
   // Tournaments and tables: tennis events his players are in, India's series, the championships
   const tours = [];
@@ -439,11 +452,11 @@ function viewFootball() {
   // Results and fixtures
   const resRows = (H?.results || []).map(m => {
     const r = m.winner === "us" ? "W" : m.winner === "them" ? "L" : "D", sc = `${m.us}–${m.them}`;
-    return `<div class="row">${crest(m.opponent_id, m.opponent, "sm")}<div class="grow"><div class="t1">${m.home ? "v" : "at"} ${esc(m.opponent)}</div><div class="t2">${esc(m.competition || "")} · ${esc(shortDate(m.date))}</div></div><span class="score ${r} tnum" aria-label="${r === "W" ? "Won" : r === "L" ? "Lost" : "Drew"} ${esc(sc)}">${esc(sc)}</span></div>`;
+    return `<div class="row">${crest(m.opponent_id, m.opponent, "sm")}<div class="grow"><div class="t1">${m.home ? "v" : "at"} ${esc(m.opponent)}</div><div class="t2">${esc(sn(m.competition))} · ${esc(shortDate(m.date))}</div></div><span class="score ${r} tnum" aria-label="${r === "W" ? "Won" : r === "L" ? "Lost" : "Drew"} ${esc(sc)}">${esc(sc)}</span></div>`;
   });
   const fxRows = (H?.fixtures || []).map(m => {
     const sides = m.home ? [cname, m.opponent] : [m.opponent, cname], p = sideProbs(oddsFor("football", sides, m.date), sides), mine = p ? (m.home ? p.a : p.b) : null;
-    return `<div class="row">${crest(m.opponent_id, m.opponent, "sm")}<div class="grow"><div class="t1">${m.home ? "v" : "at"} ${esc(m.opponent)}</div><div class="t2">${esc(when(m.date))} · ${esc(m.competition || "")}</div></div>${mine != null ? `<div class="end"><div class="pc tnum">${mine}%</div><div class="t2">to win</div></div>` : ""}</div>`;
+    return `<div class="row">${crest(m.opponent_id, m.opponent, "sm")}<div class="grow"><div class="t1">${m.home ? "v" : "at"} ${esc(m.opponent)}</div><div class="t2">${esc(when(m.date))} · ${esc(sn(m.competition))}</div></div>${mine != null ? `<div class="end"><div class="pc tnum">${mine}%</div><div class="t2">to win</div></div>` : ""}</div>`;
   });
   const list = (rows, n, what) => (rows.length ? `<div class="list">${rows.slice(0, n).join("")}${rows.length > n ? moreBox(`${rows.length - n} more ${what}`, rows.slice(n).join("")) : ""}</div>` : "");
   // Tables
@@ -474,10 +487,10 @@ function viewFootball() {
     const o = n ? opp(n) : null, lr = l ? (+(same(l.home, T.name) ? l.hs : l.as) > +(same(l.home, T.name) ? l.as : l.hs) ? "W" : +(same(l.home, T.name) ? l.hs : l.as) < +(same(l.home, T.name) ? l.as : l.hs) ? "L" : "D") : null;
     const ls = l ? (same(l.home, T.name) ? `${l.hs}–${l.as}` : `${l.as}–${l.hs}`) : "";
     const away = n && !same(n.home, T.name);
-    return `<details class="row-d"><summary class="row">${crest(T.id, T.name, "sm")}<div class="grow"><div class="t1">${esc(T.name)}</div><div class="t2">Next ${n ? `${away ? "at" : "v"} ${esc(o.name)} · ${esc(shortDate(n.date))}` : "not listed"}</div></div>${l ? `<div class="end"><span class="score ${lr} tnum" aria-label="Last result">${lr} ${esc(ls)}</span><div class="t2">last, v ${esc(initials(same(l.home, T.name) ? l.away : l.home))}</div></div>` : ""}<svg class="chev dn" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2"/></svg></summary><div class="nt"><div class="grow">
+    return `<details class="row-d"><summary class="row">${crest(T.id, T.name, "sm")}<div class="grow"><div class="t1">${esc(T.name)}</div><div class="t2">Next ${n ? `${away ? "at" : "v"} ${esc(o.name)} · ${esc(shortDate(n.date))}` : "not listed"}</div></div>${l ? `<div class="end"><span class="score ${lr} tnum" aria-label="Last result">${lr} ${esc(ls)}</span><div class="t2">last, ${same(l.home, T.name) ? "v" : "at"} ${esc(initials(same(l.home, T.name) ? l.away : l.home))}</div></div>` : ""}<svg class="chev dn" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2"/></svg></summary><div class="nt"><div class="grow">
       <div class="nl"><span class="k">Next</span>${n ? `<span>${away ? "at" : "v"} ${esc(o.name)} · ${esc(when(n.date))}<small>${esc([n.competition, n.venue].filter(Boolean).join(" · "))}</small></span>` : "<span>No fixture listed</span>"}</div>
       ${T.next[1] ? `<div class="nl"><span class="k">Then</span><span>${same(T.next[1].home, T.name) ? "v" : "at"} ${esc(same(T.next[1].home, T.name) ? T.next[1].away : T.next[1].home)} · ${esc(when(T.next[1].date))}<small>${esc(T.next[1].competition || "")}</small></span></div>` : ""}
-      ${l ? `<div class="nl"><span class="k">Last</span><span><b class="score ${lr} tnum">${lr} ${esc(ls)}</b> v ${esc(same(l.home, T.name) ? l.away : l.home)}<small>${esc(shortDate(l.date))}</small></span></div>` : ""}</div></div></details>`;
+      ${l ? `<div class="nl"><span class="k">Last</span><span><b class="score ${lr} tnum">${lr} ${esc(ls)}</b> ${same(l.home, T.name) ? "v" : "at"} ${esc(same(l.home, T.name) ? l.away : l.home)}<small>${esc(shortDate(l.date))}</small></span></div>` : ""}</div></div></details>`;
   }).join("")}</div>`, "", "nations") : "";
   return `<div class="page">${header(`<span class="ttl">${crest(H?.club_id || "86", cname, "sm")}${esc(cname)}</span>`, sub, ["football", "madrid_hub", "club_stats"])}
     ${jump([[next && "next", "Next"], [H?.xi && "xi", "XI"], [resRows.length && "results", "Results"], [cur && "table", "Table"], [cur && "leaders", "Leaders"], [NT.length && "nations", "Nations"]])}
@@ -614,7 +627,7 @@ function viewTennis() {
     const lastE = ls ? events().find(e => e.sp === "tennis" && e.state === "done" && e.player === p.name) : null;
     const status = nx ? `${nx.event} · ${nx.round || ""}` : ls ? `${ls.event} · ${ls.won ? "won" : "out in"} ${ls.round || ""}` : "No match listed";
     const rk = atp(p.name);
-    return `<section class="blk"><div class="who-h">${player(p.name, "md")}<div><h2>${esc(p.name)}</h2><div class="note">${rk ? `<b class="tnum">${esc(rankTxt(p.name))}</b> · ${rk.points?.toLocaleString("en-IN")} pts · ` : ""}${esc(status)}</div></div></div>
+    return `<section class="blk"><div class="who-h">${player(p.name, "md")}<div><h2>${esc(p.name)}</h2><div class="note">${rk?.rank ? `<b class="tnum">${esc(rankTxt(p.name))}</b>${rk.points ? ` · ${rk.points.toLocaleString("en-IN")} pts` : ""} · ` : ""}${esc(status)}</div></div></div>
       ${nx ? `<div class="card next sp-tennis"><div class="when">${chip("tennis", nx.round || "Next")}${nx.live ? `<span class="chip live"><i></i>Live</span>` : `<span class="count">${countdown(nx.when_utc)}</span>`}</div><div class="vs"><div class="side">${player(p.name)}<b>${esc(last(p.name))}</b>${rankTxt(p.name) ? `<small class="rk">${esc(rankTxt(p.name))}</small>` : ""}</div><div class="mid time tnum">${hm(nx.when_utc)}<small>${esc(dayLabel(nx.when_utc))}</small></div><div class="side">${player(nx.opponent)}<b>${esc(last(nx.opponent) || "TBC")}</b>${rankTxt(nx.opponent) ? `<small class="rk">${esc(rankTxt(nx.opponent))}</small>` : ""}</div></div><div class="meta">${esc([nx.event, nx.court].filter(Boolean).join(" · "))}${nx.held ? `<br>${esc(nx.held)}` : ""}${p.agree === false && p.backup ? `<br>Another listing has ${esc(hm(p.backup.when_utc))}` : ""}</div>${p2 ? mktBar(p2, [last(p.name), last(nx.opponent)], "tennis") : ""}</div>` : ""}
       ${lastE ? `<div style="margin-top:12px">${resultCard(lastE)}</div>` : ""}</section>`;
   }).join("");
@@ -624,9 +637,9 @@ function viewTennis() {
     const who = TP.map(p => { const inN = p.next && same(p.next.event, ev.name), inL = p.last && same(p.last.event, ev.name); return inN || inL ? `<span class="chip ${inN || p.last.won ? "sp sp-tennis" : "done"}">${esc(last(p.name))} · ${inN ? "still in" : p.last.won ? "through" : "out"}</span>` : ""; }).join(" ");
     return `<div class="row"><div class="grow"><div class="t1">${esc(ev.name)}${ev.major ? " · Grand Slam" : ""}</div><div class="t2">${esc(ev.venue || "")} · ${going ? "until" : "from"} ${esc(shortDate(going ? ev.end : ev.start))}</div>${who ? `<div class="chips">${who}</div>` : `<div class="t2">Neither player has a match listed</div>`}</div>${going ? `<span class="chip done">Under way</span>` : ""}</div>`;
   }).join("");
-  const RK = val("tennis_hub")?.ranks || [], mine = (follows().tennis_players || []).map(atp).filter(Boolean);
+  const TH = val("tennis_hub"), RK = (TH?.ranks || []).filter(r => r.rank), mine = (follows().tennis_players || []).map(atp).filter(r => r?.rank);
   const top = RK.slice(0, 10); for (const m of mine) if (!top.includes(m)) top.push(m);
-  const rankings = top.length ? blk("ATP rankings", `<div class="list">${top.map(r => { const mv = r.previous ? r.previous - r.rank : 0, me = mine.includes(r); return `<div class="row${me ? " me" : ""}"><span class="rkn tnum">${r.rank}</span>${player(r.name, "sm")}<div class="grow"><div class="t1">${esc(r.name)}</div><div class="t2 tnum">${r.points ? `${r.points.toLocaleString("en-IN")} points` : ""}</div></div><span class="mv ${mv > 0 ? "up" : mv < 0 ? "dn" : ""} tnum">${mv > 0 ? `▲ ${mv}` : mv < 0 ? `▼ ${-mv}` : "·"}</span></div>`; }).join("")}</div><p class="foot">Movement since the previous list.</p>`, "", "rankings") : "";
+  const rankings = top.length ? blk("ATP rankings", `<div class="list">${top.map(r => `<div class="row${mine.includes(r) ? " me" : ""}"><span class="rkn tnum">${r.rank}</span>${player(r.name, "sm")}<div class="grow"><div class="t1">${esc(r.name)}</div>${r.points ? `<div class="t2 tnum">${r.points.toLocaleString("en-IN")} points</div>` : ""}</div></div>`).join("")}</div>`, TH?.date ? `<span class="note">Official list of ${esc(fmt(TH.date + "T12:00:00Z", { day: "numeric", month: "short" }))}</span>` : `<span class="note">ESPN's order</span>`, "rankings") : "";
   return `<div class="page">${header("Tennis", `<b>${esc((follows().tennis_players || []).join(" and "))}</b>`, ["tennis_players", "tennis"])}
     ${!TP.length ? `<div class="skel"></div><div class="skel"></div>` : ""}
     ${cards}

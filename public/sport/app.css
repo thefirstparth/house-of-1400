@@ -159,10 +159,14 @@ a.row:active{background:var(--surface2)}
 
 /* the F1 hero's track, and a live fixture's progress */
 .card.next.one.has-trk{isolation:isolate}
-.hero-trk{position:absolute;right:-6px;top:52px;width:50%;max-width:220px;height:auto;opacity:.16;z-index:-1;pointer-events:none}
-@media (prefers-color-scheme:light){.hero-trk{filter:invert(1) grayscale(1) contrast(3);mix-blend-mode:multiply;opacity:.12}}
-.prog{position:absolute;left:0;right:0;top:0;height:4px;background:color-mix(in srgb,var(--c) 18%,transparent)}
-.prog i{display:block;height:100%;background:var(--c);transition:width 1s var(--ease)}
+.hero-trk{position:absolute;right:-10px;bottom:10px;width:46%;max-width:200px;height:auto;opacity:.18;z-index:-1;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 35%);mask-image:linear-gradient(90deg,transparent 0,#000 35%)}
+@media (prefers-color-scheme:light){.hero-trk{filter:invert(1) grayscale(1) contrast(3);mix-blend-mode:multiply;opacity:.1}}
+.prog{height:4px;margin:14px 0 0;border-radius:999px;overflow:hidden;background:color-mix(in srgb,var(--c) 18%,var(--surface2))}
+.prog i{display:block;height:100%;border-radius:999px;background:var(--c);transition:width 1s var(--ease)}
+.scorers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;font-weight:500;font-size:.76rem;line-height:1.45;color:var(--ink2)}
+.scorers>div:last-child{text-align:right}
+.res-card .scorers{margin-top:0}
+.rc{display:inline-block;width:8px;height:11px;border-radius:2px;background:var(--loss);margin-right:4px;vertical-align:-1px}
 [data-cd].tick{display:inline-block;animation:tick .45s var(--spring)}
 @keyframes tick{from{transform:translateY(-6px);opacity:.2}}
 
@@ -298,7 +302,7 @@ a.row:active{background:var(--surface2)}
 .pitch{position:relative;aspect-ratio:68/80;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#2c8a4f,#257a45)}
 @media (prefers-color-scheme:dark){.pitch{background:linear-gradient(180deg,#1d5e37,#174d2d)}}
 .pitch svg.lines{position:absolute;inset:0;width:100%;height:100%;stroke:rgba(255,255,255,.3);stroke-width:.5;fill:none}
-.pl{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;width:22%;text-align:center}
+.pl{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;width:25%;text-align:center}
 .pl b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#11141a;font-family:var(--board);font-weight:700;font-size:1rem;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .pl.gk b{background:#f5c542}
 .pl span.lg{font-size:.66rem;letter-spacing:-.01em}
