@@ -31,6 +31,8 @@ export async function GET(request) {
   // game about to start: held only until its start, so the first live score is not an hour late.
   // The Sport app's Madrid hub: held for a minute while a match is on, so goals and cards arrive with the score
   if (key === "madrid_hub" && out.ok && out.value?.live?.state === "in") [s, swr] = [60, 60];
+  // An F1 session on, or due inside 15 minutes (or late to start): ESPN's state held for a minute, not ten
+  if (key === "f1_sessions" && out.ok && (out.value?.status || []).some(x => x.state === "in" || (x.state === "pre" && Date.parse(x.start) - Date.now() < 15 * 6e4))) [s, swr] = [60, 60];
   if ((key === "football" || key === "nba") && out.ok) {
     const games = out.value?.next || [], now = Date.now();
     if (games.some(g => g.state === "in" || g.live)) [s, swr] = [60, 60];
