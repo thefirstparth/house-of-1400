@@ -509,3 +509,11 @@ body[data-tab="nba"]{--acc:var(--nba);--acc-ink:var(--nba-ink)}
   .barrow{grid-template-columns:minmax(0,1fr) 34%}
 }
 .list.tours .t1,.list.tours .t2,#fixtures .t2{white-space:normal}
+/* round 11 */
+.pl:has(span.lg){width:34%}
+.phc .crest.wp{transform:scale(1.8);transform-origin:50% 4%;object-position:50% 0;filter:saturate(.85)}
+.ph:has(.crest.wp) .phc{background:var(--surface2)}
+.barrow .nm>span{white-space:normal;line-height:1.25}
+body.big .barrow{grid-template-columns:minmax(0,1fr) 34%}
+.blk .list>a.row .t2{white-space:normal}
+.wrapt .t1,body.big .row .t1{white-space:normal}
