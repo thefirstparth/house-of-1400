@@ -138,6 +138,20 @@ a.row:active{background:var(--surface2)}
 .crest.lg{width:56px;height:56px}.crest.sm{width:28px;height:28px}.crest.xs{width:22px;height:22px}
 .mono{display:grid;place-items:center;border-radius:50%;background:var(--surface2);color:var(--ink2);font-weight:700;flex:none}
 .mono.lg{width:56px;height:56px;font-size:1rem}.mono.sm{width:28px;height:28px;font-size:.62rem}.mono.xs{width:22px;height:22px;font-size:.56rem}
+.ph{position:relative;display:inline-block;flex:none;border-radius:50%}
+.ph .crest{object-fit:cover;background:var(--surface2)}
+.ph.md .crest,.ph.md .mono{width:48px;height:48px}
+.pf{position:absolute;right:-2px;bottom:-2px;width:18px;height:18px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px var(--surface)}
+.ph.sm .pf{width:12px;height:12px;right:-3px;bottom:-3px}
+.vs .side .rk{font-weight:600;font-size:.72rem;color:var(--muted);margin-top:-4px}
+.who-h{display:flex;align-items:center;gap:14px;margin:0 2px 12px}
+.who-h h2{margin:0;font-weight:700;font-size:1.24rem;letter-spacing:-.015em}
+.who-h .note{font-weight:500;font-size:.76rem;color:var(--muted);margin-top:2px}
+.who-h .note b{color:var(--ink2)}
+.rkn{width:26px;text-align:right;font-family:var(--board);font-weight:700;font-size:1.06rem;color:var(--muted);flex:none}
+.mv{font-family:var(--board);font-weight:700;font-size:.94rem;color:var(--muted);min-width:34px;text-align:right}
+.mv.up{color:var(--win-ink)}.mv.dn{color:var(--loss-ink)}
+.mono.md{width:48px;height:48px;font-size:.9rem}
 .mono.flagm.lg{font-size:2rem}.mono.flagm.sm{font-size:1rem}
 
 /* market: a bar split by the outcomes, the favourite in colour */

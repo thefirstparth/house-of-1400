@@ -3,7 +3,7 @@
 // with its time; a feed that fails falls back to the last copy this phone saw, then the day's edition snapshot, marked
 // with its time; otherwise the block is left out. Times are IST. No LLM anywhere.
 const TZ = "Asia/Kolkata";
-const KEYS = ["football", "madrid_hub", "club_stats", "intl_hub", "f1_next", "f1_sessions", "f1_standings", "f1_last", "f1_market", "f1_hub", "odds", "crease", "tennis_players", "tennis", "nba"];
+const KEYS = ["football", "madrid_hub", "club_stats", "intl_hub", "f1_next", "f1_sessions", "f1_standings", "f1_last", "f1_market", "f1_hub", "odds", "crease", "tennis_players", "tennis", "tennis_hub", "nba"];
 const D = {}; // key -> { value, as_of, source, stale }
 let CFG = null, SNAP = null, lastLoad = 0, loading = false;
 const $ = s => document.querySelector(s);
@@ -64,6 +64,14 @@ function logo(url, name, size = "lg") {
 const px = size => (size === "lg" ? 128 : 64);
 const crest = (id, name, size = "lg") => logo(id ? `https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/${encodeURIComponent(id)}.png&w=${px(size)}&h=${px(size)}` : null, name, size);
 const nbaLogo = (abbr, name, size = "lg") => logo(abbr ? `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${encodeURIComponent(String(abbr).toLowerCase())}.png&w=${px(size)}&h=${px(size)}` : null, name, size);
+// A tennis player: ESPN's photo where the ATP list has one, else the initials; and his ranking
+const atp = name => (val("tennis_hub")?.ranks || []).find(r => same(r.name, name)) || null;
+function player(name, size = "lg") {
+  const r = atp(name);
+  if (r?.photo) return `<span class="ph ${size}">${logo(`https://a.espncdn.com/combiner/i?img=${encodeURIComponent(new URL(r.photo).pathname)}&w=${size === "lg" ? 160 : 80}&h=${size === "lg" ? 160 : 80}`, name, size)}${r.flag ? `<img class="pf" src="${esc(r.flag)}" alt="" loading="lazy">` : ""}</span>`;
+  return monoHTML(name, size);
+}
+const rankTxt = name => { const r = atp(name); if (!r) return ""; const mv = r.previous ? r.previous - r.rank : 0; return `No. ${r.rank}${mv > 0 ? ` ▲${mv}` : mv < 0 ? ` ▼${-mv}` : ""}`; };
 const FLAG = { India: "🇮🇳", "New Zealand": "🇳🇿", Australia: "🇦🇺", "South Africa": "🇿🇦", Pakistan: "🇵🇰", "Sri Lanka": "🇱🇰", Bangladesh: "🇧🇩", Afghanistan: "🇦🇫", Zimbabwe: "🇿🇼", Ireland: "🇮🇪", Netherlands: "🇳🇱", Nepal: "🇳🇵", Scotland: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", USA: "🇺🇸", "United Arab Emirates": "🇦🇪", Oman: "🇴🇲" };
 const country = (name, size = "lg") => (FLAG[name] ? `<span class="mono ${size} flagm" aria-hidden="true">${FLAG[name]}</span>` : monoHTML(name, size));
 // Where the figures come from, folded away at the foot of a page
@@ -192,7 +200,7 @@ function events() {
   }
   // Tennis
   for (const p of val("tennis_players")?.players || []) {
-    if (p.next) out.push({ sp: "tennis", id: "tn" + p.name + p.next.when_utc, start: p.next.when_utc, state: p.next.live ? "live" : "next", title: `${last(p.name)} v ${last(p.next.opponent) || "TBC"}`, a: p.name, b: p.next.opponent, la: monoHTML(p.name, "lg"), lb: monoHTML(p.next.opponent, "lg"), comp: [p.next.event, p.next.round].filter(Boolean).join(", "), venue: p.next.court, player: p.name, who: last(p.name), href: "#tennis" });
+    if (p.next) out.push({ sp: "tennis", id: "tn" + p.name + p.next.when_utc, start: p.next.when_utc, state: p.next.live ? "live" : "next", title: `${last(p.name)} v ${last(p.next.opponent) || "TBC"}`, a: p.name, b: p.next.opponent, la: player(p.name), lb: player(p.next.opponent), comp: [p.next.event, p.next.round].filter(Boolean).join(", "), venue: p.next.court, player: p.name, who: last(p.name), href: "#tennis" });
     if (p.last) out.push({ sp: "tennis", id: "tl" + p.name + p.last.when_utc, start: p.last.when_utc, state: "done", title: `${last(p.name)} v ${last(p.last.opponent)}`, a: p.name, b: p.last.opponent, comp: [p.last.event, p.last.round].filter(Boolean).join(", "), won: p.last.won ? "a" : "b", note: p.last.note, player: p.name, who: last(p.name), href: "#tennis" });
   }
   // The Warriors
@@ -548,8 +556,9 @@ function viewTennis() {
     const p2 = nx ? sideProbs(oddsFor("tennis", [p.name, nx.opponent], nx.when_utc), [p.name, nx.opponent]) : null;
     const lastE = ls ? events().find(e => e.sp === "tennis" && e.state === "done" && e.player === p.name) : null;
     const status = nx ? `${nx.event} · ${nx.round || ""}` : ls ? `${ls.event} · ${ls.won ? "won" : "out in"} ${ls.round || ""}` : "No match listed";
-    return `<section class="blk"><div class="blk-h"><h2>${esc(p.name)}</h2><span class="note">${esc(status)}</span></div>
-      ${nx ? `<div class="card next sp-tennis"><div class="when">${chip("tennis", nx.round || "Next")}${nx.live ? `<span class="chip live"><i></i>Live</span>` : `<span class="count">${countdown(nx.when_utc)}</span>`}</div><div class="vs"><div class="side">${monoHTML(p.name, "lg")}<b>${esc(last(p.name))}</b></div><div class="mid time tnum">${hm(nx.when_utc)}<small>${esc(dayLabel(nx.when_utc))}</small></div><div class="side">${monoHTML(nx.opponent, "lg")}<b>${esc(last(nx.opponent) || "TBC")}</b></div></div><div class="meta">${esc([nx.event, nx.court].filter(Boolean).join(" · "))}${nx.held ? `<br>${esc(nx.held)}` : ""}${p.agree === false && p.backup ? `<br>Another listing has ${esc(hm(p.backup.when_utc))}` : ""}</div>${p2 ? mktBar(p2, [last(p.name), last(nx.opponent)], "tennis") : ""}</div>` : ""}
+    const rk = atp(p.name);
+    return `<section class="blk"><div class="who-h">${player(p.name, "md")}<div><h2>${esc(p.name)}</h2><div class="note">${rk ? `<b class="tnum">${esc(rankTxt(p.name))}</b> · ${rk.points?.toLocaleString("en-IN")} pts · ` : ""}${esc(status)}</div></div></div>
+      ${nx ? `<div class="card next sp-tennis"><div class="when">${chip("tennis", nx.round || "Next")}${nx.live ? `<span class="chip live"><i></i>Live</span>` : `<span class="count">${countdown(nx.when_utc)}</span>`}</div><div class="vs"><div class="side">${player(p.name)}<b>${esc(last(p.name))}</b>${rankTxt(p.name) ? `<small class="rk">${esc(rankTxt(p.name))}</small>` : ""}</div><div class="mid time tnum">${hm(nx.when_utc)}<small>${esc(dayLabel(nx.when_utc))}</small></div><div class="side">${player(nx.opponent)}<b>${esc(last(nx.opponent) || "TBC")}</b>${rankTxt(nx.opponent) ? `<small class="rk">${esc(rankTxt(nx.opponent))}</small>` : ""}</div></div><div class="meta">${esc([nx.event, nx.court].filter(Boolean).join(" · "))}${nx.held ? `<br>${esc(nx.held)}` : ""}${p.agree === false && p.backup ? `<br>Another listing has ${esc(hm(p.backup.when_utc))}` : ""}</div>${p2 ? mktBar(p2, [last(p.name), last(nx.opponent)], "tennis") : ""}</div>` : ""}
       ${lastE ? `<div style="margin-top:12px">${resultCard(lastE)}</div>` : ""}</section>`;
   }).join("");
   const tours = EV.filter(ev => t(ev.end) > now - 864e5).map(ev => {
@@ -557,11 +566,15 @@ function viewTennis() {
     const who = TP.map(p => { const inN = p.next && same(p.next.event, ev.name), inL = p.last && same(p.last.event, ev.name); return inN || inL ? `<span class="chip ${inN || p.last.won ? "sp sp-tennis" : "done"}">${esc(last(p.name))} · ${inN ? "still in" : p.last.won ? "through" : "out"}</span>` : ""; }).join(" ");
     return `<div class="row"><div class="grow"><div class="t1">${esc(ev.name)}${ev.major ? " · Grand Slam" : ""}</div><div class="t2">${esc(ev.venue || "")} · ${going ? "until" : "from"} ${esc(shortDate(going ? ev.end : ev.start))}</div>${who ? `<div class="chips">${who}</div>` : `<div class="t2">Neither player has a match listed</div>`}</div>${going ? `<span class="chip done">Under way</span>` : ""}</div>`;
   }).join("");
+  const RK = val("tennis_hub")?.ranks || [], mine = (follows().tennis_players || []).map(atp).filter(Boolean);
+  const top = RK.slice(0, 10); for (const m of mine) if (!top.includes(m)) top.push(m);
+  const rankings = top.length ? blk("ATP rankings", `<div class="list">${top.map(r => { const mv = r.previous ? r.previous - r.rank : 0, me = mine.includes(r); return `<div class="row${me ? " me" : ""}"><span class="rkn tnum">${r.rank}</span>${player(r.name, "sm")}<div class="grow"><div class="t1">${esc(r.name)}</div><div class="t2 tnum">${r.points ? `${r.points.toLocaleString("en-IN")} points` : ""}</div></div><span class="mv ${mv > 0 ? "up" : mv < 0 ? "dn" : ""} tnum">${mv > 0 ? `▲ ${mv}` : mv < 0 ? `▼ ${-mv}` : "–"}</span></div>`; }).join("")}</div><p class="foot">Movement since the previous list.</p>`, "", "rankings") : "";
   return `<div class="page">${header("Tennis", `<b>${esc((follows().tennis_players || []).join(" and "))}</b>`, ["tennis_players", "tennis"])}
     ${!TP.length ? `<div class="skel"></div><div class="skel"></div>` : ""}
     ${cards}
     ${tours ? blk("Tournaments", `<div class="list">${tours}</div>`) : ""}
-    ${sources("tennis_players", "tennis", "odds")}</div>`;
+    ${rankings}
+    ${sources("tennis_players", "tennis", "tennis_hub", "odds")}</div>`;
 }
 
 // ------------------------------------------------------------------ Warriors
