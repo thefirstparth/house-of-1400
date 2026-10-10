@@ -116,3 +116,14 @@ test("cricket card: each side's top scorer and best bowler, not-out marked, wick
   assert.deepEqual(c.potm, ["Shai Hope"]);
   assert.equal(cardOf({}, 1), null);
 });
+
+test("The Crease: a tour match Cricbuzz files as a series of its own goes back into the tour", async () => {
+  const { creaseView } = await import("../lib/cricket.js");
+  const m = (id, n, start, state, series = "West Indies tour of India, 2026") => ({ id, n, desc: `${n}${n === 1 ? "st" : n === 2 ? "nd" : n === 3 ? "rd" : "th"} T20I`, format: "T20", opponent: "West Indies", start, state, series });
+  const ms = [m(1, 1, "2026-10-06T13:30:00Z", "done"), m(2, 2, "2026-10-09T13:30:00Z", "done"), m(3, 3, "2026-10-11T13:30:00Z", "next", "India v West Indies"), m(4, 4, "2026-10-14T13:30:00Z", "next"), m(5, 5, "2026-10-17T13:30:00Z", "next")];
+  const v = creaseView(ms, Date.parse("2026-10-10T12:00:00Z"));
+  assert.equal(v.main.name, "West Indies tour of India, 2026");
+  assert.deepEqual(v.main.formats[0].matches.map(x => x.n), [1, 2, 3, 4, 5]);
+  assert.deepEqual(v.also, []);
+  assert.equal(v.next.series, "West Indies tour of India, 2026");
+});

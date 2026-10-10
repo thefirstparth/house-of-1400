@@ -92,6 +92,8 @@ function sources(...keys) {
   return parts.length ? `<details class="srcs"><summary>Sources and times</summary><ul>${[...new Set(parts)].join("")}</ul><p>The time beside each source is when the app last checked it. All times IST. Markets are Kalshi and Polymarket prices, not forecasts, each rounded to a whole number, so a pair can add up to 99 or 101.</p></details>` : "";
 }
 
+// "27 Sept to 17 Oct", or one date when it is one day
+const span = (a, b) => (shortDate(a) === shortDate(b) ? shortDate(a) : `${shortDate(a)} to ${shortDate(b)}`);
 // ------------------------------------------------------------------ data
 async function getJSON(url, ms = 25000) {
   const r = await fetch(url, { signal: AbortSignal.timeout(ms), cache: "no-cache" });
@@ -456,7 +458,7 @@ function viewHome() {
   const C = val("crease");
   for (const S of [C?.main, ...(C?.also || [])].filter(Boolean)) {
     const sc = (S.formats || []).map(f => (f.score ? `${f.label} ${f.score}` : null)).filter(Boolean).join(" · ");
-    tours.push(`<a class="row" href="#cricket">${tile("cricket")}<div class="grow"><div class="t1">${esc(S.name.replace(/,? \d{4}$/, ""))}</div><div class="t2 wrap">${esc(sc || `${shortDate(S.first)} to ${shortDate(S.last)}`)}</div></div></a>`);
+    tours.push(`<a class="row" href="#cricket">${tile("cricket")}<div class="grow"><div class="t1">${esc(S.name.replace(/,? \d{4}$/, ""))}</div><div class="t2 wrap">${esc(sc || span(S.first, S.last))}</div></div></a>`);
   }
   const ST = val("f1_standings");
   if (ST?.drivers?.length) {
@@ -680,7 +682,7 @@ function viewCricket() {
       return `<a class="row" href="#cricket" data-match="in${esc(m.id)}"><div class="grow"><div class="t1">${esc(m.desc)}</div><div class="t2 wrap">${m.city ? `${esc(m.city)} · ` : ""}${m.state === "done" ? esc(shortDate(m.start)) : esc(m.time_announced === false ? `${shortDate(m.start)}, time TBC` : when(m.start))}</div>${m.state === "done" && m.score ? `<div class="inns">${String(m.score).split(" · ").map(x => `<span class="inn tnum">${esc(x)}</span>`).join("")}</div>` : ""}</div><div class="end">${m.state === "done" ? `<span class="score txt ${st}">${esc(resultWord(m))}</span>` : m.state === "live" ? `<span class="chip live"><i></i>Live</span>` : m.state === "off" ? `<span class="chip done">${esc(m.status || "No result")}</span>` : `<span class="t2">${countdown(m.start)}</span>`}</div></a>`;
     }).join("");
     return `<div class="sub-h out">${esc(f.label || f.format)}${f.score ? ` <span class="chip sp sp-cricket">${esc(f.score)}</span>` : ""}</div><div class="list">${rows}</div>`;
-  }).join(""), `<span class="note">${esc(shortDate(S.first))} to ${esc(shortDate(S.last))}</span>`, "series");
+  }).join(""), `<span class="note">${esc(span(S.first, S.last))}</span>`, "series");
   const series = [C?.main, ...(C?.also || [])].filter(Boolean).map(seriesBlock).join("");
   const A = C?.after;
   const after = A?.formats ? blk(`Next: ${esc(A.name.replace(/,? \d{4}$/, ""))}`, `<div class="list">${A.formats.map(f => { const ms = f.matches || []; return `<details class="row-d"><summary class="row"><div class="grow"><div class="t1">${ms.length} ${esc(f.label || f.format)}</div><div class="t2 wrap">${ms[0] ? `${esc(shortDate(ms[0].start))} to ${esc(shortDate(ms.at(-1).start))} · ${esc([...new Set(ms.map(m => m.city).filter(Boolean))].slice(0, 3).join(", "))}` : ""}</div></div><svg class="chev dn" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2"/></svg></summary>${ms.map(m => `<a class="row sub" href="#cricket" data-match="in${esc(m.id)}"><div class="grow"><div class="t1">${esc(m.desc)}</div><div class="t2">${m.city ? `${esc(m.city)} · ` : ""}${esc(m.time_announced === false ? `${shortDate(m.start)}, time TBC` : when(m.start))}</div></div></a>`).join("")}</details>`; }).join("")}</div>`, `<span class="note">From ${esc(shortDate(A.first))}</span>`, "after") : "";
@@ -792,6 +794,15 @@ function render(navigated) {
 }
 addEventListener("hashchange", () => { vibe(); UI.match = null; const { r } = parse(); render(r !== route); });
 $("#refresh").addEventListener("click", () => { vibe(); loadAll(); });
+// Light unless dark is chosen; the choice stays on the phone
+const setTheme = dark => {
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+  $("#themeColor")?.setAttribute("content", dark ? "#000000" : "#f2f2f4");
+  const b = $("#theme"); b.setAttribute("aria-pressed", String(dark)); b.setAttribute("aria-label", dark ? "Light mode" : "Dark mode");
+  try { localStorage.setItem("sport-theme", dark ? "dark" : "light"); } catch {}
+};
+setTheme(document.documentElement.dataset.theme === "dark");
+$("#theme").addEventListener("click", () => { vibe(); setTheme(document.documentElement.dataset.theme !== "dark"); });
 function dragSheet(el) {
   if (!el) return; let y0 = null, dy = 0;
   el.addEventListener("touchstart", e => { if (el.scrollTop > 0) return; y0 = e.touches[0].clientY; dy = 0; el.style.transition = "none"; }, { passive: true });

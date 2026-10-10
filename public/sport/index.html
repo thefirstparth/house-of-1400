@@ -6,9 +6,9 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Sport · The House of 1400</title>
 <meta name="description" content="Everything Parth follows: Real Madrid, Formula 1, India, Alcaraz and Djokovic, the Warriors.">
-<meta name="theme-color" content="#f2f2f4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
-<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f2f2f4" id="themeColor">
+<meta name="color-scheme" content="light">
+<script>try{if(localStorage.getItem("sport-theme")==="dark"){document.documentElement.dataset.theme="dark";document.getElementById("themeColor").content="#000000"}}catch(e){}</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -26,7 +26,10 @@
   <header class="top" id="top">
     <div class="top-in">
       <div class="top-title" id="topTitle" aria-hidden="true"></div>
-      <button class="refresh" id="refresh" type="button" aria-label="Refresh"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg></button>
+      <div class="top-btns">
+        <button class="refresh theme" id="theme" type="button" aria-label="Dark mode" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="moon" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/><g class="sun"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></svg></button>
+        <button class="refresh" id="refresh" type="button" aria-label="Refresh"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg></button>
+      </div>
     </div>
   </header>
   <main id="view" tabindex="-1"></main>

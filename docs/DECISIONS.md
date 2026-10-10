@@ -868,3 +868,13 @@ trades still shows a price (seen 10 Oct: Lindblad at 12% for pole with no bid an
 drops a runner with no bid or more than 5 cents between bid and ask, the rule Kalshi's prices already follow. Applies
 to the paper and the Sport app. The Sport app shows a market only on the weekend it belongs to (a race later in the
 season gets its times and calendar entries, never this weekend's prices).
+
+## The Sport app opens light; dark is a switch (10 Oct 2026)
+Parth: "default it to light mode only, with the option to switch it to dark". The app no longer follows the phone's
+setting: it opens light, and the moon button in the top bar switches to dark. The choice is kept on the phone
+(localStorage `sport-theme`) and applied before first paint.
+
+## A tour match Cricbuzz files on its own goes back into the tour (10 Oct 2026)
+Cricbuzz listed the 3rd T20I of the West Indies tour as a separate series ("India v West Indies"), so the tour showed
+1st, 2nd, 4th and 5th. The Crease now moves a numbered match from a one- or two-match series into a bigger series
+against the same side when that number is missing there and the date falls inside it. Paper and Sport app alike.
