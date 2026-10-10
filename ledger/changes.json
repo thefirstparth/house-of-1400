@@ -174,6 +174,20 @@
       "section": "ledger",
       "found_by": "daily run 2026-10-09",
       "printed_on": "2026-10-09"
+    },
+    {
+      "id": "rbi-fx-curbs-oct-2026",
+      "what": "RBI forex curbs: 20% cash Foreign Exchange Risk Reserve on INR forwards above $2m bought to hedge current-account imports; no rebooking of cancelled INR derivatives; unhedged-exposure limit cut from $100m to $5m; special dollar window for IOC, HPCL, BPCL",
+      "who": "RBI",
+      "announced": "2026-10-10",
+      "effective": "2026-10-12 (OMC window); circulars issued 2026-10-10",
+      "sources": [
+        "https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=63783",
+        "https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=63784"
+      ],
+      "section": "ledger",
+      "found_by": "daily run 2026-10-10 (money sweep, RBI feed)",
+      "printed_on": "2026-10-10"
     }
   ]
 }
