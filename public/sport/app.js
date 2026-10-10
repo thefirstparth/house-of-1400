@@ -684,6 +684,13 @@ view.addEventListener("click", e => {
   const j = e.target.closest("a[data-jump]");
   if (j) { e.preventDefault(); const el = document.getElementById(j.dataset.jump); if (el) { el.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); history.replaceState(null, "", j.getAttribute("href")); } }
 });
+// Pull to refresh (a home-screen web app on iPhone has none of its own): drag down from the top past 70px
+{
+  let y0 = null, pulled = 0; const ind = document.createElement("div"); ind.className = "ptr"; ind.setAttribute("aria-hidden", "true"); document.body.append(ind);
+  addEventListener("touchstart", e => { y0 = window.scrollY <= 0 && !UI.day ? e.touches[0].clientY : null; pulled = 0; }, { passive: true });
+  addEventListener("touchmove", e => { if (y0 == null) return; pulled = Math.max(0, e.touches[0].clientY - y0); ind.style.setProperty("--p", Math.min(pulled / 70, 1)); ind.classList.toggle("on", pulled > 8); ind.classList.toggle("ready", pulled > 70); }, { passive: true });
+  addEventListener("touchend", () => { if (y0 != null && pulled > 70) { vibe(); loadAll(); } y0 = null; ind.classList.remove("on", "ready"); }, { passive: true });
+}
 addEventListener("keydown", e => { if (e.key === "Escape" && UI.day) { UI.day = null; render(false); } });
 // Countdowns tick; the data refreshes every minute while something is live, else every five, and on return to the app
 setInterval(() => { for (const el of document.querySelectorAll("[data-cd]")) el.textContent = rel(el.dataset.cd); }, 20000);
