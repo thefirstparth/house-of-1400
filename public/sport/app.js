@@ -45,8 +45,15 @@ let io = null, jio = null, jcur = null, onBottom = () => {}, sheetFor = null, si
 const scrollMem = {};
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 let sT = 0; addEventListener("scroll", () => { clearTimeout(sT); sT = setTimeout(() => { if (S.route) scrollMem[S.route] = scrollY; }, 120); }, { passive: true });
-// each visited tab's page is kept and put back on return (images stay decoded), then patched with fresh data
-const pages = {};
+// every visited tab's page stays in #view, laid out but hidden (content-visibility), so going back to a tab only
+// shows it again and patches it with fresh data; the page shown is the one without .away
+const cur = () => view.querySelector(":scope > .pg:not(.away)") || view;
+const byId = id => cur().querySelector("#" + CSS.escape(id));
+function pageFor(r, html) {
+  let pg = view.querySelector(`:scope > .pg[data-r="${r}"]`);
+  if (!pg) { pg = document.createElement("div"); pg.className = "pg away"; pg.dataset.r = r; pg.innerHTML = html; view.append(pg); return [pg, true]; }
+  return [pg, false];
+}
 let fromHome = false;
 const parse = () => { const [r, sec] = location.hash.replace(/^#\/?/, "").split("/"); return { r: VIEWS[r] ? r : "home", sec: sec || null }; };
 const stateSig = () => events().map(e => `${e.id}:${e.state}:${e.late ? 1 : 0}${e.starting ? 1 : 0}:${e.sa ?? ""}-${e.sb ?? ""}:${(e.liveTop || []).join(",")}`).join("|");
@@ -62,7 +69,8 @@ function render(navigated) {
   if (tabFx) return;
   const from = parseFloat(getComputedStyle(view).opacity);
   tabFx = view.animate([{ opacity: isNaN(from) ? 1 : from }, { opacity: 0 }], { duration: RM() ? 60 : 90, easing: "ease-in", fill: "forwards" });
-  setTimeout(() => { const r = parse().r; try { pre = { r, html: VIEWS[r]() }; } catch { pre = null; } }, 0); // built while it fades
+  // the next page is built (and, first time, attached hidden) while the old one fades
+  setTimeout(() => { const r = parse().r; try { pre = { r, html: VIEWS[r]() }; const [pg, made] = pageFor(r, pre.html); if (!made) morph(pg, pre.html); } catch { pre = null; } }, 0);
   tabFx.finished.catch(() => {}).then(() => {
     draw(true);
     view.animate(RM() ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: RM() ? 60 : 160, easing: "cubic-bezier(.2,0,0,1)" });
@@ -88,13 +96,13 @@ function draw(navigated) {
   $("#topTitle").textContent = TITLES[r];
   const html = !Object.keys(D).length && S.lastLoad && !S.loading ? failed(r) : pre && pre.r === r ? pre.html : VIEWS[r]();
   pre = null;
-  if (changed && prev && view.firstElementChild) pages[prev] = view.firstElementChild;
-  if (changed && pages[r]) { pages[r].style.animation = "none"; view.replaceChildren(pages[r]); morph(view, html); view.firstElementChild?.style.setProperty("animation", "none"); }
-  else if (changed || !view.firstChild) { view.innerHTML = html; if (prev) view.querySelector(".page")?.style.setProperty("animation", "none"); }
-  else morph(view, html);
+  const [pg, made] = pageFor(r, html);
+  if (!made) morph(pg, html);
+  if (prev && changed) pg.querySelector(".page")?.style.setProperty("animation", "none");
+  for (const x of view.children) x.classList.toggle("away", x !== pg);
   sig = stateSig();
   // a score that changed since the last draw rolls in (once: the patch keeps the class until the roll ends)
-  for (const el of view.querySelectorAll("[data-sk]")) {
+  for (const el of cur().querySelectorAll("[data-sk]")) {
     const k = el.dataset.sk, v = el.dataset.v;
     if (v && lastScores.has(k) && lastScores.get(k) !== v) { el.classList.add("bump"); el.addEventListener("animationend", () => el.classList.remove("bump"), { once: true }); const lab = el.closest("[aria-label]")?.getAttribute("aria-label"), ev = events().find(x => k.startsWith(x.id)), g = ev?.ev?.filter(x => x.kind !== "red").at(-1); if (lab) say(`${g ? `Goal, ${last(g.player)} ${String(g.minute || "").replace(/'/g, "")} minutes. ` : "Score: "}${lab}`); }
     lastScores.set(k, v);
@@ -105,7 +113,7 @@ function draw(navigated) {
     if (sec) pendingSec = sec;
     else window.scrollTo(0, scrollMem[r] || 0);
   }
-  if (pendingSec) { const el = document.getElementById(pendingSec); if (el && !view.querySelector(".skel")) { pendingSec = null; requestAnimationFrame(() => el.scrollIntoView({ block: "start" })); } }
+  if (pendingSec) { const el = byId(pendingSec); if (el && !cur().querySelector(".skel")) { pendingSec = null; requestAnimationFrame(() => el.scrollIntoView({ block: "start" })); } }
   document.title = `${TITLES[r]} · Sport`;
   observe();
 }
@@ -132,11 +140,11 @@ function startClose() {
   root.classList.add("closing"); $("#app").inert = false;
   const done = () => { if (root.classList.contains("closing")) { root.classList.remove("closing"); root.innerHTML = ""; } };
   if (RM()) done(); else { root.querySelector(".sheet")?.addEventListener("animationend", done, { once: true }); setTimeout(done, 400); }
-  if (sheetFor) { view.querySelector(sheetFor)?.focus({ preventScroll: true }); sheetFor = null; }
+  if (sheetFor) { cur().querySelector(sheetFor)?.focus({ preventScroll: true }); sheetFor = null; }
 }
 function observe() {
   io?.disconnect(); jio?.disconnect(); jcur = null;
-  const chips = [...document.querySelectorAll(".jump a[data-jump]")];
+  const chips = [...cur().querySelectorAll(".jump a[data-jump]")];
   const slide = (bar, left) => bar.scrollTo({ left, behavior: RM() ? "auto" : "smooth" });
   if (chips.length && "IntersectionObserver" in window) {
     const seen = new Map();
@@ -147,17 +155,18 @@ function observe() {
       if (cur === jcur) return; jcur = cur;
       for (const c of chips) { const on = c.dataset.jump === cur; c.toggleAttribute("aria-current", on); if (on) slide(c.parentElement, Math.max(0, c.offsetLeft - (c.parentElement.clientWidth - c.offsetWidth) / 2)); }
     }, { rootMargin: "-110px 0px -55% 0px" });
-    for (const c of chips) { const el = document.getElementById(c.dataset.jump); if (el) jio.observe(el); }
+    for (const c of chips) { const el = byId(c.dataset.jump); if (el) jio.observe(el); }
     onBottom = () => { if (atBottom()) { const lastC = chips.at(-1); if (jcur !== lastC.dataset.jump) { jcur = lastC.dataset.jump; for (const c of chips) c.toggleAttribute("aria-current", c === lastC); slide(lastC.parentElement, lastC.parentElement.scrollWidth); } } };
   } else onBottom = () => {};
-  const h1 = $("#h1");
+  const h1 = cur().querySelector("#h1");
   if (h1 && "IntersectionObserver" in window) { io = new IntersectionObserver(([en]) => $("#top").classList.toggle("solid", !en.isIntersecting), { rootMargin: "-56px 0px 0px 0px" }); io.observe(h1); }
 }
 addEventListener("hashchange", () => { const r = parse().r; vibe(); UI.match = null; UI.day = r === "home" ? history.state?.day || null : null; if (r === "home") fromHome = false; else if (S.route === "home") fromHome = true; render(true); });
 // back: the sheet closes, then a chosen day goes back to today; a back across tabs is handled by hashchange
 addEventListener("popstate", () => {
-  backPending = false;
+  const was = backPending; backPending = false;
   if (parse().r !== S.route) return;
+  if (was && wantDay !== undefined) { const d = wantDay; wantDay = undefined; if (d) { UI.day = null; setTimeout(() => setDay(d), 0); } }
   const st = history.state || {};
   if (UI.match && !st.sheet) UI.match = null;
   UI.day = st.day || null;
@@ -165,9 +174,9 @@ addEventListener("popstate", () => {
 });
 const closeSheet = () => { startClose(); if (history.state?.sheet) history.back(); else { UI.match = null; draw(false); } };
 // one back at a time: a scrub across Today must never send two (two backs would leave the app)
-let backPending = false;
+let backPending = false, wantDay;
 const setDay = v => {
-  const d = v || null; if (d === UI.day || backPending) return;
+  const d = v || null; if (backPending) { wantDay = d; return; } if (d === UI.day) return;
   if (!d) { UI.day = null; if (history.state?.day) { backPending = true; history.back(); } draw(false); return; }
   if (history.state?.day) history.replaceState({ day: d }, ""); else history.pushState({ day: d }, "");
   UI.day = d; vibe(5); draw(false);
@@ -235,11 +244,11 @@ view.addEventListener("click", e => {
   const mt = e.target.closest("[data-match]");
   if (mt) { e.preventDefault(); UI.match = mt.dataset.match; vibe(); draw(false); return; }
   const j = e.target.closest("a[data-jump]");
-  if (j) { e.preventDefault(); const el = document.getElementById(j.dataset.jump); if (el) { el.scrollIntoView({ behavior: RM() ? "auto" : "smooth", block: "start" }); history.replaceState(history.state, "", j.getAttribute("href")); } }
+  if (j) { e.preventDefault(); const el = byId(j.dataset.jump); if (el) { el.scrollIntoView({ behavior: RM() ? "auto" : "smooth", block: "start" }); history.replaceState(history.state, "", j.getAttribute("href")); } }
 });
 // scrub the days: drag along the rail (a tick on each day), or swipe the Today page sideways
 {
-  const days = () => [...view.querySelectorAll(".rail .day:not(:disabled)")];
+  const days = () => [...cur().querySelectorAll(".rail .day:not(:disabled)")];
   let scrub = false;
   view.addEventListener("pointerdown", e => { if (e.target.closest(".rail-in")) scrub = true; });
   view.addEventListener("pointermove", e => {
@@ -253,7 +262,7 @@ view.addEventListener("click", e => {
   view.addEventListener("touchend", e => {
     if (sx == null) return; const dx = e.changedTouches[0].clientX - sx, ady = Math.abs(e.changedTouches[0].clientY - sy); sx = null;
     if (Math.abs(dx) < 70 || ady > 40) return;
-    const all = [...view.querySelectorAll(".rail .day")], i = all.findIndex(b => b.classList.contains("on"));
+    const all = [...cur().querySelectorAll(".rail .day")], i = all.findIndex(b => b.classList.contains("on"));
     for (let j = i + (dx < 0 ? 1 : -1); j >= 0 && j < all.length; j += dx < 0 ? 1 : -1) if (!all[j].disabled) { setDay(all[j].dataset.v); break; }
   }, { passive: true });
 }

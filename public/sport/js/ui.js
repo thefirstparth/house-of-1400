@@ -260,7 +260,7 @@ function sheetBody(e) {
     }
     if (e.sp === "tennis" && e.then) parts.push(`<div class="card then"><span class="k">If he wins</span><span>${e.then.round ? `${esc(e.then.round)} v ` : "v "}${(e.then.opponent ? [e.then.opponent] : e.then.from).map(n => `<span class="nw">${esc(n)}${atp(n)?.rank ? ` <span class="dim">(${atp(n).rank})</span>` : ""}</span>`).join(" or ")}</span></div>`);
   }
-  const rows = [["When", e.id.startsWith("gp") ? "" : e.tbc ? `${longDate(e.start)}, time to be confirmed` : `${longDate(e.start)}, ${hm(e.start)} IST`], ["Where", e.venue && (done || lv || e.sp === "f1") ? e.venue : ""], ["Competition", (done || lv) && e.sp !== "f1" ? e.comp : ""], ["Status", e.state === "off" ? (e.seen ? `Live feed lost; last seen live at ${at(e.seen)}` : e.offWhy || "") : ""]].filter(([, v]) => v);
+  const rows = [["When", e.id.startsWith("gp") ? "" : e.tbc ? `${longDate(e.start)}, time to be confirmed` : `${longDate(e.start)}, ${hm(e.start)} IST`], ["Where", e.venue && (done || lv || e.sp === "f1") ? e.venue : ""], ["Competition", done && e.sp !== "f1" ? e.comp : ""], ["Status", e.state === "off" ? (e.seen ? `Live feed lost; last seen live at ${at(e.seen)}` : e.offWhy || "") : ""]].filter(([, v]) => v);
   if (rows.length) parts.push(`<dl class="kv">${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>`);
   const wk = e.id.startsWith("gp") && e.sessions?.length > 1;
   const acts = `${e.state === "next" && !e.tbc ? `<a class="btn" href="${esc(wk ? weekendIcs(e) : icsHref(e))}">${ICON.cal}<span class="long">${wk ? "Add the weekend" : "Add to calendar"}</span><span class="short">${wk ? "Add weekend" : "Calendar"}</span></a>` : ""}${S.route !== TAB_OF[e.sp] ? `<a class="btn ghost" href="${esc(e.href)}">Open ${esc(TAB_NAME[e.sp])}</a>` : ""}`;
@@ -269,5 +269,5 @@ function sheetBody(e) {
 export function sheet(e) {
   const heroLed = e.sp !== "f1" && (e.state === "next" || (e.state === "live" && e.sp !== "cricket"));
   const title = e.sp === "f1" ? (e.id.startsWith("gp") ? gpShort(e.gp) : `${e.session} · ${gpShort(e.gp)}`) : heroLed ? `${e.comp || TAB_NAME[e.sp]} · ${e.state === "live" ? "Live" : "Next"}` : `${sideName(e, "a")} v ${sideName(e, "b")}`;
-  return `<div class="sheet-bg" data-close="match"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t"><div class="grab" aria-hidden="true"></div><div class="sheet-h"><b id="sheet-t" tabindex="-1">${esc(title)}</b><button type="button" class="x" data-close="match" aria-label="Close">${ICON.x}</button></div><div class="sb">${sheetBody(e)}</div></div>`;
+  return `<div class="sheet-bg" data-close="match"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(e.sp === "f1" ? title : `${sideName(e, "a")} v ${sideName(e, "b")}, ${e.comp || ""}${e.state === "live" ? ", live" : ""}`)}"><div class="grab" aria-hidden="true"></div><div class="sheet-h"><b id="sheet-t" tabindex="-1">${esc(title)}</b><button type="button" class="x" data-close="match" aria-label="Close">${ICON.x}</button></div><div class="sb">${sheetBody(e)}</div></div>`;
 }

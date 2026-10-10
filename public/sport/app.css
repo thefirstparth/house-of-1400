@@ -494,3 +494,6 @@ body.big .rank .n,body.big .formt .nm{white-space:normal;overflow:visible;max-wi
 @container (max-width:340px){.ln .mx{display:none}.meta.alt{display:block}}
 body.big .ln .mx{display:none}body.big .meta.alt{display:block}
 @media (max-width:359px){.day .dn{letter-spacing:-.04em}}
+#view{position:relative}
+.pg.away{content-visibility:hidden;position:absolute;left:0;right:0;top:0;pointer-events:none}
+body.big .formt .nm,body.big .formt .fr.me .nm{white-space:normal;overflow:visible;overflow-wrap:anywhere}
