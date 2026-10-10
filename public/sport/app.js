@@ -26,7 +26,7 @@ const when = iso => `${dayLabel(iso)}, ${hm(iso)}`;
 const shortDate = iso => fmt(iso, { day: "numeric", month: "short" });
 function rel(iso) {
   const m = Math.round((t(iso) - Date.now()) / 6e4), a = Math.abs(m);
-  const txt = a < 60 ? `${a} min` : a < 48 * 60 ? `${Math.floor(a / 60)}h${a % 60 && a < 600 ? ` ${a % 60}m` : ""}` : `${Math.round(a / 1440)} days`;
+  const txt = a < 60 ? `${a} min` : a < 48 * 60 ? `${Math.floor(a / 60)}h${a % 60 && a < 600 ? ` ${a % 60}m` : ""}` : `${Math.abs(Date.parse(dayKey(t(iso))) - Date.parse(dayKey(Date.now()))) / 864e5} days`; // whole days by the IST calendar, as the date beside it reads
   return a < 1 ? "now" : m > 0 ? `in ${txt}` : `${txt} ago`;
 }
 const norm = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/\b(cf|fc|club de futbol|sad)\b/g, "").replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
