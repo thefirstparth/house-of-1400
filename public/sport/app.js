@@ -34,7 +34,12 @@ const norm = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLow
 // Whole words only, so "Real Madrid" is never "Atlético Madrid" and "India" never "West Indies".
 const same = (a, b) => { const x = norm(a), y = norm(b); return !!x && !!y && (x === y || ` ${x} `.includes(` ${y} `) || ` ${y} `.includes(` ${x} `)); };
 // A surname: the last word, except "Vinícius Júnior" (and the like) is "Vinícius"
-const last = n => { const w = String(n || "").split(" "); return w.length > 1 && /^(J[uú]nior|Jr\.?|Neto|Filho)$/i.test(w.at(-1)) ? w.at(-2) : w.at(-1); };
+// and particles stay with the name: "de Jong", "van Dijk"
+const last = n => {
+  const w = String(n || "").split(" ").filter(Boolean); let i = w.length > 1 && /^(J[uú]nior|Jr\.?|Neto|Filho)$/i.test(w.at(-1)) ? w.length - 2 : w.length - 1;
+  const end = i; while (i > 1 && /^(de|da|di|do|dos|das|du|del|della|van|von|der|den|ter|le|la)$/.test(w[i - 1])) i--;
+  return w.slice(i, end + 1).join(" ");
+};
 // "IND", "WI", "NZ", "JMC": a one-word name gives its first three letters, longer names their initials
 const initials = n => { const w = String(n || "").split(/\s+/).filter(Boolean); return (w.length === 1 ? w[0].slice(0, 2) : w[0][0] + w.at(-1)[0]).toUpperCase(); };
 const ordinal = n => `${n}${n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th"}`;
@@ -83,7 +88,7 @@ const CRIC = { India: 6, England: 1, Australia: 2, "South Africa": 3, "West Indi
 const country = (name, size = "lg") => (CRIC[name] ? logo(`https://a.espncdn.com/combiner/i?img=/i/teamlogos/cricket/500/${CRIC[name]}.png&w=${px(size)}&h=${px(size)}`, name, size).replace('class="crest', 'class="crest cflag') : FLAG[name] ? `<span class="mono ${size} flagm" aria-hidden="true">${FLAG[name]}</span>` : monoHTML(name, size));
 // Where the figures come from, folded away at the foot of a page
 function sources(...keys) {
-  const parts = keys.filter(k => D[k]?.source).map(k => `<li>${esc(D[k].source)} · ${D[k].as_of ? (dayKey(t(D[k].as_of)) === dayKey(Date.now()) ? hm(D[k].as_of) : `${shortDate(D[k].as_of)}, ${hm(D[k].as_of)}`) : ""}${D[k].stale ? " · last saved copy" : ""}</li>`);
+  const parts = keys.filter(k => D[k]?.source).map(k => `<li>${esc(D[k].source)} · checked ${D[k].as_of ? (dayKey(t(D[k].as_of)) === dayKey(Date.now()) ? hm(D[k].as_of) : `${shortDate(D[k].as_of)}, ${hm(D[k].as_of)}`) : ""}${D[k].stale ? " · last saved copy" : ""}</li>`);
   return parts.length ? `<details class="srcs"><summary>Sources and times</summary><ul>${[...new Set(parts)].join("")}</ul><p>The time beside each source is when the app last checked it. All times IST. Markets are Kalshi and Polymarket prices, not forecasts, each rounded to a whole number, so a pair can add up to 99 or 101.</p></details>` : "";
 }
 
@@ -200,6 +205,7 @@ function events(all = false) {
   }
   // The national sides
   for (const T of val("intl_hub")?.teams || []) for (const m of [...T.next, ...(T.last ? [T.last] : [])]) {
+    if (D.intl_hub?.stale && !m.completed && t(m.date) < now) continue;
     // Under way: shown as live without a score (this feed is cached for an hour, too slow for a live score); a match
     // ESPN marks finished-but-not-completed, or still open three hours after kick-off, was called off
     const ist = m.completed ? "done" : m.state === "post" || t(m.date) < now - 3 * 36e5 ? "off" : t(m.date) <= now ? "live" : "next";
@@ -274,7 +280,7 @@ function nextCard(e, { odds = true } = {}) {
     const qs = /^sprint$/i.test(e.session) ? /sprint (qualifying|shootout)/i : /^race$/i.test(e.session) ? /^qualifying$/i : null;
     const q = qs && (val("f1_sessions")?.results || []).find(r => qs.test(r.name) && dayKey(t(r.start)) >= dayKey(t(e.start) - 3 * 864e5));
     const qi = q ? q.top.findIndex(n => same(n, last(fav))) : -1;
-    const qline = qi >= 0 ? `${fpos({ pos: qi + 1, finished: true })}${esc(last(fav))} qualified ${ordinal(qi + 1)}` : "";
+    const qline = qi >= 0 ? `${fpos({ pos: qi + 1, finished: true })}${esc(last(fav))} qualified ${ordinal(qi + 1)}` : q ? `${esc(last(fav))} qualified outside the top three` : "";
     const st = t(e.start), dur = ((val("f1_next")?.race?.sessions || []).find(x => x.start === e.start)?.minutes || 60) * 6e4;
     const prog = e.state === "live" ? `<div class="prog" role="progressbar" aria-label="Session under way" aria-valuenow="${Math.round(Math.min(1, (Date.now() - st) / dur) * 100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.min(100, ((Date.now() - st) / dur) * 100)}%"></i></div>` : "";
     return `<a class="card next one sp-f1" href="${e.href}">${prog}${head}<div class="title">${e.flag ? `<span class="fl">${esc(e.flag)}</span> ` : ""}${esc(e.title)}<small>${esc(e.sub || "")}</small></div><div class="clock tnum">${hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>${o || qline ? `<div class="pill-row"><span class="pill${qline ? " res" : ""}"><span class="nw">${qline || esc(o.label)}${o && qline ? " ·" : ""}</span>${o ? `<span class="nw"><b class="tnum">${o.prob}%</b> to win</span>` : ""}</span></div>` : ""}</a>`;
@@ -319,8 +325,8 @@ function scoreboard(e) {
     // Each side's top scorer and best bowler, then the player of the match (Cricbuzz's scorecard)
     const K = e.card?.innings;
     if (K?.length) {
-      const lines = K.map(x => { const bw = K.find(y => y.bowl?.team === x.team)?.bowl; return [x.team, [x.bat && `${last(x.bat.name)} ${x.bat.runs}${x.bat.out ? "" : "*"}${x.bat.balls != null ? ` (${x.bat.balls})` : ""}`, bw && `${last(bw.name)} ${bw.wickets}/${bw.runs}`].filter(Boolean).join(" · ")]; }).filter(([, l]) => l);
-      body += `<div class="perf">${lines.map(([tm, l]) => `<div><b>${esc(tm)}</b><span class="tnum">${esc(l)}</span></div>`).join("")}${e.card.potm?.length ? `<div class="potm">Player of the match: ${esc(e.card.potm.join(", "))}</div>` : ""}</div>`;
+      const lines = K.map(x => { const bw = K.find(y => y.bowl?.team === x.team)?.bowl; return [x.team, [x.bat && `<small>bat</small> ${esc(last(x.bat.name))} ${x.bat.runs}${x.bat.out ? "" : "*"}${x.bat.balls != null ? ` (${x.bat.balls})` : ""}`, bw && `<small>bowl</small> ${esc(last(bw.name))} ${bw.wickets}/${bw.runs}`].filter(Boolean).join(" · ")]; }).filter(([, l]) => l);
+      body += `<div class="perf">${lines.map(([tm, l]) => `<div><b>${esc(tm)}</b><span class="tnum">${l}</span></div>`).join("")}${e.card.potm?.length ? `<div class="potm">Player of the match: ${esc(e.card.potm.join(", "))}</div>` : ""}</div>`;
     }
     return body;
   }

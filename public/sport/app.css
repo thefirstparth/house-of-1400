@@ -474,3 +474,4 @@ body[data-tab="nba"]{--acc:var(--nba);--acc-ink:var(--nba-ink)}
 .perf>div{display:flex;gap:10px}.perf b{font-weight:700;color:var(--ink);min-width:2.6rem}
 .perf .potm{color:var(--muted);font-size:.8rem}
 .pill .nw{display:inline-flex;align-items:center;gap:6px}
+.perf small{font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
