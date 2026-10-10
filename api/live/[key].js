@@ -8,9 +8,10 @@ import { RAIN, RAIN_CACHE, rainTtl } from "../../lib/rain.js";
 import { IMD, IMD_CACHE } from "../../lib/imd.js";
 import { OPENAQ, OPENAQ_CACHE } from "../../lib/openaq.js";
 import { OFFDUTY, OFFDUTY_CACHE } from "../../lib/offduty.js";
+import { SPORTAPP, SPORTAPP_CACHE } from "../../lib/sportapp.js";
 
 // The paper's keys, The Ledger's extra blocks (lib/money.js), Madridismo's competitions (lib/football.js), the odds on every followed match (lib/odds.js), Bengaluru's rain gauges (lib/rain.js) and the trial's keys (lib/trial.js).
-const LIVE = { ...PAPER, ...MONEY, ...CREASE, ...FOOTBALL, ...ODDS, ...RAIN, ...IMD, ...OPENAQ, ...OFFDUTY, ...TRIAL }, CACHE = { ...PAPER_CACHE, ...MONEY_CACHE, ...CREASE_CACHE, ...FOOTBALL_CACHE, ...ODDS_CACHE, ...RAIN_CACHE, ...IMD_CACHE, ...OPENAQ_CACHE, ...OFFDUTY_CACHE, ...TRIAL_CACHE };
+const LIVE = { ...PAPER, ...MONEY, ...CREASE, ...FOOTBALL, ...ODDS, ...RAIN, ...IMD, ...OPENAQ, ...OFFDUTY, ...SPORTAPP, ...TRIAL }, CACHE = { ...PAPER_CACHE, ...MONEY_CACHE, ...CREASE_CACHE, ...FOOTBALL_CACHE, ...ODDS_CACHE, ...RAIN_CACHE, ...IMD_CACHE, ...OPENAQ_CACHE, ...OFFDUTY_CACHE, ...SPORTAPP_CACHE, ...TRIAL_CACHE };
 
 // GET /api/live/<key>. Returns {ok, value, source, as_of, stale}.
 export async function GET(request) {

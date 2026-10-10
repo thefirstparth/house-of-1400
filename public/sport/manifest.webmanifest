@@ -1,0 +1,17 @@
+{
+  "name": "Sport · The House of 1400",
+  "short_name": "Sport",
+  "description": "Real Madrid, Formula 1, India, Alcaraz and Djokovic, the Warriors.",
+  "start_url": "/sport#home",
+  "scope": "/sport",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    { "src": "/sport/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/sport/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/sport/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/sport/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
