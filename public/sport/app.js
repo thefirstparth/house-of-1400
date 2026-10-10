@@ -56,20 +56,23 @@ const down = '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5l4 4 4-4"
 const moreBox = (label, inner) => `<details class="more-box"><summary>${label} ${down}</summary>${inner}</details>`;
 // Images: ESPN's crests and NBA logos, a flag for a cricket country, else the initials
 const monoHTML = (name, size) => `<span class="mono ${size}" aria-hidden="true">${esc(initials(name))}</span>`;
-function logo(url, name, size = "lg") {
+// alt: a second image to try before the initials (a Wikipedia photo for a player ESPN has none for)
+function logo(url, name, size = "lg", alt = "") {
   if (!url) return monoHTML(name, size);
   const fb = esc(`<span class="mono ${size}">${esc(initials(name))}</span>`).replace(/'/g, "");
-  return `<img class="crest ${size}" src="${esc(url)}" alt="" loading="lazy" decoding="async" onload="this.classList.add('ok')" onerror="this.outerHTML='${fb}'">`;
+  return `<img class="crest ${size}" src="${esc(url)}"${alt ? ` data-alt="${esc(alt)}"` : ""} alt="" loading="lazy" decoding="async" onload="this.classList.add('ok')" onerror="if(this.dataset.alt){this.src=this.dataset.alt;this.removeAttribute('data-alt');this.classList.add('wp')}else this.outerHTML='${fb}'">`;
 }
 const px = size => (size === "lg" ? 128 : 64);
 const crest = (id, name, size = "lg") => logo(id ? `https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/${encodeURIComponent(id)}.png&w=${px(size)}&h=${px(size)}` : null, name, size);
 const nbaLogo = (abbr, name, size = "lg") => logo(abbr ? `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${encodeURIComponent(String(abbr).toLowerCase())}.png&w=${px(size)}&h=${px(size)}` : null, name, size);
-// A tennis player: ESPN's photo where the ATP list has one, else the initials; and his ranking
+// A tennis player: ESPN's photo where the ATP list has one, else his Wikipedia photo, else the initials; and his ranking
 const atp = name => (val("tennis_hub")?.ranks || []).find(r => same(r.name, name)) || null;
 function player(name, size = "lg") {
   const r = atp(name);
   const path = r?.photo ? new URL(r.photo).pathname : r?.id ? `/i/headshots/tennis/players/full/${r.id}.png` : null;
-  if (path) return `<span class="ph ${size}">${logo(`https://a.espncdn.com/combiner/i?img=${encodeURIComponent(path)}&w=${size === "lg" ? 160 : 80}&h=${size === "lg" ? 160 : 80}`, name, size)}${r.flag ? `<img class="pf" src="${esc(r.flag)}" alt="" loading="lazy">` : ""}</span>`;
+  const flag = r?.flag ? `<img class="pf" src="${esc(r.flag)}" alt="" loading="lazy">` : "";
+  if (path) return `<span class="ph ${size}">${logo(`https://a.espncdn.com/combiner/i?img=${encodeURIComponent(path)}&w=${size === "lg" ? 160 : 80}&h=${size === "lg" ? 160 : 80}`, name, size, r.alt_photo || "")}${flag}</span>`;
+  if (r?.alt_photo) return `<span class="ph ${size}">${logo(r.alt_photo, name, size).replace('class="crest', 'class="crest wp')}${flag}</span>`;
   return monoHTML(name, size);
 }
 const rankTxt = name => { const r = atp(name); return r?.rank ? `No. ${r.rank}` : ""; };
@@ -78,7 +81,7 @@ const country = (name, size = "lg") => (FLAG[name] ? `<span class="mono ${size} 
 // Where the figures come from, folded away at the foot of a page
 function sources(...keys) {
   const parts = keys.filter(k => D[k]?.source).map(k => `<li>${esc(D[k].source)} · ${D[k].as_of ? (dayKey(t(D[k].as_of)) === dayKey(Date.now()) ? hm(D[k].as_of) : `${shortDate(D[k].as_of)}, ${hm(D[k].as_of)}`) : ""}${D[k].stale ? " · last saved copy" : ""}</li>`);
-  return parts.length ? `<details class="srcs"><summary>Sources and times</summary><ul>${[...new Set(parts)].join("")}</ul><p>All times IST. Markets are Kalshi and Polymarket prices, not forecasts.</p></details>` : "";
+  return parts.length ? `<details class="srcs"><summary>Sources and times</summary><ul>${[...new Set(parts)].join("")}</ul><p>The time beside each source is when the app last checked it. All times IST. Markets are Kalshi and Polymarket prices, not forecasts.</p></details>` : "";
 }
 
 // ------------------------------------------------------------------ data
@@ -194,8 +197,11 @@ function events() {
   }
   // The national sides
   for (const T of val("intl_hub")?.teams || []) for (const m of [...T.next, ...(T.last ? [T.last] : [])]) {
-    out.push({ sp: "intl", id: "nt" + m.id, start: m.date, state: m.completed ? "done" : t(m.date) < now ? "off" : "next", title: `${m.home} v ${m.away}`, a: m.home, b: m.away, la: crest(m.home_id, m.home), lb: crest(m.away_id, m.away),
-      sla: crest(m.home_id, m.home, "sm"), slb: crest(m.away_id, m.away, "sm"), comp: m.competition, venue: m.venue, sa: m.hs, sb: m.as, won: m.completed ? (+m.hs > +m.as ? "a" : +m.hs < +m.as ? "b" : null) : null, who: T.name, href: "#football/nations" });
+    // Under way: shown as live without a score (this feed is cached for an hour, too slow for a live score); a match
+    // ESPN marks finished-but-not-completed, or still open three hours after kick-off, was called off
+    const ist = m.completed ? "done" : m.state === "post" || t(m.date) < now - 3 * 36e5 ? "off" : t(m.date) <= now ? "live" : "next";
+    out.push({ sp: "intl", id: "nt" + m.id, start: m.date, state: ist, title: `${m.home} v ${m.away}`, a: m.home, b: m.away, la: crest(m.home_id, m.home), lb: crest(m.away_id, m.away),
+      sla: crest(m.home_id, m.home, "sm"), slb: crest(m.away_id, m.away, "sm"), comp: m.competition, venue: m.venue, sa: m.completed ? m.hs : null, sb: m.completed ? m.as : null, won: m.completed ? (+m.hs > +m.as ? "a" : +m.hs < +m.as ? "b" : null) : null, who: T.name, href: "#football/nations" });
   }
   // India (The Crease)
   const C = val("crease");
@@ -262,7 +268,7 @@ function nextCard(e, { odds = true } = {}) {
     const qs = /^sprint$/i.test(e.session) ? /sprint (qualifying|shootout)/i : /^race$/i.test(e.session) ? /^qualifying$/i : null;
     const q = qs && (val("f1_sessions")?.results || []).find(r => qs.test(r.name) && dayKey(t(r.start)) >= dayKey(t(e.start) - 3 * 864e5));
     const qi = q ? q.top.findIndex(n => same(n, last(fav))) : -1;
-    const qline = qi >= 0 ? `${fpos({ pos: qi + 1, finished: true })}${esc(last(fav))} starts ${ordinal(qi + 1)}` : "";
+    const qline = qi >= 0 ? `${fpos({ pos: qi + 1, finished: true })}${esc(last(fav))} qualified ${ordinal(qi + 1)}` : "";
     const trk = val("f1_next")?.race?.track?.image, st = t(e.start), dur = ((val("f1_next")?.race?.sessions || []).find(x => x.start === e.start)?.minutes || 60) * 6e4;
     const prog = e.state === "live" ? `<div class="prog" role="progressbar" aria-label="Session under way" aria-valuenow="${Math.round(Math.min(1, (Date.now() - st) / dur) * 100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.min(100, ((Date.now() - st) / dur) * 100)}%"></i></div>` : "";
     return `<a class="card next one sp-f1${trk ? " has-trk" : ""}" href="${e.href}">${trk ? `<img class="hero-trk" src="${esc(trk)}" alt="" loading="lazy">` : ""}${prog}${head}<div class="title">${e.flag ? `<span class="fl">${esc(e.flag)}</span> ` : ""}${esc(e.title)}<small>${esc(e.sub || "")}</small></div><div class="clock tnum">${hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>${o || qline ? `<div class="pill-row"><span class="pill${qline ? " res" : ""}">${qline || esc(o.label)}${o ? `${qline ? " ·" : ""} <b class="tnum">${o.prob}%</b> to win` : ""}</span></div>` : ""}</a>`;
@@ -491,7 +497,7 @@ function viewFootball() {
       <div class="nl"><span class="k">Next</span>${n ? `<span>${away ? "at" : "v"} ${esc(o.name)} · ${esc(when(n.date))}<small>${esc([n.competition, n.venue].filter(Boolean).join(" · "))}</small></span>` : "<span>No fixture listed</span>"}</div>
       ${T.next[1] ? `<div class="nl"><span class="k">Then</span><span>${same(T.next[1].home, T.name) ? "v" : "at"} ${esc(same(T.next[1].home, T.name) ? T.next[1].away : T.next[1].home)} · ${esc(when(T.next[1].date))}<small>${esc(T.next[1].competition || "")}</small></span></div>` : ""}
       ${l ? `<div class="nl"><span class="k">Last</span><span><b class="score ${lr} tnum">${lr} ${esc(ls)}</b> ${same(l.home, T.name) ? "v" : "at"} ${esc(same(l.home, T.name) ? l.away : l.home)}<small>${esc(shortDate(l.date))}</small></span></div>` : ""}</div></div></details>`;
-  }).join("")}</div>`, "", "nations") : "";
+  }).join("")}</div><p class="foot">Fixtures and results as ESPN lists them.</p>`, "", "nations") : "";
   return `<div class="page">${header(`<span class="ttl">${crest(H?.club_id || "86", cname, "sm")}${esc(cname)}</span>`, sub, ["football", "madrid_hub", "club_stats"])}
     ${jump([[next && "next", "Next"], [H?.xi && "xi", "XI"], [resRows.length && "results", "Results"], [cur && "table", "Table"], [cur && "leaders", "Leaders"], [NT.length && "nations", "Nations"]])}
     ${!H && !F ? `<div class="skel"></div><div class="skel"></div>` : ""}

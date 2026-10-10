@@ -179,6 +179,7 @@ a.row:active{background:var(--surface2)}
 .mono.lg{width:56px;height:56px;font-size:1rem}.mono.sm{width:28px;height:28px;font-size:.72rem}.mono.xs{width:22px;height:22px;font-size:.56rem}
 .ph{position:relative;display:inline-block;flex:none;border-radius:50%}
 .ph .crest{object-fit:cover;background:var(--surface2)}
+.ph .crest.wp{object-position:50% 18%}
 .ph.md .crest,.ph.md .mono{width:48px;height:48px}
 .pf{position:absolute;right:-2px;bottom:-2px;width:18px;height:18px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px var(--surface);background:var(--surface)}
 .who-h .ph .crest{background:var(--surface)}

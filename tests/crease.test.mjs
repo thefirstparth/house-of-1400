@@ -97,4 +97,6 @@ test("cricket scores: innings in batting order, overs as a reader writes them, a
     matchScore: { team1Score: { inngs1: { inningsId: 1, runs: 320, wickets: 10, overs: 98.2 }, inngs2: { inningsId: 3, runs: 180, wickets: 4, overs: 40 } }, team2Score: { inngs1: { inningsId: 2, runs: 250, wickets: 10, overs: 80 } } } };
   assert.equal(inningsLine(test), "IND 320 & 180/4 · ENG 250");
   assert.equal(inningsLine({ matchFormat: "ODI", team1: t(1, "A"), team2: t(2, "B") }), null);
+  const cut = { ...odi, state: "In Progress", matchScore: { team1Score: { inngs1: { inningsId: 1, runs: 238, wickets: 10, overs: 41 } }, team2Score: { inngs1: { inningsId: 2, runs: 60, wickets: 1, overs: 12 } } } };
+  assert.equal(inningsLine(cut), "WI 238 · IND 60/1 (12 ov)", "a finished first innings given as whole overs short of 50 drops its overs; the live one keeps them");
 });
