@@ -517,3 +517,11 @@ body[data-tab="nba"]{--acc:var(--nba);--acc-ink:var(--nba-ink)}
 body.big .barrow{grid-template-columns:minmax(0,1fr) 34%}
 .blk .list>a.row .t2{white-space:normal}
 .wrapt .t1,body.big .row .t1{white-space:normal}
+/* round 12 */
+.barrow .nm>span:last-child{white-space:normal;overflow:visible}
+.barrow .nm small{white-space:nowrap}
+body.big .formt .grow{min-width:6.2rem}
+body.big .barrow{grid-template-columns:minmax(0,1fr) 32%}
+.row-d a.row .t2{white-space:normal}
+.pl.gk{transform:translate(-50%,-38%)}
+.shelf{align-items:flex-start}
