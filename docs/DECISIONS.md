@@ -912,3 +912,13 @@ longer used (badly framed, with mixed backgrounds). An image that fails once is 
   - The phone keeps each player's last known ESPN id, photo and flag, and uses them when a fresh list lacks them.
   - The followed players' ESPN ids are in config (`follows.tennis_espn`), so Alcaraz's and Djokovic's photos never
     depend on the rankings at all.
+
+## Sport: any date on Today; pitch names never collide (11 Oct 2026)
+- Parth asked for a way to check any future date, not only the eight days on the rail. Today now has an "Any date"
+  button in the header, which opens the phone's own date picker. A chosen day lists everything the feeds have
+  for it. A day with nothing reads "No fixture listed for this day in the feeds yet", since the feeds only reach so
+  far ahead.
+- The Madrid XI's names ran into each other on his phone (Alexander-Arnold, Á. Carreras). Each name now keeps to
+  its own slot on the line, set in the condensed Board face, and wraps at a hyphen if it has to. A leading initial is
+  dropped ("Carreras"), and the shirt number stays on its line.
+- A national match that has kicked off with no live data is shown as a row, never the Up next hero.

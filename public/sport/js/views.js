@@ -31,8 +31,8 @@ function whyNow(e, kind) {
 // finished, up next, what changed since you last looked, the latest results and the tables; any other day lists its
 // fixtures and results in place.
 function dayRail(all, sel) {
-  const now = Date.now(), days = [-1, 0, 1, 2, 3, 4, 5, 6].map(i => dayKey(now + i * 864e5)), di = sel ? Math.max(0, days.indexOf(sel)) : 1;
-  return `<nav class="rail" aria-label="Days, drag or swipe to change"><div class="rail-in" style="--di:${di}"><i class="rail-pill" aria-hidden="true"></i>${days.map((d, i) => {
+  const now = Date.now(), days = [-1, 0, 1, 2, 3, 4, 5, 6].map(i => dayKey(now + i * 864e5)), di = sel ? days.indexOf(sel) : 1;
+  return `<nav class="rail" aria-label="Days, drag or swipe to change"><div class="rail-in${di < 0 ? " beyond" : ""}" style="--di:${Math.max(0, di)}"><i class="rail-pill" aria-hidden="true"></i>${days.map((d, i) => {
     const ev = all.filter(e => dayKey(t(e.start)) === d && e.state !== "off" && !(e.sp === "f1" && !f1Kind(e.session))), dt = new Date(d + "T12:00:00+05:30").toISOString();
     const sps = [...new Set(ev.map(e => (e.sp === "intl" ? "football" : e.sp)))].slice(0, 4), on = sel ? d === sel : i === 1;
     return `<button type="button" class="day${i === 1 ? " today" : ""}${on ? " on" : ""}" data-ui="day" data-v="${i === 1 ? "" : d}" aria-pressed="${on}" aria-label="${esc(i === 1 ? "Today" : i === 0 ? "Yesterday" : fmt(dt, { weekday: "long" }))}, ${esc(fmt(dt, { day: "numeric", month: "long" }))}: ${ev.length} ${ev.length === 1 ? "event" : "events"}"${ev.length || i === 1 ? "" : " disabled"}><span class="dn">${i === 1 ? "Today" : i === 0 ? "Yest." : esc(fmt(dt, { weekday: "short" }))}</span><b class="tnum">${esc(fmt(dt, { day: "numeric" }))}</b><span class="dots">${sps.map(sp => `<i class="sp-${sp}"></i>`).join("")}</span></button>`;
@@ -45,7 +45,8 @@ export function viewHome() {
   if (!ready && S.lastLoad) return `<div class="page">${header("Today", `<b>${esc(today)}</b>`)}<div class="empty"><b>The feeds did not answer.</b><span>Nothing is shown rather than something old. Pull down or tap refresh to try again.</span></div></div>`;
   const sel = S.UI.day && S.UI.day !== dayKey(now) ? S.UI.day : null;
   const selD = sel ? new Date(sel + "T12:00:00+05:30").toISOString() : null;
-  const head = header("Today", `<b>${esc(sel ? `Showing ${fmt(selD, { weekday: "long" })} ${shortDate(selD)}` : today)}</b>${S.lastLoad && fresh ? `<span>Updated ${hm(new Date(S.lastLoad).toISOString())}</span>` : ""}`, ["football", "madrid_hub", "f1_sessions", "crease", "tennis_players", "nba"]);
+  const pick = `<label class="pick${sel ? " on" : ""}">${ICON.cal}<span>${sel ? esc(shortDate(selD)) : "Any date"}</span><input type="date" data-pick min="${dayKey(now - 864e5)}" value="${esc(sel || dayKey(now))}" aria-label="Pick any date to see what is on"></label>`;
+  const head = header("Today", `<b>${esc(sel ? `Showing ${fmt(selD, { weekday: "long" })} ${shortDate(selD)}` : today)}</b>${S.lastLoad && fresh ? `<span>Updated ${hm(new Date(S.lastLoad).toISOString())}</span>` : ""}`, ["football", "madrid_hub", "f1_sessions", "crease", "tennis_players", "nba"], pick);
   if (!ready) return `<div class="page">${head}${skel}</div>`;
   const NAMES = [["Madrid", ["football", "madrid_hub"]], ["F1", ["f1_next", "f1_sessions"]], ["India", ["crease"]], ["Tennis", ["tennis_players"]], ["Warriors", ["nba"]]];
   const miss = S.lastLoad && !S.loading ? NAMES.filter(([, ks]) => ks.every(k => !D[k])).map(([n]) => n) : [];
@@ -54,7 +55,7 @@ export function viewHome() {
   if (sel) {
     const list = all.filter(e => dayKey(t(e.start)) === sel && e.state !== "off" && !(e.sp === "f1" && !f1Kind(e.session) && e.id.startsWith("f1")));
     const dt = new Date(sel + "T12:00:00+05:30").toISOString();
-    return `<div class="page">${head}${dayRail(all, sel)}${blk(esc(fmt(dt, { weekday: "long" }) + " " + shortDate(dt)), list.length ? `<div class="list">${list.map(e => row(e)).join("")}</div>` : " ", `<button type="button" class="chip" data-ui="day" data-v="">Back to today</button>`, "day")}</div>`;
+    return `<div class="page">${head}${dayRail(all, sel)}${blk(esc(fmt(dt, { weekday: "long" }) + " " + shortDate(dt)), list.length ? `<div class="list">${list.map(e => row(e)).join("")}</div>` : `<p class="foot">No fixture listed for this day in the feeds yet.</p>`, `<button type="button" class="chip" data-ui="day" data-v="">Back to today</button>`, "day")}</div>`;
   }
   const RANK = { football: 0, f1: 1, cricket: 2, intl: 3, tennis: 4, nba: 5 };
   const rich = e => (e.sa != null || e.liveTop || e.liveOrder ? 0 : 1);
@@ -70,7 +71,7 @@ export function viewHome() {
     if (per.has(e.key) || (e.sp === "intl" && t(e.start) - now > 10 * 864e5)) { if (!per.has(e.key) && !later.has(e.key)) later.set(e.key, e); continue; }
     per.set(e.key, e);
   }
-  const ups = [...per.values()].sort((a, b) => t(a.start) - t(b.start)), top = lives.length ? null : ups[0], rest = ups.filter(e => e !== top);
+  const ups = [...per.values()].sort((a, b) => t(a.start) - t(b.start)), top = lives.length ? null : ups.find(e => !e.nolive) || null, rest = ups.filter(e => e !== top);
   // since you last looked: what changed while the app was away, in words; nothing already on screen above it
   const onTop = new Set([...lives.map(e => e.id), ...just.map(e => e.id)]);
   const SL = sinceLast(E), items = SL.items.filter(x => !onTop.has(x.e.id) && (x.e.sp !== "f1" || x.e.top || x.kind === "live"));
@@ -116,7 +117,7 @@ function pitch(xi) {
   }
   const L = lines.length, dots = lines.map((l, li2) => {
     const y = 90 - (li2 / Math.max(L - 1, 1)) * 78, sorted = [...l].sort((a, b) => side(a) - side(b));
-    return sorted.map((p, i) => { const nm = String(p.short || p.name).replace(/^[A-Z]\. /, "").replace(/ Júnior$/, " Jr."); return `<div class="pl${nm.length > 8 ? " long" : ""}" style="left:${((i + 1) / (sorted.length + 1)) * 100}%;top:${y}%"><b class="tnum">${esc(p.shirt || "")}</b><span>${esc(nm)}</span></div>`; }).join("");
+    return sorted.map((p, i) => { const nm = String(p.short || p.name).replace(/^\p{Lu}\. /u, "").replace(/ Júnior$/, " Jr."); return `<div class="pl" style="left:${((i + 1) / (sorted.length + 1)) * 100}%;top:${y}%;width:${Math.min(34, 100 / (sorted.length + 1) - 1).toFixed(1)}%"><b class="tnum">${esc(p.shirt || "")}</b><span>${esc(nm)}</span></div>`; }).join("");
   }).join("");
   return `<div class="pitch" role="img" aria-label="${esc(xi.formation || "")}: ${esc(xi.players.map(p => p.name).join(", "))}"><svg class="lines" viewBox="0 0 68 80" preserveAspectRatio="none" aria-hidden="true"><rect x="2" y="2" width="64" height="76" rx="1"/><path d="M2 40h64"/><circle cx="34" cy="40" r="7"/><rect x="18" y="66" width="32" height="12"/><rect x="26" y="73" width="16" height="5"/><rect x="18" y="2" width="32" height="12"/><rect x="26" y="2" width="16" height="5"/></svg>${dots}</div>`;
 }

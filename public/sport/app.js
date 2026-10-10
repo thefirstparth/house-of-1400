@@ -232,6 +232,12 @@ root.addEventListener("click", e => {
   if (tab) { e.preventDefault(); UI.match = null; UI.day = null; vibe(); history.replaceState(null, "", tab.getAttribute("href")); render(true); return; }
   const mt = e.target.closest("[data-match]"); if (mt) { e.preventDefault(); UI.match = mt.dataset.match; vibe(); draw(false); }
 });
+// any date from the phone's own date picker on Today
+view.addEventListener("change", e => {
+  const inp = e.target.closest("input[data-pick]"); if (!inp) return;
+  const v = inp.value, today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
+  setDay(!v || v === today ? null : v); window.scrollTo(0, 0);
+});
 view.addEventListener("click", e => {
   if (e.target.closest("[data-act=retry]")) { vibe(); loadAll(true); return; }
   const b = e.target.closest("button[data-ui]");

@@ -65,9 +65,9 @@ export const countdown = iso => `<span data-cd="${esc(iso)}">${esc(rel(iso))}</s
 export const moreBox = (label, inner) => `<details class="more"><summary>${label}${ICON.down}</summary>${inner}</details>`;
 export const blk = (title, body, extra = "", id = "") => (body ? `<section class="blk"${id ? ` id="${id}"` : ""}><div class="blk-h"><h2>${title}</h2>${extra}</div>${body}</section>` : "");
 export const seg = (key, items, cur, label) => (items.length > 1 ? `<div class="seg" role="group" aria-label="${esc(label)}" style="--n:${items.length};--i:${Math.max(0, items.findIndex(([k]) => k === cur))}"><i class="thumb" aria-hidden="true"></i>${items.map(([k, n]) => `<button type="button" data-ui="${key}" data-v="${esc(k)}" aria-pressed="${k === cur}"><span>${esc(n)}</span></button>`).join("")}</div>` : "");
-export function header(title, sub, keys = []) {
+export function header(title, sub, keys = [], right = "") {
   const st = keys.filter(k => D[k]?.stale);
-  return `<header class="ph"><h1 id="h1">${title}</h1>${sub || st.length ? `<div class="sub">${sub || ""}${st.length ? `<span class="stale">Saved copy, ${esc(when(D[st[0]].as_of))}${S.loading ? ", refreshing" : ""}</span>` : ""}</div>` : ""}</header>`;
+  return `<header class="ph">${right ? `<div class="ph-r">${right}</div>` : ""}<h1 id="h1">${title}</h1>${sub || st.length ? `<div class="sub">${sub || ""}${st.length ? `<span class="stale">Saved copy, ${esc(when(D[st[0]].as_of))}${S.loading ? ", refreshing" : ""}</span>` : ""}</div>` : ""}</header>`;
 }
 export const jump = items => { const it = items.filter(([id]) => id); return it.length > 2 ? `<nav class="jump" aria-label="On this page"><div class="jump-in">${it.map(([id, n]) => `<a href="#${S.route}/${id}" data-jump="${id}">${esc(n)}</a>`).join("")}</div></nav>` : ""; };
 export function sources(...keys) {

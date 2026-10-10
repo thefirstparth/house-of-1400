@@ -474,7 +474,7 @@ body[data-tab="home"] #view{touch-action:pan-y pinch-zoom;min-height:calc(100dvh
 
 .mk.flag.l{width:44px;height:44px}
 .miss{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:10px 2px 0;color:var(--muted);font-size:var(--t-meta)}
-body.big .tbl td.team span,body.big .pl span,body.big .bar-row .tx{white-space:normal;overflow-wrap:anywhere}
+body.big .tbl td.team span,body.big .bar-row .tx{white-space:normal;overflow-wrap:anywhere}
 .line.c.paused{color:var(--ink2)}
 .mr.is-live:has(.st:not(.lv))::after{display:none}
 body.big .rank .n,body.big .formt .nm{white-space:normal;overflow:visible;max-width:none}
@@ -518,3 +518,20 @@ a.mr:active,a.li:active{transition:none}
 .ln.nx .mx{min-width:0;max-width:none}
 .li .t2.num{font-size:1rem;color:var(--ink2)}
 .bar-row .ps,.formt .ps,.pl b{font-size:1rem}
+/* the pitch: a name keeps to its own slot and wraps (at a space or hyphen) to two lines rather than run into the next */
+.pl span{white-space:normal;overflow:visible;text-overflow:clip;display:block;hyphens:manual;overflow-wrap:normal;padding:1px 5px;font-family:var(--num);font-weight:600;font-size:.86rem;letter-spacing:.01em;line-height:1.1}
+/* Today: any date */
+.ph{position:relative}
+.ph-r{position:absolute;right:0;top:6px}
+.pick{position:relative;display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border-radius:999px;background:var(--surface);box-shadow:0 0 0 .5px var(--line2);font-size:var(--t-meta);font-weight:650;color:var(--ink2);cursor:pointer;transition:transform .3s var(--spring-fast)}
+.pick:active{transform:scale(.95)}
+.pick svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.pick.on{background:var(--ink);color:var(--bg);box-shadow:none}
+.pick input{position:absolute;inset:-4px;opacity:0;width:auto;height:auto;margin:0;border:0;padding:0;cursor:pointer;font-size:16px}
+.pick input::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.rail-in.beyond .rail-pill{opacity:0}
+.rail-pill{transition:transform .5s var(--spring),opacity .2s}
+/* the shirt number sits on its line whatever the name's height (the name hangs below it) */
+.pl{transform:translate(-50%,-15px)}
+.pitch{container-type:inline-size}
+@container (max-width:340px){.pl span{font-size:.76rem;letter-spacing:0;padding:1px 3px}}
