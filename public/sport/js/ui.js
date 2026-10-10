@@ -1,30 +1,37 @@
-// Sport V2, the components. One mark system (a crest is drawn whole, never cropped; only a player's photo is round),
-// one match row used everywhere (both sides, always), one session row for F1, one hero card, one match sheet.
-import { D, S, esc, t, fmt, hm, dayKey, dayLabel, when, shortDate, longDate, rel, same, last, initials, ordinal, gpName, gpShort, val,
+// Sport V3, the components. One grid for every match row (status | sides | score, fixed tracks, so every time, score
+// and divider lines up), one hero, one sheet. Marks: a crest is drawn whole; only a player's photo is round, cropped
+// to the face from an undistorted image. Live is said once (dot, LIVE, clock); a saved copy says so.
+import { D, S, events, esc, t, fmt, hm, dayKey, dayLabel, when, shortDate, longDate, rel, same, last, initials, ordinal, gpName, gpShort, val,
   club, clubId, favDriver, short, sideProbs, oddsFor, myChance, sessionMarket, f1Kind, F1MIN, resultWord, meetRecord, atp, soccerMark } from "./core.js";
 
 // ------------------------------------------------------------------ marks
-const PX = { s: 24, m: 32, l: 56, xl: 72 };
+const PX = { s: 24, m: 32, l: 48, xl: 64 };
 const CRIC = { India: 6, England: 1, Australia: 2, "South Africa": 3, "West Indies": 4, "New Zealand": 5, Pakistan: 7, "Sri Lanka": 8, Zimbabwe: 9, Bangladesh: 25, Ireland: 29, Afghanistan: 40 };
-// ESPN's resizer stretches an image to any width and height given (its player headshots are 600x436: a square
-// request squashed every face, 10 Oct 2026), so only a width is ever asked for and the box crops with object-fit
-const espnImg = (path, px) => `https://a.espncdn.com/combiner/i?img=${encodeURIComponent(path)}&w=${Math.max(px * 3, 120)}`;
-const mono = (name, size) => `<span class="mk mono ${size}" aria-hidden="true">${esc(initials(name))}</span>`;
-function img(url, name, size, kind, alt = "") {
-  const fb = esc(mono(name, size)).replace(/'/g, "");
-  return `<span class="mk ${kind} ${size}"><img src="${esc(url)}"${alt ? ` data-alt="${esc(alt)}"` : ""} alt="" loading="lazy" decoding="async" onerror="if(this.dataset.alt){this.src=this.dataset.alt;this.removeAttribute('data-alt');this.parentNode.classList.add('wp')}else this.parentNode.outerHTML='${fb}'"></span>`;
+// ESPN's resizer stretches an image to any width and height given (its headshots are 600x436): only a width is asked
+// photos are asked at 600 (ESPN's own width; the face is the middle third of it, so a 64px circle still gets about
+// 4 source pixels per screen pixel on a 3x phone); crests at three times their size
+const espnImg = (path, px, photo = false) => `https://a.espncdn.com/combiner/i?img=${encodeURIComponent(path)}&w=${photo ? (px <= 24 ? 240 : 600) : Math.max(px * 3, 120)}`;
+const mono = (name, size, kind = "") => `<span class="mk mono${kind} ${size}" aria-hidden="true">${esc(initials(name))}</span>`;
+// an image that failed once is drawn as initials from then on (a redraw never brings the broken image back)
+const BAD = (globalThis.__badImg ||= new Set());
+function img(url, name, size, kind) {
+  if (BAD.has(url)) return mono(name, size, kind.includes("photo") ? " round" : "");
+  const fb = esc(mono(name, size, kind.includes("photo") ? " round" : "")).replace(/'/g, "");
+  return `<span class="mk ${kind} ${size}" aria-hidden="true"><img src="${esc(url)}" alt="" decoding="async" onerror="__badImg.add(this.src);this.parentNode.outerHTML='${fb}'"></span>`;
 }
-// m: { t: soccer|nba|cricket|player, id?, abbr?, name }
 export function mark(m, size = "m") {
-  if (!m) return `<span class="mk none ${size}" aria-hidden="true"></span>`;
+  // no side yet (a draw still to be played): a neutral mark, so the row still has two
+  if (!m) return `<span class="mk mono round ${size}" aria-hidden="true">?</span>`;
   const px = PX[size];
   if (m.t === "soccer") return m.id ? img(espnImg(`/i/teamlogos/soccer/500/${m.id}.png`, px), m.name, size, "crest") : mono(m.name, size);
-  if (m.t === "nba") return m.abbr ? img(espnImg(`/i/teamlogos/nba/500/${String(m.abbr).toLowerCase()}.png`, px), m.name, size, "crest") : mono(m.name, size);
+  if (m.t === "nba") return m.abbr ? img(espnImg(`/i/teamlogos/nba/500${document.documentElement.dataset.theme === "dark" ? "-dark" : ""}/${String(m.abbr).toLowerCase()}.png`, px), m.name, size, "crest") : mono(m.name, size);
   if (m.t === "cricket") return CRIC[m.name] ? img(espnImg(`/i/teamlogos/cricket/500/${CRIC[m.name]}.png`, px), m.name, size, "crest") : mono(m.name, size);
   if (m.t === "player") {
+    // only ESPN's studio headshots (one light, one crop, one background for every player); a player without one gets
+    // initials, never a cropped action photo (Parth, 10 Oct: "not a real, realistic image")
     const r = atp(m.name), path = r?.photo ? new URL(r.photo).pathname : r?.id ? `/i/headshots/tennis/players/full/${r.id}.png` : null;
-    const flag = r?.flag ? `<img class="pf" src="${esc(r.flag)}" alt="" loading="lazy">` : "";
-    const ph = path ? img(espnImg(path, px), m.name, size, "photo", r.alt_photo || "") : r?.alt_photo ? img(r.alt_photo, m.name, size, "photo wp") : mono(m.name, size);
+    const flag = r?.flag && size !== "s" ? `<img class="pf" src="${esc(r.flag)}" alt="" loading="lazy">` : "";
+    const ph = path ? img(espnImg(path, px, true), m.name, size, "photo") : mono(m.name, size, " round");
     return flag ? `<span class="mkw">${ph}${flag}</span>` : ph;
   }
   return mono(m.name, size);
@@ -35,125 +42,154 @@ export const ICON = {
   football: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8.2l3.6 2.6-1.4 4.2H9.8l-1.4-4.2z"/></svg>',
   intl: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8.2l3.6 2.6-1.4 4.2H9.8l-1.4-4.2z"/></svg>',
   f1: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V3.5"/><path d="M5 4h14v9H5"/><path class="f" d="M5 4h3.5v3H5zM12 4h3.5v3H12zM8.5 7H12v3H8.5zM15.5 7H19v3h-3.5zM5 10h3.5v3H5zM12 10h3.5v3H12z"/></svg>',
-  cricket: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 3l5.5 5.5-9.6 9.6-5.5-5.5z"/><path d="M5.9 12.6L3 19.5 4.5 21l6.9-2.9"/></svg>',
+  cricket: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M7.2 5.6c2.6 3.7 2.6 9.1 0 12.8M16.8 5.6c-2.6 3.7-2.6 9.1 0 12.8"/><path d="M8.6 8.2l1.3.4M9.3 11.4h1.3M8.6 14.8l1.3-.4M15.4 8.2l-1.3.4M14.7 11.4h-1.3M15.4 14.8l-1.3-.4"/></svg>',
   tennis: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M5 6.3c3.2 1.6 4.6 5.7 3 10.1M19 6.3c-3.2 1.6-4.6 5.7-3 10.1"/></svg>',
   nba: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5v17M6 6c3 3.4 3 8.6 0 12M18 6c-3 3.4-3 8.6 0 12"/></svg>',
   cal: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16M12 13v5M9.5 15.5h5"/></svg>',
   x: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
   down: '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5l4 4 4-4"/></svg>',
+  back: '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M9 3L5 7l4 4"/></svg>',
 };
 export const TAB_OF = { football: "football", intl: "football", f1: "f1", cricket: "cricket", tennis: "tennis", nba: "nba" };
-export const TAB_NAME = { football: "Madrid", intl: "Madrid", f1: "F1", cricket: "India", tennis: "Tennis", nba: "NBA" };
-export const tag = (sp, label) => `<span class="tag sp-${sp}">${ICON[sp]}${esc(label)}</span>`;
+export const TAB_NAME = { football: "Madrid", intl: "National teams", f1: "F1", cricket: "India", tennis: "Tennis", nba: "Warriors" };
+export const tag = (sp, label) => `<span class="tag sp-${sp}">${ICON[sp]}<span>${esc(label)}</span></span>`;
 export const live = (txt = "Live") => `<span class="live"><i></i>${esc(txt)}</span>`;
 export const countdown = iso => `<span data-cd="${esc(iso)}">${esc(rel(iso))}</span>`;
 export const moreBox = (label, inner) => `<details class="more"><summary>${label}${ICON.down}</summary>${inner}</details>`;
 export const blk = (title, body, extra = "", id = "") => (body ? `<section class="blk"${id ? ` id="${id}"` : ""}><div class="blk-h"><h2>${title}</h2>${extra}</div>${body}</section>` : "");
-export const seg = (key, items, cur, label) => (items.length > 1 ? `<div class="seg" role="group" aria-label="${esc(label)}">${items.map(([k, n]) => `<button type="button" data-ui="${key}" data-v="${esc(k)}" aria-pressed="${k === cur}">${esc(n)}</button>`).join("")}</div>` : "");
+export const seg = (key, items, cur, label) => (items.length > 1 ? `<div class="seg" role="group" aria-label="${esc(label)}" style="--n:${items.length};--i:${Math.max(0, items.findIndex(([k]) => k === cur))}"><i class="thumb" aria-hidden="true"></i>${items.map(([k, n]) => `<button type="button" data-ui="${key}" data-v="${esc(k)}" aria-pressed="${k === cur}">${esc(n)}</button>`).join("")}</div>` : "");
 export function header(title, sub, keys = []) {
   const st = keys.filter(k => D[k]?.stale);
-  return `<header class="ph"><h1 id="h1">${title}</h1>${sub || st.length ? `<div class="sub">${sub || ""}${st.length ? `<span class="stale">Saved copy from ${esc(when(D[st[0]].as_of))}${S.loading ? ", refreshing" : ""}</span>` : ""}</div>` : ""}</header>`;
+  return `<header class="ph"><h1 id="h1">${title}</h1>${sub || st.length ? `<div class="sub">${sub || ""}${st.length ? `<span class="stale">Saved copy, ${esc(when(D[st[0]].as_of))}${S.loading ? ", refreshing" : ""}</span>` : ""}</div>` : ""}</header>`;
 }
 export const jump = items => { const it = items.filter(([id]) => id); return it.length > 2 ? `<nav class="jump" aria-label="On this page"><div class="jump-in">${it.map(([id, n]) => `<a href="#${S.route}/${id}" data-jump="${id}">${esc(n)}</a>`).join("")}</div></nav>` : ""; };
 export function sources(...keys) {
-  const parts = keys.filter(k => D[k]?.source).map(k => `<li>${esc(D[k].source)} · checked ${D[k].as_of ? (dayKey(t(D[k].as_of)) === dayKey(Date.now()) ? hm(D[k].as_of) : `${shortDate(D[k].as_of)}, ${hm(D[k].as_of)}`) : ""}${D[k].stale ? " · last saved copy" : ""}</li>`);
-  return parts.length ? `<details class="srcs"><summary>Sources and times</summary><ul>${[...new Set(parts)].join("")}</ul><p>The time beside each source is when the app last checked it. All times IST. Markets are Kalshi and Polymarket prices, not forecasts, each rounded to a whole number, so a pair can add up to 99 or 101.</p></details>` : "";
+  const parts = keys.filter(k => D[k]?.source).map(k => `<li>${esc(D[k].source)} · checked ${D[k].as_of ? (dayKey(t(D[k].as_of)) === dayKey(Date.now()) ? hm(D[k].as_of) : `${shortDate(D[k].as_of)}, ${hm(D[k].as_of)}`) : ""}${D[k].stale ? " · saved copy" : ""}</li>`);
+  return parts.length ? `<details class="srcs"><summary>Sources and times</summary><ul>${[...new Set(parts)].join("")}</ul><p>The time beside each source is when the app last checked it. All times IST. Prices are Kalshi and Polymarket markets, not forecasts, rounded to whole numbers; each outcome is its own market, so a set can add up to a little more or less than 100.</p></details>` : "";
 }
 export const formSquares = (rs, label) => `<span class="form" role="img" aria-label="${esc(label || "Form")}, oldest to latest: ${esc(rs.map(r => r.r).join(" "))}">${rs.map(r => `<i class="${esc(r.r)}" title="${esc(r.t || "")}">${esc(r.r)}</i>`).join("")}</span>`;
 export function rankList(outcomes, { max = 6, nameFn = x => x, me = null } = {}) {
   const o = [...outcomes].sort((a, b) => b.prob - a.prob).slice(0, max);
-  return `<div class="rank">${o.map((x, i) => { const m = me && same(x.name, me); return `<span class="n${i === 0 ? " lead" : ""}${m ? " me" : ""}">${esc(nameFn(x.name))}</span><span class="tr"><i class="${i === 0 ? "lead" : ""}${m ? " me" : ""}" style="width:${Math.max(1.5, Math.min(100, x.prob))}%"></i></span><b class="p tnum${i === 0 ? " lead" : ""}">${Math.round(x.prob)}%</b>`; }).join("")}</div>`;
+  return `<div class="rank">${o.map((x, i) => { const m = me && same(x.name, me); return `<span class="n${m ? " me" : ""}">${esc(nameFn(x.name))}</span><span class="tr"><i class="${i === 0 ? "lead" : ""}${m ? " me" : ""}" style="width:${Math.max(1.5, Math.min(100, x.prob))}%"></i></span><b class="p tnum">${Math.round(x.prob)}%</b>`; }).join("")}</div>`;
 }
-export const barRow = (name, v, max, { me = false, sub = "", pos = "", colour = "", label = v } = {}) => `<div class="bar-row${me ? " me" : ""}"${colour ? ` style="--c:${esc(colour)}"` : ""}><div class="nm">${pos !== "" ? `<span class="ps tnum">${esc(pos)}</span>` : ""}<span class="tx">${esc(name)}${sub ? `<small>${esc(sub)}</small>` : ""}</span></div><div class="bv"><span class="tk"><i style="width:${Math.max(2, (v / Math.max(max, 1e-9)) * 100)}%"></i></span><b class="tnum">${esc(label)}</b></div></div>`;
-export function mktBar(p, names) {
+export const barRow = (name, v, max, { me = false, sub = "", pos = "", colour = "", label = v } = {}) => `<div class="bar-row${me ? " me" : ""}${pos === "" ? " np" : ""}"${colour ? ` style="--c:${esc(colour)}"` : ""}>${pos !== "" ? `<span class="ps tnum">${esc(pos)}</span>` : ""}<span class="tx">${esc(name)}${sub ? `<small>${esc(sub)}</small>` : ""}</span><span class="tk"><i style="width:${Math.max(2, (v / Math.max(max, 1e-9)) * 100)}%"></i></span><b class="tnum">${esc(label)}</b></div>`;
+export function mktBar(p, names, note = "") {
   if (!p) return "";
   const lead = Math.max(p.a, p.b, p.d ?? -1), seg2 = (v, cls) => `<i class="${cls}${v === lead ? " lead" : ""}" style="flex:${Math.max(v, 3)}"></i>`;
-  return `<div class="mkt" role="img" aria-label="Market: ${esc(names[0])} ${p.a}%, ${p.d != null ? `draw ${p.d}%, ` : ""}${esc(names[1])} ${p.b}%"><div class="track">${seg2(p.a, "a")}${p.d != null ? seg2(p.d, "d") : ""}${seg2(p.b, "b")}</div>
-    <div class="lab"><span class="${p.a === lead ? "lead" : ""}"><b class="tnum">${p.a}%</b> ${esc(names[0])}</span>${p.d != null ? `<span class="${p.d === lead ? "lead" : ""}">Draw <b class="tnum">${p.d}%</b></span>` : ""}<span class="${p.b === lead ? "lead" : ""}">${esc(names[1])} <b class="tnum">${p.b}%</b></span></div>
-    <div class="src">${esc(p.source)}${D.odds?.as_of ? ` · ${hm(D.odds.as_of)}` : ""}</div></div>`;
+  const asOf = D.odds?.as_of ? (dayKey(t(D.odds.as_of)) === dayKey(Date.now()) ? hm(D.odds.as_of) : `${shortDate(D.odds.as_of)} ${hm(D.odds.as_of)}`) : "";
+  return `<div class="mkt" role="img" aria-label="${esc(note || "Market")}: ${esc(names[0])} ${p.a}%, ${p.d != null ? `draw ${p.d}%, ` : ""}${esc(names[1])} ${p.b}%"><div class="track">${seg2(p.a, "a")}${p.d != null ? seg2(p.d, "d") : ""}${seg2(p.b, "b")}</div>
+    <div class="lab"><span><b class="tnum">${p.a}%</b> ${esc(names[0])}</span>${p.d != null ? `<span>Draw <b class="tnum">${p.d}%</b></span>` : ""}<span>${esc(names[1])} <b class="tnum">${p.b}%</b></span></div>
+    <div class="src">${note ? `${esc(note)} · ` : ""}${esc(p.source)}${asOf ? ` · ${asOf}` : ""}</div></div>`;
 }
 
-// ------------------------------------------------------------------ names on rows
+// ------------------------------------------------------------------ names
 export const sideName = (e, side) => { const n = side === "a" ? e.a : e.b; if (!n) return "To be decided"; return e.sp === "tennis" || e.sp === "nba" ? last(n) : e.sp === "football" ? short(n) : n; };
 export const sessionTitle = e => (e.id.startsWith("gp") ? gpShort(e.gp) : e.session);
 
-// ------------------------------------------------------------------ the right-hand status of a row
-// the live label: a stoppage by name, a saved copy with its time, else Live
-export const liveLabel = e => (e.pause ? e.pause : e.long ? "Live, running long" : "Live");
-const liveSub = e => (e.saved ? `Saved ${hm(e.saved)}` : e.clock || "");
+// ------------------------------------------------------------------ the status track (left, fixed width)
+// the day in the status track: Today, Tmrw, Yest., else "20 Sep" (the track is narrow; the sheet gives the weekday)
+const dayShort = iso => { const k = dayKey(t(iso)), now = Date.now(); return k === dayKey(now) ? "Today" : k === dayKey(now + 864e5) ? "Tmrw" : k === dayKey(now - 864e5) ? "Yest." : shortDate(iso); };
+export const liveLabel = e => e.pause || "Live";
+const at = iso => (dayKey(t(iso)) === dayKey(Date.now()) ? hm(iso) : `${shortDate(iso)} ${hm(iso)}`);
+// in a word: why an event is not on (Postponed, Cancelled, Abandoned), or that its live feed was lost
+const offShort = e => (e.seen ? "Last seen" : e.offWhy ? String(e.offWhy).replace(/^(\w+(?: result)?).*/, "$1") : "Not played");
 function status(e) {
-  if (e.state === "live") return `<div class="st">${e.pause ? `<b class="fin">${esc(e.pause)}</b>` : live(liveLabel(e))}${liveSub(e) ? `<small>${esc(liveSub(e))}</small>` : ""}</div>`;
-  if (e.state === "off") return `<div class="st"><b class="dim">Off</b><small>${esc(shortDate(e.start))}</small></div>`;
+  if (e.state === "live") return e.pause ? `<span class="st lv"><b class="w">${esc(e.pause)}</b><small>${e.saved ? `Saved ${esc(at(e.saved))}` : "Live"}</small></span>` : `<span class="st lv"><b>${live("Live")}</b><small>${esc(e.saved ? `Saved ${at(e.saved)}` : e.clock || "")}</small></span>`;
+  if (e.state === "off") return `<span class="st"><b class="w">${esc(offShort(e))}</b><small>${esc(e.seen ? at(e.seen) : dayShort(e.start))}</small></span>`;
   if (e.state === "done") {
-    const w = e.sp === "cricket" ? resultWord(e) : e.sp === "f1" ? (e.provisional ? "Provisional" : "Final") : e.sp === "football" || e.sp === "intl" ? "FT" : "Final";
-    return `<div class="st"><b class="fin">${esc(w)}</b><small>${esc(dayLabel(e.start))}</small></div>`;
+    const w = e.sp === "cricket" ? (e.won === "a" ? "Won" : e.won === "b" ? "Lost" : "Result") : e.sp === "f1" ? (e.provisional ? "Prov." : e.unconfirmed ? "Ended" : "Final") : e.sp === "football" || e.sp === "intl" ? "FT" : "Final";
+    return `<span class="st"><b class="w">${esc(w)}</b><small>${esc(dayShort(e.start))}</small></span>`;
   }
-  const c = myChance(e), soon = t(e.start) - Date.now() < 12 * 36e5;
-  return `<div class="st"><b class="tnum">${e.tbc ? "TBC" : hm(e.start)}</b><small>${e.starting ? "Starting" : e.late ? "Delayed" : soon ? countdown(e.start) : esc(dayLabel(e.start))}</small>${c ? `<span class="ch tnum">${c.prob}%<small> ${esc(c.who)}</small></span>` : ""}</div>`;
+  const soon = t(e.start) - Date.now() < 12 * 36e5;
+  return `<span class="st"><b class="tnum">${e.tbc ? "TBC" : hm(e.start)}</b><small>${e.due ? "On now" : e.starting ? "Starting" : e.late ? "Delayed" : e.tbc ? esc(shortDate(e.start)) : soon ? countdown(e.start) : esc(dayShort(e.start))}</small></span>`;
+}
+// what a screen reader hears for a row
+export function said(e) {
+  const when2 = e.state === "live" ? `live${e.pause ? `, ${e.pause}` : e.clock ? `, ${e.clock}` : ""}${e.saved ? `, saved copy from ${at(e.saved)}` : ""}` : e.state === "done" ? `finished ${dayLabel(e.start)}` : e.state === "off" ? (e.seen ? `live feed lost, last seen at ${at(e.seen)}` : String(e.offWhy || "not played").toLowerCase()) : e.tbc ? `${dayLabel(e.start)}, time to be confirmed` : e.late ? `due at ${hm(e.start)}, not yet started` : `${dayLabel(e.start)} at ${hm(e.start)}`;
+  if (e.sp === "f1") return `${e.session}, ${gpName(e.gp)}, ${when2}${e.top && e.state !== "next" ? `, ${e.provisional ? "provisional " : ""}${e.top.map((n, i) => `${i + 1} ${last(n)}`).join(", ")}` : ""}`;
+  const done = e.state === "done";
+  const sc = e.sp === "tennis" && done && e.setsA?.length ? `, ${e.setsA.map((g, i) => `${g}-${e.setsB[i]}`).join(", ")}` : (done || e.state === "live") && (e.sa != null || e.sb != null) ? `, ${[e.sa != null ? `${sideName(e, "a")} ${e.sa}` : "", e.sb != null ? `${sideName(e, "b")} ${e.sb}` : ""].filter(Boolean).join(", ")}` : "";
+  const won = done ? (e.won ? `, ${sideName(e, e.won)} won${e.sp === "cricket" ? (resultWord(e).match(/ by .+$/)?.[0] || "") : ""}` : e.sp === "football" || e.sp === "intl" ? ", a draw" : "") : "";
+  return `${sideName(e, "a")} versus ${sideName(e, "b")}${sc}${won}, ${when2}${e.comp ? `, ${e.comp}` : ""}`;
 }
 
-// ------------------------------------------------------------------ the match row: both sides, always
-export function row(e, { sub = true, extra = "" } = {}) {
-  if (e.sp === "f1") return sessionRow(e);
+// ------------------------------------------------------------------ the match row
+export function row(e, { meta = true, extra = "", why = "" } = {}) {
+  if (why) extra = `<span class="why">${esc(why)}</span>` + extra;
+  if (e.sp === "f1") return sessionRow(e, { extra, why });
   const done = e.state === "done", lv = e.state === "live";
   const sc = side => {
-    if (e.sp === "tennis" && done) return `<span class="sets">${(side === "a" ? e.setsA : e.setsB).map((g, i) => `<b class="tnum${g > (side === "a" ? e.setsB : e.setsA)[i] ? " w" : ""}">${g}</b>`).join("")}</span>`;
-    const v = side === "a" ? e.sa : e.sb, ov = side === "a" ? e.oa : e.ob;
-    return v != null && (done || lv) ? `<b class="sc tnum">${esc(v)}${ov && lv ? `<small>${esc(ov)} ov</small>` : ""}</b>` : "";
+    if (e.sp === "tennis" && done) return `<span class="sc sets">${(side === "a" ? e.setsA : e.setsB).map((g, i) => `<b class="tnum${g > (side === "a" ? e.setsB : e.setsA)[i] ? " w" : ""}">${g}</b>`).join("")}</span>`;
+    const v = side === "a" ? e.sa : e.sb;
+    return `<span class="sc tnum" data-sk="${esc(e.id + side)}" data-v="${esc(v ?? "")}">${v != null && (done || lv) ? esc(v) : ""}</span>`;
   };
-  const line = side => `<div class="ln${done && e.won === side ? " win" : done && e.won ? " lose" : ""}">${mark(side === "a" ? e.ma : e.mb, "s")}<span class="nm">${esc(sideName(e, side))}</span>${sc(side)}</div>`;
-  const meta = [e.comp, e.sp === "cricket" && e.city ? e.city : ""].filter(Boolean).join(" · ");
-  return `<a class="mr sp-${e.sp}${lv ? " is-live" : ""}" href="${e.href}" data-match="${esc(e.id)}"><div class="sides">${line("a")}${line("b")}${sub && meta ? `<div class="meta">${esc(meta)}</div>` : ""}${extra}</div>${status(e)}</a>`;
+  const line = side => `<span class="ln${done && e.won === side ? " win" : done && e.won ? " lose" : ""}">${mark(side === "a" ? e.ma : e.mb, "s")}<span class="nm">${esc(sideName(e, side))}</span>${sc(side)}</span>`;
+  // cricket: the city before the match, the margin after it ("by 8 wkts"; Won or Lost is in the status track)
+  const margin = e.sp === "cricket" && done ? (resultWord(e).match(/\bby .+$/)?.[0] || "") : "";
+  const m = meta ? [e.comp, e.sp === "cricket" && !done && e.city ? e.city : "", margin].filter(Boolean).join(" · ") : "";
+  return `<a class="mr sc-${e.sp}${lv ? " is-live" : ""}" href="${e.href}" data-match="${esc(e.id)}" aria-label="${esc((why ? why + ". " : "") + said(e))}">${status(e)}<span class="sides">${line("a")}${line("b")}${m ? `<span class="meta">${esc(m)}</span>` : ""}${extra}</span></a>`;
 }
-// An F1 session: the flag, the session and Grand Prix, then the time, the live state or the top three
-export function sessionRow(e, { gp = true } = {}) {
+// an F1 session: the status, then flag, session, and the top three (live order, provisional or final)
+export function sessionRow(e, { gp = true, extra = "", why = "" } = {}) {
   const S2 = val("f1_standings")?.drivers || [];
   const code = n => S2.find(d => same(last(d.name), last(n)) || same(d.shown, n))?.code || last(n).slice(0, 3).toUpperCase();
   const top = e.state === "live" && e.liveTop ? e.liveTop : e.state === "done" ? e.top : null;
-  const podium = top ? `<div class="pod">${top.map((n, i) => `<span><b class="tnum">${i + 1}</b>${esc(code(n))}</span>`).join("")}</div>` : "";
-  return `<a class="mr f1 sp-f1${e.state === "live" ? " is-live" : ""}" href="${e.href}" data-match="${esc(e.id)}"><div class="sides"><div class="ln"><span class="mk flagx s" aria-hidden="true">${esc(e.flag || "")}</span><span class="nm">${esc(sessionTitle(e))}</span></div>${gp ? `<div class="meta">${esc(e.id.startsWith("gp") ? `Round ${e.round}${e.heldIn ? `, held in ${e.heldIn}` : ""}` : gpShort(e.gp))}</div>` : ""}${podium}</div>${status(e)}</a>`;
+  const pod = top ? `<span class="pod">${top.map((n, i) => `<span><b class="tnum">${i + 1}</b>${esc(code(n))}</span>`).join("")}</span>` : "";
+  const sub = gp ? (e.id.startsWith("gp") ? `Round ${e.round}${e.heldIn ? `, held in ${e.heldIn}` : ""}` : gpShort(e.gp)) : "";
+  return `<a class="mr sc-f1${e.state === "live" ? " is-live" : ""}" href="${e.href}" data-match="${esc(e.id)}" aria-label="${esc((why ? why + ". " : "") + said(e))}">${status(e)}<span class="sides"><span class="ln f1"><span class="mk flagx s" aria-hidden="true">${esc(e.flag || "")}</span><span class="nm">${esc(sessionTitle(e))}</span></span>${pod}${sub ? `<span class="meta">${esc(sub)}</span>` : ""}${extra}</span></a>`;
 }
 
-// ------------------------------------------------------------------ the hero: the live or next event, large
-export function hero(e) {
+// ------------------------------------------------------------------ the hero
+function f1Order(e, list, n = 3) {
+  const S2 = val("f1_standings")?.drivers || [], fav = favDriver(), drv = x => S2.find(d => same(last(d.name), last(x)) || same(d.shown, x));
+  const li = (x, i) => { const d = drv(x); return `<li class="${same(last(x), last(fav)) ? "me" : ""}"><b class="tnum">${i + 1}</b>${d?.colour ? `<i style="background:${esc(d.colour)}"></i>` : ""}<span>${esc(d?.shown || x)}</span></li>`; };
+  const head = list.slice(0, n), mi = list.findIndex(x => same(last(x), last(fav)));
+  return `<ol class="order">${head.map(li).join("")}${mi >= n ? `<li class="gap" aria-hidden="true"></li>${li(list[mi], mi)}` : ""}</ol>`;
+}
+export function hero(e, { inSheet = false } = {}) {
   if (!e) return "";
   const lv = e.state === "live";
-  const top = `<div class="hh">${tag(e.sp, e.sp === "f1" ? `F1 · ${gpShort(e.gp)}` : e.comp || "")}${lv ? (e.pause ? `<span class="cd">${esc(e.pause)}</span>` : live(e.long ? "Live · long" : "Live")) : `<span class="cd">${e.tbc ? "Time to be confirmed" : e.starting ? "Starting" : e.late ? "Delayed" : countdown(e.start)}</span>`}</div>`;
+  const right = lv ? `${e.pause ? `<span class="cd w">${esc(e.pause)}</span>` : live("Live")}${e.saved ? `<span class="cd">Saved ${esc(at(e.saved))}</span>` : ""}` : `<span class="cd">${e.tbc ? "" : e.due ? "On now by the timetable" : e.starting ? "Starting" : e.late ? (e.sp === "tennis" ? "Not yet on court" : "Delayed") : countdown(e.start)}</span>`;
+  const top = `<div class="hh">${tag(e.sp, e.sp === "f1" ? gpShort(e.gp) : e.comp || "")}<span class="hr">${right}</span></div>`;
   if (e.sp === "f1") {
-    const S2 = val("f1_standings")?.drivers || [], fav = favDriver();
-    const drv = n => S2.find(d => same(last(d.name), last(n)) || same(d.shown, n));
-    const order = lv && e.liveTop ? `<ol class="order">${e.liveTop.map((n, i) => { const d = drv(n); return `<li class="${same(last(n), last(fav)) ? "me" : ""}"><b class="tnum">${i + 1}</b><i style="background:${esc(d?.colour || "var(--line)")}"></i><span>${esc(d?.shown || n)}</span></li>`; }).join("")}</ol><p class="foot">Running order from ESPN's live timing</p>` : "";
-    // qualifying decides the grid: the race and sprint heroes say where Verstappen starts
+    const fav = favDriver(), c = myChance(e);
     const qs = /^sprint$/i.test(e.session) ? /sprint (qualifying|shootout)/i : /^race$/i.test(e.session) ? /^qualifying$/i : null;
     const q = qs && (val("f1_sessions")?.results || []).find(r => qs.test(r.name) && dayKey(t(r.start)) >= dayKey(t(e.start) - 3 * 864e5));
     const qi = q ? q.top.findIndex(n => same(n, last(fav))) : -1;
-    const c = myChance(e);
-    const pills = [qi >= 0 ? `${last(fav)} qualified ${ordinal(qi + 1)}` : "", c ? `${last(fav)} <b class="tnum">${c.prob}%</b> ${c.what === "pole" ? "for pole" : "to win"}` : ""].filter(Boolean);
-    return `<a class="hero sp-f1${lv ? " is-live" : ""}" href="${e.href}" data-match="${esc(e.id)}">${top}<div class="f1t"><span class="flagx l">${esc(e.flag || "")}</span><div><div class="big">${esc(e.session)}</div><div class="sm">${esc(e.circuit || gpName(e.gp))}</div></div></div>
-      ${lv ? order : `<div class="clock tnum">${hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>`}${pills.length ? `<div class="pills">${pills.map(p => `<span class="pill">${p}</span>`).join("")}</div>` : ""}</a>`;
+    const body = lv && (e.liveOrder || e.liveTop) ? `${f1Order(e, e.liveOrder || e.liveTop)}<p class="foot">Running order, ESPN live timing</p>`
+      : `<div class="clock tnum">${hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>${qi >= 0 || c ? `<p class="line">${qi >= 0 ? `${esc(last(fav))} qualified ${ordinal(qi + 1)}` : ""}${qi >= 0 && c ? " · " : ""}${c ? `${esc(last(fav))} <b class="tnum">${c.prob}%</b> ${c.what === "pole" ? "for pole" : "to win"}, ${esc(sessionMarket(e.session, e.start)?.source || "")}${priceAt(e) ? ` at ${esc(priceAt(e))}` : ""}` : ""}</p>` : ""}`;
+    return `<a class="hero sc-f1${lv ? " is-live" : ""}" href="${e.href}" data-match="${esc(e.id)}" aria-label="${esc(said(e))}">${top}${inSheet ? "" : `<div class="f1t"><span class="flagx l" aria-hidden="true">${esc(e.flag || "")}</span><div><div class="big">${esc(e.session)}</div><div class="sm">${esc(e.circuit || gpName(e.gp))}</div></div></div>`}${body}</a>`;
   }
-  const side = s => `<div class="side">${mark(s === "a" ? e.ma : e.mb, "l")}<b>${esc(sideName(e, s))}</b></div>`;
-  const mid = lv && e.sa != null && e.sp !== "cricket" ? `<div class="mid tnum">${esc(e.sa)}<span>–</span>${esc(e.sb)}${liveSub(e) ? `<small>${esc(liveSub(e))}</small>` : ""}</div>`
-    : lv && e.score ? `<div class="mid sm"><small>${esc(e.score).replace(" · ", "<br>")}</small>${e.saved ? `<small>Saved ${hm(e.saved)}</small>` : ""}</div>` : `<div class="mid tnum">${e.tbc ? "TBC" : hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>`;
+  const crl = lv && e.sp === "cricket";
+  const side = s => { const v = s === "a" ? e.sa : e.sb, o = s === "a" ? e.oa : e.ob; return `<div class="side">${mark(s === "a" ? e.ma : e.mb, "l")}<b>${esc(sideName(e, s))}</b>${crl ? `<span class="crs tnum">${v ? `<span>${esc(v)}</span>${o ? `<small>${esc(o)} ov</small>` : ""}` : `<small>Yet to bat</small>`}</span>` : ""}</div>`; };
+  let mid;
+  if (crl) mid = `<div class="mid tnum"><span class="vsw">v</span></div>`;
+  else if (lv && e.sa != null) mid = `<div class="mid tnum"><span class="nums"><span data-sk="${esc(e.id)}a" data-v="${esc(e.sa)}">${esc(e.sa)}</span><i>–</i><span data-sk="${esc(e.id)}b" data-v="${esc(e.sb)}">${esc(e.sb)}</span></span><small>${esc(e.saved ? "" : e.clock || "")}</small></div>`;
+  else if (lv) mid = `<div class="mid tnum"><span class="nums sm">${hm(e.start)}</span><small>Under way</small></div>`;
+  else mid = `<div class="mid tnum"><span class="nums">${e.tbc ? "TBC" : hm(e.start)}</span><small>${esc(e.tbc ? shortDate(e.start) : dayLabel(e.start))}</small></div>`;
   const sp = e.sp === "nba" ? "basketball" : e.sp === "intl" ? null : e.sp;
-  const p = sp ? sideProbs(oddsFor(sp, [e.a, e.b], e.start), [e.a, e.b]) : null;
-  const ev = e.sp === "football" && lv && e.ev ? scorers(e) : "";
-  return `<a class="hero sp-${e.sp}${lv ? " is-live" : ""}" href="${e.href}" data-match="${esc(e.id)}">${top}<div class="vs">${side("a")}${mid}${side("b")}</div>${ev}${e.venue ? `<div class="venue">${esc(e.venue)}</div>` : ""}${p ? mktBar(p, [sideName(e, "a"), sideName(e, "b")]) : ""}</a>`;
+  const p = !lv && sp ? sideProbs(oddsFor(sp, [e.a, e.b], e.start), [e.a, e.b]) : null;
+  const extra = lv && e.sp === "football" && e.ev?.length ? scorers(e) : crl && e.status ? `<p class="line c">${esc(e.status)}</p>` : "";
+  return `<a class="hero sc-${e.sp}${lv ? " is-live" : ""}" href="${e.href}" data-match="${esc(e.id)}" aria-label="${esc(said(e))}">${top}<div class="vs">${side("a")}${mid}${side("b")}</div>${extra}${e.venue && !lv ? `<div class="venue">${esc(e.venue)}${e.held ? ` · ${esc(e.held)}` : ""}</div>` : ""}${p ? mktBar(p, [sideName(e, "a"), sideName(e, "b")], "Before the start") : ""}</a>`;
 }
-// Goals and red cards, each side's under its name
 export function scorers(e) {
   if (!e.ev?.length) return "";
   const cid = clubId(), home = same(e.a, club());
   const pick = isHome => e.ev.filter(x => ((isHome === home) ? x.team_id === cid : x.team_id !== cid));
-  const line = list => { const by = new Map(); for (const x of list) { const k = (x.kind === "red" ? "red:" : "") + x.player; if (!by.has(k)) by.set(k, []); by.get(k).push(`${x.minute || ""}${x.kind === "pen" ? " pen" : x.kind === "og" ? " og" : ""}`); } return [...by].map(([k, ms]) => k.startsWith("red:") ? `<span class="rc" aria-label="red card"></span>${esc(last(k.slice(4)))} ${esc(ms.join(", "))}` : `${esc(last(k))} ${esc(ms.join(", "))}`).join("<br>"); };
+  const line = list => { const by = new Map(); for (const x of list) { const k = (x.kind === "red" ? "red:" : "") + x.player; if (!by.has(k)) by.set(k, []); by.get(k).push(`${String(x.minute || "").replace(/'/g, "′")}${x.kind === "pen" ? " pen" : x.kind === "og" ? " og" : ""}`); } return [...by].map(([k, ms]) => k.startsWith("red:") ? `<span class="rc" aria-label="red card"></span>${esc(last(k.slice(4)))} ${esc(ms.join(", "))}` : `${esc(last(k))} ${esc(ms.join(", "))}`).join("<br>"); };
   const a = line(pick(true)), b = line(pick(false));
   return a || b ? `<div class="scorers"><div>${a}</div><div>${b}</div></div>` : "";
 }
-// Madrid's goals in one line under a result: "Mbappé 2, Bellingham, Dituro og"
 export function goalsLine(e) {
   const by = new Map(), cid = clubId();
   for (const x of e.ev || []) if (x.kind !== "red" && x.team_id === cid) { const k = last(x.player) + (x.kind === "og" ? " og" : ""); by.set(k, (by.get(k) || 0) + 1); }
   return [...by].map(([k, n]) => (n > 1 ? `${k} ${n}` : k)).join(", ");
+}
+export function cricketCard(e) {
+  const K = e.card?.innings;
+  if (!K?.length) return "";
+  const lines = K.map(x => { const bw = K.find(y => y.bowl?.team === x.team)?.bowl; return [x.team, [x.bat && `<span class="pe"><small>bat</small> ${esc(last(x.bat.name))} ${x.bat.runs}${x.bat.out ? "" : "*"}${x.bat.balls != null ? ` (${x.bat.balls})` : ""}</span>`, bw && `<span class="pe"><small>bowl</small> ${esc(last(bw.name))} ${bw.wickets}/${bw.runs}</span>`].filter(Boolean).join("")]; }).filter(([, l]) => l);
+  return `<span class="perf">${lines.map(([tm, l]) => `<span class="pl2"><b>${esc(tm)}</b><span class="tnum">${l}</span></span>`).join("")}${e.card.potm?.length ? `<span class="potm">Player of the match: ${esc(e.card.potm.join(", "))}</span>` : ""}</span>`;
 }
 
 // ------------------------------------------------------------------ the match sheet
@@ -165,23 +201,28 @@ function weekendIcs(e) {
   for (const x of e.sessions) { q.append("t", f1Title(x.name, e.gp)); q.append("s", x.start); q.append("m", x.minutes || F1MIN[f1Kind(x.name)] || 60); }
   q.append("u", e.id); return `/api/ics?${q}`;
 }
+// when an F1 price was read (the race market from f1_market, the session markets from odds)
+export const priceAt = e => { const k = f1Kind(e.session) === "race" ? "f1_market" : "odds", a = D[k]?.as_of; return a ? at(a) : ""; };
+const unlink = h => h.replace(/^<a ([^>]*?) href="[^"]*" data-match="[^"]*"( aria-label="[^"]*")?/, "<div $1").replace(/<\/a>$/, "</div>");
 function sheetBody(e) {
-  const done = e.state === "done", parts = [];
-  // the score, the result's detail, or the hero for one to come
+  const done = e.state === "done", lv = e.state === "live", parts = [];
   if (e.sp === "f1") {
-    if (e.state === "live" || (!done && !e.id.startsWith("gp"))) parts.push(hero(e).replace(/^<a ([^>]*?) href="[^"]*" data-match="[^"]*"/, "<div $1").replace(/<\/a>$/, "</div>"));
-    else if (done && e.top) {
-      const S2 = val("f1_standings")?.drivers || [], drv = n => S2.find(d => same(last(d.name), last(n)) || same(d.shown, n));
-      parts.push(`<div class="card"><ol class="order">${e.top.map((n, i) => { const d = drv(n); return `<li class="${same(last(n), last(favDriver())) ? "me" : ""}"><b class="tnum">${i + 1}</b><i style="background:${esc(d?.colour || "var(--line)")}"></i><span>${esc(d?.shown || n)}</span></li>`; }).join("")}</ol>${e.provisional ? `<p class="foot">Provisional, from ESPN's timing at the flag; the final result follows once a second source confirms it.</p>` : ""}</div>`);
-    }
+    if (lv) {
+      parts.push(unlink(hero(e, { inSheet: true })));
+      if ((e.liveOrder || []).length > 3) parts.push(`<div class="card"><div class="sub-h">Full running order</div>${f1Order(e, e.liveOrder, e.liveOrder.length)}</div>`);
+    } else if (done && e.top) parts.push(`<div class="card">${f1Order(e, e.top, 3)}${e.provisional ? `<p class="foot">Provisional, from ESPN's timing; final once a second source confirms it.</p>` : ""}</div>`);
+    else if (!e.id.startsWith("gp")) parts.push(unlink(hero(e, { inSheet: true })));
     if (e.id.startsWith("gp") && e.sessions?.length) parts.push(`<div class="list">${e.sessions.map(x => `<div class="li"><div class="grow"><div class="t1">${esc(x.name)}</div><div class="t2">${esc(longDate(x.start))}, ${hm(x.start)} IST</div></div><a class="cal" href="${esc(icsHref({ sp: "f1", session: x.name, gp: e.gp, start: x.start, mins: x.minutes, id: e.id + x.name.replace(/\W/g, "") }))}" aria-label="Add ${esc(x.name)} to calendar">${ICON.cal}</a></div>`).join("")}</div>`);
-    const mk = !done && e.id.startsWith("f1") ? sessionMarket(e.session, e.start) : null;
-    if (mk) parts.push(`<div class="card"><div class="sub-h">Who the market expects</div>${rankList(mk.outcomes, { max: 5, me: favDriver(), nameFn: n => (val("f1_standings")?.drivers || []).find(d => same(d.name, n))?.shown || n })}<p class="foot">${esc(mk.source || "")}</p></div>`);
-  } else if (done || e.state === "live" && e.sa != null) {
-    parts.push(`<div class="card">${row(e, { sub: false }).replace(/^<a ([^>]*?) href="[^"]*" data-match="[^"]*"/, "<div $1").replace(/<\/a>$/, "</div>")}${e.sp === "football" ? scorers(e) : ""}${e.sp === "nba" && e.tops ? `<div class="scorers">${e.tops.map(x => `<div>${esc(last(x.name))} ${x.points} pts</div>`).join("")}</div>` : ""}${e.sp === "cricket" ? cricketCard(e) : ""}${e.retired ? `<p class="foot">${esc(last(e.won === "a" ? e.b : e.a))} retired</p>` : ""}</div>`);
+    // the rest of the weekend, each session with its state
+    const wk2 = e.id.startsWith("f1") ? events(true).filter(x => x.sp === "f1" && x.id.startsWith("f1") && x.id !== e.id && f1Kind(x.session)) : [];
+    if (wk2.length) parts.push(`<div class="sub-h">The weekend</div><div class="list">${wk2.map(x => sessionRow(x, { gp: false })).join("")}</div>`);
+    const mk = e.state === "next" && e.id.startsWith("f1") ? sessionMarket(e.session, e.start) : null;
+    if (mk) parts.push(`<div class="card"><div class="sub-h">Who the market expects</div>${rankList(mk.outcomes, { max: 6, me: favDriver(), nameFn: n => (val("f1_standings")?.drivers || []).find(d => same(d.name, n))?.shown || n })}<p class="foot">${esc(mk.source || "")}${priceAt(e) ? ` · ${esc(priceAt(e))}` : ""}</p></div>`);
+  } else if (done || (lv && e.sa != null)) {
+    parts.push(`<div class="card flush">${unlink(row(e, { meta: false }))}${e.sp === "football" && e.ev?.length ? `<div class="pad">${scorers(e)}</div>` : ""}${e.sp === "nba" && e.tops ? `<div class="pad"><div class="scorers">${e.tops.map(x => `<div>${esc(last(x.name))} ${x.points} pts</div>`).join("")}</div></div>` : ""}${e.sp === "cricket" ? `<div class="pad"><p class="res">${esc(String(e.status || "").replace(/ due to .*$/i, ""))}</p>${cricketCard(e)}</div>` : ""}${e.retired ? `<p class="foot pad">${esc(last(e.won === "a" ? e.b : e.a))} retired</p>` : ""}</div>`);
+
   } else {
-    parts.push(hero(e).replace(/^<a ([^>]*?) href="[^"]*" data-match="[^"]*"/, "<div $1").replace(/<\/a>$/, "</div>"));
-    // Madrid's next match: both sides' form and the meetings
+    parts.push(unlink(hero(e)));
     const PV = e.sp === "football" ? val("madrid_hub")?.preview : null;
     if (PV && String(PV.match_id) === e.mid) {
       const r = meetRecord(PV);
@@ -189,27 +230,13 @@ function sheetBody(e) {
     }
     if (e.sp === "tennis" && e.then) parts.push(`<div class="card then"><span class="k">If he wins</span><span>${e.then.round ? `${esc(e.then.round)} v ` : "v "}${(e.then.opponent ? [e.then.opponent] : e.then.from).map(n => `<span class="nw">${esc(n)}${atp(n)?.rank ? ` <span class="dim">(${atp(n).rank})</span>` : ""}</span>`).join(" or ")}</span></div>`);
   }
-  // when and where
-  const rows = [["When", e.id.startsWith("gp") ? "" : e.tbc ? `${longDate(e.start)}, time to be confirmed` : `${longDate(e.start)}, ${hm(e.start)} IST`], ["Where", done ? e.venue : ""], ["Competition", done && e.sp !== "f1" ? e.comp : ""]].filter(([, v]) => v);
+  const rows = [["When", e.id.startsWith("gp") ? "" : e.tbc ? `${longDate(e.start)}, time to be confirmed` : `${longDate(e.start)}, ${hm(e.start)} IST`], ["Where", e.venue && (done || lv || e.sp === "f1") ? e.venue : ""], ["Competition", (done || lv) && e.sp !== "f1" ? e.comp : ""], ["Status", e.state === "off" ? (e.seen ? `Live feed lost; last seen live at ${at(e.seen)}` : e.offWhy || "") : ""]].filter(([, v]) => v);
   if (rows.length) parts.push(`<dl class="kv">${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>`);
   const wk = e.id.startsWith("gp") && e.sessions?.length > 1;
   const acts = `${e.state === "next" && !e.tbc ? `<a class="btn" href="${esc(wk ? weekendIcs(e) : icsHref(e))}">${ICON.cal}<span class="long">${wk ? "Add the weekend" : "Add to calendar"}</span><span class="short">${wk ? "Add weekend" : "Calendar"}</span></a>` : ""}${S.route !== TAB_OF[e.sp] ? `<a class="btn ghost" href="${esc(e.href)}">Open ${esc(TAB_NAME[e.sp])}</a>` : ""}`;
   return parts.join("") + (acts ? `<div class="acts">${acts}</div>` : "");
 }
-// India's result: top batter and best bowler each side, the player of the match
-export function cricketCard(e) {
-  let body = e.status ? `<p class="res">${esc(String(e.status).replace(/ due to .*$/i, ""))}</p>` : "";
-  const K = e.card?.innings;
-  if (K?.length) {
-    const lines = K.map(x => { const bw = K.find(y => y.bowl?.team === x.team)?.bowl; return [x.team, [x.bat && `<span class="pe"><small>bat</small> ${esc(last(x.bat.name))} ${x.bat.runs}${x.bat.out ? "" : "*"}${x.bat.balls != null ? ` (${x.bat.balls})` : ""}</span>`, bw && `<span class="pe"><small>bowl</small> ${esc(last(bw.name))} ${bw.wickets}/${bw.runs}</span>`].filter(Boolean).join("")]; }).filter(([, l]) => l);
-    body += `<div class="perf">${lines.map(([tm, l]) => `<div><b>${esc(tm)}</b><span class="tnum">${l}</span></div>`).join("")}${e.card.potm?.length ? `<div class="potm">Player of the match: ${esc(e.card.potm.join(", "))}</div>` : ""}</div>`;
-  }
-  return body;
-}
 export function sheet(e) {
   const title = e.sp === "f1" ? (e.id.startsWith("gp") ? gpShort(e.gp) : `${e.session} · ${gpShort(e.gp)}`) : `${sideName(e, "a")} v ${sideName(e, "b")}`;
   return `<div class="sheet-bg" data-close="match"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t"><div class="grab" aria-hidden="true"></div><div class="sheet-h"><b id="sheet-t" tabindex="-1">${esc(title)}</b><button type="button" class="x" data-close="match" aria-label="Close">${ICON.x}</button></div><div class="sb">${sheetBody(e)}</div></div>`;
-}
-export function daySheet(dayIso, list) {
-  return `<div class="sheet-bg" data-close="day"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t"><div class="grab" aria-hidden="true"></div><div class="sheet-h"><b id="sheet-t" tabindex="-1">${esc(dayKey(t(dayIso)) === dayKey(Date.now()) ? "Today" : fmt(dayIso, { weekday: "long", day: "numeric", month: "long" }))}</b><button type="button" class="x" data-close="day" aria-label="Close">${ICON.x}</button></div><div class="sb"><div class="list">${list.map(e => row(e)).join("")}</div></div></div>`;
 }

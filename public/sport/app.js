@@ -1,52 +1,113 @@
-// Sport V2 (/sport): everything Parth follows, in one app. The shell: routing, sheets, refresh, theme. Data in
-// js/core.js, components in js/ui.js, screens in js/views.js. No LLM anywhere.
-import { D, S, events, loadAll as load, rel, nbaOn } from "./js/core.js";
-import { sheet } from "./js/ui.js";
+// Sport V3 (/sport): everything Parth follows, in one app. The shell: routing, history, sheets, refresh, theme, motion.
+// Data in js/core.js, components in js/ui.js, screens in js/views.js. No LLM anywhere.
+// A redraw patches the page in place (js/morph.js): nodes that did not change are kept, so pills glide, images stay
+// painted, an open sheet stays put and a new score rolls in once. Only a change of tab swaps the page, with a cross-fade.
+import { D, S, events, loadAll as load, rel, nbaOn, markSeen, hm } from "./js/core.js";
+import { sheet, header } from "./js/ui.js";
 import { VIEWS, TITLES } from "./js/views.js";
+import { morph } from "./js/morph.js";
 
 const $ = s => document.querySelector(s);
-const view = $("#view");
-const vibe = () => { try { navigator.vibrate?.(8); } catch {} };
+const view = $("#view"), root = $("#sheet-root");
+const RM = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const vibe = (ms = 8) => { try { navigator.vibrate?.(ms); } catch {} };
 const UI = S.UI;
+const say = txt => { const a = $("#announce"); if (a) { a.textContent = ""; setTimeout(() => (a.textContent = txt), 50); } };
 
-async function loadAll() {
+// ------------------------------------------------------------------ loading
+// The first draw waits for the feeds that decide what leads Today (live and next), up to 0.8 seconds, so Live now
+// never arrives last and pushes the page down. After that, redraws as feeds arrive are merged (one per 250ms).
+const LEAD = ["f1_sessions", "f1_next", "football", "crease", "tennis_players", "nba", "intl_hub"];
+let held = true, pend = null;
+const soon = () => { if (held || pend) return; pend = setTimeout(() => { pend = null; render(false); }, 250); };
+async function loadAll(manual = false) {
   if (S.loading) return;
   $("#refresh").classList.add("spin");
-  let q = false;
-  await load(() => { if (q) return; q = true; requestAnimationFrame(() => { q = false; render(false); }); });
+  const got = new Set(), first = !S.lastLoad;
+  if (first) setTimeout(() => { if (held) { held = false; render(false); } }, 800);
+  await load(k => { if (k) got.add(k); if (held && LEAD.every(x => got.has(x))) { held = false; render(false); } else soon(); });
+  held = false;
   $("#refresh").classList.remove("spin");
-  render(false);
+  clearTimeout(pend); pend = null; render(false);
+  const fresh = Object.values(D).some(x => x && !x.stale);
+  if (manual || !fresh) say(fresh ? `Updated ${hm(new Date().toISOString())}` : "The feeds did not answer. Showing the last saved copies.");
 }
 
-// ------------------------------------------------------------------ router
+// ------------------------------------------------------------------ router and history
+// Back from any tab goes to Today, then out of the app (a tab change from another tab replaces the history entry);
+// a chosen day and an open sheet are history entries, so the Android back gesture undoes them first.
 const atBottom = () => innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
-let io = null, jio = null, jcur = null, onBottom = () => {}, sheetFor = null, sig = "";
+let io = null, jio = null, jcur = null, onBottom = () => {}, sheetFor = null, sig = "", pendingSec = null, vt = false;
+const scrollMem = {};
 const parse = () => { const [r, sec] = location.hash.replace(/^#\/?/, "").split("/"); return { r: VIEWS[r] ? r : "home", sec: sec || null }; };
-const stateSig = () => events().map(e => `${e.id}:${e.state}:${e.sa ?? ""}-${e.sb ?? ""}:${(e.liveTop || []).join(",")}`).join("|");
+const stateSig = () => events().map(e => `${e.id}:${e.state}:${e.late ? 1 : 0}${e.starting ? 1 : 0}:${e.sa ?? ""}-${e.sb ?? ""}:${(e.liveTop || []).join(",")}`).join("|");
 function render(navigated) {
-  const { r, sec } = parse(), changed = r !== S.route; S.route = r;
-  const y = window.scrollY;
+  if (held && S.loading) return;
+  const go = () => draw(navigated);
+  if (navigated && S.route && document.startViewTransition && !RM()) { vt = true; const tr = document.startViewTransition(go); tr.finished.finally(() => (vt = false)); }
+  else go();
+}
+const failed = r => `<div class="page">${header(TITLES[r])}<div class="empty"><b>The feeds did not answer.</b><span>Nothing is shown rather than something old.</span><button type="button" class="chip" data-act="retry">Try again</button></div></div>`;
+const lastScores = new Map();
+function draw(navigated) {
+  const { r, sec } = parse(), changed = r !== S.route;
+  if (changed && S.route) scrollMem[S.route] = scrollY;
+  S.route = r;
   document.body.dataset.tab = r;
-  const nbaTab = $('.tabs a[data-tab="nba"]'); if (nbaTab) nbaTab.hidden = !nbaOn() && r !== "nba";
-  $("#tabs").style.setProperty("--n", [...document.querySelectorAll(".tabs a")].filter(a => !a.hidden).length);
-  for (const a of document.querySelectorAll(".tabs a")) { if (a.dataset.tab === r) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); }
+  const tabs = [...document.querySelectorAll(".tabs a")], nbaTab = tabs.find(a => a.dataset.tab === "nba");
+  if (nbaTab && (Object.keys(D).length || r === "nba")) { nbaTab.hidden = !nbaOn() && r !== "nba"; try { localStorage.setItem("sport:nbaTab", nbaTab.hidden ? "0" : "1"); } catch {} }
+  const shown = tabs.filter(a => !a.hidden);
+  $("#tabs").style.setProperty("--n", shown.length);
+  $("#tabs").style.setProperty("--ti", Math.max(0, shown.findIndex(a => a.dataset.tab === r)));
+  for (const a of tabs) a.toggleAttribute("aria-current", a.dataset.tab === r) && a.setAttribute("aria-current", "page");
   $("#topTitle").textContent = TITLES[r];
-  S.sheet = "";
-  view.innerHTML = VIEWS[r]();
-  if (UI.match) { const ev = events(true).find(x => x.id === UI.match); if (ev) S.sheet = sheet(ev); else UI.match = null; }
+  const html = !Object.keys(D).length && S.lastLoad && !S.loading ? failed(r) : VIEWS[r]();
+  if (changed || !view.firstChild) { view.innerHTML = html; if (vt) view.querySelector(".page")?.style.setProperty("animation", "none"); }
+  else morph(view, html);
   sig = stateSig();
-  // sheets sit in their own layer above the app, which goes inert behind them
-  const root = $("#sheet-root"), opening = S.sheet && !root.innerHTML, was = root.innerHTML ? root.dataset.kind : "", kind = UI.match ? "m" : "d";
-  root.innerHTML = S.sheet; root.dataset.kind = S.sheet ? kind : "";
-  $("#app").inert = !!root.innerHTML;
-  if (opening || (S.sheet && was && was !== kind)) { sheetFor = UI.match ? `[data-match="${CSS.escape(UI.match)}"]` : `.wd[data-v="${CSS.escape(UI.day || "")}"]`; requestAnimationFrame(() => $("#sheet-t")?.focus()); dragSheet(root.querySelector(".sheet")); }
-  else if (!root.innerHTML && sheetFor) { const b = view.querySelector(sheetFor); sheetFor = null; b?.focus({ preventScroll: true }); }
-  if (!changed && !navigated) { view.querySelector(".page")?.style.setProperty("animation", "none"); window.scrollTo(0, y); }
-  else if (sec && document.getElementById(sec)) requestAnimationFrame(() => document.getElementById(sec).scrollIntoView({ block: "start" }));
-  else window.scrollTo(0, 0);
+  // a score that changed since the last draw rolls in (once: the patch keeps the class until the roll ends)
+  for (const el of view.querySelectorAll("[data-sk]")) {
+    const k = el.dataset.sk, v = el.dataset.v;
+    if (v && lastScores.has(k) && lastScores.get(k) !== v) { el.classList.add("bump"); el.addEventListener("animationend", () => el.classList.remove("bump"), { once: true }); }
+    lastScores.set(k, v);
+  }
+  drawSheet();
+  // where to be on the page: a section asked for in the link (once its content is in), else where this tab was left
+  if (changed) {
+    if (sec) pendingSec = sec;
+    else if (!navigated || history.state?.restore !== false) window.scrollTo(0, scrollMem[r] || 0);
+  }
+  if (pendingSec) { const el = document.getElementById(pendingSec); if (el && !view.querySelector(".skel")) { pendingSec = null; requestAnimationFrame(() => el.scrollIntoView({ block: "start" })); } }
   document.title = `${TITLES[r]} · Sport`;
+  observe();
+}
+// sheets sit in their own layer above the app, which goes inert behind them; a sheet already up is patched, not redrawn
+function drawSheet() {
+  const ev = UI.match ? events(true).find(x => x.id === UI.match) : null;
+  if (UI.match && !ev) UI.match = null;
+  const open = root.firstElementChild && !root.classList.contains("closing");
+  if (ev) {
+    const html = sheet(ev);
+    if (open) morph(root, html);
+    else {
+      root.classList.remove("closing"); root.innerHTML = html;
+      sheetFor = `[data-match="${CSS.escape(UI.match)}"]`;
+      if (!history.state?.sheet) history.pushState({ sheet: true, day: UI.day || null }, "");
+      requestAnimationFrame(() => $("#sheet-t")?.focus());
+      dragSheet(root.querySelector(".sheet"));
+    }
+    $("#app").inert = true;
+  } else if (open) {
+    root.classList.add("closing"); $("#app").inert = false;
+    const done = () => { if (root.classList.contains("closing")) { root.classList.remove("closing"); root.innerHTML = ""; } };
+    if (RM()) done(); else setTimeout(done, 240);
+    if (sheetFor) { view.querySelector(sheetFor)?.focus({ preventScroll: true }); sheetFor = null; }
+  }
+}
+function observe() {
   io?.disconnect(); jio?.disconnect(); jcur = null;
   const chips = [...document.querySelectorAll(".jump a[data-jump]")];
+  const slide = (bar, left) => bar.scrollTo({ left, behavior: RM() ? "auto" : "smooth" });
   if (chips.length && "IntersectionObserver" in window) {
     const seen = new Map();
     jio = new IntersectionObserver(es => {
@@ -54,57 +115,123 @@ function render(navigated) {
       if (atBottom()) return onBottom();
       const cur = [...seen].filter(([, v]) => v != null).sort((a, b) => a[1] - b[1])[0]?.[0];
       if (cur === jcur) return; jcur = cur;
-      for (const c of chips) { const on = c.dataset.jump === cur; c.toggleAttribute("aria-current", on); if (on) { const bar = c.parentElement; bar.scrollTo({ left: Math.max(0, c.offsetLeft - (bar.clientWidth - c.offsetWidth) / 2), behavior: "smooth" }); } }
+      for (const c of chips) { const on = c.dataset.jump === cur; c.toggleAttribute("aria-current", on); if (on) slide(c.parentElement, Math.max(0, c.offsetLeft - (c.parentElement.clientWidth - c.offsetWidth) / 2)); }
     }, { rootMargin: "-110px 0px -55% 0px" });
     for (const c of chips) { const el = document.getElementById(c.dataset.jump); if (el) jio.observe(el); }
-    onBottom = () => { if (atBottom()) { const lastC = chips.at(-1); if (jcur !== lastC.dataset.jump) { jcur = lastC.dataset.jump; for (const c of chips) c.toggleAttribute("aria-current", c === lastC); const bar = lastC.parentElement; bar.scrollTo({ left: bar.scrollWidth, behavior: "smooth" }); } } };
+    onBottom = () => { if (atBottom()) { const lastC = chips.at(-1); if (jcur !== lastC.dataset.jump) { jcur = lastC.dataset.jump; for (const c of chips) c.toggleAttribute("aria-current", c === lastC); slide(lastC.parentElement, lastC.parentElement.scrollWidth); } } };
   } else onBottom = () => {};
   const h1 = $("#h1");
   if (h1 && "IntersectionObserver" in window) { io = new IntersectionObserver(([en]) => $("#top").classList.toggle("solid", !en.isIntersecting), { rootMargin: "-56px 0px 0px 0px" }); io.observe(h1); }
 }
 addEventListener("hashchange", () => { vibe(); UI.match = null; UI.day = null; render(true); });
-$("#refresh").addEventListener("click", () => { vibe(); loadAll(); });
+// back: the sheet closes, then a chosen day goes back to today; a back across tabs is handled by hashchange
+addEventListener("popstate", () => {
+  if (parse().r !== S.route) return;
+  const st = history.state || {};
+  if (UI.match && !st.sheet) UI.match = null;
+  UI.day = st.day || null;
+  draw(false);
+});
+const closeSheet = () => { if (history.state?.sheet) history.back(); else { UI.match = null; draw(false); } };
+const setDay = v => {
+  const d = v || null; if (d === UI.day) return;
+  if (!d) { if (history.state?.day) history.back(); else { UI.day = null; draw(false); } return; }
+  if (history.state?.day) history.replaceState({ day: d }, ""); else history.pushState({ day: d }, "");
+  UI.day = d; vibe(5); draw(false);
+};
+// a tab: from Today it is a new history entry, from another tab it replaces the entry; the tab already shown scrolls
+// to the top (and Today goes back to today)
+$("#tabs").addEventListener("click", e => {
+  const a = e.target.closest("a[data-tab]"); if (!a) return;
+  e.preventDefault();
+  if (a.dataset.tab === S.route && !UI.match) { vibe(); if (UI.day) setDay(null); window.scrollTo({ top: 0, behavior: RM() ? "auto" : "smooth" }); return; }
+  go(a.getAttribute("href"));
+});
+function go(href) {
+  vibe(); UI.match = null; UI.day = null;
+  if (S.route === "home" && !history.state?.sheet) location.hash = href; // hashchange draws
+  else { history.replaceState(null, "", href); render(true); }
+}
+$("#refresh").addEventListener("click", () => { vibe(); loadAll(true); });
 
 // ------------------------------------------------------------------ theme: light unless dark is chosen, kept on the phone
 const setTheme = dark => {
   document.documentElement.dataset.theme = dark ? "dark" : "light";
-  $("#themeColor")?.setAttribute("content", dark ? "#000000" : "#f4f4f6");
+  $("#themeColor")?.setAttribute("content", dark ? "#000000" : "#f3f3f5");
   const b = $("#theme"); b.setAttribute("aria-pressed", String(dark)); b.setAttribute("aria-label", dark ? "Light mode" : "Dark mode");
   try { localStorage.setItem("sport-theme", dark ? "dark" : "light"); } catch {}
 };
 setTheme(document.documentElement.dataset.theme === "dark");
-$("#theme").addEventListener("click", () => { vibe(); setTheme(document.documentElement.dataset.theme !== "dark"); });
+$("#theme").addEventListener("click", () => { vibe(); setTheme(document.documentElement.dataset.theme !== "dark"); draw(false); });
 
-// ------------------------------------------------------------------ taps
+// ------------------------------------------------------------------ sheets: drag down to close, or flick
 function dragSheet(el) {
-  if (!el) return; let y0 = null, dy = 0;
-  el.addEventListener("touchstart", e => { if (el.scrollTop > 0) return; y0 = e.touches[0].clientY; dy = 0; el.style.transition = "none"; }, { passive: true });
-  el.addEventListener("touchmove", e => { if (y0 == null) return; dy = Math.max(0, e.touches[0].clientY - y0); el.style.transform = `translateY(${dy}px)`; }, { passive: true });
-  el.addEventListener("touchend", () => { if (y0 == null) return; el.style.transition = ""; if (dy > 80) { if (UI.match) UI.match = null; else UI.day = null; render(false); } else el.style.transform = ""; y0 = null; }, { passive: true });
+  if (!el) return;
+  const bg = root.querySelector(".sheet-bg");
+  let y0 = null, dy = 0, t0 = 0, last = [0, 0];
+  el.addEventListener("touchstart", e => { if (el.scrollTop > 0) return; y0 = e.touches[0].clientY; dy = 0; t0 = performance.now(); last = [y0, t0]; el.style.transition = "none"; }, { passive: true });
+  el.addEventListener("touchmove", e => {
+    if (y0 == null) return; const y = e.touches[0].clientY; dy = Math.max(0, y - y0);
+    el.style.transform = dy ? `translateY(${dy}px)` : ""; if (bg) bg.style.opacity = String(Math.max(0, 1 - dy / (el.offsetHeight || 600)));
+    last = [y, performance.now()];
+  }, { passive: true });
+  el.addEventListener("touchend", e => {
+    if (y0 == null) return; y0 = null;
+    const v = (e.changedTouches[0].clientY - last[0]) / Math.max(1, performance.now() - last[1]); // px per ms at release
+    el.style.transition = ""; if (bg) bg.style.opacity = "";
+    if (dy > 120 || (dy > 24 && v > 0.45)) closeSheet(); else el.style.transform = "";
+  }, { passive: true });
 }
-$("#sheet-root").addEventListener("click", e => {
-  const c = e.target.closest("[data-close]"); if (c) { UI[c.dataset.close] = null; render(false); return; }
-  const mt = e.target.closest("[data-match]"); if (mt) { e.preventDefault(); UI.match = mt.dataset.match; vibe(); render(false); }
+root.addEventListener("click", e => {
+  if (e.target.closest("[data-close]")) return closeSheet();
+  const tab = e.target.closest('a[href^="#"]:not([data-match])');
+  if (tab) { e.preventDefault(); UI.match = null; UI.day = null; vibe(); history.replaceState(null, "", tab.getAttribute("href")); render(true); return; }
+  const mt = e.target.closest("[data-match]"); if (mt) { e.preventDefault(); UI.match = mt.dataset.match; vibe(); draw(false); }
 });
 view.addEventListener("click", e => {
+  if (e.target.closest("[data-act=retry]")) { vibe(); loadAll(true); return; }
   const b = e.target.closest("button[data-ui]");
-  if (b) { UI[b.dataset.ui] = b.dataset.ui === "day" && UI.day === b.dataset.v ? null : b.dataset.v; vibe(); render(false); return; }
+  if (b) {
+    const k = b.dataset.ui, v = b.dataset.v;
+    if (k === "day") { setDay(v); if (!RM()) window.scrollTo({ top: 0, behavior: "smooth" }); else window.scrollTo(0, 0); return; }
+    UI[k] = v; vibe(); draw(false); return;
+  }
   const mt = e.target.closest("[data-match]");
-  if (mt) { e.preventDefault(); UI.match = mt.dataset.match; vibe(); render(false); return; }
+  if (mt) { e.preventDefault(); UI.match = mt.dataset.match; vibe(); draw(false); return; }
   const j = e.target.closest("a[data-jump]");
-  if (j) { e.preventDefault(); const el = document.getElementById(j.dataset.jump); if (el) { el.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); history.replaceState(null, "", j.getAttribute("href")); } }
+  if (j) { e.preventDefault(); const el = document.getElementById(j.dataset.jump); if (el) { el.scrollIntoView({ behavior: RM() ? "auto" : "smooth", block: "start" }); history.replaceState(history.state, "", j.getAttribute("href")); } }
 });
+// scrub the days: drag along the rail (a tick on each day), or swipe the Today page sideways
+{
+  const days = () => [...view.querySelectorAll(".rail .day:not(:disabled)")];
+  let scrub = false;
+  view.addEventListener("pointerdown", e => { if (e.target.closest(".rail-in")) scrub = true; });
+  view.addEventListener("pointermove", e => {
+    if (!scrub || e.pointerType === "mouse" && !e.buttons) return;
+    const d = days().find(b => { const r = b.getBoundingClientRect(); return e.clientX >= r.left && e.clientX < r.right; });
+    if (d && !d.classList.contains("on")) setDay(d.dataset.v);
+  });
+  addEventListener("pointerup", () => { scrub = false; }); addEventListener("pointercancel", () => { scrub = false; });
+  let sx = null, sy = 0;
+  view.addEventListener("touchstart", e => { sx = S.route === "home" && !e.target.closest(".rail,.jump,.seg,.hscroll") ? e.touches[0].clientX : null; sy = e.touches[0].clientY; }, { passive: true });
+  view.addEventListener("touchend", e => {
+    if (sx == null) return; const dx = e.changedTouches[0].clientX - sx, ady = Math.abs(e.changedTouches[0].clientY - sy); sx = null;
+    if (Math.abs(dx) < 70 || ady > 40) return;
+    const all = [...view.querySelectorAll(".rail .day")], i = all.findIndex(b => b.classList.contains("on"));
+    for (let j = i + (dx < 0 ? 1 : -1); j >= 0 && j < all.length; j += dx < 0 ? 1 : -1) if (!all[j].disabled) { setDay(all[j].dataset.v); break; }
+  }, { passive: true });
+}
 // pull to refresh (a home-screen web app on iPhone has none of its own)
 {
   let y0 = null, pulled = 0; const ind = document.createElement("div"); ind.className = "ptr"; ind.setAttribute("aria-hidden", "true"); document.body.append(ind);
-  addEventListener("touchstart", e => { y0 = window.scrollY <= 0 && !UI.day && !UI.match ? e.touches[0].clientY : null; pulled = 0; }, { passive: true });
+  addEventListener("touchstart", e => { y0 = window.scrollY <= 0 && !UI.match && !e.target.closest(".rail") ? e.touches[0].clientY : null; pulled = 0; }, { passive: true });
   addEventListener("touchmove", e => { if (y0 == null) return; pulled = Math.max(0, e.touches[0].clientY - y0); ind.style.setProperty("--p", Math.min(pulled / 70, 1)); ind.classList.toggle("on", pulled > 8); ind.classList.toggle("ready", pulled > 70); }, { passive: true });
-  addEventListener("touchend", () => { if (y0 != null && pulled > 70) { vibe(); loadAll(); } y0 = null; ind.classList.remove("on", "ready"); }, { passive: true });
+  addEventListener("touchend", () => { if (y0 != null && pulled > 70) { vibe(); loadAll(true); } y0 = null; ind.classList.remove("on", "ready"); }, { passive: true });
 }
 addEventListener("scroll", () => onBottom(), { passive: true });
 addEventListener("pointerdown", () => { document.body.dataset.input = "touch"; }, { passive: true });
 addEventListener("keydown", () => { delete document.body.dataset.input; });
-addEventListener("keydown", e => { if (e.key === "Escape" && (UI.day || UI.match)) { if (UI.match) UI.match = null; else UI.day = null; render(false); } });
+addEventListener("keydown", e => { if (e.key === "Escape" && UI.match) closeSheet(); });
 
 // ------------------------------------------------------------------ time
 // Countdowns tick every 20 seconds. Every 30 seconds: redraw if any event changed state (a session starting or
@@ -113,12 +240,14 @@ addEventListener("keydown", e => { if (e.key === "Escape" && (UI.day || UI.match
 setInterval(() => { for (const el of document.querySelectorAll("[data-cd]")) { const v = rel(el.dataset.cd); if (el.textContent !== v) el.textContent = v; } }, 20000);
 setInterval(() => {
   if (document.hidden) return;
-  if (!UI.match && !UI.day && stateSig() !== sig) render(false);
+  if (stateSig() !== sig) draw(false);
   const E = events(), hot = E.some(e => e.state === "live" || (e.state === "next" && Date.parse(e.start) - Date.now() < 15 * 6e4));
   if (Date.now() - S.lastLoad > (hot ? 60e3 : 300e3)) loadAll();
 }, 30000);
-document.addEventListener("visibilitychange", () => { if (!document.hidden) { sizeCheck(); if (Date.now() - S.lastLoad > 60e3) loadAll(); } });
-// very large text (Dynamic Type): capped at 21px; the tab bar keeps its icons and drops the labels
+// "Since you last looked" compares against what the phone saw when the app was last put away
+document.addEventListener("visibilitychange", () => { if (document.hidden) { if (S.lastLoad) markSeen(events()); return; } sizeCheck(); if (Date.now() - S.lastLoad > 60e3) loadAll(); });
+addEventListener("pagehide", () => { if (S.lastLoad) markSeen(events()); });
+// very large text (Dynamic Type): capped at 21px; rows put the status above the names
 const sizeCheck = () => {
   const h = document.documentElement; h.style.fontSize = "";
   const px = parseFloat(getComputedStyle(h).fontSize);
@@ -126,7 +255,8 @@ const sizeCheck = () => {
   document.body.classList.toggle("big", px > 19);
 };
 sizeCheck(); addEventListener("resize", sizeCheck);
-render(true);
+{ const { sec } = parse(); if (sec) pendingSec = sec; }
+draw(true);
 loadAll();
 if ("serviceWorker" in navigator && location.hostname !== "localhost") navigator.serviceWorker.register("/sport-sw.js", { scope: "/sport" }).catch(() => {});
 export { D };

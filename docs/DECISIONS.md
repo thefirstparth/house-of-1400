@@ -878,3 +878,30 @@ setting: it opens light, and the moon button in the top bar switches to dark. Th
 Cricbuzz listed the 3rd T20I of the West Indies tour as a separate series ("India v West Indies"), so the tour showed
 1st, 2nd, 4th and 5th. The Crease now moves a numbered match from a one- or two-match series into a bigger series
 against the same side when that number is missing there and the date falls inside it. Paper and Sport app alike.
+
+## Sport V3: the app redrawn, and stricter live states (10 Oct 2026)
+Parth on V2: "the bar next to the timing is at a different place for every team, too much white space, not clean".
+V3 (brief in `docs/SPORT-V3.md`) puts every match row on one grid, so every time, score and divider lines up. Each
+redraw now updates the page in place (`js/morph.js`), so pills glide and sheets don't jump. Day, tab and sheet
+changes go through history in the usual app way. The live rules also got stricter:
+- A saved copy (the feed failed) counts as live for ten minutes after it was taken, in every sport, Tests included.
+  After that the event says "Last seen" with the time, and is never drawn as live.
+- A national side is live only when its feed says "in", never from the kick-off time alone. Its feed is held for a
+  minute from 15 minutes before kick-off until full time.
+- F1:
+  - A result two sources agree on ends a session, whatever ESPN still says.
+  - Postponed or cancelled is off, in a word.
+  - A red flag is named.
+  - A session over by the clock only (no live source) says "Ended", never "Final".
+- Tennis and the NBA get football's states:
+  - "Starting" for 15 minutes after the listed time.
+  - Then "Delayed" (tennis: "Not yet on court").
+- Postponed and abandoned matches stay on screen as rows with the reason.
+- A match is shown once even when two followed sides play it.
+- Prices are not shown once a match is live (the feed's prices are in-play by then). Every F1 price gives its time.
+
+## Player photos: ESPN studio headshots only (10 Oct 2026)
+Parth: the player photos were "too narrow, not a real, realistic image". ESPN's headshots are now asked for at their
+own width (600px, never a forced height), so a 64px circle still gets about four source pixels per screen pixel. A
+player without an ESPN headshot gets their initials in a circle. Wikipedia action photos cropped to a circle are no
+longer used (badly framed, with mixed backgrounds). An image that fails once is drawn as initials from then on.

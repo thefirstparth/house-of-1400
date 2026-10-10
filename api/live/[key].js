@@ -26,7 +26,11 @@ export async function GET(request) {
   // No index trading anywhere: the market feed changes slowly (the rupee, oil, Bitcoin), so hold it for 30 minutes.
   if (key === "markets" && out.ok && !(out.value?.indices || []).some(i => i.live)) [s, swr] = [1800, 3600];
   // A match in play: The Crease's score is held for a minute, not ten (Parth, 1 Oct: "Live now" showed a stale score).
-  if (key === "crease" && out.ok && [out.value?.next, ...(out.value?.main?.formats || []).flatMap(f => f.matches)].some(m => m?.state === "live")) [s, swr] = [60, 60];
+  // ...and from 15 minutes before a start until the match is live or over, so the first ball is not ten minutes late
+  if (key === "crease" && out.ok && [out.value?.today, out.value?.next, ...(out.value?.main?.formats || []).flatMap(f => f.matches)].some(m => m && (m.state === "live" || (m.state !== "done" && m.state !== "off" && Date.parse(m.start) - Date.now() < 15 * 6e4 && Date.now() - Date.parse(m.start) < 10 * 36e5)))) [s, swr] = [60, 60];
+  // A national side's match from 15 minutes before kick-off until full time: held for a minute (the app takes the live
+  // state only from this feed's own "in", never from the clock)
+  if (key === "intl_hub" && out.ok && (out.value?.teams || []).some(T => (T.next || []).some(m => !m.completed && m.state !== "post" && Date.parse(m.date) - Date.now() < 15 * 6e4 && Date.now() - Date.parse(m.date) < 3 * 36e5))) [s, swr] = [60, 60];
   // Madrid or the Warriors playing: the score held for a minute (Parth, 3 Oct: "the match is live and the score"); a
   // game about to start: held only until its start, so the first live score is not an hour late.
   // The Sport app's Madrid hub: held for a minute while a match is on, so goals and cards arrive with the score

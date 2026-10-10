@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Sport · The House of 1400</title>
 <meta name="description" content="Everything Parth follows: Real Madrid, Formula 1, India, Alcaraz and Djokovic, the Warriors.">
-<meta name="theme-color" content="#f4f4f6" id="themeColor">
+<meta name="theme-color" content="#f3f3f5" id="themeColor">
 <meta name="color-scheme" content="light">
 <script>try{if(localStorage.getItem("sport-theme")==="dark"){document.documentElement.dataset.theme="dark";document.getElementById("themeColor").content="#000000"}}catch(e){}</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -34,16 +34,19 @@
   </header>
   <main id="view" tabindex="-1"></main>
   <nav class="tabs" id="tabs" aria-label="Sections">
+    <i class="tab-pill" aria-hidden="true"></i>
     <a href="#home" data-tab="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5L12 5l8 6.5"/><path d="M6.5 10v9h11v-9"/><path d="M10 19v-5h4v5"/></svg><span>Today</span></a>
     <a href="#football" data-tab="football"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8.2l3.6 2.6-1.4 4.2H9.8l-1.4-4.2z"/><path d="M12 3.5v4.7M15.6 10.8l4.3-1.4M14.2 15l2.6 3.7M9.8 15l-2.6 3.7M8.4 10.8l-4.3-1.4"/></svg><span>Madrid</span></a>
     <a href="#f1" data-tab="f1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V3.5"/><path d="M5 4h14v9H5"/><path class="f" d="M5 4h3.5v3H5zM12 4h3.5v3H12zM8.5 7H12v3H8.5zM15.5 7H19v3h-3.5zM5 10h3.5v3H5zM12 10h3.5v3H12z"/></svg><span>F1</span></a>
-    <a href="#cricket" data-tab="cricket"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 3l5.5 5.5-9.6 9.6-5.5-5.5z"/><path d="M5.9 12.6L3 19.5 4.5 21l6.9-2.9"/><circle cx="18.5" cy="18.5" r="2"/></svg><span>India</span></a>
+    <a href="#cricket" data-tab="cricket"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.6 3.6l2.8 2.8-8.9 8.9-2.8-2.8z"/><path d="M6.4 14.9l-2.6 2.6a1 1 0 0 0 0 1.4l1.3 1.3a1 1 0 0 0 1.4 0l2.6-2.6"/><circle cx="17.5" cy="17.5" r="2.6"/></svg><span>India</span></a>
     <a href="#tennis" data-tab="tennis"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M5 6.3c3.2 1.6 4.6 5.7 3 10.1M19 6.3c-3.2 1.6-4.6 5.7-3 10.1"/></svg><span>Tennis</span></a>
     <a href="#nba" data-tab="nba" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5v17M6 6c3 3.4 3 8.6 0 12M18 6c-3 3.4-3 8.6 0 12"/></svg><span>NBA</span></a>
   </nav>
 </div>
 <div id="sheet-root"></div>
+<div id="announce" class="vh" aria-live="polite"></div>
 <noscript><p class="nojs">This app needs JavaScript.</p></noscript>
+<script>try{if(localStorage.getItem("sport:nbaTab")==="1")document.querySelector('.tabs a[data-tab="nba"]').hidden=false}catch(e){}</script>
 <script type="module" src="/sport/app.js"></script>
 </body>
 </html>
