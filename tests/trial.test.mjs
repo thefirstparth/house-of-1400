@@ -104,8 +104,26 @@ test("Tennis Explorer: next match from a player's page, Prague time to UTC", asy
   const { parseTennisExplorer } = await import("../lib/trial.js");
   const html = `<table class="result gamedetail"><tbody><tr class="one"><td><a href="/beijing/2026/atp-men/">Beijing</a></td><td title="1. round">1R</td><td class="time noWrp">30.09. 13:00</td><th class="t-name"><a href="/match-detail/?id=1" title="Click for match detail">Borges N. - Djokovic N.</a></th></tr></tbody></table>`;
   assert.deepEqual(parseTennisExplorer(html, "Novak Djokovic", Date.parse("2026-09-29T12:00:00Z")),
-    { event: "Beijing", round: "1. round", when_utc: "2026-09-30T11:00:00.000Z", opponent: "Borges N.", source: "Tennis Explorer" });
+    { event: "Beijing", event_path: "/beijing/2026/atp-men/", round: "1. round", when_utc: "2026-09-30T11:00:00.000Z", opponent: "Borges N.", source: "Tennis Explorer" });
   assert.equal(parseTennisExplorer("<p>No upcoming matches.</p>", "Novak Djokovic"), null);
+});
+
+test("Tennis Explorer draw: the next round's opponent, or the pair it comes from; none once the match is played", async () => {
+  const { drawNext } = await import("../lib/trial.js");
+  const box = (l, t, inner) => `<div style="\n position: absolute;\n left: ${l}px;\n top: ${t}px;\n width: 137px;\n height: 15px;\n border-bottom: 1px solid black;\n ">${inner}</div>`;
+  const p = n => `<a href="/player/${n.toLowerCase()}/">${n}</a>`;
+  const head = (l, x) => `<div style=" position: absolute; left: ${l}px; top: 0; width: 136px; height: 17px; ">${x}</div>`;
+  // Round 1: A v B, C v D, E v F, G v H; round 2 so far: A, D, F (G v H not played)
+  const r1 = ["A", "B", "C", "D", "E", "F", "G", "H"].map((n, i) => box(10, 20 + i * 30, p(n))).join("");
+  const r2 = (w4 = "") => [p("Alcaraz"), p("D"), p("F"), w4].map((x, i) => box(150, 35 + i * 60, x)).join("");
+  const html = (r1x, r2x, r3x) => head(150, "2. round") + head(290, "3. round") + r1x + r2x + r3x;
+  const r3 = (a = "", b = "") => [a, b].map((x, i) => box(290, 65 + i * 120, x)).join("");
+  assert.equal(drawNext(html(r1, r2(), r3()), "Alcaraz"), null, "the next pair is F and an unplayed G v H: left out");
+  assert.deepEqual(drawNext(html(r1, r2(p("G")), r3()), "Alcaraz"), { round: "Round 3", from: ["F", "G"] });
+  assert.deepEqual(drawNext(html(r1, r2(p("G")), r3("", p("G"))), "Alcaraz"), { round: "Round 3", opponent: "G" });
+  assert.deepEqual(drawNext(html(r1, r2(p("G")), r3(p("Alcaraz"))), "F"), { round: "Round 3", opponent: "Alcaraz" });
+  assert.equal(drawNext(html(r1, r2(p("G")), r3("", p("G"))), "F"), null, "his own match already played (lost)");
+  assert.equal(drawNext("<p>no draw</p>", "F"), null);
 });
 
 test("tennis: why a due match has not started (the match on its court, or ESPN's own word)", () => {
