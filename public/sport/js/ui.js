@@ -8,8 +8,8 @@ import { D, S, events, esc, t, fmt, hm, dayKey, dayLabel, when, shortDate, longD
 const PX = { s: 24, m: 32, l: 48, xl: 64 };
 const CRIC = { India: 6, England: 1, Australia: 2, "South Africa": 3, "West Indies": 4, "New Zealand": 5, Pakistan: 7, "Sri Lanka": 8, Zimbabwe: 9, Bangladesh: 25, Ireland: 29, Afghanistan: 40 };
 // ESPN's resizer stretches an image to any width and height given (its headshots are 600x436): only a width is asked
-// photos are asked at 600 (ESPN's own width; the face is the middle third of it, so a 64px circle still gets about
-// 4 source pixels per screen pixel on a 3x phone); crests at three times their size
+// photos are asked at 360 wide (160 and 240 for the small sizes; never a height, so nothing is stretched): sharp on a
+// 3x phone at the largest circle; crests at three times their size
 const espnImg = (path, px, photo = false) => `https://a.espncdn.com/combiner/i?img=${encodeURIComponent(path)}&w=${photo ? (px <= 24 ? 160 : px <= 32 ? 240 : 360) : Math.max(px * 3, 120)}`;
 const mono = (name, size, kind = "") => `<span class="mk mono${kind} ${size}" aria-hidden="true">${esc(initials(name))}</span>`;
 // an image that failed once is drawn as initials from then on (a redraw never brings the broken image back)
@@ -36,7 +36,7 @@ export function mark(m, size = "m") {
   if (m.t === "player") {
     // only ESPN's studio headshots (one light, one crop, one background for every player); a player without one gets
     // initials, never a cropped action photo (Parth, 10 Oct: "not a real, realistic image")
-    const r = atp(m.name), path = r?.photo ? new URL(r.photo).pathname : r?.id ? `/i/headshots/tennis/players/full/${r.id}.png` : null;
+    const r = atp(m.name), path = r?.photo ? new URL(r.photo).pathname : r?.id && r.photo === undefined ? `/i/headshots/tennis/players/full/${r.id}.png` : null;
     const flag = r?.flag && size !== "s" ? `<img class="pf" src="${esc(/^https:\/\/a\.espncdn\.com\/i\//.test(r.flag) ? espnImg(new URL(r.flag).pathname, 20) : r.flag)}" alt="" crossorigin="anonymous" decoding="async">` : "";
     const ph = path ? img(espnImg(path, px, true), m.name, size, "photo") : mono(m.name, size, " round");
     return flag ? `<span class="mkw">${ph}${flag}</span>` : ph;
@@ -102,6 +102,7 @@ const at = iso => (dayKey(t(iso)) === dayKey(Date.now()) ? hm(iso) : `${shortDat
 const offShort = e => (e.seen ? "Last seen" : offWord(e.offWhy || "") || (/did not start/i.test(e.offWhy || "") ? "Not run" : "Off"));
 const atDay = iso => (dayKey(t(iso)) === dayKey(Date.now()) ? hm(iso) : shortDate(iso));
 function status(e) {
+  if (e.state === "live" && e.pause && e.sp === "cricket") return `<span class="st"><b class="w${e.pause.length > 6 ? " l" : ""}">${esc(e.pause)}</b><small>${e.saved ? esc(atDay(e.saved)) : "Play stopped"}</small></span>`;
   if (e.state === "live") return e.pause ? `<span class="st lv"><b class="w${e.pause.length > 6 ? " l" : ""}">${esc(e.pause)}</b><small>${e.saved ? esc(atDay(e.saved)) : "Live"}</small></span>` : `<span class="st lv"><b>${live("Live")}</b><small>${esc(e.saved ? atDay(e.saved) : e.clock || (e.sp === "cricket" ? ((e.sb && e.ob ? e.ob : e.oa) ? `${e.sb && e.ob ? e.ob : e.oa} ov` : "") : ""))}</small></span>`;
   if (e.state === "off") return `<span class="st"><b class="w${offShort(e).length > 6 ? " l" : ""}">${esc(offShort(e))}</b><small>${esc(e.seen ? atDay(e.seen) : dayShort(e.start))}</small></span>`;
   if (e.state === "done") {
@@ -160,7 +161,7 @@ function f1Order(e, list, n = 3) {
 export function hero(e, { inSheet = false } = {}) {
   if (!e) return "";
   const lv = e.state === "live";
-  const right = lv ? `${e.pause ? `<span class="cd w">${esc(e.pause)}</span>` : live("Live")}${e.saved ? `<span class="cd">Saved ${esc(at(e.saved))}</span>` : ""}` : `<span class="cd">${e.tbc ? "" : e.due ? "On now by the timetable" : e.starting ? "Starting" : e.late ? (e.sp === "tennis" ? "Not yet on court" : "Delayed") : countdown(e.start)}</span>`;
+  const right = lv ? `${e.pause && e.sp === "cricket" ? "" : e.pause ? `<span class="cd w">${esc(e.pause)}</span>` : live("Live")}${e.saved ? `<span class="cd">Saved ${esc(at(e.saved))}</span>` : ""}` : `<span class="cd">${e.tbc ? "" : e.due ? "On now by the timetable" : e.starting ? "Starting" : e.late ? (e.sp === "tennis" ? "Not yet on court" : "Delayed") : countdown(e.start)}</span>`;
   const top = `<div class="hh">${tag(e.sp, e.sp === "f1" ? gpShort(e.gp) : e.comp || "")}<span class="hr">${right}</span></div>`;
   if (e.sp === "f1") {
     const fav = favDriver(), c = myChance(e);
@@ -181,7 +182,7 @@ export function hero(e, { inSheet = false } = {}) {
   else mid = `<div class="mid tnum"><span class="nums">${e.tbc ? "TBC" : hm(e.start)}</span><small>${esc(e.tbc ? shortDate(e.start) : dayLabel(e.start))}</small></div>`;
   const sp = e.sp === "nba" ? "basketball" : e.sp === "intl" ? null : e.sp;
   const p = !lv && !e.late && !e.starting && t(e.start) > Date.now() && sp ? sideProbs(oddsFor(sp, [e.a, e.b], e.start), [e.a, e.b]) : null;
-  const extra = lv && e.sp === "football" && e.ev?.length ? scorers(e) : crl && e.status ? `<p class="line c">${esc(e.status)}</p>` : "";
+  const extra = lv && e.sp === "football" && e.ev?.length ? scorers(e) : crl && e.status ? `<p class="line c${e.pause ? " paused" : ""}">${esc(e.status)}</p>` : "";
   return `<a class="hero sc-${e.sp}${lv ? " is-live" : ""}" href="${e.href}" data-match="${esc(e.id)}" aria-label="${esc(said(e))}">${top}<div class="vs">${side("a")}${mid}${side("b")}</div>${extra}${e.venue && !lv ? `<div class="venue">${esc(e.venue)}${e.held ? ` · ${esc(e.held)}` : ""}</div>` : ""}${p ? mktBar(p, [sideName(e, "a"), sideName(e, "b")], "Before the start") : ""}</a>`;
 }
 export function scorers(e) {

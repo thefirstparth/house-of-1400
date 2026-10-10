@@ -231,7 +231,7 @@ export function events(all = false) {
     // live only on the feed's own word ("in"), never from the clock; still "pre" after kick-off is starting, then late
     const st = m.completed ? "done" : m.state === "post" || t(m.date) < now - 3 * 36e5 ? "off" : m.state === "in" ? "live" : "next";
     if (st === "next" && now - t(m.date) > 2 * 36e5) continue;
-    const lt = st === "next" && t(m.date) < now ? (now - t(m.date) < 15 * 6e4 ? "starting" : "late") : null;
+    const lt = st === "next" && t(m.date) < now ? (D.intl_hub?.as_of && t(D.intl_hub.as_of) - t(m.date) > 15 * 6e4 ? "late" : "starting") : null;
     out.push({ sp: "intl", id: "nt" + m.id, start: m.date, state: st, a: m.home, b: m.away, ma: soccerMark(m.home_id, m.home), mb: soccerMark(m.away_id, m.away), abbrA: m.home_abbr, abbrB: m.away_abbr,
       comp: m.competition, venue: m.venue, sa: m.completed || st === "live" ? m.hs ?? null : null, sb: m.completed || st === "live" ? m.as ?? null : null, won: m.completed ? (+m.hs > +m.as ? "a" : +m.hs < +m.as ? "b" : null) : null,
       late: lt === "late", starting: lt === "starting", who: T.name, key: "nt:" + T.name, href: "#football/nations" });

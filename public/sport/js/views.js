@@ -56,7 +56,9 @@ export function viewHome() {
     const dt = new Date(sel + "T12:00:00+05:30").toISOString();
     return `<div class="page">${head}${dayRail(all, sel)}${blk(esc(fmt(dt, { weekday: "long" }) + " " + shortDate(dt)), list.length ? `<div class="list">${list.map(e => row(e)).join("")}</div>` : " ", `<button type="button" class="chip" data-ui="day" data-v="">Back to today</button>`, "day")}</div>`;
   }
-  const lives = E.filter(e => e.state === "live");
+  const RANK = { football: 0, f1: 1, cricket: 2, intl: 3, tennis: 4, nba: 5 };
+  const rich = e => (e.sa != null || e.liveTop || e.liveOrder ? 0 : 1);
+  const lives = E.filter(e => e.state === "live").sort((a, b) => rich(a) - rich(b) || RANK[a.sp] - RANK[b.sp] || t(a.start) - t(b.start));
   // a live feed lost (a saved copy too old to believe), or a match called off today: a row, said plainly
   const odd = E.filter(e => e.state === "off" && (e.seen || e.offWhy) && Math.abs(now - t(e.start)) < 12 * 36e5);
   // just finished: inside three hours
@@ -157,7 +159,7 @@ export function viewFootball() {
     table = blk("Table", `${seg("table", comps.map(c => [c.key, sn(c.label)]), cur.key, "Competition")}<div class="list"><table class="tbl">${head}<tbody>${show.map((r, i) => (i && r.rank - show[i - 1].rank > 1 ? `<tr class="gap"><td colspan="5">···</td></tr>` : "") + tr(r)).join("")}</tbody></table>${show.length < rows.length ? moreBox("Full table", `<table class="tbl">${head}<tbody>${rows.map(tr).join("")}</tbody></table>`) : ""}${zones.length ? `<div class="legend">${zones.map(([n, c]) => `<span><i style="background:${esc(c)}"></i>${esc(n)}</span>`).join("")}</div>` : ""}</div>`, "", "table");
     const kinds = [["goals", "Goals"], ["assists", "Assists"], ["ratings", "Rating"]].filter(([k]) => cur[k]?.length), lk = kinds.find(([k]) => k === UI.leaders)?.[0] || kinds[0]?.[0];
     if (lk) {
-      const L = cur[lk].slice(0, 8), mx = Math.max(...L.map(x => x.value)), rs = L.map(x => barRow(x.name, x.value, mx, { me: same(x.team, cname), sub: x.team, pos: x.rank, label: lk === "ratings" ? Number(x.value).toFixed(2) : x.value }));
+      const L = cur[lk].slice(0, 8), mx = Math.max(...L.map(x => x.value)), rs = L.map(x => barRow(x.name, x.value, mx, { me: same(x.team, cname), sub: short(x.team), pos: x.rank, label: lk === "ratings" ? Number(x.value).toFixed(2) : x.value }));
       leaders = blk("Leaders", `${seg("leaders", kinds, lk, "Leader board")}<div class="list">${rs.slice(0, 5).join("")}${rs.length > 5 ? moreBox(`${rs.length - 5} more`, rs.slice(5).join("")) : ""}</div>`, "", "leaders");
     }
   }

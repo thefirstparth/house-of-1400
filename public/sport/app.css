@@ -475,3 +475,5 @@ body[data-tab="home"] #view{touch-action:pan-y pinch-zoom;min-height:calc(100dvh
 .mk.flag.l{width:44px;height:44px}
 .miss{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:10px 2px 0;color:var(--muted);font-size:var(--t-meta)}
 body.big .tbl td.team span,body.big .pl span,body.big .bar-row .tx{white-space:normal;overflow-wrap:anywhere}
+.line.c.paused{color:var(--ink2)}
+.mr.is-live:has(.st:not(.lv))::after{display:none}
