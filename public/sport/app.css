@@ -525,3 +525,13 @@ body.big .barrow{grid-template-columns:minmax(0,1fr) 32%}
 .row-d a.row .t2{white-space:normal}
 .pl.gk{transform:translate(-50%,-38%)}
 .shelf{align-items:flex-start}
+/* round 13 */
+.formt .fgrid>.fpos{width:32px;min-width:0;padding:0}
+body.big .formt .fgrid>.fpos{width:34px}
+.formt .fpos.rh{letter-spacing:-.02em}
+.formt .row.me .t1{font-weight:600}
+.tbl td.team span{letter-spacing:-.005em}
+body.big .formt .fgrid>*:first-child{display:none}
+body.big .formt .grow{min-width:5.8rem}
+@media (max-width:359px){.formt .fgrid>.fpos{width:30px}}
+@media (max-width:359px){.formt .t1{font-size:.88rem}.formt .row{padding-left:12px;padding-right:12px}.formt .grow{min-width:4.6rem}.formt .fgrid>.fpos{width:28px}}
