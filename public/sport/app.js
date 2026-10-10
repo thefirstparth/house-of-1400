@@ -34,7 +34,8 @@ const norm = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLow
 // Whole words only, so "Real Madrid" is never "Atlético Madrid" and "India" never "West Indies".
 const same = (a, b) => { const x = norm(a), y = norm(b); return !!x && !!y && (x === y || ` ${x} `.includes(` ${y} `) || ` ${y} `.includes(` ${x} `)); };
 const last = n => String(n || "").split(" ").pop();
-const initials = n => String(n || "").split(/\s+/).filter(Boolean).map(w => w[0]).join("").slice(0, 3).toUpperCase();
+// "IND", "WI", "NZ", "JMC": a one-word name gives its first three letters, longer names their initials
+const initials = n => { const w = String(n || "").split(/\s+/).filter(Boolean); return (w.length === 1 ? w[0].slice(0, 3) : w.map(x => x[0]).join("").slice(0, 3)).toUpperCase(); };
 const val = k => D[k]?.value || null;
 const vibe = () => { try { navigator.vibrate?.(8); } catch {} };
 const ICON = {
@@ -123,7 +124,7 @@ function mktBar(p, names, sp) {
   return `<div class="mkt sp-${sp}" role="img" aria-label="Market: ${esc(names[0])} ${p.a}%, ${p.d != null ? `draw ${p.d}%, ` : ""}${esc(names[1])} ${p.b}%">
     <div class="bar">${seg(p.a, "")}${p.d != null ? seg(p.d, "draw") : ""}${seg(p.b, "")}</div>
     <div class="lab"><span class="${p.a === lead ? "lead" : ""}"><b class="tnum">${p.a}%</b> ${esc(names[0])}</span>${p.d != null ? `<span class="${p.d === lead ? "lead" : ""}">Draw <b class="tnum">${p.d}%</b></span>` : ""}<span class="${p.b === lead ? "lead" : ""}">${esc(names[1])} <b class="tnum">${p.b}%</b></span></div>
-    <div class="src">${esc(p.source)} market${D.odds?.as_of ? ` · ${hm(D.odds.as_of)}` : ""}</div></div>`;
+    <div class="src">${esc(p.source)}${D.odds?.as_of ? ` · ${hm(D.odds.as_of)}` : ""}</div></div>`;
 }
 function rankList(outcomes, sp, { max = 6, nameFn = x => x, mark = null } = {}) {
   const o = [...outcomes].sort((a, b) => b.prob - a.prob).slice(0, max), top = o[0]?.prob || 1;
@@ -250,7 +251,7 @@ function viewHome() {
   const hero = ups[0];
   const rows = ups.slice(1).map(e => {
     const o = evOdds(e);
-    return `<a class="row" href="${e.href}">${chip(e.sp, e.sp === "tennis" ? last(e.player) : e.sp === "football" ? "Madrid" : e.sp === "cricket" ? "India" : e.sp === "nba" ? "Warriors" : "F1")}<div class="grow"><div class="t1">${esc(e.sp === "f1" ? `${e.title}${e.sp === "f1" && e.session !== "Race" ? "" : ""}` : e.title)}</div><div class="t2">${esc(e.tbc ? "Time to be confirmed" : when(e.start))}${e.sp === "f1" && e.sub ? ` · ${esc(e.sub)}` : e.comp ? ` · ${esc(e.comp)}` : ""}</div></div><div class="end">${o ? `<div class="t1 tnum">${o.prob}%</div><div class="t2">${esc(o.label)}</div>` : `<div class="t2">${countdown(e.start)}</div>`}</div></a>`;
+    return `<a class="row" href="${e.href}">${chip(e.sp, e.sp === "tennis" ? last(e.player) : e.sp === "football" ? "Madrid" : e.sp === "cricket" ? "India" : e.sp === "nba" ? "Warriors" : "F1")}<div class="grow"><div class="t1">${esc(e.sp === "nba" ? `${last(e.a)} v ${last(e.b)}` : e.title)}</div><div class="t2">${esc(e.tbc ? "Time to be confirmed" : when(e.start))}${e.sp === "f1" && e.sub ? ` · ${esc(e.sub)}` : e.comp ? ` · ${esc(e.comp)}` : ""}</div></div><div class="end">${o ? `<div class="t1 tnum">${o.prob}%</div><div class="t2">${esc(o.label)}</div>` : `<div class="t2">${countdown(e.start)}</div>`}</div></a>`;
   }).join("");
   // Latest results: the most recent finished event per follow, in the last ten days
   const doneBy = new Map();
@@ -268,17 +269,17 @@ function viewHome() {
       return null;
     }).filter(Boolean);
     const going = t(ev.start) <= now;
-    tours.push(`<a class="row" href="#tennis">${chip("tennis")}<div class="grow"><div class="t1">${esc(ev.name)}</div><div class="t2">${st.length ? st.join(" · ") : `${going ? "Under way" : "Starts " + shortDate(ev.start)} · ${esc(ev.venue || "")}`}</div></div>${chev}</a>`);
+    tours.push(`<a class="row" href="#tennis">${chip("tennis")}<div class="grow"><div class="t1">${esc(ev.name)}</div><div class="t2 wrap">${st.length ? st.join(" · ") : `${going ? "Under way" : "Starts " + shortDate(ev.start)} · ${esc(ev.venue || "")}`}</div></div>${chev}</a>`);
   }
   const C = val("crease");
   for (const S of [C?.main, ...(C?.also || [])].filter(Boolean)) {
     const sc = (S.formats || []).map(f => f.score ? `${f.label}: ${f.score}` : null).filter(Boolean).join(" · ");
-    tours.push(`<a class="row" href="#cricket">${chip("cricket", "India")}<div class="grow"><div class="t1">${esc(S.name)}</div><div class="t2">${esc(sc || `${shortDate(S.first)} to ${shortDate(S.last)}`)}</div></div>${chev}</a>`);
+    tours.push(`<a class="row" href="#cricket">${chip("cricket", "India")}<div class="grow"><div class="t1">${esc(S.name)}</div><div class="t2 wrap">${esc(sc || `${shortDate(S.first)} to ${shortDate(S.last)}`)}</div></div>${chev}</a>`);
   }
   const ST = val("f1_standings");
   if (ST?.drivers?.length) {
     const me = ST.drivers.find(d => same(d.name, favDriver())), lead = ST.drivers[0];
-    tours.push(`<a class="row" href="#f1">${chip("f1")}<div class="grow"><div class="t1">Drivers' championship</div><div class="t2">${esc(last(lead.shown || lead.name))} leads on ${lead.points}${me && me !== lead ? ` · ${esc(last(favDriver()))} P${me.pos}, ${lead.points - me.points} behind` : ""}</div></div>${chev}</a>`);
+    tours.push(`<a class="row" href="#f1">${chip("f1")}<div class="grow"><div class="t1">Drivers' championship</div><div class="t2 wrap">${esc(last(lead.shown || lead.name))} leads on ${lead.points}${me && me !== lead ? ` · ${esc(last(favDriver()))} P${me.pos}, ${lead.points - me.points} behind` : ""}</div></div>${chev}</a>`);
   }
   const TB = (val("club_stats")?.comps || []).find(c => c.key === "liga")?.rows?.find(r => same(r.team, club()));
   if (TB) tours.push(`<a class="row" href="#football">${chip("football", "Madrid")}<div class="grow"><div class="t1">La Liga</div><div class="t2">${ordinal(TB.rank)} on ${TB.points} points after ${TB.played}</div></div>${chev}</a>`);
@@ -329,6 +330,19 @@ function viewFootball() {
     const cap = X.kind === "official" ? `<span class="chip live" style="background:var(--win)">Official XI</span><span class="note">v ${esc(X.opponent)}</span>` : `<span class="note">Started v ${esc(X.opponent)}, ${esc(shortDate(X.date))}</span>`;
     xi = blk(X.kind === "official" ? "Starting XI" : "Last starting XI", `<div class="card">${pitch(X)}<p class="foot">${X.kind === "official" ? `${esc(X.formation || "")} · announced by the club` : `${esc(X.formation || "")} · the official XI for the next match shows here once it is announced, about an hour before kick-off`}${X.bench?.length ? `<br>Bench: ${esc(X.bench.slice(0, 12).join(", "))}` : ""}</p></div>`, cap);
   }
+  // The next match's preview: both sides' last five, and the last meetings
+  let preview = "";
+  const PV = H?.preview;
+  if (PV && next && String(next.id) === "rm" + PV.match_id) {
+    const fm = PV.form.map(tm => `<div class="pvf"><div class="pvt">${crest(tm.id, tm.team, "sm")}<b>${esc(tm.team)}</b></div><span class="form" aria-label="${esc(tm.team)} form ${tm.games.map(g => g.result).join(" ")}">${tm.games.map(g => `<i class="${esc(g.result || "D")}" title="${esc(`${g.at ? "at" : "v"} ${g.opponent} ${g.score || ""}`)}">${esc(g.result || "")}</i>`).join("")}</span></div>`).join("");
+    const mt = PV.meetings.map(m => `<div class="row"><div class="grow"><div class="t1">${esc(m.home)} ${esc(m.hs)}–${esc(m.as)} ${esc(m.away)}</div><div class="t2">${esc(m.competition || "")} · ${esc(fmt(m.date, { day: "numeric", month: "short", year: "numeric" }))}</div></div></div>`).join("");
+    preview = blk("Form and meetings", `${fm ? `<div class="card pv">${fm}<p class="foot" style="margin:10px 0 0">Last five matches, oldest first.</p></div>` : ""}${mt ? `<div class="list" style="margin-top:12px">${mt}</div>` : ""}`, (() => {
+      // Madrid's record in those meetings, counted here from the scores
+      let w = 0, d = 0, l = 0;
+      for (const m of PV.meetings) { const us = same(m.home, cname) ? m.hs : same(m.away, cname) ? m.as : null, them = same(m.home, cname) ? m.as : m.hs; if (us == null) continue; if (+us > +them) w++; else if (+us < +them) l++; else d++; }
+      return w + d + l ? `<span class="note">Last ${w + d + l} meetings: ${w}W ${d}D ${l}L</span>` : "";
+    })());
+  }
   // Results and fixtures
   const resRows = (H?.results || []).map(m => {
     const r = m.winner === "us" ? "W" : m.winner === "them" ? "L" : "D", sc = `${m.us}–${m.them}`; // Madrid's goals first
@@ -364,6 +378,7 @@ function viewFootball() {
   return `<div class="page">${header(`<span style="display:inline-flex;align-items:center;gap:12px">${crest(H?.club_id || "86", cname, "sm")}${esc(cname)}</span>`, sub, ["football", "madrid_hub", "club_stats"])}
     ${!H && !F ? `<div class="skel"></div><div class="skel"></div>` : ""}
     ${next ? blk(next.state === "live" ? "Live" : "Next match", nextCard(next)) : ""}
+    ${preview}
     ${xi}
     ${blk("Results", list(resRows, 5))}
     ${blk("Fixtures", list(fxRows, 4))}
@@ -375,6 +390,13 @@ function viewFootball() {
 // ------------------------------------------------------------------ F1
 const fposCls = r => (!r ? "" : !r.finished ? "out" : r.pos === 1 ? "p1" : r.pos === 2 ? "p2" : r.pos === 3 ? "p3" : "");
 const fpos = r => `<span class="fpos ${fposCls(r)} tnum" title="${esc(r?.race || "")}">${r ? (r.finished ? r.pos : esc(r.text === "R" ? "DNF" : r.text || "DNF")) : "–"}</span>`;
+// The market favourite and the favourite driver's price for a session still to come
+function sessFav(s) {
+  const kind = /sprint qualif|shootout/i.test(s.name) ? "sprint_qualifying" : /sprint/i.test(s.name) ? "sprint" : /qualif/i.test(s.name) ? "qualifying" : /^race$/i.test(s.name) ? "race" : null;
+  const m = kind && oddsFor("f1", null, s.start, kind); if (!m?.outcomes?.length) return "";
+  const top = [...m.outcomes].sort((a, b) => b.prob - a.prob)[0], me = m.outcomes.find(x => same(x.name, favDriver()));
+  return ` · ${esc(last(top.name))} ${Math.round(top.prob)}%${me && me !== top ? `, ${esc(last(me.name))} ${Math.round(me.prob)}%` : ""}`;
+}
 function viewF1() {
   const N = val("f1_next"), R = N?.race, S = val("f1_standings"), HB = val("f1_hub"), MK = val("f1_market"), SR = val("f1_sessions")?.results || [], LR = val("f1_last"), fav = favDriver(), now = Date.now();
   const drivers = S?.drivers || [], me = drivers.find(d => same(d.name, fav)), lead = drivers[0];
@@ -388,7 +410,7 @@ function viewF1() {
       return { ...s, state, res };
     });
     const nx = sess.find(s => s.state !== "done");
-    const rows = sess.map(s => `<div class="row ${s.state}${s === nx && s.state === "next" ? " next" : ""}"><span class="dot"></span><div class="grow"><div class="t1">${esc(s.name)}</div><div class="t2">${s.res ? `${s.res.top.map((n, i) => `${i + 1} ${esc(n)}`).join(" · ")}` : esc(when(s.start))}</div></div><div class="end">${s.state === "now" ? `<span class="chip live"><i></i>On now</span>` : s.state === "done" ? `<span class="t2">${esc(dayLabel(s.start))}</span>` : `<div class="t1 tnum">${hm(s.start)}</div><div class="t2">${s === nx ? countdown(s.start) : esc(dayLabel(s.start))}</div>`}</div></div>`).join("");
+    const rows = sess.map(s => `<div class="row ${s.state}${s === nx && s.state === "next" ? " next" : ""}"><span class="dot"></span><div class="grow"><div class="t1">${esc(s.name)}</div><div class="t2">${s.res ? `${s.res.top.map((n, i) => `${i + 1} ${esc(n)}`).join(" · ")}` : esc(when(s.start))}${s.state !== "done" ? sessFav(s) : ""}</div></div><div class="end">${s.state === "now" ? `<span class="chip live"><i></i>On now</span>` : s.state === "done" ? `<span class="t2">${esc(dayLabel(s.start))}</span>` : `<div class="t1 tnum">${hm(s.start)}</div><div class="t2">${s === nx ? countdown(s.start) : esc(dayLabel(s.start))}</div>`}</div></div>`).join("");
     weekend = blk("This weekend", `<div class="card sp-f1"><div class="when" style="display:flex;justify-content:space-between;align-items:center">${chip("f1", `Round ${R.round}`)}${nx ? `<span class="count">${nx.name} ${countdown(nx.start)}</span>` : ""}</div><div class="next one" style="padding:0"><div class="title">${R.flag ? `${esc(R.flag)} ` : ""}${esc(String(R.name).replace(/ in .*$/, ""))}<small>${esc(R.circuit || "")}${R.locality ? `, ${esc(R.locality)}` : ""}</small></div></div>${R.track?.image ? `<img class="track" src="${esc(R.track.image)}" alt="${esc(R.circuit || "")} layout" loading="lazy">` : ""}</div><div class="list sess sp-f1" style="margin-top:12px">${rows}</div>`);
   }
   // Max Watch
@@ -444,6 +466,11 @@ function viewF1() {
 }
 
 // ------------------------------------------------------------------ India
+// India's result in two or three words: "Won by 8 wkts", "Lost by 5 wkts", else the status as given
+function resultWord(m) {
+  const by = String(m.status || "").match(/won by (.+?)(?: \(.*\))?$/i)?.[1];
+  return by && m.won === true ? `Won by ${by}` : by && m.won === false ? `Lost by ${by}` : String(m.status || "").replace(/ due to .*$/i, "");
+}
 function viewCricket() {
   const C = val("crease"), now = Date.now(), E = events().filter(e => e.sp === "cricket");
   const live = E.find(e => e.state === "live"), next = live || E.find(e => e.state === "next" && t(e.start) > now - 6e4);
@@ -451,14 +478,15 @@ function viewCricket() {
     const fm = (S.formats || []).map(f => {
       const rows = (f.matches || []).map(m => {
         const st = m.state === "done" ? (m.won === true ? "W" : m.won === false ? "L" : "D") : null;
-        return `<div class="row"><div class="grow"><div class="t1">${esc(m.desc)}</div><div class="t2">${esc([m.city, m.state === "done" ? shortDate(m.start) : m.time_announced === false ? `${shortDate(m.start)}, time TBC` : when(m.start)].filter(Boolean).join(" · "))}</div>${m.state === "done" && m.score ? `<div class="t2 tnum" style="white-space:normal">${esc(m.score)}</div>` : ""}</div><div class="end">${m.state === "done" ? `<span class="score ${st} tnum" style="font:600 13px var(--sans);min-width:0">${esc(String(m.status || "").replace(/^India /, "").replace(/ due to .*$/i, ""))}</span>` : m.state === "live" ? `<span class="chip live"><i></i>Live</span>` : m.state === "off" ? `<span class="chip done">${esc(m.status || "No result")}</span>` : `<span class="t2">${countdown(m.start)}</span>`}</div></div>`;
+        return `<div class="row"><div class="grow"><div class="t1">${esc(m.desc)}</div><div class="t2">${esc([m.city, m.state === "done" ? shortDate(m.start) : m.time_announced === false ? `${shortDate(m.start)}, time TBC` : when(m.start)].filter(Boolean).join(" · "))}</div>${m.state === "done" && m.score ? `<div class="t2 tnum" style="white-space:normal">${esc(m.score)}</div>` : ""}</div><div class="end">${m.state === "done" ? `<span class="score ${st} tnum" style="font:600 13px var(--sans);min-width:0">${esc(resultWord(m))}</span>` : m.state === "live" ? `<span class="chip live"><i></i>Live</span>` : m.state === "off" ? `<span class="chip done">${esc(m.status || "No result")}</span>` : `<span class="t2">${countdown(m.start)}</span>`}</div></div>`;
       }).join("");
       return `<div class="blk-h" style="margin:16px 4px 8px"><h2 style="font-size:17px">${esc(f.label || f.format)}</h2>${f.score ? `<span class="chip sp sp-cricket">${esc(f.score)}</span>` : ""}</div><div class="list">${rows}</div>`;
     }).join("");
     return blk(title ? `${title} · ${esc(S.name)}` : esc(S.name), fm, `<span class="note">${esc(shortDate(S.first))} to ${esc(shortDate(S.last))}</span>`);
   };
   const series = [C?.main, ...(C?.also || [])].filter(Boolean).map(S => seriesBlock(S)).join("");
-  const after = C?.after?.formats ? seriesBlock(C.after, "Next") : "";
+  const A = C?.after;
+  const after = A?.formats ? blk(`Next · ${esc(A.name)}`, `<div class="list">${A.formats.map(f => { const ms = f.matches || []; return `<details class="row-d"><summary class="row"><div class="grow"><div class="t1">${ms.length} ${esc(f.label || f.format)}</div><div class="t2">${ms[0] ? `${esc(shortDate(ms[0].start))} to ${esc(shortDate(ms.at(-1).start))} · ${esc([...new Set(ms.map(m => m.city).filter(Boolean))].slice(0, 3).join(", "))}` : ""}</div></div><svg class="chev dn" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2"/></svg></summary>${ms.map(m => `<div class="row sub"><div class="grow"><div class="t1">${esc(m.desc)}</div><div class="t2">${esc([m.city, m.time_announced === false ? `${shortDate(m.start)}, time TBC` : when(m.start)].filter(Boolean).join(" · "))}</div></div></div>`).join("")}</details>`; }).join("")}</div>`, `<span class="note">From ${esc(shortDate(A.first))}</span>`) : "";
   const done = E.filter(e => e.state === "done").slice(-1)[0];
   return `<div class="page">${header("India", C?.main ? `<b>${esc(C.main.name)}</b>` : "", ["crease"])}
     ${!C ? `<div class="skel"></div><div class="skel"></div>` : ""}
@@ -542,3 +570,4 @@ setInterval(() => { if (document.hidden) return; const live = events().some(e =>
 document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - lastLoad > 60e3) loadAll(); });
 render(true);
 loadAll();
+if ("serviceWorker" in navigator && location.hostname !== "localhost") navigator.serviceWorker.register("/sport-sw.js", { scope: "/sport" }).catch(() => {});
