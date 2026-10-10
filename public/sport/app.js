@@ -249,19 +249,26 @@ view.addEventListener("click", e => {
 // scrub the days: drag along the rail (a tick on each day), or swipe the Today page sideways
 {
   const days = () => [...cur().querySelectorAll(".rail .day:not(:disabled)")];
-  let scrub = false;
-  // the pill and the thumb start moving at the touch, not at the click
+  // a scrub starts only once the finger moves sideways (a vertical drag that starts on the rail is a page scroll)
+  let scrub = false, onRail = false, x0 = 0, y0 = 0;
+  // the pill and the thumb start moving at the touch, not at the click; a touch that turns into a scroll puts them back
+  const settle = () => {
+    const rail = cur().querySelector(".rail-in"); if (rail) { const all = [...rail.querySelectorAll(".day")]; rail.style.setProperty("--di", Math.max(0, all.findIndex(d => d.classList.contains("on")))); }
+    for (const sg of cur().querySelectorAll(".seg")) sg.style.setProperty("--i", Math.max(0, [...sg.querySelectorAll("button")].findIndex(b => b.getAttribute("aria-pressed") === "true")));
+  };
+  view.addEventListener("pointercancel", settle);
   view.addEventListener("pointerdown", e => {
-    if (e.target.closest(".rail-in")) scrub = true;
+    onRail = !!e.target.closest(".rail-in"); scrub = false; x0 = e.clientX; y0 = e.clientY;
     const d = e.target.closest(".rail .day:not(:disabled)"); if (d) { const all = [...d.parentElement.querySelectorAll(".day")]; d.parentElement.style.setProperty("--di", all.indexOf(d)); }
     const b = e.target.closest(".seg button"); if (b) b.parentElement.style.setProperty("--i", [...b.parentElement.querySelectorAll("button")].indexOf(b));
   });
   view.addEventListener("pointermove", e => {
-    if (!scrub || e.pointerType === "mouse" && !e.buttons) return;
+    if (!onRail || (e.pointerType === "mouse" && !e.buttons)) return;
+    if (!scrub) { const dx = Math.abs(e.clientX - x0), dy = Math.abs(e.clientY - y0); if (dx > 8 && dx > dy) scrub = true; else return; }
     const d = days().find(b => { const r = b.getBoundingClientRect(); return e.clientX >= r.left && e.clientX < r.right; });
     if (d && !d.classList.contains("on")) setDay(d.dataset.v);
   });
-  addEventListener("pointerup", () => { scrub = false; }); addEventListener("pointercancel", () => { scrub = false; });
+  addEventListener("pointerup", () => { scrub = false; onRail = false; }); addEventListener("pointercancel", () => { scrub = false; onRail = false; });
   let sx = null, sy = 0;
   view.addEventListener("touchstart", e => { sx = S.route === "home" && !e.target.closest(".rail,.jump,.seg,.hscroll") ? e.touches[0].clientX : null; sy = e.touches[0].clientY; }, { passive: true });
   view.addEventListener("touchend", e => {
