@@ -513,3 +513,6 @@ a.mr:active,a.li:active{transition:none}
 .stat b,.crs span,.mid .nums.sm,.mid.cr span{font-size:1.45rem}
 .st b.w.l{font-size:.92rem}
 .sheet .hero .tag{display:none}
+/* the side's name is never what gives way: the competition beside it shrinks first */
+.ln.nx{grid-template-columns:22px fit-content(100%) minmax(0,1fr)}
+.ln.nx .mx{min-width:0;max-width:none}
