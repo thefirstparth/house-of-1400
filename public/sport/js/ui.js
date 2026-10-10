@@ -2,7 +2,7 @@
 // and divider lines up), one hero, one sheet. Marks: a crest is drawn whole; only a player's photo is round, cropped
 // to the face from an undistorted image. Live is said once (dot, LIVE, clock); a saved copy says so.
 import { D, S, events, esc, t, fmt, hm, dayKey, dayLabel, when, shortDate, longDate, rel, same, last, initials, ordinal, gpName, gpShort, val,
-  club, clubId, favDriver, short, sideProbs, oddsFor, myChance, sessionMarket, f1Kind, F1MIN, resultWord, meetRecord, atp, soccerMark } from "./core.js";
+  club, clubId, favDriver, short, offWord, sideProbs, oddsFor, myChance, sessionMarket, f1Kind, F1MIN, resultWord, meetRecord, atp, soccerMark } from "./core.js";
 
 // ------------------------------------------------------------------ marks
 const PX = { s: 24, m: 32, l: 48, xl: 64 };
@@ -10,27 +10,28 @@ const CRIC = { India: 6, England: 1, Australia: 2, "South Africa": 3, "West Indi
 // ESPN's resizer stretches an image to any width and height given (its headshots are 600x436): only a width is asked
 // photos are asked at 600 (ESPN's own width; the face is the middle third of it, so a 64px circle still gets about
 // 4 source pixels per screen pixel on a 3x phone); crests at three times their size
-const espnImg = (path, px, photo = false) => `https://a.espncdn.com/combiner/i?img=${encodeURIComponent(path)}&w=${photo ? (px <= 24 ? 240 : 600) : Math.max(px * 3, 120)}`;
+const espnImg = (path, px, photo = false) => `https://a.espncdn.com/combiner/i?img=${encodeURIComponent(path)}&w=${photo ? (px <= 24 ? 160 : px <= 32 ? 240 : 360) : Math.max(px * 3, 120)}`;
 const mono = (name, size, kind = "") => `<span class="mk mono${kind} ${size}" aria-hidden="true">${esc(initials(name))}</span>`;
 // an image that failed once is drawn as initials from then on (a redraw never brings the broken image back)
 const BAD = (globalThis.__badImg ||= new Set());
-function img(url, name, size, kind) {
-  if (BAD.has(url)) return mono(name, size, kind.includes("photo") ? " round" : "");
+function img(url, name, size, kind, alt = "") {
+  if (BAD.has(url)) return alt ? img(alt, name, size, kind) : mono(name, size, kind.includes("photo") ? " round" : "");
   const fb = esc(mono(name, size, kind.includes("photo") ? " round" : "")).replace(/'/g, "");
-  return `<span class="mk ${kind} ${size}" aria-hidden="true"><img src="${esc(url)}" alt="" decoding="async" onerror="__badImg.add(this.src);this.parentNode.outerHTML='${fb}'"></span>`;
+  return `<span class="mk ${kind} ${size}" aria-hidden="true"><img src="${esc(url)}"${alt ? ` data-alt="${esc(alt)}"` : ""} alt=""${/^https:\/\/a\.espncdn\.com\//.test(url) ? ` crossorigin="anonymous"` : ""} decoding="async" onerror="__badImg.add(this.src);if(this.dataset.alt){this.src=this.dataset.alt;this.removeAttribute('data-alt')}else this.parentNode.outerHTML='${fb}'"></span>`;
 }
 export function mark(m, size = "m") {
   // no side yet (a draw still to be played): a neutral mark, so the row still has two
   if (!m) return `<span class="mk mono round ${size}" aria-hidden="true">?</span>`;
   const px = PX[size];
-  if (m.t === "soccer") return m.id ? img(espnImg(`/i/teamlogos/soccer/500/${m.id}.png`, px), m.name, size, "crest") : mono(m.name, size);
+  const dark = document.documentElement.dataset.theme === "dark";
+  if (m.t === "soccer") return m.id ? (dark ? img(espnImg(`/i/teamlogos/soccer/500-dark/${m.id}.png`, px), m.name, size, "crest", espnImg(`/i/teamlogos/soccer/500/${m.id}.png`, px)) : img(espnImg(`/i/teamlogos/soccer/500/${m.id}.png`, px), m.name, size, "crest")) : mono(m.name, size);
   if (m.t === "nba") return m.abbr ? img(espnImg(`/i/teamlogos/nba/500${document.documentElement.dataset.theme === "dark" ? "-dark" : ""}/${String(m.abbr).toLowerCase()}.png`, px), m.name, size, "crest") : mono(m.name, size);
   if (m.t === "cricket") return CRIC[m.name] ? img(espnImg(`/i/teamlogos/cricket/500/${CRIC[m.name]}.png`, px), m.name, size, "crest") : mono(m.name, size);
   if (m.t === "player") {
     // only ESPN's studio headshots (one light, one crop, one background for every player); a player without one gets
     // initials, never a cropped action photo (Parth, 10 Oct: "not a real, realistic image")
     const r = atp(m.name), path = r?.photo ? new URL(r.photo).pathname : r?.id ? `/i/headshots/tennis/players/full/${r.id}.png` : null;
-    const flag = r?.flag && size !== "s" ? `<img class="pf" src="${esc(r.flag)}" alt="" loading="lazy">` : "";
+    const flag = r?.flag && size !== "s" ? `<img class="pf" src="${esc(/^https:\/\/a\.espncdn\.com\/i\//.test(r.flag) ? espnImg(new URL(r.flag).pathname, 20) : r.flag)}" alt="" crossorigin="anonymous" decoding="async">` : "";
     const ph = path ? img(espnImg(path, px, true), m.name, size, "photo") : mono(m.name, size, " round");
     return flag ? `<span class="mkw">${ph}${flag}</span>` : ph;
   }
@@ -92,25 +93,28 @@ const dayShort = iso => { const k = dayKey(t(iso)), now = Date.now(); return k =
 export const liveLabel = e => e.pause || "Live";
 const at = iso => (dayKey(t(iso)) === dayKey(Date.now()) ? hm(iso) : `${shortDate(iso)} ${hm(iso)}`);
 // in a word: why an event is not on (Postponed, Cancelled, Abandoned), or that its live feed was lost
-const offShort = e => (e.seen ? "Last seen" : e.offWhy ? String(e.offWhy).replace(/^(\w+(?: result)?).*/, "$1") : "Not played");
+const offShort = e => (e.seen ? "Last seen" : offWord(e.offWhy || "") || (/did not start/i.test(e.offWhy || "") ? "Not run" : "Off"));
+const atDay = iso => (dayKey(t(iso)) === dayKey(Date.now()) ? hm(iso) : shortDate(iso));
 function status(e) {
-  if (e.state === "live") return e.pause ? `<span class="st lv"><b class="w">${esc(e.pause)}</b><small>${e.saved ? `Saved ${esc(at(e.saved))}` : "Live"}</small></span>` : `<span class="st lv"><b>${live("Live")}</b><small>${esc(e.saved ? `Saved ${at(e.saved)}` : e.clock || "")}</small></span>`;
-  if (e.state === "off") return `<span class="st"><b class="w">${esc(offShort(e))}</b><small>${esc(e.seen ? at(e.seen) : dayShort(e.start))}</small></span>`;
+  if (e.state === "live") return e.pause ? `<span class="st lv"><b class="w${e.pause.length > 6 ? " l" : ""}">${esc(e.pause)}</b><small>${e.saved ? `Saved ${esc(at(e.saved))}` : "Live"}</small></span>` : `<span class="st lv"><b>${live("Live")}</b><small>${esc(e.saved ? `Saved ${at(e.saved)}` : e.clock || "")}</small></span>`;
+  if (e.state === "off") return `<span class="st"><b class="w${offShort(e).length > 6 ? " l" : ""}">${esc(offShort(e))}</b><small>${esc(e.seen ? atDay(e.seen) : dayShort(e.start))}</small></span>`;
   if (e.state === "done") {
-    const w = e.sp === "cricket" ? (e.won === "a" ? "Won" : e.won === "b" ? "Lost" : "Result") : e.sp === "f1" ? (e.provisional ? "Prov." : e.unconfirmed ? "Ended" : "Final") : e.sp === "football" || e.sp === "intl" ? "FT" : "Final";
+    const w = e.sp === "cricket" ? (e.won === "a" ? "Won" : e.won === "b" ? "Lost" : "Result") : e.sp === "f1" ? (e.provisional ? "Prov." : e.unconfirmed || !e.top ? "Ended" : "Final") : e.sp === "football" || e.sp === "intl" ? "FT" : "Final";
     return `<span class="st"><b class="w">${esc(w)}</b><small>${esc(dayShort(e.start))}</small></span>`;
   }
   const soon = t(e.start) - Date.now() < 12 * 36e5;
   return `<span class="st"><b class="tnum">${e.tbc ? "TBC" : hm(e.start)}</b><small>${e.due ? "On now" : e.starting ? "Starting" : e.late ? "Delayed" : e.tbc ? esc(shortDate(e.start)) : soon ? countdown(e.start) : esc(dayShort(e.start))}</small></span>`;
 }
 // what a screen reader hears for a row
-export function said(e) {
+export function said(e, { noWin = false } = {}) {
   const when2 = e.state === "live" ? `live${e.pause ? `, ${e.pause}` : e.clock ? `, ${e.clock}` : ""}${e.saved ? `, saved copy from ${at(e.saved)}` : ""}` : e.state === "done" ? `finished ${dayLabel(e.start)}` : e.state === "off" ? (e.seen ? `live feed lost, last seen at ${at(e.seen)}` : String(e.offWhy || "not played").toLowerCase()) : e.tbc ? `${dayLabel(e.start)}, time to be confirmed` : e.late ? `due at ${hm(e.start)}, not yet started` : `${dayLabel(e.start)} at ${hm(e.start)}`;
-  if (e.sp === "f1") return `${e.session}, ${gpName(e.gp)}, ${when2}${e.top && e.state !== "next" ? `, ${e.provisional ? "provisional " : ""}${e.top.map((n, i) => `${i + 1} ${last(n)}`).join(", ")}` : ""}`;
+  const order = e.state === "live" ? e.liveTop : e.state === "done" ? e.top : null;
+  if (e.sp === "f1") return `${e.session}, ${gpName(e.gp)}, ${when2}${order ? `, ${e.provisional ? "provisional " : ""}${order.map((n, i) => `${i + 1} ${last(n)}`).join(", ")}` : ""}`;
   const done = e.state === "done";
   const sc = e.sp === "tennis" && done && e.setsA?.length ? `, ${e.setsA.map((g, i) => `${g}-${e.setsB[i]}`).join(", ")}` : (done || e.state === "live") && (e.sa != null || e.sb != null) ? `, ${[e.sa != null ? `${sideName(e, "a")} ${e.sa}` : "", e.sb != null ? `${sideName(e, "b")} ${e.sb}` : ""].filter(Boolean).join(", ")}` : "";
-  const won = done ? (e.won ? `, ${sideName(e, e.won)} won${e.sp === "cricket" ? (resultWord(e).match(/ by .+$/)?.[0] || "") : ""}` : e.sp === "football" || e.sp === "intl" ? ", a draw" : "") : "";
-  return `${sideName(e, "a")} versus ${sideName(e, "b")}${sc}${won}, ${when2}${e.comp ? `, ${e.comp}` : ""}`;
+  const nm = side => ((side === "a" ? e.a : e.b) ? sideName(e, side) : "to be decided");
+  const won = done && !noWin ? (e.won ? `, ${sideName(e, e.won)} won${e.sp === "cricket" ? (resultWord(e).match(/ by .+$/)?.[0] || "") : ""}` : e.sp === "football" || e.sp === "intl" ? ", a draw" : "") : "";
+  return `${nm("a")} versus ${nm("b")}${sc}${won}, ${when2}${e.comp ? `, ${e.comp}` : ""}`.replace(/\bwkts?\b/g, "wickets");
 }
 
 // ------------------------------------------------------------------ the match row
@@ -127,7 +131,8 @@ export function row(e, { meta = true, extra = "", why = "" } = {}) {
   // cricket: the city before the match, the margin after it ("by 8 wkts"; Won or Lost is in the status track)
   const margin = e.sp === "cricket" && done ? (resultWord(e).match(/\bby .+$/)?.[0] || "") : "";
   const m = meta ? [e.comp, e.sp === "cricket" && !done && e.city ? e.city : "", margin].filter(Boolean).join(" · ") : "";
-  return `<a class="mr sc-${e.sp}${lv ? " is-live" : ""}" href="${e.href}" data-match="${esc(e.id)}" aria-label="${esc((why ? why + ". " : "") + said(e))}">${status(e)}<span class="sides">${line("a")}${line("b")}${m ? `<span class="meta">${esc(m)}</span>` : ""}${extra}</span></a>`;
+  const tagN = e.plain ? "div" : "a", link = e.plain ? "" : ` href="${e.href}" data-match="${esc(e.id)}"`;
+  return `<${tagN} class="mr sc-${e.sp}${lv ? " is-live" : ""}"${link} aria-label="${esc((why ? why + ". " : "") + said(e, { noWin: !!why }))}">${status(e)}<span class="sides">${line("a")}${line("b")}${m ? `<span class="meta">${esc(m)}</span>` : ""}${extra}</span></${tagN}>`;
 }
 // an F1 session: the status, then flag, session, and the top three (live order, provisional or final)
 export function sessionRow(e, { gp = true, extra = "", why = "" } = {}) {
@@ -157,6 +162,7 @@ export function hero(e, { inSheet = false } = {}) {
     const q = qs && (val("f1_sessions")?.results || []).find(r => qs.test(r.name) && dayKey(t(r.start)) >= dayKey(t(e.start) - 3 * 864e5));
     const qi = q ? q.top.findIndex(n => same(n, last(fav))) : -1;
     const body = lv && (e.liveOrder || e.liveTop) ? `${f1Order(e, e.liveOrder || e.liveTop)}<p class="foot">Running order, ESPN live timing</p>`
+      : lv ? `<div class="clock uw">Under way<small>since ${hm(e.start)}</small></div>`
       : `<div class="clock tnum">${hm(e.start)}<small>${esc(dayLabel(e.start))}</small></div>${qi >= 0 || c ? `<p class="line">${qi >= 0 ? `${esc(last(fav))} qualified ${ordinal(qi + 1)}` : ""}${qi >= 0 && c ? " · " : ""}${c ? `${esc(last(fav))} <b class="tnum">${c.prob}%</b> ${c.what === "pole" ? "for pole" : "to win"}, ${esc(sessionMarket(e.session, e.start)?.source || "")}${priceAt(e) ? ` at ${esc(priceAt(e))}` : ""}` : ""}</p>` : ""}`;
     return `<a class="hero sc-f1${lv ? " is-live" : ""}" href="${e.href}" data-match="${esc(e.id)}" aria-label="${esc(said(e))}">${top}${inSheet ? "" : `<div class="f1t"><span class="flagx l" aria-hidden="true">${esc(e.flag || "")}</span><div><div class="big">${esc(e.session)}</div><div class="sm">${esc(e.circuit || gpName(e.gp))}</div></div></div>`}${body}</a>`;
   }
@@ -168,7 +174,7 @@ export function hero(e, { inSheet = false } = {}) {
   else if (lv) mid = `<div class="mid tnum"><span class="nums sm">${hm(e.start)}</span><small>Under way</small></div>`;
   else mid = `<div class="mid tnum"><span class="nums">${e.tbc ? "TBC" : hm(e.start)}</span><small>${esc(e.tbc ? shortDate(e.start) : dayLabel(e.start))}</small></div>`;
   const sp = e.sp === "nba" ? "basketball" : e.sp === "intl" ? null : e.sp;
-  const p = !lv && sp ? sideProbs(oddsFor(sp, [e.a, e.b], e.start), [e.a, e.b]) : null;
+  const p = !lv && !e.late && !e.starting && t(e.start) > Date.now() && sp ? sideProbs(oddsFor(sp, [e.a, e.b], e.start), [e.a, e.b]) : null;
   const extra = lv && e.sp === "football" && e.ev?.length ? scorers(e) : crl && e.status ? `<p class="line c">${esc(e.status)}</p>` : "";
   return `<a class="hero sc-${e.sp}${lv ? " is-live" : ""}" href="${e.href}" data-match="${esc(e.id)}" aria-label="${esc(said(e))}">${top}<div class="vs">${side("a")}${mid}${side("b")}</div>${extra}${e.venue && !lv ? `<div class="venue">${esc(e.venue)}${e.held ? ` · ${esc(e.held)}` : ""}</div>` : ""}${p ? mktBar(p, [sideName(e, "a"), sideName(e, "b")], "Before the start") : ""}</a>`;
 }
@@ -230,7 +236,7 @@ function sheetBody(e) {
     }
     if (e.sp === "tennis" && e.then) parts.push(`<div class="card then"><span class="k">If he wins</span><span>${e.then.round ? `${esc(e.then.round)} v ` : "v "}${(e.then.opponent ? [e.then.opponent] : e.then.from).map(n => `<span class="nw">${esc(n)}${atp(n)?.rank ? ` <span class="dim">(${atp(n).rank})</span>` : ""}</span>`).join(" or ")}</span></div>`);
   }
-  const rows = [["When", e.id.startsWith("gp") ? "" : e.tbc ? `${longDate(e.start)}, time to be confirmed` : `${longDate(e.start)}, ${hm(e.start)} IST`], ["Where", e.venue && (done || lv || e.sp === "f1") ? e.venue : ""], ["Competition", (done || lv) && e.sp !== "f1" ? e.comp : ""], ["Status", e.state === "off" ? (e.seen ? `Live feed lost; last seen live at ${at(e.seen)}` : e.offWhy || "") : ""]].filter(([, v]) => v);
+  const rows = [["When", e.id.startsWith("gp") ? "" : e.tbc ? `${longDate(e.start)}, time to be confirmed` : `${longDate(e.start)}, ${hm(e.start)} IST`], ["Where", e.venue && (done || lv || e.sp === "f1") ? e.venue : ""], ["Competition", (done || lv) && e.sp !== "f1" ? e.comp : ""], ["Minute", lv && !e.saved && e.sp === "football" && e.clock ? e.clock : ""], ["Status", e.state === "off" ? (e.seen ? `Live feed lost; last seen live at ${at(e.seen)}` : e.offWhy || "") : ""]].filter(([, v]) => v);
   if (rows.length) parts.push(`<dl class="kv">${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>`);
   const wk = e.id.startsWith("gp") && e.sessions?.length > 1;
   const acts = `${e.state === "next" && !e.tbc ? `<a class="btn" href="${esc(wk ? weekendIcs(e) : icsHref(e))}">${ICON.cal}<span class="long">${wk ? "Add the weekend" : "Add to calendar"}</span><span class="short">${wk ? "Add weekend" : "Calendar"}</span></a>` : ""}${S.route !== TAB_OF[e.sp] ? `<a class="btn ghost" href="${esc(e.href)}">Open ${esc(TAB_NAME[e.sp])}</a>` : ""}`;

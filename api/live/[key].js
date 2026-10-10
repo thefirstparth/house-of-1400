@@ -30,7 +30,12 @@ export async function GET(request) {
   if (key === "crease" && out.ok && [out.value?.today, out.value?.next, ...(out.value?.main?.formats || []).flatMap(f => f.matches)].some(m => m && (m.state === "live" || (m.state !== "done" && m.state !== "off" && Date.parse(m.start) - Date.now() < 15 * 6e4 && Date.now() - Date.parse(m.start) < 10 * 36e5)))) [s, swr] = [60, 60];
   // A national side's match from 15 minutes before kick-off until full time: held for a minute (the app takes the live
   // state only from this feed's own "in", never from the clock)
-  if (key === "intl_hub" && out.ok && (out.value?.teams || []).some(T => (T.next || []).some(m => !m.completed && m.state !== "post" && Date.parse(m.date) - Date.now() < 15 * 6e4 && Date.now() - Date.parse(m.date) < 3 * 36e5))) [s, swr] = [60, 60];
+  if (key === "intl_hub" && out.ok) {
+    const ms = (out.value?.teams || []).flatMap(T => T.next || []).filter(m => !m.completed && m.state !== "post"), now = Date.now();
+    if (ms.some(m => Date.parse(m.date) - now < 15 * 6e4 && now - Date.parse(m.date) < 3 * 36e5)) [s, swr] = [60, 60];
+    // otherwise held no later than 15 minutes before the next kick-off, so the minute-by-minute window starts on time
+    else { const w = ms.map(m => (Date.parse(m.date) - 15 * 6e4 - now) / 1000).filter(x => x > 0).sort((a, b) => a - b)[0]; if (w < s) [s, swr] = [Math.max(60, Math.round(w)), 60]; }
+  }
   // Madrid or the Warriors playing: the score held for a minute (Parth, 3 Oct: "the match is live and the score"); a
   // game about to start: held only until its start, so the first live score is not an hour late.
   // The Sport app's Madrid hub: held for a minute while a match is on, so goals and cards arrive with the score

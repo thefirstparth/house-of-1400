@@ -25,12 +25,16 @@ async function loadAll(manual = false) {
   $("#refresh").classList.add("spin");
   const got = new Set(), first = !S.lastLoad;
   if (first) setTimeout(() => { if (held) { held = false; render(false); } }, 800);
-  await load(k => { if (k) got.add(k); if (held && LEAD.every(x => got.has(x))) { held = false; render(false); } else soon(); });
+  await load(k => {
+    if (k) got.add(k);
+    else if (held && first && LEAD.every(x => D[x])) { held = false; render(false); return; } // the phone's saved copy covers what leads Today
+    if (held && LEAD.every(x => got.has(x))) { held = false; render(false); } else soon();
+  });
   held = false;
   $("#refresh").classList.remove("spin");
   clearTimeout(pend); pend = null; render(false);
   const fresh = Object.values(D).some(x => x && !x.stale);
-  if (manual || !fresh) say(fresh ? `Updated ${hm(new Date().toISOString())}` : "The feeds did not answer. Showing the last saved copies.");
+  if (manual || !fresh) say(fresh ? `Updated ${hm(new Date().toISOString())}` : Object.keys(D).length ? "The feeds did not answer. Showing the last saved copies." : "The feeds did not answer.");
 }
 
 // ------------------------------------------------------------------ router and history
@@ -39,6 +43,11 @@ async function loadAll(manual = false) {
 const atBottom = () => innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
 let io = null, jio = null, jcur = null, onBottom = () => {}, sheetFor = null, sig = "", pendingSec = null, vt = false;
 const scrollMem = {};
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+let sT = 0; addEventListener("scroll", () => { clearTimeout(sT); sT = setTimeout(() => { if (S.route) scrollMem[S.route] = scrollY; }, 120); }, { passive: true });
+// each visited tab's page is kept and put back on return (images stay decoded), then patched with fresh data
+const pages = {};
+let fromHome = false;
 const parse = () => { const [r, sec] = location.hash.replace(/^#\/?/, "").split("/"); return { r: VIEWS[r] ? r : "home", sec: sec || null }; };
 const stateSig = () => events().map(e => `${e.id}:${e.state}:${e.late ? 1 : 0}${e.starting ? 1 : 0}:${e.sa ?? ""}-${e.sb ?? ""}:${(e.liveTop || []).join(",")}`).join("|");
 function render(navigated) {
@@ -50,8 +59,7 @@ function render(navigated) {
 const failed = r => `<div class="page">${header(TITLES[r])}<div class="empty"><b>The feeds did not answer.</b><span>Nothing is shown rather than something old.</span><button type="button" class="chip" data-act="retry">Try again</button></div></div>`;
 const lastScores = new Map();
 function draw(navigated) {
-  const { r, sec } = parse(), changed = r !== S.route;
-  if (changed && S.route) scrollMem[S.route] = scrollY;
+  const { r, sec } = parse(), changed = r !== S.route, prev = S.route;
   S.route = r;
   document.body.dataset.tab = r;
   const tabs = [...document.querySelectorAll(".tabs a")], nbaTab = tabs.find(a => a.dataset.tab === "nba");
@@ -62,20 +70,22 @@ function draw(navigated) {
   for (const a of tabs) a.toggleAttribute("aria-current", a.dataset.tab === r) && a.setAttribute("aria-current", "page");
   $("#topTitle").textContent = TITLES[r];
   const html = !Object.keys(D).length && S.lastLoad && !S.loading ? failed(r) : VIEWS[r]();
-  if (changed || !view.firstChild) { view.innerHTML = html; if (vt) view.querySelector(".page")?.style.setProperty("animation", "none"); }
+  if (changed && prev && view.firstElementChild) pages[prev] = view.firstElementChild;
+  if (changed && pages[r]) { pages[r].style.animation = "none"; view.replaceChildren(pages[r]); morph(view, html); view.firstElementChild?.style.setProperty("animation", "none"); }
+  else if (changed || !view.firstChild) { view.innerHTML = html; if (vt) view.querySelector(".page")?.style.setProperty("animation", "none"); }
   else morph(view, html);
   sig = stateSig();
   // a score that changed since the last draw rolls in (once: the patch keeps the class until the roll ends)
   for (const el of view.querySelectorAll("[data-sk]")) {
     const k = el.dataset.sk, v = el.dataset.v;
-    if (v && lastScores.has(k) && lastScores.get(k) !== v) { el.classList.add("bump"); el.addEventListener("animationend", () => el.classList.remove("bump"), { once: true }); }
+    if (v && lastScores.has(k) && lastScores.get(k) !== v) { el.classList.add("bump"); el.addEventListener("animationend", () => el.classList.remove("bump"), { once: true }); const lab = el.closest("[aria-label]")?.getAttribute("aria-label"); if (lab) say(`Score: ${lab}`); }
     lastScores.set(k, v);
   }
   drawSheet();
   // where to be on the page: a section asked for in the link (once its content is in), else where this tab was left
   if (changed) {
     if (sec) pendingSec = sec;
-    else if (!navigated || history.state?.restore !== false) window.scrollTo(0, scrollMem[r] || 0);
+    else window.scrollTo(0, scrollMem[r] || 0);
   }
   if (pendingSec) { const el = document.getElementById(pendingSec); if (el && !view.querySelector(".skel")) { pendingSec = null; requestAnimationFrame(() => el.scrollIntoView({ block: "start" })); } }
   document.title = `${TITLES[r]} · Sport`;
@@ -97,12 +107,14 @@ function drawSheet() {
       dragSheet(root.querySelector(".sheet"));
     }
     $("#app").inert = true;
-  } else if (open) {
-    root.classList.add("closing"); $("#app").inert = false;
-    const done = () => { if (root.classList.contains("closing")) { root.classList.remove("closing"); root.innerHTML = ""; } };
-    if (RM()) done(); else setTimeout(done, 240);
-    if (sheetFor) { view.querySelector(sheetFor)?.focus({ preventScroll: true }); sheetFor = null; }
-  }
+  } else if (open) startClose();
+}
+function startClose() {
+  if (!root.firstElementChild || root.classList.contains("closing")) return;
+  root.classList.add("closing"); $("#app").inert = false;
+  const done = () => { if (root.classList.contains("closing")) { root.classList.remove("closing"); root.innerHTML = ""; } };
+  if (RM()) done(); else { root.querySelector(".sheet")?.addEventListener("animationend", done, { once: true }); setTimeout(done, 400); }
+  if (sheetFor) { view.querySelector(sheetFor)?.focus({ preventScroll: true }); sheetFor = null; }
 }
 function observe() {
   io?.disconnect(); jio?.disconnect(); jcur = null;
@@ -123,7 +135,7 @@ function observe() {
   const h1 = $("#h1");
   if (h1 && "IntersectionObserver" in window) { io = new IntersectionObserver(([en]) => $("#top").classList.toggle("solid", !en.isIntersecting), { rootMargin: "-56px 0px 0px 0px" }); io.observe(h1); }
 }
-addEventListener("hashchange", () => { vibe(); UI.match = null; UI.day = null; render(true); });
+addEventListener("hashchange", () => { const r = parse().r; vibe(); UI.match = null; UI.day = r === "home" ? history.state?.day || null : null; if (r === "home") fromHome = false; else if (S.route === "home") fromHome = true; render(true); });
 // back: the sheet closes, then a chosen day goes back to today; a back across tabs is handled by hashchange
 addEventListener("popstate", () => {
   if (parse().r !== S.route) return;
@@ -132,7 +144,7 @@ addEventListener("popstate", () => {
   UI.day = st.day || null;
   draw(false);
 });
-const closeSheet = () => { if (history.state?.sheet) history.back(); else { UI.match = null; draw(false); } };
+const closeSheet = () => { startClose(); if (history.state?.sheet) history.back(); else { UI.match = null; draw(false); } };
 const setDay = v => {
   const d = v || null; if (d === UI.day) return;
   if (!d) { if (history.state?.day) history.back(); else { UI.day = null; draw(false); } return; }
@@ -148,9 +160,11 @@ $("#tabs").addEventListener("click", e => {
   go(a.getAttribute("href"));
 });
 function go(href) {
-  vibe(); UI.match = null; UI.day = null;
-  if (S.route === "home" && !history.state?.sheet) location.hash = href; // hashchange draws
-  else { history.replaceState(null, "", href); render(true); }
+  vibe(); UI.match = null;
+  if (S.route === "home" && !history.state?.sheet) { fromHome = true; location.hash = href; return; } // hashchange draws
+  UI.day = null;
+  if (href === "#home" && fromHome) { fromHome = false; history.back(); return; } // back to the Today entry, not a second one
+  history.replaceState(null, "", href); render(true);
 }
 $("#refresh").addEventListener("click", () => { vibe(); loadAll(true); });
 
@@ -158,7 +172,7 @@ $("#refresh").addEventListener("click", () => { vibe(); loadAll(true); });
 const setTheme = dark => {
   document.documentElement.dataset.theme = dark ? "dark" : "light";
   $("#themeColor")?.setAttribute("content", dark ? "#000000" : "#f3f3f5");
-  const b = $("#theme"); b.setAttribute("aria-pressed", String(dark)); b.setAttribute("aria-label", dark ? "Light mode" : "Dark mode");
+  const b = $("#theme"); b.setAttribute("aria-pressed", String(dark)); b.setAttribute("aria-label", "Dark mode");
   try { localStorage.setItem("sport-theme", dark ? "dark" : "light"); } catch {}
 };
 setTheme(document.documentElement.dataset.theme === "dark");
@@ -168,16 +182,16 @@ $("#theme").addEventListener("click", () => { vibe(); setTheme(document.document
 function dragSheet(el) {
   if (!el) return;
   const bg = root.querySelector(".sheet-bg");
-  let y0 = null, dy = 0, t0 = 0, last = [0, 0];
-  el.addEventListener("touchstart", e => { if (el.scrollTop > 0) return; y0 = e.touches[0].clientY; dy = 0; t0 = performance.now(); last = [y0, t0]; el.style.transition = "none"; }, { passive: true });
+  let y0 = null, dy = 0, prev = [0, 0], last = [0, 0];
+  el.addEventListener("touchstart", e => { if (el.scrollTop > 0) return; y0 = e.touches[0].clientY; dy = 0; last = prev = [y0, performance.now()]; el.style.transition = "none"; }, { passive: true });
   el.addEventListener("touchmove", e => {
     if (y0 == null) return; const y = e.touches[0].clientY; dy = Math.max(0, y - y0);
     el.style.transform = dy ? `translateY(${dy}px)` : ""; if (bg) bg.style.opacity = String(Math.max(0, 1 - dy / (el.offsetHeight || 600)));
-    last = [y, performance.now()];
+    prev = last; last = [y, performance.now()];
   }, { passive: true });
   el.addEventListener("touchend", e => {
     if (y0 == null) return; y0 = null;
-    const v = (e.changedTouches[0].clientY - last[0]) / Math.max(1, performance.now() - last[1]); // px per ms at release
+    const v = performance.now() - last[1] < 80 ? (last[0] - prev[0]) / Math.max(1, last[1] - prev[1]) : 0; // px per ms at release
     el.style.transition = ""; if (bg) bg.style.opacity = "";
     if (dy > 120 || (dy > 24 && v > 0.45)) closeSheet(); else el.style.transform = "";
   }, { passive: true });
@@ -231,7 +245,14 @@ view.addEventListener("click", e => {
 addEventListener("scroll", () => onBottom(), { passive: true });
 addEventListener("pointerdown", () => { document.body.dataset.input = "touch"; }, { passive: true });
 addEventListener("keydown", () => { delete document.body.dataset.input; });
-addEventListener("keydown", e => { if (e.key === "Escape" && UI.match) closeSheet(); });
+addEventListener("keydown", e => {
+  if (e.key === "Escape" && UI.match) closeSheet();
+  if (e.key === "Tab" && UI.match) {
+    const f = [...root.querySelectorAll("a[href],button,[tabindex]")].filter(x => !x.disabled && x.offsetParent); if (!f.length) return;
+    if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f.at(-1).focus(); }
+    else if (!e.shiftKey && (document.activeElement === f.at(-1) || !root.contains(document.activeElement))) { e.preventDefault(); f[0].focus(); }
+  }
+});
 
 // ------------------------------------------------------------------ time
 // Countdowns tick every 20 seconds. Every 30 seconds: redraw if any event changed state (a session starting or

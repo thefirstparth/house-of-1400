@@ -15,7 +15,7 @@
   --t-display:1.88rem;--t-title:1.18rem;--t-body:.9rem;--t-meta:.78rem;--t-cap:.72rem;
   --n-hero:2.6rem;--n-clock:3rem;--n-row:1.12rem;
   --gut:16px;--r:20px;--r-s:12px;--safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px);--tabh:62px;
-  --st:3.5rem;--sheet-ease:cubic-bezier(.32,.72,0,1);
+  --st:3.8rem;--sheet-ease:cubic-bezier(.32,.72,0,1);
   --spring-fast:linear(0,0.181,0.497,0.795,0.982,1.074,1.091,1.072,1.043,1.016,1,0.993,0.992,0.994,0.996,0.999,1,1.001,1.001,1.001,1);
   --spring:linear(0,0.089,0.27,0.466,0.64,0.776,0.877,0.941,0.98,1.001,1.011,1.014,1.013,1.011,1.008,1.005,1.003,1.002,1.001,1,1);
   --spring-fx:linear(0,0.118,0.321,0.499,0.653,0.766,0.845,0.899,0.933,0.957,0.972,0.982,0.989,0.993,0.995,0.997,0.998,0.999,0.999,1,1);
@@ -82,9 +82,9 @@ body.big .tabs a span{font-size:.6rem}body.big .tabs a svg{width:19px;height:19p
 .ph .sub b{color:var(--ink2);font-weight:600}
 .stale{padding:2px 9px;border-radius:999px;background:var(--sunk);color:var(--ink2);font-size:var(--t-cap);font-weight:650}
 .blk{margin-top:26px;scroll-margin-top:104px}
-.blk-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 2px 9px}
+.blk-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;margin:0 2px 9px}
 .blk-h h2{margin:0;font-size:var(--t-title);font-weight:750;letter-spacing:-.015em}
-.note{color:var(--muted);font-size:var(--t-cap);font-weight:550;text-align:right}
+.note{color:var(--muted);font-size:var(--t-cap);font-weight:550;text-align:right;white-space:nowrap}
 .chip{position:relative;min-height:32px;padding:0 12px;border-radius:999px;background:var(--sunk);font-size:var(--t-cap);font-weight:650;color:var(--ink2)}
 .sub-h{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:16px 2px 8px;font-size:var(--t-meta);font-weight:700;color:var(--ink2)}
 .sub-h span{font-weight:500;color:var(--muted)}
@@ -110,7 +110,7 @@ body.big .tabs a span{font-size:.6rem}body.big .tabs a svg{width:19px;height:19p
 .mk.crest img{width:100%;height:100%;object-fit:contain}
 .mk.photo{border-radius:50%;overflow:hidden;background:var(--sunk);box-shadow:inset 0 0 0 .5px var(--line2)}
 .mk.photo img{width:100%;height:100%;object-fit:cover;object-position:50% 0;transform:scale(1.3);transform-origin:50% 10%}
-.mk.mono{border-radius:7px;background:var(--sunk);color:var(--ink2);font-weight:700;font-size:var(--t-cap);letter-spacing:.02em}
+.mk.mono{border-radius:7px;background:color-mix(in srgb,var(--ink) 7%,var(--surface));box-shadow:inset 0 0 0 .5px var(--line2);color:var(--ink2);font-weight:700;font-size:var(--t-cap);letter-spacing:.02em}
 .mk.mono.s{border-radius:6px;font-size:.72rem;letter-spacing:-.02em}.mk.mono.l{border-radius:14px;font-size:var(--t-body)}
 .mk.none{visibility:hidden}
 .mkw{position:relative;display:inline-flex;flex:none}
@@ -150,7 +150,8 @@ details.more[open]>summary svg{transform:rotate(180deg)}
 .seg button:active,.jump a:active,.chip:active,.x:active,details.more>summary:active,.srcs summary:active{transform:scale(.95)}
 .seg button,.jump a,.chip,.x,details.more>summary{transition:transform .3s var(--spring-fast),background .25s var(--spring-fx),color .25s}
 details.more>summary:active{transform:none;background:var(--sunk)}
-.jump{position:sticky;top:calc(46px + var(--safe-t));z-index:15;margin:10px calc(-1 * var(--gut)) 0;padding:6px 0;background:var(--bg);box-shadow:0 .5px 0 var(--line2)}
+.jump{position:sticky;top:calc(46px + var(--safe-t));z-index:15;margin:10px calc(-1 * var(--gut)) 0;padding:6px 0;background:var(--bg);transition:box-shadow .2s}
+body:has(.top.solid) .jump{box-shadow:0 .5px 0 var(--line2)}
 body:has(.jump) .top.solid{border-bottom-color:transparent}
 .jump-in{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:6px var(--gut);margin:-6px 0;scroll-padding:0 var(--gut)}
 .jump-in::-webkit-scrollbar{display:none}
@@ -437,8 +438,30 @@ body.big .mr{grid-template-columns:minmax(0,1fr);row-gap:4px}body.big .st{flex-d
 .bar-row.np{grid-template-columns:minmax(0,1fr) 34% 2.4rem}
 .list>.bar-row.np+.bar-row::before{left:14px}
 body.big .bar-row.np{grid-template-columns:minmax(0,1fr) 26% 2.6rem}
-@media (max-width:359px){.day .dn{font-size:.6rem;letter-spacing:-.01em}.day b{font-size:1.1rem}}
+
 [data-theme="dark"] .fpos.p1,[data-theme="dark"] .order li:first-child b,[data-theme="dark"] .pod span:first-child b{background:color-mix(in srgb,#e2b520 55%,#1a1a1c);color:#fff3c4}
 [data-theme="dark"] .fpos.p2{background:color-mix(in srgb,#b9bec7 45%,#1a1a1c);color:#f1f3f6}
 [data-theme="dark"] .fpos.p3{background:color-mix(in srgb,#c98a4f 50%,#1a1a1c);color:#ffe6cf}
 .vs:has(.crs){align-items:start}.vs:has(.crs) .mid{align-self:center}
+.st b.w.l{font-size:.92rem}
+/* a highlighted row runs edge to edge: its dividers do too */
+.list>.li.me::before,.list>.li.me+.li::before,.list>.bar-row.me::before,.list>.bar-row.me+.bar-row::before,.formt .fr.me::before,.formt .fr.me+.fr::before{left:0}
+.card.flush>.pad{padding-left:calc(14px + var(--st) + 12px)}
+
+@media (max-width:359px){.rail-in{grid-template-columns:repeat(7,minmax(0,1fr))}.rail-pill{width:calc((100% - 8px) / 7)}.rail .day:last-child{display:none}.day .dn{font-size:var(--t-cap);letter-spacing:-.02em}}
+/* round 3: gestures stay in the app (no browser back on a sideways drag), the day swipe works anywhere on Today */
+html,body{overscroll-behavior-x:none}
+.rail-in{touch-action:pan-y}
+body[data-tab="home"] #view{touch-action:pan-y pinch-zoom;min-height:calc(100dvh - var(--tabh) - 46px)}
+.ph .sub{min-height:1.2em}
+@media (prefers-contrast:more){.tabs{box-shadow:0 0 0 1px var(--ink)!important}.tab-pill{box-shadow:inset 0 0 0 1.5px var(--ink)}}
+.why{color:var(--ink2);font-weight:650}
+.why::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--c);margin-right:6px;vertical-align:1px}
+.seg button{min-height:40px}
+/* long names in a hero: two lines at most, both sides top-aligned */
+.vs{align-items:start}.vs .mid{align-self:center}
+.side b{overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sc-cricket .ln{grid-template-columns:22px minmax(0,1fr) auto}
+.pf{width:32%;height:32%;right:-4px;bottom:-3px}
+@container (max-width:300px){.list>.mr+details::before,.list>details>.mr+.mr::before{left:14px}}
+.clock.uw{font-family:var(--sans);font-size:1.6rem;font-weight:800;letter-spacing:-.02em}
