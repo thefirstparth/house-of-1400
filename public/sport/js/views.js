@@ -190,7 +190,8 @@ const raceCode = r => CC[r.country] || String(r.country || r.name).slice(0, 3).t
 export function viewF1() {
   const N = val("f1_next"), R = N?.race, ST = val("f1_standings"), HB = val("f1_hub"), MK = val("f1_market"), LR = val("f1_last"), fav = favDriver(), UI = S.UI;
   const drivers = ST?.drivers || [], me = drivers.find(d => same(d.name, fav)), lead = drivers[0];
-  const all = events(true).filter(e => e.sp === "f1"), sess = all.filter(e => e.id.startsWith("f1")), cal = all.filter(e => e.id.startsWith("gp"));
+  // an off session with no reason given and no live copy lost is left out (never "not played" from silence)
+  const all = events(true).filter(e => e.sp === "f1" && !(e.state === "off" && !e.offWhy && !e.seen)), sess = all.filter(e => e.id.startsWith("f1")), cal = all.filter(e => e.id.startsWith("gp"));
   const focus = firstLiveOrNext(sess.filter(e => f1Kind(e.session))) || null;
   const weekend = R && (focus || sess.length) ? blk(focus?.state === "live" ? "Live now" : "This weekend", `${focus ? hero(focus) : ""}<div class="list">${sess.filter(e => e !== focus).map(e => sessionRow(e, { gp: false })).join("")}</div>`, `<span class="note">Round ${R.round}</span>`, "weekend") : "";
   // Verstappen: the championship, this weekend's sessions (where he finished, else his chance), his record here

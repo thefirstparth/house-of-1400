@@ -102,8 +102,8 @@ const at = iso => (dayKey(t(iso)) === dayKey(Date.now()) ? hm(iso) : `${shortDat
 const offShort = e => (e.seen ? "Last seen" : offWord(e.offWhy || "") || (/did not start/i.test(e.offWhy || "") ? "Not run" : "Off"));
 const atDay = iso => (dayKey(t(iso)) === dayKey(Date.now()) ? hm(iso) : shortDate(iso));
 function status(e) {
-  if (e.state === "live" && e.pause && e.sp === "cricket") return `<span class="st"><b class="w${e.pause.length > 6 ? " l" : ""}">${esc(e.pause)}</b><small>${e.saved ? esc(atDay(e.saved)) : "Play stopped"}</small></span>`;
-  if (e.state === "live") return e.pause ? `<span class="st lv"><b class="w${e.pause.length > 6 ? " l" : ""}">${esc(e.pause)}</b><small>${e.saved ? esc(atDay(e.saved)) : "Live"}</small></span>` : `<span class="st lv"><b>${live("Live")}</b><small>${esc(e.saved ? atDay(e.saved) : e.clock || (e.sp === "cricket" ? ((e.sb && e.ob ? e.ob : e.oa) ? `${e.sb && e.ob ? e.ob : e.oa} ov` : "") : ""))}</small></span>`;
+  if (e.state === "live" && e.pause && e.sp === "cricket") return `<span class="st"><b class="w${e.pause.length > 6 ? " l" : ""}">${esc(e.pause)}</b>${e.saved ? `<small class="sv">${hm(e.saved)}</small>` : /stumps/i.test(e.pause) ? (String(e.status || "").match(/\bDay \d+\b/i)?.[0] ? `<small>${esc(String(e.status).match(/\bDay \d+\b/i)[0])}</small>` : "") : `<small>Paused</small>`}</span>`;
+  if (e.state === "live") return e.pause ? `<span class="st lv"><b class="w${e.pause.length > 6 ? " l" : ""}">${esc(e.pause)}</b>${e.saved ? `<small class="sv">${hm(e.saved)}</small>` : "<small>Live</small>"}</span>` : `<span class="st lv"><b>${live("Live")}</b><small${e.saved ? ` class="sv"` : ""}>${esc(e.saved ? hm(e.saved) : e.clock || (e.sp === "cricket" ? ((e.sb && e.ob ? e.ob : e.oa) ? `${e.sb && e.ob ? e.ob : e.oa} ov` : "") : ""))}</small></span>`;
   if (e.state === "off") return `<span class="st"><b class="w${offShort(e).length > 6 ? " l" : ""}">${esc(offShort(e))}</b><small>${esc(e.seen ? atDay(e.seen) : dayShort(e.start))}</small></span>`;
   if (e.state === "done") {
     const w = e.sp === "cricket" ? (e.won === "a" ? "Won" : e.won === "b" ? "Lost" : "Result") : e.sp === "f1" ? (e.provisional ? "Prov." : e.unconfirmed || !e.top ? "Ended" : "Final") : e.sp === "football" || e.sp === "intl" ? "FT" : "Final";
@@ -179,7 +179,7 @@ export function hero(e, { inSheet = false } = {}) {
   if (crl) mid = `<div class="mid tnum"><span class="vsw">v</span></div>`;
   else if (lv && e.sa != null) mid = `<div class="mid tnum"><span class="nums"><span data-sk="${esc(e.id)}a" data-v="${esc(e.sa)}">${esc(e.sa)}</span><i>–</i><span data-sk="${esc(e.id)}b" data-v="${esc(e.sb)}">${esc(e.sb)}</span></span><small>${esc(e.saved || (e.pause && e.clock === e.pause) ? "" : e.clock || "")}</small></div>`;
   else if (lv) mid = `<div class="mid tnum"><span class="nums sm">${hm(e.start)}</span><small>Under way</small></div>`;
-  else mid = `<div class="mid tnum"><span class="nums">${e.tbc ? "TBC" : hm(e.start)}</span><small>${esc(e.tbc ? shortDate(e.start) : dayLabel(e.start))}</small></div>`;
+  else mid = `<div class="mid tnum"><span class="nums">${e.tbc ? "TBC" : hm(e.start)}</span><small>${esc(dayLabel(e.start))}</small></div>`;
   const sp = e.sp === "nba" ? "basketball" : e.sp === "intl" ? null : e.sp;
   const p = !lv && !e.late && !e.starting && t(e.start) > Date.now() && sp ? sideProbs(oddsFor(sp, [e.a, e.b], e.start), [e.a, e.b]) : null;
   const extra = lv && e.sp === "football" && e.ev?.length ? scorers(e) : crl && e.status ? `<p class="line c${e.pause ? " paused" : ""}">${esc(e.status)}</p>` : "";

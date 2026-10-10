@@ -484,3 +484,4 @@ body.big .rank .n,body.big .formt .nm{white-space:normal;overflow:visible;max-wi
 .tl .tl-r b{font-family:var(--num);font-weight:700;font-size:1rem;min-width:2.4rem}
 .tl .tl-r.r b{text-align:right}
 .tl .tl-r small{display:block;color:var(--muted);font-size:var(--t-cap)}
+.st.lv small.sv,.st small.sv{color:var(--muted);font-weight:600}
