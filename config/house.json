@@ -476,7 +476,8 @@
       "Spain",
       "Portugal",
       "England"
-    ]
+    ],
+  "national_team_espn_ids": {"Brazil": 205, "Spain": 164, "Portugal": 482, "England": 448}
   },
   "beats": {
     "primary": [
