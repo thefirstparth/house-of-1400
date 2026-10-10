@@ -80,7 +80,7 @@ function status(e) {
   if (e.state === "live") return `<div class="st">${live(e.long ? "Live, running long" : "Live")}${e.clock ? `<small>${esc(e.clock)}</small>` : ""}</div>`;
   if (e.state === "off") return `<div class="st"><b class="dim">Off</b><small>${esc(shortDate(e.start))}</small></div>`;
   if (e.state === "done") {
-    const w = e.sp === "cricket" ? resultWord(e) : e.sp === "f1" ? "Final" : e.sp === "nba" ? "Final" : "FT";
+    const w = e.sp === "cricket" ? resultWord(e) : e.sp === "f1" ? (e.provisional ? "Provisional" : "Final") : e.sp === "nba" ? "Final" : "FT";
     return `<div class="st"><b class="fin">${esc(w)}</b><small>${esc(dayLabel(e.start))}</small></div>`;
   }
   const c = myChance(e), soon = t(e.start) - Date.now() < 12 * 36e5;
@@ -167,7 +167,7 @@ function sheetBody(e) {
     if (e.state === "live" || (!done && !e.id.startsWith("gp"))) parts.push(hero(e).replace(/^<a ([^>]*?) href="[^"]*" data-match="[^"]*"/, "<div $1").replace(/<\/a>$/, "</div>"));
     else if (done && e.top) {
       const S2 = val("f1_standings")?.drivers || [], drv = n => S2.find(d => same(last(d.name), last(n)) || same(d.shown, n));
-      parts.push(`<div class="card"><ol class="order">${e.top.map((n, i) => { const d = drv(n); return `<li class="${same(last(n), last(favDriver())) ? "me" : ""}"><b class="tnum">${i + 1}</b><i style="background:${esc(d?.colour || "var(--line)")}"></i><span>${esc(d?.shown || n)}</span></li>`; }).join("")}</ol></div>`);
+      parts.push(`<div class="card"><ol class="order">${e.top.map((n, i) => { const d = drv(n); return `<li class="${same(last(n), last(favDriver())) ? "me" : ""}"><b class="tnum">${i + 1}</b><i style="background:${esc(d?.colour || "var(--line)")}"></i><span>${esc(d?.shown || n)}</span></li>`; }).join("")}</ol>${e.provisional ? `<p class="foot">Provisional, from ESPN's timing at the flag; the final result follows once a second source confirms it.</p>` : ""}</div>`);
     }
     if (e.id.startsWith("gp") && e.sessions?.length) parts.push(`<div class="list">${e.sessions.map(x => `<div class="li"><div class="grow"><div class="t1">${esc(x.name)}</div><div class="t2">${esc(longDate(x.start))}, ${hm(x.start)} IST</div></div><a class="cal" href="${esc(icsHref({ sp: "f1", session: x.name, gp: e.gp, start: x.start, mins: x.minutes, id: e.id + x.name.replace(/\W/g, "") }))}" aria-label="Add ${esc(x.name)} to calendar">${ICON.cal}</a></div>`).join("")}</div>`);
     const mk = !done && e.id.startsWith("f1") ? sessionMarket(e.session, e.start) : null;

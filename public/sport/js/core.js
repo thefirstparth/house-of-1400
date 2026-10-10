@@ -149,13 +149,19 @@ export function f1State(s, res, now = Date.now()) {
   const ES = (val("f1_sessions")?.status || []).find(x => x.name === s.name && Math.abs(t(x.start) - t(s.start)) < 6 * 36e5);
   const start = ES?.start || s.start, st = t(start), mins = s.minutes || F1MIN[f1Kind(s.name)] || 60;
   let state;
-  // a live state is believed for four hours after the start at most (a saved copy must never stay live for ever)
-  if (ES?.state === "in") state = now - st < 4 * 36e5 ? "live" : "done";
+  // ESPN holds a finished session at "in" with "End of Session" for a while: that is over (older copies of the feed
+  // carry the detail without the server's correction). A live state is believed for four hours after the start at
+  // most (a saved copy must never stay live for ever).
+  const ended = ES && (ES.state === "post" || /end of session|final|finished|complete/i.test(ES.detail || ""));
+  if (ES?.state === "in" && !ended) state = now - st < 4 * 36e5 ? "live" : "done";
+  else if (ended) state = "done";
   else if (ES?.state === "post" || res) state = "done";
   else if (now < st) state = "next";
   else if (ES?.state === "pre") state = now - st < 3 * 36e5 ? "late" : "done"; // due but not started (a delay)
   else state = now < st + (mins + 90) * 6e4 ? "live" : "done";
-  return { state: state === "late" ? "next" : state, late: state === "late", start, long: state === "live" && now > st + mins * 6e4, liveTop: ES?.state === "in" ? ES.top || null : null, mins };
+  // ESPN's order at the flag stands in, marked provisional, until two sources agree on the result
+  const prov = state === "done" && !res && ended && ES?.top?.length ? ES.top : null;
+  return { state: state === "late" ? "next" : state, late: state === "late", start, long: state === "live" && now > st + mins * 6e4, liveTop: state === "live" ? ES?.top || null : null, mins, prov };
 }
 
 // A feed that says "in play" is believed only so long after the start: beyond it, a saved copy has gone stale and the
@@ -210,7 +216,7 @@ export function events(all = false) {
     if (!f1Kind(s.name) && !all) continue;
     const res = R.find(r => r.name === s.name || Math.abs(t(r.start) - t(s.start)) < 45 * 6e4) || null, X = f1State(s, res, now);
     out.push({ sp: "f1", id: "f1" + s.start, start: X.start, state: X.state, late: X.late, long: X.long, liveTop: X.liveTop, mins: X.mins, session: s.name,
-      gp: gpName(N.name), circuit: N.circuit, flag: N.flag, round: N.round, top: res?.top || null, who: "F1", key: "f1", href: "#f1" });
+      gp: gpName(N.name), circuit: N.circuit, flag: N.flag, round: N.round, top: res?.top || X.prov || null, provisional: !res && !!X.prov, who: "F1", key: "f1", href: "#f1" });
   }
   if (all) for (const u of val("f1_next")?.upcoming || []) out.push({ sp: "f1", id: "gp" + u.round, start: u.date, state: "next", session: "Race", gp: gpName(u.name), heldIn: / in /.test(u.name) ? u.name.replace(/^.* in /, "") : null,
     circuit: [u.circuit, u.locality].filter(Boolean).join(", "), flag: u.flag, round: u.round, sessions: u.sessions || [], who: "F1", key: "f1", href: "#f1/calendar" });
