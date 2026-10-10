@@ -110,7 +110,7 @@ function status(e) {
     return `<span class="st"><b class="w">${esc(w)}</b><small>${esc(dayShort(e.start))}</small></span>`;
   }
   const soon = t(e.start) - Date.now() < 12 * 36e5;
-  return `<span class="st"><b class="tnum">${e.tbc ? "TBC" : hm(e.start)}</b><small>${e.due ? "On now" : e.starting ? "Starting" : e.late ? "Delayed" : e.tbc ? esc(dayShort(e.start)) : soon ? countdown(e.start) : esc(dayShort(e.start))}</small></span>`;
+  return `<span class="st"><b class="tnum">${e.tbc ? "TBC" : hm(e.start)}</b><small>${e.due ? "On now" : e.starting ? "Starting" : e.late ? "Delayed" : e.tbc ? esc(dayShort(e.start)) : soon ? countdown(e.start) : S.UI.day && dayKey(t(e.start)) === S.UI.day ? "" : esc(dayShort(e.start))}</small></span>`;
 }
 // what a screen reader hears for a row
 export function said(e, { noWin = false } = {}) {
@@ -216,6 +216,15 @@ function weekendIcs(e) {
 }
 // when an F1 price was read (the race market from f1_market, the session markets from odds)
 export const priceAt = e => { const k = f1Kind(e.session) === "race" ? "f1_market" : "odds", a = D[k]?.as_of; return a ? at(a) : ""; };
+// the match so far: each goal and red card with its minute, on the side it happened
+function timeline(e) {
+  const cid = clubId(), homeIsUs = same(e.a, club()), KIND = { goal: "Goal", pen: "Penalty", og: "Own goal", red: "Red card" };
+  const rows = [...e.ev].sort((x, y) => parseInt(x.minute) - parseInt(y.minute)).map(x => {
+    const us = x.team_id === cid, left = us === homeIsUs;
+    return `<div class="tl-r${left ? "" : " r"}"><b class="tnum">${esc(String(x.minute || "").replace(/'/g, "′"))}</b><span>${x.kind === "red" ? `<span class="rc" aria-hidden="true"></span>` : ""}${esc(last(x.player))}<small>${esc(KIND[x.kind] || "Goal")}</small></span></div>`;
+  }).join("");
+  return `<div class="card tl"><div class="sub-h">The match so far</div>${rows}</div>`;
+}
 const unlink = h => h.replace(/^<a ([^>]*?) href="[^"]*" data-match="[^"]*"( aria-label="[^"]*")?/, "<div $1").replace(/<\/a>$/, "</div>");
 function sheetBody(e) {
   const done = e.state === "done", lv = e.state === "live", parts = [];
@@ -229,12 +238,12 @@ function sheetBody(e) {
     // the rest of the weekend, each session with its state
     const wk2 = e.id.startsWith("f1") ? events(true).filter(x => x.sp === "f1" && x.id.startsWith("f1") && x.id !== e.id && f1Kind(x.session)) : [];
     const wkShow = wk2.filter(x => x.state !== "done" || x.top), wkGone = wk2.filter(x => x.state === "done" && !x.top);
-    if (wkShow.length) parts.push(`<div class="sub-h">The weekend</div><div class="list">${wkShow.map(x => sessionRow(x, { gp: false })).join("")}</div>`);
-    if (wkGone.length) parts.push(`<p class="foot">Earlier: ${esc(wkGone.map(x => x.session).join(", "))}</p>`);
+    if (wkShow.length || wkGone.length) parts.push(`<div class="sub-h">The weekend</div>${wkGone.length ? `<p class="foot">Earlier: ${esc(wkGone.map(x => x.session).join(", "))}</p>` : ""}${wkShow.length ? `<div class="list">${wkShow.map(x => sessionRow(x, { gp: false })).join("")}</div>` : ""}`);
     const mk = e.state === "next" && e.id.startsWith("f1") ? sessionMarket(e.session, e.start) : null;
     if (mk) parts.push(`<div class="card"><div class="sub-h">Who the market expects</div>${rankList(mk.outcomes, { max: 6, me: favDriver(), nameFn: n => (val("f1_standings")?.drivers || []).find(d => same(d.name, n))?.shown || n })}<p class="foot">${esc(mk.source || "")}${priceAt(e) ? ` · ${esc(priceAt(e))}` : ""}</p></div>`);
   } else if (lv && e.sp !== "cricket") {
     parts.push(unlink(hero(e)));
+    if ((e.sp === "football" || e.sp === "intl") && e.ev?.length) parts.push(timeline(e));
   } else if (done || (lv && e.sa != null)) {
     parts.push(`<div class="card flush">${unlink(row(e, { meta: false }))}${e.sp === "football" && e.ev?.length ? `<div class="pad">${scorers(e)}</div>` : ""}${e.sp === "nba" && e.tops ? `<div class="pad"><div class="scorers">${e.tops.map(x => `<div>${esc(last(x.name))} ${x.points} pts</div>`).join("")}</div></div>` : ""}${e.sp === "cricket" ? `<div class="pad"><p class="res">${esc(String(e.status || "").replace(/ due to .*$/i, ""))}</p>${cricketCard(e)}</div>` : ""}${e.retired ? `<p class="foot pad">${esc(last(e.won === "a" ? e.b : e.a))} retired</p>` : ""}</div>`);
 

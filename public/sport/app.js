@@ -156,6 +156,7 @@ function observe() {
 addEventListener("hashchange", () => { const r = parse().r; vibe(); UI.match = null; UI.day = r === "home" ? history.state?.day || null : null; if (r === "home") fromHome = false; else if (S.route === "home") fromHome = true; render(true); });
 // back: the sheet closes, then a chosen day goes back to today; a back across tabs is handled by hashchange
 addEventListener("popstate", () => {
+  backPending = false;
   if (parse().r !== S.route) return;
   const st = history.state || {};
   if (UI.match && !st.sheet) UI.match = null;
@@ -163,9 +164,11 @@ addEventListener("popstate", () => {
   draw(false);
 });
 const closeSheet = () => { startClose(); if (history.state?.sheet) history.back(); else { UI.match = null; draw(false); } };
+// one back at a time: a scrub across Today must never send two (two backs would leave the app)
+let backPending = false;
 const setDay = v => {
-  const d = v || null; if (d === UI.day) return;
-  if (!d) { if (history.state?.day) history.back(); else { UI.day = null; draw(false); } return; }
+  const d = v || null; if (d === UI.day || backPending) return;
+  if (!d) { UI.day = null; if (history.state?.day) { backPending = true; history.back(); } draw(false); return; }
   if (history.state?.day) history.replaceState({ day: d }, ""); else history.pushState({ day: d }, "");
   UI.day = d; vibe(5); draw(false);
 };
