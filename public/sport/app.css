@@ -152,7 +152,7 @@ a.mr:active{background:var(--surface2)}
 .mr .sets b.w{color:var(--ink);font-weight:700}
 .mr .meta{font-size:.8rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mr .gl{font-size:.8rem;color:var(--ink2);line-height:1.35}
-.mr .st{flex:none;min-width:76px;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:2px;padding-left:12px;border-left:1px solid var(--line);text-align:right}
+.mr .st{flex:none;width:7.2rem;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:2px;padding-left:12px;border-left:1px solid var(--line);text-align:right}
 .mr .st b{font-family:var(--num);font-weight:700;font-size:1.2rem;line-height:1.1}
 .mr .st b.fin{font-family:var(--sans);font-size:.82rem;font-weight:700;color:var(--ink2);max-width:104px;white-space:normal;line-height:1.25}
 .mr .st small{font-size:.75rem;color:var(--muted);white-space:nowrap}
