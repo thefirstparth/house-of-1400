@@ -1,24 +1,18 @@
 {
-  "date": "2026-10-10",
-  "from": "2026-10-09",
+  "date": "2026-10-11",
+  "from": "2026-10-10",
   "carry": [
     {
       "id": "pm:us-iran-ceasefire-continues-throughptptpt",
       "title": "US-Iran ceasefire continues through...?",
       "since": "2026-10-08",
-      "reason": "#1 by 24h volume"
-    },
-    {
-      "id": "pm:brazil-presidential-election-second-round-margin-of-victory",
-      "title": "Brazil Presidential Election Second Round: Margin of Victory",
-      "since": "2026-10-05",
       "reason": "#2 by 24h volume"
     },
     {
       "id": "pm:ballon-dor-winner-2026",
       "title": "Ballon d'Or Winner 2026",
       "since": "2026-09-25",
-      "reason": "#3 by 24h volume; Harry Kane moved 6.7 pts since printed"
+      "reason": "#3 by 24h volume; Harry Kane moved 6.1 pts since printed"
     },
     {
       "id": "pm:next-french-presidential-election",
@@ -33,26 +27,32 @@
       "reason": "#5 by 24h volume"
     },
     {
-      "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
-      "title": "US announces end of Iranian blockade by...?",
-      "since": "2026-09-25",
-      "reason": "#7 by 24h volume; By October 15 moved 5.0 pts since printed"
-    }
-  ],
-  "dropped": [
-    {
-      "id": "pm:nobel-peace-prize-winner-2026-139",
-      "title": "Nobel Peace Prize Winner 2026",
-      "why": "ended or decided, no next market in the same line"
+      "id": "pm:brazil-presidential-election-second-round-margin-of-victory",
+      "title": "Brazil Presidential Election Second Round: Margin of Victory",
+      "since": "2026-10-05",
+      "reason": "#6 by 24h volume"
     },
     {
       "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
       "title": "Prime Minister of Israel after the next election?",
+      "since": "2026-10-10",
+      "reason": "#7 by 24h volume"
+    }
+  ],
+  "dropped": [
+    {
+      "id": "pm:epl-ars-lee-2026-10-10",
+      "title": "Arsenal FC vs. Leeds United FC",
+      "why": "ended or decided, no next market in the same line"
+    },
+    {
+      "id": "pm:epl-eve-che-2026-10-17",
+      "title": "Everton FC vs. Chelsea FC",
       "why": "carry cap of 6"
     },
     {
-      "id": "pm:indiana-enacts-data-center-moratorium-by-20260929",
-      "title": "Indiana enacts data center moratorium by...?",
+      "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
+      "title": "US announces end of Iranian blockade by...?",
       "why": "carry cap of 6"
     }
   ]

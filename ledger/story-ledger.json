@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-10T08:41:23.511Z",
-  "last_edition": "2026-10-10",
+  "last_updated": "2026-10-11T08:41:22.755Z",
+  "last_edition": "2026-10-11",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -133,7 +133,7 @@
     },
     {
       "thread_id": "madrid-next-villarreal",
-      "title": "Valverde, Mbappé and Konaté all in the squad for Villarreal at the Bernabéu tonight",
+      "title": "Diomande's first goal beats Villarreal 1–0, but Vinícius is sent off for pulling hair and may miss the Clásico",
       "entities": [],
       "facts": {
         "next": "Villarreal (H) 2026-10-10T19:00:00Z",
@@ -141,11 +141,15 @@
         "points": 15,
         "kickoff": "2026-10-10T19:00:00Z",
         "valverde": "in squad",
-        "mbappe": "in squad"
+        "mbappe": "in squad",
+        "score": "1-0",
+        "scorer": "Diomande",
+        "red": "Vinícius",
+        "ban": "1-3 games possible"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-10",
-      "last_change": "2026-10-10",
+      "last_printed": "2026-10-11",
+      "last_change": "2026-10-11",
       "status": "active",
       "votes": {
         "up": 0,
@@ -548,7 +552,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Police detain more than 1,600 in Delhi to stop the protest against the Election Commission, including its leaders on their plane",
+      "title": "Supreme Court, sitting on a Sunday, bars illegal detentions and orders Delhi's Metro and internet restored",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -576,11 +580,14 @@
         "cec_security": "raised",
         "murmu": "8 pm Friday",
         "detained_delhi": ">1,600",
-        "leaders": "Dipke, Das, Ranka held on plane"
+        "leaders": "Dipke, Das, Ranka held on plane",
+        "bench": "Bagchi, Mohana",
+        "orders": "no illegal detention, Metro and internet restored",
+        "cjp_leaders": "released"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-10",
-      "last_change": "2026-10-10",
+      "last_printed": "2026-10-11",
+      "last_change": "2026-10-11",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1892,7 +1899,7 @@
     },
     {
       "thread_id": "ronaldo-portugal-2026",
-      "title": "Ronaldo says Jorge Jesus twice broke his word, apologises to his teammates, and is not retiring",
+      "title": "Portugal's federation provisionally suspends Ronaldo for walking out of the squad",
       "entities": [],
       "facts": {
         "left": "30 Sep, Copenhagen",
@@ -1903,11 +1910,12 @@
         "statement": "not yet given",
         "future": "unclear",
         "jesus": "door open",
-        "retiring": "no"
+        "retiring": "no",
+        "status": "provisionally suspended"
       },
       "first_printed": "2026-10-01",
-      "last_printed": "2026-10-07",
-      "last_change": "2026-10-07",
+      "last_printed": "2026-10-11",
+      "last_change": "2026-10-11",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2079,14 +2087,15 @@
     },
     {
       "thread_id": "russia-fuel-imports-2026",
-      "title": "US lifts sanctions on Russian diesel sales until April after a Trump-Putin call",
+      "title": "Trump says Ukraine should get a new president after Zelensky condemns the Russian diesel deal",
       "entities": [],
       "facts": {
-        "until": "2027-04-07"
+        "until": "2027-04-07",
+        "trump": "Ukraine should get a new president"
       },
       "first_printed": "2026-10-02",
-      "last_printed": "2026-10-10",
-      "last_change": "2026-10-10",
+      "last_printed": "2026-10-11",
+      "last_change": "2026-10-11",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3078,15 +3087,15 @@
     },
     {
       "thread_id": "shanghai-masters-2026",
-      "title": "Djokovic loses 6–4 6–3 to Hurkacz, ending an eight-match winning run against him",
+      "title": "Alcaraz beats Juan Manuel Cerundolo 6–3 6–3 and plays Zizou Bergs on Monday",
       "entities": [],
       "facts": {
-        "score": "4-6 3-6",
-        "next": "Paris"
+        "score": "6-3 6-3",
+        "next": "Bergs, 12 Oct"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-10",
-      "last_change": "2026-10-10",
+      "last_printed": "2026-10-11",
+      "last_change": "2026-10-11",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3632,15 +3641,19 @@
     },
     {
       "thread_id": "f1-singapore-2026",
-      "title": "Verstappen takes sprint pole ahead of Russell and keeps it after a yellow-flag inquiry",
+      "title": "Max wins the rain-hit Singapore sprint and takes pole for tonight's Grand Prix",
       "entities": [],
       "facts": {
         "sprint_pole": "Verstappen",
-        "p2": "Russell"
+        "p2": "Russell",
+        "sprint": "1 Verstappen, 2 Hamilton, 3 Leclerc",
+        "pole": "Verstappen",
+        "front_row": "Leclerc",
+        "race_ist": "17:30"
       },
       "first_printed": "2026-10-10",
-      "last_printed": "2026-10-10",
-      "last_change": "2026-10-10",
+      "last_printed": "2026-10-11",
+      "last_change": "2026-10-11",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3665,18 +3678,81 @@
     },
     {
       "thread_id": "motogp-2026",
-      "title": "Marc Márquez wins the Indonesian sprint and takes the championship lead from Jorge Martín",
+      "title": "Bezzecchi wins in Indonesia and Martín takes the title lead back from Márquez",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "winner": "Bezzecchi",
+        "leader": "Martín"
+      },
       "first_printed": "2026-10-10",
-      "last_printed": "2026-10-10",
-      "last_change": "2026-10-10",
+      "last_printed": "2026-10-11",
+      "last_change": "2026-10-11",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
       "section": "sidelines"
+    },
+    {
+      "thread_id": "messi-miami-2026",
+      "title": "Messi scores twice for Inter Miami in his first game since leaving Argentina",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-11",
+      "last_printed": "2026-10-11",
+      "last_change": "2026-10-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "kipchoge-2026",
+      "title": "Kipchoge, 41, breaks the course record at the Melbourne Marathon",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-11",
+      "last_printed": "2026-10-11",
+      "last_change": "2026-10-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "nepal-floods-2026",
+      "title": "Flash floods in Nepal's Gorkha wash away six bridges; ten missing",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-11",
+      "last_printed": "2026-10-11",
+      "last_change": "2026-10-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "fpi-flows-2026",
+      "title": "Foreign investors have pulled ₹44,166 crore out of Indian shares in October so far",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-11",
+      "last_printed": "2026-10-11",
+      "last_change": "2026-10-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
     }
   ]
 }
