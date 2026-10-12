@@ -922,3 +922,13 @@ longer used (badly framed, with mixed backgrounds). An image that fails once is 
   its own slot on the line, set in the condensed Board face, and wraps at a hyphen if it has to. A leading initial is
   dropped ("Carreras"), and the shirt number stays on its line.
 - A national match that has kicked off with no live data is shown as a row, never the Up next hero.
+
+## Deuce: a match played after the paper overrules the paper's words about it (12 Oct 2026)
+- Parth saw Alcaraz's card say "Today: Lost to Zizou Bergs" above the edition's "Next match: third round v Zizou Bergs,
+  today 15:30 IST". The tournament table also still said "Alcaraz plays Bergs in the third round today".
+- Now, when ESPN has a result from after the edition was written:
+  - the edition's next-match line for that same match is dropped;
+  - the table note that names the player says what happened ("Alcaraz lost to Bergs, round 3").
+- Djokovic's line said "next event Paris" while the table had no Paris row. EDITORIAL.md now says the table lists:
+  - every big tournament on now or within four weeks;
+  - always any event named as a followed player's next one.

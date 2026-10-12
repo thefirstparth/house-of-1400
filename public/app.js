@@ -1460,16 +1460,21 @@ function deuceBlock() { return `<div data-live="deuce">${deuceData()}</div>` + s
 function deuceData() {
   const T = E.tennis || {};
   let h = "";
-  if (T.events?.length) h += `<div class="tbl" style="margin-bottom:16px"><table><thead><tr><th>Tournament</th><th>Dates</th><th>Note</th></tr></thead><tbody>${T.events.map(e => `<tr><td><b style="font-weight:600">${esc(e.name)}</b>${e.place ? " · " + esc(e.place) : ""}</td><td>${esc(e.dates)}</td><td class="sub">${esc([e.level, e.note].filter(Boolean).join(" · "))}</td></tr>`).join("")}</tbody></table></div>`;
+  // A match played after the edition was written overrules the edition's words about it (Parth, 12 Oct: Alcaraz "lost
+  // to Bergs" sat above "Next match: third round v Bergs, today", and the table still said he plays Bergs today).
+  const LT = liveTennis(), fresh = LT.filter(t => t.final && Date.parse(t.when_utc) > Date.parse(`${E.date}T08:00:00Z`));
+  const said = t => `${lastName(t.player)} ${/^Won/.test(t.result) ? "beat" : "lost to"} ${lastName(t.opponent || "") || "TBC"}${t.round ? `, ${String(t.round).toLowerCase()}` : ""}`;
+  const noteOf = e => { const f = fresh.filter(t => e.note && e.note.includes(lastName(t.player))); return f.length ? f.map(said).join("; ") : e.note; };
+  if (T.events?.length) h += `<div class="tbl" style="margin-bottom:16px"><table><thead><tr><th>Tournament</th><th>Dates</th><th>Note</th></tr></thead><tbody>${T.events.map(e => `<tr><td><b style="font-weight:600">${esc(e.name)}</b>${e.place ? " · " + esc(e.place) : ""}</td><td>${esc(e.dates)}</td><td class="sub">${esc([e.level, noteOf(e)].filter(Boolean).join(" · "))}</td></tr>`).join("")}</tbody></table></div>`;
   // A followed player's next match comes live (ESPN, checked every five minutes) when ESPN lists one; the edition's
-  // line is shown otherwise. "Match TBD" is added only when the edition's line does not already say so.
-  const LT = liveTennis();
+  // line is shown otherwise, unless that match has since been played. "Match TBD" is added only when the edition's line
+  // does not already say so.
   if (T.players?.length) h += `<div class="cols2">${T.players.map(p => {
     const lv = LT.find(t => t.player === p.name && !t.final), done = LT.find(t => t.player === p.name && t.final), n = Date.now(), st = lv && fixState(lv, n);
     const won = done && /^Won/.test(done.result), sc = done ? done.result.replace(/^(Won|Lost)\s*/, "") : "";
     const todayLine = done ? `<p style="margin:6px 0 4px"><b>${playedDay(done.when_utc)}:</b> <span class="${won ? "up" : "dn"}">${won ? "Beat" : "Lost to"} ${esc(done.opponent || "")}${sc ? " " + esc(sc) : ""}</span> · ${esc([done.event, done.round].filter(Boolean).join(", "))}</p>` : "";
     const nextLine = lv ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc([lv.round, `v ${lv.opponent || "TBC"}`].filter(Boolean).join(" "))} · ${esc(lv.event)} · ${esc(istFull(lv.when_utc))} IST${lv.court ? ` · ${esc(lv.court)}` : ""}${watchTag({ entity: "tennis", event: lv.event, label: lv.label })}.${oddsHTML(oddsFor("tennis", [p.name, lv.opponent], lv.when_utc))}${st === "on" ? ` <span class="live"><i></i>Live</span>` : st === "due" || (st === "next" && lv.held) ? ` <span class="due">${esc(dueWhy(lv))}</span>` : ""}</p>${lv.other ? `<p class="note">Another listing (Tennis Explorer) has it at ${esc(lv.other)} IST, so worth a look nearer the time.</p>` : ""}`
-      : p.next_match ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc(p.next_match.text)}</p>` : "";
+      : p.next_match && !(done && (Math.abs(Date.parse(done.when_utc) - Date.parse(p.next_match.when_utc || 0)) < 12 * 36e5 || (done.opponent && p.next_match.text.includes(lastName(done.opponent))))) ? `<p style="margin:6px 0 4px"><b>Next match:</b> ${esc(p.next_match.text)}</p>` : "";
     // With a live match, the live match says where the player plays next; the edition's line may be out of date.
     const ev = p.next_event && !lv ? `<p style="margin:6px 0 4px"><b>${p.next_match ? "Event" : "Next event"}:</b> ${esc(p.next_event.text)}${p.next_match || /TBD/i.test(p.next_event.text) ? "" : " Match TBD."}</p>` : "";
     return `<div class="panel"><div class="nm">${esc(p.name)}</div>${todayLine}${nextLine}${ev}${p.note && !lv?.other ? `<p class="note">${esc(p.note)}</p>` : ""}</div>`;
