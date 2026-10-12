@@ -71,3 +71,10 @@ test("podcast: the feed is private (blocked from Apple's directory) and lists th
   assert.ok(xml.indexOf("2026-10-13") < xml.indexOf("2026-10-12"));
   assert.match(xml, /x &amp; y/);
 });
+
+test("podcast: every step the episode maker calls is defined (the Kokoro fallback was lost once in an edit, 13 Oct)", () => {
+  const src = readFileSync(new URL("../scripts/podcast/make.mjs", import.meta.url), "utf8");
+  for (const f of ["writeScript", "ttsGemini", "ttsKokoro", "publishFeed", "gemini", "pcmOf", "wavHeader"]) {
+    if (new RegExp(`\\b${f}\\(`).test(src)) assert.match(src, new RegExp(`(function ${f}\\b|const ${f} =)`), `${f} is called but not defined`);
+  }
+});

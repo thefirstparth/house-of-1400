@@ -118,6 +118,14 @@ async function ttsGemini(turns) {
   throw new Error("both one-take forms failed");
 }
 
+// Kokoro (open source, on the runner's CPU) voices the same script when Gemini cannot
+function ttsKokoro(turns) {
+  const K = P.kokoro || {}, inp = `${OUT}/turns.json`, wav = `${OUT}/kokoro.wav`;
+  writeFileSync(inp, JSON.stringify({ lang: K.lang || "b", voices: K.voices || {}, turns: turns.map(t => ({ speaker: t.speaker, text: spoken(t.text, P.pronounce).replace(/<[^>]+>/g, "") })) }));
+  execFileSync(process.env.PODCAST_PYTHON || "python3", [`${H}scripts/podcast/kokoro_voice.py`, inp, wav], { stdio: "inherit", timeout: 40 * 60000 });
+  return pcmOf(readFileSync(wav));
+}
+
 // 4. Store and publish
 async function blob() { return import("@vercel/blob"); }
 const site = (cfg.site?.url || process.env.SITE_URL || "https://house14.vercel.app").replace(/\/+$/, "");
