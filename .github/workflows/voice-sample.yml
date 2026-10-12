@@ -1,0 +1,41 @@
+# One-off: generate Edge TTS voice samples (Neerja, Prabhat) for Parth to compare. Removed after use.
+name: voice-sample
+on: workflow_dispatch
+jobs:
+  edge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -q edge-tts && edge-tts --list-voices | grep en-IN
+      - name: Generate
+        run: |
+          mkdir out && cd out
+          SOLO="Good afternoon, this is The House of 1400 for Monday the twelfth of October. Max Verstappen finally won in Singapore, at the tenth attempt, after leading every single session of the weekend. Closer to home, India beat West Indies in Indore, so they lead the T20 series two-one, which sets up Hyderabad on Wednesday nicely. Markets had a rough day. The Sensex fell about three-quarters of a per cent, to seventy-one thousand nine hundred and twenty. But the rupee had its best day in weeks, at ninety-five sixty-nine to the dollar. And a sad one from the Gulf: a strike on Riyadh airport killed thirteen people, including an Indian man. That's the afternoon. See you tomorrow."
+          for v in en-IN-NeerjaNeural en-IN-NeerjaExpressiveNeural en-IN-PrabhatNeural; do edge-tts --voice "$v" --text "$SOLO" --write-media "solo-$v.mp3"; done
+          cat > lines.txt <<'TXT'
+          A|Good afternoon, this is The House of 1400 for Monday the twelfth of October. Big one to start. Max Verstappen finally won in Singapore.
+          B|Finally is the word. Tenth attempt! And he led every single session of the weekend, which almost never happens at Marina Bay.
+          A|Almost never. Closer to home, India beat West Indies in Indore, so they lead the T20 series two-one.
+          B|Which sets up Hyderabad on Wednesday nicely. Abhishek's sixty-nine off thirty balls was something else.
+          A|It really was. Now, the less fun part. Markets had a rough day.
+          B|Yeah. The Sensex fell about three-quarters of a per cent, to seventy-one thousand nine hundred and twenty. But the rupee? Best day in weeks, ninety-five sixty-nine to the dollar.
+          A|Small mercies. And a sad one from the Gulf: a strike on Riyadh airport killed thirteen people, including an Indian man.
+          B|A grim end to a busy day. That's the afternoon. See you tomorrow.
+          TXT
+          ffmpeg -loglevel error -f lavfi -i anullsrc=r=24000:cl=mono -t 0.35 -c:a libmp3lame -b:a 48k gap.mp3
+          i=0; : > list.txt
+          while IFS='|' read -r who line; do who=$(echo "$who" | tr -d ' '); i=$((i+1)); v=en-IN-NeerjaExpressiveNeural; [ "$who" = B ] && v=en-IN-PrabhatNeural
+            edge-tts --voice "$v" --text "$line" --write-media "l$i.mp3"
+            ffmpeg -loglevel error -y -i "l$i.mp3" -ar 24000 -ac 1 -c:a libmp3lame -b:a 48k "n$i.mp3"
+            echo "file 'n$i.mp3'" >> list.txt; echo "file 'gap.mp3'" >> list.txt; done < lines.txt
+          ffmpeg -loglevel error -f concat -safe 0 -i list.txt -c:a libmp3lame -b:a 96k duo-Neerja-Prabhat.mp3
+          ls -la *.mp3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: edge-samples
+          path: |
+            out/solo-*.mp3
+            out/duo-*.mp3
+          retention-days: 2
