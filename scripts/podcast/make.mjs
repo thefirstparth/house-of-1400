@@ -117,7 +117,7 @@ function ttsKokoro(turns) {
 // 4. Store and publish
 async function blob() { return import("@vercel/blob"); }
 async function main() {
-  const { put, list, del } = DRY ? {} : await blob();
+  const { put, list, del, get } = DRY ? {} : await blob();
   if (!DRY && !FORCE) {
     const { blobs } = await list({ prefix: `${folder}/${date}.json`, token: BLOB });
     if (blobs.length) { log(`episode for ${date} already published`); return; }
@@ -139,23 +139,25 @@ async function main() {
   const seconds = pcm.length / 48000, bytes = statSync(`${OUT}/episode.mp3`).size;
   log(`audio: ${Math.round(seconds)} s, ${Math.round(bytes / 1024)} KB, voice ${voice}`);
   if (DRY) { log("dry run: .podcast/episode.mp3"); return; }
-  const mp3 = await put(`${folder}/${date}.mp3`, readFileSync(`${OUT}/episode.mp3`), { access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "audio/mpeg", token: BLOB });
+  const site = (cfg.site?.url || process.env.SITE_URL || "https://house14.vercel.app").replace(/\/+$/, "");
+  const served = f => `${site}/${folder}/${f}`; // the site's /podcast/<secret>/<file> route (api/podcast.js)
+  await put(`${folder}/${date}.mp3`, readFileSync(`${OUT}/episode.mp3`), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "audio/mpeg", token: BLOB });
   const day = new Date(date + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
-  const meta = { date, title: `${day} · ${R.lead.headline}`, description: [R.lead, ...R.stories].map(s => s.headline).join(" · "), url: mp3.url, bytes, seconds, published: new Date().toISOString(), by, voice };
-  await put(`${folder}/${date}.json`, JSON.stringify(meta), { access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", token: BLOB });
+  const meta = { date, title: `${day} · ${R.lead.headline}`, description: [R.lead, ...R.stories].map(s => s.headline).join(" · "), url: served(`${date}.mp3`), bytes, seconds, published: new Date().toISOString(), by, voice };
+  await put(`${folder}/${date}.json`, JSON.stringify(meta), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", token: BLOB });
   // the feed from every episode still kept; older ones are deleted
   const { blobs } = await list({ prefix: `${folder}/`, token: BLOB }), cut = new Date(Date.now() - (P.keep_days || 14) * 864e5).toISOString().slice(0, 10);
   const episodes = [], old = [];
   for (const b of blobs.filter(b => /\d{4}-\d{2}-\d{2}\.json$/.test(b.pathname))) {
     const d = b.pathname.match(/(\d{4}-\d{2}-\d{2})\.json$/)[1];
     if (d < cut) { old.push(b.url, b.url.replace(/\.json$/, ".mp3")); continue; }
-    const m = await (await fetch(b.url, { cache: "no-store" })).json().catch(() => null); if (m) episodes.push(m);
+    const g = await get(b.pathname, { access: "private", useCache: false, token: BLOB }).catch(() => null);
+    const m = g?.stream ? await new Response(g.stream).json().catch(() => null) : null; if (m) episodes.push(m);
   }
-  if (old.length) { await del(old, { token: BLOB }).catch(e => log("could not delete old episodes:", e.message)); log(`removed ${old.length / 2} old episode(s)`); }
-  const site = (cfg.site?.url || process.env.SITE_URL || "https://house14.vercel.app").replace(/\/+$/, "");
-  const feed = await put(`${folder}/feed.xml`, feedXML({ P, base: site, episodes, image: P.image || null }), { access: "public", addRandomSuffix: false, allowOverwrite: true, contentType: "application/rss+xml; charset=utf-8", cacheControlMaxAge: 300, token: BLOB });
+  if (old.length) { await del(old.map(u => u), { token: BLOB }).catch(e => log("could not delete old episodes:", e.message)); log(`removed ${old.length / 2} old episode(s)`); }
+  await put(`${folder}/feed.xml`, feedXML({ P, base: site, episodes, image: P.image || null }), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/rss+xml; charset=utf-8", cacheControlMaxAge: 300, token: BLOB });
   log(`published ${date} (${episodes.length} in the feed)`);
-  log(`FEED ${feed.url}`);
+  log(`FEED ${served("feed.xml")}`);
 }
 // exitCode, not process.exit: exiting at once can drop the last log lines on a pipe
 main().catch(e => { console.error("podcast: failed:", e.message); process.exitCode = 1; });

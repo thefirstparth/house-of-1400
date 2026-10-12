@@ -1,5 +1,7 @@
 # The daily podcast (scripts/podcast/make.mjs): after each edition is pushed, and again at 15:45 and 17:15 IST in case
 # the push did not start it. It only writes to Vercel Blob, never to the repo. Free: Gemini free tier, Kokoro fallback.
+# Two jobs, so Gemini's log is readable as soon as it ends: "gemini" makes the episode; "kokoro" runs only if it failed,
+# voicing the same script (handed over as an artifact) with the open-source Kokoro.
 name: podcast
 on:
   push:
@@ -14,31 +16,44 @@ on:
       force: { description: "Make it again even if published", type: boolean, default: false }
 concurrency: { group: podcast, cancel-in-progress: false }
 jobs:
-  episode:
+  gemini:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - run: sudo apt-get install -y -qq ffmpeg >/dev/null && npm install --no-save --no-audit --no-fund @vercel/blob
+      - name: Make the episode
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
+        run: node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }}
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with: { name: podcast-script, path: .podcast/script.json, retention-days: 2, if-no-files-found: ignore }
+  kokoro:
+    needs: gemini
+    if: failure()
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with: { node-version: 22 }
       - uses: actions/setup-python@v6
         with: { python-version: "3.12" }
-      - run: sudo apt-get install -y -qq ffmpeg >/dev/null && npm install --no-save --no-audit --no-fund @vercel/blob
-      - name: Make the episode
-        id: make
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
-        run: node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }}
+      - uses: actions/download-artifact@v4
+        with: { name: podcast-script, path: .podcast }
         continue-on-error: true
-      # Gemini could not voice it: Kokoro (open source) voices the same script on this runner
-      - name: Kokoro fallback
-        if: steps.make.outcome == 'failure'
+      - run: |
+          sudo apt-get install -y -qq ffmpeg espeak-ng >/dev/null
+          npm install --no-save --no-audit --no-fund @vercel/blob
+          python3 -m pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          python3 -m pip install -q kokoro soundfile https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
+      - name: Voice it with Kokoro
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
-        run: |
-          sudo apt-get install -y -qq espeak-ng >/dev/null
-          python3.12 -m pip install -q torch --index-url https://download.pytorch.org/whl/cpu
-          python3.12 -m pip install -q kokoro soundfile https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
-          PODCAST_VOICE=kokoro node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }}
+          PODCAST_VOICE: kokoro
+        run: node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }}

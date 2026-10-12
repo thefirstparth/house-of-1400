@@ -29,6 +29,10 @@
     {
       "source": "/poster/:name",
       "destination": "/"
+    },
+    {
+      "source": "/podcast/:k/:f",
+      "destination": "/api/podcast?k=:k&f=:f"
     }
   ],
   "functions": {
@@ -40,6 +44,9 @@
     },
     "api/live/[key].js": {
       "includeFiles": "{config/house.json,config/nifty500.csv,config/climate.json,content/latest.json}",
+      "maxDuration": 60
+    },
+    "api/podcast.js": {
       "maxDuration": 60
     }
   },
