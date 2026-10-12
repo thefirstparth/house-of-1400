@@ -165,7 +165,7 @@ async function main() {
     const { blobs } = await list({ prefix: `${folder}/${date}.json`, token: BLOB });
     if (blobs.length) { log(`episode for ${date} already published`); return; }
   }
-  const R = rundown(E, P, undefined, { desks: cfg.desks_v2?.desks, sections: cfg.sections });
+  const R = rundown(E, P, undefined, { desks: cfg.desks_v2?.desks, sections: cfg.sections, follows: cfg.follows });
   if (!R.lead) { log("the edition has no lead; nothing to say"); return; }
   const KOKORO = process.env.PODCAST_VOICE === "kokoro", saved = existsSync(`${OUT}/script.json`) ? JSON.parse(readFileSync(`${OUT}/script.json`, "utf8")) : null;
   // the Kokoro step (podcast.yml) reuses the script the first step wrote

@@ -78,3 +78,13 @@ test("podcast: every step the episode maker calls is defined (the Kokoro fallbac
     if (new RegExp(`\\b${f}\\(`).test(src)) assert.match(src, new RegExp(`(function ${f}\\b|const ${f} =)`), `${f} is called but not defined`);
   }
 });
+
+test("podcast: upcoming sport follows the page's rules: only followed national teams, no pre-season Warriors", () => {
+  const T = Date.parse("2026-10-12T09:00:00Z"), at = h => new Date(T + h * 36e5).toISOString();
+  const E2 = { ...E, snapshot: { ...E.snapshot,
+    intl_football: { value: { matches: [{ home: "Spain", away: "Georgia", when_utc: at(30), state: "pre" }, { home: "India", away: "Nepal", when_utc: at(20), state: "pre" }] } },
+    nba: { value: { team: "Golden State Warriors", in_season: false, next: [{ date: at(17), preseason: true, opponent: "Los Angeles Lakers", home: false }] } } } };
+  const R = rundown(E2, P, undefined, { ...paper, follows: C.follows }), coming = R.segments.find(g => g.desk === "Sport").coming.join(" | ");
+  assert.match(coming, /Spain v Georgia \(international\)/);
+  assert.doesNotMatch(coming, /India v Nepal|Warriors/);
+});

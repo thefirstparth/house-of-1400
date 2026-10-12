@@ -133,13 +133,22 @@ export function rundown(E, P = {}, now, paper = {}) {
   }
   for (const p of E.tennis?.players || []) { const t = Date.parse(p.next_match?.when_utc); if (t > now - 18e5 && t < now + 7 * 864e5 && !near(t)) coming.push(`${p.name}: ${String(p.next_match.text).replace(/,?\s*(today|tomorrow|tonight|monday|tuesday|wednesday|thursday|friday|saturday|sunday)?,?\s*\d{1,2}:\d{2}\s*IST\.?/i, "").replace(/\.$/, "")}, ${sayWhen(t, now)}`); }
   for (const ev of E.tennis?.events || []) if (ev.note) results.push(`${ev.name}: ${ev.note}`);
-  // the live sport the page builds itself (the edition's snapshot): F1 sessions this race week, the Warriors, India's
-  // football, the tennis players' last results; Week Ahead only exists on Mondays
+  // the live sport the page itself shows (the edition's snapshot, by the page's own rules): F1 sessions this race
+  // week; the national teams Parth follows (config follows.national_teams: the page's Internationals table, last result
+  // within four days, next within ten); the Warriors only in season (follows.nba_team.in_season_only); the tennis
+  // players' last results. The Week Ahead exists only on Mondays.
   const soonish = (t, days = 3) => t > now - 18e5 && t < now + days * 864e5;
   for (const x of ok("f1_next")?.race?.sessions || []) { const t = Date.parse(x.start); if (/qualif|sprint|race/i.test(x.name) && soonish(t) && !near(t)) { coming.push(`Formula One, ${ok("f1_next").race.name}, ${x.name}: ${sayWhen(t, now)}`); times.push(t); } }
   const nba = ok("nba"), g = (nba?.next || [])[0], gt = Date.parse(g?.date);
-  if (g && soonish(gt, 2)) coming.push(`${nba.team}${g.preseason ? " (pre-season)" : ""} ${g.home ? "v" : "at"} ${g.opponent}, ${sayWhen(gt, now)}`);
-  for (const m of ok("intl_football")?.matches || []) { const t = Date.parse(m.when_utc || m.date); const label = m.label || m.name; if (label && soonish(t) && !near(t)) coming.push(`${label}, ${sayWhen(t, now)}`); }
+  if (g && (nba.in_season || !paper.follows?.nba_team?.in_season_only) && !g.preseason && soonish(gt, 2)) coming.push(`${nba.team} ${g.home ? "v" : "at"} ${g.opponent}, ${sayWhen(gt, now)}`);
+  const nations = paper.follows?.national_teams || [], intl = ok("intl_football")?.matches || [];
+  for (const team of nations) {
+    const mine = intl.filter(m => m.home === team || m.away === team).sort((a, b) => String(a.when_utc).localeCompare(String(b.when_utc)));
+    const last = mine.filter(m => m.state === "post" && m.score && now - Date.parse(m.when_utc) < 4 * 864e5 && Date.parse(m.when_utc) <= now).pop();
+    const next = mine.find(m => m.state === "pre" && Date.parse(m.when_utc) > now - 18e5 && Date.parse(m.when_utc) - now < 10 * 864e5);
+    if (last && !results.some(r => r.includes(`${last.home} ${last.score}`))) results.push(`${last.home} ${last.score} ${last.away} (international)`);
+    if (next && !coming.some(c => c.startsWith(`${next.home} v ${next.away}`))) coming.push(`${next.home} v ${next.away} (international), ${Date.parse(next.when_utc) < now + 6 * 864e5 ? sayWhen(next.when_utc, now) : sayDay(new Date(Date.parse(next.when_utc) + IST - 4 * 36e5).toISOString().slice(0, 10), now)}`);
+  }
   for (const p of ok("tennis_players")?.players || []) { const l = p.last, t = Date.parse(l?.when_utc); if (l && t > now - 36 * 36e5 && t <= now) results.push(`${p.name}: ${l.won ? "beat" : "lost to"} ${l.opponent}, ${l.round}, ${l.event}`); }
   const city = ok("weather")?.cities?.[0], d0 = city?.daily?.[0];
   const weather = city && d0 ? `${city.name} today: top of ${Math.round(d0.max)} degrees${Number.isFinite(d0.min) ? `, low of ${Math.round(d0.min)}` : ""}, ${d0.rain_prob}% chance of rain` : null;
