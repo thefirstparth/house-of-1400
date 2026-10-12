@@ -2331,6 +2331,14 @@
         "max": 30
       },
       {
+        "id": "fonearena",
+        "name": "FoneArena",
+        "url": "https://www.fonearena.com/blog/feed",
+        "section": "workshop",
+        "desk": "tech",
+        "kind": "news"
+      },
+      {
         "id": "beebom",
         "name": "Beebom",
         "url": "https://beebom.com/feed/",

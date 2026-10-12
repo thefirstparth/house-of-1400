@@ -47,6 +47,12 @@ test("desks: an India story on a general feed is Desh, a world one Videsh", () =
   assert.equal(deskOf(story("North Korea fires missiles towards the sea", ["gn-in-top#4"], 5), F), "videsh");
 });
 
+test("desks: a gadget launch on a tech feed stays Tech, India price and all", () => {
+  const F = Object.fromEntries(feeds.map(f => [f.id, f]));
+  assert.equal(deskOf(story("Dell XPS 13 with Intel Core Ultra 7 Series 3 processor launched in India", ["verge#1"], 1), F), "tech");
+  assert.equal(deskOf(story("POCO X8 Power 5G Review: A 10,000mAh Battery Powerhouse", ["verge#2"], 1), F), "tech");
+});
+
 test("a paywalled-only story is never shortlisted; the open outlet is read first", () => {
   const wire = { items: [], stories: [
     story("Only on the paywall", ["bbc#1"], 3, { url: "https://www.nytimes.com/x" }),

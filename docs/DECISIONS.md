@@ -957,3 +957,6 @@ The cause of the thinning: from 5 Oct the run answered the desk check of about 3
 - **Depth** (config `pool.depth`): every full story has a long version of 150 to 260 words written from the pool's text; a brief is two sentences, at least 22 words.
 - **The brief:** `docs/DESK.md`, about 6 KB, replaces reading the 54 KB EDITORIAL.md, which stays the per-section reference. The model stays Opus for now, per Parth.
 - **Future changes are numbers in config `pool`,** not new prose.
+
+## 12 Oct 2026: FoneArena on the tech desk
+- Parth asked for FoneArena (`fonearena`, tech desk): Indian launch prices and what a gadget means for buyers in India. Its gadget headlines (display, Snapdragon, mAh, "launched in India") failed the pool's tech-word rule and fell to Videsh, so `TECH_WORDS` in `lib/pool.js` now knows gadget vocabulary. The rule still applies only to stories a tech feed carried.
