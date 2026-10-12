@@ -32,7 +32,10 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const GEM = "https://generativelanguage.googleapis.com/v1beta/models";
 async function gemini(model, body, tries = 2) {
   for (let i = 0; i < tries; i++) {
-    const r = await fetch(`${GEM}/${model}:generateContent`, { method: "POST", headers: { "x-goog-api-key": KEY, "content-type": "application/json" }, body: JSON.stringify(body) });
+    const t0 = Date.now();
+    // a stuck request fails within five minutes instead of holding the job (voicing six minutes takes one or two)
+    const r = await fetch(`${GEM}/${model}:generateContent`, { method: "POST", headers: { "x-goog-api-key": KEY, "content-type": "application/json" }, body: JSON.stringify(body), signal: AbortSignal.timeout(300000) });
+    log(`${model}: ${r.status} in ${Math.round((Date.now() - t0) / 1000)} s`);
     const j = await r.json().catch(() => ({}));
     if (r.ok) return j;
     const msg = `${model} ${r.status}: ${j.error?.message || ""}`.slice(0, 300);
@@ -97,7 +100,7 @@ async function ttsGemini(turns) {
 function ttsKokoro(turns) {
   const K = P.kokoro || {}, inp = `${OUT}/turns.json`, wav = `${OUT}/kokoro.wav`;
   writeFileSync(inp, JSON.stringify({ lang: K.lang || "b", voices: K.voices || {}, turns: turns.map(t => ({ speaker: t.speaker, text: spoken(t.text, P.pronounce).replace(/<[^>]+>/g, "") })) }));
-  execFileSync("python3", [`${H}scripts/podcast/kokoro.py`, inp, wav], { stdio: "inherit", timeout: 40 * 60000 });
+  execFileSync(process.env.PODCAST_PYTHON || "python3", [`${H}scripts/podcast/kokoro_voice.py`, inp, wav], { stdio: "inherit", timeout: 40 * 60000 });
   return pcmOf(readFileSync(wav));
 }
 
