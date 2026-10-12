@@ -32,7 +32,8 @@ const log = (...a) => console.log("podcast:", ...a);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 const GEM = "https://generativelanguage.googleapis.com/v1beta/models";
-// "busy" (429, 500, 503) is waited out a minute at a time, up to `tries` attempts in all
+// "busy" (429, 500, 503) is waited out a minute at a time, up to `tries` attempts in all (the main writer's first
+// try: nine, about eight minutes; 3.8 Flash was busy for over three minutes at a time on 12-13 Oct)
 async function gemini(model, body, tries = 2) {
   for (let i = 0; i < tries; i++) {
     const t0 = Date.now();
@@ -56,7 +57,7 @@ async function writeScript(R) {
     let prompt = base, best = null;
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
-        const j = await gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.9 } }, 4);
+        const j = await gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.9 } }, attempt === 0 && model === (P.text_models || [])[0] ? 9 : 3);
         const text = j.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
         const turns = JSON.parse(text.replace(/^```(?:json)?|```$/g, "").trim()).turns;
         const probs = checkScript(turns, R, P), hard = probs.filter(p => p.hard);

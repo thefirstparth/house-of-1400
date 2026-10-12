@@ -56,6 +56,8 @@ function ordinal(n) {
 const kickerTag = k => String(k || "").split("·")[0].trim();
 const storyText = s => [s.short || s.text, ...(s.more || [])].filter(Boolean).join(" ");
 const longDate = ymd => new Date(ymd + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" });
+const clock12 = (h, m) => `${intWords(h % 12 || 12)}${m ? " " + (m < 10 ? "oh " + ONES[m] : intWords(m)) : ""} ${h < 12 ? "a m" : "p m"}`;
+const sayTimes = t => String(t || "").replace(/\b([01]?\d|2[0-3]):([0-5]\d)(?:\s*(?:IST|hrs|hours))?\b/g, (_, h, m) => clock12(Number(h), Number(m))).replace(/\s*\bIST\b/g, "");
 const cut = (t, n) => { t = String(t || ""); if (t.length <= n) return t; const s = t.slice(0, n), i = s.lastIndexOf(". "); return i > n * 0.5 ? s.slice(0, i + 1) : s.replace(/\s+\S*$/, "") + "…"; };
 
 // A match time, exact, in IST (Parth, 13 Oct: "a Real Madrid match will always start at a specific time"): the
@@ -67,7 +69,7 @@ export function sayWhen(utc, now = Date.now()) {
   const d = new Date(t + IST), h = d.getUTCHours(), m = d.getUTCMinutes(), day = Math.floor((t + IST) / 864e5) - Math.floor((now + IST) / 864e5);
   const wd = ms => new Date(ms + IST).toLocaleDateString("en-GB", { weekday: "long", timeZone: "UTC" });
   const dayWord = k => (k === 0 ? "today" : k === 1 ? "tomorrow" : k === -1 ? "yesterday" : `on ${wd(t + (k - day) * 864e5)}`);
-  const clock = h === 0 && m === 0 ? "twelve midnight" : h === 12 && m === 0 ? "twelve noon" : `${intWords(h % 12 || 12)}${m ? " " + (m < 10 ? "oh " + ONES[m] : intWords(m)) : ""} ${h < 12 ? "a m" : "p m"}`;
+  const clock = h === 0 && m === 0 ? "twelve midnight" : h === 12 && m === 0 ? "twelve noon" : clock12(h, m);
   const night = h < 4 ? `, late ${day - 1 === 0 ? "tonight" : day - 1 === 1 ? "tomorrow night" : day - 1 === -1 ? "last night" : `on ${wd(t - 864e5)} night`}` : "";
   return `${dayWord(day)} at ${clock}${night}`;
 }
@@ -108,7 +110,7 @@ export function rundown(E, P = {}, now, paper = {}) {
   const deepN = Math.max(0, (P.deep_max || 6) - 1), deep = ranked.slice(0, deepN);
   if (!deep.some(s => desk(s).id === "sport") && desk(lead || {}).id !== "sport") { const sp = ranked.find(s => desk(s).id === "sport"); if (sp && deep.length) deep[deep.length - 1] = sp; else if (sp) deep.push(sp); }
   const deepIds = new Set(deep.map(s => s.id)), quick = ranked.filter(s => !deepIds.has(s.id)).slice(0, P.quick_max || 14);
-  const item = (s, depth) => ({ id: s.id, desk: desk(s).name, section: nameOf[s.section] || null, kicker: s.kicker || null, headline: s.headline, tone: ["good", "bad", "mixed"].includes(s.tone) ? s.tone : "neutral", depth, text: cut(storyText(s), depth === "quick" ? 360 : 1100), why: s.why?.text || null });
+  const item = (s, depth) => ({ id: s.id, desk: desk(s).name, section: nameOf[s.section] || null, kicker: s.kicker || null, headline: sayTimes(s.headline), tone: ["good", "bad", "mixed"].includes(s.tone) ? s.tone : "neutral", depth, text: sayTimes(cut(storyText(s), depth === "quick" ? 360 : 1100)), why: sayTimes(s.why?.text) || null });
   const snap = E.snapshot || {}, ok = k => (snap[k]?.value && !snap[k]?.error ? snap[k].value : null);
   const idx = ok("markets")?.indices || [], fx = ok("fx"), gold = ok("gold_in");
   const markets = [];
@@ -120,7 +122,7 @@ export function rundown(E, P = {}, now, paper = {}) {
   for (const w of E.week_ahead || []) {
     const t = w.time_ist ? Date.parse(`${w.date}T${w.time_ist}:00+05:30`) : Date.parse(`${w.date}T23:59:00+05:30`), sport = SPORT.has(w.area);
     if (!(t > now - 2 * 36e5 && t < now + (sport ? 7 : 3) * 864e5)) continue;
-    const line = `${w.what}, ${w.time_ist ? sayWhen(t, now) : sayDay(w.date, now)}${w.why ? ` (${w.why})` : ""}`;
+    const line = `${sayTimes(w.what)}, ${w.time_ist ? sayWhen(t, now) : sayDay(w.date, now)}${w.why ? ` (${w.why})` : ""}`;
     if (sport) { coming.push(line); if (w.time_ist) times.push(t); } else if (ahead.length < 5) ahead.push(line);
   }
   const near = t => times.some(x => Math.abs(x - t) < 3 * 36e5);
@@ -147,7 +149,7 @@ export function rundown(E, P = {}, now, paper = {}) {
 export const deepItems = R => [R.lead, ...(R.segments || []).flatMap(s => s.items.filter(i => i.depth === "deep"))].filter(Boolean);
 
 const SERIOUS = new Set(["bad", "sombre", "concerned", "gentle"]);
-const EXAMPLE = `Asha [delighted]: Right, the chess club. They actually did it.
+export const EXAMPLE = `Asha [delighted]: Right, the chess club. They actually did it.
 Ravi [surprised]: The village side? Beat the city champions?
 Asha [delighted]: Beat them, and in the final round, with the youngest player on the team.
 Ravi [amused]: How young?
@@ -178,11 +180,12 @@ THE SHOW, in this order (everything comes from the RUNDOWN below)
 8. Close: the House Note retold in the hosts' own words with its punchline intact, then a short, warm goodbye.
 
 HOW IT SOUNDS
-- A real conversation: mix longer turns with plenty of quick reactions of two to eight words ("Thirteen. That's terrible." "Wait, his own call?" "Oh, lovely."). At least six genuine questions between the hosts.
+- A real conversation: mix longer turns with plenty of quick reactions of two to eight words, each a natural response to exactly what was just said, in your own words (never reuse the example's lines). At least six genuine questions between the hosts.
 - Real feeling that fits each story: delight at a win, shock and quiet sadness at deaths, worry about prices, amusement at the House Note. Never laugh or joke near bad news.
 - Say each fact ONCE. The headline and the text repeat each other; never say the same fact twice.
 - Never copy sentences from the rundown. Retell them the way people talk; contractions are good.
 - Numbers are hard to follow by ear: at most two numbers in a turn, rounded when the exact figure does not matter ("about thirty-two and a half thousand crore", "nearly one per cent"). Leave out numbers that do not matter.
+- Times: say them exactly as the rundown writes them, the twelve-hour way with "a m" or "p m". Never the twenty-four-hour clock and never "IST".
 - Never use these: "Turning to", "In other news", "Moving on", "Let's look at", "Let us look at", "Meanwhile", "Closer to home", "Stay tuned", "On the cricket field".
 - Use only facts in the rundown. Never add a fact, name, number or quote. Short personal reactions are fine ("I'd love to see that").
 - No talk about how the paper or the show is made, about sources or checking, or about anything being missing.
@@ -236,6 +239,12 @@ export function checkScript(turns, R, P = {}) {
   const seenAt = new Map(), twice = [];
   turns.forEach((t, i) => { for (const s of new Set(shingles(words(t.text), 6))) { if (seenAt.has(s) && seenAt.get(s) !== i) twice.push(s); else seenAt.set(s, i); } });
   if (twice.length) soft(`says the same thing twice: "${twice[0]}"`);
+  // the example's own lines reused (Flash Lite dropped "Thirteen. That's terrible." into the money news, 13 Oct test)
+  const ex = new Set(shingles(words(EXAMPLE.replace(/^\w+ \[[^\]]+\]: /gm, "")), 4));
+  const reused = turns.map((t, i) => [i, shingles(words(t.text), 4).find(s => ex.has(s))]).filter(x => x[1]);
+  if (reused.length) soft(`reuses the example's lines in turn ${reused[0][0] + 1}: "${reused[0][1]}"`);
+  const H24 = /\b(i s t|ist|(thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|twenty-one|twenty-two|twenty-three) (hundred|oh [a-z]+|fifteen|thirty|forty-five)( hours)?)\b/i;
+  turns.forEach((t, i) => { const m = String(t.text).match(H24); if (m) soft(`turn ${i + 1}: twenty-four-hour clock or IST ("${m[0]}"); use "a m" or "p m"`); });
   // every match time is said exactly as written (the clock words, e.g. "twelve thirty a m")
   const said = turns.map(t => String(t.text)).join(" ").toLowerCase().replace(/\b([ap])\.\s?m\.?/g, "$1 m").replace(/\b([ap])m\b/g, "$1 m").replace(/-/g, " ");
   for (const g of R.segments || []) for (const c of g.coming || []) { const k = clockOf(c); if (k && /sport/i.test(g.desk) && !said.includes(k.replace(/-/g, " "))) soft(`leaves out or changes the time "${k}" for: ${c.split(",")[0]}`); }
