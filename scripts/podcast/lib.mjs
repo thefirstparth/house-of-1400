@@ -170,14 +170,14 @@ HOSTS
 - ${B.id} (${B.gender || "man"}): ${B.about || ""}
 
 THE SHOW, in this order (everything comes from the RUNDOWN below)
-1. Open: ${A.id} greets with the day ("Good afternoon, it's ${R.day.split(" ")[0]}...") and goes straight into the lead as a hook. The two talk the lead through properly.
+1. Open (first two turns): ${A.id} welcomes the listeners to the show BY NAME and gives the day, something like "Good afternoon, and welcome to ${P.title || "The House of 1400"}. It's ${R.day}, I'm ${A.id}..." and ${B.id} says hello too. Then straight into the lead as a hook, and the two talk the lead through properly.
 2. Then the desk segments in the order given. Items marked "deep" get a real back-and-forth of about 80 to 140 words: one host tells it, the other reacts and asks what a listener would ask (what does it mean for us, why now, who is this), answered from "why" and the text. Items marked "quick" get one or two sentences each; several quick ones can run together briskly. Mention every item.
 3. If you name a segment, use the paper's desk names: News, Close to Home, Money, Tech and AI, Sport, Off Duty. "Close to Home" means Bengaluru only. A story from Delhi or anywhere else is News, never "close to home".
 4. Sport gets real energy: every sport item, the recent results, and EVERY match in "coming", even when no story covers it (say each day and time EXACTLY as written, e.g. "on Thursday at twelve thirty a m, late on Wednesday night"; match times must be precise).
 5. Money: the market numbers in one or two lines, no more than three numbers in all.
 6. Weather, if given: one everyday line ("warm, with a fair chance of rain later").
 7. The Week Ahead, if given: a couple of quick lines on what is coming in the next few days.
-8. Close: the House Note retold in the hosts' own words with its punchline intact, then a short, warm goodbye.
+8. Close: the House Note retold in the hosts' own words with its punchline intact, then a short, warm goodbye that names the show again ("That's ${P.title || "The House of 1400"} for today...").
 
 HOW IT SOUNDS
 - A real conversation: mix longer turns with plenty of quick reactions of two to eight words, each a natural response to exactly what was just said, in your own words (never reuse the example's lines). At least six genuine questions between the hosts.
@@ -188,6 +188,7 @@ HOW IT SOUNDS
 - Times: say them exactly as the rundown writes them, the twelve-hour way with "a m" or "p m". Never the twenty-four-hour clock and never "IST".
 - Never use these: "Turning to", "In other news", "Moving on", "Let's look at", "Let us look at", "Meanwhile", "Closer to home", "Stay tuned", "On the cricket field".
 - Use only facts in the rundown. Never add a fact, name, number or quote. Short personal reactions are fine ("I'd love to see that").
+- Never address the listeners by name; speak to them as "you" if at all.
 - No talk about how the paper or the show is made, about sources or checking, or about anything being missing.
 - Every number, score, time and date in words, the Indian way (lakh and crore). No digits, no symbols like ₹, %, $ or &.
 - About ${W.target} words in total (between ${W.min} and ${W.max}).
@@ -227,6 +228,11 @@ export function checkScript(turns, R, P = {}) {
     const b = txt.match(BANNED); if (b) soft(`turn ${i + 1}: uses the stock phrase "${b[0]}"`);
     if (numberRuns(txt) > 3) soft(`turn ${i + 1}: ${numberRuns(txt)} numbers in one turn (at most two)`);
   });
+  const title = String(P.title || "The House of 1400").toLowerCase().replace("1400", "(1400|fourteen hundred)");
+  const named = t => new RegExp(title.replace(/^the /, "")).test(String(t?.text || "").toLowerCase());
+  if (!turns.slice(0, 2).some(named)) soft(`the opening does not name the show ("${P.title || "The House of 1400"}") in the first two turns`);
+  if (!turns.slice(-3).some(named)) soft(`the goodbye does not name the show`);
+  turns.forEach((t, i) => { if (/\bParth\b/i.test(t.text)) soft(`turn ${i + 1}: addresses the listener by name`); });
   const avg = n / turns.length, shortN = turns.filter(t => words(t.text).length <= 8).length, qs = turns.filter(t => /\?/.test(t.text)).length;
   if (avg > 40) soft(`turns average ${Math.round(avg)} words: too much reading, not enough conversation`);
   if (shortN < 6) soft(`only ${shortN} quick reactions of eight words or fewer (needs six or more)`);

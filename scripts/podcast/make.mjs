@@ -33,7 +33,8 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 const GEM = "https://generativelanguage.googleapis.com/v1beta/models";
 // "busy" (429, 500, 503) is waited out a minute at a time, up to `tries` attempts in all (the main writer's first
-// try: nine, about eight minutes; 3.8 Flash was busy for over three minutes at a time on 12-13 Oct)
+// try: six, about five minutes; 3.8 Flash was busy for over three minutes at a time on 12-13 Oct, and refused
+// requests count against the free day's twenty)
 async function gemini(model, body, tries = 2) {
   for (let i = 0; i < tries; i++) {
     const t0 = Date.now();
@@ -57,9 +58,9 @@ async function writeScript(R) {
     let prompt = base, best = null;
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
-        const j = await gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.9 } }, attempt === 0 && model === (P.text_models || [])[0] ? 9 : 3);
+        const j = await gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.9 } }, attempt === 0 && model === (P.text_models || [])[0] ? 6 : 2);
         const text = j.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
-        const turns = JSON.parse(text.replace(/^```(?:json)?|```$/g, "").trim()).turns;
+        const body = text.replace(/^```(?:json)?|```$/g, "").trim(), turns = JSON.parse(body.slice(body.indexOf("{"), body.lastIndexOf("}") + 1)).turns;
         const probs = checkScript(turns, R, P), hard = probs.filter(p => p.hard);
         log(`script by ${model} (try ${attempt + 1}): ${turns.length} turns, ${probs.length ? probs.map(p => (p.hard ? "HARD " : "") + p.msg).slice(0, 8).join("; ") : "no problems"}`);
         if (!hard.length && (!best || probs.length < best.n)) best = { turns, by: model, n: probs.length };
