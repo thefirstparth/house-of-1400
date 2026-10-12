@@ -666,6 +666,8 @@ function fitDesk() {
 // On a laptop the Since strip is one more block, last in its column (on a phone it runs across the top).
 // Money ranks above Weather (Parth, 2 Oct: "at least for the front page, let's make money more important than
 // weather"): it opens the middle column, and wherever the two share a column Money comes first.
+// Blocks that step aside, in this order, only when the reader has zoomed in with ⌘+ (fitOne)
+const P1GIVE = ["eve", "bets", "weather", "sport"];
 const P1BLOCKS = ["money", "weather", "sport", "bets", "eve", "since"], P1HOME = [1, 2, 1, 2, 0, 0], P1WIDE = [1.5, 1.25, 1];
 function balanceOne() {
   const body = document.querySelector(".p1body"), news = document.getElementById("p1-minute"), cols = [...document.querySelectorAll(".p1body > .stack")];
@@ -716,27 +718,58 @@ function fitOne() {
   if (DESK.id !== "one" || !document.querySelector(".p1end")) return;
   const bottom = s => document.querySelector(s)?.getBoundingClientRect().bottom ?? 0;
   if (p1lines !== P1MAX) { p1lines = P1MAX; paintOne(); }
+  for (const id of P1GIVE) { const el = document.getElementById(`p1-${id}`); if (el) el.style.display = ""; }
   const W = innerWidth;
   balanceOne();
   if (W < 1000) return;
   setZoom(1, W); balanceOne(); // arrange at the screen's own width, then scale
-  // Zoomed in with ⌘+ (Parth, 12 Oct 2026: the text must grow when asked): the page is fitted to the screen as it was
-  // before the zoom, so the type comes out larger by the zoom and the page scrolls, instead of shrinking it back.
-  const VH = innerHeight * browserZoom();
-  const at = (z, s = ".p1end") => { setZoom(z, Math.min(W / z, 2600)); return bottom(s) <= VH; };
+  // Zoomed in with ⌘+ (Parth, 12 Oct 2026: the text must grow, and Page One must still never scroll). The page remembers
+  // the size its type had on this screen without zoom; zoomed in, it aims for that size (so the type on screen is
+  // larger by the zoom) and makes room, least important first: the evening pick, The market expects, Weather, then
+  // Sport this week (each has its own desk page behind the tabs; Money and the day in a minute always stay), then the
+  // day in a minute's later lines, down to five. Only if that is still not enough does the type grow less.
+  const U = browserZoom(), KEY = `h1400-z100:${screen.width}x${screen.height}`;
+  const at = (z, s = ".p1end") => { setZoom(z, Math.min(W / z, 2600)); return bottom(s) <= innerHeight; };
   const LO = 0.8; // lines are dropped (never below five) before the type goes under this
-  while (!at(LO) && p1lines > P1MIN) { p1lines--; paintOne(); }
   const search = (s, top) => {
     let lo = LO, hi = Math.max(LO, top);
     if (at(hi, s)) return hi;
     for (let k = 0; k < 14; k++) { const z = (lo + hi) / 2; if (at(z, s)) lo = z; else hi = z; }
     return lo;
   };
+  let top = Math.min(W / 1100, 2.2);
+  if (U > 1.04) {
+    let base = 1; try { base = Number(localStorage.getItem(KEY)) || 1; } catch {}
+    top = Math.max(LO, Math.min(base, 2.2));
+    // a block steps aside only when that makes room (when the day in a minute is the tallest column, it would not)
+    for (const id of P1GIVE) {
+      if (at(top)) break;
+      const el = document.getElementById(`p1-${id}`); if (!el) continue;
+      const before = bottom(".p1end");
+      el.style.display = "none"; balanceOne();
+      if (!at(top) && bottom(".p1end") >= before - 2) { el.style.display = ""; balanceOne(); }
+    }
+    while (!at(top) && p1lines > P1MIN) { p1lines--; paintOne(); }
+    // then bring back, most important first, every block that fits at the size the page can reach
+    const reach = search(".p1end", top);
+    for (const id of [...P1GIVE].reverse()) {
+      const el = document.getElementById(`p1-${id}`); if (!el || el.style.display !== "none") continue;
+      el.style.display = ""; balanceOne();
+      if (!at(reach)) { el.style.display = "none"; balanceOne(); }
+    }
+  }
+  while (!at(LO) && p1lines > P1MIN) { p1lines--; paintOne(); }
+  // zoomed in, Page One never scrolls: if even the smallest type would not fit, blocks keep stepping aside
+  if (U > 1.04) for (const id of P1GIVE) {
+    if (at(LO)) break;
+    const el = document.getElementById(`p1-${id}`); if (el && el.style.display !== "none") { el.style.display = "none"; balanceOne(); }
+  }
   // the type never goes below 0.8 of its size (body text about 12.5px; QA, 2 Oct: a 1080p Windows laptop at 150% has
   // a window only 595px tall, and fitting it all printed the text at 10.5px). Only such a short window scrolls, a little.
-  const scale = () => Math.max(0.8, search(".p1end", Math.min(W / 1100, 2.2)));
+  const scale = () => Math.max(0.8, search(".p1end", top));
   // the page's width changes with its scale, so arrange again at the scale found, then scale once more
-  at(scale()); balanceOne(); at(scale());
+  at(scale()); balanceOne(); const z = scale(); at(z);
+  if (U <= 1.04) try { localStorage.setItem(KEY, String(Math.round(z * 1000) / 1000)); } catch {}
 }
 let unmountMark = () => {};
 // The day in dots: each desk's share of today's paper, in words, in the tabs' order (storiesFromEdition)

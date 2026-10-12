@@ -355,7 +355,7 @@ const updFor = x => (x.update?.since ? `<span class="upd" title="Follows our sto
 const newFor = x => updFor(x) + (x.new_for_you ? `<span class="newfor">New for you</span>` : "");
 
 // Listen (Parth, 12 Oct 2026, after Speechify's Apple Design Award and kylo's Listen button): the browser reads a story,
-// or The day in a minute, aloud in its own voice, an Indian English one where the device has it. Nothing is sent
+// or The day in a minute, aloud in the best voice the device has (bestVoice). Nothing is sent
 // anywhere and nothing is generated; it reads the edition's own words. One thing at a time: Listen again, or another
 // Listen, stops it. Read sentence by sentence, because Chrome stops a single long utterance after about 15 seconds.
 const CAN_SAY = typeof speechSynthesis !== "undefined" && typeof SpeechSynthesisUtterance !== "undefined";
@@ -368,6 +368,15 @@ function sayText(id) {
   }
   if (!st) return [];
   return [st.headline, st.deck, st.short || st.text, ...(st.more || []), st.why?.text ? `Why it matters. ${st.why.text}` : null];
+}
+// The best voice the device has: quality first (macOS/iOS Premium and Enhanced voices, Edge's Natural voices, Chrome's
+// online Google voices), then Indian English, then British, then any English. The compact voices macOS ships by
+// default sound robotic; a Premium one is a free download (System Settings > Accessibility > Spoken Content).
+function bestVoice() {
+  const vs = speechSynthesis.getVoices().filter(v => /^en([-_]|$)/i.test(v.lang));
+  const q = v => (/premium/i.test(v.name) ? 40 : /enhanced/i.test(v.name) ? 30 : /natural|neural/i.test(v.name) ? 35 : /^google/i.test(v.name) ? 20 : 0) - (/compact|novelty|eloquence|whisper|bad news|bells|bubbles|cellos|zarvox|trinoids|organ|boing|albert|jester|superstar|wobble/i.test(v.name) ? 50 : 0);
+  const l = v => (/[-_]IN$/i.test(v.lang) ? 3 : /[-_]GB$/i.test(v.lang) ? 2 : /[-_](AU|IE|ZA|NZ)$/i.test(v.lang) ? 1 : 0);
+  return vs.sort((a, b) => q(b) - q(a) || l(b) - l(a) || (b.localService === false) - (a.localService === false))[0] || null;
 }
 function sayButtons(id, on) {
   document.querySelectorAll(`[data-say="${CSS.escape(id)}"]`).forEach(b => { b.textContent = on ? "Stop" : "Listen"; b.setAttribute("aria-pressed", on ? "true" : "false"); });
@@ -384,7 +393,7 @@ function say(id) {
   const parts = sayText(id).filter(Boolean).map(t => String(t).replace(/\s+/g, " ").trim()).filter(Boolean);
   const sentences = parts.flatMap(t => t.match(/[^.!?]+[.!?]+["'’”)]*|[^.!?]+$/g) || [t]).map(x => x.trim()).filter(Boolean);
   if (!sentences.length) return;
-  const voices = speechSynthesis.getVoices(), voice = voices.find(v => /^en[-_]IN/i.test(v.lang)) || voices.find(v => /^en[-_]GB/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang)) || null;
+  const voice = bestVoice();
   saying = id; sayButtons(id, true);
   sentences.forEach((text, i) => {
     const u = new SpeechSynthesisUtterance(text);
