@@ -39,5 +39,6 @@ jobs:
           BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
         run: |
           sudo apt-get install -y -qq espeak-ng >/dev/null
+          python3.12 -m pip install -q torch --index-url https://download.pytorch.org/whl/cpu
           python3.12 -m pip install -q kokoro soundfile https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
           PODCAST_VOICE=kokoro node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }}
