@@ -47,6 +47,12 @@ test("desks: an India story on a general feed is Desh, a world one Videsh", () =
   assert.equal(deskOf(story("North Korea fires missiles towards the sea", ["gn-in-top#4"], 5), F), "videsh");
 });
 
+test("a site's subscription banner inside the article body is dropped", () => {
+  const body = "Subscribed with another email? Logout and Login with that one. The Hindu On Books Books of the week, reviews, excerpts, new titles and features. " + "The Supreme Court on Monday heard the petition on the electoral rolls. ".repeat(6);
+  const html = `<script type="application/ld+json">${JSON.stringify({ articleBody: body })}</script>`;
+  assert.ok(articleText(html).startsWith("The Supreme Court on Monday"));
+});
+
 test("desks: a gadget launch on a tech feed stays Tech, India price and all", () => {
   const F = Object.fromEntries(feeds.map(f => [f.id, f]));
   assert.equal(deskOf(story("Dell XPS 13 with Intel Core Ultra 7 Series 3 processor launched in India", ["verge#1"], 1), F), "tech");
