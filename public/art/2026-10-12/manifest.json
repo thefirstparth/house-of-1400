@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-12",
+  "made_by": "Bunty Brushwala",
+  "items": [
+    {
+      "story_id": "verstappen-wins-singapore",
+      "file": "verstappen-wins-singapore.webp",
+      "alt": "Max Verstappen celebrates his Singapore win as Ferrari strategists argue over a failed tyre call."
+    },
+    {
+      "story_id": "riyadh-13-dead-indian",
+      "file": "riyadh-13-dead-indian.webp",
+      "alt": "Travelers flee a smoke-filled airport past cancelled flights and a suitcase beside an Indian flag."
+    },
+    {
+      "story_id": "india-win-indore",
+      "file": "india-win-indore.webp",
+      "alt": "India celebrate a 14-run win over West Indies, with the correct 223 and 209/7 scores on the stadium board."
+    },
+    {
+      "story_id": "jantar-mantar-denotified",
+      "file": "jantar-mantar-denotified.webp",
+      "alt": "Police barricades close Jantar Mantar as an officer points protesters to three alternative grounds on a map."
+    }
+  ]
+}
