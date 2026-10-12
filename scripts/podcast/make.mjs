@@ -35,17 +35,18 @@ const GEM = "https://generativelanguage.googleapis.com/v1beta/models";
 // "busy" (429, 500, 503) is waited out a minute at a time, up to `tries` attempts in all (the main writer's first
 // try: six, about five minutes; 3.8 Flash was busy for over three minutes at a time on 12-13 Oct, and refused
 // requests count against the free day's twenty)
-async function gemini(model, body, tries = 2) {
+async function gemini(model, body, tries = 2, waitMs = 300000) {
   for (let i = 0; i < tries; i++) {
     const t0 = Date.now();
-    // a stuck request fails within five minutes instead of holding the job (voicing six minutes takes one or two)
-    const r = await fetch(`${GEM}/${model}:generateContent`, { method: "POST", headers: { "x-goog-api-key": KEY, "content-type": "application/json" }, body: JSON.stringify(body), signal: AbortSignal.timeout(300000) });
+    // a stuck request fails in time instead of holding the job (the writer thinks for up to four minutes; voicing
+    // seven minutes takes under a minute)
+    const r = await fetch(`${GEM}/${model}:generateContent`, { method: "POST", headers: { "x-goog-api-key": KEY, "content-type": "application/json" }, body: JSON.stringify(body), signal: AbortSignal.timeout(waitMs) });
     log(`${model}: ${r.status} in ${Math.round((Date.now() - t0) / 1000)} s`);
     const j = await r.json().catch(() => ({}));
     if (r.ok) return j;
     const msg = `${model} ${r.status}: ${j.error?.message || ""}`.slice(0, 600);
     if ([429, 500, 503].includes(r.status) && i + 1 < tries) { log(msg, "- busy, waiting a minute"); await sleep(62000); continue; }
-    throw new Error(msg);
+    throw Object.assign(new Error(msg), { http: r.status });
   }
 }
 
@@ -58,7 +59,7 @@ async function writeScript(R) {
     let prompt = base, best = null;
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
-        const j = await gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.9 } }, attempt === 0 && model === (P.text_models || [])[0] ? 6 : 2);
+        const j = await gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.9 } }, attempt === 0 && model === (P.text_models || [])[0] ? 6 : 2, 540000);
         const text = j.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
         const body = text.replace(/^```(?:json)?|```$/g, "").trim(), turns = JSON.parse(body.slice(body.indexOf("{"), body.lastIndexOf("}") + 1)).turns;
         const probs = checkScript(turns, R, P), hard = probs.filter(p => p.hard);
@@ -67,7 +68,12 @@ async function writeScript(R) {
         if (!probs.length) break;
         last = probs.map(p => p.msg);
         prompt = `${base}\n\nYOUR PREVIOUS SCRIPT (below) was sent back for: ${last.join("; ")}. Rewrite it, fixing exactly these and keeping everything else that works.\n${JSON.stringify({ turns })}`;
-      } catch (e) { last = [e.message]; log(`writer ${model} failed:`, e.message); if (!best) break; }
+      } catch (e) {
+        // an answer that could not be read is tried again; a refusal (still busy, or a bad request) or a timeout
+        // moves on to the next writer unless this one already gave a usable script
+        last = [e.message]; log(`writer ${model} failed:`, e.message);
+        if (!best && (e.http || e.name === "TimeoutError" || e.name === "AbortError")) break;
+      }
     }
     if (best) { log(`script chosen: ${model}, ${best.n} soft problem(s) left`); return { turns: best.turns, by: model }; }
   }

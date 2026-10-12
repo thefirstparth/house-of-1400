@@ -21,7 +21,7 @@ concurrency: { group: podcast, cancel-in-progress: false }
 jobs:
   gemini:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
