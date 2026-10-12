@@ -624,7 +624,7 @@ function sinceHTML() {
 
 const blk = (id, desk, title, link, to, body, extra = "") => (body ? `<section class="blk" id="p1-${id}" style="--c:var(--d-${desk})"><div class="bh"><h2>${title}</h2>${extra}<a href="${deskHref(desk)}" data-desk="${desk}" data-to="${to}">${link} →</a></div><div data-p1="${id}">${body}</div></section>` : "");
 function pageOne() {
-  return `<div class="p1"><div id="p1-since" data-p1="since">${sinceHTML()}</div><div class="p1body"><div class="stack c1"><section class="news" id="p1-minute"><div class="bh" style="--c:var(--d-one)"><h2>The day in a minute</h2><a href="${deskHref("news")}" data-desk="news">All the news →</a></div><div data-p1="minute">${minuteHTML(p1lines)}</div></section><div class="eve" id="p1-eve" data-p1="evening">${eveningHTML()}</div></div>
+  return `<div class="p1"><div id="p1-since" data-p1="since">${sinceHTML()}</div><div class="p1body"><div class="stack c1"><section class="news" id="p1-minute"><div class="bh" style="--c:var(--d-one)"><h2>The day in a minute</h2>${CAN_SAY ? `<button class="say" data-say="minute" aria-pressed="false" title="Read The day in a minute aloud">Listen</button>` : ""}<a href="${deskHref("news")}" data-desk="news">All the news →</a></div><div data-p1="minute">${minuteHTML(p1lines)}</div></section><div class="eve" id="p1-eve" data-p1="evening">${eveningHTML()}</div></div>
 <div class="stack c2">${blk("money", "money", "Money", "The Ledger", "ledger", moneyHTML())}${blk("sport", "sport", "Sport this week", "Sport", "fixtures", sportHTML(6))}</div>
 <div class="stack c3">${blk("weather", "home", "Weather", "Sky &amp; Streets", "sky", weatherHTML(), `<span class="bhx" data-p1="wxhead">${hereHead()}</span>`)}${blk("bets", "news", "The market expects", "Betting Window", "betting", betsHTML(3))}</div></div></div>`;
 }
@@ -703,6 +703,14 @@ function balanceOne() {
 // It never scrolls on a laptop (Parth, 2 Oct: "the first page logic was specifically to not have to scroll"); the type
 // stays large because the blocks balance (balanceOne) and the fixed parts are compact: the House Note and the foot share
 // one row, the Since strip is one line.
+// The browser's own zoom (⌘+ / ⌘−). Chrome and Safari keep the window's outer width in screen points while the page's
+// width shrinks in CSS pixels, so their ratio is the zoom. Firefox scales both and reads as 1, which keeps today's fit.
+// `h1400-zoom-test` in localStorage stands in for it in tests (a headless browser cannot press ⌘+).
+function browserZoom() {
+  try { const t = Number(localStorage.getItem("h1400-zoom-test")); if (t > 0) return t; } catch {}
+  const r = outerWidth && innerWidth ? outerWidth / innerWidth : 1;
+  return r > 1.04 && r < 4 ? r : 1;
+}
 function fitOne() {
   setZoom(1, 0);
   if (DESK.id !== "one" || !document.querySelector(".p1end")) return;
@@ -712,7 +720,10 @@ function fitOne() {
   balanceOne();
   if (W < 1000) return;
   setZoom(1, W); balanceOne(); // arrange at the screen's own width, then scale
-  const at = (z, s = ".p1end") => { setZoom(z, Math.min(W / z, 2600)); return bottom(s) <= innerHeight; };
+  // Zoomed in with ⌘+ (Parth, 12 Oct 2026: the text must grow when asked): the page is fitted to the screen as it was
+  // before the zoom, so the type comes out larger by the zoom and the page scrolls, instead of shrinking it back.
+  const VH = innerHeight * browserZoom();
+  const at = (z, s = ".p1end") => { setZoom(z, Math.min(W / z, 2600)); return bottom(s) <= VH; };
   const LO = 0.8; // lines are dropped (never below five) before the type goes under this
   while (!at(LO) && p1lines > P1MIN) { p1lines--; paintOne(); }
   const search = (s, top) => {

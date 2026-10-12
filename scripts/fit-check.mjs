@@ -3,7 +3,7 @@
 // its most (11 lines, every one a full 14-word headline with its subject in bold), the longest editor's note and a
 // long House Note. Live figures come from the edition's own snapshot, and the clock is set to 15:00 IST on its date.
 // At each window size it fails when the page scrolls, when any of the 11 lines is dropped or runs off the screen, when
-// the type is scaled below 0.8, or when the page throws.
+// the type is scaled below 0.8, or when the page throws; and when ⌘+ to 125% does not make the text larger.
 //   node scripts/fit-check.mjs            (run `npm run build` first; tests/fit.test.mjs does both)
 import { chromium } from "playwright-core";
 import { existsSync, readFileSync } from "node:fs";
@@ -89,6 +89,30 @@ export async function fitCheck({ sizes = SIZES, log = console.log } = {}) {
       if (bad.length) fails.push(`${name}: ${bad.join("; ")}`);
       await ctx.close();
     }
+    // ⌘+ must make the text larger (Parth, 12 Oct 2026): at 125% browser zoom on the Air 13, the day in a minute's text
+    // on screen must be at least 15% larger than at 100% (the page may scroll then; that is the reader's choice).
+    const size = async Z => {
+      const ctx = await b.newContext({ viewport: { width: Math.round(1470 / Z), height: Math.round(832 / Z) }, deviceScaleFactor: 2 * Z });
+      if (Z !== 1) await ctx.addInitScript(`try{localStorage.setItem("h1400-zoom-test","${Z}")}catch(e){}`);
+      const p = await ctx.newPage();
+      await p.route(/^https?:/, r => r.abort());
+      await p.route(/^https:\/\/house14\.test\//, r => {
+        const u = new URL(r.request().url()), k = (u.pathname.match(/^\/api\/live\/([a-z_0-9]+)$/) || [])[1];
+        if (k) { const s = snap[k]; return s?.value ? r.fulfill({ json: { ok: true, value: s.value } }) : r.fulfill({ status: 404, json: {} }); }
+        if (u.pathname === "/content/latest.json") return r.fulfill({ json: E });
+        let f = D + u.pathname; if (u.pathname === "/") f = D + "/index.html";
+        return existsSync(f) ? r.fulfill({ body: readFileSync(f), contentType: TYPES[extname(f)] || "application/octet-stream" }) : r.fulfill({ status: 404, body: "" });
+      });
+      await p.goto("https://house14.test/#d-one");
+      await p.waitForSelector("#p1-minute ol.min b", { timeout: 15000 }).catch(() => {});
+      await p.waitForTimeout(2500);
+      const v = await p.evaluate(() => { const el = document.querySelector("#p1-minute ol.min b"); return el ? parseFloat(getComputedStyle(el).fontSize) * Number(document.getElementById("layout")?.style.zoom || 1) : 0; });
+      await ctx.close();
+      return v * Z;
+    };
+    const s100 = await size(1), s125 = await size(1.25), grow = s100 ? s125 / s100 : 0;
+    log(`${grow >= 1.15 ? "ok  " : "FAIL"} ⌘+ to 125% on the Air 13: text ${s100.toFixed(1)}pt -> ${s125.toFixed(1)}pt (x${grow.toFixed(2)})`);
+    if (grow < 1.15) fails.push(`⌘+ to 125%: the text only grows x${grow.toFixed(2)} (needs x1.15)`);
   } finally { await b.close(); }
   return fails;
 }

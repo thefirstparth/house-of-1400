@@ -176,6 +176,9 @@ body.on-one .dbar{display:none}
 .p1 .bh h2{margin:0;font:600 18px/1.1 var(--hl);font-variation-settings:"opsz" 30;color:var(--c,var(--ink))}
 .p1 .bh a{font:600 11.5px var(--sans);color:var(--muted)}
 .p1 .bh a:hover{color:var(--c)}
+.p1 .bh .say{all:unset;cursor:pointer;margin-left:auto;font:600 11.5px var(--sans);color:var(--muted)}
+.p1 .bh .say:hover,.p1 .bh .say[aria-pressed="true"]{color:var(--c,var(--ink))}
+.p1 .bh .say:focus-visible{outline:2px solid var(--c,var(--ink));outline-offset:3px}
 .p1 .leadh{display:block;margin:0 0 6px}
 .p1 .leadh .lab{font:700 10.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--c)}
 .p1 .leadh h3{margin:2px 0 0;font:600 24px/1.14 var(--hl);font-variation-settings:"opsz" 40;letter-spacing:-.005em;text-wrap:balance}
@@ -718,3 +721,11 @@ html.vs-open{overflow:hidden}
 .agenda.fx3 .day.past h3.big .dn{color:var(--muted)}
 .agenda.fx3.flowed .col>.day+.day h3{margin-top:22px}
 @container (max-width:250px){.agenda.fx3 li.fx{grid-template-columns:1fr;gap:2px}}
+
+/* Increase contrast (macOS and iOS Accessibility, Parth 12 Oct 2026): darker text and rules on the light paper, brighter
+   on the dark one, and the desks' colours pushed further from the paper. Nothing else changes. */
+@media (prefers-contrast:more){
+  :root{--ink:#0b0a07;--ink2:#15140f;--muted:#33302a;--rule:#8a8475;--rule2:#a39d8f;--d-news:#152f5a;--d-home:#065a85;--d-sport:#8f3508;--d-tech:#52309a;--d-money:#075c32;--d-off:#6e5000}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#fffaf0;--ink2:#f3eee2;--muted:#dcd5c4;--rule:#77715f;--rule2:#5c574b;--d-news:#c7d8f5;--d-home:#a8def7;--d-sport:#f8bc93;--d-tech:#d3c4f7;--d-money:#8be8bd;--d-off:#f0d688}}
+  :root[data-theme="dark"]{--ink:#fffaf0;--ink2:#f3eee2;--muted:#dcd5c4;--rule:#77715f;--rule2:#5c574b;--d-news:#c7d8f5;--d-home:#a8def7;--d-sport:#f8bc93;--d-tech:#d3c4f7;--d-money:#8be8bd;--d-off:#f0d688}
+}

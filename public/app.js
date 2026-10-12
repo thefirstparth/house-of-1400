@@ -354,10 +354,53 @@ const sourcesLine = srcs => {
 const updFor = x => (x.update?.since ? `<span class="upd" title="Follows our story of ${esc(new Date(x.update.since + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "long", timeZone: "UTC" }))}">Update</span>` : "");
 const newFor = x => updFor(x) + (x.new_for_you ? `<span class="newfor">New for you</span>` : "");
 
+// Listen (Parth, 12 Oct 2026, after Speechify's Apple Design Award and kylo's Listen button): the browser reads a story,
+// or The day in a minute, aloud in its own voice, an Indian English one where the device has it. Nothing is sent
+// anywhere and nothing is generated; it reads the edition's own words. One thing at a time: Listen again, or another
+// Listen, stops it. Read sentence by sentence, because Chrome stops a single long utterance after about 15 seconds.
+const CAN_SAY = typeof speechSynthesis !== "undefined" && typeof SpeechSynthesisUtterance !== "undefined";
+let saying = null;
+function sayText(id) {
+  const st = allStories().find(x => x.id === id);
+  if (id === "minute") {
+    const L = E.front.lead, lines = (E.glance || []).filter(g => g.target !== L.id).map(g => g.line);
+    return [`The day in a minute, ${longDate(E.date)}.`, L.headline, ...lines];
+  }
+  if (!st) return [];
+  return [st.headline, st.deck, st.short || st.text, ...(st.more || []), st.why?.text ? `Why it matters. ${st.why.text}` : null];
+}
+function sayButtons(id, on) {
+  document.querySelectorAll(`[data-say="${CSS.escape(id)}"]`).forEach(b => { b.textContent = on ? "Stop" : "Listen"; b.setAttribute("aria-pressed", on ? "true" : "false"); });
+}
+function stopSaying() {
+  if (!CAN_SAY) return;
+  const was = saying; saying = null; speechSynthesis.cancel();
+  if (was) sayButtons(was, false);
+}
+function say(id) {
+  if (!CAN_SAY) return;
+  if (saying === id) { stopSaying(); return; }
+  stopSaying();
+  const parts = sayText(id).filter(Boolean).map(t => String(t).replace(/\s+/g, " ").trim()).filter(Boolean);
+  const sentences = parts.flatMap(t => t.match(/[^.!?]+[.!?]+["'’”)]*|[^.!?]+$/g) || [t]).map(x => x.trim()).filter(Boolean);
+  if (!sentences.length) return;
+  const voices = speechSynthesis.getVoices(), voice = voices.find(v => /^en[-_]IN/i.test(v.lang)) || voices.find(v => /^en[-_]GB/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang)) || null;
+  saying = id; sayButtons(id, true);
+  sentences.forEach((text, i) => {
+    const u = new SpeechSynthesisUtterance(text);
+    if (voice) { u.voice = voice; u.lang = voice.lang; } else u.lang = "en-IN";
+    u.rate = 1;
+    if (i === sentences.length - 1) u.onend = () => { if (saying === id) { saying = null; sayButtons(id, false); } };
+    u.onerror = () => { if (saying === id) { saying = null; sayButtons(id, false); } };
+    try { speechSynthesis.speak(u); } catch { if (saying === id) { saying = null; sayButtons(id, false); } }
+  });
+}
+addEventListener("pagehide", stopSaying);
+
 function tools(st, withMore) {
   const link = st.sources?.[0]?.url;
   const id = esc(st.id);
-  return `<div class="tools">${withMore ? `<button class="rm" data-more="${id}" aria-expanded="false">Full story</button>` : ""}${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">Source ↗</a>` : ""}<button data-clip="${id}" title="Share this story as an image">Share</button></div>`;
+  return `<div class="tools">${withMore ? `<button class="rm" data-more="${id}" aria-expanded="false">Full story</button>` : ""}${CAN_SAY ? `<button data-say="${id}" aria-pressed="false" title="Read this story aloud">Listen</button>` : ""}${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">Source ↗</a>` : ""}<button data-clip="${id}" title="Share this story as an image">Share</button></div>`;
 }
 
 const why = (w, tone) => (w?.text ? `<div class="why${tone === "good" || tone === "bad" ? " " + tone : ""}"><b>${w.personal ? "Why it matters for you" : "Why it matters"}</b>${esc(w.text)}</div>` : "");
@@ -2130,6 +2173,7 @@ document.addEventListener("click", e => {
   if (t.dataset.f1board) { f1Board(t.dataset.f1board); return; }
   // Streaming Top 10 on a phone: one service at a time
   if (t.dataset.svc != null && t.closest(".od-tabs")) { const box = t.closest("section"); box.querySelectorAll(".od-tabs button").forEach(b => b.classList.toggle("on", b === t)); box.querySelectorAll(".od-col").forEach((c, i) => c.classList.toggle("on", String(i) === t.dataset.svc)); return; }
+  if (t.dataset.say) { say(t.dataset.say); return; }
   if (t.dataset.more) { toggleMore(t.dataset.more); return; }
   if (t.dataset.head) { if (!toggleMore(t.dataset.head)) toast("Short story. The full text is already shown."); return; }
   if (t.dataset.clip) { clip(t.dataset.clip); return; }
