@@ -3380,8 +3380,7 @@
       "uncounted": [
         "back"
       ],
-      "answer_top": true,
-      "glance_min": 4
+      "answer_top": true
     },
     "depth": {
       "more_min": 150,

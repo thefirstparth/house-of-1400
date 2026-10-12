@@ -103,14 +103,28 @@ function money(E) {
   return [parts.join(" · "), line2.join(" · ")].filter(Boolean);
 }
 
+// Headlines: the paper's own stories and briefs (front page first, then the sections), most important first by
+// Bhide's art scores, 4 to 10 of them. "The day in a minute" belongs to the page and is not used here.
+function headlines(E) {
+  const items = [];
+  if (E.front) items.push(E.front.lead, ...(E.front.seconds || []), ...(E.front.briefs || []));
+  for (const S of Object.values(E.sections || {})) items.push(...(S.stories || []), ...(S.briefs || []));
+  const seen = new Set(), list = items.filter(i => i?.headline && !seen.has(i.id) && seen.add(i.id));
+  const imp = Object.fromEntries((E.art_scores || []).map(x => [x.story_id, x.importance ?? 0]));
+  const [lead, ...rest] = list;
+  const ranked = rest.map((x, i) => ({ x, i })).sort((a, b) => (imp[b.x.id] ?? 1) - (imp[a.x.id] ?? 1) || a.i - b.i).map(r => r.x);
+  const strong = ranked.filter(x => (imp[x.id] ?? 1) >= 2);
+  return [lead, ...ranked.slice(0, Math.min(9, Math.max(3, strong.length)))].filter(Boolean);
+}
+
 export function summary(E, origin, run, { cfg = {}, now = Date.now() } = {}) {
-  const tag = g => esc(String(g.section || "").split("·")[0].trim());
-  const glance = (E.glance || []).slice(0, 10);
+  const tag = i => esc(String(i.kicker || "").trim());
+  const heads = headlines(E);
   const lines = [`📰 <b>The House of 1400</b> · ${esc(longDate(E.date))}`, ""];
-  if (glance.length) {
-    const [lead, ...rest] = glance;
-    lines.push(`<b>${tag(lead) ? `${tag(lead)}: ` : ""}${esc(lead.line)}</b>`, ...rest.map(g => `• ${tag(g) ? `${tag(g)}: ` : ""}${esc(g.line)}`));
-  } else lines.push(`<b>${esc(E.front?.lead?.headline || "Today's paper is out")}</b>`);
+  if (heads.length) {
+    const [lead, ...rest] = heads;
+    lines.push(`<b>${esc(lead.headline)}</b>`, ...rest.map(i => `• ${tag(i) ? `${tag(i)}: ` : ""}${esc(i.headline)}`));
+  } else lines.push("<b>Today's paper is out</b>");
   if (E.editor_note && E.big_day) lines.push("", `✒️ <i>${esc(E.editor_note)}</i>`);
   const mo = money(E);
   if (mo.length) lines.push("", `📈 ${esc(mo[0])}`, ...mo.slice(1).map(esc));

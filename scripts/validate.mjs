@@ -495,8 +495,6 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
       const words = x => String(Array.isArray(x) ? x.join(" ") : x || "").split(/\s+/).filter(Boolean).length;
       const deskOf = i => i.section || i._where.match(/^sections\.([a-z_]+)\./)?.[1] || null;
       const counted = items.filter(i => i._kind !== "line" && !skipSec.has(deskOf(i)));
-      // At a Glance doubles as the Telegram message (Parth, 12 Oct 2026): enough lines to carry the day.
-      if (ED.glance_min && (E.glance || []).length < ED.glance_min) errors.push(`glance: ${(E.glance || []).length} lines; the pool-era paper needs ${ED.glance_min} to 10, each clear on its own (DESK.md)`);
       if (ED.items && (counted.length < ED.items.min || counted.length > ED.items.max))
         errors.push(`numbers: the paper has ${counted.length} stories and briefs (Back Home not counted); it needs ${ED.items.min} to ${ED.items.max} (config pool.edition.items). ${counted.length < ED.items.min ? "Add from the pool" : "Move the weakest to Also in lines"}`);
       for (const [d, r] of Object.entries(ED.desks || {})) {
