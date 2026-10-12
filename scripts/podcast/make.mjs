@@ -138,6 +138,12 @@ async function publishFeed({ put, list, del, get }) {
   return episodes.length;
 }
 async function main() {
+  // --models: the models this key can call, and a one-line ping of each text writer (does not write an episode)
+  if (args.includes("--models")) {
+    const r = await fetch(`${GEM}?pageSize=200`, { headers: { "x-goog-api-key": KEY } }), j = await r.json().catch(() => ({}));
+    log(`models (${r.status}):`, (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes("generateContent")).map(m => m.name.replace("models/", "")).join(", "));
+    return;
+  }
   const { put, list, del, get } = DRY ? {} : await blob();
   if (FEED_ONLY) { const n = await publishFeed({ put, list, del, get }); log(`feed rebuilt (${n} in the feed)`); log(`FEED ${served("feed.xml")}`); return; }
   if (!DRY && !FORCE) {

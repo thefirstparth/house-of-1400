@@ -16,6 +16,7 @@ on:
       force: { description: "Make it again even if published", type: boolean, default: false }
       feed_only: { description: "Only rebuild the feed (no new episode)", type: boolean, default: false }
       dry: { description: "Test: write and voice it, publish nothing (script and MP3 as artifacts)", type: boolean, default: false }
+      models: { description: "Only list the Gemini models this key can use", type: boolean, default: false }
 concurrency: { group: podcast, cancel-in-progress: false }
 jobs:
   gemini:
@@ -30,7 +31,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
-        run: node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }} ${{ inputs.feed_only && '--feed' || '' }} ${{ inputs.dry && '--dry' || '' }}
+        run: node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }} ${{ inputs.feed_only && '--feed' || '' }} ${{ inputs.dry && '--dry' || '' }} ${{ inputs.models && '--models' || '' }}
       - if: always()
         uses: actions/upload-artifact@v4
         with: { name: podcast-script, path: .podcast/script.json, retention-days: 2, if-no-files-found: ignore }
