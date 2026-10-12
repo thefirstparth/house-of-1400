@@ -3441,11 +3441,12 @@
     "deep_max": 6,
     "quick_max": 14,
     "kokoro": {
-      "lang": "b",
+      "lang": "a",
       "voices": {
-        "Asha": "bf_emma",
-        "Ravi": "bm_george"
-      }
+        "Asha": "af_heart",
+        "Ravi": "am_michael"
+      },
+      "note": "Kokoro's best-rated voices (af_heart is graded A); speed and pauses follow each turn's mood (kokoro_voice.py)."
     },
     "pronounce": {
       "1400": "fourteen hundred",
