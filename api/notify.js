@@ -88,7 +88,7 @@ async function handle(request, { cron }) {
   // Today's edition is not live. Only the afternoon cron says so, once, after the last retry has had its chance.
   if (!cron || hm() < "15:55") return Response.json({ ok: true, sent: false, reason: "today's edition is not live yet" });
   if (await marker(`late-${day}`)) return Response.json({ ok: true, sent: false, reason: "already sent today" });
-  const out = await send(`🕯️ <b>No paper today</b> (${esc(longDate(day))}).\nAll four runs finished without publishing. The site is showing ${E ? `the edition of ${esc(longDate(E.date))}` : "the last edition"}; nothing needs doing on your side.\n\n${origin}/`);
+  const out = await send(`🕯️ <b>No paper today</b> (${esc(longDate(day))}).\nNone of the runs published today. The site is showing ${E ? `the edition of ${esc(longDate(E.date))}` : "the last edition"}; nothing needs doing on your side.\n\n${origin}/`);
   if (out.sent) await mark(`late-${day}`, { at: new Date().toISOString() });
   return Response.json({ ok: true, ...out });
 }
