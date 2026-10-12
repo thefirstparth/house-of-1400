@@ -19,7 +19,7 @@ const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" 
 const latest = JSON.parse(readFileSync(`${H}content/latest.json`, "utf8"));
 const date = args.find(a => /^\d{4}-\d{2}-\d{2}$/.test(a)) || latest.edition || latest.date || today;
 const file = `${H}content/editions/${date}.json`;
-if (!existsSync(file)) { console.log(`podcast: no edition for ${date}; nothing to do`); process.exit(0); }
+if (!existsSync(file)) { console.log(`podcast: no edition for ${date}; nothing to do`); process.exit(0); } // nothing logged after it
 const E = JSON.parse(readFileSync(file, "utf8"));
 const KEY = process.env.GEMINI_API_KEY, BLOB = process.env.BLOB_READ_WRITE_TOKEN;
 if (!DRY && (!KEY || !BLOB)) { console.error("podcast: GEMINI_API_KEY and BLOB_READ_WRITE_TOKEN are needed"); process.exit(1); }
@@ -147,4 +147,5 @@ async function main() {
   log(`published ${date} (${episodes.length} in the feed)`);
   log(`FEED ${feed.url}`);
 }
-main().catch(e => { console.error("podcast: failed:", e.message); process.exit(1); });
+// exitCode, not process.exit: exiting at once can drop the last log lines on a pipe
+main().catch(e => { console.error("podcast: failed:", e.message); process.exitCode = 1; });
