@@ -23,6 +23,7 @@ Half static, half live, like the Daily Prophet: the news is written once a day a
 **Poster run** (16:00 IST, `docs/RUNBOOK.md` → Posters): only writes `public/posters/latest/`.
 
 **Daily run** (a scheduled edition run, following `docs/RUNBOOK.md`):
+- From the 13 Oct 2026 edition the brief is `docs/DESK.md`: code builds the day's pool (`node scripts/prep.mjs`) and the run chooses and writes from it to fixed numbers. Do not read the "Read these first" list above; read RUNBOOK and DESK only, and open EDITORIAL.md only at a section the validator names.
 - Only write `content/editions/YYYY-MM-DD.json`, `content/latest.json`, `content/archive.json`, and files under `ledger/`.
 - Never touch code, styles, config or docs during a daily run.
 - `public/art/` belongs to the illustrator, Bunty Brushwala (drawn by Codex; see `public/art/README.md`): daily runs never write there.

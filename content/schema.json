@@ -1289,6 +1289,32 @@
               }
             }
           }
+        },
+        "pool": {
+          "type": "array",
+          "$comment": "From the 13 Oct 2026 edition: an answer for each of the pool's top stories the paper does not print (one id each).",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "covered_by": {
+                "type": "string"
+              },
+              "skip": {
+                "type": "string",
+                "minLength": 15
+              }
+            }
+          }
+        },
+        "pool_error": {
+          "type": "string"
         }
       }
     },

@@ -149,6 +149,10 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   const cut = Date.parse(`${E.date}T${E.cut_ist || "14:00"}:00+05:30`);
 
   const items = allItems(E);
+  // From the 13 Oct 2026 edition (config pool.from; Parth, 12 Oct): code builds the day's pool (scripts/pool.mjs) and
+  // the edition is held to fixed numbers and depth below. The hand sweeps and the desk check it replaces are not asked.
+  let POOLCFG = {}; try { POOLCFG = read("config/house.json").pool || {}; } catch {}
+  const POOL = !!POOLCFG.from && E.date >= POOLCFG.from;
 
   // Sources on every substantive story
   for (const s of items) if (s._kind === "story" && !(s.sources || []).some(x => /^https?:\/\//.test(x.url))) errors.push(`sources: ${s._where} has no source URL`);
@@ -335,11 +339,11 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     }
     // b) The India money sweep: at least three sources from three different sites, read for this edition.
     const hosts = new Set((E.checks?.money_sweep || []).map(u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return null; } }).filter(Boolean));
-    if (hosts.size < 3) errors.push("checks.money_sweep: list the regulator and personal-finance pages read for the India money sweep (at least 3 sites)");
+    if (hosts.size < 3 && !POOL) errors.push("checks.money_sweep: list the regulator and personal-finance pages read for the India money sweep (at least 3 sites)");
     //    From 29 Sep 2026 (ledger/lessons.json, the TRAI miss): at least one page from each group in config money.groups,
     //    the bodies that set rules on money and the bodies that set prices and charges people pay. A Google News search
     //    restricted to a body's site (site:pib.gov.in) counts for that body.
-    if (E.date > "2026-09-28") {
+    if (E.date > "2026-09-28" && !POOL) {
       const G = read("config/house.json").money?.groups || {};
       const sweep = E.checks?.money_sweep || [];
       const hit = (u, h) => { try { const x = new URL(u); const host = x.hostname.replace(/^www\./, ""); return host === h || host.endsWith(`.${h}`) || decodeURIComponent(x.search).includes(`site:${h}`); } catch { return false; } };
@@ -348,8 +352,8 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     // c) The national front-page sweep: the India stories leading the national press are in the paper or explained.
     const nat = E.checks?.national || [];
     const natHosts = new Set((E.checks?.national_sweep || []).map(u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return null; } }).filter(Boolean));
-    if (natHosts.size < 3) errors.push("checks.national_sweep: list the national front pages read (at least 3 sites)");
-    if (nat.length < 5) errors.push("checks.national: record the top India stories from the national front pages (at least 5), each covered or explained");
+    if (natHosts.size < 3 && !POOL) errors.push("checks.national_sweep: list the national front pages read (at least 3 sites)");
+    if (nat.length < 5 && !POOL) errors.push("checks.national: record the top India stories from the national front pages (at least 5), each covered or explained");
     for (const n of nat) {
       if (n.covered_by && !ids.has(n.covered_by)) errors.push(`checks.national: covered_by "${n.covered_by}" is not an item in this edition`);
       if (!n.covered_by && !(n.answer && n.answer.length >= 15)) errors.push(`checks.national: "${n.story}" is neither covered (covered_by) nor explained (answer)`);
@@ -412,7 +416,7 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     // searches it used, and every change taking effect in the next 30 days that has not been printed is printed or
     // answered in checks.changes. publish.mjs marks it printed.
     if (E.date > "2026-09-28") {
-      if ((E.checks?.money_net || []).length < 2) errors.push("checks.money_net: record the pages and searches used for the wider net (at least two): what changed what people in India pay, earn, save, borrow, invest or insure?");
+      if ((E.checks?.money_net || []).length < 2 && !POOL) errors.push("checks.money_net: record the pages and searches used for the wider net (at least two): what changed what people in India pay, earn, save, borrow, invest or insure?");
       let cal = null;
       try { cal = read("ledger/changes.json"); } catch {}
       const soon = new Date(Date.parse(E.date + "T00:00:00Z") + 30 * 864e5).toISOString().slice(0, 10);
@@ -445,8 +449,8 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     // The wire check (from 30 Sep 2026, Parth's review of 29 Sep; scripts/wire-check.mjs): every story the day's news
     // widely agreed on, every story about someone Parth follows from three outlets (lib/trial.js wireCandidates), and
     // every paywalled lead with an open outlet, is carried (a story, a brief or an "Also in" line) or answered in
-    // checks.wire with {id, covered_by} or {id, skip} (why it is not for this paper).
-    if (E.date > "2026-09-29") {
+    // checks.wire with {id, covered_by} or {id, skip} (why it is not for this paper). Replaced by the pool from its date.
+    if (E.date > "2026-09-29" && !POOL) {
       let wc = null;
       try { wc = read("ledger/wire-check.json"); } catch {}
       if (!wc || wc.date !== E.date) warnings.push("wire: run `node scripts/wire-check.mjs content/editions/YYYY-MM-DD.json` and answer what it lists (checks.wire)");
@@ -482,6 +486,41 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
           if (a?.skip) { if (a.skip.trim().length < 12) errors.push(`checks.wire: say why lead "${l.title}" is not for this paper`); continue; }
           if (printed.some(it => matchItem(it, [{ title: l.title }, ...l.elsewhere]))) continue;
           errors.push(`checks.wire: lead "${l.title}" (${l.lead_from}; open at ${l.elsewhere.map(e => e.outlet).join(", ")}) is neither in the paper nor answered; print it from the open outlet and record {id: "${l.id}", covered_by}, or {id: "${l.id}", skip: "why not"}`);
+        }
+      }
+    }
+    // The pool and the fixed numbers (from config pool.from). Every number comes from config pool, never from here.
+    if (POOL) {
+      const ED = POOLCFG.edition || {}, DP = POOLCFG.depth || {}, skipSec = new Set(ED.uncounted || []);
+      const words = x => String(Array.isArray(x) ? x.join(" ") : x || "").split(/\s+/).filter(Boolean).length;
+      const deskOf = i => i.section || i._where.match(/^sections\.([a-z_]+)\./)?.[1] || null;
+      const counted = items.filter(i => i._kind !== "line" && !skipSec.has(deskOf(i)));
+      if (ED.items && (counted.length < ED.items.min || counted.length > ED.items.max))
+        errors.push(`numbers: the paper has ${counted.length} stories and briefs (Back Home not counted); it needs ${ED.items.min} to ${ED.items.max} (config pool.edition.items). ${counted.length < ED.items.min ? "Add from the pool" : "Move the weakest to Also in lines"}`);
+      for (const [d, r] of Object.entries(ED.desks || {})) {
+        const n = counted.filter(i => deskOf(i) === d).length;
+        if (n < r.min) errors.push(`numbers: ${d} has ${n} stories and briefs (front page included); it needs at least ${r.min}. The pool lists ${d} stories: print the best`);
+        if (n > r.max) errors.push(`numbers: ${d} has ${n} stories and briefs (front page included); at most ${r.max}. Move the rest to Also in lines`);
+      }
+      const full = items.filter(i => i._kind === "story");
+      if (ED.full_stories_min && full.length < ED.full_stories_min) errors.push(`numbers: ${full.length} full stories; at least ${ED.full_stories_min} (the front page's lead and seconds count)`);
+      for (const s of full) {
+        const w = words(s.more);
+        if (w < (DP.more_min || 0)) errors.push(`depth: ${s._where} "${String(s.headline).slice(0, 50)}" has a long version of ${w} words; write ${DP.more_min} to ${DP.more_max} from the pool's text (background, figures, who said what, what happens next), never repeating the short version`);
+        else if (DP.more_max && w > DP.more_max) errors.push(`depth: ${s._where} has a long version of ${w} words; at most ${DP.more_max}`);
+      }
+      for (const b of items.filter(i => i._kind === "brief")) if (words(b.text) < (DP.brief_min || 0)) errors.push(`depth: ${b._where} "${String(b.headline).slice(0, 50)}" is ${words(b.text)} words; a brief is two sentences, at least ${DP.brief_min} words`);
+      let pl = null; try { pl = read("ledger/pool.json"); } catch {}
+      if (!pl || pl.date !== E.date) errors.push("pool: run `node scripts/pool.mjs` for today (ledger/pool.json is missing or not from today)");
+      else if (pl.error) warnings.push(`pool: the pool failed (${pl.error}); the numbers still apply`);
+      else if (ED.answer_top) {
+        const ans = new Map((E.checks?.pool || []).map(a => [a.id, a]));
+        for (const c of pl.clusters.filter(c => c.top)) {
+          const a = ans.get(c.id);
+          if (a?.covered_by) { if (!ids.has(a.covered_by)) errors.push(`checks.pool: covered_by "${a.covered_by}" is not an item in this edition`); continue; }
+          if (a?.skip) { if (a.skip.trim().length < 15) errors.push(`checks.pool: say why "${c.title}" is not for this paper, in a reason of its own`); continue; }
+          if (items.some(it => matchItem(it, [{ title: c.title }, ...(c.also || []).map(t => ({ title: t }))]))) continue;
+          errors.push(`checks.pool: top story [${c.id}] "${c.title}" is neither printed nor answered; print it, or record {id: "${c.id}", covered_by} or {id: "${c.id}", skip: "why not"}`);
         }
       }
     }

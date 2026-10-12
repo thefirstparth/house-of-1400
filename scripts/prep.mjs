@@ -6,6 +6,7 @@
 //   4. Betting Window candidates (scripts/betting-candidates.mjs), 5. the live snapshot into today's edition
 //      (scripts/snapshot.mjs; creates the file with just the date if it does not exist yet; keep its `snapshot`).
 // Each helper prints what it always printed and writes its ledger file as before; the validator is unchanged.
+//   6. from config pool.from (13 Oct 2026), the day's pool (scripts/pool.mjs): the stories to choose from, with their text.
 // Usage: node scripts/prep.mjs [YYYY-MM-DD]
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
@@ -33,4 +34,7 @@ run("India's cricket times", ["scripts/cricket-times.mjs"]);
 run("Betting Window candidates", ["scripts/betting-candidates.mjs"]);
 if (!existsSync(file)) writeFileSync(file, JSON.stringify({ date: today }, null, 2) + "\n");
 run(`Live snapshot into ${file}`, ["scripts/snapshot.mjs", file]);
-console.log("\nprep: done. Next: research (RUNBOOK step 5), then the wire check.");
+// From the 13 Oct 2026 edition: the day's pool (scripts/pool.mjs), the stories to choose from, with their text.
+let poolFrom = null; try { poolFrom = JSON.parse(readFileSync("config/house.json", "utf8")).pool?.from || null; } catch {}
+if (poolFrom && today >= poolFrom) { run("The day's pool", ["scripts/pool.mjs", today]); console.log("\nprep: done. Next: choose and write from the pool (docs/DESK.md), then validate."); }
+else console.log("\nprep: done. Next: research (RUNBOOK step 5), then the wire check.");

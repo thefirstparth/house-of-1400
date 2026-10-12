@@ -1,0 +1,1664 @@
+{
+ "date": "2026-10-12",
+ "window": {
+  "from": "2026-10-11T08:30:00.000Z",
+  "to": "2026-10-12T10:30:00.000Z"
+ },
+ "built_at": "2026-10-12T17:54:09.016Z",
+ "feeds": {
+  "total": 162,
+  "failed": [
+   "androidpolice: fetch failed"
+  ]
+ },
+ "candidates": 1760,
+ "counts": {
+  "desh": 7,
+  "tech": 3,
+  "crease": 3,
+  "ledger": 6,
+  "madrid": 1,
+  "sidelines": 2,
+  "videsh": 8,
+  "ai": 3,
+  "screen": 1,
+  "paddock": 1,
+  "sales": 1,
+  "back": 2,
+  "namma": 2,
+  "pitch": 2,
+  "deuce": 1,
+  "cards": 1
+ },
+ "read": 41,
+ "clusters": [
+  {
+   "id": "p-jantar-mantar-longer-legal-protest-site",
+   "rank": 1,
+   "top": true,
+   "desk": "desh",
+   "score": 9.33,
+   "title": "Jantar Mantar no longer legal protest site; three alternative sites designated by Delhi Police",
+   "outlets": [
+    "The Hindu",
+    "NDTV",
+    "Telegraph India",
+    "The Indian Express",
+    "News18, India",
+    "Hindustan Times, India"
+   ],
+   "n": 6,
+   "date": "2026-10-12T08:28:01.000Z",
+   "read": [
+    "https://www.news18.com/videos/india/delhi-revokes-jantar-mantar-as-protest-venue-3-new-sites-designated-delhi-protest-news-today-10378030.html",
+    "https://www.news18.com/india/jantar-mantar-to-no-longer-serve-as-protest-venue-delhi-police-10377929.html",
+    "https://www.hindustantimes.com/india-news/jantar-mantar-no-longer-a-protest-site-delhi-police-names-3-new-venues-burari-ramlila-ground-cbd-ground-101791791722288.html"
+   ],
+   "snippet": "In a significant shift, Jantar Mantar has been revoked as a protest site in Delhi. The Home Ministry has designated three new venues—Ramlila Ground, Burari Ground, and CBD Ground—for protests, aiming to manage public demonstrations more effectively.Delhi has reportedly revoked Ja",
+   "also": [
+    "Delhi Revokes Jantar Mantar as Protest Venue | 3 New Sites Designated | Delhi Protest News Today",
+    "Jantar Mantar No Longer A Designated Protest Venue, Delhi Police Identifies 3 New Sites",
+    "Jantar Mantar off limits, these 3 venues are now designated protest sites of Delhi"
+   ],
+   "text": "In a significant shift, Jantar Mantar has been revoked as a protest site in Delhi. The Home Ministry has designated three new venues—Ramlila Ground, Burari Ground, and CBD Ground—for protests, aiming to manage public demonstrations more effectively.Delhi has reportedly revoked Jantar Mantar’s designation as a protest venue and identified three alternative sites for demonstrations. The move could change where political parties, organisations and citizens gather to stage protests in the national capital. The development raises questions about permissions, public demonstrations and access to designated protest spaces in Delhi. Stay tuned for the latest updates on the new venues and how the decision may affect upcoming protests. n18oc_indian18oc_breaking-news",
+   "text_url": "https://www.news18.com/videos/india/delhi-revokes-jantar-mantar-as-protest-venue-3-new-sites-designated-delhi-protest-news-today-10378030.html"
+  },
+  {
+   "id": "p-18-cops-suvs-how-delhi-police",
+   "rank": 2,
+   "top": true,
+   "desk": "desh",
+   "score": 9.3,
+   "title": "18 cops, 3 SUVs: How Delhi Police detained CJP leaders at IGI Airport, split them up",
+   "outlets": [
+    "The Indian Express",
+    "Reuters",
+    "The Guardian",
+    "The Hindu",
+    "The Times of India",
+    "Al Jazeera",
+    "The New York Times",
+    "ABC News - Breaking News, Latest News and Videos"
+   ],
+   "n": 10,
+   "date": "2026-10-12T09:10:36.000Z",
+   "read": [
+    "https://indianexpress.com/article/cities/delhi/delhi-police-cockroach-janta-party-leaders-abhijeet-dipke-saurabh-das-ashutosh-ranka-flight-jantar-mantar-protest-10917903/",
+    "https://news.google.com/rss/articles/CBMi_wFBVV95cUxNelFsS1daeURXS3hKZUJ1WTFlRWFBZXh1MjhRaHVTQkV3LUxMNGNFam9IUWJpMV9pUjZKa0FweEtTcXF6Ym03SFRGMlFFVEUtd3BHSTZpd09SazltTW5iYkdmMHY2MjlSQjliQndGeEV5SGUxWkhNbnV5OTlaWnBRamltWWhPdXFYYzlHbl9KekpTYllQU0tXUVlZRTNtVVZnVTlpNFUweHNOUUV2dlB6eFY4U0VfZjNTc0ZaNVV1ZXdUSC1QT2lyTzhXUmYxVlJBU20xU0ZTLVpScXBONVpCZ1draEVWT0NrcVJEbmtUOFN3b0tad1RxZEg4WDhLaDDSAYYCQVVfeXFMUGphTUdHeEktbzZnWmdIU3UzV1U2WWtjdEY4Slp6U2Q3N0k1eDBnZDlDTHdIWndIb0RQQzk2Q1VZc3E3N2F0UkE5M1l0cXJRMlVLUlhlWFNYTVhLSjJkUjdfRUNIUUczckROQWtOb3ZfenBfZ3RVWnFwWHdtanh0VEtwMzR0TXdiMXNZNjhRNVcxVksxX2wyMlVqbmZPa1dMSXBpeXNkN0RjVUxYRVdlMU1Yb2t2ZWI3VGxVVlFLVFpNV0xHQmlLS3dGWFE0Tlh0UFMxWjJQd0ZKZVdmT2lhNEdkcU9LX0lKLXJzU2MzcndQd0ZPRTRyLUdZQ2ZFQUs4ZzREN3hzZw?oc=5"
+   ],
+   "snippet": null,
+   "also": [],
+   "text": "Minutes before Air India flight (AI-2428) from Mumbai landed in Delhi at 10.19 am on October 10, a team of 18 police personnel arrived at the Indira Gandhi International (IGI) Airport in three SUVs. On the flight were three Cockroach Janta Party (CJP) leaders — founder Abhijeet Dipke and co-convenors Saurabh Das and Ashutosh Ranka. Sources said the Delhi Police had planned to detain the trio at the airport after asking them to call off their protest against Chief Election Commissioner Gyanesh Kumar and refrain from proceeding to Jantar Mantar as they had not been granted permission. Also Read | Delhi’s Jantar Mantar no longer designated protest site, 3 new grounds named How the operation unfolded The team comprised police personnel from the Western Range and Southwest and Outer districts. Two inspectors were assigned to the operation. The airport staff had been alerted about the trio’s arrival, sources said. “Soon after the aircraft landed, it was moved to a remote parking bay, and announcements were made asking passengers to remain seated,” sources said. After informing the airport authorities, one inspector, accompanied by seven personnel, including three women police officers, entered the aircraft and asked the trio to disembark. They were then taken in an Air India bus to Gate 6 of Terminal 3. The officers were not carrying weapons, sources said. The three leaders were asked to board separate police vehicles parked outside Gate 6. The vehicles then left for different locations. Dipke was taken to the Special Staff office of the Southwest district in Vasant Vihar, Das to the RK Puram police station, and Ranka to the Baba Haridas Nagar police station. Each team comprised six police personnel. Sources said the entire operation was being recorded by one of the team members. During their detention, the three leaders were asked to surrender their mobile phones and other electronic gadgets after the police decided to place them under preventive arrest. According to police sources, the decision to take the three CJP leaders to separate locations was taken to prevent any disturbance or the gathering of supporters at a single location. Preventive arrest and release Preventive action, governed by Sections 126 and 170 of the Bharatiya Nagarik Suraksha Sanhita (BNSS), empower the authorities to take preventive measures to maintain public peace and, under specified ci",
+   "text_url": "https://indianexpress.com/article/cities/delhi/delhi-police-cockroach-janta-party-leaders-abhijeet-dipke-saurabh-das-ashutosh-ranka-flight-jantar-mantar-protest-10917903/"
+  },
+  {
+   "id": "p-apple-name-smart-home-hub-homeview",
+   "rank": 3,
+   "top": true,
+   "desk": "tech",
+   "score": 9.23,
+   "title": "Apple is to name its smart home hub 'HomeView' – it will feature a chip from the iPhone 16 and 8 GB of RAM",
+   "outlets": [
+    "Mezha",
+    "Bloomberg.com",
+    "The Times of India",
+    "Deccan Herald",
+    "GSMArena.com",
+    "MacRumors",
+    "USA Today",
+    "AppleInsider"
+   ],
+   "n": 9,
+   "date": "2026-10-12T07:19:00.000Z",
+   "read": [
+    "https://www.macrumors.com/2026/10/11/apple-tv-4k-homeview-homepod-mini-2-leaks/",
+    "https://news.google.com/rss/articles/CBMinAFBVV95cUxNTUg4S1B3X2RmaDF6UlJmdHhfMjd4V3hhRk1JU2gydDluQTJCaE00cmVremtsSEwwRWVIRmVPcDhCYW01b2g5R0J6Uk1Vd0psMm9hVEhnQzZkWTJoYktzTkFZVDNxWHZkSE1pM3ZvMW9MWjhVQl9FUFRYdVNEM1gwb09teXJzd19FemdzWXI0M3paam5uYm9fa3paZmrSAaIBQVVfeXFMUGRaVHNCM1hPYnpkV2hKYmpKOXd5bmN0SnhaTk16Y2hZanU1UUlEOEUwZDZzc2kwX0dTWWVLckItMXh2M2VObHkxanRJNFlBRkczT1VBVDUxRGRONmhfQlFsSnNwNjZZanl4YmJlR2ZoRE04SEhnMkhPRURpMGRqVWNmRnV5Sk16YURmRGt3YmZUX1BoZ1QxOFk4djR0blFpdVpR?oc=5"
+   ],
+   "snippet": "Just two days before Apple's \"Welcome home\" experience in New York, Bloomberg 's Mark Gurman has leaked several details about the new products set to be unveiled, including an all-new smart home hub, a HomePod mini 2, and a new Apple TV 4K. Here is an all-in-one summary of the de",
+   "also": [
+    "New Apple TV 4K, HomeView, and HomePod Mini: 16 Details Just Leaked"
+   ],
+   "text": "Just two days before Apple's \"Welcome home\" experience in New York, Bloomberg 's Mark Gurman has leaked several details about the new products set to be unveiled, including an all-new smart home hub, a HomePod mini 2, and a new Apple TV 4K. Here is an all-in-one summary of the details shared by Gurman:",
+   "text_url": "https://www.macrumors.com/2026/10/11/apple-tv-4k-homeview-homepod-mini-2-leaks/"
+  },
+  {
+   "id": "p-iphone-duo-pre-orders-starting-week",
+   "rank": 4,
+   "top": true,
+   "desk": "tech",
+   "score": 9.18,
+   "title": "iPhone Duo pre-orders starting this week, Apple preparing special demo at select stores",
+   "outlets": [
+    "India Today",
+    "PhoneArena",
+    "Forbes",
+    "Softonic",
+    "Kursiv Media Узбекистан",
+    "MacRumors",
+    "PCMag UK",
+    "9to5Mac"
+   ],
+   "n": 8,
+   "date": "2026-10-12T10:12:26.000Z",
+   "read": [
+    "https://www.macrumors.com/2026/10/11/iphone-duo-retail-showcase/",
+    "https://news.google.com/rss/articles/CBMi6AFBVV95cUxOT1N5cDQyUXZlSGI5NVo0WGZTMzZUMXJtandYdkhGZ1I5UWZuN0hvMWlXclE3YWlHWWpBa1gzeDZ6RV9VTHdoS0Y5ZXBLOGNjeFM4WkkxR1lmVmNWVkcybFVJcUliSjQ5eTFYTkVoVjdfb011SzNkT3RsRkV3N3RqV1A2dUJHVC1fa2R4MnpwUnhDUDEtSzZRWlZsOEJZVlNrUjF0ckFrSGhWVmd0MFVjc1BsMi1sb3BGdXBkNXFFWXFMeElpdGJLRGExSS1pRGZUOUFfYzFQQlIyQV8tTXJBNE13UWpuMWpk0gHuAUFVX3lxTE90M2RwSmtNZGlLdkZmb3h1VGhRYjRCUGJxN2VON2NtSFVTajlqVjdINk5IZTc1NUJSTi1QVDVKQjBXWThxVC02Q1Mzc0UwV2YzRnZvZ3F2Zk92dHRrYmtJbGJjblNZbmRPTHVzcFdtQmFwdFZ2UFB6M010VWdXaWNZMEM1VUFjTTJWdWh4eGxPcVJsWVJDTFpaNWo5RjN4NE12dFA2aEtjVXVWRVlXSkx0bDY4bG9XenEtdjZDUWhxbHhqYTJtU0dZdUtLZmtoVGJVcU9YbWlmNTY1c3FzV2dPOWN5dFJ3cGFpN3N4T1E?oc=5"
+   ],
+   "snippet": "Apple is preparing new displays and large numbers of demo units for the iPhone Duo 's October 23 launch, but supply will be limited, according to Bloomberg 's Mark Gurman . Ahead of the October 23 launch, Apple plans to set aside a section of its Fifth Avenue flagship store for t",
+   "also": [
+    "Apple Plans Major iPhone Duo Retail Showcase, But Supply Will Be Limited"
+   ],
+   "text": "Apple is preparing new displays and large numbers of demo units for the iPhone Duo 's October 23 launch, but supply will be limited, according to Bloomberg 's Mark Gurman . Ahead of the October 23 launch, Apple plans to set aside a section of its Fifth Avenue flagship store for the &zwnj;iPhone Duo&zwnj;. Most locations will add an extra spotlight table for the device, using Apple's white display tables with central posts. Gurman said a new fixture will show how the phone folds and unfolds. The number of demonstration devices will vary considerably between locations. Fifth Avenue in New York is expected to receive more than 150 units for customers to try and for other displays, compared with nearly 100 at the Apple Park Visitor Center. Non-flagship stores will receive approximately 20 units each on average. Three other prominent stores will fall between those allocations: Chicago's Michigan Avenue, The Grove in Los Angeles, and Manhattan's Upper West Side. Each is expected to have approximately 30 to 40 devices. Visitors will be able to explore StandBy on untethered phones in the Avenue display areas along the sides of stores. For comparisons on store tables, Apple has designed a MagSafe stand that accommodates an open &zwnj;iPhone Duo&zwnj; and two conventional iPhones. The retail preparations come as Apple faces tighter supply than it had anticipated. According to Gurman, around two months ago the company believed production constraints could prevent sales from starting until later in November. It has since assembled sufficient inventory to proceed with this month's release, although stock is expected to remain limited. Apple is also equipping stores with \" Presto \" machines adapted for the &zwnj;iPhone Duo&zwnj;. Apple's wireless system can install software updates without opening an iPhone's packaging, and will also add the buyer's name to the greeting displayed during the device's first startup. Gurman previously said the personalized greeting will be offered in U.S. Apple Stores in English and Spanish. &zwnj;iPhone Duo&zwnj; pre-orders open October 16 at 5 a.m. Pacific Time, with sales starting on October 23. The 256GB model starts at $1,999 in the United States.",
+   "text_url": "https://www.macrumors.com/2026/10/11/iphone-duo-retail-showcase/"
+  },
+  {
+   "id": "p-watching-videos-kohli-hitting-deck-how",
+   "rank": 5,
+   "top": true,
+   "desk": "crease",
+   "score": 9.14,
+   "title": "Watching videos of Kohli, hitting the deck: how Australia A conquered India",
+   "outlets": [
+    "Cricinfo",
+    "Cricbuzz",
+    "Sportstar",
+    "The Times of India",
+    "ESPNcricinfo",
+    "Hindustan Times, cricket"
+   ],
+   "n": 6,
+   "date": "2026-10-12T05:21:52.000Z",
+   "read": [
+    "https://www.cricinfo.com/ci/content/story/1558063.html?ex_cid=OTC-RSS",
+    "https://www.hindustantimes.com/cricket/how-watching-virat-kohli-steve-smith-videos-helped-australia-a-batter-nathan-mcsweeney-tackle-indias-spin-challenge-101791791138346.html",
+    "https://news.google.com/rss/articles/CBMisgFBVV95cUxNRkdrbU1wQVFBdVVwZzNxRHNFMUNVcXpOTHJJd1lJcW9rVldoT0F1emVFWVVhWTZ4d2tQQlpJRzlqdmRZRDlmUUhya3VPMkRhdmFMVGhyOTVPUHp2a3dDcHdFV0NhRmNzaEZncFVHNDVtZWhmNkJKLVk1bTY5M1pEeGZZQ3JCUmM0WUc3aE5NdlQ1b0hGR3BHdVBBUTBNTzI0SWRBTzR0V2tMTDVpd1F6SDd30gHDAUFVX3lxTE5GTjBHZDNNc25ack9UZFNIUjZzaFRfVmtkSkl4MFdFdXdtM2RJZml2eDBxTUxqR1Ztb2FNeWxDYTRpSmt6Z3dOaEJvOEw4VHBMYmtFRGZQS05zV0NjT3VJNkZIam5ZWTBPaTl4SVBlNlJBOG5saGhwTmZLanlNU08zZFM5Y1VTSW1QdTBsSm04cl9EYUZpV2Q1enJmRm1SempOVXFTLUNnMmhZRm9ZWFhLT1NjSVd1MXEzVDY1czBacDNSNA?oc=5"
+   ],
+   "snippet": "Murphy says one of the highlights was \"the ball speed from the quicks and how exciting they were and how threatening they looked\"",
+   "also": [
+    "How watching Virat Kohli, Steve Smith videos helped Australia’s Nathan McSweeney tackle India’s spin challenge"
+   ],
+   "text": "For Nathan McSweeney, watching videos of Virat Kohli and Steve Smith has proved extremely beneficial. The 27-year-old is coming off a successful one-day series for Australia A against India A, having scored 194 runs to emerge as his team's highest run-scorer in the three-game contest, which the visitors won 2-1.Kohli and Smith have been influential in shaping the careers of several up-and-coming cricketers. McSweeney, it seems, recognised that succeeding on subcontinental pitches would require him to learn from Smith, who has scored 805 runs in Tests in India at an average of 50.3, and follow his blueprint.Kohli, meanwhile, has struggled against spin in the latter part of his career. However, before his returns dipped over the past five years, the former India captain was highly effective on slow, turning pitches.\"I think obviously coming to India as an Australian, it's a heavy spin focus, and you try and work hard and watch the great Indian players on how they play spin,\" McSweeney told the host broadcaster.\"[Watching] Virat Kohli on YouTube trying to study how he goes about it, Steve Smith, other Australians that have come over and done really well. So, there are plenty of analysts and data that we are given as well. So, it's nice to action that out in the middle and execute it fairly well.\"McSweeney was impressive against spin, often charging down the wicket to Anukul Roy, Vipraj Nigam and Nishant Sindhu. His approach proved effective, with the batter falling to spin just once on the tour - to Shams Mulani in the second unofficial Test.Decent India outingMcSweeney put the disappointment of the preceding four-day matches behind him to produce a Player-of-the-Match performance in the first one-dayer. With Australia reduced to 104/5, McSweeney scored 123 in Puducherry and forged a 141-run partnership with Will Sutherland to take the team total to 274. He got starts in the next two games with 32 and 39. Despite having failed to convert those into big innings, the batter seemed content with what he had achieved in India.\"I'm very pleased to come over here in good conditions and spend some time in the middle, which is always nice, and a series win in India is no easy feat for any international team coming over. It's a very tough place to come and play cricket against tough competition, always. So, yeah, well done to our boys, and it's nice to get a series win,“",
+   "text_url": "https://www.hindustantimes.com/cricket/how-watching-virat-kohli-steve-smith-videos-helped-australia-a-batter-nathan-mcsweeney-tackle-indias-spin-challenge-101791791138346.html"
+  },
+  {
+   "id": "p-stock-market-close-sensex-sheds-548",
+   "rank": 6,
+   "top": true,
+   "desk": "ledger",
+   "score": 8.85,
+   "title": "Stock Market Close: Sensex sheds 548 pts, Nifty ends at 22,363; FMCG, PSU Bank indices underperform",
+   "outlets": [
+    "Business Standard",
+    "The Hindu",
+    "The Economic Times",
+    "Investing.com India",
+    "Deccan Herald",
+    "Business Standard, markets",
+    "Investing.com"
+   ],
+   "n": 7,
+   "date": "2026-10-12T10:26:20.000Z",
+   "read": [
+    "https://www.business-standard.com/markets/news/stock-market-live-october-12-bse-sensex-today-nifty50-gift-nifty-crude-oil-prices-q2-results-today-126101200057_1.html",
+    "https://news.google.com/rss/articles/CBMi-AFBVV95cUxQQmNoM05CQXI0M0RrdVY3aWp1bVhiWVhjVjJhRjFsR0g5T3ZtSW5lMTJPR3U1cnFEVEptSTFreDNBaWpEUE1QUnV4bS15OHdtQ29nTVNXVmlzaDR2c0pjLUpBb0QxTy1rSXJPLXBjRTJZMFliUDR5MTBhSHROTTJmMGg4SjRxZE5xVGZCWk55ajNKSFdkUzlrakR2RXBYYUVoUE10QmZkY1BUa05oWWtoRVJ4ZlBxR0d4a2lnWWlMUjRXYXh0YUkwQ2h3VmltZjdtSGlSWG55enExaUNMNnp2cXo2Mm5BWm5JdUpFLW1vckpxaFZoSkJzcdIB_gFBVV95cUxNdWlLZmNibWZsa3k4MXZPQUdXeHRNZGhhNTBtMm9kUTlGNWFYNjJZQ0tkQU5sbTdWTEpiLTBDdVlTQVRMOHFyX25SVlFocExLaW0ta3NscHNDMkJkV3BhcTF1d2NhQ2dkanBtb2ZMOW9Oc1lBOWtYVGYwS3JFc2lFQjBvUWFIS1JhN1dzeUhVeG9KejZiNThZd2RKdUVVRkdsTnpZUlN5Ym9BbmRhY01Qbk84SlZ0NS1lZldnYm9CbW1fczF6enM1Ul9zVU0wOW1zSHNXcnlkWFBWUFF1MTAyREhvQ0xZaXNZWEpCV3ltYm11SzdjRWc1NmZJeDNKZw?oc=5",
+    "https://news.google.com/rss/articles/CBMirwFBVV95cUxNSkhxNEw0MExFTkR6d1I2RF9qVTRObWgyaUptMGJ6NXZQcWk4UFBmUm9HVmw4VU9EU0JpRUtrNXFwUUlpUzNpbTVzc3pWbzVLcGdIYjJVaTdwTzZSMkNSSnBidExtRURMWnpRX08xSngwTXBSNXJnRUF4WHJHS0pnUzRfU1d0YWFDWnhhT1BLQ0hfQmlmWjY2RW8yTUcwMVJmMVdXSXBvSlI3N0stREtF?oc=5"
+   ],
+   "snippet": "Sensex Today | Stock Market Highlights, Monday: In the broader markets, the Nifty MidCap and the Nifty SmallCap rose 0.08 per cent and 1.42 per cent, respectively",
+   "also": [
+    "India shares lower at close of trade; Nifty 50 down 0.70%",
+    "India stocks lower at close of trade; Nifty 50 down 0.70%"
+   ],
+   "text": "Stock Market Highlights on Monday, Oct 12, 2026: The benchmark indices ended sharply lower as FMCG, PSU Bank, and IT shares weighed. The Sensex fell 547.65 points or 0.76 per cent to 71,924.68 and the Nifty50 was down 157.10 points or 0.7 per cent at 22,363.35. Apollo Hospitals Enterprise, ITC, and Tech Mahindra were the top losers in the Nifty50 index. In the broader markets, the Nifty MidCap and the Nifty SmallCap rose 0.08 per cent and 1.42 per cent, respectively. Sector-wise, Nifty FMCG and Nifty PSU Bank declined the most, while Nifty Media and Nifty Chemical rose the most.",
+   "text_url": "https://www.business-standard.com/markets/news/stock-market-live-october-12-bse-sensex-today-nifty50-gift-nifty-crude-oil-prices-q2-results-today-126101200057_1.html"
+  },
+  {
+   "id": "p-wasim-jaffer-virat-kohli-retired-test",
+   "rank": 7,
+   "top": true,
+   "desk": "crease",
+   "score": 8.54,
+   "title": "Wasim Jaffer says Virat Kohli retired from Test cricket out of bitterness: ‘He was preparing for the England tour’ | Cricket",
+   "outlets": [
+    "Hindustan Times",
+    "Rediff",
+    "The Times of India",
+    "India Today",
+    "Moneycontrol.com",
+    "Hindustan Times, cricket"
+   ],
+   "n": 6,
+   "date": "2026-10-11T11:37:30.000Z",
+   "read": [
+    "https://www.hindustantimes.com/cricket/wasim-jaffer-questions-ajit-agarkars-handling-of-kohli-before-abrupt-test-retirement-virat-was-a-bit-bitter-101791717470292.html",
+    "https://news.google.com/rss/articles/CBMi-wFBVV95cUxPUUM2SHBuVjJlaXlwNFRiU3FkbDZJQlB4MkxvTkd2Q2pjWXVPRHhPTGhOV2ZIb2lHNzhxODMwRHFEVkVnNHdfeUVVUnJSSjE1Wk8zS2NKclpmV1hRMmxUUUM0dEd4ZnhZZ2RvVXJyMlY2RDNfaFdmYjU0d0VPNEktd0xkTW5NcU0xSTFMMmQ0Sm9IYzJCOHd3U3I2U2FfT3cxcUYzOXl0amZjTFdGYXJJX3dCcWdHUnpHZllOaVJReF9fdXVqUjllbDF3d01wU3lScC1vQTFZUkoyVnRvNmJHT0VTNWZWeVNIa2sxcnRTUllDenBabDA4SV82a9IBgAJBVV95cUxOSzZWc3hQeGRoZVRqSVZPeU42dzZMUFNzczlSSnl3OWg0SWlmcjFfQmcya0RuaGx5ZENNZzhmZGVfU1hSSWRtVUtTcG5Vc0Rta0Z4d1FoMXZYcUxkSXdpaU5haUU2eWVHRXh4aXZ5UTdWX3lsSnpKR3Q3enRpVENfYVRrc0pOUDlySl84ZGhsQ240Z25SQjNNSTFSMUZTdXU1RWYzLU1KdTlYU3BrRmlzdlFGanp5MHEzRGxuU1ZLWUJFd25STk5GNWhibWZWdUlNSzV0TFdpOFVkWnJyUTdibEphTnV5ZDFDY0VuYmZ4LWZ3RFAzSzE3amdZQi05R2Ro?oc=5"
+   ],
+   "snippet": "Wasim Jaffer says Virat Kohli may have been unhappy with how his Test retirement was handled.",
+   "also": [
+    "Wasim Jaffer says Virat Kohli retired from Test cricket out of bitterness: ‘He was preparing for the England tour’"
+   ],
+   "text": "May 12, 2025, brought news that surprised many Indian cricket fans. Virat Kohli announced his retirement from Test cricket. There had been discussions about whether Ro-Ko would be part of the next series in the days leading up to the announcement. However, both Kohli and Rohit decided to leave the format within a span of five days, rather abruptly.It has been more than a year since Kohli said that he would no longer wear the whites for India. But conjecture and discussions around what led to his sudden retirement resurface now and then. Former India batter Wasim Jaffer has now spoken about the incident, observing that Kohli might not have been too happy with how the situation was handled.“It felt like Virat was a bit bitter about the way he was treated. A player like Virat brings people to the ground. He has such a following. He definitely could have played more Test cricket. Till we hear it from Virat’s mouth, we won’t know. He was preparing for the England tour,” Jaffer said on his YouTube channel.Jaffer was assessing departing chief selector Ajit Agarkar’s tenure when he made the observation. The former Indian batter praised India’s white-ball achievements during Agarkar’s time in the office. However, he did not agree with how certain senior players were handled.Notably, Rohit Sharma announced his Test retirement on May 7, 2025. During the final Test of the preceding Australia tour, Sharma had maintained that he had no intention of retiring. However, within a few months, he made the decision, raising a lot of questions.Regarding Kohli's retirement, Delhi coach Sarandeep Singh had expressed surprise when the decision was made public. He revealed that Kohli had discussed his plans while representing Delhi in the Ranji Trophy in early 2025. He wanted to play the England tour and was eager to score three or four centuries. Kohli had even discussed playing two India A matches before the series, as per Singh. However, Agarkar's own account of the development was different: “Virat obviously reached out in early April and said he wants to finish.”Jaffer questions Agarkar's handling of senior playersBesides the Rohit-Kohli situation, Jaffer also spoke about Agarkar's decision to drop Suryakumar Yadav after he had captained India to the 2026 T20 World Cup title. The selection situations surrounding players like Bhuvneshwar Kumar, Mohammed Shami, Sarfaraz Khan and A",
+   "text_url": "https://www.hindustantimes.com/cricket/wasim-jaffer-questions-ajit-agarkars-handling-of-kohli-before-abrupt-test-retirement-virat-was-a-bit-bitter-101791717470292.html"
+  },
+  {
+   "id": "p-stats-real-madrid-villarreal",
+   "rank": 8,
+   "top": true,
+   "desk": "madrid",
+   "score": 8.28,
+   "title": "6 stats from Real Madrid 1-0 Villarreal",
+   "outlets": [
+    "Managing Madrid",
+    "The Times of India",
+    "Goal.com",
+    "Firstpost"
+   ],
+   "n": 4,
+   "date": "2026-10-11T09:11:54.000Z",
+   "read": [
+    "https://www.managingmadrid.com/113917/diomande-im-happy-for-my-first-goal-and-for-the-victory",
+    "https://www.managingmadrid.com/real-madrid-cf-la-liga/113887/6-stats-from-real-madrid-1-0-villarreal",
+    "https://news.google.com/rss/articles/CBMiogFBVV95cUxQUE1oY1dTWHBhQ2drR0VCSDdtSEdVSzhTbEYyMXF2Yk00ck1HS0JKdmRXd3dyOU4xaW5ZcVhMZnU2NHpraXlMMHg3Z3JDTC1lVS1FSU5Qc2NtZ2thS1FSUUZhNFRNLW51R0lRd3dFZEMwdWNsbE5WMHhfbnZ6MnE1OW9CUkdtMWUyYVM1XzhfMHdrZEU5dEo4YVFoQV9tVGdpckE?oc=5"
+   ],
+   "snippet": "Real Madrid winger Yan Diomande talked to Real Madrid TV after scoring the game-winning goal for the team in Saturday’s match against Villarreal. It was his first goal for the club and Diomande was visibly happy. “It was a good game. We always play to win, and today we did. I am ",
+   "also": [
+    "Diomande: “I’m happy for my first goal and for the victory”",
+    "Vinicius Sent Off As Real Madrid's Problems Deepen Before El Clasico | First Sports With Rupha Raman"
+   ],
+   "text": "Real Madrid winger Yan Diomande talked to Real Madrid TV after scoring the game-winning goal for the team in Saturday’s match against Villarreal. It was his first goal for the club and Diomande was visibly happy. “It was a good game. We always play to win, and today we did. I am happy with the victory. I’m happy. I’ve been waiting for that first goal for a long time. I’m glad, both for myself and for the team. In that position, I think the only option was to control, turn, and shoot,” he said. [Media: https://www.instagram.com/p/DeZLJqmnPtk/?img_index=1] Diomande is making his case to get a spot as a starter in Mourinho’s team and could even start in the upcoming Clásico against Barcelona if Vinicius gets a significant suspension. After a rough start to the season, Diomande is establishing himself as a very solid player who can contribute for Real Madrid.",
+   "text_url": "https://www.managingmadrid.com/113917/diomande-im-happy-for-my-first-goal-and-for-the-victory"
+  },
+  {
+   "id": "p-isco-betis-rise-back-above-real",
+   "rank": 9,
+   "top": true,
+   "desk": "sidelines",
+   "score": 8.15,
+   "title": "Isco’s Betis rise back above Real Madrid to third",
+   "outlets": [
+    "IraqiNews",
+    "Dhaka Tribune",
+    "Sportstar"
+   ],
+   "n": 3,
+   "date": "2026-10-12T05:33:45.000Z",
+   "read": [
+    "https://sportstar.thehindu.com/football/la-liga/isco-2-goals-vs-osasuna-real-betis-overtakes-madrid-points-table/article71573657.ece",
+    "https://news.google.com/rss/articles/CBMiigFBVV95cUxOUUlTc2pNN0M3UnRkMFp3SkllUzhGM2ZoZkJnU3RWLWhialNHTlh0WHpOLTJyLWtnQ1pmVTJndUd3MEY1cHl6aWRwSTZQVFVmNWxFY1NHejZVLVlpS0w0TUZGOTNhalh6WVRfSU9nRUNmZmdxbDhlUWhfT0xqMm1Ed0NKYWczYXNzX1E?oc=5",
+    "https://news.google.com/rss/articles/CBMiogFBVV95cUxPNkNVRlVxX0wzZDQxejA3b1FNdnM2d3VnUUQ2djZxUTlWVUVQZ2hhLUlLZGhxb1NRRDhBcDRyVmZZQTJuZjZWLWtTanZGS21xYlYzSVl2d3V2UnhBdWJZV09iV3pHN2dyVjRwRmVsa1ZmdnRydnBnU0FxMEs5bzV2ankwUkhndVZrY3BrbTNNLS0yZnVRT3hxUU1qdDNyUl9NUWfSAaIBQVVfeXFMTzZDVUZVcV9MM2Q0MXowN29RTXZzNnd1Z1FENnY2cVE5VlVFUGdoYS1JS2RocW9TUUQ4QXA0clZmWUEybmY2Vi1rU2p2RkttcWJWM0lZdnd1dlJ4QXViWVdPYld6RzdnclY0cEZlbGtWZnZ0cnZwZ1NBcTBLOW81dmp5MFJIZ3VWa2Nwa20zTS0tMmZ1UU94cVFNanQzclJfTVFn?oc=5"
+   ],
+   "snippet": "The Andalucian side moved a point above Real Madrid, fourth, and level with second place Atletico Madrid, trailing leader Barcelona by five points.",
+   "also": [
+    "Isco nets brace as Betis rise back above Real Madrid to third",
+    "La Liga 2026-27: Isco’s Real Betis rises back above Real Madrid to third in standings"
+   ],
+   "text": "La Liga 2026-27: Isco’s Real Betis rises back above Real Madrid to third in standings left Isco struck twice against Osasuna to help Real Betis climb back into third place in La Liga. AFP AFP https://ss-i.thgim.com/public/incoming/49frhw/article71573655.ece/alternates/FREE_1200/AFP_D2XA7WK.jpg JORGE GUERRERO Real Betis' Spanish midfielder #22 Isco (2R) celebrates scoring his team's fourth goal during the Spanish league football match between Real Betis and CA Osasuna at Benito Villamarin Stadium in Seville on October 11, 2026. (Photo by JORGE GUERRERO / AFP) The Andalucian side moved a point above Real Madrid, fourth, and level with second place Atletico Madrid, trailing leader Barcelona by five points. Seville Veteran playmaker Isco struck twice to help Real Betis climb back into third place in La Liga with a 5-2 win over Osasuna on Sunday. The Andalucian side moved a point above Real Madrid, fourth, and level with second place Atletico Madrid, trailing leader Barcelona by five points. Manuel Pellegrini’s side claimed a sixth league win from eight matches with an exciting display of attacking football at La Cartuja stadium, where it is playing until its Benito Villamarin home is renovated, likely 2028. Former Real Madrid midfielder Isco, 34, netted from the penalty spot after a foul on Rodrigo Riquelme, and Ez Abde doubled the host lead after half-an-hour with a cool finish. Ante Budimir’s own goal gave Betis its third after half-time, before the Croatian striker netted at the correct and Raul Garcia added another to give Osasuna a fighting chance. Isco capitalised on a loose ball in the box to grab his second and Jose Morante bagged a fifth in stoppage time to close out Betis’ big win. “Football is never truly under control,” said Pellegrini after his side almost let its three-goal lead slip. “As soon as the pace drops, the other team can pull level.” The former Manchester City coach also praised Isco after his brace. “He has spectacular quality and a maturity as a player that allows him to perform at whatever level he wants to,” added Pellegrini. Elsewhere Valencia, 19th, earned a point in a 2-2 draw at Racing Santander under new coach Javier Aguirre. Real Sociedad defeated Deportivo La Coruna 3-2 in another entertaining battle. The Basque side, sixth, eased into a three-goal lead Mario Soriano pulled one back for the visitor in San Sebastian to spark a D",
+   "text_url": "https://sportstar.thehindu.com/football/la-liga/isco-2-goals-vs-osasuna-real-betis-overtakes-madrid-points-table/article71573657.ece"
+  },
+  {
+   "id": "p-world-bank-jobs-council-urges-crisis",
+   "rank": 10,
+   "top": true,
+   "desk": "ledger",
+   "score": 8.01,
+   "title": "World Bank jobs council urges 'crisis-era' employment support measures as IMF warns of AI ‘tsunami’",
+   "outlets": [
+    "CNBC",
+    "Reuters",
+    "CGTN",
+    "Quartz",
+    "Investing.com India",
+    "Bloomberg.com",
+    "Financial Times",
+    "Yahoo"
+   ],
+   "n": 8,
+   "date": "2026-10-12T08:11:46.000Z",
+   "read": [
+    "https://news.google.com/rss/articles/CBMiekFVX3lxTE9ReU51ZE0yMnJUSG41Q2xIQTdLSG9BOEJMMlVVNExsd0dYQU5QZmViQnA2eF93a2lQcUl0d29jN19TNkhfRDk3LVUwNG5La2plN0dGamNoTmpLamJHNUpiXzU1eDRnNnc0OThsNk4yenZaVjY1Q3VKX2R30gF_QVVfeXFMT3RBNEdmZUNVR1kwR0hIQWI2UFZnRUJoZUY3Nm5vOFpWTHBHVG1zY1JHbFdad29DZjdfc21teFMyOVFjUEc1azgxRDU3bmdwSXNIVTNiUTg4ZElXN3pweEhXeTdZa2RrT29LMlV3WnNPLVpNSDJGcWZqaGFJaTNmOA?oc=5",
+    "https://news.google.com/rss/articles/CBMiwgFBVV95cUxONXItVGZaTjNISE9iMlVzZzhlV2ZmYzFDR29feFhfWFRhRzJFdWlwYXk5QkZpUHQ3WVhLZEZId2xobTNmc1E2Y25FN2c1TTg1eldiR3RLR003ajh2RUpSN1RxYXVzYjJ4TW5ZMW1ZcVljRndfSUpoNVVlLUE3eWc1MkhqUUtGQTdYdC1zVUxIbnNJWVJYb2ZIcVN1S3QzWWhQUmdsQ3VFVG9xSEs4NDVvOTZ5dHJRZUNNaUtsazVSMThYQQ?oc=5"
+   ],
+   "snippet": null,
+   "also": [
+    "IMF says AI investment keeps global growth around 3% but brings massive disruption"
+   ]
+  },
+  {
+   "id": "p-north-korea-fires-multiple-ballistic-missiles",
+   "rank": 11,
+   "top": true,
+   "desk": "videsh",
+   "score": 8,
+   "title": "North Korea fires multiple ballistic missiles towards the sea",
+   "outlets": [
+    "Al Jazeera",
+    "News On AIR",
+    "The Hindu",
+    "The Times of India",
+    "CGTN",
+    "AP News",
+    "CBS News",
+    "ABC News - Breaking News, Latest News and Videos"
+   ],
+   "n": 10,
+   "date": "2026-10-12T06:57:45.000Z",
+   "read": [
+    "https://www.cbsnews.com/news/north-korea-fires-ballistic-missiles-tests/",
+    "https://news.google.com/rss/articles/CBMipgFBVV95cUxNZGo5dEtVRUhzWjJnblVZbzBnVWdjYTBxamhweFBfNlBkVUF2d0QyM2l3WEg1Z0xkUTI5UWJDUGNydV9jcjZOdS1tTld4c3htRUhLTS1pUExMcjlzNjNRdjVudWtPM2RTLVV1Uk0yT29mS2tUTDRKaF9NcFVQcUgzMTQ1WnpILVltZmxzYl8xanc0TXRSMHBHV3BzZXhXUG1qT3NLLUFB0gGrAUFVX3lxTE80NGU2WnoyWVhSWjFRaW1QN0F0bXJBZmFpMG9nY1hEYkFZY0NHbVZjdktzWnIzSnpXaXRSLVVMUDFhQnpuRnBXNFUyVURubENHdlR2dmRUUkMxTkdMejNtM1NiYm5zUWtScnd3ajNSRExHTlFoeVo1VzZfSDdmVGloU0w1dmNVVmU3NTBaNXM4eHBQRTM2LU9jS2QwS0FOZ0dJaVQzZ09zc2hIaw?oc=5",
+    "https://news.google.com/rss/articles/CBMilAFBVV95cUxPZ2FsdGE3YUJ5V3VpbjBDWEpDaF9FMk9IbE9ZWFRUZ0l2SEJmQi1pbFZxNzFscG5LVDJiUUxpRzZ3c2dvbzl0R3RWQmlKTTN0TDdwX1FST0IydGp5c0NwY0lpTTFOQklXZU5LZ2piMnBQRl9pcUg2M3VLTTVSU1k1NngwMkdab3BWeVFuUXh2NTBCTld2?oc=5"
+   ],
+   "snippet": "South Korea's Joint Chiefs of Staff said the missiles were fired from an area around the North Korean capital of Pyongyang.",
+   "also": [
+    "North Korea fires multiple ballistic missiles, adding to streak of weapons tests",
+    "North Korea fires multiple ballistic missiles in continued weapons tests"
+   ],
+   "text": "North Korea on Monday fired multiple ballistic missiles toward its eastern waters, South Korea's military said, adding to a recent streak of weapons demonstrations that has heightened tensions during a prolonged freeze in diplomacy.South Korea's Joint Chiefs of Staff said the missiles were fired from an area around the North Korean capital of Pyongyang, where the country has used its airport as a major launch site in recent years. The joint chiefs did not immediately specify how many missiles they detected or how far they flew. Japan's Defense Ministry said it detected at least two missiles and assessed that the weapons landed in waters outside the country's exclusive economic zone.The launch came days after South Korea on Friday flight-tested its first domestically developed hypersonic weapon, designed to fly at least five times the speed of sound and evade missile defense systems, which President Lee Jae Myung described as an important step in strengthening the South's conventional defense capabilities.While maintaining a hard line toward Seoul, North Korea has been ramping up weapons testing as it seeks to expand its arsenal of nuclear-capable systems, including an Oct. 3 test of what the North described as a hypersonic intermediate-range missile designed to evade missile defenses in South Korea and Japan. North Korea has also conducted other missile tests and live-fire drills and commissioned a new warship as leader Kim Jong Un continues to flaunt his nuclear weapons program while rejecting U.S. and South Korean offers to resume long-stalled diplomacy.Tensions were further worsened after three South Korean soldiers were injured in land mine explosions last month near the heavily armed inter-Korean border. The South's military and the U.S.-led United Nations Command concluded the blasts were caused by devices planted by North Korea, which has denied responsibility and ridiculed the South's demands for an apology. Kim in recent years has halted all diplomacy and cooperation with South Korea and described the neighbor as a permanent enemy during a prolonged stalemate in larger nuclear negotiations with Washington. He has so far rebuffed President Trump's calls to revive their diplomacy, which broke down in 2019, with his government demanding that Washington abandon its \"hostile\" policy toward Pyongyang and drop demands for North Korea's denuclearization as ",
+   "text_url": "https://www.cbsnews.com/news/north-korea-fires-ballistic-missiles-tests/"
+  },
+  {
+   "id": "p-bill-gates-openai-ceo-sam-altman",
+   "rank": 12,
+   "top": true,
+   "desk": "ai",
+   "score": 7.96,
+   "title": "Bill Gates to OpenAI CEO Sam Altman, who says AI fears sound like 'bad science fiction': All responsible",
+   "outlets": [
+    "The Times of India",
+    "YourStory.com",
+    "Telangana Today",
+    "India Today",
+    "EnergyNow.com",
+    "Yahoo",
+    "The Seattle Times",
+    "The Daily Progress"
+   ],
+   "n": 8,
+   "date": "2026-10-12T04:46:00.000Z",
+   "read": [
+    "https://news.google.com/rss/articles/CBMi0AJBVV95cUxNUmZLNG1jUXNlQTlHbVZsTXZYZnJwejNCTDZuMEhZUWNoUkpNcG9FVzlTZk5COXNFZk1zTXRSS1ZoQjVWZURuaUM5ZTdFSmlkSUJ4cVVfWHdYc2VmVk1OOUhpUUZZdEVBWUpfRlNRd1I2UXBXSms4aHhBZ3hRYXI5eFBNWlR3clF2WFA0Ykk3d25XSEVmV2s0RGxaUVZhYVE3QjZkS3Vzc2tHM3dsVWpfTEhUZE9rZDRBYl9pRXI2bGZPeUJpUDJYTFVmdHZMei1uMkE5R0xiMEU2U3ZDdFN1cl8yMEhtdEtTcVRuelFNcFdFQzlOdERBTGxVcExtUnFENWthbVNJLVkwVjNabi1fajN1cVdyVzlfYVRVRGtBaFowbEJXMkVnU3Y1VXdYa3pHeE9QUS1DdWNYVHJMLXk5OWRpNzBjNjRfY0ZuY1FpTWTSAdYCQVVfeXFMUE9tMDREUUhKeTRkY21IdHI2cDhjQjVwNkJhSXNoc082RERKcFY1ZzE4b0RSNTZLLWtkaEpTVkh6Q1hwTnlzVHBpTlRHSGxMNG1wNnNLSHplVWtkOGRVODFLVzVuQWl2b0VBT2xGWVYxemVfMGxCSmFaVFF2WXhqcEx0NjhHT3VVNk9fYTJUUXRNQTNyaTdya3RaMGFQQ0JjamRETHh2T3IyQ2t1OGFvalQyc2tTNXMzUWlsaXU4a2pVbEVGNmY1RmlXQjdyTW01MHNEUW44aXd2T2lJR0xFWVFvdVZuZ2RESG1KV0F1NnkwTVQtNTNhR1JiY0NESFBRdi02YVlmQXktZ20zTlhhRzFxQ2dCNXAzM3NLX3c2SWVEYzlGbTNrZFRwTFRvWE52NWY3RDNLbnFBVEwxVkVJLTlOUGJ4aUJhYjk2bzk2YWliOFN3dlRB?oc=5",
+    "https://news.google.com/rss/articles/CBMi0AJBVV95cUxNUmZLNG1jUXNlQTlHbVZsTXZYZnJwejNCTDZuMEhZUWNoUkpNcG9FVzlTZk5COXNFZk1zTXRSS1ZoQjVWZURuaUM5ZTdFSmlkSUJ4cVVfWHdYc2VmVk1OOUhpUUZZdEVBWUpfRlNRd1I2UXBXSms4aHhBZ3hRYXI5eFBNWlR3clF2WFA0Ykk3d25XSEVmV2s0RGxaUVZhYVE3QjZkS3Vzc2tHM3dsVWpfTEhUZE9rZDRBYl9pRXI2bGZPeUJpUDJYTFVmdHZMei1uMkE5R0xiMEU2U3ZDdFN1cl8yMEhtdEtTcVRuelFNcFdFQzlOdERBTGxVcExtUnFENWthbVNJLVkwVjNabi1fajN1cVdyVzlfYVRVRGtBaFowbEJXMkVnU3Y1VXdYa3pHeE9QUS1DdWNYVHJMLXk5OWRpNzBjNjRfY0ZuY1FpTWTSAdYCQVVfeXFMUE9tMDREUUhKeTRkY21IdHI2cDhjQjVwNkJhSXNoc082RERKcFY1ZzE4b0RSNTZLLWtkaEpTVkh6Q1hwTnlzVHBpTlRHSGxMNG1wNnNLSHplVWtkOGRVODFLVzVuQWl2b0VBT2xGWVYxemVfMGxCSmFaVFF2WXhqcEx0NjhHT3VVNk9fYTJUUXRNQTNyaTdya3RaMGFQQ0JjamRETHh2T3IyQ2t1OGFvalQyc2tTNXMzUWlsaXU4a2pVbEVGNmY1RmlXQjdyTW01MHNEUW44aXd2T2lJR0xFWVFvdVZuZ2RESG1KV0F1NnkwTVQtNTNhR1JiY0NESFBRdi02YVlmQXktZ20zTlhhRzFxQ2dCNXAzM3NLX3c2SWVEYzlGbTNrZFRwTFRvWE52NWY3RDNLbnFBVEwxVkVJLTlOUGJ4aUJhYjk2bzk2YWliOFN3dlRB?oc=5"
+   ],
+   "snippet": null,
+   "also": [],
+   "text": "Microsoft co-founder Bill Gates has pushed back on OpenAI CEO Sam Altman's warning against AI \"doomerism\", saying every responsible AI leader, Altman included, is already telling the world that artificial intelligence is \"very concerning\". Altman had recently said some of the scenarios people imagine about AI are \"so dystopian that they sound like the plot of bad science fiction movies.\"In a Sunday interview with Jake Tapper, Gates, who has described AI as more dangerous than nuclear weapons, agreed that the risk can get overblown when people \"act like all of humanity is at risk\". But he said AI is more dangerous than cars, planes or medicines, all of which are heavily regulated, and that \"there are some grim possibilities if we don't maintain control.\"Bill Gates says a middle ground on AI regulation existsGates said the AI industry is doing its job by raising the alarm. What isn't getting across, he argued, is that the risks can be kept down \"if we're judicious\". He blamed part of that on governments that swing between two extremes: \"let's not have any safeguards\" or \"let's completely stop this\".The world found a workable balance for planes, cars and drugs, he said, and AI needs the same. Finding that balance is something \"we don't have a lot of sophistication\" in right now, he added, \"but I do believe that middle ground exists.\" He repeated the point in a post on X, writing that safeguards won't eliminate every harm but can help stop misuse by bad actors.Sam Altman's UN speech warned against both AI extremesAltman's \"bad science fiction\" line came from his address to the UN Security Council on September 23. In the same speech, he said OpenAI wants to avoid both blind optimism and doomerism, and walk a middle path. He also flagged two ways AI could go badly: humans losing control of it, or too much power ending up in too few hands.That speech had a line Gates could easily have written. Altman told the Council that a risk of catastrophe, whether 10% or 0.1%, is not \"remotely acceptable\". Since then, he has struck a looser tone, saying on a podcast that \"the world should accept some bad things happening\", such as hacks and scams, because people will do far more good with AI.Bill Gates's AI essay sets out the safeguards he wantsGates's stance traces back to a nearly 6,000-word essay he published in August. In it, he named three big risks: jobs disappearing for",
+   "text_url": "https://timesofindia.indiatimes.com/technology/tech-news/bill-gates-to-openai-ceo-sam-altman-who-says-ai-fears-sound-like-bad-science-fiction-all-responsible-ai-leaders-including-you-are-telling-the-world-/articleshow/134882705.cms"
+  },
+  {
+   "id": "p-keralam-assembly-passes-resolution-seeking-removal",
+   "rank": 13,
+   "top": false,
+   "desk": "desh",
+   "score": 7.9,
+   "title": "Keralam Assembly passes resolution seeking removal of CEC Gyanesh Kumar, steps to restore credibility of ECI",
+   "outlets": [
+    "The Hindu",
+    "The New Indian Express",
+    "ThePrint",
+    "The News Minute",
+    "Prudent Media",
+    "The Indian Express, India",
+    "Hindustan Times, India",
+    "Scroll"
+   ],
+   "n": 9,
+   "date": "2026-10-12T07:59:49.000Z",
+   "read": [
+    "https://indianexpress.com/article/india/keralam-assembly-passes-resolution-seeking-removal-of-cec-gyanesh-kumar-10917790/",
+    "https://indianexpress.com/article/india/kerala-assembly-election-commissioner-gyanesh-kumar-removal-resolution-10917164/",
+    "https://www.hindustantimes.com/india-news/keralam-assembly-adopts-resolution-demanding-ouster-of-gyanesh-kumar-as-cec-101791795265357.html"
+   ],
+   "snippet": "One of the resolution’s key demands is addressing irregularities in the Special Intensive Revision (SIR) process",
+   "also": [
+    "Kerala Assembly passes resolution seeking removal of CEC Gyanesh Kumar",
+    "Seeking removal of CEC Gyanesh Kumar, Kerala Assembly to move resolution today",
+    "Keralam assembly adopts resolution demanding ouster of Gyanesh Kumar as CEC"
+   ],
+   "text": "The Kerala Legislative Assembly on Monday passed a resolution seeking the removal of the Chief Election Commissioner Gyanesh Kumar. The state assembly is the first in the country to adopt such a resolution urging the Union government to remove Kumar from his position. The resolution was moved by Chief Minister V D Satheesan in the 140-member assembly, where the ruling Congress-led alliance has a strength of 102 members. The Left, which has 35 members, also supported the resolution, leading to its unanimous passing. Keralam makes history. For the first time, the Keralam Legislative Assembly has passed a resolution seeking the removal of the Chief Election Commissioner. The integrity of our electoral process is non-negotiable. Serious concerns over voter roll revisions, the disenfranchisement of eligible voters, and the impartiality of the Election Commission cannot be ignored. Through this historic resolution, Keralam has put forward three clear demands: 1. Restore voting rights: Address the irregularities in the Special Intensive Revision (SIR) process and immediately restore the voting rights of all eligible voters who have been wrongfully excluded. 2. Remove the Chief Election Commissioner: Initiate proceedings to remove the Chief Election Commissioner, whose impartiality has come under serious question. 3. Reform the selection process: Reconstitute the Election Commissioners’ selection committee to include the Prime Minister, the Leader of the Opposition in the Lok Sabha, and the Chief Justice of India, ensuring the independence and credibility of the institution. The right to vote is the foundation of our democracy. No institution can be allowed to undermine the constitutional rights of our citizens. Our stand is unequivocal. The right to vote must be protected. The Constitution must be upheld. Democracy must prevail. Keralam stands firmly for free and fair elections. #VDSatheesan #Keralam — V D Satheesan (@vdsatheesan) October 12, 2026 Apart from urging the union government to remove the CEO, the resolution has also demanded restoration of voting rights by addressing the irregularities in the Special Intensive Revision (SIR) process and to immediately restore the voting rights of all eligible voters who have allegedly been wrongfully excluded. It also demanded a change in the process of electing the CEO. It wanted the selection committee for the CEO to ",
+   "text_url": "https://indianexpress.com/article/india/keralam-assembly-passes-resolution-seeking-removal-of-cec-gyanesh-kumar-10917790/"
+  },
+  {
+   "id": "p-zelenskyy-russia-already-violated-trump-energy",
+   "rank": 14,
+   "top": false,
+   "desk": "videsh",
+   "score": 7.89,
+   "title": "Zelenskyy says Russia has already violated Trump's 'energy ceasefire'",
+   "outlets": [
+    "Euronews.com",
+    "BBC",
+    "The Guardian",
+    "The Telegraph",
+    "Axios"
+   ],
+   "n": 5,
+   "date": "2026-10-12T09:22:38.000Z",
+   "read": [
+    "https://news.google.com/rss/articles/CBMirgFBVV95cUxOU3prMXJjaUE2QjlxbkVSbC1YYnZWNGNveXZsSFViRnBLMk5lMXFTeEJ2V0drb3Fvai1uUGlXYzYtS0dFMmNXMm9HTTI3N3NublJzZlVhajJaaFZkZ05tQ2ZKZ0ZnN2dmQXZEaWRTc1lfdEtpcW1DeTRDdm5CVDh4SXJnSXQ4TGc0UkMzUFZXT1pJYkpCLWo4XzNRUlZjUFRHRXVDeW1YcTljQVY2N1E?oc=5",
+    "https://news.google.com/rss/articles/CBMikwFBVV95cUxPSHZpRnVWRlc4eWdqQzRGNnFiY2xheFhYb3Z6QXFrWGFQNk9aUkpuemc5cmQxSnFYMi10YjJPRzQtWmtVRkZHNWJlM0s4S1VvdVFFT19vdndGYWYzUFdxOVRvQk1laV96VGFkN29oeHpNMWItUzR1MW43R1dVd3I0ZWFTd1hNRUxqUER0TmhvcENYNGs?oc=5"
+   ],
+   "snippet": null,
+   "also": [
+    "Trump bears down on Zelensky as Russia keeps up attacks on Ukraine"
+   ],
+   "text": "Ukrainian President Volodymyr Zelenskyy accused Russia on Monday of violating an energy ceasefire announced by Donald Trump, saying Kyiv had not even been consulted about the purported agreement and had only learned of it through the media. \"We did not know about that. We've learned that from the media as well, that the president of the United States has secured an energy ceasefire,\" Zelenskyy said.Speaking at the Warsaw Security Forum, Zelenskyy questioned whether Moscow had agreed to the proposal at all, saying he had seen neither a public endorsement from Russia nor any let-up in its attacks on Ukrainian energy infrastructure.\"We have not seen that they support this ceasefire anywhere,\" he said, pointing to continued Russian strikes on Ukrainian energy facilities.Large parts of Kyiv were without electricity and water when Trump made his announcement, as repair crews struggled to restore power following Russian strikes. Shortly afterwards, Russia launched another targeted attack on a power plant in Kharkiv, Zelenskyy said.\"It was clear that Putin does not read Truth Social,\" he remarked, referring to Trump's social media platform.Zelenskyy also accused Russia of striking a Ukrainian gas production facility and a petrol station overnight, while Ukraine had refrained from attacking Russian oil refineries.Despite the continued attacks, he said Kyiv remained willing to observe a reciprocal halt to strikes on energy infrastructure.\"We are ready to respect an energy ceasefire if Russia is ready to do the same. We agree if they agree,\" he said.Zelenskyy offered to sign formal guarantees if Washington considered them necessary, but stressed that the US would have to secure Moscow's compliance.Trump-Putin diesel deal sparks backlashZelenskyy's remarks followed several days of mounting tensions with Washington, beginning on Friday when Trump announced a deal with Vladimir Putin to supply Russian diesel to US and global markets, in an attempt to bring down soaring fuel prices ahead of November's US midterm elections.The US Treasury subsequently issued a six-month licence easing sanctions on Russian diesel already loaded onto tankers, allowing deliveries until April 2027 — a sharp reversal of Washington's efforts to restrict Moscow's energy revenues.The move drew criticism from European leaders and US lawmakers, including a bipartisan group of senators who urged Trump",
+   "text_url": "https://www.euronews.com/2026/10/12/zelenskyy-says-russia-ignored-trumps-ceasefire-and-kept-attacking-ukraine"
+  },
+  {
+   "id": "p-equity-mutual-fund-inflows-rise-31",
+   "rank": 15,
+   "top": false,
+   "desk": "ledger",
+   "score": 7.86,
+   "title": "Equity mutual fund inflows rise 31% in September; small-cap schemes hit all-time high",
+   "outlets": [
+    "CNBC TV18",
+    "Reuters",
+    "The Hindu",
+    "Rediff",
+    "The Economic Times",
+    "Mint, money",
+    "BusinessLine, markets",
+    "The Indian Express, latest"
+   ],
+   "n": 10,
+   "date": "2026-10-12T06:38:34.000Z",
+   "read": [
+    "https://www.livemint.com/money/personal-finance/mutual-fund-sip-inflows-hit-record-32-490-crore-in-september-equity-inflows-rise-31-11791788328192.html",
+    "https://www.thehindubusinessline.com/markets/equity-mutual-fund-inflows-rise-31-to-38306-crore-in-september-sips-hit-record-high/article71574396.ece",
+    "https://indianexpress.com/article/business/sip-inflows-record-32490-crore-september-10918051/"
+   ],
+   "snippet": "Mutual fund SIP inflows hit a record ₹32,490 crore in September, while equity mutual fund inflows rose 30.6% month-on-month. However, debt fund withdrawals led to net outflows of ₹1.33 lakh crore for the industry during the month.",
+   "also": [
+    "Mutual fund SIP inflows hit record ₹32,490 crore in September; equity inflows rise 31%",
+    "Equity mutual fund inflows rise 31% to ₹38,306 crore in September; SIPs hit record high",
+    "SIP inflows hit record Rs 32,490 crore in September despite muted returns"
+   ],
+   "text": "Monthly investments through systematic investment plans (SIPs) in mutual funds touched a record ₹ 32,490 crore in September 2026, up from ₹ 32,297 crore in August, according to data released by the Association of Mutual Funds in India (AMFI). The equity mutual funds also attracted stronger inflows during the month, even as the mutual fund industry recorded an overall net outflow, largely due to the substantial withdrawals from different fixed-income schemes. Net inflows into equity mutual funds rose to ₹ 38,307 crore in September from ₹ 29,328 crore in August, an increase of around 30.6% month-on-month. The small-cap mutual funds attracted ₹ 9,039 crore, in comparison with ₹ 7,973 crore in August. Mid-cap fund inflows rose to ₹ 7,835 crore from ₹ 6,989 crore, while flexi-cap schemes added inflows of ₹ 6,702 crore, up from ₹ 5,059 crore. The sectoral thematic funds saw inflows increase to ₹ 3,640 crore from ₹ 1,713 crore. Large-cap mutual funds also returned to positive territory, attracting ₹ 859 crore after net outflows of ₹ 1,147 crore in August. These figures highlight stronger investment flows into equity schemes, although monthly inflows alone are not an indication of future market performance. Even after record SIP contributions and very strong equity inflows, the mutual fund industry recorded net outflows of ₹ 1.33 lakh crore in September, compared with ₹ 41,353 crore in August. Fixed-income mutual funds accounted for the majority of the pressure, recording net outflows of ₹ 1.83 lakh crore in September, against ₹ 8,127 crore in August. The industry's net asset under management (AUM) declined to ₹ 82.64 lakh crore in September from ₹ 87.08 lakh crore in August. The record SIP figures underscore continued investor enthusiasm and participation in equity markets. However, investors should ensure they choose mutual fund schemes aligned with their long-term economic objectives, investment horizon and risk tolerance, rather than relying solely on monthly inflow trends. SIPs help investors invest in markets on a regular, planned basis, but do not assure or guarantee returns or protect against market-driven losses. Disclaimer: This article is for general information only and should not be construed as investment advice. Mutual fund investments are subject to market risks. Investors should assess their financial goals, risk tolerance and investment horizon bef",
+   "text_url": "https://www.livemint.com/money/personal-finance/mutual-fund-sip-inflows-hit-record-32-490-crore-in-september-equity-inflows-rise-31-11791788328192.html"
+  },
+  {
+   "id": "p-polish-security-services-meet-serious-threat",
+   "rank": 16,
+   "top": false,
+   "desk": "videsh",
+   "score": 7.85,
+   "title": "Polish security services meet after 'serious' threat to PM and defense minister",
+   "outlets": [
+    "CNBC",
+    "The Hindu",
+    "BBC",
+    "Al Jazeera",
+    "The Times of India",
+    "Reuters",
+    "AP News",
+    "The Telegraph"
+   ],
+   "n": 12,
+   "date": "2026-10-11T12:51:58.000Z",
+   "read": [
+    "https://www.bbc.co.uk/news/articles/c6n9rvynl5p5o?at_medium=RSS&at_campaign=rss",
+    "https://abcnews.com/International/wireStory/polands-police-warn-plot-attack-prime-minister-donald-137170227",
+    "https://www.thehindu.com/news/international/polands-police-warn-of-a-possible-plot-to-attack-prime-minister-donald-tusk/article71571270.ece"
+   ],
+   "snippet": "Police received credible information about possible attacks against Donald Tusk and his defence minister.",
+   "also": [
+    "Poland detains man suspected of planning assassination of PM Tusk",
+    "Poland's police warn of a possible plot to attack Prime Minister Donald Tusk",
+    "Poland's police warn of a possible plot to attack Prime Minister Donald Tusk"
+   ],
+   "text": "Donald Tusk thanked the police for \"swift and decisive action\" Poland's Prime Minister Donald Tusk said a man accused of plotting an assassination attack against him and his defence minister has been detained. The interior ministry earlier reported that police had received credible information about possible attacks against Tusk and Wladyslaw Kosiniak-Kamysz. Polish security services convened a special meeting on Sunday after receiving information about the planned attacks, with a spokesman saying officials were treating the threat as \"deadly serious\". Tusk thanked the police for \"swift and decisive action\" in arresting the suspect. The suspect was arrested in the Lower Silesia region and was a Polish national, Jacek Dobrzynski, a spokesman for the Special Services Co-ordinator told local media. \"In this case we are talking about a strong likelihood that these threats could actually be carried out,\" he said. The plan was uncovered when an email with information about the potential attack was forwarded to police by the State Protection Service, which is responsible for ministers' security, Interior Ministry spokeswoman Karolina Galecka said. Tusk has been Polish prime minister since 2023, having previously held the office from 2007 to 2014. He served as president of the European Council from 2014 to 2019. Poland stabbings driven by online glorification of violence, Tusk says",
+   "text_url": "https://www.bbc.co.uk/news/articles/c6n9rvynl5p5o?at_medium=RSS&at_campaign=rss"
+  },
+  {
+   "id": "p-stock-market-outlook-today-12-oct",
+   "rank": 17,
+   "top": false,
+   "desk": "ledger",
+   "score": 7.72,
+   "title": "Stock market outlook today, 12 Oct: Sensex, Nifty prediction - DJIA, S&P, NASDAQ, GIFT Nifty, Kospi, Taiwan cues",
+   "outlets": [
+    "Livemint",
+    "The Hindu",
+    "Telegraph India",
+    "The Economic Times",
+    "Investing.com India",
+    "Mint, markets"
+   ],
+   "n": 6,
+   "date": "2026-10-12T01:27:56.000Z",
+   "read": [
+    "https://www.livemint.com/market/stock-market-news/stock-market-prediction-for-tomorrow-sensex-nifty-outlook-for-tuesday-kospi-taiwan-cues-to-watch-13-oct-2026-11791799942402.html",
+    "https://news.google.com/rss/articles/CBMiggJBVV95cUxQdElobnFRdkhBaW55dkdTbjNrNGlBZjhGcjE0em00Y1JNVmRhY1dhNjBCa05QbnpMVG5iV0hfcUxDV0ZwTFVYT1lJUF93ZjlhUGNJS2JKNTlPYndRSGdFcU43eDFERnVsYWZoRjJVNjlSa1ZHRURsUm9oaXpmeGM3bjZseDJRR0hERnd0aVFPSm0xLWNHU1VkSnRpZ3daVVlVZlE1RmZ0TXVpbFJicWhWUDB4ZUNrU1lzNThzY3duMThqZUhHd0lPU0tYZ21TaVFaV0J6U1JFSnVxcEs5NG0yTTRuZnZkNGZLZWQycElBeHBETmY0UkJ0VXBhTDROYU83X0HSAYcCQVVfeXFMTV93NTFOWk1nTnVTOGk3M0llNGhjZkdrckNJNHV3bWxGWG5OaVd0VkR5NjBwZkNZV2ZvajZSTE52TDViYjJxYTEwOXVRaUhOaUtDeGNneTQ2dEpxNHQteHdmaXQ4Zy1CYm51R19idlNmUUtBaHRrSGo3QVh0d01ESTFOYjFRX1IxelEzWHFwNUNVbDBWcFRROFhGTS1iOVN5OWY1QUU5RDRUVWJNWHZQajlPVXFnSmVXczlmQlJ4R0IzLThYVktGNDRIRTRZUVVscU5iNmptb2YyS0lacE9JRURrM3JLaUJCTWhLV0tBbG92V3pFYVpWRlNDZHBqMnRCbTdTZWlHVUU?oc=5"
+   ],
+   "snippet": "Indian stocks fell on Monday as investors booked profits and volatile oil prices weighed on sentiment ahead of key inflation data. The Nifty 50 dropped 0.70% and the Sensex 0.76%, while mid- and small-cap indices gained.&nbsp;",
+   "also": [
+    "Stock market prediction for tomorrow: Sensex, Nifty outlook for Tuesday | Kospi, Taiwan cues to watch | 13 Oct 2026"
+   ],
+   "text": "The Indian stock market ended Monday’s session in the red as stocks gave up all their intraday gains amid profit booking at higher levels. Sharp volatility in crude oil prices also weighed on broader market sentiment. Stocks opened higher, tracking gains in the previous session on Friday. At one point, both benchmark indices had risen 0.60% intraday before paring their gains and slipping into negative territory. The reversal erased most of the indices’ early gains and the losses came ahead of crucial inflation data that could offer cues on the outlook for further interest rate hikes. Indian stock market today The Nifty 50 closed 0.70% lower at 22,363, while the Sensex settled at 71,924, down 0.76% from the previous session. The broader markets, however, ended in positive territory, with the Nifty Midcap 100 rising 0.08% and the Nifty Smallcap 100 surging 1.42%, indicating relative resilience among mid- and small-cap stocks.Sectoral performance was mixed, with FMCG emerging as the biggest laggard, followed by PSU banks, technology, cement, and oil and gas stocks. On the other hand, media, chemicals, auto, realty, and pharmaceutical stocks closed in positive territory. In the currency market, the Indian rupee strengthened to around 95.77 per dollar, rebounding from levels near its all-time low. The recovery came after the Reserve Bank of India (RBI) rolled out a series of measures on Saturday to support the currency, including opening a special window to meet the dollar requirements of state-run oil companies and introducing a reserve requirement for certain foreign-exchange derivatives. The central bank’s measures came after the rupee approached the record-low mark of 97 per dollar. The RBI had also raised interest rates on Wednesday and signaled that it remained open to further monetary tightening. Meanwhile, Brent crude traded above $105.50 a barrel on Monday, its highest level in more than two weeks, as escalating tensions in the Middle East heightened concerns over regional security. Saudi Arabia’s main airport reportedly came under attack again on Sunday, while another tanker was targeted in the Strait of Hormuz. How did key Asian markets perform amid regional volatility? Among other key Asian markets, South Korea’s Kospi fell 3.7% to 6,384.24, while markets in Tokyo remained closed for a holiday. Hong Kong’s Hang Seng gained 0.3% to 24,271.20, while the",
+   "text_url": "https://www.livemint.com/market/stock-market-news/stock-market-prediction-for-tomorrow-sensex-nifty-outlook-for-tuesday-kospi-taiwan-cues-to-watch-13-oct-2026-11791799942402.html"
+  },
+  {
+   "id": "p-gta-leaker-demands-30m-meme-coin",
+   "rank": 18,
+   "top": false,
+   "desk": "videsh",
+   "score": 7.67,
+   "title": "GTA 6 Leaker Demands $30M Meme Coin Market Cap to Release Full Game",
+   "outlets": [
+    "Security Affairs",
+    "https://tech-insider.org/",
+    "Mashable",
+    "The Verge",
+    "Polygon.com",
+    "GamesIndustry.biz",
+    "Forbes"
+   ],
+   "n": 7,
+   "date": "2026-10-12T06:42:51.000Z",
+   "read": [
+    "https://news.google.com/rss/articles/CBMiugFBVV95cUxOcnV5cnVaVkFhUnhWRUJDLV9GS0dqc1NyeWZ6aWVhMUZLaXRSejIzMlpSNkV2RlRhYmlJZzBrWDJNelhrdWZkTnJ6eVpfXzFDMk9Sb0Exb3ZwZHRodVI0NnNrdTN1ODh2VlMwV1VaRHlJVDBmNWswNGdpR1BGNFBuZWVRT3FQZnpPbjJzMmc0VHBRMUg0VnduOGhyamIwOU5lbWpQc19wSFNIVEEtUTJITWZLRGhianNWc3fSAb8BQVVfeXFMTVNscndmWk93WGgyQjI2V3lneUVZMm1NUm9BbXlyNm0zVDhmZlIyQjhuQlhMMTQ3dTVNb3YySnF6M2ctVTJldENVR0hGaUo2NnJYRnB1c1h5STlGYTZzbUk4Nm5DWWlPWksxaWwwNTUxN1NuRk05a1NMZi1GNkN3a3hYck1BOFRTSzV5UzBiUnhDTWRSQVVEQ000SU9Mclhwd3N4aUl2OGx6QVlLSzdaSnRnRm1JZUR2cDE1Um5uYXc?oc=5"
+   ],
+   "snippet": null,
+   "also": [],
+   "text": "CyberXero Used 51 AI Agents to Steal 628,000 Ukrainian Records GTA 6 Leaker Demands $30M Meme Coin Market Cap to Release Full Game Bitdefender finds preinstalled Android malware you can't uninstall, seen in 150 countries U.S. CISA adds ProFTPD, ONLYOFFICE Docs, Strapi, Apache Struts, and ISC BIND flaws to its Known Exploited Vulnerabilities catalog Anthropic Restricts Live Internet Access After Claude Evaluation Failures Silent Ransom Group Allegedly Extorted $207 Million Without Encrypting Files US Sentences Empire Market Co-Creator Over $430 Million Criminal Marketplace Germany Arrests Suspected Qilin Ransomware Leader After Japan Detention Claude Helps Secure Open Source as Anthropic Offers Free Vulnerability Scanning US Disrupts China-Linked Integrity Tech 's Cyber Espionage Tools AI-Driven tool ARTEX used in attacks against South Korean Banks Italy's Foreign Ministry Under Cyberattack as Embassy Sites Come Under Review Hunt.io Finds New Infrastructure Of BraZetsu Access Broker Months Before Disclosure MonsterCloud Owner Charged With Secretly Paying Ransomware Demands U.S. Offers $10 Million Reward for Alleged HAFNIUM Hacker Zhang Yu Atlassian Vulnerability Comes Under Attack Hours After Details Go Public CyberLeek, the anonymous figure behind this summer’s wave of GTA 6 leaks , just raised the stakes considerably. After dropping 25 minutes of gameplay footage earlier last week, including nudity and dev menu access, they’re now threatening to release a complete, playable build of the game, start to finish. “A GTA 6 leaker has reportedly threatened to put out a complete, playable build of the game, start to finish.” reads Eurogamer.net . “The threat was posted on CyberLeek’s website after the leaker shared 25 minutes of footage from the game earlier this week.” CyberLeek posted the threat on its own website. The demand is simple: if its cryptocurrency reaches a $30 million market value, the leaker will release the playable build of GTA 6, including the full story mode, from start to finish, with the ending credits. CyberLeek says Take-Two can avoid the leak only by providing physical copies of the game and issuing a public apology. This sounds more like a challenge than a serious negotiation. “Here’s the deal, nice and clean,” the leaker states. “CyberLeek hits 30 million marketcap, the build goes out — full story mode, played to the end, credits and all.",
+   "text_url": "https://securityaffairs.com/200780/cyber-crime/gta-6-leaker-demands-30m-meme-coin-market-cap-to-release-full-game.html"
+  },
+  {
+   "id": "p-uk-pm-andy-burnham-clear-russia",
+   "rank": 19,
+   "top": false,
+   "desk": "videsh",
+   "score": 7.66,
+   "title": "UK PM Andy Burnham says it is ‘clear’ Russia interfered in 2016 Brexit vote",
+   "outlets": [
+    "Al Jazeera",
+    "Reuters",
+    "BBC",
+    "The Guardian",
+    "NDTV",
+    "AP News",
+    "Bloomberg.com",
+    "ABC News, international"
+   ],
+   "n": 9,
+   "date": "2026-10-12T01:16:27.000Z",
+   "read": [
+    "https://abcnews.com/International/wireStory/uk-prime-minister-clear-russia-interfered-2016-brexit-137180724",
+    "https://www.hindustantimes.com/world-news/yes-there-was-uk-pm-andy-burnham-says-russia-clearly-interfered-in-2016-brexit-vote-101791780378921.html",
+    "https://news.google.com/rss/articles/CBMitgFBVV95cUxNNVFTc2taSDIwbVVBQ0JmTHkyRnZiWUt6ek82ZVNsTFJIaHo3Y01TUWVKRmI0MnVoVnUxVlRCSlE0eUk3THJiSm9LWUY2dFRKNTVmZUh2bGFOM3BqWnZqdlVpOXVxdGhNeU9NZ3RVazR5N2J6UmE2ZVp4SGgxY1NkUFVnb1o2STNmV1pLT1hONm9NMDltTHh2X2R5cm9YZmpxeF9RUDJ4MEVTZDVwUjI0SHY0eFlTZ9IBuwFBVV95cUxQZnQ3ZElNLUdGTmxUbEREVTNua2hvNTZqMVpSWnVqakUwRnlHemkwYkpES3FXVE53Q1VQZTc0MjV0M3Z1MVRFWGVSMmRoRVNiNV9ma0hvS1J0ZUowa0lNR2ZndW5wOXhVRTFBSmJoSkViT3RRemxucVFUcDZhYkdkTGhCSFQ2QkJ2YzBsUG5zMkxaS2VLdmJ3NG5SYy1VY1Q2Q0xVdzJabjZLclU0c1oyb1dfRnMwa2VCemFv?oc=5"
+   ],
+   "snippet": "Countries across Europe are facing the same threat, Burnham says.",
+   "also": [
+    "UK prime minister say it is ‘clear’ Russia interfered in 2016 Brexit referendum",
+    "UK prime minister says it's 'clear' Russia interfered in Brexit referendum",
+    "‘Yes, there was’: UK PM Andy Burnham says Russia ‘clearly’ interfered in 2016 Brexit vote"
+   ],
+   "text": "Countries across Europe are facing the same threat, Burnham says. LONDON -- U.K. Prime Minister Andy Burnham says it is clear that Russia interfered with Britain’s vote to leave the European Union , adding it was important to put Moscow’s tampering on the record because countries across Europe are facing the same threat. In excerpts from “The Rest is Politics’’ podcast released Sunday, Burnham said that when he became prime minister in July he asked his advisers whether Russia had interfered with the 2016 referendum. The full podcast is scheduled to drop on Monday. “I’ve had the clear answer that yes, there was,’’ Burnham said. “These things are important now to put clearly on the record and I believe help voters in Germany and France understand that some of this politics is instigated via our enemies, namely Russia.” Russia has long said it does not meddle in other countries’ elections or referendums. Burnham’s comments come as U.K. intelligence agencies warn about the increasing threat of Russian interference in Britain’s democratic institutions. The intervention is believed to be the first time a British prime minister has publicly acknowledged Russian interference in the Brexit vote. Burnham said he spoke to German Chancellor Friedrich Merz about possible links between Russia and the far-right Alternative for Germany party when the two leaders met last week in Berlin. “You know he was saying to me that the AfD are clearly linked to Russia, funded I believe,” Burnham said. “There is certainly misinformation, disinformation that is emanating from Russia into German politics,” he added. Parliament’s Intelligence and Security Committee found in 2020 that the government failed to fully assess the impact Russian state-run media and “troll” accounts could have had on the EU referendum. U.K. Prime Minister Andy Burnham says it is clear that Russia interfered with Britain’s vote to leave the European Union , adding it was important to put Moscow’s tampering on the record because countries across Europe are facing the same threat.",
+   "text_url": "https://abcnews.com/International/wireStory/uk-prime-minister-clear-russia-interfered-2016-brexit-137180724"
+  },
+  {
+   "id": "p-indian-debt-funds-set-extend-billion",
+   "rank": 20,
+   "top": false,
+   "desk": "ledger",
+   "score": 7.66,
+   "title": "Indian debt funds set to extend $4.5 billion bond selloff after RBI policy shift",
+   "outlets": [
+    "The Hindu",
+    "ET Government",
+    "BusinessLine",
+    "The Economic Times",
+    "TradingView",
+    "BusinessLine, markets",
+    "Reuters"
+   ],
+   "n": 7,
+   "date": "2026-10-12T05:51:37.000Z",
+   "read": [
+    "https://www.thehindubusinessline.com/markets/rbi-liquidity-measures-may-pressure-india-bonds-rupee-rally-to-limit-losses/article71573695.ece",
+    "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOdk1Ca3d6MWM4QjV6cFU0R2ppWGZXX3ZYSmRiOUJkVnVSVGlpUm5WRng0VUt6VzZHWlpRb3pJRTBIQ3dKa0l1LWdlX3lPZFRGWlY1REp4dkFfWl9oVnl0d3kwQVNnRjVudGF0clIwdWhfZlFhbVJiSFdwcDFvWTlIaFUxbmwtZklocGM4dmliMmZNRHlPSEdwX0ZCMkVHRTAyVUNwdjh6UHXSAa8BQVVfeXFMTklyZGdrUkR1R2N3aV9PZENCYzdlbjk3LThHVW5tcFEtQVpRa0tfc2hPemc4U3Y0TXVSM3ZYaUxiMXBkZ1RKOE81VDBPcWtoU1cyS3pjY3pYdUdPQ25DVWJ5eVRWMnJkcGZZYi1jV3hjWmRCU3VncVl5VWVPeUFLWk5TbnN5WUxRTHp1NElTS29aOE84bzhRTHotX2ZSM1MzZUxEbVZ3OEpxTzJaX1g1RQ?oc=5",
+    "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQbmZEY1dlV0gzSExkMDJHRkhRQnFRRHBhNGs2ZTE0Rm1ZUlRJTzg2M0s3eVF5dnlMMm9nWmg5RWdkd25CaW95a1hYWnI4ai1uM3VGcVoyZHdVSGg2MnJ0NWlqVVVGYXh3MGhuMnV5SXRUMnJIQ0UxZVNXc0x6Sm5ZNzRnZE1ITmFOdEZvendYTnExWklzTXRrMk81d05zSGlFOEt3cURHWTRsUy1IR1l3U29HRndDZnFpVVY3WXVhVlk?oc=5"
+   ],
+   "snippet": "Rupee support measures could limit losses as September inflation data is awaited",
+   "also": [
+    "RBI liquidity measures may pressure India bonds; rupee rally to limit losses"
+   ],
+   "text": "0 ? 'text-green' : 'text-red') + '\">'; htmlElements += (tickerData[i].Pricediff > 0 ? '+' : '') + ' ' + numberformat(tickerData[i].Pricediff) + ' Indian government bonds could open the week under mild selling pressure after the central bank announced measures to absorb banking-system liquidity, although expectations of a sharp rupee rally may help limit losses. The benchmark 6.94 per cent 2036 bond yield may trade in a 7.26-7.32 per cent band, a trader with a primary dealership said, after ending at 7.2994 per cent on Friday. Bond yields rise when prices fall. Over the weekend, the Reserve Bank of India (RBI) unveiled fresh measures to shore up the rupee, redirecting oil companies’ dollar purchases away from the spot market and tightening hedging rules as the currency hovers near record lows. “We could have seen yet another test of over 7.30 per cent levels on the 10-year benchmark, but the rupee measures will provide an overall calm to Indian assets,” the trader said. The RBI announced it will sell debt worth ₹25,000 crore ($2.58 billion) on Tuesday, and tightened norms of daily reserve maintenance for banks from October 16. The moves come just days after the central bank raised its policy rate and tweaked its stance to calibrated tightening, hinting at more hikes in coming months. It also raised its inflation forecast by 20 bps to 5.2 per cent, while core inflation, which excludes volatile food and fuel prices, was seen at 4.4 per cent from 4.3 per cent earlier. India’s September retail inflation print is due later in the day, with a Reuters poll showing the print rising 5.4 per cent year-on-year (y-o-y). Meanwhile, the benchmark Brent crude price remains close to the $105 per barrel mark. Elevated energy prices could impact oil-import-dependent India’s inflation trajectory and government finances. India’s overnight indexed swap rates may ease in line with bond yields. On Friday, the one-year OIS rate ended at 6.24 per cent, the two-year rate closed at 6.44 per cent, while the liquid five-year rate settled at 6.7250 per cent. Comments have to be in English, and in full sentences. They cannot be abusive or personal. Please abide by our community guidelines for posting your comments. We have migrated to a new commenting platform. If you are already a registered user of TheHindu Businessline and logged in, you may continue to engage with our articles. If you ",
+   "text_url": "https://www.thehindubusinessline.com/markets/rbi-liquidity-measures-may-pressure-india-bonds-rupee-rally-to-limit-losses/article71573695.ece"
+  },
+  {
+   "id": "p-such-discussion-bcci-denies-reports-india",
+   "rank": 21,
+   "top": false,
+   "desk": "crease",
+   "score": 7.62,
+   "title": "'No such discussion': BCCI denies reports of India-Sri Lanka ODI being shifted from Delhi to Ahmedabad",
+   "outlets": [
+    "The Times of India",
+    "Telegraph India",
+    "The Economic Times",
+    "WION",
+    "Mid-Day",
+    "Hindustan Times, cricket"
+   ],
+   "n": 6,
+   "date": "2026-10-12T09:53:00.000Z",
+   "read": [
+    "https://www.hindustantimes.com/cricket/bcci-issues-clarification-says-delhi-odi-between-india-and-sri-lanka-not-shifted-to-ahmedabad-101791797937414.html",
+    "https://news.google.com/rss/articles/CBMijgJBVV95cUxObEozNThweFRyUGJhQmVXNklFbnc2TUVOTmFIdDdncUFoOHJyS3lEczhDbmVQM0Y5NDFWdnZhNkllOWF3YURrdFNpSkxKTkJDaHMxcm9TSmFzUXRWUUdUSFU5d09fV1BJRzVrZlNOUUVxUmlfLTdaSDVMSkhGcW5sXzQ3eUkyai1mRUlNS3gwYVVJaTRVQnJxNlRMYmptMFo2Zl9CUnRZR2hWTUdZcm1aQm5sTzlQdGJSRnZXakwtbWx6LWNXMVhyVnRFMk4zd01FY0xjZFdKR2QwQjltSVdkangtOG5BWnNacUtScFlWTDRyMVNkVGU2VmtyTmMwdkxuM2FweF9kbGZPNFZZY1E?oc=5"
+   ],
+   "snippet": "BCCI issues statement, says the Delhi ODI between India and Sri Lanka hasn't been shifted to Ahmedabad.",
+   "also": [
+    "BCCI issues clarification, says Delhi ODI between India and Sri Lanka not shifted to Ahmedabad"
+   ],
+   "text": "The Board of Control for Cricket in India (BCCI) secretary Devajit Saikia on Monday denied reports that the opening ODI between India and Sri Lanka would be shifted from Delhi to Ahmedabad. Earlier, several reports claimed that the Arun Jaitley Stadium in New Delhi would be unable to host the series opener between the two Asian teams due to ongoing construction work.However, Saikia said no such decision has been taken for now and that the decision to allot bilateral matches depends on the standard policy, and there has been no change in the venue.“Reports suggesting that the India–Sri Lanka ODI match scheduled in Delhi may be shifted to Ahmedabad are not accurate. There has been no such decision by the BCCI. We request media colleagues to kindly refer to official BCCI communications for any updates regarding the schedule,\" Saikia said in an official statement.“Further, it needs to be reiterated that bilateral matches are primarily allotted by following a standard policy,” he added.According to the official schedule issued by the BCCI, the first ODI between India and Sri Lanka is scheduled for December 13 in the national capital. As of now, Ahmedabad is slated to host the third and final ODI on December 19. Apart from the ODIs, Sri Lanka will also play the Men in Blue in three T20Is.Pollution issue in DelhiThe pollution levels are expected to rise in the next few months; hence, once again, the scheduling of a major cricket fixture in Delhi in December is in question. Back in 2017, Sri Lankan pacer Suranga Lakmal was seen vomiting on the ground and had to be escorted off the field. The incident happenedAt that time, the BCCI stated they would be wary of hosting matches in Delhi from October to December. \"Scheduling of matches in Delhi during this time of the year will be considered,” Amitabh Chaudhary, the acting secretary of the BCCI, had said at that time.The topic of pollution had popped up during the 2023 World Cup during the match between Bangladesh and Sri Lanka at the Arun Jaitley Stadium. Both teams also cancelled their training sessions, and the players who went ahead with the optional sessions did so wearing face masks.",
+   "text_url": "https://www.hindustantimes.com/cricket/bcci-issues-clarification-says-delhi-odi-between-india-and-sri-lanka-not-shifted-to-ahmedabad-101791797937414.html"
+  },
+  {
+   "id": "p-senators-question-legality-trump-decision-allow",
+   "rank": 22,
+   "top": false,
+   "desk": "videsh",
+   "score": 7.49,
+   "title": "U.S. Senators question legality of Trump’s decision to allow Russian oil imports",
+   "outlets": [
+    "The Hindu",
+    "BBC",
+    "The New York Times",
+    "CNBC",
+    "Reuters",
+    "BBC, world",
+    "The Hindu, international"
+   ],
+   "n": 7,
+   "date": "2026-10-12T03:33:24.000Z",
+   "read": [
+    "https://www.bbc.co.uk/news/articles/cjn5v21py07vo?at_medium=RSS&at_campaign=rss",
+    "https://www.thehindu.com/news/international/us-senators-question-legality-of-trumps-decision-to-allow-russian-oil-imports/article71573668.ece",
+    "https://news.google.com/rss/articles/CBMi2AFBVV95cUxPN0J4dUp2cnpJZFpIelI5dkdZSzU2bnN0TVp4S1kydkN2ZTc4V0VpMlVYU1VWaG1WQ0ZlbUM4VkRGRlN6OUprS3JaWklneGFpRHMxT1AtTkFoajI2TFFaaVlUcEw4M19EdWJlWlNZT3psM2JQTzcydHVGUDNrTlhMLVRJUjdIeUJZOUVGdkJ1SVFtb3A2NmV5RUJ0V0F2SzFXNVV5SUhSeXA5VlVvT2dTRHZHVVJoc1ZtWk5YbkJWU3d0WDVraV81THRISXdjQ1ZTcHRPdzhSeWvSAd8BQVVfeXFMTXRZQ1NFdGp2bEU5WEdiMG5URm95c2ViS0dKS2xJRFNMMXprNkFZS3RPRlRNWHpIc3NxQTlELXpjdFh0Z1JoNUpvenJweWp3UkI4bWtlTXdLNFp1VlROUkctMU9xZXBmVnlUSUhQbENNYzk2ZUxiQjhJekxBVlJaY005YWdaMEstaFRTaGVWTXZJVzliWlNBaklmRTlmR3lNNE5IUkVQdE4xTzFFb28tNDVldEpfYzZ4ZVVmMUlMZHU0N2p6TzdGY21DWW45VUZGYXBKb0VhRzY2Sk8zNHRaSQ?oc=5"
+   ],
+   "snippet": "Both Republican and Democratic lawmakers have criticised the deal, which was announced weeks before the US midterm elections.",
+   "also": [
+    "Trump faces growing backlash over plans to import diesel from Russia"
+   ],
+   "text": "Global fuel prices have soared since the US-Israel war with Iran began at the end of February US President Donald Trump is facing a growing backlash over plans to import diesel from Russia as the Iran war continues to impact global energy prices. Trump on Friday announced that Russian President Vladimir Putin had agreed to release 300,000 tonnes of diesel immediately \"to the American and global marketplace\" followed by several other shipments. That is despite signing legislation to authorise fresh US sanctions and tariffs on nations that import Russian oil and gas just weeks ago. The move has been criticised by some Republican and Democratic lawmakers, who believe the deal violates US laws. As well as the initial release of 300,000 tonnes of diesel, Trump said Russia would then supply 500,000 tonnes in November and one million more after that. This would be followed by a further three million tonnes, which would be delivered \"within a short period\" dependent on the condition of its refineries, which have been attacked by Ukraine during the ongoing war between the two countries. \"Lower prices for Americans, especially our Great Farmers, Ranchers, and Truckers, is my Greatest Priority,\" Trump wrote in a Truth Social post. Russia's Deputy Prime Minister Alexander Novak confirmed these numbers to Tass, the country's state-owned news agency, saying the export volume could reach three million tonnes per month in future. Ukrainian President Volodymyr Zelensky has called the deal a gift to Putin that amounts to \"an investment in a war that must be ended\". It is understood the US Treasury is suspending sanctions on Russian diesel exports until 7 April as part of the deal, but other assets like those in American banks are still frozen. A group of seven senators - four Republicans and three Democrats – on Sunday said the deal violated US laws, urging Trump to \"reverse course\". \"The United States should not provide Putin with a financial lifeline while Russia continues to kill Ukrainian civilians,\" the lawmakers said. They added that Congress had \"explicitly banned Russian energy imports in 2022 to prevent American dollars from financing Putin's brutal war against Ukraine\". The statement was signed by Republicans Susan Collins, Lisa Murkowski, Thom Tillis and John Curtis, as well as Democrats Jeanne Shaheen, Richard Blumenthal and Ron Wyden. Trump's 'energy ceasefire' c",
+   "text_url": "https://www.bbc.co.uk/news/articles/cjn5v21py07vo?at_medium=RSS&at_campaign=rss"
+  },
+  {
+   "id": "p-nobel-economics-prize-awarded-robert-hall",
+   "rank": 23,
+   "top": false,
+   "desk": "desh",
+   "score": 7.45,
+   "title": "Nobel economics prize awarded to Robert Hall, Michael Woodford for stabilisation models",
+   "outlets": [
+    "Scroll",
+    "The Indian Express, world",
+    "Hindustan Times, world",
+    "The Indian Express, latest",
+    "Mint, news",
+    "The Economic Times, top",
+    "BusinessLine, economy",
+    "CNBC-TV18"
+   ],
+   "n": 8,
+   "date": "2026-10-12T10:37:25.000Z",
+   "read": [
+    "https://scroll.in/latest/1096344/nobel-economics-prize-awarded-to-robert-hall-michael-woodford-for-stabilisation-models?utm_source=rss&utm_medium=public",
+    "https://indianexpress.com/article/world/robert-hall-michael-woodford-win-nobel-prize-in-economics-10917987/",
+    "https://www.hindustantimes.com/world-news/nobel-prize-economics-2026-winners-michael-woodford-robert-e-hall-stockholm-royal-swedish-academy-of-sciences-sveriges-riksbank-101791797782167.html"
+   ],
+   "snippet": "Their models have ‘significantly improved our ability to implement’ effective economic stabilisation policy, the Royal Swedish Academy of Sciences said.",
+   "also": [
+    "Nobel Economics 2026: Robert E Hall, Michael Woodford win for stabilisation research",
+    "Michael Woodford and Robert E Hall win 2026 Sveriges Riksbank Prize in Economic Sciences",
+    "Nobel Economics 2026: Robert E Hall, Michael Woodford win for stabilisation research"
+   ],
+   "text": "The Nobel Prize in economics was on Monday awarded to American economists Robert Hall and Michael Woodford for stabilisation models. Hall and Woodford developed new macroeconomic models that have “significantly improved our ability to implement effective stabilisation policy”, the Royal Swedish Academy of Sciences said. A stabilisation policy is a set of macroeconomic measures that governments and central banks take to stabilise the business cycle, maintain employment levels and keep inflation under control. Fiscal and monetary policy measures based on these models “can reduce the economy’s peaks and troughs”, the academy said. Hall and Woodford were awarded the prize for “demonstrating how economic models could be reconstructed to revitalise stabilisation policy”, it added. “Rather than basing the models on statistical links between macroeconomic variables, such as inflation, production and consumption, they chose to build them on a microeconomic foundation,” said the academy. “This encompasses an understanding for how the total mass of individual households and businesses affect the economy through their actions.” The two economists will equally share the prize amount of 12 million Swedish kronor, or Rs 11.4 crore. The prize in economics was the last to be announced this year. On October 5, the prize in medicine was awarded to three scientists – Peter Hegemann, Georg Nagel and Karl Deisseroth – for their research on brain activity. A day later, the prize in physics was awarded to Belgian physicist Francis Halzen for the discovery of high-energy neutrinos of astrophysical origin and his contributions to the IceCube Neutrino Observatory in Antarctica. Two chemists – Henri Kagan and Kenso Soai – were awarded the prize in chemistry on Wednesday for their research into the mirror images of molecules, which is decisive for the development of pharmaceuticals. On Thursday, the prize in literature was awarded to Canadian poet, essayist and translator Anne Carson for her “bold and inventive” body of work that, “in playful dialogue with the classical tradition, has created new forms for contemporary literature”. A day later, the Nobel Peace Prize was awarded to South African jurist Navi Pillay for her efforts to promote peace and international law. In 2025, the prize in economics was awarded to economists Joel Mokyr, Philippe Aghion and Peter Howitt for their work on",
+   "text_url": "https://scroll.in/latest/1096344/nobel-economics-prize-awarded-to-robert-hall-michael-woodford-for-stabilisation-models?utm_source=rss&utm_medium=public"
+  },
+  {
+   "id": "p-flydubai-crew-trying-help-omani-co",
+   "rank": 24,
+   "top": false,
+   "desk": "videsh",
+   "score": 7.43,
+   "title": "Was flydubai crew trying to help the Omani co-pilot? Passenger's explosive claim raises questions about...",
+   "outlets": [
+    "Moneycontrol.com",
+    "The Times of Israel",
+    "The Jerusalem Post",
+    "Eurasia Review",
+    "Firstpost",
+    "The New Yorker",
+    "The Washington Post",
+    "Bluefield Daily Telegraph"
+   ],
+   "n": 8,
+   "date": "2026-10-12T10:13:17.000Z",
+   "read": [
+    "https://news.google.com/rss/articles/CBMijgJBVV95cUxQcEdBTEoyNEtLR2pnVTcxbGF0TXI0OHFTXzlGNHBHVnhrUHh2dGpHRUpLLUJacnBhanVOdEVmLXZEVlROZUpiTFpVSldtVzlXSEZzS0c3cEl2RGdNLWJXREJ0U0ZEOGpjV0E0WUV0b2pIMFZMSGJDM3ZzZDF2WWRldXBGdkJrT0hLMUxKNm1WcUJDRm5XeVoxbjlPS3M2QUFKMGhZbGFNM1RjdzJnTEplODl2RGpiZ0E3X1d5T210SkRqQlg0ZGVOUXJSX1pBRU1Tbm9ueFA2RkhEckdlT1Y1UG9pSHcwRzNlOGJ6VmtqSE1GblhQNE1OVDNDU1ViVUJSbDk1Rm1UMzFIRzdra1HSAZMCQVVfeXFMTmkyUHBXUUFEWW1TX0VQV0NKUHBpbFhLYnUxcE1BYTVXUnhwRng0My15d2J3X2JLTk1ZTUE0SWlTVmtCY2ZJS0VfTGJhaElxUTlMSlBUalZMemdpWXpMVVUzY3ZvWElfZHVndUZWS1JpZEtpT3cxX2s2UEtsMm9FcGJzU25fZXQ0MDN2OHRXQk1GSWYwUU9hVGVrNTdiMnFJNzBRdjcyZmt4MmlDMkJ5eVduV25zMk5xUDYzZVVtSHRkR0loM0lGd2tScDFRNUZ2VTFDUzRnT0lwX2FUTl9MY2VLcGxRQ1VGcTVReFFXeHJGQUotYnowZG9YalZqa280SFYyNURBRjBuZjdRZzE5bWdEQ1U?oc=5"
+   ],
+   "snippet": null,
+   "also": [],
+   "text": "You are using an outdated browser. Please upgrade your browser to improve your experience and security. Discover the secret world of unlisted shares — analyse India's top pre-IPO companies and invest before they hit the markets Invest in Apple, Nvidia, Microsoft, Tesla and 9,000+ U.S. stocks & ETFs. Start from just ₹1. Questions have emerged over the conduct of flydubai crew members during a mid-air emergency after an Israeli passenger alleged that two attendants behaved suspiciously while passengers restrained an Omani co-pilot accused of attacking the aircraft’s Indian captain. Asaf Rajuan, who helped subdue co-pilot Hamam al-Hammami aboard flight FZ1073, has urged investigators to examine the crew’s actions and hear accounts from two additional pilots who eventually took control of the aircraft. The allegations have not been established. The UAE’s official account said al-Hammami claimed to have acted alone, while authorities indicated that investigations into possible accomplices and other connections were continuing. The incident occurred on September 30, 2026, when the Dubai-to-Tel Aviv flight diverted to Tabuk in Saudi Arabia after al-Hammami allegedly attacked Captain Smit Machchhar with an emergency axe. Speaking to Channel 12, Rajuan alleged that one flight attendant appeared to loosen the restraints used to hold the co-pilot. He said passengers confronted the crew member after noticing what was happening. “We said to him, ‘What are you doing? What are you doing?’ It drove us crazy, we almost jumped on him,” Rajuan said. He also questioned why some crew members allegedly discouraged passengers from recording the incident. Recalling the atmosphere inside the aircraft, he said passengers feared that another person might produce a weapon. “We were afraid of them. They were beasts. You touch him, you feel like you're touching a rock,” he said. Rajuan further alleged that an attendant approached the injured captain while Israeli dentist Shota Musayev was treating him and brought an unidentified pill. He said passengers were concerned because Machchhar was wearing an oxygen mask. The passenger also recalled an attendant asking him whether he was a police officer and said he noticed crew members exchanging nervous glances. However, he acknowledged that he had no evidence linking them to the alleged attack. Asked whether the attendants had worked with the ",
+   "text_url": "https://www.moneycontrol.com/world/was-flydubai-crew-trying-to-help-the-omani-co-pilot-passenger-s-explosive-claim-raises-questions-about-what-happened-mid-air-article-14050191.html"
+  },
+  {
+   "id": "p-started-sink-backwards-139-migrants-including",
+   "rank": 25,
+   "top": false,
+   "desk": "videsh",
+   "score": 7.41,
+   "title": "'Started to sink backwards': 139 migrants, including 15 children, killed as boat capsizes off Djibouti",
+   "outlets": [
+    "The Times of India",
+    "News On AIR",
+    "Telegraph India",
+    "BBC",
+    "The Hindu",
+    "BBC, world",
+    "The Independent, world",
+    "Sky News, world"
+   ],
+   "n": 9,
+   "date": "2026-10-12T01:54:00.000Z",
+   "read": [
+    "https://www.bbc.co.uk/news/articles/cwy7lxx60dg5o?at_medium=RSS&at_campaign=rss",
+    "https://www.independent.co.uk/news/world/africa/djibouti-migrant-boat-deaths-africa-yemen-b3065130.html",
+    "https://news.sky.com/story/109-dead-after-ship-sinks-off-coast-of-djibouti-un-agency-says-13597707"
+   ],
+   "snippet": "The boat was travelling from Djibouti to Yemen with 305 people on board, when it capsized near the port town of Obock on Thursday night.",
+   "also": [
+    "Children among 139 dead after boat capsizes off Djibouti, UN says",
+    "Children among at least 139 dead after migrant boat capsizes",
+    "Children among at least 139 dead after migrant boat capsizes"
+   ],
+   "text": "IOM workers receiving migrants near Guhere, north of the port town of Obock At least 139 migrants including 15 children have died and dozens more are still missing after a boat sank off the coast of Djibouti, the UN's migration office has said. The boat had been travelling from Djibouti to Yemen with 305 people aboard when it capsized near the port town of Obock on Thursday night. Around 82 people were rescued, the International Organization for Migration (IOM) said. IOM's Djibouti mission chief Alexandre Coissac called the tragedy a \"stark reminder\" of the dangers migrants face when seeking a new life elsewhere. Tens of thousands of migrants from the Horn of Africa make the perilous journey each year hoping to reach Gulf countries for safety and work, the agency says. The organisation revised its toll from 109 on Sunday after 30 more bodies were recovered. \"This is a devastating loss of life,\" Coissac said. \"Our thoughts are with the survivors and the families who have lost loved ones or remain without news of their relatives.\" Local authorities are also arranging burials for those who have died, while the survivors - all Ethiopian nationals - have medical care readily available to them. Yemen remains engulfed in a devastating civil war that has lasted more than a decade. Despite this conflict - and growing instability across the wider region - migrants still cross the Bab el-Mandeb Strait to Yemen driven by poverty, insecurity and the growing impacts of climate change. Since 10 September, the IOM said its Displacement Tracking Matrix had observed more than 20,000 \"movements\" from Ethiopia to Djibouti. IOM said it was providing assistance to 64 of the survivors at its response centre in Obock, including healthcare and support to \"restore contact with their families\". The UN agency was working in \"close collaboration\" with local authorities to help migrants and \"prevent deaths at sea and on land\", it added. More than 900 migrants died or went missing taking the same route in 2025, during an 18% increase in the number of people attempting the journey, according to IOM statistics. In March 2026, nine people were killed and 45 went missing following a similar incident as Thursday's. The conflict in Yemen has also displaced more than 130,000 people across the country, the UN refugee agency said last month. Thousands of Yemenis have fled to Djibouti to escape the",
+   "text_url": "https://www.bbc.co.uk/news/articles/cwy7lxx60dg5o?at_medium=RSS&at_campaign=rss"
+  },
+  {
+   "id": "p-neither-approved-nor-disapproved-eci-form",
+   "rank": 26,
+   "top": false,
+   "desk": "desh",
+   "score": 7.32,
+   "title": "We have neither approved nor disapproved ECI's Form 6 modification: Supreme Court clarifies",
+   "outlets": [
+    "Bar and Bench",
+    "Live Law",
+    "The Hindu",
+    "The Times of India",
+    "Scroll.in",
+    "Scroll",
+    "News18, India",
+    "Mint, news"
+   ],
+   "n": 8,
+   "date": "2026-10-12T07:40:27.000Z",
+   "read": [
+    "https://scroll.in/latest/1096345/sc-says-it-never-heard-matters-related-to-modification-of-form-6?utm_source=rss&utm_medium=public",
+    "https://www.news18.com/india/supreme-court-clarifies-it-has-not-approved-or-revised-eci-form-6-ws-l-10378006.html",
+    "https://www.livemint.com/news/india/no-adjudication-on-new-form-6-while-hearing-bihar-sir-supreme-court-11791790464620.html"
+   ],
+   "snippet": "The Election Commission claimed in a statement on September 26 that a declaration attached to Form 6 for the SIR had been upheld by the Supreme Court.",
+   "also": [
+    "SC says it never heard matters related to modification of Form 6",
+    "Supreme Court Says It Neither Approved Nor Disapproved Revised Form 6, Says Will Examine Validity",
+    "New Form 6 neither approved nor rejected: Supreme Court clarifies stance, ‘When Bihar SIR judgment was delivered…’"
+   ],
+   "text": "The Supreme Court on Monday said that it had not heard any matter related to the Election Commission’s Form 6, which is used to register new voters, reported Bar and Bench . Therefore, the court’s statements from October 5 cannot be construed as approving or disapproving any changes to the form, Justice Joymala Bagchi was quoted as saying by the legal news outlet. Hearing petitions seeking the suspension of Chief Election Commissioner Gyanesh Kumar for allegedly taking unilateral decisions regarding the special intensive revision of electoral rolls, Chief Justice Surya Kant had verbally observed on October 5 that the Supreme Court had not approved any changes to Form 6. On September 26, the Election Commission had claimed in a statement that a declaration attached to Form 6 for the voter roll revision exercise had been upheld by the Supreme Court. The poll panel had also announced that the old version of Form 6 would be used in periods when SIR is not underway. “Any modified Form 6 has not been approved by us,” Kant was quoted as having said. “Let’s be clear. When the record is produced, we would like to see who modified [it].” During the hearing on Monday, the petitioners said that the poll panel had represented the new Form 6 as having the Supreme Court’s approval. “On October 5, this Court had already declared that Form 6 was not approved by the Supreme Court of India,” the petitioner pointed out, reported Bar and Bench . “This is very important. I am seeking a direction regarding this.” Kant told the petitioner that the court had not heard any matter related to the form. “That is all we have said,” said the chief justice on Monday. “Whether approved or not approved, don’t pick up words like this only for yourself, please.” Petitions were filed before the court after The Indian Express reported on September 23 that Sandhu and Joshi had formally objected 14 times in 10 months to decisions by the poll panel related to the special intensive revision, saying some had been taken without their knowledge. Their objections were reportedly related to the changes to Form 6, appeals against the inclusion of voters in West Bengal and the handling of voter data in Goa, among other matters. The two election commissioners had also raised concerns over access to the digital electoral roll database. In one written objection, Sandhu was quoted as having stated that the pol",
+   "text_url": "https://scroll.in/latest/1096345/sc-says-it-never-heard-matters-related-to-modification-of-form-6?utm_source=rss&utm_medium=public"
+  },
+  {
+   "id": "p-two-indian-seafarers-missing-nine-rescued",
+   "rank": 27,
+   "top": false,
+   "desk": "desh",
+   "score": 7.16,
+   "title": "Two Indian seafarers missing, nine rescued after drone attack on tanker at Sohar Anchorage, says Sonowal",
+   "outlets": [
+    "The Hindu",
+    "The Indian Express",
+    "Telegraph India",
+    "The Times of India",
+    "TheWire.in",
+    "The Indian Express, India",
+    "Firstpost, India"
+   ],
+   "n": 7,
+   "date": "2026-10-12T03:29:46.000Z",
+   "read": [
+    "https://indianexpress.com/article/india/india-condemns-strait-of-hormuz-attacks-2-indian-sailors-missing-10917154/",
+    "https://www.firstpost.com/world/india-condemns-hormuz-ship-attacks-two-seafarers-missing-14052056.html",
+    "https://www.firstpost.com/world/nine-indian-seafarers-rescued-2-missing-after-drone-attack-on-tanker-at-omans-sohar-anchorage-14052034.html"
+   ],
+   "snippet": "Nine crew members were rescued from MT Petro Dolphin, while search-and-rescue operations continue for two missing Indians. All 11 Indian seafarers aboard MT Valthera are safe",
+   "also": [
+    "India condemns Strait of Hormuz attacks; 2 Indian sailors missing",
+    "‘Attacks must cease’: India condemns strikes on two ships near Hormuz, two seafarers missing",
+    "Nine Indian seafarers rescued, 2 missing after drone attack on tanker at Oman’s Sohar Anchorage"
+   ],
+   "text": "India on Monday condemned attacks on two ships with Indians on board in the Strait of Hormuz, in which two Indian seafarers were missing. “We condemn the attacks on commercial vessels in the Strait of Hormuz region on 11 October 2026. MT PETRO DOLPHIN was reportedly struck by a drone, with two of the 11 Indian seafarers onboard reported missing. MT VALTHERA, a Marshall Islands-flagged tanker, was struck by an unknown projectile, resulting in a fire onboard. All 11 Indian seafarers onboard MT VALTHERA are reported to be safe,” it said. It said that the Embassy of India in Muscat is closely monitoring the situation and coordinating with the Omani authorities and respective ship management companies for the rescue of missing Indians and to provide all possible assistance to the Indian crew. “The safety and security of Indian seafarers remain a priority for the Government of India.The recurring attacks on commercial shipping in the region are deeply concerning and risk further aggravating an already volatile situation,” it said. It also said that “India reiterates the need for immediate de-escalation and a resolution to the ongoing conflict through dialogue and diplomacy. Attacks on commercial vessels, seafarers and civilian infrastructure must cease. Freedom of navigation and the safe, unimpeded flow of maritime commerce through international waterways, in accordance with international law, must be upheld.” Shipping Minister Sarbananda Sonowal said that tanker MT PETRO DOLPHIN, carrying 11 Indian seafarers, was subjected to a drone attack at Sohar Anchorage. In a social media post on X, Sonowal said that while nine Indian crew members had been successfully rescued and were safe, two Indian nationals remained missing. He further said search-and-rescue operations were actively underway by the local Coast Guard. \"We are continuously coordinating with all relevant authorities to fully support the ongoing rescue efforts and ensure every possible action is taken to safely locate our missing personnel,\" Sonowal said.",
+   "text_url": "https://indianexpress.com/article/india/india-condemns-strait-of-hormuz-attacks-2-indian-sailors-missing-10917154/"
+  },
+  {
+   "id": "p-chatgpt-alone-enough-tcs-hire-80",
+   "rank": 28,
+   "top": false,
+   "desk": "ai",
+   "score": 7.16,
+   "title": "'ChatGPT Alone Not Enough': TCS To Hire 80% Freshers With These AI Skills",
+   "outlets": [
+    "NDTV",
+    "ET CIO",
+    "BusinessLine",
+    "The Hindu",
+    "The Economic Times",
+    "ET Markets",
+    "The Economic Times, top"
+   ],
+   "n": 7,
+   "date": "2026-10-12T08:53:32.000Z",
+   "read": [
+    "https://economictimes.indiatimes.com/markets/stocks/news/tcs-shares-after-6-rally-in-2-sessions-after-q2-results-what-are-technicals-indicating-for-the-it-major/articleshow/134884849.cms",
+    "https://economictimes.indiatimes.com/jobs/fresher/tcs-to-hire-80-pc-of-workforce-with-digital-ai-skills-ai-work-to-expand-profitability/articleshow/134884437.cms",
+    "https://news.google.com/rss/articles/CBMivAFBVV95cUxQOFMzNzBsRXpTclZUQjJ1RFlaSGhvYUlXUzNWa1BkZXZ4OEcwWC13NDUyUW1aU2VDS0lVWlVKN2JoYW9IWnRqS0JzT0JTRUI2NHNtX3FFU05feGlWVWVSUEY0UW9VcVR1WmViZW1YUnZWeVpYOUFKcEJrVG12WEVoT1lkX3JFWVhYN1hWSll5MTVXck9SV1ROOVJKRkRXb0Faam9EOTdwbENUNENYcmI2cWgyU3FJWHA0Mk1MatIBxAFBVV95cUxNYmI4RUx6RW9rTHF3RmhPS2RBY1dkbUgxb3QzWWZ5Q3h2dzMyZVFSbkJfcnhVYkQ5WTlOWFlMLUVQdUlsN0xESXRHRzBMV0lBZ1dOS2pmZ2ZjZWhUWHhfTDE2aU03WWgtRFJDS1BFX0FERmxfUmtQMnNqbmtxTTZ5YkpUWXFlMjFxU240bnlEYWViT3liXzJUcTlZOE1meGs3dlVsZm1RN0ctVHctNkE2dDhlNGlETWFETlVSY3ZZbW02VWhT?oc=5"
+   ],
+   "snippet": "TCS reported a 15% year-on-year rise in consolidated net profit to Rs 13,884 crore and declared an interim dividend of Rs 12 per share.",
+   "also": [
+    "TCS shares rally 6% in 2 sessions after Q2 results. What are technicals indicating for the IT major?",
+    "TCS to hire 80% of workforce with digital, AI skills"
+   ],
+   "text": "Shares of India’s largest IT company TCS rallied another 1.5% to their day’s high of Rs 2,195 on the BSE on Monday to extend gains for a second session and rally 6% over the same period after declaring its Q2 earnings.The company reported a 15% year-on-year (YoY) growth in its consolidated net profit at Rs 13,884 crore for the second quarter. The same stood at Rs 12,075 crore a year ago. The Board has declared a second interim dividend of Rs 12 per share for the financial year 2026-27.In constant currency terms, revenue rose 0.5% quarter-on-quarter. Operating margin came in at 24%, while net margin stood at 19%.What are charts showing?TCS witnessed a sharp pullback towards its 50-day EMA but faced profit booking around this level. Despite the recovery and early signs of improving momentum, the broader technical structure remains weak, Sudeep Shah, Head of Derivatives Research at SBI Securities said. On the weekly chart, the stock continues to trade below key moving averages. The 20-week EMA zone of Rs 2,255–2,260 is likely to act as immediate resistance. A decisive breakout above this zone would be necessary to strengthen the case for a meaningful pullback in the near term.“The Nifty IT Index has been consolidating in the 27,613–28,777 range since late September. The index continues to trade below key moving averages on the weekly chart, keeping the broader trend weak. The RSI has recovered from oversold territory, but momentum remains subdued, with no clear signs of a strong trend reversal yet,” he added.On the Relative Rotation Graph (RRG), the IT Index is placed in the Improving quadrant, indicating early signs of improving momentum, although relative strength remains limited. The 27,600–27,550 zone is likely to act as immediate support, while the 20-week EMA zone of 29,500–29,550 is expected to act as a key resistance. A decisive and sustained breakout above this zone could trigger a meaningful pullback in the near term.Should you buy TCS shares?Nomura has maintained its Buy rating on TCS with a price target of Rs 2,630, implying an upside of 27%. The brokerage noted that the company's trailing 12-month deal wins remained flat year-on-year, while near-term demand conditions were largely unchanged as clients continue to scrutinise discretionary spending that does not offer immediate benefits.Goldman Sachs has maintained its Buy rating on TCS with a target",
+   "text_url": "https://economictimes.indiatimes.com/markets/stocks/news/tcs-shares-after-6-rally-in-2-sessions-after-q2-results-what-are-technicals-indicating-for-the-it-major/articleshow/134884849.cms"
+  },
+  {
+   "id": "p-aa23-lokesh-kanagaraj-shares-update-film",
+   "rank": 29,
+   "top": false,
+   "desk": "screen",
+   "score": 7.15,
+   "title": "AA23: Lokesh Kanagaraj Shares Update On Film With Allu Arjun Amid Shelving Rumours",
+   "outlets": [
+    "NDTV",
+    "The Times of India",
+    "Gulte",
+    "Tupaki English",
+    "Telugu360"
+   ],
+   "n": 5,
+   "date": "2026-10-12T10:38:59.000Z",
+   "read": [
+    "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNa3drdGNqQk9GMk04WUVzVkNJNnppNldwNDdfNTNWaDVfbTFhdGdDUlM4dFhLbmtFQmViSVA1Q3d6TURrQUpkenhrbEU5ZjVEbE9ZazhKWjc0MV9zUmhKNnBablNhbUVFeEtqQXNYOWxyY1hnTWUtZy1ROUZKcGplTkVrc1JoN3F4VTBwU0U0Wi11QmdWczN5aFZCMU0xeHFUbGlLSFhkU3NjVkVPd3dKdVJpMnc5alhxaUhhc3AxQTJfbDDSAcsBQVVfeXFMUFpjUXdEd1pBUGtsdnVJd0N3anNIMU1VQ0lmQjlONl85N2c4MDNOZzU4S2tWMjF6YTBQVU9zQURJbmpIbVc5MXVjT0VQVGpGSlA5UktlSFFzRFMwVTFPYW9Pc0xkcTF4TWNsWU9rVERSQkZSUjBmN01majBfcU5qckVXT3Rmcm81czJ5d19UaVE4SkRlR3FPdVFoQzFfYUxyUzByd0M1WWJicjNPZkVLbXZYVlZ0cENJU3RwNWFPbTlIOHlZZEtHajNrVFE?oc=5"
+   ],
+   "snippet": null,
+   "also": []
+  },
+  {
+   "id": "p-flash-floods-nepal-again-warning-bells",
+   "rank": 30,
+   "top": false,
+   "desk": "desh",
+   "score": 7.12,
+   "title": "Flash floods in Nepal again: Warning bells for Himalaya, lessons for India",
+   "outlets": [
+    "The Indian Express",
+    "BBC",
+    "Reuters",
+    "ABC News - Breaking News, Latest News and Videos",
+    "AP News",
+    "ABC News, international",
+    "The Hindu, international"
+   ],
+   "n": 7,
+   "date": "2026-10-12T02:21:46.000Z",
+   "read": [
+    "https://abcnews.com/International/wireStory/villages-evacuated-flash-flood-budhi-gandaki-river-hits-137168729",
+    "https://www.thehindu.com/news/international/villages-evacuated-as-flash-flood-from-budhi-gandaki-river-hits-northern-nepal/article71570887.ece",
+    "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPd0t5eWhJYUFlUGdkSWJjNERiVjFMVTJ6ZkVQNWVTVG1mNG9IWEo0cTRJa1lQNXhNVkd3UEctQUY5UmQwakNYMzlQcXk4UGc5TktyQ1ZTX0hXUDdhUEpPUkhvSzF5RTdaOHlFdHZxNi1lQ0lFeldIUnVDSHFLYzhJMG1uZ0FxbHVPTjJHZTd2TE1XTGhhcmFmcDlNYzVHekk5WVRpbFBYaGh6QllSODUyOGMzOHVUcV9zSUl30gHCAUFVX3lxTE4zeTJlRzdneFdzbDZ2UUw3bUhhd3VBTHJvMG1YMlM4a05ubVZkSHhWUEZQU1ZzazV6eTM2bmh4ZnlVN29LZENkNDVzTVVKNHdic2poZlM5R3MzaVo0bGFkY29raVBuOHRpaDZJTTRpN19KdUsxUXYwSS1iNXJLaWU5VnhTZnNLbjdsTG5SM3ppU05xaHpTSFQ0RGlUYnk2aEFsWjNXVVl2MVF5dUg4b2xPZFN2N1NteFBSb2FhSm9MN1ZB?oc=5"
+   ],
+   "snippet": "Residents in north central Nepal have evacuated after flash flooding on the Budhi Gandaki River",
+   "also": [
+    "Villages evacuated as flash flood from Budhi Gandaki River hits northern Nepal",
+    "Villages evacuated as flash flood from Budhi Gandaki River hits northern Nepal",
+    "Villages evacuated as flash flood from Budhi Gandaki River hits northern Nepal"
+   ],
+   "text": "Residents in north central Nepal have evacuated after flash flooding on the Budhi Gandaki River KATHMANDU, Nepal -- Residents along the Budhi Gandaki River in north central Nepal evacuated on Sunday as flash flooding destroyed homes and other structures in the area. The National Disaster Risk Reduction and Management Authority evacuated villagers and warned others to move to safer areas while remaining on alert until late Sunday. The agency said at least five people are reported missing so far. The flash flood also damaged or destroyed four bridges, swept away about three dozen houses and damaged the construction site of a hydropower plant. Several power and communication towers were also damaged along the riverside. Nepal's army said in a statement that it was continuing to rescue stranded people using helicopters and ground troops. They had rescued 49 people by Sunday afternoon. The agency said the flash flood was caused by a landslide that initially blocked the river near the village of Chumchure. The dam formed by the landslide breached, triggering the flood. The Budhi Gandaki River merges into the Trishuli River and is a key waterway near the capital Kathmandu. Videos on social media show houses and sheds being swept away by the swollen river flowing between tall mountains. It was not immediately clear how many of the small villages in the mountainous area were impacted. Social media posts indicate the government warning prompted an evacuation in Arughat, a riverside town on the highway connecting Kathmandu to other parts of the country. Nepal is still recovering from a devastating flood in August along the mountainous Nepal-China border that left more than 1,400 people dead and thousands more missing. The office of Nepal Prime Minister Balendra Shah on Monday announced an end to search and rescue operations for additional victims. Authorities will instead concentrate on recovery, including restoration of roads and bridges cut off by floods, particularly in remote areas where damaged infrastructure has made aid deliveries difficult. The government estimates the rebuilding effort will cost $4.77 billion. Nearly 33,000 people have been affected and about 7,500 homes were damaged or destroyed. Residents along the Budhi Gandaki River in north central Nepal evacuated on Sunday as flash flooding destroyed homes and other structures in the area.",
+   "text_url": "https://abcnews.com/International/wireStory/villages-evacuated-flash-flood-budhi-gandaki-river-hits-137168729"
+  },
+  {
+   "id": "p-premier-league-man-city-defeats-liverpool",
+   "rank": 31,
+   "top": false,
+   "desk": "sidelines",
+   "score": 7,
+   "title": "Premier League: Man City defeats Liverpool 3-0, silencing hostile Anfield crowd",
+   "outlets": [
+    "The Hindu",
+    "The Guardian",
+    "BBC",
+    "Al Jazeera",
+    "Premier League",
+    "The Guardian, football",
+    "The Guardian, international",
+    "The Guardian, sport"
+   ],
+   "n": 8,
+   "date": "2026-10-11T22:12:15.000Z",
+   "read": [
+    "https://www.theguardian.com/football/2026/oct/12/premier-league-10-talking-points-from-the-weekend-action",
+    "https://www.theguardian.com/football/2026/oct/12/premier-league-10-talking-points-from-the-weekend-action",
+    "https://www.theguardian.com/football/2026/oct/12/premier-league-10-talking-points-from-the-weekend-action"
+   ],
+   "snippet": "Manchester City unrepentant in victory, Spurs make progress of a sort and Noni Madueke meets the moment The manner of Manchester City’s victory at Liverpool was an article of both vindication and vilification. Those gleefully wielding inflatable bananas in the Anfield away end co",
+   "also": [
+    "Premier League: 10 talking points from the weekend’s action",
+    "Premier League: 10 talking points from the weekend’s action",
+    "Premier League: 10 talking points from the weekend’s action"
+   ],
+   "text": "Manchester City unrepentant in victory, Spurs make progress of a sort and Noni Madueke meets the moment The manner of Manchester City’s victory at Liverpool was an article of both vindication and vilification. Those gleefully wielding inflatable bananas in the Anfield away end could thumb their noses. Why not enjoy the dances of defiance until the music stops? The same went for City players, asked to perform under the darkest of clouds, able to focus, at last, on football, rather than legal argument and uncertain futures. Beyond City, the sight of a club found guilty of 100-plus charges laying waste to such rivals as Liverpool was deeply uncomfortable . The Premier League season and product are badly damaged until the matter is somehow resolved. What happened at Anfield should double the haste for a resolution. Chants of “cheat” whenever City players, the game already won, slipped the ball around, are bound to be repeated at other stadiums. Enzo Maresca has described his club’s plight as “noise” but his team’s victory did absolutely nothing to turn the volume down. John Brewin Andoni Iraola’s Liverpool reboot will require patience. They showed plenty of drive and determination against Manchester City but also uneven edges , polish lacking. Iraola’s aim was to get his players in their opponents’ faces, deepening any doubts circulating in City’s players. Mission mostly accomplished during the first half. A flurry of chances at the beginning of the second half had City rocking only for Ryan Gravenberch’s dismissal to pull the rug. With Alexander Isak and Cody Gakpo missing, Liverpool lacked the quality to cause the necessary damage. Lewis Koumas played well in the role of agitator as emergency centre-forward. Víctor Muñoz continues to be full of buzz but Bradley Barcola and Florian Wirtz, both players signed for £100m plus, are supposed to supply the cutting edge. Barcola has the mitigation of being a new arrival, while discussions about Wirtz border on football cliche. Once Gravenberch departed, and Trey Nyoni was required in midfield, the finger was always going to be pointed in the German’s direction. JB For the second time this season, Pierre Sage watched his Crystal Palace side win a Premier League game despite not being at their best; the Frenchman was honest enough to admit they had been slightly fortunate against Nottingham Forest . But after overcoming",
+   "text_url": "https://www.theguardian.com/football/2026/oct/12/premier-league-10-talking-points-from-the-weekend-action"
+  },
+  {
+   "id": "p-jurassic-fossil-reveals-ancient-origins-how",
+   "rank": 32,
+   "top": false,
+   "desk": "tech",
+   "score": 6.98,
+   "title": "Jurassic fossil reveals ancient origins of how mammals drink milk",
+   "outlets": [
+    "Phys.org",
+    "Nature",
+    "Reuters",
+    "University of Chicago News",
+    "NPR",
+    "CGTN",
+    "The Times of India",
+    "Bryan College Station Eagle"
+   ],
+   "n": 8,
+   "date": "2026-10-11T16:00:04.000Z",
+   "read": [
+    "https://news.google.com/rss/articles/CBMif0FVX3lxTE96MlN1eWVub2lMclhsR3NuU2Y5dFIyNVhwdVFIT3RybDlPS0xpMFJEcFljelZBUGtxcjd2WTJuaGMtdjlMazh1X3dhNTA2eGllNkVhUEV0UnB0TVJXTmEzSVhHQ1JjZzVlN0U0TTN4NWpLcEhISDlPREdqc0lYX1E?oc=5"
+   ],
+   "snippet": null,
+   "also": [],
+   "text": "This article has been reviewed according to Science X's editorial process and policies . Editors have highlighted the following attributes while ensuring the content's credibility: An international team of researchers has uncovered new evidence illuminating the evolutionary origins of one of the defining features of mammals: the ability to suckle and consume milk during infancy. Their findings, published in Nature , suggest that key anatomical structures required for mammalian suckling, swallowing and breastfeeding behaviors evolved nearly 165 million years ago, long before the appearance of modern mammals. The findings describe a newly discovered species called Megacauda sungei, a large mammaliaform that lived during the Middle Jurassic Period in what is now Inner Mongolia, China. The research was led by scientists from the University of Chicago, Shenyang Normal University, Shandong University of Science and Technology, the University of Bonn and Ohio University. Using high-resolution microCT imaging, the team reconstructed the skull and skeletal anatomy of the fossil. They discovered an unexpected combination of traits. Megacauda had specialized blade-like cheek teeth resembling those of modern seals, a platypus-like pelvis and an otter-like tail, indicating it was likely a semiaquatic predator that hunted small vertebrates and invertebrates in freshwater environments. More significantly, the researchers identified a pair of small bony projections on the roof of the mouth that closely resemble features found in living therian mammals, a group that includes marsupials (such as kangaroos and opossums) and placental mammals (such as elephants and humans). In modern mammals, these structures help support the soft palate and muscles involved in suckling, swallowing and protecting the airway. Because soft tissues are rarely preserved in fossils, scientists have long struggled to determine when these important feeding structures first evolved. \"The anatomy of Megacauda suggests that structures involved in coordinating swallowing and sucking had already begun to evolve by the Middle Jurassic. This discovery helps us better understand the biological foundations of one of the defining characteristics of mammals: feeding young with milk,\" said Zhe-Xi Luo, Ph.D., professor of organismal biology and anatomy at the University of Chicago and senior author of the study. T",
+   "text_url": "https://phys.org/news/2026-10-jurassic-fossil-reveals-ancient-mammals.html"
+  },
+  {
+   "id": "p-what-expect-markets-week-big-bank",
+   "rank": 33,
+   "top": false,
+   "desk": "ledger",
+   "score": 6.98,
+   "title": "What to Expect in Markets This Week: Big Bank Reports Fire Up Earnings Season; Inflation, Retail Sales Figures Land",
+   "outlets": [
+    "Investopedia",
+    "Financial Times",
+    "Yahoo Finance",
+    "CMC Markets",
+    "Investing.com India",
+    "Barron's",
+    "Bloomberg.com"
+   ],
+   "n": 7,
+   "date": "2026-10-11T09:00:00.000Z",
+   "read": [
+    "https://news.google.com/rss/articles/CBMi5AFBVV95cUxOMWRaeHVmdURib2x4b01xUHRBcXNMalQ2UUpjQmRpWGxQaTlNS2hkdHRzamczeHdRaVBrcVlBbEF1VEJGcktsMmNEVnd6emtSN1F2YzYzaGl3MVVrRVNVVEF4S21LaE1qZVZSMHI0SDY5aXBTQ0Rra2pKM3V5YkkyVUlEck41RWd0NUdwYzRTUTBhVmtTaktCZC1COG51TjE5VmxkNmxDNFBnUWo1LV9kRXZkaEhoUi04LVVTOVBsbGRVXy12bW1scFlDanFQY1JzLVQtamFjOFNsQzhZSWQtTVo1MGY?oc=5"
+   ],
+   "snippet": null,
+   "also": []
+  },
+  {
+   "id": "p-max-verstappen-jokes-about-coded-messages",
+   "rank": 34,
+   "top": false,
+   "desk": "paddock",
+   "score": 6.96,
+   "title": "Max Verstappen jokes about coded messages as Red Bull plans first races for Gianpiero Lambiase’s successor",
+   "outlets": [
+    "Motorsport.com, F1",
+    "Autosport, F1"
+   ],
+   "n": 2,
+   "date": "2026-10-11T17:17:47.000Z",
+   "read": [
+    "https://www.motorsport.com/f1/news/max-verstappen-jokes-about-coded-messages-as-red-bull-plans-first-races-for-lambiases-successor/10864449/?utm_source=RSS&utm_medium=referral&utm_campaign=RSS-F1&utm_term=News&utm_content=www",
+    "https://www.autosport.com/f1/news/max-verstappen-jokes-about-coded-messages-as-red-bull-plans-first-races-for-gianpiero-lambiases-suc/10864455/?utm_source=RSS&utm_medium=referral&utm_campaign=RSS-F1&utm_term=News&utm_content=uk"
+   ],
+   "snippet": "There were still two races on the current Formula 1 calendar missing from Max Verstappen's list of victories: the Madring and the Marina Bay Street Circuit. Given that F1 only visited the street circuit in Madrid for the first time this year, that is understandable, but Singapore",
+   "also": [
+    "Verstappen jokes about coded messages as Red Bull phases in Lambiase’s successor"
+   ],
+   "text": "There were still two races on the current Formula 1 calendar missing from Max Verstappen's list of victories: the Madring and the Marina Bay Street Circuit. Given that F1 only visited the street circuit in Madrid for the first time this year, that is understandable, but Singapore has proved to be Red Bull's Achilles' heel for years. Until this season. In 2026, Verstappen was dominant in Singapore, claiming two pole positions and two victories over the sprint weekend. On Sunday, the main focus was on the start – a major headache for Red Bull this year – although Verstappen managed to hold his position this time. “The start was critical, and it was just good enough. Again, something was not particularly right at the start, so I need to understand what went wrong there”, Verstappen revealed. Read Also: Formula 1F1 Singapore GP: Max Verstappen dominates for Marina Bay double “Before releasing the clutch, it didn't feel good. Then we had a few laps with some deployment issues, so that's where Charles almost got me into Turn 7. Once we had cleared the deployment problems, it was fine.” According to Verstappen, those starting problems were different from what he had experienced in recent weeks. On those occasions, things had gone wrong when he released the clutch, but this time the problem had already emerged at an earlier stage. “I need to understand what went on with the engine before even dropping the clutch, because I think that did hurt my start. It was again not fantastic, you can say that.” Afterwards, Verstappen braked late on the outside line and also managed to survive the deployment issues. That meant the threat from his rivals had passed, although the Dutchman still had to deal with another inconvenience for the remainder of the race: his radio was not working properly. Charles Leclerc, Ferrari, Max Verstappen, Red Bull Racing Photo by: Joe Portlock / Getty Images The four-time world champion could still hear the team, but his responses were unintelligible. “Maybe GP was happy that it was not working!” Verstappen laughed in the post-race press conference. “I couldn't really say anything. He did try at one point to ask me a few things in code, and I think he understood well what I meant or what I didn’t want! But it's never nice. I've been having difficulties with my radio already the whole season, and this weekend has been particularly bad.” It meant La",
+   "text_url": "https://www.motorsport.com/f1/news/max-verstappen-jokes-about-coded-messages-as-red-bull-plans-first-races-for-lambiases-successor/10864449/?utm_source=RSS&utm_medium=referral&utm_campaign=RSS-F1&utm_term=News&utm_content=www"
+  },
+  {
+   "id": "p-made-terrible-games-google-ai-playground",
+   "rank": 35,
+   "top": false,
+   "desk": "ai",
+   "score": 6.76,
+   "title": "I Made Terrible Games With Google’s AI Playground",
+   "outlets": [
+    "WIRED",
+    "blog.google",
+    "The Verge",
+    "Simply Wall Street",
+    "Financial Times",
+    "Game Developer",
+    "Barchart.com",
+    "Wired"
+   ],
+   "n": 8,
+   "date": "2026-10-11T11:30:00.000Z",
+   "read": [
+    "https://www.wired.com/story/i-made-terrible-games-with-googles-ai-playground/",
+    "https://news.google.com/rss/articles/CBMigwFBVV95cUxONndJdkFrWTdpbnc5VjRDbmFKZXNEamVqc3hEQVZ3d2hNVmJ4aFRoYmtDd3RpX1VfOGtzNkVHdTU4X3RqM204S2twMHJhU1hWaFJ3TFd5WHUweDg0TkRlS3o4aXRPd2FQbW9taERjbTRQUXJPaTd0U1N3b3diUldBWTlPWQ?oc=5"
+   ],
+   "snippet": "A long day’s haul in the video game slop mines.",
+   "also": [],
+   "text": "“Keep shooting!” Neon Don says as he mows enemies down. “Brenda took everything else away!” Playground, which Google launched this week, is part of Google Labs, the company’s landing page for its various AI experiments that haven’t made it into an app or official service quite yet. (Google has done this before with things like music production). It works similarly to Horizon Create, the game generation service Meta announced in September. Playground is essentially vibe coding for video games, letting people describe in plain language what kind of game they want to make in a chatbot-like interface. Playground then builds a working in-browser version of a game. You can add further instructions to tweak the design from there. If you have assets you want to use as a reference, you can upload photos, videos, or models. Otherwise, the visuals and designs are all AI-generated. The process of making a game is very straightforward, conversational, and responsive. That means it is perfect for dummies like me with little to no video game development chops or even decent coding skills. By simply throwing out some ideas, I built three playable, stable, and not even remotely good games in one day. Pork Drop My first work was Pork Drop, a result generated from the prompt “Tetris but with cute pigs instead of blocks.” I typed that in, hit Build. The AI chugged, then spit out a farm-themed version of Tetris with little pig faces drawn on every block. I had to iterate a bit to realize my vision, telling the AI not just to stick pig faces on the blocks but to have the blocks shaped like distorted pigs. “Each block is a pig,” I wrote, “contorted into the shape of the Tetris blocks. Make ’em look a little squished but still cute!” This resulted in a clean, playable version of Tetris, though the occasional block looked like a T-posed pig with its legs spread-eagle. The AI suggested the title Piggy Stacker, but I thought mine was better. (I’m right.) Dinner Darling The next game idea came courtesy of my colleague Jay Dayrit, who, when asked what kind of game I should make, immediately requested, “Gay dinner party.” I typed that in. With no follow-up requests, the result was a 2D flash-style game called Dinner Darling. The art looks like everyone is a Bitmoji. You’re placed in the shoes of a very stressed-out-looking host, Julian, who is tasked with hosting a fancy dinner party wit",
+   "text_url": "https://www.wired.com/story/i-made-terrible-games-with-googles-ai-playground/"
+  },
+  {
+   "id": "p-salesforce-ceo-marc-benioff-renames-company",
+   "rank": 36,
+   "top": false,
+   "desk": "sales",
+   "score": 6.01,
+   "title": "Salesforce CEO Marc Benioff renames company’s biggest product, hours after the US government's 'enemy pos",
+   "outlets": [
+    "The Times of India",
+    "CNN",
+    "The Verge",
+    "BusinessLine",
+    "chronicleonline.com"
+   ],
+   "n": 5,
+   "date": "2026-10-12T04:06:00.000Z",
+   "read": [
+    "https://news.google.com/rss/articles/CBMi2AJBVV95cUxPRTBJUnFHeDN0Mi14eWhBbEhnb3Z3ODA4ZGlrVlVXOFF1R3FJa2NXb2lpVWNpdFl0b1ZSNkNHTVhKYmY1ZUtuRjIyWGdGenNmYmFwbnl2RzFJVVRfR3JCdTA2MWVLYTlkanhzR1VJejlDRWxGUHZGNnNkaklkczYzcVJXOGItOXdnbDExeU1Ram9tcFp0Uk8zazFIcFJKOHB6Smd4WmhYNGFCWGM0OGtZVmxVMHMzalRkNUE4NXpHeHJQYzlzVnpSTkRMcEhfYXRvVjl2cW1DSzRZOXVBX2czLTRmaGNqVGRENktZQnBPWVN1UVhhUzIzc1VhazVCcXplSzVIZTQ2cXNIbXRJcmhlVWdlaFhSRnU1T2owdGpVTENDWTB3VGxnMFRqWkVrVkNWUjd0cnd6eS1VVXdIVzMyb2xLUFdkTlBjdEF1VmU3c2pSTFBGT0FoeNIB3gJBVV95cUxOa3NSNWJ1RW5TVFdWY053cmJ6T2NvbXhkeVBBUnNadG9UR2I5c0Q4S3h1cTVCYTZ3WGFfV3dQTzk3ODJXUHV5cG01aWMwdkkzcEZadDBGN0JxUWtDaVJmaUFZSmFrUkVwVjdmSFBJVFBPOTAzRWxlSENON3E2Mm9RZlhZaTNwaXZ5UkpINGdKS3p0anJxcWI4OGIzaHdKQ29fQXdFSGk1dFplQlBXd2FRNlRiTGlJbXcyTEROcjdKcE96N0FRcmxoREl5OHhPYUstbkh5TXBORm1OZnBqWE82dFk3NG5DelBQXzhvUnoxZmdGc0xUeWRBNThPSDZlR1plTmZfS1lFbFQ3blJkVGZQYmVEMTlLWmgyY25iQTZpSktKY2dabmpPblJkcXpPSHF1eUZ3ZEFIYURFYkhBYjBPM2dqRGVKTzFqeWh1VUZtMWxwOWlUOVR0M0xWU3piUQ?oc=5",
+    "https://news.google.com/rss/articles/CBMi2AJBVV95cUxPRTBJUnFHeDN0Mi14eWhBbEhnb3Z3ODA4ZGlrVlVXOFF1R3FJa2NXb2lpVWNpdFl0b1ZSNkNHTVhKYmY1ZUtuRjIyWGdGenNmYmFwbnl2RzFJVVRfR3JCdTA2MWVLYTlkanhzR1VJejlDRWxGUHZGNnNkaklkczYzcVJXOGItOXdnbDExeU1Ram9tcFp0Uk8zazFIcFJKOHB6Smd4WmhYNGFCWGM0OGtZVmxVMHMzalRkNUE4NXpHeHJQYzlzVnpSTkRMcEhfYXRvVjl2cW1DSzRZOXVBX2czLTRmaGNqVGRENktZQnBPWVN1UVhhUzIzc1VhazVCcXplSzVIZTQ2cXNIbXRJcmhlVWdlaFhSRnU1T2owdGpVTENDWTB3VGxnMFRqWkVrVkNWUjd0cnd6eS1VVXdIVzMyb2xLUFdkTlBjdEF1VmU3c2pSTFBGT0FoeNIB3gJBVV95cUxOa3NSNWJ1RW5TVFdWY053cmJ6T2NvbXhkeVBBUnNadG9UR2I5c0Q4S3h1cTVCYTZ3WGFfV3dQTzk3ODJXUHV5cG01aWMwdkkzcEZadDBGN0JxUWtDaVJmaUFZSmFrUkVwVjdmSFBJVFBPOTAzRWxlSENON3E2Mm9RZlhZaTNwaXZ5UkpINGdKS3p0anJxcWI4OGIzaHdKQ29fQXdFSGk1dFplQlBXd2FRNlRiTGlJbXcyTEROcjdKcE96N0FRcmxoREl5OHhPYUstbkh5TXBORm1OZnBqWE82dFk3NG5DelBQXzhvUnoxZmdGc0xUeWRBNThPSDZlR1plTmZfS1lFbFQ3blJkVGZQYmVEMTlLWmgyY25iQTZpSktKY2dabmpPblJkcXpPSHF1eUZ3ZEFIYURFYkhBYjBPM2dqRGVKTzFqeWh1VUZtMWxwOWlUOVR0M0xWU3piUQ?oc=5"
+   ],
+   "snippet": null,
+   "also": [],
+   "text": "Salesforce is renaming its AIForce agent platform to SIForce, chief executive Marc Benioff said on Friday, as Katherine Li reported for Business Insider. \"The era of Super Intelligence is here. AIForce is officially SIForce,\" wrote Salesforce CEO Marc Benioff in a post on X, formerly Twitter. Salesforce announced the renaming just hours after the US President Donald Trump's 'enemy post'. Incidentally, the change covers the agent platform only, not the company’s name.Earlier this week, in a post Trump wrote in a post on Truth Social, “The White House considers anyone that uses the term, “Artificial Intelligence,” as opposed to the highly accepted new and more accurate term, “Super Intelligence,” THE ENEMY!\" An Executive Order in late September, told federal agencies to replace the term Artificial Intelligence (AI) with Super Intelligence (SI). It asked all federal government agencies to make the switch in official documents and websites. The order tells executive branch agencies to stop using the older terms. As for timeline, the order also gives Trump’s science and technology adviser 60 days to propose a legal definition of superintelligence.By changing the name, Salesforce follows Tesla CEO Elon Musk. On October 5, Elon Musk said that SpaceX’s artificial intelligence unit, SpaceXAI, will change its name to SpaceXSI. Musk confirmed the change in a reply on X, after a user had asked him whether SpaceXAI could become SpaceXSI. \"Yes, we will make that change,\" Musk wrote.The Justice Department told staff on October 6 to use the new term, including in court filings “when appropriate”. Similarly, Amazon founder Jeff Bezos too backed the replacement of the term AI with SI in a Fox News interview.“I do like SI, because ‘artificial’ is not a very flattering thing,” Bezos said.What law says on AIArtificial intelligence is defined in the law in America in the National AI Initiative Act of 2020, and only Congress can change it. Both the House and the Senate would have to pass a new law, and the President would have to sign it. As a first step, the President’s science adviser has until November 28 to write a proposal for Congress. Even if a new law passes, it would only change the words the government uses.What Donald Trump's Executive Order saysPresident Donald Trump signed an Executive Order to replace the term “Artificial Intelligence” (“AI”) with “Super Intelligence",
+   "text_url": "https://timesofindia.indiatimes.com/technology/tech-news/salesforce-ceo-marc-benioff-renames-companys-biggest-product-hours-after-the-us-governments-enemy-post-adopts-label-that-white-house-wants-everyone-to-use/articleshow/134864245.cms"
+  },
+  {
+   "id": "p-shikhar-mohan-another-boy-ranchi-who",
+   "rank": 37,
+   "top": false,
+   "desk": "back",
+   "score": 5.95,
+   "title": "Shikhar Mohan, another boy from Ranchi, who is making himself count",
+   "outlets": [
+    "The Times of India",
+    "The Hindu",
+    "The New Indian Express",
+    "Livemint",
+    "The Indian Express"
+   ],
+   "n": 5,
+   "date": "2026-10-12T02:14:00.000Z",
+   "read": [
+    "https://news.google.com/rss/articles/CBMi4AFBVV95cUxQZlJJZWh1VmJQY1ExdFRkdlR5b2w3Z0pNUlV5dXJSYmtidHJveldVNHA3Tm9jV3lsRXJFZXNNMmU3WFQ5OGJNV0hmellsVDlCaWhDYXFpaDVFZ24zb3VaM1VPRkhudmQ1UG01RWFueUJJblhLeFBwWWRuOE5QVWZpbVVGaDV0VXQwQUYxNk9uNEhsQTFscTQ2V1hsNXFNM3NVT3UzRjA2NUJoYU1jbExWZS1ZZFNTclRrejU0X05NMFpya3JGcGphak9GdkZWVzl3ZlFfcS13NVd6cmlaaEIzLQ?oc=5",
+    "https://news.google.com/rss/articles/CBMi4AFBVV95cUxQZlJJZWh1VmJQY1ExdFRkdlR5b2w3Z0pNUlV5dXJSYmtidHJveldVNHA3Tm9jV3lsRXJFZXNNMmU3WFQ5OGJNV0hmellsVDlCaWhDYXFpaDVFZ24zb3VaM1VPRkhudmQ1UG01RWFueUJJblhLeFBwWWRuOE5QVWZpbVVGaDV0VXQwQUYxNk9uNEhsQTFscTQ2V1hsNXFNM3NVT3UzRjA2NUJoYU1jbExWZS1ZZFNTclRrejU0X05NMFpya3JGcGphak9GdkZWVzl3ZlFfcS13NVd6cmlaaEIzLQ?oc=5"
+   ],
+   "snippet": null,
+   "also": [],
+   "text": "NEW DELHI: Shikhar Mohan hails from Doranda, a familiar corner of Ranchi known for its educational institutions, PG accommodations and its much-loved litti chokha stall, whose popularity extends beyond the city limits.“Wo mandir ke paas wala shop... kaafi famous hai ab (That stall near the temple is pretty famous now),” said Shikhar, referring to Bhola Litti, a popular eating joint that he considers one of the best places for litti chokha.The 21-year-old, who has lived all his life in Doranda, is arguably the hottest cricketing talent in India right now. Former India spinner and current Jharkhand State Cricket Association (JSCA) official Shahbaz Nadeem calls Shikhar Mohan a prodigious talent. \"Lambi race ka ghoda hai, alag hi talent hai (He is a long-term prospect with exceptional talent),\" Nadeem told TimesofIndia.com.The second season is always more important because the opposition knows more about you. Teams analyse your strengths and weaknesses, so you have to keep improving.The opener has indeed walked the talk. After an excellent debut season in 2025-26, in which he amassed 613 runs at an average of 55.73, including two centuries, he has started the new season in rollicking fashion, smashing 143 in Jharkhand's opening match against Kerala at the Keenan Stadium in Jamshedpur. The southpaw also made some valuable contributions in the Duleep Trophy final for East Zone, scoring 85 and 52 in both innings, followed by a solid 60 on a green top in Srinagar in the Irani Trophy, playing for Rest of India against defending Ranji Trophy champions Jammu and Kashmir.\"I want to perform as well as I did last season. The second season is always more important because the opposition knows more about you. Teams analyse your strengths and weaknesses, so you have to keep improving,\" Shikhar Mohan told this website on the eve of their match.\"More importantly, I want the team to do well. We reached the final last year, and I want us to go one step further. We have won the white-ball tournament (Syed Mushtaq Ali Trophy). Now, our plan is to win a red-ball tournament as well. I want to have another good season,\" he said.Shikhar has already made a great start to the Ranji Trophy season and credits it to the 25-day camp held in Chennai.\"We had a camp in Chennai for around 25 days before the Duleep Trophy. We trained during the afternoon in the Chennai heat. We also played in th",
+   "text_url": "https://timesofindia.indiatimes.com/sports/cricket/news/shikhar-mohan-another-boy-from-ranchi-who-is-making-himself-count/articleshow/134880482.cms"
+  },
+  {
+   "id": "p-bmtc-plans-five-feeder-routes-pink",
+   "rank": 38,
+   "top": false,
+   "desk": "namma",
+   "score": 5.24,
+   "title": "BMTC plans five feeder routes for Pink Line, real-time bus arrival updates at stations",
+   "outlets": [
+    "The Hindu, Bengaluru",
+    "The Times of India, Bengaluru",
+    "The Hindu"
+   ],
+   "n": 3,
+   "date": "2026-10-11T15:06:31.000Z",
+   "read": [
+    "https://www.thehindu.com/news/cities/bangalore/bmtc-plans-five-feeder-routes-for-pink-line-real-time-bus-arrival-updates-at-stations/article71572145.ece",
+    "https://timesofindia.indiatimes.com/city/bengaluru/bmtc-proposes-five-metro-feeder-routes-for-bengaluru-metros-pink-line/articleshow/134876486.cms",
+    "https://news.google.com/rss/articles/CBMi7gFBVV95cUxOSkhSWkJhMFYydENFV2oybFNQZE5XUEtuZ1VrcTRTSkVDdTdjbXRUb2xWaFdLVGh6Ql9oOWhXLTJGVFQyMUMzRXJTVjZ2RGFpaGdKeWdHbGpMdjRQa0VPNkpDNTliT25Wa2xJeFBWc212SEJiRXRqcmNIeE9XNFNZY1Z6OEZfdmZGdDNmN2VfdjJrWTNJMEttVGtWdlpoSGlEN1dseTc5cWFPc3RDS0NXSzhfY2NvZXFiVGRSeFBTdDhHWUFSWkZnTnRvU3lub3pDV1BIcDQ3aXdqd1lwaDlZR0g2ancyUzZhd2R1dG5n0gHuAUFVX3lxTE5KSFJaQmEwVjJ0Q0VXajJsU1BkTldQS25nVWtxNFNKRUN1N2NtdFRvbFZoV0tUaHpCX2g5aFctMkZUVDIxQzNFclNWNnZEYWloZ0p5Z0dsakx2NFBrRU82SkM1OWJPblZrbEl4UFZzbXZIQmJFdGpyY0h4T1c0U1ljVno4Rl92ZkZ0M2Y3ZV92MmtZM0kwS21Ua1Z2WmhIaUQ3V2x5NzlxYU9zdENLQ1dLOF9jY29lcWJUZFJ4UFN0OEdZQVJaRmdOdG9TeW5vekNXUEhwNDdpd2p3WXBoOVlHSDZqdzJTNmF3ZHV0bmc?oc=5"
+   ],
+   "snippet": null,
+   "also": [
+    "BMTC proposes five Metro feeder routes for Bengaluru Metro’s Pink Line"
+   ],
+   "text": "Subscribed with another email? Logout and Login with that one. Account subscription benefits alongside Premium Stories, Editorials, Opinions and more. Unlock these with Subscription The View From India Looking at World Affairs from the Indian perspective. First Day First Show News and reviews from the world of cinema and streaming. Today's Cache Your download of the top 5 technology stories of the day. Data Point Decoding the headlines with facts, figures, and numbers Health Matters Ramya Kannan writes to you on getting to good health, and staying there The Hindu On Books Books of the week, reviews, excerpts, new titles and features. A file photo of the feeder service at M.G. Road in Bengaluru. | Photo Credit: SUDHAKARA JAIN The Bengaluru Metropolitan Transport Corporation (BMTC) has planned five feeder routes for the upcoming Namma Metro Pink Line, with 30 buses expected to operate 415 trips a day at a frequency of 10 minutes on each route. The routes will connect metro stations at Jayadeva Hospital, J.P. Nagar 4th Phase, Tavarekere and Hulimavu to surrounding areas, including Uttarahalli, BTM Layout, Arekere, Bilekahalli, Begur lake and Singasandra. The BMTC said it is also working with the Bangalore Metro Rail Corporation Limited (BMRCL) to provide real-time information on bus arrivals at the Pink Line metro stations. Under the arrangement, passengers will be able to check when the BMTC buses are expected to arrive at nearby bus stops. The bus arrival information will be made available through data-sharing and integration between the two corporations. The facility is still in the planning stage. The BMTC currently operates three feeder services connecting areas along the upcoming Pink Line to other parts of the metro network. These services together account for 132 trips a day using nine buses. Comments have to be in English, and in full sentences. They cannot be abusive or personal. Please abide by our community guidelines for posting your comments. We have migrated to a new commenting platform. If you are already a registered user of The Hindu and logged in, you may continue to engage with our articles. If you do not have an account please register and login to post comments. Users can access their older comments by logging into their accounts on Vuukle.",
+   "text_url": "https://www.thehindu.com/news/cities/bangalore/bmtc-plans-five-feeder-routes-for-pink-line-real-time-bus-arrival-updates-at-stations/article71572145.ece"
+  },
+  {
+   "id": "p-bmtc-share-real-time-bus-data",
+   "rank": 39,
+   "top": false,
+   "desk": "namma",
+   "score": 4.8,
+   "title": "BMTC to share real-time bus data with mobility platforms in Bengaluru",
+   "outlets": [
+    "The Hindu, Bengaluru",
+    "The Hindu"
+   ],
+   "n": 2,
+   "date": "2026-10-12T05:05:39.000Z",
+   "read": [
+    "https://www.thehindu.com/news/cities/bangalore/bmtc-to-share-real-time-bus-data-with-mobility-platforms-in-bengaluru/article71568994.ece",
+    "https://news.google.com/rss/articles/CBMi2AFBVV95cUxOTWJUWEdrd2M4OHU5dHhMMTVYejMzV3o0U1ltTWVtTTBHdlA1a2stUHpsZHY0MDBQTS1yUkRjUGFmUFNlZzBIRUJvNTFFbGVhaDBtSUJGc044WHhwTnh6cjdMZ1M0MHpxNm1sYmdRa2tBd0RrUHIwbEtNN3NnUGRnM05CaVJhWFJZRDU5RENxU3YxLTUxV2dKcjhfRTVCbWVVLXRnU3dBaU1JZzlHSVViOGVKbTRsQlhCT3RkUDIwOFNrcEJHRzZDMzJROTBTcDRvZUUzVGlNMWTSAdgBQVVfeXFMTk1iVFhHa3djODh1OXR4TDE1WHozM1d6NFNZbU1lbU0wR3ZQNWtrLVB6bGR2NDAwUE0tclJEY1BhZlBTZWcwSEVCbzUxRWxlYWgwbUlCRnNOOFh4cE54enI3TGdTNDB6cTZtbGJnUWtrQXdEa1ByMGxLTTdzZ1BkZzNOQmlSYVhSWUQ1OURDcVN2MS01MVdnSnI4X0U1Qm1lVS10Z1N3QWlNSWc5R0lVYjhlSm00bEJYQk90ZFAyMDhTa3BCR0c2QzMyUTkwU3A0b2VFM1RpTTFk?oc=5"
+   ],
+   "snippet": "In the initial phase, BMTC is planning to provide its transit data to Namma Yatri, Bengaluru International Airport Limited (BIAL) and Tummoc",
+   "also": [
+    "BMTC to share real-time bus data with mobility platforms"
+   ],
+   "text": "Subscribed with another email? Logout and Login with that one. Account subscription benefits alongside Premium Stories, Editorials, Opinions and more. Unlock these with Subscription The View From India Looking at World Affairs from the Indian perspective. First Day First Show News and reviews from the world of cinema and streaming. Today's Cache Your download of the top 5 technology stories of the day. Data Point Decoding the headlines with facts, figures, and numbers Health Matters Ramya Kannan writes to you on getting to good health, and staying there The Hindu On Books Books of the week, reviews, excerpts, new titles and features. Commuters wait to board a BMTC bus. As part of the proposed initiative, BMTC is expected to make information covering its extensive network of bus routes, stops, schedules, and fares available in the General Transit Feed Specification (GTFS) format. | Photo Credit: Murali Kumar K The Bengaluru Metropolitan Transport Corporation (BMTC) is preparing to share real-time bus transit data with third-party mobility platforms, a long-pending move expected to make public transport information more accessible and help commuters plan journeys involving multiple modes of transport. In the initial phase, BMTC is planning to provide its transit data to Namma Yatri, Bengaluru International Airport Limited (BIAL), and Tummoc, according to officials. The initiative is expected to enable passengers to access updated bus information through these applications and coordinate their journeys with Namma Metro, autorickshaw, and other transport services. Sharing BMTC’s transit information with third-party applications has been a longstanding demand among commuters and mobility platforms. The absence of integrated bus data has limited the ability of these applications to provide comprehensive travel options, particularly for passengers who depend on buses to reach Namma Metro stations, railway stations, and other destinations. The Bangalore Metro Rail Corporation Limited (BMRCL) shares transit information with third-party mobility applications, enabling users to access metro-related details through external platforms. Under an open-data framework, BMRCL provides operational information in the General Transit Feed Specification (GTFS) format, an internationally recognised standard for publishing public transport data. The framework enables developers and",
+   "text_url": "https://www.thehindu.com/news/cities/bangalore/bmtc-to-share-real-time-bus-data-with-mobility-platforms-in-bengaluru/article71568994.ece"
+  },
+  {
+   "id": "p-elite-schedule-sustainable-55-game-seasons",
+   "rank": 40,
+   "top": false,
+   "desk": "pitch",
+   "score": 4.27,
+   "title": "Elite schedule 'not sustainable' amid 55-game seasons",
+   "outlets": [
+    "BBC, football",
+    "BBC Sport"
+   ],
+   "n": 2,
+   "date": "2026-10-12T10:26:18.000Z",
+   "read": [
+    "https://www.bbc.co.uk/sport/football/articles/cmp3gwz17qn7o?at_medium=RSS&at_campaign=rss",
+    "https://www.bbc.co.uk/sport/football/articles/cmp3gwz17qn7o?at_medium=RSS&at_campaign=rss"
+   ],
+   "snippet": "The Premier League may have just returned from a three-week break, but for many of its stars there was no rest at all.",
+   "also": [],
+   "text": "Cole Palmer missed the 2026 World Cup after struggling last season with chronic injury The Premier League may have just returned from a three-week break, but for many of its stars there was no rest at all. Of all the Premier League players called up by their countries, 25 played 360 minutes - the full length of four games - during the extended international break. These included 13 players who featured for their clubs at the World Cup, such as Liverpool captain Virgil van Dijk, who also played 55 games for his club last season. Van Dijk is one of several players, including England's Declan Rice, Morgan Rogers and Harry Kane, who played more than 4,000 minutes in all competitions in 2025-26 and have started on a similar trajectory this season. According to expert sports scientists and psychologists, this cannot be maintained. \"It is not sustainable,\" Dr Dave Richardson, head of psychology, sports science and wellbeing at the University of Lincoln, told BBC Sport. \"We will start to see more clamour when we are not happy with the quality of performances; the public pay to see high quality.\" The impact of the hectic schedule is already being seen in players picking their battles. Five players - Cole Palmer, Marcus Rashford, Rice, Kobbie Mainoo and Tino Livramento - pulled out of the England squad before the latest international window. Germany's Kai Havertz and France captain Kylian Mbappe also withdrew from the recent international break. Maheta Molango, CEO of the Professional Footballers' Association (PFA), said the withdrawals were emblematic of a \"sick\" system. \"When England see five players who need to withdraw when the single most proud moment a player has is to be called up for the national team, you just ask yourself, what's wrong about the industry?\" Molango said. \"They love to play for England. They love to play for their national team. But, unfortunately, your body puts a limit to it. You cannot cheat biology.\" Molango wants a mandatory three-week summer break and a three-week \"retraining\" period every summer. But Dr Richardson, who has worked with Liverpool on player care and psychology, says that will be impossible in the current fractured system of sporting bodies. \"The problem is that there is no one body covering the playing schedule, and they all want predominance,\" he said. \"They are all vying for the spotlight and championing their product as",
+   "text_url": "https://www.bbc.co.uk/sport/football/articles/cmp3gwz17qn7o?at_medium=RSS&at_campaign=rss"
+  },
+  {
+   "id": "p-peterborough-deny-making-illegal-approach-savage",
+   "rank": 41,
+   "top": false,
+   "desk": "pitch",
+   "score": 4.26,
+   "title": "Peterborough deny making illegal approach for Savage",
+   "outlets": [
+    "BBC, football",
+    "BBC Sport"
+   ],
+   "n": 2,
+   "date": "2026-10-12T10:20:21.000Z",
+   "read": [
+    "https://www.bbc.co.uk/sport/football/articles/cr93zn4kq0wjo?at_medium=RSS&at_campaign=rss",
+    "https://www.bbc.co.uk/sport/football/articles/cr93zn4kq0wjo?at_medium=RSS&at_campaign=rss"
+   ],
+   "snippet": "Darragh MacAnthony denies claims by Forest Green owner Dale Vince that Peterborough made an illegal approach for manager Robbie Savage.",
+   "also": [],
+   "text": "Robbie Savage won his first league game as Peterborough boss at his former club Leicester on Saturday Darragh MacAnthony has denied claims by Forest Green Rovers owner Dale Vince that Peterborough United made an illegal approach for manager Robbie Savage. Vince told BBC Radio Gloucestershire that he initially refused Peterborough permission to speak to Savage. He said he was forced to agree to the move after the League One side approached his former manager directly before appointing him on 2 October. \"He's [Savage] a friend and it was very hard to say no, so I said 'fine, go and talk to them',\" said Vince. \"Peterborough themselves have covered themselves in no glory here. They came to us and said 'we would like to speak to your manager'. \"We said no and so they spoke to him and then he came to us and said 'I hear Peterborough want to speak to me'. So, that's an illegal approach.\" However, Posh chairman MacAnthony, writing on X, said the process to appoint a new manager was \"100% correct and proper, following all the rules\". Late last month, National League side Forest Green announced that Savage, 51, had been given permission to speak to another club, before confirming he had been offered the Peterborough job, following the departure of Luke Williams. \"In the negotiations, Peterborough paid no respect to Robbie's position,\" said Vince. \"He was stuck in the middle. He went there on the Monday, they offered him the job verbally and then they denied offering him the job. \"Then they said they were going to move on to their second choice, leaving him in a real pickle, and we had no choice but to say 'look, just take him, that's the best thing for him'.\" Vince added: \"Robbie is a friend and told us he had an intense personal need to leave. It was impossible to have a proper negotiation. \"In the end, we said 'look, just take him on your terms'. We cared more about Robbie than the outcome. \"Football is not a bad place, but there's people in it that give it a bad name. Enough said.\" In response, MacAnthony added: \"I have been an owner for 20 years in the EFL and have respect for the process. Forest Green have not confirmed if they have contacted the Football Association about the matter. Following Saturday's 3-1 win at Leicester City, Peterborough host Burton Albion this weekend in Savage's first home league game in charge.",
+   "text_url": "https://www.bbc.co.uk/sport/football/articles/cr93zn4kq0wjo?at_medium=RSS&at_campaign=rss"
+  },
+  {
+   "id": "p-fit-again-kartal-beats-top-50",
+   "rank": 42,
+   "top": false,
+   "desk": "deuce",
+   "score": 4.1,
+   "title": "Fit-again Kartal beats top-50 opponent in Wuhan",
+   "outlets": [
+    "BBC, tennis",
+    "BBC Sport"
+   ],
+   "n": 2,
+   "date": "2026-10-12T06:32:10.000Z",
+   "read": [
+    "https://www.bbc.co.uk/sport/tennis/articles/c64g104ly00do?at_medium=RSS&at_campaign=rss",
+    "https://www.bbc.co.uk/sport/tennis/articles/c64g104ly00do?at_medium=RSS&at_campaign=rss"
+   ],
+   "snippet": "Britain's Sonay Kartal continues her impressive form since returning from injury by beating Anhelina Kalinina in straight sets to reach the second round of the Wuhan Open.",
+   "also": [],
+   "text": "Sonay Kartal has slipped to 170th in the world rankings after her back injury Sonay Kartal says she has \"thrown herself in the deep end\" since returning from a six-month injury absence after beating Anhelina Kalinina to reach the Wuhan Open second round. The British number five, 24, reached the third round at the Beijing Open earlier this month in her first WTA tournament since suffering a stress fracture in her back. She followed that up by defeating Ukraine's Kalinina 7-5 6-3 in an hour and 31 minutes in Wuhan. World number 170 Kartal will face Swiss ninth seed Belinda Bencic next. \"I've thrown myself in the deep end, playing [my] first few events playing the best players in the world,\" said Kartal. \"It's definitely a challenge, but I'm happy with the level that I've managed to produce. There is still got a long way to go to get to back where I left off, but I'm happy. It's looking positive and I'm feeling good.\" Kartal returned to action last month for Great Britain at the Billie Jean King Cup team event, where she narrowly lost to Czech Marie Bouzkova, who sat 26th in the world rankings. Wins over Spain's Andrea Lazaro Garcia and Wang Xinyu followed for Kartal in Beijing, before she lost to Armenia's Alina Charaeva. Against world number 48 Kalinina, Kartal served four aces and won 23 of 30 points when landing her first serve. She sealed her spot in the last-32 stage at the third time of asking after Kalanina saved two match points. Zheng Qinwen withdrew from her home tournament in Wuhan after becoming the first Chinese player to win the China Open. In a statement, Zheng said she would not be competing because her \"body is feeling very fatigued\" after \"an intense run of matches\". Zheng underwent elbow surgery last year and had struggled with form and fitness over the past 12 months, before a recent upturn led to her triumph in Beijing. Highlights: Zheng Qinwen beats Mirra Andreeva to become China Open champion Ticket rises and more TV packages - why is price of sport increasing? Navarro opens up on health struggles that caused 'deep anger' on court",
+   "text_url": "https://www.bbc.co.uk/sport/tennis/articles/c64g104ly00do?at_medium=RSS&at_campaign=rss"
+  },
+  {
+   "id": "p-upi-mdr-framework-needs-rationalisation-report",
+   "rank": 43,
+   "top": false,
+   "desk": "cards",
+   "score": 3.69,
+   "title": "UPI MDR Framework Needs Rationalisation, Says New Report",
+   "outlets": [
+    "Kalkine India"
+   ],
+   "n": 1,
+   "date": "2026-10-12T06:44:00.000Z",
+   "read": [
+    "https://news.google.com/rss/articles/CBMizAFBVV95cUxOWS1ETlI2UnN0RTFJNHN5VVVaWVpuZnlXcWZkZEFKckd1SGV3TlI1V0hhUnRMRHZrLU5sQ29uWWJvSk5zdDhaajc0NE41ODExQWM4YWgwVkFsZ2JubVh0bmltSG5vR1hidGptcGNJaUVROGRDOG5ESzIwTHU1eEp0R1dUZTZpSE1nTHNhLVh4bGZfU1dTeDRVdXNLak5hREFraFltRVJ0ZDBpeWVBeGFXUzI0R3dsTjBKTHZHTDVkQ0ZIRkI1dk90UUIwTGw?oc=5"
+   ],
+   "snippet": null,
+   "also": [],
+   "text": "You are reading a free article with opinions that may differ from the recommendation given by Kalkine in its paid research reports. Become a Kalkine member today to get access to our research reports, in-depth technical and fundamental research. Learn More India's Unified Payments Interface (UPI) has become the backbone of everyday digital payments, from paying for groceries to settling large bills. As the system prepares for a merchant charge on higher-value transactions, a new report has argued that the proposed merchant discount rate (MDR) framework needs rationalisation to protect public trust in UPI. The report, written by an academic and a former central bank official, suggests a much lower charge, a different way of sharing it between participants and a greater role for banks in funding UPI's upkeep. The merchant discount rate is the fee a merchant pays to the payments ecosystem for accepting a digital payment. For several years, UPI payments to merchants have largely been free of such charges, which helped drive rapid adoption across shops, small businesses and online platforms. On September 15, the UPI Steering Committee set an MDR of 0.40 per cent on person-to-merchant (P2M) transactions above Rs 2,000. The framework is scheduled to take effect from October 15, 2026. Trade bodies have asked the government to roll back the charge, arguing that it could burden merchants who have embraced UPI. Reserve Bank of India (RBI) Governor Sanjay Malhotra, for his part, has said that a small MDR is unlikely to hurt UPI volumes. The report enters this debate with a set of alternative proposals. The report's central recommendation is to cut the proposed UPI MDR from 0.40 per cent to 0.08 per cent. It also suggests a different distribution of this fee. Under its proposal, third-party app providers (TPAPs), such as PhonePe and Google Pay, would receive 0.06 per cent, while payment service providers (PSPs), which are mostly banks, would retain 0.02 per cent. Third-party app providers are the consumer-facing apps through which most people initiate UPI payments, while payment service providers are the banks that hold accounts and process the underlying transactions. By directing most of the fee to apps, the report seeks to aid the firms that bear the cost of user interfaces, customer acquisition and technology, while asking banks to rely on other sources to fund their",
+   "text_url": "https://www.kalkine.co.in/article/business-finance/rethinking-upi-merchant-charges-why-a-new-report-calls-for-a-leaner-mdr-framework"
+  },
+  {
+   "id": "p-how-arshdeep-co-stopped-hope-ranchi",
+   "rank": 44,
+   "top": false,
+   "desk": "back",
+   "score": 3.08,
+   "title": "How Arshdeep and Co. stopped Hope after Ranchi blitz",
+   "outlets": [
+    "Rediff"
+   ],
+   "n": 1,
+   "date": "2026-10-12T09:59:43.000Z",
+   "read": [
+    "https://news.google.com/rss/articles/CBMitAFBVV95cUxQak91c0ZwTzZGQWNGejJNQk9WVndLS0gzVGYyLWgyNjlXRGh4Z1NHU3dtZkVxTkU1Z0F4OVRJWndjQlFFWktxUm81TVBSYXhZdUd2N29GVGR0UkplbzlOZHM4c1hDbC1vTDVrUFVfVWRWeUtweTNVMjlPQXVydXVNRWQtRWx1QmczNjVBYjlsanc0OFlyTDhKQ21HdktmcHFoc3FSaktNaURseEp5WE56bTBKN07SAbcBQVVfeXFMT21lRWhsbVB3R010QmxobURITWpZeHhMUlowYUpBRVZraVRlWHVLdkduSkJFVGNNSHFielJVbEVtZmJyU0o3cDVteDY3YVl4MThhazZ2ODI3WG9BTXY4dzY4b2NDZmxlSU84YUstd3M1dHVpYl9JYVlwMlprWkZZblhxT1FxYWUxYnpzRVF5cUhnQWs3c1BoQllQWjNyY3NyNWs2REF1UkNyang1dVRKd1YtMjlQai1z?oc=5"
+   ],
+   "snippet": null,
+   "also": [],
+   "text": "Pacer Arshdeep Singhs strategic bowling and crucial wickets secured India a 14-run win over West Indies in the third T20 International, giving them a 2-1 series lead and showcasing strong team execution.IMAGE: Arshdeep Singh celebrates a wicket against the West Indies in the third T20I in Indore on Sunday. Photograph: BCCIKey PointsPacer Arshdeep Singh led India to a 14-run victory in the third T20 International on Sunday, giving them a 2-1 series lead.Arshdeep claimed three crucial wickets, including West Indies skipper Shai Hope and Sherfane Rutherford, executing a pre-planned strategy.He praised the coaching staff for their tactical guidance and acknowledged Mayank Yadavs role in building pressure from the other end.Arshdeep highlighted the relaxed and supportive dressing-room atmosphere, fostering learning among young players.He also expressed his commitment to improving his batting, contributing 11 runs with a six in the match.Pacer Arshdeep Singh said India had a clear plan to keep West Indies skipper Shai Hope in check and he was pleased that the bowlers executed it to perfection to secure a 14-run win in the third T20 International in Indore.With the win on Sunday, India took a 2-1 lead in the five-match series. Arshdeep claimed three wickets, playing a pivotal role in containing the West Indies batters, particularly the dangerous opener Hope (5) and Sherfane Rutherford (32). He clean-bowled both the West Indies batters as India successfully defended 223.The victory was significant, considering Hope had smashed a century while Rutherford hammered a 37-ball 84 to help West Indies pulled off a record chase of 250 in the second game in Ranchi.Indias Strategic Bowling DominanceBefore the match we had planned how to target Shai Hope, to keep things tight and execute that plan on the field; seeing the result feels great, said Arshdeep, who returned with figures of 3/44 in his four overs, in a video posted by the BCCI.A lot of credit goes to coaches for walking us through the plan and highlighting what we could apply in the match. It was executed well, supported by brilliant bowling overall.(Pacer) Mayank (Yadav) kept the pressure building from the other end and all six bowlers chipped in. It feels good when there is a bit of pressure on execution &acirc;&brvbar; it is good fun, added Arshdeep.While Mayank Yadav went wicket-less, he kept the West Indies ba",
+   "text_url": "https://www.rediff.com/cricket/report/how-arshdeep-and-co-stopped-hope-after-ranchi-blitz-west-indies/20261012.htm"
+  }
+ ],
+ "headlines": [
+  {
+   "id": "h-us-court-orders-trump-administration-cancel",
+   "desk": "videsh",
+   "title": "US court orders Trump administration to cancel taxpayer-funded political ads",
+   "outlets": [
+    "The Times of India",
+    "CNBC",
+    "Telegraph India",
+    "WSJ"
+   ],
+   "n": 9,
+   "url": "https://www.hindustantimes.com/world-news/us-news/trump-govt-ordered-to-cancel-taxpayer-funded-promotional-tv-ads-20-million-in-immigration-spending-faces-scrutiny-101791767379463.html"
+  },
+  {
+   "id": "h-thorium-clocks-start-ticking-lasers",
+   "desk": "videsh",
+   "title": "Thorium Clocks Start Ticking With Lasers",
+   "outlets": [
+    "Hackaday",
+    "Nature",
+    "The New York Times",
+    "American Physical Society"
+   ],
+   "n": 8,
+   "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9SWU8yX3lULXpMNW1oSHU1b3lvWGV6X0Y4OFU1SGNfVHMxT2xMN3lNZjhCOXVYU1Q0VURlS28zTDBROXkxNVcwakF0WVpUdDFUTHB2TUdsVUtValhPcXpXWnFSRFo0Nk9VRzNkQ1RHR2dXVk5WUkd6VGFBR2FZUQ?oc=5"
+  },
+  {
+   "id": "h-hurricane-simon-hits-mexico-pacific-coast",
+   "desk": "videsh",
+   "title": "Hurricane Simon hits Mexico's Pacific coast with damaging winds and rain",
+   "outlets": [
+    "PBS",
+    "FOX Weather",
+    "The Detroit News",
+    "NBC News"
+   ],
+   "n": 7,
+   "url": "https://www.dw.com/en/hurricane-simon-batters-mexico-s-pacific-coast/a-79636873?maca=en-rss-en-all-1573-rdf"
+  },
+  {
+   "id": "h-72-killed-airstrike-gold-mine-sudan",
+   "desk": "videsh",
+   "title": "72 Killed In Airstrike On Gold Mine At Sudan-Egypt Disputed Border",
+   "outlets": [
+    "NDTV",
+    "Al Jazeera",
+    "CNN",
+    "The Times of India"
+   ],
+   "n": 8,
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPRkZ5and5YlY0ekFZR2xQcWxyaEFVT0lxSUpoN0lveGtVeGhPeTJlWi1aZ1l5dW9QSExsNnpwTE5YeDByb2ItMFF1RTM3VjJSY1lseDNNR3JjbGxXMzNTRmFVbm1hMUMzdXJGSXU3cEZrMi1PZHp6bnpNY2FYUHp5Wkxhc05TTHZFTkRXODV6OE44d0pJWklhVlJ6SkE1UWdmbzU2Z0xlSVNtZGPSAbMBQVVfeXFMTnEyMzZPTlVmOF9ZSmp3WU9Za2NUYVhBNVhGZXI1QmlWcU80aGdZcE8zQUVmdENpbl9MZXZnV3R1SUl3Ml9fVzVSOGQyY3B6eWZBUWo1c1B5OTQ2emRZSi16cFcyUWpxRVFtMThvLU9udV9fc1R5dlB3RjRBM1lNQ3ZPX3BaQ1g2LW1XbHBTWDMxYWx0QksxbFZBbG9uV2I2UjIyVWlxXzhRbzRzXy1RSm4tWnM?oc=5"
+  },
+  {
+   "id": "h-who-releases-first-global-guidelines-child",
+   "desk": "videsh",
+   "title": "WHO releases first global guidelines for child and adolescent obesity as prevalence reaches 170 million cases",
+   "outlets": [
+    "fundsforNGOs News",
+    "Telangana Today",
+    "The Indian Express",
+    "Bloomberg.com"
+   ],
+   "n": 5,
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPX0p0Rl9NSGt1MU4yS0pOaGZqNVdUak5xdlpsd3JFVm9malJySWtYcVRrdGxIVnNXOUtfR3FrMS1aeG1sNVJEd0JkdTNPWWc4U0tXS2R1VjZzSXE1VnZzTFZ2UUVuMEZoZ2JPNndKZkZfQl9DTE5ldGFoUlVUN3ItQmE1M2ZpWlRJTlRhZUJYUmQ0TGwwdmo4dUhFSXVzMDFReEprRVQxSlFZdw?oc=5"
+  },
+  {
+   "id": "h-world-energy-order-tested-again-iran",
+   "desk": "videsh",
+   "title": "World’s Energy Order Tested Again as Iran War’s Reach Extends Further",
+   "outlets": [
+    "The New York Times",
+    "CNN",
+    "Crude Oil Prices Today | OilPrice.com",
+    "Al Jazeera"
+   ],
+   "n": 5,
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQekFBLV9XVkZmX2hLR0ZHMGhxMzB6Rkp4ZHhWLUFSd3N0VW1pVG9FOHlhal9NNk1JbjRNaDlMemJTZ2ZhWFBOS2FFMzJVSXhMRVNPNXZDTlhkTVBDZVNmOU54WjNseDAyeWJnSjZ4cU9MdmpaZlFtOVhGRENhakdzb3l2YzJVZW95MUhhSFd3?oc=5"
+  },
+  {
+   "id": "h-areas-most-risk-flash-floods-el",
+   "desk": "videsh",
+   "title": "The areas most at risk of flash floods as El Niño threatens millions in UK",
+   "outlets": [
+    "The i Paper",
+    "BBC",
+    "Sky News",
+    "GOV.UK"
+   ],
+   "n": 4,
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOb1p4dlE5WFdLV0dwU3NBSHA4WmY3cDVpb1JHWmprd0RONGVLZURMU0FCZlpHbXp1Z2d0VFpLRTMxdDByYVIxY2xxeUl5MGVxUHBaLUZzbWNvQmFza3pzeE8yWjZKYUdwTVIzMkV6eHhHZ21fRjhZWEJMMHV3d1ZMbFM2LWpuN0Q2SHQ4?oc=5"
+  },
+  {
+   "id": "h-amazon-talks-buy-ai-startup-decart",
+   "desk": "ledger",
+   "title": "Amazon in talks to buy AI startup Decart for around $7 billion, WSJ reports",
+   "outlets": [
+    "Reuters",
+    "WSJ",
+    "The Times of India",
+    "Simply Wall Street"
+   ],
+   "n": 8,
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOSTR0SUxydGYzRDJmaGtaWkRTYkkybS1GWlRkZFFnMjVXRFlZX0hHMUtVdFdIN0ZyQk0wMk1LNFhaUml3Y3FlRUV6SWFxVk9UUFg3MTUzelJtZU8tdjVpREpVS0owdkt2aVJhMUVObjg1TlRTREtZQzBINHJTTFloWDNBQTFCVl9yOE9HNXhBazJWMElncnlIZWNPdG5IY25ObFg0SGswNks5MkF0ODM4bEVRWkhjS3ZqcXVuWlVnamU0dw?oc=5"
+  },
+  {
+   "id": "h-german-finance-minister-cancels-india-trip",
+   "desk": "desh",
+   "title": "German finance minister cancels India trip amid Berlin turmoil",
+   "outlets": [
+    "Reuters",
+    "The Guardian",
+    "DW.com",
+    "Bloomberg.com"
+   ],
+   "n": 7,
+   "url": "https://www.dw.com/en/germany-bas-quits-as-spd-co-chair-amid-coalition-friction/a-79636869?maca=en-rss-en-all-1573-rdf"
+  },
+  {
+   "id": "h-dodgers-offense-looks-rickety-vulnerable-ever",
+   "desk": "sidelines",
+   "title": "Dodgers' offense looks as rickety and vulnerable as ever as Shohei Ohtani and Co. lose NLCS Game 1 to the Brewers",
+   "outlets": [
+    "Yahoo Sports",
+    "Fox News",
+    "Milwaukee Journal Sentinel",
+    "FanGraphs"
+   ],
+   "n": 5,
+   "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxNNVNDb2JmUTFmeXN1WjFvUnlGRGJTUFlqR1hIYU9GNWVtWUhJenRwYzNOQXFUU0pGcEMzQ1JuOWoxaUpKNUI3MjJ1cGV1QXZ4RWFDUFhDbGFHTm5PY2tfWk1obVduRTMtZ1dQZElUYVBDeVZBQ1JleGU3Q0gtdlBvUWN2ZXVBUVVFcTVYbUliOUlRNFBtTnRBMVFFcWk5VlliVzVYZE1wM1ZpTlZXaEIxbTBJU3hlVnh3eTFsZzROcll6TWQyOVdRVFc5aGtFTy1rX2doWFB4VThzUUhoWmJrS2w2T2Vtc2cyZnBYWFprZ3lNMHBoMmc?oc=5"
+  },
+  {
+   "id": "h-aishwarya-rai-wishes-amitabh-bachchan-84th",
+   "desk": "screen",
+   "title": "Aishwarya Rai wishes Amitabh Bachchan on 84th birthday, shares pic with Aaradhya: ‘Pa-Dadaji’",
+   "outlets": [
+    "The Indian Express",
+    "NDTV",
+    "Telegraph India",
+    "The Economic Times"
+   ],
+   "n": 6,
+   "url": "https://indianexpress.com/article/entertainment/bollywood/aishwarya-rai-wishes-amitabh-bachchan-on-84th-birthday-shares-pic-with-aaradhya-pa-dadaji-10917379/"
+  },
+  {
+   "id": "h-trading-plan-can-nifty-50-hold",
+   "desk": "ledger",
+   "title": "Trading Plan: Can Nifty 50 hold 22,500, Bank Nifty reclaim 55,500 as market sentiment improves?",
+   "outlets": [
+    "Moneycontrol.com",
+    "Investing.com India",
+    "The Economic Times",
+    "Business Standard"
+   ],
+   "n": 5,
+   "url": "https://www.business-standard.com/markets/news/stocks-to-buy-today-nifty-s-technical-setup-remains-weak-trent-among-3-stock-ideas-by-angel-one-126101200048_1.html"
+  },
+  {
+   "id": "h-gold-silver-prices-today-12-october",
+   "desk": "ledger",
+   "title": "Gold, silver prices today, 12 October: Check retail rates of 24K, 22K gold, 999 silver in Delhi, Mumbai and Kolkata",
+   "outlets": [
+    "Livemint",
+    "The Times of India",
+    "The Economic Times",
+    "Rediff MoneyWiz"
+   ],
+   "n": 7,
+   "url": "https://economictimes.indiatimes.com/wealth/invest/gold-silver-rate-today-october-12-2026-18k-20k-24k-chennai-delhi-hyderabad-bengaluru-citywise-ibja-gold-price-malabar-gold-kalyan-jewelers-joyalukkas/articleshow/134884876.cms"
+  },
+  {
+   "id": "h-bmi-predicts-brent-crude-remain-above",
+   "desk": "ledger",
+   "title": "BMI Predicts Brent Crude Will Remain Above $100 for Months",
+   "outlets": [
+    "Crude Oil Prices Today | OilPrice.com",
+    "WSJ",
+    "ET EnergyWorld",
+    "Firstpost"
+   ],
+   "n": 5,
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOQ3hPQ21jRXVBM3BPalBXdWh2dmllVVRMdDUtM05vM2lPeldXTmlja3ZTbGpnN2I0b1JUWW1tcDBWX3hUdllpNjhkM19kY05SMWRlQXU4emNtdmpLRm81Tk1CUjVhazVnUjBfek9uZzhiYWs1T0xPanpPeDFVWXlSQWZqOTJOTGN5WDJGVkxycy11dk5oX3dzZ0I3THFXRU9vQUx6eU1ZZ2xXczdFdlBzR2dtUdIBuAFBVV95cUxNZk42UDRocERYRThBVzNiTEZaUjB4YmJESE50a1dETnA4ODd4bm1vZ1VVeTRqcFdZdDVHaU5IS05XQXd3dHlzMzZzOXJqVHctLXBBOVNLXzJ1WElCUWw3cEJkV0pvdkJtWTc0MW1WZUJTRnhGSm9Db0l4bmc0a2s5UEpqdHVmZzZnMDU2WUlUMzUxa3FQWkdUaUhmc2FBMW1QN3VET1pRcjhqbkphUlgzNXdSQUZmVW9o?oc=5"
+  },
+  {
+   "id": "h-power-bank-fire-sparks-mid-air",
+   "desk": "desh",
+   "title": "Power bank fire sparks mid-air scare on Delhi-Chennai IndiGo flight, plane diverted to Hyderabad",
+   "outlets": [
+    "Moneycontrol.com",
+    "The Hindu",
+    "NDTV",
+    "The Indian Express"
+   ],
+   "n": 8,
+   "url": "https://indianexpress.com/article/india/power-bank-catches-fire-mid-air-indigo-delhi-chennai-flight-diverted-to-hyderabad-10916811/"
+  },
+  {
+   "id": "h-rising-waters-flood-homes-temples-villagers",
+   "desk": "desh",
+   "title": "As rising waters flood homes and temples, villagers protest India's $87 billion river-linking project",
+   "outlets": [
+    "Reuters",
+    "The Hindu",
+    "inc.in",
+    "Yahoo"
+   ],
+   "n": 7,
+   "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxOTElpdjF1UmxmZFZUSnB1c2VCVHVyTlJ0cktqZmNHbmJGVXNsRUx0aUtGNDZuUFBzU3c3VEQ3UXN6M1dkX2hSeTBnOXFIS2hIWTRRSWs5bDBWVUVkSEFQb3ZvVkZUVlFjWVhLOUEwNmgtTDVFV1d5V2hPb1VxYnBodzlyRVVhQl9YMC1wUWgtdkxlSzl2X3ItYjJvQlg2bUZraE1SSDgxVlNSR3ZmOXVjMzdvU3VrS1FQY1FuT3NqZmY5X3NlTDEwdFpkYk4?oc=5"
+  },
+  {
+   "id": "h-insufficient-iran-rejects-us-response-conditions",
+   "desk": "videsh",
+   "title": "Insufficient: Iran rejects US response to 7 conditions for reopening Strait of Hormuz",
+   "outlets": [
+    "India Today",
+    "Reuters",
+    "PBS",
+    "CGTN"
+   ],
+   "n": 6,
+   "url": "https://www.hindustantimes.com/world-news/us-news/iran-us-response-peace-proposal-strait-of-hormuz-reopening-trump-tehran-saudi-houthi-middle-east-latest-news-101791770526616.html"
+  },
+  {
+   "id": "h-astronomers-combined-16-years-gamma-ray",
+   "desk": "tech",
+   "title": "Astronomers combined 16.7 years of gamma-ray data with 4.9 years of FAST radio observations to confirm a",
+   "outlets": [
+    "The Times of India",
+    "AAS Nova",
+    "Moneycontrol.com",
+    "China.org.cn"
+   ],
+   "n": 5,
+   "url": "https://news.google.com/rss/articles/CBMigwNBVV95cUxNdTFqZlR0anJPQXVoNzd3VGdqamctTHZzQUh3dDlFTXFOSGt0S3ZQYUZhbnJVWlN0LS1mWTFWRURYTXlGd3JpeDYtSWt6MHJmZWhzUWZ1aF9tRHA4OWRlX2piRVUzeW05N1BxZnBjUHJoQVVSMnE4OWF2OTE5aE5OaDgzZG1GdWpPTWlRU1hWaVhIME0zaERIWG1udnBLejFmckJKa3YyQmdVbXdOb215S1I2cmhSX2pvdXF0WmRHSU44OGVrVkJYdTNla3RTVEVGNUJsbl9la1B0Y2lEd1dDVjJfdTE5N1dGWElUdFZmUmJjMkdldG9wNXB5alZ1SUhtMnpSa0xyYTlUclotWjFMbE03bEhjVmhOckNid18tSkQ0aWRSS2lncHFZQjMxNHUxVG5oLU1RbENPbnktRUpuRjlOblN2RENtQjBlNnFHdEhKVWZDZ0RUdVNONnpFbEM5cFlNa3ZOdEVSRUxuRVlaLTVqN0tJVF8zQWYxZ0xHRlVNWVnSAYgDQVVfeXFMTktWdWRtUU5LUUJhbzZSNzU5c0VFZms4T0Fac2pCZVpCNndSRjZYT2Rpd2t0SVlva1BId0xYWXBxMG9RX3RGZ3kxNUxYQnE2cHozUUI0N1VWQUFwTWFvWkZaSmJ1cW95TThwS1dLakdYaTFKcVBpTVlXT3NNWnhrRElfQkdTNlBES0lPdzQ5N0xmR1g3LWd5YzdoRWc5Tnh5VGhiMU9vU2VGMnFOaDF2M3FabUVqRm00SnpHMTlzcEd1Mk5DeS1mNW1CRmlFdFV6VjFzcjlmVGw5X2lXT2dHbC1LblM1dW9KUktYdFpWOHc2X3FnbGsyWGZydnZsc2FDRnlVamRnRl8zdG54ekpydUdSR3ZFT0VnYUplaG9BclJZT0M5M1Z4MDNBUHNRVXBMVU1La1lUU0gwTlJhVTM5NmdFZVh3UGVpM3lZN1hicmgxQ2Y4Q09pQ2M2a3U0MWc1bjFTb2RDQ2hrSW1YZTEzRE9XTXlYcE5YNFp0cG5YbVNHMTBwVGNHVUU?oc=5"
+  },
+  {
+   "id": "h-critics-react-series-three-time-starring",
+   "desk": "screen",
+   "title": "Critics react to series three of Time starring David Tennant",
+   "outlets": [
+    "The Independent",
+    "The Guardian",
+    "BBC",
+    "The Telegraph"
+   ],
+   "n": 6,
+   "url": "https://www.theguardian.com/tv-and-radio/2026/oct/11/time-review-david-tennant-siobhan-finneran-bbc-iplayer"
+  },
+  {
+   "id": "h-suspended-portugal-team-cristiano-ronaldo-claims",
+   "desk": "sidelines",
+   "title": "Suspended from Portugal team, Cristiano Ronaldo claims he is the best in history",
+   "outlets": [
+    "India Today",
+    "The New York Times",
+    "Telegraph India",
+    "Goal.com"
+   ],
+   "n": 5,
+   "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxQT2k5bHE0OWFhcDZzWEtNa2lwYXg1YWRXelNxUUY3d3dqSDJUX0Y0OUhXblFWdzR5WlVQbS00SzFNcndIU3hwMk4tWWJLazczcFY2Y2s3dGQxejVPcWx0R1N2TFFSdFF3Z3FWTHlQeEhwTXFzcUtSVnlBeTA2QnFKbWZxMmNkU2IwNmtFY1oyaFh5Y2E0cjk5a2VhTXU5OWlqdUlTaUdvRWlWSF9IcFdhLXE1SDR0ZFVXblJiVklFcGlQeHl4TlFRR1VQWmI5Z2VKZkU4RzdDa9IB3AFBVV95cUxQS0drVy1DbWhQOXhHNjBtNE9ROVNJX19kbUhDMEtPb0Uwa0lQa3R5OWpGN2FOTjR0blRSR28xZXZpTjVSdndNbDVCMzNRN0oyQXBmWjE0cTNQZzU1bkJyWUxTa2J0Z3RKOFhvMWtiVy04MVl1Y29SWndmMDctN25TWVlOWlAzOGVPd25RNjJnYUl1aWJFQ2o4VG0tZHF1dENoQlliT3Zwa0pNUzdqc2tsYnM3YkVWY3cwRzhVaVY4Q1dzckNUWXhMWjNFb1d1OV9TX3loLW0xelNIOFBW?oc=5"
+  },
+  {
+   "id": "h-poland-deploys-20-000-cops-schools",
+   "desk": "videsh",
+   "title": "Poland deploys 20,000 cops in schools, inspects 80k educational institutions amid rising youth violence",
+   "outlets": [
+    "The Times of India",
+    "Reuters",
+    "CGTN",
+    "BBC"
+   ],
+   "n": 6,
+   "url": "https://www.bbc.co.uk/news/articles/ckp8gyd65z2go?at_medium=RSS&at_campaign=rss"
+  },
+  {
+   "id": "h-generally-keen-sequels-rajinikanth-rejecting-baasha",
+   "desk": "screen",
+   "title": "'I’m generally not keen on sequels': Rajinikanth on rejecting 'Baasha 2' and 'Petta 2'; says 'Jailer' had",
+   "outlets": [
+    "The Times of India",
+    "NDTV",
+    "The Indian Express",
+    "Deccan Chronicle"
+   ],
+   "n": 5,
+   "url": "https://news.google.com/rss/articles/CBMivgJBVV95cUxOdzBXMjVCZm01Q3V3eFRLblJDTzVUZ0NuMHZVblZBTHlPSDRTVDZxSmpXdUlIaEFNVDlIbkZ1b1pidUxxQi1KcVg2TzZPUkJiSFFmNUF5a3V2dVBSLWNjY3Z2MU9rSTJ3ZHJrY2tWLVBFbmllT2VvTlA2WFNUdzIwcUl5UEhJMEhuMXNKanRicF9ySll3SlRFcHhEeTNGWmpDaHNVTnNUVFNCNWE2TjRJZHdSTGVielFHOGlHeTJnZGtra3VtalRHNVlRMFpZUzQ4R3o5TkkwcjluMEtDLUZoZ2E3NnFUcVRpNWJLMW9fSzN5QjBWbEZnLVhqN1dsWS1QVEhWU2JVZ2pPSF9ETmVmdUM2NTZacUQtaVpFNUNHVVludFRtZ0dKNkFnVEE0ZFpWSHpyTVlKS3NJNnVQWFHSAcMCQVVfeXFMT2E4bVk0aGZTVHV2R0RnT2NEcGxrZ1pIWkpSZGYxeHdsb1Vidnc5S3VLWlFrSWtBdFBhNW1jcm1GRUtndk5FNmtld3hOUzQwR3JGOE5Sekg2TUxCRS1ZY1RNLVdYQVFITmgxd2hpTFJ3N01tMlBnRzZ1LWhCSkJGTVU0MW1ZZlU3UWtpU1RqYm1YVHNJYXZucTVKem80ZTB6eDh3dGRCaE1zczN4VXRfbUZ1bk9KUVFVSDNPQ2g3YzdadkpxS19wR3pFLXNQSktidjhWSGRfT0ZURWl5Q210NFlHQ25tbjhObF90TDRwYmtCaVZJUzZEUW9TY2JwcDdtdmtMN3BkNkZlbFZWU2QtR0xOaGc3bktxZUN2cTRUVDA1cHdwdHJlcE1oUVBOdjBkMHdncXFoMGJSMUs1RXlFNUNWbzg?oc=5"
+  },
+  {
+   "id": "h-veteran-marathi-actress-madhu-kambikar-passes",
+   "desk": "screen",
+   "title": "Veteran Marathi actress Madhu Kambikar passes away at 73 after prolonged illness",
+   "outlets": [
+    "Moneycontrol.com",
+    "NDTV",
+    "ThePrint",
+    "The Times of India"
+   ],
+   "n": 5,
+   "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxNeFI5LVNhT3NHQUVRM21yX0dZOGVIMzA1ck5YeXgtaW1rQlZ3SGNfU0UyYnFwY2U3MnF5ZTJLdXNBVEVlTFhMck5VVWxadHFrUDRpSHRYRDlkT1hRZlo5cHFTS2pQc1NNT19ZckpZcnpNUFpENlZTMExOakxYWFZhTFRoeW9qYkJTOHhNZzZyX1pHTzhEYXFzMGJJMHIxZm5idXc2endMSTBWVmprc0N3ZkJSVUN0ZlNXM18yZlg5WWRHcXFtMVI5anMxZHI2Yk9BbzZTLXpJVFBmQzhSeHlrd2tJWGxPVHE3VndR0gHwAUFVX3lxTE5oR1lVb2tBLS1HY1NNR0tRZVhnc1h4eHlIcDk2TmRabjdTdERJek52VVpDSzNFdE1xbkFJYndmeDZCZEtoekR5XzhFZ05GWHJoN2dCTHdoSWtoaUxKT2hsQi1SVXVYaFdzX0x6OVdjWnZZZUM4ZHQ5N3lvME13RmFtQWRNTmMzemNWNHJFelFMWGs5dU02MW5OQmFXTVh4eTlGNUJxT0M4Q3NfRUtLYXp3bVVzcUJpNEZ4UG1rSlpPNjIwM1Vwcy1lNVNwRkk2a211N2w2R3VsZDBrSkppc0pJeUtqMTJwSUtRZ2NrX3ZiTA?oc=5"
+  },
+  {
+   "id": "h-saudi-iranian-foreign-ministers-discuss-regional",
+   "desk": "videsh",
+   "title": "Saudi, Iranian foreign ministers discuss regional tensions, state news agency says",
+   "outlets": [
+    "Reuters",
+    "Al Jazeera",
+    "The New York Times",
+    "i24NEWS"
+   ],
+   "n": 6,
+   "url": "https://www.thehindu.com/news/international/iran-deeply-concerned-over-escalation-between-houthis-saudi-arabia/article71574325.ece"
+  },
+  {
+   "id": "h-senior-moment-breakdown-trust-implications-hamilton",
+   "desk": "paddock",
+   "title": "'Senior moment' or breakdown of trust? The implications of Hamilton's Singapore GP meltdown",
+   "outlets": [
+    "Autosport",
+    "BBC",
+    "Sky Sports",
+    "The Race"
+   ],
+   "n": 6,
+   "url": "https://www.the-race.com/formula-1/our-verdict-on-lewis-hamilton-singapore-strategy-failure/"
+  },
+  {
+   "id": "h-oppo-find-x10-series-launch-globally",
+   "desk": "tech",
+   "title": "OPPO Find X10 Series to launch globally on October 21 with colorOS 17, 200MP cameras and 8,000mAh battery",
+   "outlets": [
+    "Moneycontrol.com",
+    "PhoneArena",
+    "OPPO",
+    "Deccan Herald"
+   ],
+   "n": 5,
+   "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxPelZpT1lfU3ZfV3dQNm1pX1k0ck0zZlpibmgzRnJrMFNUbU9RczBYdmxOblVQUGdVZk1XWGkybEh2dEpRVUxqbkUxb28xZE1PZlJYRDdEbzlnazlEaXQxZUVWTHBnUWRwMDZYM0JPS2lrNTcxYXAxckMxdXhmOEVXOVhiSzlOWHFZTngtaHNWamtDNjJmOXlSZWNrVWNlVzN2RlZFUnEtbHJveXpEZnRKWW9US1ltcEs5RElTM1A5enFDeDRPQVhVT2l6dXhVRkZ2TWduNFBiRlhUdzg5Z0JFYUU2NzhMUXhaNC1FNjRRME92MUJWZ3NTSGlR0gH_AUFVX3lxTFBkRzQ2aDE0enNKTkpSRkdUODRGMWJNRXdwY21fUzFhWUw5eHRUckFUcnB2bUxXOWROUnI5aEtaVXprSTBqQXFMcTJkU2tCRGh4Vm5lcjQ3Z0U1WmM0b1JGSnByRnd3Wlp4ckRWWG54U0NJclY3Y1B2VEc5YnRkdUhEQTh3cjZZb1ZCN3JGUmg3RXFUUWtyV2dLekJYcUI2TEFEODFxVGJqei1oTGZlVFVVc3FsZjFrTER2dnVsR0VKc1lhWnRuTXhPVkEtNlcxWlAxZ254LXdqVEwtaWUyQm9KOG51Z2RyLV90N1hfa3VQaHdPQ19pOVNiekVaTEpGaw?oc=5"
+  },
+  {
+   "id": "h-ipo-who-really-owns-jio-platforms",
+   "desk": "ledger",
+   "title": "IPO: Who really owns Jio Platforms? Reliance doesn't own 100%; Meta, Google, 7 others are major shareholders | DRHP data",
+   "outlets": [
+    "Livemint",
+    "Telegraph India",
+    "Rediff",
+    "The Economic Times"
+   ],
+   "n": 6,
+   "url": "https://economictimes.indiatimes.com/markets/ipos/fpos/jio-ipo-may-be-valued-at-rs-11-lakh-crore-what-it-means-for-ril-bharti-airtel-and-telecom-stocks/articleshow/134885702.cms"
+  },
+  {
+   "id": "h-supreme-court-stays-coercive-action-cbi",
+   "desk": "desh",
+   "title": "Supreme Court stays coercive action in CBI's corruption case against Punjab Chief Minister's OSD",
+   "outlets": [
+    "Bar and Bench",
+    "The Hindu",
+    "Live Law",
+    "Hindustan Times"
+   ],
+   "n": 6,
+   "url": "https://www.hindustantimes.com/india-news/supreme-court-declines-to-halt-cbi-case-against-bhagwant-manns-osd-bars-coercive-action-punjab-cm-101791787812339.html"
+  },
+  {
+   "id": "h-claimed-suicide-pact-chats-told-another",
+   "desk": "videsh",
+   "title": "He claimed suicide pact, chats told another story: How girlfriend's marriage fixed elsewhere led man to p",
+   "outlets": [
+    "The Times of India",
+    "NDTV",
+    "The Indian Express",
+    "India Today"
+   ],
+   "n": 5,
+   "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxQcjZNUktKakJVaXJhTlk5ZURUUUNvcVNnRmxuMWxBR1RlX09FTTJ0Tjg2c1I5aHBrckh3dVhMR2UtenJUU3NvVUdPTUVyWmJqcnI5Zkg1bFBZVzEwbC1Bb1dfQ3pqeEkwUFVLNUhLYUFGU0QwaFdnTEtiU3FTb1oyeHNScjJWTTJqYndmUlBPQmZFcDhBSmw3Rnh2RURKNEQ2aklJZGFBbl9KMl9TelFEeVMwVDBOcDQtSlMwNmhURkNranh2N1VZZ0E3cXJobG9YdDJuN1lhQTNMZXkzQkZUd1V0SHV4anJkMjhpR1FXdHdhZ2tEQ2o2cDNvYjFBZDJmdWc?oc=5"
+  },
+  {
+   "id": "h-how-can-enter-house-high-court",
+   "desk": "desh",
+   "title": "'How Can You Enter His House?': High Court Questions Delhi Police Over Nadeem Khan's Alleged Detention...",
+   "outlets": [
+    "Live Law",
+    "LawBeat",
+    "ThePrint",
+    "Hindustan Times"
+   ],
+   "n": 6,
+   "url": "https://www.hindustantimes.com/india-news/hc-asks-for-delhi-police-stand-on-activist-s-plea-over-his-detention-101791796094271.html"
+  }
+ ]
+}

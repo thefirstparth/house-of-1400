@@ -932,3 +932,28 @@ longer used (badly framed, with mixed backgrounds). An image that fails once is 
 - Djokovic's line said "next event Paris" while the table had no Paris row. EDITORIAL.md now says the table lists:
   - every big tournament on now or within four weeks;
   - always any event named as a followed player's next one.
+
+## The pool: code shortlists, the editor writes to fixed numbers (12 Oct 2026, from the 13 Oct edition)
+Parth on 12 Oct had four complaints:
+- the daily run cost about 5% of his weekly Claude limit;
+- stories were too short to read without going to the source;
+- the paper had thinned from 38 items (6 Oct) to 7 (12 Oct);
+- he wanted it fixed once, to run on its own.
+
+The cause of the thinning: from 5 Oct the run answered the desk check of about 300 headlines with about ten blanket "skip" reasons, and nothing set a floor. The decisions:
+- **Code gathers.** `scripts/pool.mjs` (lib/pool.js), run by `scripts/prep.mjs`:
+  - reads the reading list through `/api/live/wire`: 162 feeds, up from 94, adding tech (9to5Mac, 9to5Google, MacRumors, Android Police, Hacker News, security), AI labs, world, India and money feeds;
+  - groups and ranks the stories by outlets, Google front-page position, follows and freshness;
+  - keeps 44 stories: the top 12 whatever their desk, then each desk's floor (config `pool.desk_min`), then the rest within each desk's ceiling, plus 30 headlines;
+  - reads each story's article through the new run-only key `/api/live/read`, which turns Google News links into the publisher's.
+
+  The run reads that one pool. Hand research sweeps, the wire check and the desk check are retired: the validator no longer asks for `checks.national`, `money_sweep`, `money_net`, `wire` or `top` from the pool's date.
+- **Fixed numbers, enforced by the validator** (config `pool.edition`):
+  - 18 to 24 stories and briefs, at least 8 full stories;
+  - AI and Tech 1 to 3 each, Desh and Videsh 2 to 4, The Ledger 1 to 3, The Wider Pitch 2 to 5, The Sidelines 2 to 4;
+  - Back Home neither counted nor capped (Parth: 0 is fine).
+
+  Every top pool story is printed or answered with its own reason (`checks.pool`).
+- **Depth** (config `pool.depth`): every full story has a long version of 150 to 260 words written from the pool's text; a brief is two sentences, at least 22 words.
+- **The brief:** `docs/DESK.md`, about 6 KB, replaces reading the 54 KB EDITORIAL.md, which stays the per-section reference. The model stays Opus for now, per Parth.
+- **Future changes are numbers in config `pool`,** not new prose.
