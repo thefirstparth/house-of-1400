@@ -38,7 +38,7 @@ async function gemini(model, body, tries = 2) {
     log(`${model}: ${r.status} in ${Math.round((Date.now() - t0) / 1000)} s`);
     const j = await r.json().catch(() => ({}));
     if (r.ok) return j;
-    const msg = `${model} ${r.status}: ${j.error?.message || ""}`.slice(0, 300);
+    const msg = `${model} ${r.status}: ${j.error?.message || ""}`.slice(0, 600);
     if (r.status === 429 && i + 1 < tries) { log(msg, "- waiting a minute"); await sleep(62000); continue; }
     throw new Error(msg);
   }
@@ -76,26 +76,35 @@ function pcmOf(buf) {
 const hostVoice = Object.fromEntries((P.hosts || []).map(h => [h.id, h.voice]));
 const styleOf = t => `${P.style || ""} This moment: ${(P.moods || {})[t.mood] || (P.moods || {}).neutral || "conversational"}.`.trim();
 async function ttsGemini(turns) {
-  const body = list => ({
-    contents: [{ role: "user", parts: list.map(t => ({ text: spoken(t.text, P.pronounce), speech_metadata: { speaker: t.speaker, style: styleOf(t) } })) }],
-    generationConfig: { responseModalities: ["AUDIO"], speechConfig: { multiSpeakerVoiceConfig: { speakerVoiceConfigs: Object.entries(hostVoice).map(([speaker, voiceName]) => ({ speaker, voiceConfig: { prebuiltVoiceConfig: { voiceName } } })) } } },
+  const speakers = { multiSpeakerVoiceConfig: { speakerVoiceConfigs: Object.entries(hostVoice).map(([speaker, voiceName]) => ({ speaker, voiceConfig: { prebuiltVoiceConfig: { voiceName } } })) } };
+  const moods = [...new Set(turns.map(t => t.mood))].filter(m => (P.moods || {})[m]).map(m => `${m}: ${(P.moods || {})[m]}`).join("; ");
+  // 1. The transcript as one text with "Name: line" labels (the form Parth's AI Studio tester proved on this model)
+  const transcript = list => ({
+    contents: [{ role: "user", parts: [{ text: `${P.style || ""} Match each moment's tone to its news (${moods}); never laugh near sad news. Read this conversation exactly as written:\n\n${list.map(t => `${t.speaker}: ${spoken(t.text, P.pronounce)}`).join("\n")}` }] }],
+    generationConfig: { responseModalities: ["AUDIO"], speechConfig: speakers },
   });
-  const one = async list => {
-    const j = await gemini(P.tts_model || "gemini-3.8-flash-tts", body(list));
+  // 2. One part per turn with its own style (the documented 3.8 form)
+  const perTurn = list => ({
+    contents: [{ role: "user", parts: list.map(t => ({ text: spoken(t.text, P.pronounce), speechMetadata: { speaker: t.speaker, style: styleOf(t) } })) }],
+    generationConfig: { responseModalities: ["AUDIO"], speechConfig: speakers },
+  });
+  const one = async (list, form) => {
+    const j = await gemini(P.tts_model || "gemini-3.8-flash-tts", form(list), 1);
     const part = j.candidates?.[0]?.content?.parts?.find(p => p.inlineData?.data);
-    if (!part) throw new Error(`no audio in the answer (${j.candidates?.[0]?.finishReason || "?"})`);
+    if (!part) throw new Error(`no audio in the answer (${j.candidates?.[0]?.finishReason || j.promptFeedback?.blockReason || "?"})`);
+    log(`audio: ${part.inlineData.mimeType || "?"}`);
     return pcmOf(Buffer.from(part.inlineData.data, "base64"));
   };
-  try { return Buffer.concat([await one(turns)]); }
-  catch (e) {
-    log("one request failed:", e.message, "- trying in chunks at topic changes");
-    // chunks of about a third, split where the mood or the speaker pattern changes topic
-    const n = Math.ceil(turns.length / 3), chunks = [];
-    for (let i = 0; i < turns.length;) { let j = Math.min(turns.length, i + n); while (j < turns.length && j > i + 2 && turns[j].mood === turns[j - 1].mood) j--; chunks.push(turns.slice(i, j)); i = j; }
-    const gap = Buffer.alloc(24000 * 2 * 0.45), parts = [];
-    for (const [k, c] of chunks.entries()) { if (k) await sleep(22000); parts.push(await one(c), gap); }
-    return Buffer.concat(parts);
+  for (const [name, form] of [["transcript", transcript], ["per-turn", perTurn]]) {
+    try { return await one(turns, form); }
+    catch (e) { log(`voicing as one ${name} request failed: ${e.message}`); await sleep(21000); }
   }
+  // 3. Chunks of about a third, split where the topic changes, as transcripts
+  const n = Math.ceil(turns.length / 3), chunks = [];
+  for (let i = 0; i < turns.length;) { let j = Math.min(turns.length, i + n); while (j < turns.length && j > i + 2 && turns[j].mood === turns[j - 1].mood) j--; chunks.push(turns.slice(i, j)); i = j; }
+  const gap = Buffer.alloc(24000 * 2 * 0.45), parts = [];
+  for (const [k, c] of chunks.entries()) { if (k) await sleep(22000); parts.push(await one(c, transcript), gap); }
+  return Buffer.concat(parts);
 }
 function ttsKokoro(turns) {
   const K = P.kokoro || {}, inp = `${OUT}/turns.json`, wav = `${OUT}/kokoro.wav`;
