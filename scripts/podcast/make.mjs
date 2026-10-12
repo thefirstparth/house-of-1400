@@ -78,14 +78,14 @@ const styleOf = t => `${P.style || ""} This moment: ${(P.moods || {})[t.mood] ||
 async function ttsGemini(turns) {
   const speakers = { multiSpeakerVoiceConfig: { speakerVoiceConfigs: Object.entries(hostVoice).map(([speaker, voiceName]) => ({ speaker, voiceConfig: { prebuiltVoiceConfig: { voiceName } } })) } };
   const moods = [...new Set(turns.map(t => t.mood))].filter(m => (P.moods || {})[m]).map(m => `${m}: ${(P.moods || {})[m]}`).join("; ");
-  // 1. The transcript as one text with "Name: line" labels (the form Parth's AI Studio tester proved on this model)
+  // The transcript as one text with "Name: line" labels (the form Parth's AI Studio tester proved on this model)
   const transcript = list => ({
     contents: [{ role: "user", parts: [{ text: `${P.style || ""} Match each moment's tone to its news (${moods}); never laugh near sad news. Read this conversation exactly as written:\n\n${list.map(t => `${t.speaker}: ${spoken(t.text, P.pronounce)}`).join("\n")}` }] }],
     generationConfig: { responseModalities: ["AUDIO"], speechConfig: speakers },
   });
-  // 2. One part per turn with its own style (the documented 3.8 form)
+  // One part per turn with its own style (the documented 3.8 form)
   const perTurn = list => ({
-    contents: [{ role: "user", parts: list.map(t => ({ text: spoken(t.text, P.pronounce), speechMetadata: { speaker: t.speaker, style: styleOf(t) } })) }],
+    contents: [{ role: "user", parts: list.map(t => ({ text: spoken(t.text, P.pronounce), speech_metadata: { speaker: t.speaker, style: styleOf(t) } })) }],
     generationConfig: { responseModalities: ["AUDIO"], speechConfig: speakers },
   });
   const one = async (list, form) => {
@@ -95,7 +95,8 @@ async function ttsGemini(turns) {
     log(`audio: ${part.inlineData.mimeType || "?"}`);
     return pcmOf(Buffer.from(part.inlineData.data, "base64"));
   };
-  for (const [name, form] of [["transcript", transcript], ["per-turn", perTurn]]) {
+  // per-turn first: it carries each moment's mood, and it voiced the 12 Oct test in 22 s
+  for (const [name, form] of [["per-turn", perTurn], ["transcript", transcript]]) {
     try { return await one(turns, form); }
     catch (e) { log(`voicing as one ${name} request failed: ${e.message}`); await sleep(21000); }
   }

@@ -23,7 +23,7 @@ jobs:
         with: { node-version: 22 }
       - uses: actions/setup-python@v6
         with: { python-version: "3.12" }
-      - run: npm install --no-save --no-audit --no-fund @vercel/blob
+      - run: sudo apt-get install -y -qq ffmpeg >/dev/null && npm install --no-save --no-audit --no-fund @vercel/blob
       - name: Make the episode
         id: make
         env:
