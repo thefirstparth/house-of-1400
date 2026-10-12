@@ -224,6 +224,9 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   for (const g of E.glance || []) if (!targets.has(g.target)) errors.push(`glance: target ${g.target} does not exist`);
   // From the 13 Oct 2026 edition (Parth, from kylo's Sixty Seconds): each line is a plain headline of at most 14 words
   // naming who and what, and its subject (the words naming who or what) prints bold.
+  // From the 13 Oct 2026 edition: 7 to 11 lines, 8 to 10 on most days (Parth, 12 Oct; the schema allows 5 to 11 so the
+  // older editions stay valid).
+  if (E.date >= "2026-10-13" && (E.glance || []).length < 7) errors.push(`glance: ${(E.glance || []).length} lines; The day in a minute needs 7 to 11 (8 to 10 on most days)`);
   if (E.date >= "2026-10-13") for (const g of E.glance || []) {
     const n = String(g.line || "").split(/\s+/).filter(Boolean).length;
     if (n > 14) errors.push(`glance: "${g.line}" is ${n} words; a day-in-a-minute line is a plain headline of 14 words or fewer naming who and what`);

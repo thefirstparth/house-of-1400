@@ -458,7 +458,7 @@
     "glance": {
       "type": "array",
       "minItems": 5,
-      "maxItems": 10,
+      "maxItems": 11,
       "items": {
         "type": "object",
         "additionalProperties": false,

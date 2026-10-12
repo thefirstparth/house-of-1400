@@ -311,7 +311,7 @@ function flowAgenda() {
 
 // ---------------------------------------------------------------- Page One (variant B, design/page-one/README.md FINAL)
 // The day in a minute: every one of the editor's lines (Parth, 2 Oct: "the original had 7, what happened to ours?")
-const P1MAX = 10, P1MIN = 5; let p1lines = P1MAX;
+const P1MAX = 11, P1MIN = 5; let p1lines = P1MAX;
 const storyDesk = id => { const s = allStories().find(x => x.id === id); return s ? deskOf(s.section)?.id : null; };
 // The subject of a line (the words naming who or what, copied from the line) in bold (Parth, 12 Oct 2026); without
 // one, or one not in the line, the line prints as it is.
