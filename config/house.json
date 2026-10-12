@@ -3290,7 +3290,7 @@
   "pool": {
     "note": "The day's pool and the edition's fixed numbers (from the 13 Oct 2026 edition; lib/pool.js, scripts/pool.mjs, scripts/validate.mjs). The pool: `clusters` stories shortlisted by code, the `top` best whatever their desk, then each desk's `desk_min`, then the rest by score up to `desk_max` per desk; `headlines` more as one-liners. The edition: `edition` sets how many items (stories plus briefs, Back Home not counted) and each desk's floor and ceiling, checked by the validator; `depth` sets the words in a story's long version and a brief. Change a number here, never the prose.",
     "from": "2026-10-13",
-    "clusters": 44,
+    "clusters": 50,
     "top": 12,
     "headlines": 30,
     "desk_min": {

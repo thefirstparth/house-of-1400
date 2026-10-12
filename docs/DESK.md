@@ -1,6 +1,6 @@
 # DESK: the daily run's brief (from the 13 Oct 2026 edition)
 
-This page is all a daily run needs to read about the news. Code has already done the gathering. `node scripts/prep.mjs` prints the day's **pool**: about 45 stories, shortlisted and ranked by code from the whole reading list (about 160 feeds), with each story's own article text, plus 30 more headlines. Your job is to **choose and write**. Do not hunt for news on the web. Use a web search or fetch only to confirm a fact, or to find a time or result the pool and snapshot lack, and no more than about eight in the whole run.
+This page is all a daily run needs to read about the news. Code has already done the gathering. `node scripts/prep.mjs` prints the day's **pool**: about 50 stories, shortlisted and ranked by code from the whole reading list (about 160 feeds), with each story's own article text, plus 30 more headlines. Your job is to **choose and write**. Do not hunt for news on the web. Use a web search or fetch only to confirm a fact, or to find a time or result the pool and snapshot lack, and no more than about eight in the whole run.
 
 `docs/EDITORIAL.md` stays the reference for each section's detailed format. Open it only at the section the validator names when it refuses something; never read it end to end.
 

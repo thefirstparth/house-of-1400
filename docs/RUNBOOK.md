@@ -35,7 +35,7 @@ If `RUN_KEY` is missing or `/api/live` answers 401, record that, skip the snapsh
    - the letters to the editor (answer each in `checks.letters`);
    - India's cricket times;
    - the Betting Window candidates;
-   - **the day's pool:** about 45 stories ranked by code from the whole reading list, each with its own article text, and 30 more headlines (written to `ledger/pool.json`).
+   - **the day's pool:** about 50 stories ranked by code from the whole reading list, each with its own article text, and 30 more headlines (written to `ledger/pool.json`).
 
    It also stores the live snapshot in today's edition file. Write the edition into that file and keep its `snapshot`. If one part fails it says so; run that script on its own (`node scripts/pool.mjs` for the pool).
 3. **Read `docs/DESK.md`** and nothing else of the rules. It holds the tests, the fixed numbers, how to write, and one line for every block of the edition. Open `docs/EDITORIAL.md` only at the section the validator names. Read `ledger/lessons.json` and `ledger/changes.json` only if the validator asks.
