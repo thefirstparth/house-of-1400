@@ -121,7 +121,7 @@ export function rundown(E, P = {}, now, paper = {}) {
   const SPORT = new Set(["fixtures", "madrid", "paddock", "crease", "deuce", "pitch", "sidelines"]);
   for (const w of E.week_ahead || []) {
     const t = w.time_ist ? Date.parse(`${w.date}T${w.time_ist}:00+05:30`) : Date.parse(`${w.date}T23:59:00+05:30`), sport = SPORT.has(w.area);
-    if (!(t > now - 2 * 36e5 && t < now + (sport ? 7 : 3) * 864e5)) continue;
+    if (!(t > now - 18e5 && t < now + (sport ? 7 : 3) * 864e5)) continue;
     const line = `${sayTimes(w.what)}, ${w.time_ist ? sayWhen(t, now) : sayDay(w.date, now)}${w.why ? ` (${w.why})` : ""}`;
     if (sport) { coming.push(line); if (w.time_ist) times.push(t); } else if (ahead.length < 5) ahead.push(line);
   }
@@ -129,10 +129,18 @@ export function rundown(E, P = {}, now, paper = {}) {
   for (const [k, c] of Object.entries(E.chronology || {})) {
     const l = c?.last, n = c?.next, lt = Date.parse(l?.when_utc), nt = Date.parse(n?.when_utc);
     if (lt > now - 60 * 36e5 && lt <= now) results.push(`${NAMES[k] || k}: ${l.label}${l.detail ? `, ${l.detail}` : ""} (${sayWhen(lt, now)})`);
-    if (nt > now - 2 * 36e5 && !near(nt)) { coming.push(`${NAMES[k] || k} next: ${n.label}${n.detail ? `, ${n.detail}` : ""}, ${nt < now + 6 * 864e5 ? sayWhen(nt, now) : sayDay(new Date(nt + IST - 4 * 36e5).toISOString().slice(0, 10), now)}`); times.push(nt); }
+    if (nt > now - 18e5 && !near(nt)) { coming.push(`${NAMES[k] || k} next: ${n.label}${n.detail ? `, ${n.detail}` : ""}, ${nt < now + 6 * 864e5 ? sayWhen(nt, now) : sayDay(new Date(nt + IST - 4 * 36e5).toISOString().slice(0, 10), now)}`); times.push(nt); }
   }
-  for (const p of E.tennis?.players || []) { const t = Date.parse(p.next_match?.when_utc); if (t > now - 2 * 36e5 && t < now + 7 * 864e5 && !near(t)) coming.push(`${p.name}: ${String(p.next_match.text).replace(/,?\s*(today|tomorrow|tonight|monday|tuesday|wednesday|thursday|friday|saturday|sunday)?,?\s*\d{1,2}:\d{2}\s*IST\.?/i, "").replace(/\.$/, "")}, ${sayWhen(t, now)}`); }
+  for (const p of E.tennis?.players || []) { const t = Date.parse(p.next_match?.when_utc); if (t > now - 18e5 && t < now + 7 * 864e5 && !near(t)) coming.push(`${p.name}: ${String(p.next_match.text).replace(/,?\s*(today|tomorrow|tonight|monday|tuesday|wednesday|thursday|friday|saturday|sunday)?,?\s*\d{1,2}:\d{2}\s*IST\.?/i, "").replace(/\.$/, "")}, ${sayWhen(t, now)}`); }
   for (const ev of E.tennis?.events || []) if (ev.note) results.push(`${ev.name}: ${ev.note}`);
+  // the live sport the page builds itself (the edition's snapshot): F1 sessions this race week, the Warriors, India's
+  // football, the tennis players' last results; Week Ahead only exists on Mondays
+  const soonish = (t, days = 3) => t > now - 18e5 && t < now + days * 864e5;
+  for (const x of ok("f1_next")?.race?.sessions || []) { const t = Date.parse(x.start); if (/qualif|sprint|race/i.test(x.name) && soonish(t) && !near(t)) { coming.push(`Formula One, ${ok("f1_next").race.name}, ${x.name}: ${sayWhen(t, now)}`); times.push(t); } }
+  const nba = ok("nba"), g = (nba?.next || [])[0], gt = Date.parse(g?.date);
+  if (g && soonish(gt, 2)) coming.push(`${nba.team}${g.preseason ? " (pre-season)" : ""} ${g.home ? "v" : "at"} ${g.opponent}, ${sayWhen(gt, now)}`);
+  for (const m of ok("intl_football")?.matches || []) { const t = Date.parse(m.when_utc || m.date); const label = m.label || m.name; if (label && soonish(t) && !near(t)) coming.push(`${label}, ${sayWhen(t, now)}`); }
+  for (const p of ok("tennis_players")?.players || []) { const l = p.last, t = Date.parse(l?.when_utc); if (l && t > now - 36 * 36e5 && t <= now) results.push(`${p.name}: ${l.won ? "beat" : "lost to"} ${l.opponent}, ${l.round}, ${l.event}`); }
   const city = ok("weather")?.cities?.[0], d0 = city?.daily?.[0];
   const weather = city && d0 ? `${city.name} today: top of ${Math.round(d0.max)} degrees${Number.isFinite(d0.min) ? `, low of ${Math.round(d0.min)}` : ""}, ${d0.rain_prob}% chance of rain` : null;
   const groups = {};
