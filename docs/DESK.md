@@ -56,7 +56,8 @@ Every pool story marked **TOP** is printed (a story, a brief or an Also in line)
 - **`sections.ledger.data.notes`:** one driver sentence per index, keyed as config names them.
 - **`sections.paddock.data`:** in race week, the preview and `max_note`.
 - **`sections.crease.data.rows`:** the series rows, including "After this".
-- **`art_scores`:** every printed story and brief.
+- **`art_scores` (Bunty draws from these; without them there is no art):** every printed story and brief as `{story_id, importance 0-3, relevance 0-2, drawable 0-3}`. Importance is its rank in today's paper, relevance is how much it matters to Parth, drawable is whether there is one clear idea for a satirical cartoon. Drawable 0 for death, disaster, violence or anything in poor taste. Code picks the orders from the scores when you publish.
+- **`letters`:** when a letter deserves a public answer, `{letter_id, quote, reply}`: a short quote and two or three sentences in Bhide's voice (dry, exact, courteous). Most days there is none.
 - **`checks`:**
   - `movers`: every market mover in the snapshot, with why it moved.
   - `letters`: what you did with each letter.
