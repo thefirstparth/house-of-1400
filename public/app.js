@@ -1755,11 +1755,17 @@ function deskBlock() {
 // a minute and the editor's note), two on a laptop, one on a phone with the day in a minute straight after the lead.
 // Bhide's portrait: beside his own words (his note, his replies, the letter you write him), and when he has news
 // about the paper itself (late, still being set). Nowhere else.
+// A day-in-a-minute line with its subject in bold (Parth, 12 Oct 2026, from kylo's Sixty Seconds): the words naming
+// who or what it is about, copied from the line. No subject, or one not in the line: the line prints plain.
+const minuteLine = g => {
+  const line = String(g.line || ""), sub = String(g.subject || "").trim(), at = sub ? line.indexOf(sub) : -1;
+  return at < 0 ? esc(line) : `${esc(line.slice(0, at))}<b>${esc(sub)}</b>${esc(line.slice(at + sub.length))}`;
+};
 const face = (sz = 28) => `<img class="face" src="/bhide.svg" alt="" width="${sz}" height="${sz}">`;
 const editorNote = () => (E.editor_note ? `<div class="editor"><span class="eh">From the editor</span>${esc(E.editor_note)}<div class="sig"><img src="/bhide.svg" alt="" width="34" height="34"><a href="/editor">${esc(CFG.paper.editor.signature)}</a></div></div>` : "");
 function frontHTML() {
   const F = E.front;
-  const minute = E.glance?.length ? `<div class="minute"><h3>The day in a minute</h3><div class="gd">${esc(longDate(E.date))}</div><ol>${E.glance.map(g => `<li data-fam="${(s => (s ? fam(s.section) : famOfColor(g.color)))(allStories().find(x => x.id === g.target))}"><span>${esc(g.section)}${allStories().find(x => x.id === g.target)?.update ? " · Update" : ""}</span><button data-go="${esc(g.target)}">${esc(g.line)}</button></li>`).join("")}</ol></div>` : "";
+  const minute = E.glance?.length ? `<div class="minute"><h3>The day in a minute</h3><div class="gd">${esc(longDate(E.date))}</div><ol>${E.glance.map(g => `<li data-fam="${(s => (s ? fam(s.section) : famOfColor(g.color)))(allStories().find(x => x.id === g.target))}"><span>${esc(g.section)}${allStories().find(x => x.id === g.target)?.update ? " · Update" : ""}</span><button data-go="${esc(g.target)}">${minuteLine(g)}</button></li>`).join("")}</ol></div>` : "";
   return `<div class="front" id="front" style="scroll-margin-top:60px">
 <div class="col fa">${storyHTML({ ...F.lead, kicker: `Front Page · ${F.lead.kicker}` }, { lead: true })}<div class="ftail"></div></div>
 <div class="col fb"><div class="ftail">${F.seconds.map(x => storyHTML(x)).join("")}${F.briefs.length ? `<div class="briefs">${F.briefs.map(b => briefHTML(b, "brief")).join("")}</div>` : ""}</div></div>
@@ -2180,7 +2186,7 @@ function dashHTML() {
   const w = LIVE.weather?.value, c0 = w?.cities?.[0], M = LIVE.markets?.value, N = LIVE.f1_next?.value, S = LIVE.f1_standings?.value;
   const F = LIVE.football?.value, B = LIVE.betting?.value?.markets || [], G = LIVE.signals?.value || {};
   const hr = Number(fmt(new Date().toISOString(), { hour: "2-digit" }));
-  const minute = (E.glance || []).slice(0, 9).map(g => { const st = allStories().find(x => x.id === g.target); return `<li data-fam="${st ? fam(st.section) : famOfColor(g.color)}"><span>${esc(g.section)}</span>${esc(g.line)}</li>`; }).join("");
+  const minute = (E.glance || []).slice(0, 9).map(g => { const st = allStories().find(x => x.id === g.target); return `<li data-fam="${st ? fam(st.section) : famOfColor(g.color)}"><span>${esc(g.section)}</span><div>${minuteLine(g)}</div></li>`; }).join("");
 
   let sky = "";
   if (c0) {
@@ -2225,7 +2231,7 @@ ${pcard("betting", "The Betting Window", bets)}</div>`;
 // ---- "The edition, framed": the day's paper composed as one sheet
 function framedHTML() {
   const L = E.front.lead;
-  const minute = (E.glance || []).map(g => { const st = allStories().find(x => x.id === g.target); return `<li data-fam="${st ? fam(st.section) : famOfColor(g.color)}"><span>${esc(g.section)}</span>${esc(g.line)}</li>`; }).join("");
+  const minute = (E.glance || []).map(g => { const st = allStories().find(x => x.id === g.target); return `<li data-fam="${st ? fam(st.section) : famOfColor(g.color)}"><span>${esc(g.section)}</span><div>${minuteLine(g)}</div></li>`; }).join("");
   return `<div class="framed" onclick="event.stopPropagation()">
 <div class="fm"><span class="the">The</span><span class="hof">House of</span><span class="yr">1400</span><div class="colourbar">${colourBar()}</div><span class="dt">${esc(longDate(E.date))} · No. ${E.edition_no}</span></div>
 <div class="headline" data-fam="${fam(L.section)}"><small>${esc(L.kicker)}</small>${esc(L.headline)}${L.deck ? `<p>${esc(L.deck)}</p>` : ""}</div>

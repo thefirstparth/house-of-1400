@@ -222,6 +222,14 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
   // Glance targets must exist
   const targets = new Set([...items.map(s => s.id), ...Object.keys(E.sections || {}), "front", "week", "fixtures", "madrid", "paddock", "tables", "ledger", "sky", "screen", "talk", "betting", "house", "deuce", "crease"]);
   for (const g of E.glance || []) if (!targets.has(g.target)) errors.push(`glance: target ${g.target} does not exist`);
+  // From the 13 Oct 2026 edition (Parth, from kylo's Sixty Seconds): each line is a plain headline of at most 14 words
+  // naming who and what, and its subject (the words naming who or what) prints bold.
+  if (E.date >= "2026-10-13") for (const g of E.glance || []) {
+    const n = String(g.line || "").split(/\s+/).filter(Boolean).length;
+    if (n > 14) errors.push(`glance: "${g.line}" is ${n} words; a day-in-a-minute line is a plain headline of 14 words or fewer naming who and what`);
+    if (!g.subject) warnings.push(`glance: "${g.line}" has no subject (the words naming who or what it is about, copied from the line; printed bold)`);
+    else if (!String(g.line).includes(g.subject)) warnings.push(`glance: subject "${g.subject}" is not copied exactly from its line "${g.line}"`);
+  }
 
   // Tennis: NEXT EVENT when no match is confirmed
   for (const p of E.tennis?.players || []) if (!p.next_match && !p.next_event && !p.note) warnings.push(`tennis: ${p.name} has no next match, next event or note`);

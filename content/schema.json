@@ -477,6 +477,9 @@
           "target": {
             "$ref": "#/definitions/text"
           },
+          "subject": {
+            "type": "string"
+          },
           "color": {
             "type": "string"
           }

@@ -183,6 +183,7 @@ body.on-one .dbar{display:none}
 .p1 ol.min a{display:grid;grid-template-columns:1fr;gap:1px;padding:6px 0;border-top:1px solid var(--rule2)}
 .p1 ol.min .lab{font:700 10px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
 .p1 ol.min b{font:500 15.5px/1.3 var(--hl);font-variation-settings:"opsz" 16}
+.p1 ol.min b strong{font-weight:750}
 .p1 a:hover>b,.p1 .leadh:hover h3{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
 .p1 .eve:not(:empty){border-top:1px solid var(--ink);padding-top:10px}
 .p1 .pick .v{display:inline-block;font:700 9.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--c);margin-right:6px}
