@@ -35,14 +35,14 @@ test("podcast: the running order follows the paper's desks, lead first, and time
   assert.equal(desk("alcaraz"), "Sport");
   assert.equal(R.segments.find(g => g.desk === "News").items[0].id, "riyadh");
   assert.match(R.segments.find(g => g.desk === "Money").markets[0], /Nifty 50 at 22,365, down 0.7%/);
-  assert.match(R.segments.find(g => g.desk === "Sport").coming[0], /late on Wednesday night, at half past twelve/);
-  assert.equal(sayWhen("2026-10-14T13:30:00Z", Date.parse("2026-10-12T09:00:00Z")), "Wednesday at seven in the evening");
-  assert.equal(sayWhen("2026-10-12T10:00:00Z", Date.parse("2026-10-12T09:00:00Z")), "today at half past three in the afternoon");
+  assert.match(R.segments.find(g => g.desk === "Sport").coming[0], /on Thursday at twelve thirty a m, late on Wednesday night/);
+  assert.equal(sayWhen("2026-10-14T13:30:00Z", Date.parse("2026-10-12T09:00:00Z")), "on Wednesday at seven p m");
+  assert.equal(sayWhen("2026-10-12T10:00:00Z", Date.parse("2026-10-12T09:00:00Z")), "today at three thirty p m");
 });
 
 test("podcast: a script that reads the paper, laughs at a tragedy or talks about the process is refused; the code script always exists", () => {
   const R = rundown(E, P, undefined, paper), hard = ps => ps.filter(p => p.hard).map(p => p.msg).join(" | "), all = ps => ps.map(p => p.msg).join(" | ");
-  const chat = ["Max finally won in Singapore, at the tenth attempt.", "Ten tries? Wow.", "Is Riyadh safe now?", "Not really, sadly.", "What about Jantar Mantar?", "Shut to protests.", "And buses?", "BMTC is sharing live data.", "Alcaraz?", "Through in straight sets.", "Roma next for Madrid?", "Yes, late on Wednesday night."];
+  const chat = ["Max finally won in Singapore, at the tenth attempt.", "Ten tries? Wow.", "Is Riyadh safe now?", "Not really, sadly.", "What about Jantar Mantar?", "Shut to protests.", "And buses?", "BMTC is sharing live data.", "Alcaraz?", "Through in straight sets.", "Roma next for Madrid?", "Yes, on Thursday at twelve thirty a m, late on Wednesday night."];
   const pad = " and that is the gist of the whole afternoon as we heard it from friends over tea".repeat(23);
   const turns = chat.map((t, i) => ({ speaker: i % 2 ? "Ravi" : "Asha", mood: "warm", text: i % 4 === 0 ? t + pad : t }));
   assert.equal(hard(checkScript(turns, R, P)), "");

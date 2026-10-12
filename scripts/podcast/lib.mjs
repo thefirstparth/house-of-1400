@@ -58,19 +58,20 @@ const storyText = s => [s.short || s.text, ...(s.more || [])].filter(Boolean).jo
 const longDate = ymd => new Date(ymd + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" });
 const cut = (t, n) => { t = String(t || ""); if (t.length <= n) return t; const s = t.slice(0, n), i = s.lastIndexOf(". "); return i > n * 0.5 ? s.slice(0, i + 1) : s.replace(/\s+\S*$/, "") + "…"; };
 
-// A time as people say it, in IST: "tomorrow at seven in the evening", "late on Wednesday night, at half past twelve"
+// A match time, exact, in IST (Parth, 13 Oct: "a Real Madrid match will always start at a specific time"): the
+// calendar day and the clock as Indians say it, with the night spelt out after midnight: "Wednesday at seven p m",
+// "on Thursday at twelve thirty a m, late on Wednesday night", "today at three thirty p m".
 const IST = 5.5 * 36e5;
 export function sayWhen(utc, now = Date.now()) {
   const t = typeof utc === "number" ? utc : Date.parse(utc); if (!Number.isFinite(t)) return null;
   const d = new Date(t + IST), h = d.getUTCHours(), m = d.getUTCMinutes(), day = Math.floor((t + IST) / 864e5) - Math.floor((now + IST) / 864e5);
   const wd = ms => new Date(ms + IST).toLocaleDateString("en-GB", { weekday: "long", timeZone: "UTC" });
-  const h12 = x => intWords(x % 12 || 12);
-  const clock = h === 0 && m === 0 ? "midnight" : h === 12 && m === 0 ? "noon" : m === 0 ? h12(h) : m === 30 ? `half past ${h12(h)}` : m === 15 ? `quarter past ${h12(h)}` : m === 45 ? `quarter to ${h12(h + 1)}` : `${h12(h)} ${m < 10 ? "oh " + ONES[m] : intWords(m)}`;
-  if (h < 4) { const night = day - 1 === 0 ? "tonight" : day - 1 === 1 ? "tomorrow night" : day - 1 === -1 ? "last night" : `on ${wd(t - 864e5)} night`; return `late ${night}, at ${clock}`; }
-  const part = /midnight|noon/.test(clock) ? "" : h < 12 ? " in the morning" : h < 17 ? " in the afternoon" : h < 21 ? " in the evening" : " at night";
-  const dayWord = day === 0 ? "today" : day === 1 ? "tomorrow" : day === -1 ? "yesterday" : (day < -1 ? "on " : "") + wd(t);
-  return `${dayWord} at ${clock}${part}`;
+  const dayWord = k => (k === 0 ? "today" : k === 1 ? "tomorrow" : k === -1 ? "yesterday" : `on ${wd(t + (k - day) * 864e5)}`);
+  const clock = h === 0 && m === 0 ? "twelve midnight" : h === 12 && m === 0 ? "twelve noon" : `${intWords(h % 12 || 12)}${m ? " " + (m < 10 ? "oh " + ONES[m] : intWords(m)) : ""} ${h < 12 ? "a m" : "p m"}`;
+  const night = h < 4 ? `, late ${day - 1 === 0 ? "tonight" : day - 1 === 1 ? "tomorrow night" : day - 1 === -1 ? "last night" : `on ${wd(t - 864e5)} night`}` : "";
+  return `${dayWord(day)} at ${clock}${night}`;
 }
+export const clockOf = line => (String(line).match(/\b(?:(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)(?: oh [a-z]+| [a-z]+(?:-[a-z]+)?)? [ap] m|twelve midnight|twelve noon)\b/) || [])[0] || null;
 
 // A day as people say it: "today", "tomorrow", "on Wednesday", "on Sunday the twenty-fifth"
 export function sayDay(ymd, now = Date.now()) {
@@ -170,7 +171,7 @@ THE SHOW, in this order (everything comes from the RUNDOWN below)
 1. Open: ${A.id} greets with the day ("Good afternoon, it's ${R.day.split(" ")[0]}...") and goes straight into the lead as a hook. The two talk the lead through properly.
 2. Then the desk segments in the order given. Items marked "deep" get a real back-and-forth of about 80 to 140 words: one host tells it, the other reacts and asks what a listener would ask (what does it mean for us, why now, who is this), answered from "why" and the text. Items marked "quick" get one or two sentences each; several quick ones can run together briskly. Mention every item.
 3. If you name a segment, use the paper's desk names: News, Close to Home, Money, Tech and AI, Sport, Off Duty. "Close to Home" means Bengaluru only. A story from Delhi or anywhere else is News, never "close to home".
-4. Sport gets real energy: every sport item, the recent results, and EVERY match in "coming", even when no story covers it (keep the days and times exactly as written; they are already how people say them).
+4. Sport gets real energy: every sport item, the recent results, and EVERY match in "coming", even when no story covers it (say each day and time EXACTLY as written, e.g. "on Thursday at twelve thirty a m, late on Wednesday night"; match times must be precise).
 5. Money: the market numbers in one or two lines, no more than three numbers in all.
 6. Weather, if given: one everyday line ("warm, with a fair chance of rain later").
 7. The Week Ahead, if given: a couple of quick lines on what is coming in the next few days.
@@ -235,6 +236,9 @@ export function checkScript(turns, R, P = {}) {
   const seenAt = new Map(), twice = [];
   turns.forEach((t, i) => { for (const s of new Set(shingles(words(t.text), 6))) { if (seenAt.has(s) && seenAt.get(s) !== i) twice.push(s); else seenAt.set(s, i); } });
   if (twice.length) soft(`says the same thing twice: "${twice[0]}"`);
+  // every match time is said exactly as written (the clock words, e.g. "twelve thirty a m")
+  const said = turns.map(t => String(t.text)).join(" ").toLowerCase().replace(/\b([ap])\.\s?m\.?/g, "$1 m").replace(/\b([ap])m\b/g, "$1 m").replace(/-/g, " ");
+  for (const g of R.segments || []) for (const c of g.coming || []) { const k = clockOf(c); if (k && /sport/i.test(g.desk) && !said.includes(k.replace(/-/g, " "))) soft(`leaves out or changes the time "${k}" for: ${c.split(",")[0]}`); }
   // every deep story and every sport item is mentioned (one of its names appears)
   const all = turns.map(t => t.text).join(" ").toLowerCase();
   for (const s of [...deepItems(R), ...(R.segments || []).filter(g => /sport/i.test(g.desk)).flatMap(g => g.items)]) {
