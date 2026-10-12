@@ -86,6 +86,8 @@ first; the daily run and the illustrator also push to `main`).
 
 ## 6. QA protocol (use it for every visible change)
 
+Page One must fit one screen on Parth's MacBook Air (13" and 15", Chrome and Safari) with the heaviest paper the rules allow: `npm run test:fit` (also part of `npm run test:unit`). Run it after any change to Page One, the masthead, the tabs or The day in a minute.
+
 ```
 node scripts/qa/freeze.mjs              # freeze today's live data from production into qa-data/
 node scripts/build.mjs && PORT=3000 node scripts/dev.mjs &
