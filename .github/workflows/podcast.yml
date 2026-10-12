@@ -1,5 +1,5 @@
-# The daily podcast (scripts/podcast/make.mjs): after each edition is pushed, and again at 15:45 and 17:15 IST in case
-# the push did not start it. It only writes to Vercel Blob, never to the repo. Free: Gemini free tier, Kokoro fallback.
+# The daily podcast (scripts/podcast/make.mjs): when each edition is pushed (about 14:12 IST; a push was proven to start
+# it on 12 Oct), and again at 14:40 and 15:55 IST in case it did not (late papers have landed at 15:20 and 15:37). It only writes to Vercel Blob, never to the repo. Free: Gemini free tier, Kokoro fallback.
 # Two jobs, so Gemini's log is readable as soon as it ends: "gemini" makes the episode; "kokoro" runs only if it failed,
 # voicing the same script (handed over as an artifact) with the open-source Kokoro.
 name: podcast
@@ -8,18 +8,19 @@ on:
     branches: [main]
     paths: [content/latest.json]
   schedule:
-    - cron: "15 10 * * *"
-    - cron: "45 11 * * *"
+    - cron: "10 9 * * *"
+    - cron: "25 10 * * *"
   workflow_dispatch:
     inputs:
       date: { description: "Edition date (YYYY-MM-DD); empty = latest", required: false, default: "" }
       force: { description: "Make it again even if published", type: boolean, default: false }
       feed_only: { description: "Only rebuild the feed (no new episode)", type: boolean, default: false }
+      dry: { description: "Test: write and voice it, publish nothing (script and MP3 as artifacts)", type: boolean, default: false }
 concurrency: { group: podcast, cancel-in-progress: false }
 jobs:
   gemini:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -29,13 +30,16 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
-        run: node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }} ${{ inputs.feed_only && '--feed' || '' }}
+        run: node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }} ${{ inputs.feed_only && '--feed' || '' }} ${{ inputs.dry && '--dry' || '' }}
       - if: always()
         uses: actions/upload-artifact@v4
         with: { name: podcast-script, path: .podcast/script.json, retention-days: 2, if-no-files-found: ignore }
+      - if: always() && inputs.dry
+        uses: actions/upload-artifact@v4
+        with: { name: podcast-test-mp3, path: .podcast/episode.mp3, retention-days: 2, if-no-files-found: ignore }
   kokoro:
     needs: gemini
-    if: failure()
+    if: failure() && !inputs.dry
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

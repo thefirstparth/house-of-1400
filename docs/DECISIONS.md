@@ -977,3 +977,13 @@ The cause of the thinning: from 5 Oct the run answered the desk check of about 3
 - Rejected after research and tests: Edge TTS (unofficial; Microsoft answered 403 on 12 Oct), OmniVoice (about ten times slower than real time on a 4-core runner), Azure and Google Cloud TTS (card required), ElevenLabs (free plan too small), NotebookLM (no free API).
 
 - Cover art (Parth, 12 Oct: "I do not see the logo"): `public/podcast-cover.jpg`, 3000 px, the Page One halftone 1400 in the desk colours, drawn by `scripts/podcast/cover.mjs`; the feed names it as `itunes:image`. `make.mjs --feed` (or the workflow's "feed_only") rebuilds the feed without making an episode.
+
+- The script, rebuilt (Parth, 12 Oct, after the first episode: "two newsreaders taking turns reading the paper, not a conversation"; both hosts sounded male; sport mostly missing; little feeling; a fact said twice; Delhi filed under "Closer to Home"; too many numbers):
+  - Hosts: Asha is a woman (Aoede, from his shortlisted Aoede/Rasalgethi pair), Ravi a man (Rasalgethi). Ravi tells the sport.
+  - Length 6 to 8 minutes: 1,050 to 1,400 words (the two episodes ran at 168 and 178 words a minute).
+  - Running order by the paper's desks (config desks_v2), with their names, so "Close to Home" is Bengaluru only. The lead and 5 more stories are "deep" (a real back-and-forth, at least one from Sport); every other item, up to 14, gets a line or two. Sport carries the latest results and what is coming up; times are written by code the way people say them ("late on Wednesday night, at half past twelve"). The window is 14:30 IST on the edition's day, whenever the episode is made.
+  - The writer gets the paper's own text (decided: facts stay exact) but is checked for reading it out: eight words in a row from the paper sends it back. Also sent back: a fact said twice, more than two or three numbers in a turn, fewer than six questions or six quick reactions, stock radio phrases ("Turning to", "Closer to home"), a deep or sport story left out. Hard refusals (laughter near bad news, talk of how the show is made, unknown speaker, far off length) are never voiced. Up to three tries; the best script that passes the hard checks is voiced.
+  - Moods carry feeling into the voice: warm, delighted, excited, amused, curious, surprised, matter-of-fact, wry, concerned, sombre, gentle.
+  - Always the main writer first; "busy" is waited out a minute at a time (up to four tries) before Flash Lite.
+  - Voiced in one take (no chunks). If the take fails or comes back cut short, Kokoro voices the same script.
+  - Runs: on the edition push (proven on 12 Oct to start the job), backups at 14:40 and 15:55 IST (were 15:45 and 17:15).

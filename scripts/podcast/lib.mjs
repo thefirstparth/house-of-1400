@@ -56,90 +56,190 @@ function ordinal(n) {
 const kickerTag = k => String(k || "").split("·")[0].trim();
 const storyText = s => [s.short || s.text, ...(s.more || [])].filter(Boolean).join(" ");
 const longDate = ymd => new Date(ymd + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" });
+const cut = (t, n) => { t = String(t || ""); if (t.length <= n) return t; const s = t.slice(0, n), i = s.lastIndexOf(". "); return i > n * 0.5 ? s.slice(0, i + 1) : s.replace(/\s+\S*$/, "") + "…"; };
 
-// The running order: the lead, then the strongest stories by Bhide's importance score, then money, what is coming up
-// for the teams and players Parth follows, the weather, and the House Note. Nothing outside the edition.
-export function rundown(E, P = {}, now = Date.now()) {
+// A time as people say it, in IST: "tomorrow at seven in the evening", "late on Wednesday night, at half past twelve"
+const IST = 5.5 * 36e5;
+export function sayWhen(utc, now = Date.now()) {
+  const t = typeof utc === "number" ? utc : Date.parse(utc); if (!Number.isFinite(t)) return null;
+  const d = new Date(t + IST), h = d.getUTCHours(), m = d.getUTCMinutes(), day = Math.floor((t + IST) / 864e5) - Math.floor((now + IST) / 864e5);
+  const wd = ms => new Date(ms + IST).toLocaleDateString("en-GB", { weekday: "long", timeZone: "UTC" });
+  const h12 = x => intWords(x % 12 || 12);
+  const clock = h === 0 && m === 0 ? "midnight" : h === 12 && m === 0 ? "noon" : m === 0 ? h12(h) : m === 30 ? `half past ${h12(h)}` : m === 15 ? `quarter past ${h12(h)}` : m === 45 ? `quarter to ${h12(h + 1)}` : `${h12(h)} ${m < 10 ? "oh " + ONES[m] : intWords(m)}`;
+  if (h < 4) { const night = day - 1 === 0 ? "tonight" : day - 1 === 1 ? "tomorrow night" : day - 1 === -1 ? "last night" : `on ${wd(t - 864e5)} night`; return `late ${night}, at ${clock}`; }
+  const part = /midnight|noon/.test(clock) ? "" : h < 12 ? " in the morning" : h < 17 ? " in the afternoon" : h < 21 ? " in the evening" : " at night";
+  const dayWord = day === 0 ? "today" : day === 1 ? "tomorrow" : day === -1 ? "yesterday" : (day < -1 ? "on " : "") + wd(t);
+  return `${dayWord} at ${clock}${part}`;
+}
+
+// The running order (Parth, 13 Oct 2026): the lead, then the paper's desks in a listening order, each item marked
+// "deep" (a real back-and-forth) or "quick" (a line or two). Deep: the lead and the strongest stories by Bhide's
+// importance score, front-page stories first among equals, at least one from Sport; quick: the rest, up to quick_max.
+// Sport carries the latest results and what is coming up; Money the market numbers; Close to Home the weather.
+// Desk names come from the paper (config desks_v2), so the hosts never file Delhi under Close to Home. Nothing
+// outside the edition. `now` defaults to 14:30 IST on the edition's day, whenever the episode is made.
+const ORDER = ["news", "home", "money", "tech", "sport", "off"];
+export function rundown(E, P = {}, now, paper = {}) {
+  now ??= Date.parse(`${E.date}T09:00:00Z`);
+  const deskOf = {}, nameOf = {};
+  for (const d of paper.desks || []) for (const s of d.sections || []) deskOf[s] = d;
+  for (const s of paper.sections || []) if (s?.id) nameOf[s.id] = s.name;
+  const desk = s => deskOf[s.section] || (/^(F1|Tennis|La Liga|Football|Cricket|India · T20|MotoGP|Golf|Athletics)/i.test(s.kicker || "") ? { id: "sport", name: "Sport" } : { id: "news", name: "News" });
   const items = [];
   if (E.front) items.push(E.front.lead, ...(E.front.seconds || []), ...(E.front.briefs || []));
+  const front = new Set(items.filter(Boolean).map(i => i.id));
   for (const S of Object.values(E.sections || {})) items.push(...(S.stories || []), ...(S.briefs || []));
   const seen = new Set(), list = items.filter(i => i?.headline && !seen.has(i.id) && seen.add(i.id));
   const imp = Object.fromEntries((E.art_scores || []).map(x => [x.story_id, x.importance ?? 1]));
   const [lead, ...rest] = list;
-  const top = rest.map((x, i) => ({ x, i })).sort((a, b) => (imp[b.x.id] ?? 1) - (imp[a.x.id] ?? 1) || a.i - b.i).map(r => r.x).slice(0, (P.stories_max || 6) - 1);
-  const story = s => ({ id: s.id, tag: kickerTag(s.kicker), headline: s.headline, tone: ["good", "bad", "mixed"].includes(s.tone) ? s.tone : "neutral", text: storyText(s).slice(0, 1400), why: s.why?.text || null });
+  const score = s => (imp[s.id] ?? 1) + (front.has(s.id) ? 0.5 : 0) + (s.short ? 0.25 : 0);
+  const ranked = rest.map((x, i) => ({ x, i })).sort((a, b) => score(b.x) - score(a.x) || a.i - b.i).map(r => r.x);
+  const deepN = Math.max(0, (P.deep_max || 6) - 1), deep = ranked.slice(0, deepN);
+  if (!deep.some(s => desk(s).id === "sport") && desk(lead || {}).id !== "sport") { const sp = ranked.find(s => desk(s).id === "sport"); if (sp && deep.length) deep[deep.length - 1] = sp; else if (sp) deep.push(sp); }
+  const deepIds = new Set(deep.map(s => s.id)), quick = ranked.filter(s => !deepIds.has(s.id)).slice(0, P.quick_max || 14);
+  const item = (s, depth) => ({ id: s.id, desk: desk(s).name, section: nameOf[s.section] || null, kicker: s.kicker || null, headline: s.headline, tone: ["good", "bad", "mixed"].includes(s.tone) ? s.tone : "neutral", depth, text: cut(storyText(s), depth === "quick" ? 360 : 1100), why: s.why?.text || null });
   const snap = E.snapshot || {}, ok = k => (snap[k]?.value && !snap[k]?.error ? snap[k].value : null);
   const idx = ok("markets")?.indices || [], fx = ok("fx"), gold = ok("gold_in");
-  const money = [];
-  for (const name of ["Nifty 50", "Sensex"]) { const i = idx.find(x => x.name === name); if (i && Number.isFinite(i.price)) money.push(`${name} at ${Math.round(i.price).toLocaleString("en-IN")}, ${i.change_pct >= 0 ? "up" : "down"} ${Math.abs(i.change_pct).toFixed(1)}%${i.session_date && i.session_date !== E.date ? ` (${i.session_date})` : ""}`); }
-  if (Number.isFinite(fx?.price)) money.push(`the rupee at ${fx.price.toFixed(2)} to the dollar`);
-  if (Number.isFinite(gold?.per_10g_24k)) money.push(`24-carat gold at ₹${Math.round(gold.per_10g_24k).toLocaleString("en-IN")} for ten grams`);
-  const upcoming = [];
-  const soon = u => { const t = Date.parse(u); return t > now - 2 * 36e5 && t < now + 3 * 864e5; };
-  const when = u => new Date(u).toLocaleString("en-GB", { weekday: "long", hour: "2-digit", minute: "2-digit", hour12: false, timeZone: TZ });
-  const NAMES = { madrid: "Real Madrid", india_cricket: "India", f1: "Formula One" };
-  for (const [k, c] of Object.entries(E.chronology || {})) if (c?.next?.when_utc && soon(c.next.when_utc)) upcoming.push(`${NAMES[k] || k}: ${c.next.label}${c.next.detail ? ` (${c.next.detail})` : ""}, ${when(c.next.when_utc)} IST`);
-  for (const p of E.tennis?.players || []) if (p.next_match?.when_utc && soon(p.next_match.when_utc)) upcoming.push(`${p.name}: ${p.next_match.text}`);
+  const markets = [];
+  for (const name of ["Nifty 50", "Sensex"]) { const i = idx.find(x => x.name === name); if (i && Number.isFinite(i.price)) markets.push(`${name} at ${Math.round(i.price).toLocaleString("en-IN")}, ${i.change_pct >= 0 ? "up" : "down"} ${Math.abs(i.change_pct).toFixed(1)}%${i.session_date && i.session_date !== E.date ? ` (${i.session_date})` : ""}`); }
+  if (Number.isFinite(fx?.price)) markets.push(`the rupee at ${fx.price.toFixed(2)} to the dollar`);
+  if (Number.isFinite(gold?.per_10g_24k)) markets.push(`24-carat gold at ₹${Math.round(gold.per_10g_24k).toLocaleString("en-IN")} for ten grams`);
+  const NAMES = { madrid: "Real Madrid", india_cricket: "India (cricket)", f1: "Formula One" }, results = [], coming = [];
+  for (const [k, c] of Object.entries(E.chronology || {})) {
+    const l = c?.last, n = c?.next, lt = Date.parse(l?.when_utc), nt = Date.parse(n?.when_utc);
+    if (lt > now - 60 * 36e5 && lt <= now) results.push(`${NAMES[k] || k}: ${l.label}${l.detail ? `, ${l.detail}` : ""} (${sayWhen(lt, now)})`);
+    if (nt > now - 2 * 36e5 && nt < now + 3 * 864e5) coming.push(`${NAMES[k] || k}: ${n.label}${n.detail ? `, ${n.detail}` : ""}, ${sayWhen(nt, now)}`);
+  }
+  for (const p of E.tennis?.players || []) { const t = Date.parse(p.next_match?.when_utc); if (t > now - 2 * 36e5 && t < now + 3 * 864e5) coming.push(`${p.name}: ${String(p.next_match.text).replace(/,?\s*(today|tomorrow|tonight|monday|tuesday|wednesday|thursday|friday|saturday|sunday)?,?\s*\d{1,2}:\d{2}\s*IST\.?/i, "").replace(/\.$/, "")}, ${sayWhen(t, now)}`); }
   const city = ok("weather")?.cities?.[0], d0 = city?.daily?.[0];
-  const weather = city && d0 ? `${city.name}: ${Math.round(d0.max)} degrees today, ${d0.rain_prob}% chance of rain` : null;
-  return { date: E.date, day: longDate(E.date), lead: lead ? story(lead) : null, stories: top.map(story), money, upcoming, weather, house_note: E.house_note || null, big_day: !!E.big_day, editor_note: E.big_day ? E.editor_note || null : null };
+  const weather = city && d0 ? `${city.name} today: top of ${Math.round(d0.max)} degrees${Number.isFinite(d0.min) ? `, low of ${Math.round(d0.min)}` : ""}, ${d0.rain_prob}% chance of rain` : null;
+  const groups = {};
+  for (const [s, depth] of [...deep.map(s => [s, "deep"]), ...quick.map(s => [s, "quick"])]) { const d = desk(s); (groups[d.id] ||= { desk: d.name, items: [] }).items.push(item(s, depth)); }
+  for (const g of Object.values(groups)) g.items.sort((a, b) => (a.depth === b.depth ? 0 : a.depth === "deep" ? -1 : 1));
+  const named = id => (paper.desks || []).find(d => d.id === id)?.name || { home: "Close to Home", money: "Money", sport: "Sport" }[id];
+  if (markets.length) (groups.money ||= { desk: named("money"), items: [] }).markets = markets;
+  if (results.length || coming.length) Object.assign(groups.sport ||= { desk: named("sport"), items: [] }, { results, coming });
+  if (weather) (groups.home ||= { desk: named("home"), items: [] }).weather = weather;
+  const segments = [...ORDER, ...Object.keys(groups).filter(k => !ORDER.includes(k))].filter(k => groups[k]).map(k => groups[k]);
+  return { date: E.date, day: longDate(E.date), lead: lead ? { ...item(lead, "deep"), desk: "Lead" } : null, segments, house_note: E.house_note || null, editor_note: E.big_day ? E.editor_note || null : null };
 }
+export const deepItems = R => [R.lead, ...(R.segments || []).flatMap(s => s.items.filter(i => i.depth === "deep"))].filter(Boolean);
 
-// What the writer is asked for (Gemini, free tier)
+const SERIOUS = new Set(["bad", "sombre", "concerned", "gentle"]);
+const EXAMPLE = `Asha [delighted]: Right, the chess club. They actually did it.
+Ravi [surprised]: The village side? Beat the city champions?
+Asha [delighted]: Beat them, and in the final round, with the youngest player on the team.
+Ravi [amused]: How young?
+Asha [warm]: Eleven.
+Ravi [excited]: Eleven! I couldn't tie my shoelaces at eleven.
+Asha [matter-of-fact]: And the bad news on the same board: the hall they play in shuts next month.
+Ravi [concerned]: Oh no. So where do they go?
+Asha [gentle]: Nobody knows yet. The council meets on Friday.`;
+
+// What the writer is asked for (Gemini, free tier). Parth, 13 Oct 2026: a conversation, not two readers taking turns.
 export function writerPrompt(R, P = {}) {
-  const [A, B] = P.hosts || [{ id: "Asha" }, { id: "Ravi" }], W = P.words || { min: 650, target: 850, max: 1100 };
-  return `You write the script of a daily two-host news podcast for one listener in Bengaluru and his wife. The show is "${P.title || "The House of 1400"}", the spoken version of their private afternoon newspaper.
+  const [A, B] = P.hosts || [{ id: "Asha" }, { id: "Ravi" }], W = P.words || { min: 1050, target: 1200, max: 1400 };
+  const moods = Object.keys(P.moods || { neutral: 1 }).join(", ");
+  return `You write the script of "${P.title || "The House of 1400"}", a daily podcast made from one family's private afternoon newspaper. The listeners are Parth and his wife in Bengaluru. It must sound like two friends who have both read today's paper, talking it through over chai. It is NOT a news bulletin and NOT two people taking turns to read the paper.
 
-Hosts: ${A.id} (${A.about || "asks and reacts"}) and ${B.id} (${B.about || "explains"}). They are friends talking naturally: questions, reactions, handovers, the odd light remark. They never read headlines out like a bulletin.
+HOSTS
+- ${A.id} (${A.gender || "woman"}): ${A.about || ""}
+- ${B.id} (${B.gender || "man"}): ${B.about || ""}
 
-Write about ${W.target} words in total (between ${W.min} and ${W.max}), covering the rundown below IN ORDER: open with the date and the lead, then the stories, then money, then what is coming up in sport, then the weather, and close with the house note in the hosts' own words and a short goodbye.
+THE SHOW, in this order (everything comes from the RUNDOWN below)
+1. Open: ${A.id} greets with the day ("Good afternoon, it's ${R.day.split(" ")[0]}...") and goes straight into the lead as a hook. The two talk the lead through properly.
+2. Then the desk segments in the order given. Items marked "deep" get a real back-and-forth of about 80 to 140 words: one host tells it, the other reacts and asks what a listener would ask (what does it mean for us, why now, who is this), answered from "why" and the text. Items marked "quick" get one or two sentences each; several quick ones can run together briskly. Mention every item.
+3. If you name a segment, use the paper's desk names: News, Close to Home, Money, Tech and AI, Sport, Off Duty. "Close to Home" means Bengaluru only. A story from Delhi or anywhere else is News, never "close to home".
+4. Sport gets real energy: every sport item, the recent results and what is coming up (keep the times exactly as written; they are already how people say them).
+5. Money: the market numbers in one or two lines, no more than three numbers in all.
+6. Weather, if given: one everyday line ("warm, with a fair chance of rain later").
+7. Close: the House Note retold in the hosts' own words with its punchline intact, then a short, warm goodbye.
 
-Rules:
-- Use only facts in the rundown. Never add a fact, number, name, quote or opinion that is not there. If something is unclear, leave it out.
-- Write every number, amount, score and date in words, the way an Indian speaker says them (lakh and crore for rupees; "two-one" for a series score). No digits, no symbols like ₹, %, $ or &.
-- Bad news (deaths, disasters, violence, illness) is handled gently and seriously: no jokes, no laughter, no light remarks near it.
-- No talk about how the paper or the show is made, sources being checked, or anything being absent. No "stay tuned", no clichés, no telling the listener how to feel.
-- Each turn is one to four sentences. Alternate speakers naturally; one may briefly react inside the other's story.
-- You may use these inline tags sparingly: <short pause>, <laugh> (only for genuinely light moments), <sigh>.
-- "mood" for each turn is one of: good, bad, mixed, neutral, matching the story being discussed.
+HOW IT SOUNDS
+- A real conversation: mix longer turns with plenty of quick reactions of two to eight words ("Thirteen. That's terrible." "Wait, his own call?" "Oh, lovely."). At least six genuine questions between the hosts.
+- Real feeling that fits each story: delight at a win, shock and quiet sadness at deaths, worry about prices, amusement at the House Note. Never laugh or joke near bad news.
+- Say each fact ONCE. The headline and the text repeat each other; never say the same fact twice.
+- Never copy sentences from the rundown. Retell them the way people talk; contractions are good.
+- Numbers are hard to follow by ear: at most two numbers in a turn, rounded when the exact figure does not matter ("about thirty-two and a half thousand crore", "nearly one per cent"). Leave out numbers that do not matter.
+- Never use these: "Turning to", "In other news", "Moving on", "Let's look at", "Let us look at", "Meanwhile", "Closer to home", "Stay tuned", "On the cricket field".
+- Use only facts in the rundown. Never add a fact, name, number or quote. Short personal reactions are fine ("I'd love to see that").
+- No talk about how the paper or the show is made, about sources or checking, or about anything being missing.
+- Every number, score, time and date in words, the Indian way (lakh and crore). No digits, no symbols like ₹, %, $ or &.
+- About ${W.target} words in total (between ${W.min} and ${W.max}).
+- "mood" sets the voice for that line; one of: ${moods}. Inline tags, sparingly: <laugh> (light moments only), <sigh>, <short pause>.
 
-Return JSON only: {"turns":[{"speaker":"${A.id}"|"${B.id}","mood":"good|bad|mixed|neutral","text":"..."}]}
+EXAMPLE OF THE SOUND ONLY (its facts are invented: never use them; this is the rhythm and feeling to aim for)
+${EXAMPLE}
 
-RUNDOWN:
+Return JSON only: {"turns":[{"speaker":"${A.id}"|"${B.id}","mood":"...","text":"..."}]}
+
+RUNDOWN
 ${JSON.stringify(R, null, 1)}`;
 }
 
-const PROCESS = /\b(source[sd]?|sourcing|validator|edition file|the pool|pool story|rundown|script|prompt|we checked|second source|AI|model|generated)\b/i;
-// The checks before voicing; returns a list of problems (empty = fine)
+const PROCESS = /\b(source[sd]?|sourcing|validator|edition file|the pool|pool story|rundown|script|prompt|we checked|second source|AI-generated|language model|generated)\b/i;
+const NUMW = new Set([...ONES, ...TENS.filter(Boolean), "hundred", "thousand", "lakh", "crore", "million", "billion", "point", "per", "cent", "percent"]);
+const words = t => String(t || "").replace(/<[^>]+>/g, " ").toLowerCase().replace(/[^a-z0-9' -]/g, " ").split(/[\s-]+/).filter(Boolean);
+const numberRuns = t => { let n = 0, inRun = false, only = true; for (const w of words(t)) { if (NUMW.has(w) || (inRun && w === "and")) { if (!inRun) { inRun = true; only = true; } if (w !== "one" && w !== "and") only = false; } else { if (inRun && !only) n++; inRun = false; } } if (inRun && !only) n++; return n; };
+const shingles = (ws, k) => { const out = []; for (let i = 0; i + k <= ws.length; i++) out.push(ws.slice(i, i + k).join(" ")); return out; };
+const BANNED = /\b(turning to|in other news|moving on|let'?s look at|let us look at|meanwhile|closer to home|stay tuned|on the cricket field)\b/i;
+
+// The checks before voicing. Each problem is { hard, msg }: a hard one means the script is never voiced; soft ones
+// send it back for a rewrite, and after the last try the script with the fewest soft problems is voiced.
 export function checkScript(turns, R, P = {}) {
-  const W = P.words || { min: 650, max: 1100 }, ids = new Set((P.hosts || [{ id: "Asha" }, { id: "Ravi" }]).map(h => h.id)), out = [];
-  if (!Array.isArray(turns) || turns.length < 8) return ["fewer than 8 turns"];
-  const words = turns.reduce((a, t) => a + String(t.text || "").split(/\s+/).filter(Boolean).length, 0);
-  if (words < W.min || words > W.max) out.push(`${words} words (needs ${W.min} to ${W.max})`);
+  const W = P.words || { min: 1050, max: 1400 }, ids = new Set((P.hosts || [{ id: "Asha" }, { id: "Ravi" }]).map(h => h.id)), out = [];
+  const hard = msg => out.push({ hard: true, msg }), soft = msg => out.push({ hard: false, msg });
+  if (!Array.isArray(turns) || turns.length < 8) return [{ hard: true, msg: "fewer than 8 turns" }];
+  const n = turns.reduce((a, t) => a + words(t.text).length, 0);
+  if (n < W.min * 0.7 || n > W.max * 1.3) hard(`${n} words (needs ${W.min} to ${W.max})`); else if (n < W.min || n > W.max) soft(`${n} words (needs ${W.min} to ${W.max})`);
+  const sad = new Set(deepItems(R).concat((R.segments || []).flatMap(s => s.items)).filter(s => s?.tone === "bad").flatMap(s => String(s.headline).toLowerCase().match(/[a-z]{5,}/g) || []));
   turns.forEach((t, i) => {
-    if (!ids.has(t.speaker)) out.push(`turn ${i + 1}: unknown speaker ${t.speaker}`);
-    if (!String(t.text || "").trim()) out.push(`turn ${i + 1}: empty`);
-    if (/<laugh>|<chuckle>/i.test(t.text) && t.mood === "bad") out.push(`turn ${i + 1}: laughter in a serious moment`);
-    if (PROCESS.test(String(t.text).replace(/<[^>]+>/g, ""))) out.push(`turn ${i + 1}: talks about how the show is made ("${String(t.text).match(PROCESS)[0]}")`);
+    const txt = String(t.text || "");
+    if (!ids.has(t.speaker)) hard(`turn ${i + 1}: unknown speaker ${t.speaker}`);
+    if (!txt.trim()) hard(`turn ${i + 1}: empty`);
+    if (/<laugh>|<chuckle>/i.test(txt) && (SERIOUS.has(t.mood) || [...sad].some(w => txt.toLowerCase().includes(w)))) hard(`turn ${i + 1}: laughter in a serious moment`);
+    if (PROCESS.test(txt.replace(/<[^>]+>/g, ""))) hard(`turn ${i + 1}: talks about how the show is made ("${txt.match(PROCESS)[0]}")`);
+    const b = txt.match(BANNED); if (b) soft(`turn ${i + 1}: uses the stock phrase "${b[0]}"`);
+    if (numberRuns(txt) > 3) soft(`turn ${i + 1}: ${numberRuns(txt)} numbers in one turn (at most two)`);
   });
-  const sad = new Set([R.lead, ...(R.stories || [])].filter(s => s?.tone === "bad").flatMap(s => String(s.headline).toLowerCase().match(/[a-z]{5,}/g) || []));
-  turns.forEach((t, i) => { if (/<laugh>/i.test(t.text) && [...sad].some(w => String(t.text).toLowerCase().includes(w))) out.push(`turn ${i + 1}: laughter beside a sad story`); });
+  const avg = n / turns.length, shortN = turns.filter(t => words(t.text).length <= 8).length, qs = turns.filter(t => /\?/.test(t.text)).length;
+  if (avg > 40) soft(`turns average ${Math.round(avg)} words: too much reading, not enough conversation`);
+  if (shortN < 6) soft(`only ${shortN} quick reactions of eight words or fewer (needs six or more)`);
+  if (qs < 6) soft(`only ${qs} turns ask a question (needs six or more)`);
+  // copied from the paper: eight words in a row from the rundown's text
+  const paper = new Set([R.lead, ...(R.segments || []).flatMap(s => s.items)].filter(Boolean).flatMap(s => shingles(words(`${s.headline}. ${s.text} ${s.why || ""}`), 8)));
+  const copied = turns.map((t, i) => [i, shingles(words(t.text), 8).find(s => paper.has(s))]).filter(x => x[1]);
+  if (copied.length) soft(`reads the paper word for word in ${copied.length} turn(s), e.g. turn ${copied[0][0] + 1}: "${copied[0][1]}"`);
+  // a fact said twice: six words in a row repeated in another turn
+  const seenAt = new Map(), twice = [];
+  turns.forEach((t, i) => { for (const s of new Set(shingles(words(t.text), 6))) { if (seenAt.has(s) && seenAt.get(s) !== i) twice.push(s); else seenAt.set(s, i); } });
+  if (twice.length) soft(`says the same thing twice: "${twice[0]}"`);
+  // every deep story and every sport item is mentioned (one of its names appears)
+  const all = turns.map(t => t.text).join(" ").toLowerCase();
+  for (const s of [...deepItems(R), ...(R.segments || []).filter(g => /sport/i.test(g.desk)).flatMap(g => g.items)]) {
+    const names = (String(s.headline).match(/\b[A-Z][a-zA-Zé']{3,}\b/g) || []).slice(1).concat(String(s.headline).match(/^[A-Z][a-zA-Zé']{3,}/) || []);
+    if (names.length && !names.some(w => all.includes(w.toLowerCase().replace(/'s$/, "")))) soft(`leaves out "${s.headline}"`);
+  }
   return out;
 }
 
-// When the writer fails twice: a plain, correct conversation made by code from the rundown
+// When the writer fails: a plain, correct conversation made by code from the rundown
 export function fallbackScript(R, P = {}) {
   const [A, B] = (P.hosts || [{ id: "Asha" }, { id: "Ravi" }]).map(h => h.id), turns = [];
   const say = (speaker, mood, text) => text && turns.push({ speaker, mood, text });
-  const first = s => String(s?.text || "").split(/(?<=[.!?])\s+/).slice(0, 3).join(" ");
-  say(A, "neutral", `Good afternoon. This is ${P.title || "The House of 1400"} for ${R.day}.`);
+  const first = (s, k = 3) => String(s?.text || "").split(/(?<=[.!?])\s+/).slice(0, k).join(" ");
+  say(A, "warm", `Good afternoon. This is ${P.title || "The House of 1400"} for ${R.day}.`);
   if (R.lead) { say(B, R.lead.tone, `The big one today: ${R.lead.headline}.`); say(A, R.lead.tone, first(R.lead)); }
-  (R.stories || []).forEach((s, i) => { const [x, y] = i % 2 ? [A, B] : [B, A]; say(x, s.tone, `${s.tag ? s.tag + ". " : ""}${s.headline}.`); say(y, s.tone, first(s)); });
-  if (R.money?.length) say(B, "neutral", `On money: ${R.money.join("; ")}.`);
-  if (R.upcoming?.length) say(A, "neutral", `Coming up: ${R.upcoming.join("; ")}.`);
-  if (R.weather) say(B, "neutral", `And the weather in ${R.weather}.`);
-  if (R.house_note) say(A, "neutral", R.house_note);
-  say(B, "neutral", "That's the afternoon. See you tomorrow.");
+  let k = 0;
+  for (const g of R.segments || []) {
+    for (const s of g.items) { const [x, y] = k++ % 2 ? [A, B] : [B, A]; say(x, s.tone, `${s.headline}.`); if (s.depth === "deep") say(y, s.tone, first(s)); }
+    if (g.markets?.length) say(B, "neutral", `On the markets: ${g.markets.join("; ")}.`);
+    if (g.results?.length) say(A, "neutral", `The latest results: ${g.results.join("; ")}.`);
+    if (g.coming?.length) say(B, "neutral", `Coming up: ${g.coming.join("; ")}.`);
+    if (g.weather) say(A, "neutral", `And the weather. ${g.weather}.`);
+  }
+  if (R.house_note) say(A, "amused", R.house_note);
+  say(B, "warm", "That's the afternoon. See you tomorrow.");
   return turns;
 }
 

@@ -3389,15 +3389,15 @@
     }
   },
   "podcast": {
-    "note": "The daily episode (scripts/podcast/make.mjs, run by .github/workflows/podcast.yml after each edition). Free: Gemini free tier, Kokoro fallback. Parth, 12-13 Oct 2026.",
+    "note": "The daily episode (scripts/podcast/make.mjs, run by .github/workflows/podcast.yml when an edition is pushed). Free: Gemini free tier, Kokoro fallback. Parth, 12-13 Oct 2026: 6 to 8 minutes; Asha is a woman (Aoede), Ravi a man (Rasalgethi); a conversation, not two readers.",
     "title": "The House of 1400",
     "subtitle": "The afternoon paper, as a conversation",
     "author": "T. A. Bhide",
-    "minutes": 6,
+    "minutes": 7,
     "words": {
-      "min": 650,
-      "target": 850,
-      "max": 1100
+      "min": 1050,
+      "target": 1200,
+      "max": 1400
     },
     "keep_days": 14,
     "image": "/podcast-cover.jpg",
@@ -3409,23 +3409,37 @@
     "hosts": [
       {
         "id": "Asha",
-        "voice": "Achird",
-        "about": "friendly, youthful, curious; asks the questions a listener would, reacts naturally"
+        "gender": "woman",
+        "voice": "Aoede",
+        "about": "has read the whole paper closely; clear, warm and quick; tells most stories and feels them, glad at good news and quietly upset at bad"
       },
       {
         "id": "Ravi",
+        "gender": "man",
         "voice": "Rasalgethi",
-        "about": "casual explainer; gives the background and the numbers in plain words"
+        "about": "curious and expressive; lives for cricket, F1, tennis and Real Madrid and tells the sport himself; asks the \"hang on, why?\" questions a listener would and reacts out loud"
       }
     ],
     "style": "Two friends in Bengaluru talking through the afternoon's news over chai: warm, natural and unhurried, with real reactions. Both speak Indian English with a natural Indian accent.",
     "moods": {
+      "warm": "warm and friendly",
+      "delighted": "delighted, smiling as they speak",
+      "excited": "excited and energetic",
+      "amused": "amused, a smile in the voice",
+      "curious": "curious and engaged",
+      "surprised": "genuinely surprised",
+      "matter-of-fact": "clear and matter-of-fact",
+      "wry": "dry and wry",
+      "concerned": "concerned and serious",
+      "sombre": "sombre, slower and quiet; no laughter",
+      "gentle": "gentle and soft; no laughter",
       "good": "warm and upbeat",
       "bad": "calm, gentle and serious; no laughter",
       "mixed": "thoughtful and even",
       "neutral": "easy and conversational"
     },
-    "stories_max": 6,
+    "deep_max": 6,
+    "quick_max": 14,
     "kokoro": {
       "lang": "b",
       "voices": {

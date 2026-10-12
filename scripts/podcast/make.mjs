@@ -1,16 +1,18 @@
-// The daily episode (Parth, 12-13 Oct 2026: two hosts, Achird and Rasalgethi, free and automatic, for his phone and
-// his wife's in Apple Podcasts). Runs on GitHub Actions after each edition (.github/workflows/podcast.yml):
-//   1. the running order from the edition (lib.mjs rundown), nothing outside it;
-//   2. Gemini (free tier) writes the two-host conversation; checked; rewritten once; else a plain script by code;
-//   3. Gemini TTS (free tier) voices it in one request, per-turn mood as style; if that fails, in chunks split at topic
-//      changes; if Gemini fails altogether, Kokoro (open source) voices the same script;
+// The daily episode (Parth, 12-13 Oct 2026: two hosts, Asha (Aoede) and Ravi (Rasalgethi), 6 to 8 minutes, free and
+// automatic, for his phone and his wife's in Apple Podcasts). Runs on GitHub Actions when an edition is pushed
+// (.github/workflows/podcast.yml):
+//   1. the running order from the edition (lib.mjs rundown), by the paper's desks, nothing outside it;
+//   2. Gemini (free tier, always the main writer first; "busy" is waited out) writes the conversation; checked and sent
+//      back up to twice; the best script that passes the hard checks is voiced; else Flash Lite; else a plain script;
+//   3. Gemini TTS (free tier) voices it in one take, per-turn mood as style; if that fails or comes back cut short,
+//      Kokoro (open source) voices the same script (the "kokoro" job);
 //   4. ffmpeg levels it and makes an MP3; it goes to Vercel Blob with the feed, episodes older than keep_days removed.
 // Never touches the repo. Secrets: GEMINI_API_KEY, BLOB_READ_WRITE_TOKEN (GitHub Actions secrets).
 //   node scripts/podcast/make.mjs [YYYY-MM-DD] [--force] [--dry]   (--feed: only rebuild feed.xml from the kept episodes)
 import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { rundown, writerPrompt, checkScript, fallbackScript, spoken, feedXML } from "./lib.mjs";
+import { rundown, writerPrompt, checkScript, fallbackScript, spoken, feedXML, deepItems } from "./lib.mjs";
 
 const args = process.argv.slice(2), FORCE = args.includes("--force"), DRY = args.includes("--dry"), FEED_ONLY = args.includes("--feed");
 const H = new URL("../../", import.meta.url).pathname, OUT = `${H}.podcast`;
@@ -30,6 +32,7 @@ const log = (...a) => console.log("podcast:", ...a);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 const GEM = "https://generativelanguage.googleapis.com/v1beta/models";
+// "busy" (429, 500, 503) is waited out a minute at a time, up to `tries` attempts in all
 async function gemini(model, body, tries = 2) {
   for (let i = 0; i < tries; i++) {
     const t0 = Date.now();
@@ -39,26 +42,32 @@ async function gemini(model, body, tries = 2) {
     const j = await r.json().catch(() => ({}));
     if (r.ok) return j;
     const msg = `${model} ${r.status}: ${j.error?.message || ""}`.slice(0, 600);
-    if (r.status === 429 && i + 1 < tries) { log(msg, "- waiting a minute"); await sleep(62000); continue; }
+    if ([429, 500, 503].includes(r.status) && i + 1 < tries) { log(msg, "- busy, waiting a minute"); await sleep(62000); continue; }
     throw new Error(msg);
   }
 }
 
-// 2. The script
+// 2. The script: up to three tries per writer, each refusal's reasons sent back. The main writer is always tried first
+// and its best script that passes the hard checks is used even with soft problems left; Flash Lite only steps in when
+// the main writer produced nothing usable.
 async function writeScript(R) {
-  let prompt = writerPrompt(R, P), last = [];
+  const base = writerPrompt(R, P); let last = [];
   for (const model of P.text_models || ["gemini-3.8-flash"]) {
-    for (let attempt = 0; attempt < 2; attempt++) {
+    let prompt = base, best = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
       try {
-        const j = await gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.9 } });
+        const j = await gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.9 } }, 4);
         const text = j.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
         const turns = JSON.parse(text.replace(/^```(?:json)?|```$/g, "").trim()).turns;
-        const bad = checkScript(turns, R, P);
-        if (!bad.length) { log(`script by ${model}: ${turns.length} turns`); return { turns, by: model }; }
-        last = bad; log(`script by ${model} refused:`, bad.slice(0, 6).join("; "));
-        prompt = `${writerPrompt(R, P)}\n\nYour previous script was refused for: ${bad.join("; ")}. Write it again, fixing exactly these.`;
-      } catch (e) { last = [e.message]; log(`writer ${model} failed:`, e.message); break; }
+        const probs = checkScript(turns, R, P), hard = probs.filter(p => p.hard);
+        log(`script by ${model} (try ${attempt + 1}): ${turns.length} turns, ${probs.length ? probs.map(p => (p.hard ? "HARD " : "") + p.msg).slice(0, 8).join("; ") : "no problems"}`);
+        if (!hard.length && (!best || probs.length < best.n)) best = { turns, by: model, n: probs.length };
+        if (!probs.length) break;
+        last = probs.map(p => p.msg);
+        prompt = `${base}\n\nYOUR PREVIOUS SCRIPT (below) was sent back for: ${last.join("; ")}. Rewrite it, fixing exactly these and keeping everything else that works.\n${JSON.stringify({ turns })}`;
+      } catch (e) { last = [e.message]; log(`writer ${model} failed:`, e.message); if (!best) break; }
     }
+    if (best) { log(`script chosen: ${model}, ${best.n} soft problem(s) left`); return { turns: best.turns, by: model }; }
   }
   log("using the plain script made by code; the writer's last problems:", last.slice(0, 4).join("; "));
   return { turns: fallbackScript(R, P), by: "code" };
@@ -74,7 +83,7 @@ function pcmOf(buf) {
 
 // 3. The voice
 const hostVoice = Object.fromEntries((P.hosts || []).map(h => [h.id, h.voice]));
-const styleOf = t => `${P.style || ""} This moment: ${(P.moods || {})[t.mood] || (P.moods || {}).neutral || "conversational"}.`.trim();
+const styleOf = t => `${P.style || ""} ${t.speaker} sounds ${(P.moods || {})[t.mood] || t.mood || (P.moods || {}).neutral || "conversational"} here.`.trim();
 async function ttsGemini(turns) {
   const speakers = { multiSpeakerVoiceConfig: { speakerVoiceConfigs: Object.entries(hostVoice).map(([speaker, voiceName]) => ({ speaker, voiceConfig: { prebuiltVoiceConfig: { voiceName } } })) } };
   const moods = [...new Set(turns.map(t => t.mood))].filter(m => (P.moods || {})[m]).map(m => `${m}: ${(P.moods || {})[m]}`).join("; ");
@@ -89,29 +98,23 @@ async function ttsGemini(turns) {
     generationConfig: { responseModalities: ["AUDIO"], speechConfig: speakers },
   });
   const one = async (list, form) => {
-    const j = await gemini(P.tts_model || "gemini-3.8-flash-tts", form(list), 1);
+    const j = await gemini(P.tts_model || "gemini-3.8-flash-tts", form(list), 2);
     const part = j.candidates?.[0]?.content?.parts?.find(p => p.inlineData?.data);
     if (!part) throw new Error(`no audio in the answer (${j.candidates?.[0]?.finishReason || j.promptFeedback?.blockReason || "?"})`);
     log(`audio: ${part.inlineData.mimeType || "?"}`);
     return pcmOf(Buffer.from(part.inlineData.data, "base64"));
   };
-  // per-turn first: it carries each moment's mood, and it voiced the 12 Oct test in 22 s
+  // One take (Parth, 13 Oct: no chunks). Per-turn first, it carries each moment's mood; the transcript form second.
+  const words = turns.reduce((a, t) => a + spoken(t.text, P.pronounce).split(/\s+/).length, 0);
   for (const [name, form] of [["per-turn", perTurn], ["transcript", transcript]]) {
-    try { return await one(turns, form); }
-    catch (e) { log(`voicing as one ${name} request failed: ${e.message}`); await sleep(21000); }
+    try {
+      const pcm = await one(turns, form), secs = pcm.length / 48000;
+      // faster than 230 words a minute means the take was cut off
+      if (secs < (words / 230) * 60) throw new Error(`came back cut short (${Math.round(secs)} s for ${words} words)`);
+      return pcm;
+    } catch (e) { log(`voicing as one ${name} take failed: ${e.message}`); await sleep(21000); }
   }
-  // 3. Chunks of about a third, split where the topic changes, as transcripts
-  const n = Math.ceil(turns.length / 3), chunks = [];
-  for (let i = 0; i < turns.length;) { let j = Math.min(turns.length, i + n); while (j < turns.length && j > i + 2 && turns[j].mood === turns[j - 1].mood) j--; chunks.push(turns.slice(i, j)); i = j; }
-  const gap = Buffer.alloc(24000 * 2 * 0.45), parts = [];
-  for (const [k, c] of chunks.entries()) { if (k) await sleep(22000); parts.push(await one(c, transcript), gap); }
-  return Buffer.concat(parts);
-}
-function ttsKokoro(turns) {
-  const K = P.kokoro || {}, inp = `${OUT}/turns.json`, wav = `${OUT}/kokoro.wav`;
-  writeFileSync(inp, JSON.stringify({ lang: K.lang || "b", voices: K.voices || {}, turns: turns.map(t => ({ speaker: t.speaker, text: spoken(t.text, P.pronounce).replace(/<[^>]+>/g, "") })) }));
-  execFileSync(process.env.PODCAST_PYTHON || "python3", [`${H}scripts/podcast/kokoro_voice.py`, inp, wav], { stdio: "inherit", timeout: 40 * 60000 });
-  return pcmOf(readFileSync(wav));
+  throw new Error("both one-take forms failed");
 }
 
 // 4. Store and publish
@@ -140,7 +143,7 @@ async function main() {
     const { blobs } = await list({ prefix: `${folder}/${date}.json`, token: BLOB });
     if (blobs.length) { log(`episode for ${date} already published`); return; }
   }
-  const R = rundown(E, P);
+  const R = rundown(E, P, undefined, { desks: cfg.desks_v2?.desks, sections: cfg.sections });
   if (!R.lead) { log("the edition has no lead; nothing to say"); return; }
   const KOKORO = process.env.PODCAST_VOICE === "kokoro", saved = existsSync(`${OUT}/script.json`) ? JSON.parse(readFileSync(`${OUT}/script.json`, "utf8")) : null;
   // the Kokoro step (podcast.yml) reuses the script the first step wrote
@@ -159,7 +162,7 @@ async function main() {
   if (DRY) { log("dry run: .podcast/episode.mp3"); return; }
   await put(`${folder}/${date}.mp3`, readFileSync(`${OUT}/episode.mp3`), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "audio/mpeg", token: BLOB });
   const day = new Date(date + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
-  const meta = { date, title: `${day} · ${R.lead.headline}`, description: [R.lead, ...R.stories].map(s => s.headline).join(" · "), url: served(`${date}.mp3`), bytes, seconds, published: new Date().toISOString(), by, voice };
+  const meta = { date, title: `${day} · ${R.lead.headline}`, description: deepItems(R).map(s => s.headline).join(" · "), url: served(`${date}.mp3`), bytes, seconds, published: new Date().toISOString(), by, voice };
   await put(`${folder}/${date}.json`, JSON.stringify(meta), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", token: BLOB });
   const n = await publishFeed({ put, list, del, get });
   log(`published ${date} (${n} in the feed)`);
