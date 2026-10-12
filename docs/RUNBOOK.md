@@ -8,7 +8,7 @@ Four scheduled runs a day, 29 minutes apart, from 14:00 IST. Each one first chec
 | Main | 14:00 | `30 8 * * *` |
 | Retry 1 | 14:29 | `59 8 * * *` |
 | Retry 2 | 14:58 | `28 9 * * *` |
-| Retry 3 | 15:27 | `57 9 * * *` |
+| Retry 3 | 15:27 | `57 9 * * *` (paused by Parth, 12 Oct 2026) |
 
 The information cut is 14:00 IST: the paper covers news up to 14:00 and prints "Information cut 14:00 IST". Research starts at the cut, so the paper is usually live by about 14:45; until then the site shows the previous edition.
 

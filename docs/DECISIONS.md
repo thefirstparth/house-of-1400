@@ -961,3 +961,4 @@ The cause of the thinning: from 5 Oct the run answered the desk check of about 3
 ## 12 Oct 2026: FoneArena on the tech desk
 - Parth asked for FoneArena (`fonearena`, tech desk): Indian launch prices and what a gadget means for buyers in India. Its gadget headlines (display, Snapdragon, mAh, "launched in India") failed the pool's tech-word rule and fell to Videsh, so `TECH_WORDS` in `lib/pool.js` now knows gadget vocabulary. The rule still applies only to stories a tech feed carried.
 - 12 Oct: the pool holds 50 stories with text (config `pool.clusters`, was 44), at Parth's request, so each desk has more to choose from. About 2,000 more tokens read per run. The Hindu's subscription banner is stripped from article text, which had used up to 600 characters of each Hindu story's text.
+- 12 Oct: Parth paused the 15:27 retry routine. Three runs a day remain (14:00, 14:29, 14:58); the 16:00 cron still sends the summary, or "no paper today" if none of them published.
