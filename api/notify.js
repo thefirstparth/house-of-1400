@@ -105,7 +105,7 @@ function money(E) {
 
 export function summary(E, origin, run, { cfg = {}, now = Date.now() } = {}) {
   const tag = g => esc(String(g.section || "").split("·")[0].trim());
-  const glance = (E.glance || []).slice(0, 8);
+  const glance = (E.glance || []).slice(0, 10);
   const lines = [`📰 <b>The House of 1400</b> · ${esc(longDate(E.date))}`, ""];
   if (glance.length) {
     const [lead, ...rest] = glance;

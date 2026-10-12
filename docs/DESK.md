@@ -44,7 +44,7 @@ Every pool story marked **TOP** is printed (a story, a brief or an Also in line)
 - **Banned:** em dashes; rule-of-three rhythm; "not X, but Y"; the words pivotal, crucial, landmark, testament, underscores, highlights, showcases, delve, landscape, navigate, robust, seamless, notably, quietly and amid; "-ing" tails that fake analysis; tidy morals; "experts say"; colon-then-reveal; telling the reader how to feel; any sentence about the process or about something being absent. If there is nothing, print nothing.
 
 ## The rest of the edition (one line each; the validator's message says exactly what is missing)
-- **`glance`:** 7 to 10 ranked lines, the lead first, spread across desks. These lines are also the Telegram message, so each must make sense alone to someone who has not opened the paper: the tag (`section`, such as "Cricket · India") plus a line of about 70 characters saying who, against whom or where, and what happened, in plain words. "India beat West Indies in Indore to lead the T20 series 2–1", never "India 2–1 up after Indore".
+- **`glance`:** 4 to 10 ranked lines, the lead first, spread across desks. These lines are also the Telegram message, so each must make sense alone to someone who has not opened the paper: the tag (`section`, such as "Cricket · India") plus a line of about 70 characters saying who, against whom or where, and what happened, in plain words. "India beat West Indies in Indore to lead the T20 series 2–1", never "India 2–1 up after Indore".
 - **`editor_note`:** only on a big day, with `big_day` set. At most two sentences and 35 words.
 - **`house_note`:** always.
 - **`chronology`:** NEXT and LAST for each followed team and driver, from the snapshot.
