@@ -19,9 +19,15 @@ const to = new Date(Math.min(Date.now(), Date.parse(`${date}T14:00:00+05:30`) + 
 const local = !useRemote(args);
 const live = async (key, qs, ms) => local ? (await import(key === "read" ? "../lib/pool.js" : "../lib/trial.js"))[key](new URLSearchParams(qs.slice(1))) : remoteLive(key, qs, ms);
 
+// Feeds look after themselves: a feed that has failed on 7 days in a row is left out of the reading, and tried again
+// every Monday (and whenever it is back). ledger/feed-health.json keeps each feed's run of failures.
+let health = {}; try { health = JSON.parse(readFileSync("ledger/feed-health.json", "utf8")).feeds || {}; } catch {}
+const monday = new Date(`${date}T12:00:00+05:30`).getUTCDay() === 1;
+const resting = monday ? [] : Object.entries(health).filter(([, h]) => h.fails >= 7).map(([id]) => id);
+
 let out;
 try {
-  const w = await live("wire", `?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`, 60000);
+  const w = await live("wire", `?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}${resting.length ? `&skip=${resting.join(",")}` : ""}`, 60000);
   if (!w.ok) throw new Error(w.error || "wire failed");
   const pool = buildPool(w.value, C);
   // read the shortlisted stories' articles, eight to a request, four requests at a time
@@ -33,6 +39,8 @@ try {
   }
   for (const c of pool.clusters) { const r = got.get(c.read.join("|")); if (r?.text) { c.text = r.text; c.text_url = r.url; } }
   const failed = (w.value.feeds || []).filter(f => !f.ok).map(f => `${f.id}: ${f.error}`);
+  for (const f of w.value.feeds || []) health[f.id] = f.ok ? { fails: 0, last_ok: date } : { fails: (health[f.id]?.fails || 0) + 1, last_ok: health[f.id]?.last_ok || null, error: f.error };
+  writeFileSync("ledger/feed-health.json", JSON.stringify({ updated: date, note: "Written by scripts/pool.mjs. A feed failing 7 days in a row is rested (tried again on Mondays).", resting, feeds: health }, null, 1) + "\n");
   out = { date, window: { from, to }, built_at: new Date().toISOString(), feeds: { total: (w.value.feeds || []).length, failed }, candidates: pool.candidates, counts: pool.counts,
     read: pool.clusters.filter(c => c.text).length, clusters: pool.clusters, headlines: pool.headlines };
   const text = compactPool(out, P);
