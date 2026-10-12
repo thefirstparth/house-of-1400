@@ -164,7 +164,7 @@ export function feedXML({ P = {}, base, episodes, image }) {
   <language>en-in</language>
   <itunes:author>${esc(P.author || "")}</itunes:author>
   <itunes:block>Yes</itunes:block>
-  <itunes:explicit>false</itunes:explicit>${image ? `\n  <itunes:image href="${esc(image)}"/>` : ""}
+  <itunes:explicit>false</itunes:explicit>${image ? `\n  <itunes:image href="${esc(image)}"/>\n  <image><url>${esc(image)}</url><title>${esc(P.title || "The House of 1400")}</title><link>${esc(base)}</link></image>` : ""}
 ${items}
 </channel>
 </rss>
