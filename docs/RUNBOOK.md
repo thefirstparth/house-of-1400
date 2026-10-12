@@ -58,3 +58,6 @@ Editions before 13 Oct 2026 were made by the old flow: hand research sweeps, the
 7. **Verify:** poll `/api/health` until it reports today's date (up to 10 minutes).
 8. **Notify:** only after step 7 passes, `curl -s -X POST "https://house14.vercel.app/api/notify?run=<main|retry1|retry2|retry3>"` (no key needed; it sends at most once per edition). Telegram gets the lead, At a Glance, the editor's note and a one-line run status. A Vercel cron at 16:00 IST sends the summary if a run forgot, or one "no paper today" message if nothing went live. If Telegram is not configured it answers `sent: false`; carry on.
 9. **Source trial: stopped on 1 Oct 2026 (Parth).** Do not run `scripts/trial.mjs`. The parts already switched on stay on: `/api/live/screen` stays for looking up a title by hand, the wire check reads `/api/live/wire`, tennis next matches come from ESPN.
+
+## Podcast (code only, not part of the daily run)
+After each edition is pushed, GitHub Actions makes the day's two-host episode (`scripts/podcast/make.mjs`, `.github/workflows/podcast.yml`) and publishes it to the private Apple Podcasts feed. Daily runs do nothing for it and never touch its files. If an episode is missing, run the workflow by hand from GitHub (Actions, podcast, Run workflow). DECISIONS.md, 13 Oct 2026.

@@ -1,0 +1,41 @@
+# The daily podcast (scripts/podcast/make.mjs): after each edition is pushed, and again at 15:45 and 17:15 IST in case
+# the push did not start it. It only writes to Vercel Blob, never to the repo. Free: Gemini free tier, Kokoro fallback.
+name: podcast
+on:
+  push:
+    branches: [main]
+    paths: [content/latest.json]
+  schedule:
+    - cron: "15 10 * * *"
+    - cron: "45 11 * * *"
+  workflow_dispatch:
+    inputs:
+      date: { description: "Edition date (YYYY-MM-DD); empty = latest", required: false, default: "" }
+      force: { description: "Make it again even if published", type: boolean, default: false }
+concurrency: { group: podcast, cancel-in-progress: false }
+jobs:
+  episode:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - run: npm install --no-save --no-audit --no-fund @vercel/blob
+      - name: Make the episode
+        id: make
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
+        run: node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }}
+        continue-on-error: true
+      # Gemini could not voice it: Kokoro (open source) voices the same script on this runner
+      - name: Kokoro fallback
+        if: steps.make.outcome == 'failure'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
+        run: |
+          sudo apt-get install -y -qq espeak-ng >/dev/null
+          pip install -q kokoro soundfile
+          PODCAST_VOICE=kokoro node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }}

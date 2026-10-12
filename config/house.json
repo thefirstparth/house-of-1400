@@ -3387,5 +3387,64 @@
       "more_max": 260,
       "brief_min": 22
     }
+  },
+  "podcast": {
+    "note": "The daily episode (scripts/podcast/make.mjs, run by .github/workflows/podcast.yml after each edition). Free: Gemini free tier, Kokoro fallback. Parth, 12-13 Oct 2026.",
+    "title": "The House of 1400",
+    "subtitle": "The afternoon paper, as a conversation",
+    "author": "T. A. Bhide",
+    "minutes": 6,
+    "words": {
+      "min": 650,
+      "target": 850,
+      "max": 1100
+    },
+    "keep_days": 14,
+    "text_models": [
+      "gemini-3.8-flash",
+      "gemini-3.5-flash-lite"
+    ],
+    "tts_model": "gemini-3.8-flash-tts",
+    "hosts": [
+      {
+        "id": "Asha",
+        "voice": "Achird",
+        "about": "friendly, youthful, curious; asks the questions a listener would, reacts naturally"
+      },
+      {
+        "id": "Ravi",
+        "voice": "Rasalgethi",
+        "about": "casual explainer; gives the background and the numbers in plain words"
+      }
+    ],
+    "style": "Two friends in Bengaluru talking through the afternoon's news over chai: warm, natural and unhurried, with real reactions. Both speak Indian English with a natural Indian accent.",
+    "moods": {
+      "good": "warm and upbeat",
+      "bad": "calm, gentle and serious; no laughter",
+      "mixed": "thoughtful and even",
+      "neutral": "easy and conversational"
+    },
+    "stories_max": 6,
+    "kokoro": {
+      "lang": "b",
+      "voices": {
+        "Asha": "bf_emma",
+        "Ravi": "bm_george"
+      }
+    },
+    "pronounce": {
+      "SEBI": "say-bee",
+      "NSE": "N S E",
+      "BSE": "B S E",
+      "UPI": "U P I",
+      "T20I": "T twenty international",
+      "T20Is": "T twenty internationals",
+      "ODI": "O D I",
+      "ODIs": "O D Is",
+      "BMTC": "B M T C",
+      "ISRO": "is-ro",
+      "Nifty": "Nifty",
+      "Sensex": "Sensex"
+    }
   }
 }
