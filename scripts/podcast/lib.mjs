@@ -72,13 +72,23 @@ export function sayWhen(utc, now = Date.now()) {
   return `${dayWord} at ${clock}${part}`;
 }
 
+// A day as people say it: "today", "tomorrow", "on Wednesday", "on Sunday the twenty-fifth"
+export function sayDay(ymd, now = Date.now()) {
+  const t = Date.parse(`${ymd}T12:00:00+05:30`); if (!Number.isFinite(t)) return null;
+  const day = Math.round((t - Date.parse(new Date(now + IST).toISOString().slice(0, 10) + "T12:00:00+05:30")) / 864e5);
+  const wd = new Date(t).toLocaleDateString("en-GB", { weekday: "long", timeZone: TZ });
+  return day === 0 ? "today" : day === 1 ? "tomorrow" : day === -1 ? "yesterday" : day > 6 ? `on ${wd} the ${ordinal(new Date(t).getUTCDate())}` : `on ${wd}`;
+}
+
 // The running order (Parth, 13 Oct 2026): the lead, then the paper's desks in a listening order, each item marked
 // "deep" (a real back-and-forth) or "quick" (a line or two). Deep: the lead and the strongest stories by Bhide's
 // importance score, front-page stories first among equals, at least one from Sport; quick: the rest, up to quick_max.
-// Sport carries the latest results and what is coming up; Money the market numbers; Close to Home the weather.
+// Sport carries the latest results and what is coming up even when no story covers it (Parth, 13 Oct): The Week
+// Ahead's sport entries for the next seven days, and each followed team's next fixture however far off; Money the
+// market numbers; Close to Home the weather; The Week Ahead the other entries for the next three days.
 // Desk names come from the paper (config desks_v2), so the hosts never file Delhi under Close to Home. Nothing
 // outside the edition. `now` defaults to 14:30 IST on the edition's day, whenever the episode is made.
-const ORDER = ["news", "home", "money", "tech", "sport", "off"];
+const ORDER = ["news", "home", "money", "tech", "sport", "off", "week"];
 export function rundown(E, P = {}, now, paper = {}) {
   now ??= Date.parse(`${E.date}T09:00:00Z`);
   const deskOf = {}, nameOf = {};
@@ -104,13 +114,22 @@ export function rundown(E, P = {}, now, paper = {}) {
   for (const name of ["Nifty 50", "Sensex"]) { const i = idx.find(x => x.name === name); if (i && Number.isFinite(i.price)) markets.push(`${name} at ${Math.round(i.price).toLocaleString("en-IN")}, ${i.change_pct >= 0 ? "up" : "down"} ${Math.abs(i.change_pct).toFixed(1)}%${i.session_date && i.session_date !== E.date ? ` (${i.session_date})` : ""}`); }
   if (Number.isFinite(fx?.price)) markets.push(`the rupee at ${fx.price.toFixed(2)} to the dollar`);
   if (Number.isFinite(gold?.per_10g_24k)) markets.push(`24-carat gold at ₹${Math.round(gold.per_10g_24k).toLocaleString("en-IN")} for ten grams`);
-  const NAMES = { madrid: "Real Madrid", india_cricket: "India (cricket)", f1: "Formula One" }, results = [], coming = [];
+  const NAMES = { madrid: "Real Madrid", india_cricket: "India (cricket)", f1: "Formula One" }, results = [], coming = [], ahead = [], times = [];
+  const SPORT = new Set(["fixtures", "madrid", "paddock", "crease", "deuce", "pitch", "sidelines"]);
+  for (const w of E.week_ahead || []) {
+    const t = w.time_ist ? Date.parse(`${w.date}T${w.time_ist}:00+05:30`) : Date.parse(`${w.date}T23:59:00+05:30`), sport = SPORT.has(w.area);
+    if (!(t > now - 2 * 36e5 && t < now + (sport ? 7 : 3) * 864e5)) continue;
+    const line = `${w.what}, ${w.time_ist ? sayWhen(t, now) : sayDay(w.date, now)}${w.why ? ` (${w.why})` : ""}`;
+    if (sport) { coming.push(line); if (w.time_ist) times.push(t); } else if (ahead.length < 5) ahead.push(line);
+  }
+  const near = t => times.some(x => Math.abs(x - t) < 3 * 36e5);
   for (const [k, c] of Object.entries(E.chronology || {})) {
     const l = c?.last, n = c?.next, lt = Date.parse(l?.when_utc), nt = Date.parse(n?.when_utc);
     if (lt > now - 60 * 36e5 && lt <= now) results.push(`${NAMES[k] || k}: ${l.label}${l.detail ? `, ${l.detail}` : ""} (${sayWhen(lt, now)})`);
-    if (nt > now - 2 * 36e5 && nt < now + 3 * 864e5) coming.push(`${NAMES[k] || k}: ${n.label}${n.detail ? `, ${n.detail}` : ""}, ${sayWhen(nt, now)}`);
+    if (nt > now - 2 * 36e5 && !near(nt)) { coming.push(`${NAMES[k] || k} next: ${n.label}${n.detail ? `, ${n.detail}` : ""}, ${nt < now + 6 * 864e5 ? sayWhen(nt, now) : sayDay(new Date(nt + IST - 4 * 36e5).toISOString().slice(0, 10), now)}`); times.push(nt); }
   }
-  for (const p of E.tennis?.players || []) { const t = Date.parse(p.next_match?.when_utc); if (t > now - 2 * 36e5 && t < now + 3 * 864e5) coming.push(`${p.name}: ${String(p.next_match.text).replace(/,?\s*(today|tomorrow|tonight|monday|tuesday|wednesday|thursday|friday|saturday|sunday)?,?\s*\d{1,2}:\d{2}\s*IST\.?/i, "").replace(/\.$/, "")}, ${sayWhen(t, now)}`); }
+  for (const p of E.tennis?.players || []) { const t = Date.parse(p.next_match?.when_utc); if (t > now - 2 * 36e5 && t < now + 7 * 864e5 && !near(t)) coming.push(`${p.name}: ${String(p.next_match.text).replace(/,?\s*(today|tomorrow|tonight|monday|tuesday|wednesday|thursday|friday|saturday|sunday)?,?\s*\d{1,2}:\d{2}\s*IST\.?/i, "").replace(/\.$/, "")}, ${sayWhen(t, now)}`); }
+  for (const ev of E.tennis?.events || []) if (ev.note) results.push(`${ev.name}: ${ev.note}`);
   const city = ok("weather")?.cities?.[0], d0 = city?.daily?.[0];
   const weather = city && d0 ? `${city.name} today: top of ${Math.round(d0.max)} degrees${Number.isFinite(d0.min) ? `, low of ${Math.round(d0.min)}` : ""}, ${d0.rain_prob}% chance of rain` : null;
   const groups = {};
@@ -120,6 +139,7 @@ export function rundown(E, P = {}, now, paper = {}) {
   if (markets.length) (groups.money ||= { desk: named("money"), items: [] }).markets = markets;
   if (results.length || coming.length) Object.assign(groups.sport ||= { desk: named("sport"), items: [] }, { results, coming });
   if (weather) (groups.home ||= { desk: named("home"), items: [] }).weather = weather;
+  if (ahead.length) groups.week = { desk: "The Week Ahead", items: [], coming: ahead };
   const segments = [...ORDER, ...Object.keys(groups).filter(k => !ORDER.includes(k))].filter(k => groups[k]).map(k => groups[k]);
   return { date: E.date, day: longDate(E.date), lead: lead ? { ...item(lead, "deep"), desk: "Lead" } : null, segments, house_note: E.house_note || null, editor_note: E.big_day ? E.editor_note || null : null };
 }
@@ -150,10 +170,11 @@ THE SHOW, in this order (everything comes from the RUNDOWN below)
 1. Open: ${A.id} greets with the day ("Good afternoon, it's ${R.day.split(" ")[0]}...") and goes straight into the lead as a hook. The two talk the lead through properly.
 2. Then the desk segments in the order given. Items marked "deep" get a real back-and-forth of about 80 to 140 words: one host tells it, the other reacts and asks what a listener would ask (what does it mean for us, why now, who is this), answered from "why" and the text. Items marked "quick" get one or two sentences each; several quick ones can run together briskly. Mention every item.
 3. If you name a segment, use the paper's desk names: News, Close to Home, Money, Tech and AI, Sport, Off Duty. "Close to Home" means Bengaluru only. A story from Delhi or anywhere else is News, never "close to home".
-4. Sport gets real energy: every sport item, the recent results and what is coming up (keep the times exactly as written; they are already how people say them).
+4. Sport gets real energy: every sport item, the recent results, and EVERY match in "coming", even when no story covers it (keep the days and times exactly as written; they are already how people say them).
 5. Money: the market numbers in one or two lines, no more than three numbers in all.
 6. Weather, if given: one everyday line ("warm, with a fair chance of rain later").
-7. Close: the House Note retold in the hosts' own words with its punchline intact, then a short, warm goodbye.
+7. The Week Ahead, if given: a couple of quick lines on what is coming in the next few days.
+8. Close: the House Note retold in the hosts' own words with its punchline intact, then a short, warm goodbye.
 
 HOW IT SOUNDS
 - A real conversation: mix longer turns with plenty of quick reactions of two to eight words ("Thirteen. That's terrible." "Wait, his own call?" "Oh, lovely."). At least six genuine questions between the hosts.
