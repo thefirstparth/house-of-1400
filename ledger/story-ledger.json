@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-11T08:41:22.755Z",
-  "last_edition": "2026-10-11",
+  "last_updated": "2026-10-12T08:42:12.382Z",
+  "last_edition": "2026-10-12",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -552,7 +552,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Supreme Court, sitting on a Sunday, bars illegal detentions and orders Delhi's Metro and internet restored",
+      "title": "Delhi Police strike Jantar Mantar off the list of protest sites and name three grounds instead",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -583,11 +583,12 @@
         "leaders": "Dipke, Das, Ranka held on plane",
         "bench": "Bagchi, Mohana",
         "orders": "no illegal detention, Metro and internet restored",
-        "cjp_leaders": "released"
+        "cjp_leaders": "released",
+        "new_sites": "Ramlila Ground, Burari, CBD Ground"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-11",
-      "last_change": "2026-10-11",
+      "last_printed": "2026-10-12",
+      "last_change": "2026-10-12",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2087,15 +2088,16 @@
     },
     {
       "thread_id": "russia-fuel-imports-2026",
-      "title": "Trump says Ukraine should get a new president after Zelensky condemns the Russian diesel deal",
+      "title": "Zelensky backs Trump's 'energy ceasefire' if Moscow does, but says Russia is still hitting power plants",
       "entities": [],
       "facts": {
         "until": "2027-04-07",
-        "trump": "Ukraine should get a new president"
+        "trump": "Ukraine should get a new president",
+        "status": "announced, disputed"
       },
       "first_printed": "2026-10-02",
-      "last_printed": "2026-10-11",
-      "last_change": "2026-10-11",
+      "last_printed": "2026-10-12",
+      "last_change": "2026-10-12",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2308,7 +2310,7 @@
     },
     {
       "thread_id": "saudi-houthi-2026",
-      "title": "A Saudia pilot was among the three killed when Riyadh's airport and a parked jet were hit",
+      "title": "Saturday's strike on Riyadh airport killed 13, including an Indian man; another hit on Sunday killed one",
       "entities": [],
       "facts": {
         "pact": "activated 5 Oct",
@@ -2318,11 +2320,14 @@
         "injured": 36,
         "airports": "Abha, King Khalid Riyadh",
         "pilot": "killed",
-        "airport": "reopened"
+        "airport": "reopened",
+        "saturday": "13 dead, 308 injured",
+        "indian": "1 dead",
+        "sunday": "1 dead, 11 injured"
       },
       "first_printed": "2026-10-04",
-      "last_printed": "2026-10-09",
-      "last_change": "2026-10-09",
+      "last_printed": "2026-10-12",
+      "last_change": "2026-10-12",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3051,18 +3056,19 @@
     },
     {
       "thread_id": "ind-wi-t20is-2026",
-      "title": "India make 249 in Ranchi and still lose: Shai Hope's 102 from 45 balls powers West Indies' record chase",
+      "title": "Abhishek's 69 from 30 balls and Arshdeep's three wickets put India 2–1 up",
       "entities": [],
       "facts": {
-        "wi": "252/4 (18.3)",
-        "ind": "249/5",
+        "wi": "209/7",
+        "ind": "223",
         "iyer": "102* (43)",
         "rank": 7,
-        "series": "1-1"
+        "series": "2-1",
+        "margin": "14 runs"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-10",
-      "last_change": "2026-10-10",
+      "last_printed": "2026-10-12",
+      "last_change": "2026-10-12",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3641,19 +3647,23 @@
     },
     {
       "thread_id": "f1-singapore-2026",
-      "title": "Max wins the rain-hit Singapore sprint and takes pole for tonight's Grand Prix",
+      "title": "Max wins in Singapore at the tenth attempt, after leading every session of the weekend",
       "entities": [],
       "facts": {
         "sprint_pole": "Verstappen",
-        "p2": "Russell",
+        "p2": "Leclerc +7.335",
         "sprint": "1 Verstappen, 2 Hamilton, 3 Leclerc",
         "pole": "Verstappen",
         "front_row": "Leclerc",
-        "race_ist": "17:30"
+        "race_ist": "17:30",
+        "winner": "Verstappen",
+        "p3": "Antonelli",
+        "hamilton": "6th",
+        "standings_gap": "Antonelli +102 over Russell"
       },
       "first_printed": "2026-10-10",
-      "last_printed": "2026-10-11",
-      "last_change": "2026-10-11",
+      "last_printed": "2026-10-12",
+      "last_change": "2026-10-12",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3747,6 +3757,36 @@
       "first_printed": "2026-10-11",
       "last_printed": "2026-10-11",
       "last_change": "2026-10-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "bmtc-2026",
+      "title": "BMTC to share live bus data with map apps, and plans five feeder routes for the Pink Line",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-12",
+      "last_printed": "2026-10-12",
+      "last_change": "2026-10-12",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "mf-flows-2026",
+      "title": "SIPs hit a record ₹32,490 crore in September despite the falling market",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-12",
+      "last_printed": "2026-10-12",
+      "last_change": "2026-10-12",
       "status": "active",
       "votes": {
         "up": 0,
