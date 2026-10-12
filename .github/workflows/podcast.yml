@@ -6,7 +6,7 @@ name: podcast
 on:
   push:
     branches: [main]
-    paths: [content/latest.json]
+    paths: [content/latest.json, .github/podcast-ping]
   schedule:
     - cron: "15 10 * * *"
     - cron: "45 11 * * *"
