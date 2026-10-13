@@ -261,6 +261,8 @@ async function main() {
   // episode is ready before 15:45 IST at any cost).
   const ist = new Date(Date.now() + 5.5 * 36e5), early = ist.getUTCHours() * 60 + ist.getUTCMinutes() < 14 * 60 + 35;
   if (!DRY && !KOKORO && !args.includes("--final") && early && (/lite/.test(by) || by === "code")) { log(`script by ${by}: holding it back for the 14:40 IST run, which publishes whatever it gets`); return; }
+  // a redo never swaps a published episode for a weaker script (Flash Lite or the code's plain one)
+  if (prior && !DRY && (/lite/.test(by) || by === "code")) { log(`redo: script by ${by}, keeping the published episode`); return; }
   log(`script: ${turns.length} turns, ${turns.reduce((a, t) => a + t.text.split(/\s+/).length, 0)} words, by ${by}`);
   if (DRY && !KEY) { log("dry run: script written to .podcast/script.json"); return; }
   let pcm, voice = KOKORO ? "kokoro" : "gemini";
