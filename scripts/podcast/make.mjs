@@ -187,9 +187,11 @@ async function main() {
   // the Kokoro step (podcast.yml) reuses the script the first step wrote
   const { turns, by } = KOKORO && saved?.date === date ? saved : DRY && !KEY ? { turns: fallbackScript(R, P), by: "code" } : await writeScript(R);
   writeFileSync(`${OUT}/script.json`, JSON.stringify({ date, by, turns }, null, 1));
-  // A script from Flash Lite or the code is held back until the day's last run (15:55 IST, or one started by hand),
-  // so a busy hour does not publish the weak version when a strong writer may be free half an hour later
-  if (!DRY && !KOKORO && !args.includes("--final") && (/lite/.test(by) || by === "code")) { log(`script by ${by}: holding it back for the next run (the 15:55 IST run publishes whatever it gets)`); return; }
+  // A script from Flash Lite or the code is held back once: at the edition push, and only before 14:35 IST, so the
+  // 14:40 run can try the strong writers again. Every later run publishes whatever it gets (Parth, 13 Oct: the
+  // episode is ready before 15:45 IST at any cost).
+  const ist = new Date(Date.now() + 5.5 * 36e5), early = ist.getUTCHours() * 60 + ist.getUTCMinutes() < 14 * 60 + 35;
+  if (!DRY && !KOKORO && !args.includes("--final") && early && (/lite/.test(by) || by === "code")) { log(`script by ${by}: holding it back for the 14:40 IST run, which publishes whatever it gets`); return; }
   log(`script: ${turns.length} turns, ${turns.reduce((a, t) => a + t.text.split(/\s+/).length, 0)} words, by ${by}`);
   if (DRY && !KEY) { log("dry run: script written to .podcast/script.json"); return; }
   let pcm, voice = KOKORO ? "kokoro" : "gemini";
