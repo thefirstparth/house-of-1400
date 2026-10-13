@@ -1,0 +1,14 @@
+{
+  "note": "A 40-second intro from the 13 Oct paper, to hear Ashu and Tarun before their first episode (14 Oct). Every fact is from that edition.",
+  "turns": [
+    { "speaker": "Ashu", "mood": "warm", "text": "Good afternoon, and welcome to The House of 1400. It's Tuesday, the thirteenth of October. I'm Ashu, with T. A. Bhide's paper, fresh off the press." },
+    { "speaker": "Tarun", "mood": "warm", "text": "And I'm Tarun. Chai is ready, and arre, what a front page today." },
+    { "speaker": "Ashu", "mood": "matter-of-fact", "text": "Jantar Mantar was closed to protests on Monday. By Tuesday morning, Cockroach Janata Party leaders had walked in carrying the Tiranga." },
+    { "speaker": "Tarun", "mood": "surprised", "text": "Walked in? How?" },
+    { "speaker": "Ashu", "mood": "amused", "text": "Through the food stalls right beside it. The police detained them inside." },
+    { "speaker": "Tarun", "mood": "curious", "text": "And money? Good news or bad for us?" },
+    { "speaker": "Ashu", "mood": "concerned", "text": "Mostly bad. Retail inflation jumped to five point five four per cent in September, the highest since October twenty twenty-four." },
+    { "speaker": "Tarun", "mood": "matter-of-fact", "text": "But the Sensex is up about one per cent today, though it's still near its three-month low." },
+    { "speaker": "Ashu", "mood": "warm", "text": "Bilkul. Let's get into it." }
+  ]
+}

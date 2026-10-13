@@ -194,6 +194,15 @@ async function main() {
     log(`models (${r.status}):`, (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes("generateContent")).map(m => m.name.replace("models/", "")).join(", "));
     return;
   }
+  // --sample=FILE: voice a short given script ({turns}) with the day's voices and settings, nothing published (to hear
+  // a change before an episode carries it)
+  const sample = args.find(a => a.startsWith("--sample="))?.slice(9);
+  if (sample) {
+    const { turns } = JSON.parse(readFileSync(`${H}${sample}`, "utf8")), pcm = await ttsGemini(turns);
+    writeFileSync(`${OUT}/episode.wav`, Buffer.concat([wavHeader(pcm.length), pcm]));
+    execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-i", `${OUT}/episode.wav`, "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-ar", "44100", "-ac", "1", "-codec:a", "libmp3lame", "-b:a", "96k", `${OUT}/episode.mp3`]);
+    log(`sample: ${Math.round(pcm.length / 48000)} s from ${sample}`); return;
+  }
   const { put, list, del, get } = DRY ? {} : await blob();
   if (FEED_ONLY) { const n = await publishFeed({ put, list, del, get }); log(`feed rebuilt (${n} in the feed)`); log(`FEED ${served("feed.xml")}`); return; }
   if (!DRY && !FORCE) {
