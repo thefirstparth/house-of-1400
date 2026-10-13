@@ -188,6 +188,19 @@
       "section": "ledger",
       "found_by": "daily run 2026-10-10 (money sweep, RBI feed)",
       "printed_on": "2026-10-10"
+    },
+    {
+      "id": "upi-mdr-deferred-oct-2026",
+      "what": "UPI merchant fee (0.4% above Rs 2,000) deferred from 15 October to after Diwali; new date to be notified; structure unchanged",
+      "who": "NPCI",
+      "announced": "2026-10-13",
+      "effective": "after Diwali (date to be notified)",
+      "sources": [
+        "https://www.business-standard.com/finance/news/upi-mdr-deferred-until-after-diwali-new-date-to-be-notified-npci-126101300556_1.html"
+      ],
+      "section": "ledger",
+      "found_by": "daily run 2026-10-13 (pool)",
+      "printed_on": "2026-10-13"
     }
   ]
 }

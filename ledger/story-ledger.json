@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-12T08:42:12.382Z",
-  "last_edition": "2026-10-12",
+  "last_updated": "2026-10-13T08:44:13.928Z",
+  "last_edition": "2026-10-13",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -25,7 +25,7 @@
     },
     {
       "thread_id": "india-markets-daily",
-      "title": "TCS profit up 15% with AI revenue past 10%; IT leads an 800-point Sensex rebound",
+      "title": "HCLTech leads a 3% IT rally and the rupee firms to 95.25 after the RBI's curbs",
       "entities": [],
       "facts": {
         "sensex_close": "71909.7",
@@ -40,16 +40,19 @@
         "bofa": "100 bps hikes through H1 2027",
         "us10y": ">5.3%",
         "weeks": "8",
-        "sensex": "72,399 (+806) at 13:05",
+        "sensex": "72,391 (+466) 10:55",
         "brent": ">$102",
         "fii_9d": "~₹57,000 cr",
         "tcs_pat": "₹13,884 cr (+15%)",
         "revenue": "₹73,188 cr",
-        "dividend": "₹12, record 14 Oct"
+        "dividend": "₹12, record 14 Oct",
+        "hcltech": "+7%",
+        "nifty_it": "+3%",
+        "usdinr": "95.25"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-09",
-      "last_change": "2026-10-09",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
       "status": "active",
       "votes": {
         "up": 0,
@@ -523,7 +526,7 @@
     },
     {
       "thread_id": "upi-mdr-2026",
-      "title": "The UPI merchant fee due on 15 October may be pushed to January",
+      "title": "NPCI puts off the UPI merchant fee until after Diwali, two days before it was due",
       "entities": [],
       "facts": {
         "mdr": "0.4%",
@@ -537,12 +540,13 @@
         "flat_fee_sectors": "Rs 5",
         "sc_interim_stay": "refused",
         "replies_due": "4 weeks",
-        "start": "15 Oct, may move to Jan",
-        "decided": "no"
+        "start": "after Diwali, date to be notified",
+        "decided": "no",
+        "fee": "0.4% above ₹2,000"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-08",
-      "last_change": "2026-10-08",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
       "status": "active",
       "votes": {
         "up": 0,
@@ -552,7 +556,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Delhi Police strike Jantar Mantar off the list of protest sites and name three grounds instead",
+      "title": "CJP leaders slip into Jantar Mantar with the Tiranga a day after it was closed to protest, and are detained",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -564,7 +568,7 @@
         "opposition": "INDIA bloc seeks ballot papers",
         "meetings": "second in four days",
         "extended": "Andhra Pradesh, Meghalaya",
-        "detained": "10,000 (CJP)",
+        "detained": "Das, Ranka, Shinde",
         "internet": "suspended near Jantar Mantar",
         "karnataka": "Form 7 probe ordered",
         "mumbai": "Thackeray march",
@@ -584,11 +588,12 @@
         "bench": "Bagchi, Mohana",
         "orders": "no illegal detention, Metro and internet restored",
         "cjp_leaders": "released",
-        "new_sites": "Ramlila Ground, Burari, CBD Ground"
+        "new_sites": "Ramlila Ground, Burari, CBD Ground",
+        "site": "de-notified 12 Oct"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-12",
-      "last_change": "2026-10-12",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2310,7 +2315,7 @@
     },
     {
       "thread_id": "saudi-houthi-2026",
-      "title": "Saturday's strike on Riyadh airport killed 13, including an Indian man; another hit on Sunday killed one",
+      "title": "Houthis hit Riyadh for a third day and strike Dammam; IndiGo and Akasa stop Saudi flights until 17 October",
       "entities": [],
       "facts": {
         "pact": "activated 5 Oct",
@@ -2323,11 +2328,13 @@
         "airport": "reopened",
         "saturday": "13 dead, 308 injured",
         "indian": "1 dead",
-        "sunday": "1 dead, 11 injured"
+        "sunday": "1 dead, 11 injured",
+        "flights": "IndiGo, Akasa suspended to 17 Oct",
+        "dammam": "hit"
       },
       "first_printed": "2026-10-04",
-      "last_printed": "2026-10-12",
-      "last_change": "2026-10-12",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3093,15 +3100,16 @@
     },
     {
       "thread_id": "shanghai-masters-2026",
-      "title": "Alcaraz beats Juan Manuel Cerundolo 6–3 6–3 and plays Zizou Bergs on Monday",
+      "title": "Alcaraz loses to Zizou Bergs in Shanghai, and Zverev is sure to finish the year as world No. 1",
       "entities": [],
       "facts": {
-        "score": "6-3 6-3",
-        "next": "Bergs, 12 Oct"
+        "score": "5-7 6-7(4)",
+        "next": "Bergs, 12 Oct",
+        "year_end_no1": "Zverev"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-11",
-      "last_change": "2026-10-11",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3673,12 +3681,15 @@
     },
     {
       "thread_id": "anthropic-agents-2026",
-      "title": "An Anthropic model sent Philadelphia police a false tip about an unsolved murder",
+      "title": "Anthropic researchers say small AI models may soon copy themselves onto smart TVs and fridges",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "finding": "small models may self-replicate on IoT devices within months",
+        "authors": "Zhou, Freeman"
+      },
       "first_printed": "2026-10-10",
-      "last_printed": "2026-10-10",
-      "last_change": "2026-10-10",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3793,6 +3804,374 @@
         "down": 0
       },
       "section": "ledger"
+    },
+    {
+      "thread_id": "india-cpi-2026",
+      "title": "Retail inflation jumps to 5.54% in September, the highest since October 2024, with food at 7.74%",
+      "entities": [],
+      "facts": {
+        "cpi": "5.54%",
+        "food": "7.74%",
+        "rural": "6.08%",
+        "urban": "4.88%",
+        "aug": "4.83%"
+      },
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "modi-economy-2026",
+      "title": "Modi tells the Bloomberg forum India grows 'with the world', citing 7.8% growth",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "punjab-drugs-2026",
+      "title": "Anti-drug activist shot dead by a chemist he was filming in Punjab's Mansa",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "imf-weo-oct-2026",
+      "title": "IMF raises its global growth forecast but warns the world's resilience to the oil shock is running out",
+      "entities": [],
+      "facts": {
+        "report": "WEO October 2026"
+      },
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "us-politics-2026",
+      "title": "Federal agents search Ilhan Omar's Washington home in an immigration fraud inquiry",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-hundreds-of-french-supermarkets-were-hit",
+      "title": "Hundreds of French supermarkets were hit by a cyber attack that heated their fridges to 50°C and spoiled food worth millions of euros",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-trump-says-he-is-not-happy",
+      "title": "Trump says he is 'not happy' with Kimberly Guilfoyle, his ambassador to Greece, after reports of misconduct",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-global-smartphone-shipments-fell-20-in",
+      "title": "Global smartphone shipments fell 20% in the third quarter, the lowest in 14 years, on memory costs; Samsung and Apple gained share",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "claude-code-2026",
+      "title": "An amateur used Claude Code to check what may be a new planet in NASA data",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "meta-ai-2026",
+      "title": "Zuckerberg says Meta has reached the AI frontier as it releases its latest Muse model",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "google-hardware-2026",
+      "title": "Google's Fitbit Edge puts a screen on a slim band for $179.99",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "mars-2026",
+      "title": "NASA's Perseverance has now driven farther than any vehicle on another world",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "oneplus-2026",
+      "title": "OnePlus 16 launches in China with a 9,000mAh battery and a 185Hz screen",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "premier-league-2026",
+      "title": "Lampard's Coventry beat Newcastle 4–1 and climb out of the relegation zone",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "man-utd-2026",
+      "title": "Carrick says Manchester United will 'come out fighting' at Atlético despite their worst start in 40 years",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "icc-awards-2026",
+      "title": "Shubman Gill wins a record fifth ICC Player of the Month award; Shafali Verma takes the women's",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "afghan-cricket-2026",
+      "title": "Ollie Pope pulls out of the Afghanistan Premier League draft over the Taliban's treatment of women",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "line-sri-lanka-call-up-eshan-malinga",
+      "title": "Sri Lanka call up Eshan Malinga and drop Niroshan Dickwella for Kusal Mendis's first Test series as captain, in Pakistan",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "eci-sir-karnataka-2026",
+      "title": "Bengaluru police detain about 100 marching to the state election office against the voter-roll revision",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "blr-pub-checks-2026",
+      "title": "IAS officer booked for abusing police during a late-night pub check on Residency Road",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "madrid-refereeing-2026",
+      "title": "Madrid have had 42 goals ruled out by VAR since 2018, more than any other La Liga club",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "line-leclerc-says-he-could-not-see",
+      "title": "Leclerc says he could not see the braking boards from the inside of Turn 1, which is why he let Verstappen keep the lead",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "iiit-ranchi-2026",
+      "title": "IIIT Ranchi students protest for a third day after a first-year student's death",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "jharkhand-weather-2026",
+      "title": "The monsoon has left all of Jharkhand, clearing the way for dry Puja weather",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-13",
+      "last_printed": "2026-10-13",
+      "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
     }
   ]
 }

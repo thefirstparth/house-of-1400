@@ -1,11 +1,11 @@
 {
-  "date": "2026-10-12",
-  "from": "2026-10-11",
+  "date": "2026-10-13",
+  "from": "2026-10-12",
   "carry": [
     {
-      "id": "pm:next-french-presidential-election",
-      "title": "Next French Presidential Election",
-      "since": "2026-10-09",
+      "id": "pm:us-iran-ceasefire-continues-throughptptpt",
+      "title": "US-Iran ceasefire continues through...?",
+      "since": "2026-10-08",
       "reason": "#1 by 24h volume"
     },
     {
@@ -18,41 +18,41 @@
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
       "title": "UEFA Champions League: 2027 Champion",
       "since": "2026-09-25",
-      "reason": "#3 by 24h volume"
-    },
-    {
-      "id": "pm:us-iran-ceasefire-continues-throughptptpt",
-      "title": "US-Iran ceasefire continues through...?",
-      "since": "2026-10-08",
       "reason": "#4 by 24h volume"
     },
     {
-      "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
-      "title": "Prime Minister of Israel after the next election?",
-      "since": "2026-10-10",
+      "id": "pm:will-the-us-invade-iran-before-2027",
+      "title": "Will the U.S. invade Iran before 2027?",
+      "since": "2026-10-12",
       "reason": "#5 by 24h volume"
     },
     {
-      "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
-      "title": "US announces end of Iranian blockade by...?",
-      "since": "2026-10-11",
-      "reason": "#6 by 24h volume"
+      "id": "pm:next-french-presidential-election",
+      "title": "Next French Presidential Election",
+      "since": "2026-10-09",
+      "reason": "#7 by 24h volume"
+    },
+    {
+      "id": "pm:brazil-presidential-election",
+      "title": "Brazil Presidential Election",
+      "since": "2026-10-12",
+      "reason": "#8 by 24h volume"
     }
   ],
   "dropped": [
     {
-      "id": "pm:lal-ray-bil-2026-10-10",
-      "title": "Rayo Vallecano de Madrid vs. Athletic Club",
-      "why": "ended or decided, no next market in the same line"
+      "id": "pm:2026-f1-drivers-champion",
+      "title": "F1 Drivers' Champion",
+      "why": "cooled: outside the ranking by volume, moved 0.4 pts"
     },
     {
-      "id": "pm:epl-hul-eve-2026-10-11",
-      "title": "Hull City AFC vs. Everton FC",
-      "why": "cooled: outside the ranking by volume, moved 0.0 pts"
+      "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
+      "title": "Prime Minister of Israel after the next election?",
+      "why": "carry cap of 6"
     },
     {
-      "id": "pm:brazil-presidential-election-second-round-margin-of-victory",
-      "title": "Brazil Presidential Election Second Round: Margin of Victory",
+      "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
+      "title": "US announces end of Iranian blockade by...?",
       "why": "carry cap of 6"
     }
   ]
