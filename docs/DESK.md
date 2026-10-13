@@ -10,6 +10,8 @@ Three tests, in order:
 - **A well-informed person in India would be caught out not knowing it.** Major national and world news, and India's institutions (courts, the Election Commission, Parliament, the RBI) when they lead the news. Write these neutral and factual.
 - **It changes what people in India pay, earn, save, borrow, invest or insure,** or it moved an Indian stock or sector hard.
 
+**The lead** (Parth, 13 Oct 2026) is the story a well-informed person in India would most regret missing today. The benchmark is what leads the national front pages you sweep and the pool's TOP stories. A story about one of Parth's follows leads only when it is big news beyond its fans, the kind those front pages would carry too, or when nothing of national or world weight is leading. When a follow and a bigger story compete, the bigger story leads and the follow sits beside it on the front page.
+
 Also print what he may not follow but would find interesting. The pool's TOP stories are the day's biggest whatever their desk. Mark these `new_for_you: true`.
 
 Every pool story marked **TOP** is printed (a story, a brief or an Also in line) or answered in `checks.pool` as `{id, skip: "why"}`. Each answer covers one id, with its own reason.
