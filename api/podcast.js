@@ -1,8 +1,8 @@
 // The private podcast feed and its episodes (scripts/podcast/make.mjs writes them to the private Blob store under
 // podcast/<secret>/). Served here so Apple Podcasts can fetch them: /podcast/<secret>/feed.xml and
-// /podcast/<secret>/YYYY-MM-DD.mp3 (vercel.json rewrites to this function). The secret folder name is the only key:
+// /podcast/<secret>/YYYY-MM-DD.mp3 (or -v2.mp3, a redo) (vercel.json rewrites to this function). The secret folder name is the only key:
 // anything else is a plain 404. Byte ranges are passed through, which Apple Podcasts uses to stream.
-const OK_K = /^[a-f0-9]{24}$/, OK_F = /^(feed\.xml|\d{4}-\d{2}-\d{2}\.mp3)$/;
+const OK_K = /^[a-f0-9]{24}$/, OK_F = /^(feed\.xml|\d{4}-\d{2}-\d{2}(-v\d+)?\.mp3)$/;
 
 async function serve(request, head) {
   const url = new URL(request.url), k = url.searchParams.get("k") || "", f = url.searchParams.get("f") || "";

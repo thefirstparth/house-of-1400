@@ -386,7 +386,7 @@ export function feedXML({ P = {}, base, episodes, image }) {
     <title>${esc(e.title)}</title>
     <description>${esc(e.description)}</description>
     <enclosure url="${esc(e.url)}" length="${e.bytes}" type="audio/mpeg"/>
-    <guid isPermaLink="false">h1400-${e.date}</guid>
+    <guid isPermaLink="false">h1400-${e.date}${e.v > 1 ? `-v${e.v}` : ""}</guid>
     <pubDate>${new Date(e.published).toUTCString()}</pubDate>
     <itunes:duration>${Math.round(e.seconds)}</itunes:duration>
     <itunes:explicit>false</itunes:explicit>

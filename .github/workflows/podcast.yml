@@ -4,7 +4,8 @@
 # publishes whatever it gets, so the episode is out before 15:45 IST (Parth, 13 Oct).
 # It only writes to Vercel Blob, never to the repo. Free: Gemini free tier, Kokoro fallback.
 # Two jobs, so Gemini's log is readable as soon as it ends: "gemini" makes the episode; "kokoro" runs only if it failed,
-# voicing the same script (handed over as an artifact) with the open-source Kokoro.
+# voicing the same script (handed over as an artifact) with the open-source Kokoro; never on a forced redo, which
+# keeps the published episode when it fails.
 name: podcast
 on:
   push:
@@ -39,12 +40,12 @@ jobs:
       - if: always()
         uses: actions/upload-artifact@v4
         with: { name: podcast-script, path: .podcast/script.json, retention-days: 2, if-no-files-found: ignore }
-      - if: always() && (inputs.dry || inputs.sample)
+      - if: always() && (inputs.dry || inputs.sample || inputs.force)
         uses: actions/upload-artifact@v4
         with: { name: podcast-test-mp3, path: .podcast/episode.mp3, retention-days: 2, if-no-files-found: ignore }
   kokoro:
     needs: gemini
-    if: failure() && !inputs.dry && !inputs.sample
+    if: failure() && !inputs.dry && !inputs.sample && !inputs.force
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

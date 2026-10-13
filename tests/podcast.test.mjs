@@ -73,6 +73,13 @@ test("podcast: the feed is private (blocked from Apple's directory) and lists th
   assert.match(xml, /x &amp; y/);
 });
 
+test("podcast: a redo is a new episode to Apple Podcasts (new guid), and the server serves its file", async () => {
+  const xml = feedXML({ P, base: "https://b", episodes: [{ date: "2026-10-13", v: 2, title: "t", description: "d", url: "https://b/2026-10-13-v2.mp3", bytes: 1, seconds: 1, published: "2026-10-13T10:00:00Z" }] });
+  assert.match(xml, /<guid isPermaLink="false">h1400-2026-10-13-v2<\/guid>/);
+  const src = readFileSync(new URL("../api/podcast.js", import.meta.url), "utf8"), OK_F = new RegExp(src.match(/OK_F = \/(.+?)\/;/)[1]);
+  assert.ok(OK_F.test("2026-10-13-v2.mp3") && OK_F.test("2026-10-13.mp3") && !OK_F.test("x.mp3"));
+});
+
 test("podcast: every step the episode maker calls is defined (the Kokoro fallback was lost once in an edit, 13 Oct)", () => {
   const src = readFileSync(new URL("../scripts/podcast/make.mjs", import.meta.url), "utf8");
   for (const f of ["writeScript", "ttsGemini", "ttsKokoro", "publishFeed", "gemini", "pcmOf", "wavHeader"]) {

@@ -218,10 +218,15 @@ async function main() {
   }
   const { put, list, del, get } = DRY ? {} : await blob();
   if (FEED_ONLY) { const n = await publishFeed({ put, list, del, get }); log(`feed rebuilt (${n} in the feed)`); log(`FEED ${served("feed.xml")}`); return; }
-  if (!DRY && !FORCE) {
+  // --force on a published day is a redo: the new take goes up under a new file and episode id (-v2, -v3), the feed
+  // switches to it, and only then is the old file deleted, so a failed redo leaves the old episode up (Parth, 13 Oct)
+  let prior = null;
+  if (!DRY) {
     const { blobs } = await list({ prefix: `${folder}/${date}.json`, token: BLOB });
-    if (blobs.length) { log(`episode for ${date} already published`); return; }
+    if (blobs.length && !FORCE) { log(`episode for ${date} already published`); return; }
+    if (blobs.length) { const g = await get(`${folder}/${date}.json`, { access: "private", useCache: false, token: BLOB }).catch(() => null); prior = g?.stream ? await new Response(g.stream).json().catch(() => null) : null; }
   }
+  const v = prior ? (prior.v || 1) + 1 : 1, file = v > 1 ? `${date}-v${v}.mp3` : `${date}.mp3`;
   const R = rundown(E, P, undefined, { desks: cfg.desks_v2?.desks, sections: cfg.sections, follows: cfg.follows, betting: cfg.betting });
   if (!R.lead) { log("the edition has no lead; nothing to say"); return; }
   const KOKORO = process.env.PODCAST_VOICE === "kokoro", saved = existsSync(`${OUT}/script.json`) ? JSON.parse(readFileSync(`${OUT}/script.json`, "utf8")) : null;
@@ -244,12 +249,14 @@ async function main() {
   const seconds = pcm.length / 48000, bytes = statSync(`${OUT}/episode.mp3`).size;
   log(`audio: ${Math.round(seconds)} s, ${Math.round(bytes / 1024)} KB, voice ${voice}`);
   if (DRY) { log("dry run: .podcast/episode.mp3"); return; }
-  await put(`${folder}/${date}.mp3`, readFileSync(`${OUT}/episode.mp3`), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "audio/mpeg", token: BLOB });
+  await put(`${folder}/${file}`, readFileSync(`${OUT}/episode.mp3`), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "audio/mpeg", token: BLOB });
   const day = new Date(date + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
-  const meta = { date, title: `${day} · ${R.lead.headline}`, description: deepItems(R).map(s => s.headline).join(" · "), url: served(`${date}.mp3`), bytes, seconds, published: new Date().toISOString(), by, voice, voice_model: KOKORO ? "kokoro" : voiceModel };
+  const meta = { date, title: `${day} · ${R.lead.headline}`, description: deepItems(R).map(s => s.headline).join(" · "), url: served(file), v, bytes, seconds, published: new Date().toISOString(), by, voice, voice_model: KOKORO ? "kokoro" : voiceModel };
   await put(`${folder}/${date}.json`, JSON.stringify(meta), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", token: BLOB });
   const n = await publishFeed({ put, list, del, get });
-  log(`published ${date} (${n} in the feed)`);
+  log(`published ${date}${v > 1 ? ` (take ${v})` : ""} (${n} in the feed)`);
+  const was = prior?.url?.split("/").pop();
+  if (was && was !== file) await del(`${folder}/${was}`, { token: BLOB }).then(() => log(`removed the old take ${was}`)).catch(e => log(`could not remove the old take ${was}:`, e.message));
   log(`FEED ${served("feed.xml")}`);
   // a separate Telegram message that the episode is in Apple Podcasts, with its writer and voice (api/notify.js; once a day)
   await fetch(`${site}/api/notify?podcast=${date}&k=${folder.split("/")[1]}`, { method: "POST", signal: AbortSignal.timeout(30000) })
