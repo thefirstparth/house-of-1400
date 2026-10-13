@@ -79,12 +79,14 @@ test("podcast: every step the episode maker calls is defined (the Kokoro fallbac
   }
 });
 
-test("podcast: upcoming sport follows the page's rules: only followed national teams, no pre-season Warriors", () => {
+test("podcast: what is coming up is the paper's Fixture List (Warriors pre-season marked; national sides not on it)", () => {
   const T = Date.parse("2026-10-12T09:00:00Z"), at = h => new Date(T + h * 36e5).toISOString();
-  const E2 = { ...E, snapshot: { ...E.snapshot,
-    intl_football: { value: { matches: [{ home: "Spain", away: "Georgia", when_utc: at(30), state: "pre" }, { home: "India", away: "Nepal", when_utc: at(20), state: "pre" }] } },
+  const E2 = { ...E, chronology: {}, snapshot: { ...E.snapshot,
+    football: { value: { next: [{ date: at(34), opponent: "AS Roma", home: false, competition: "Champions League" }] } },
+    intl_football: { value: { matches: [{ home: "Spain", away: "Georgia", when_utc: at(30), state: "pre" }] } },
     nba: { value: { team: "Golden State Warriors", in_season: false, next: [{ date: at(17), preseason: true, opponent: "Los Angeles Lakers", home: false }] } } } };
-  const R = rundown(E2, P, undefined, { ...paper, follows: C.follows }), coming = R.segments.find(g => g.desk === "Sport").coming.join(" | ");
-  assert.match(coming, /Spain v Georgia \(international\)/);
-  assert.doesNotMatch(coming, /India v Nepal|Warriors/);
+  const R = rundown(E2, P, undefined, { ...paper, follows: C.follows }), coming = R.segments.find(g => g.desk === "Sport").coming;
+  assert.match(coming.join(" | "), /Los Angeles Lakers v Golden State Warriors, pre-season, tomorrow at seven thirty a m/);
+  assert.match(coming.join(" | "), /AS Roma v Real Madrid, Champions League, on Wednesday at twelve thirty a m, late tomorrow night/);
+  assert.doesNotMatch(coming.join(" | "), /Spain v Georgia/);
 });

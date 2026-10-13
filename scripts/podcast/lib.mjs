@@ -83,12 +83,56 @@ export function sayDay(ymd, now = Date.now()) {
   return day === 0 ? "today" : day === 1 ? "tomorrow" : day === -1 ? "yesterday" : day > 6 ? `on ${wd} the ${ordinal(new Date(t).getUTCDate())}` : `on ${wd}`;
 }
 
+// The Fixture List's rows, as the page builds them (public/app.js feedFixtures, allFixtures, liveTennis) from the
+// edition's snapshot: India's cricket, Real Madrid, the F1 weekend's qualifying, sprint and race, the Warriors
+// (pre-season marked), the followed tennis players, and the edition's own rows for anything no feed covers.
+const lastName = n => String(n || "").trim().split(/\s+/).pop();
+export function fixtureList(E, follows = {}) {
+  const snap = E.snapshot || {}, v = k => (snap[k]?.value && !snap[k]?.error ? snap[k].value : null), out = [], have = new Set();
+  const C = v("crease");
+  if (C) {
+    have.add("india_cricket");
+    const short = x => (/asian games/i.test(x) ? "Asian Games cricket" : String(x || "").replace(/,?\s*\d{4}(\/\d{2})?$/, ""));
+    const all = [C.today, C.next, ...[C.main, ...(C.also || [])].filter(Boolean).flatMap(S => (S.formats || []).flatMap(f => f.matches || []))].filter(Boolean);
+    for (const m of [...new Map(all.map(m => [m.id, m])).values()]) {
+      const bilateral = m.n && !/games|cup|trophy|championship/i.test(m.series || "");
+      out.push({ when_utc: m.start, entity: "india_cricket", time_tbc: m.time_announced === false, label: bilateral ? `India v ${m.opponent}, ${m.desc}${m.city ? `, ${m.city}` : ""}` : `${short(m.series)}: India v ${m.opponent}, ${m.desc}`, ...(m.state === "done" && m.status ? { result: String(m.status).replace(/\bwkts?\b/g, "wickets").replace(/\binns\b/g, "innings") } : {}) });
+    }
+  }
+  const F = v("football"), club = follows.football_club?.name || "Real Madrid";
+  if (F) {
+    have.add("madrid");
+    for (const m of [...(F.next || []), ...(F.last ? [F.last] : [])])
+      out.push({ when_utc: new Date(Date.parse(m.date)).toISOString(), entity: "madrid", time_tbc: m.time_confirmed === false, label: `${m.home ? `${club} v ${m.opponent}` : `${m.opponent} v ${club}`}, ${m.competition || "football"}`,
+        ...(m.completed && m.score?.us != null ? { result: `${club} ${m.winner === "us" ? "won" : m.winner === "them" ? "lost" : "drew"} ${m.score.us}–${m.score.them}` } : {}) });
+  }
+  const R0 = v("f1_next")?.race, W = v("f1_sessions")?.race;
+  for (const R of [R0, W && W.round !== R0?.round ? W : null]) {
+    if (!R?.sessions?.length) continue;
+    have.add("f1");
+    const gp = String(R.name || "").replace(/\s+in\s+.*$/, "");
+    for (const x of R.sessions.filter(x => /^(qualifying|sprint|sprint qualifying|race)$/i.test(x.name)))
+      out.push({ when_utc: new Date(Date.parse(x.start)).toISOString(), entity: "f1", time_tbc: x.time_confirmed === false, label: /^race$/i.test(x.name) ? `Formula One, the ${gp}` : `Formula One, ${gp}, ${x.name.toLowerCase()}` });
+  }
+  const B = v("nba"), team = follows.nba_team?.name || "Golden State Warriors";
+  if (B) {
+    have.add("nba");
+    for (const g of [...(B.next || []), ...(B.last ? [B.last] : [])])
+      out.push({ when_utc: new Date(Date.parse(g.date)).toISOString(), entity: "nba", label: `${g.home ? `${team} v ${g.opponent}` : `${g.opponent} v ${team}`}${g.preseason ? ", pre-season" : ""}`,
+        ...(g.completed && g.score?.us != null ? { result: `${team} ${g.winner === "us" ? "won" : "lost"} ${g.score.us}–${g.score.them}` } : {}) });
+  }
+  const T = (v("tennis_players")?.players || []).filter(p => p.next?.when_utc).map(p => ({ when_utc: new Date(Date.parse(p.next.when_utc)).toISOString(), entity: "tennis", label: `${lastName(p.name)} v ${p.next.opponent || "an opponent to be decided"}, ${p.next.event}${p.next.round ? `, ${p.next.round}` : ""}` }));
+  const names = T.map(t => t.label.split(" v ")[0]);
+  const keep = (E.fixtures || []).filter(f => !have.has(f.entity) && (f.until_utc || f.entity !== "tennis" || !names.some(nm => String(f.label).includes(nm)))).map(f => ({ ...f, label: String(f.label).replace(/ · /g, ", ") }));
+  return [...keep, ...out, ...T].filter(f => Number.isFinite(Date.parse(f.when_utc))).sort((a, b) => String(a.when_utc).localeCompare(String(b.when_utc)));
+}
+
 // The running order (Parth, 13 Oct 2026): the lead, then the paper's desks in a listening order, each item marked
 // "deep" (a real back-and-forth) or "quick" (a line or two). Deep: the lead and the strongest stories by Bhide's
 // importance score, front-page stories first among equals, at least one from Sport; quick: the rest, up to quick_max.
-// Sport carries the latest results and what is coming up even when no story covers it (Parth, 13 Oct): The Week
-// Ahead's sport entries for the next seven days, and each followed team's next fixture however far off; Money the
-// market numbers; Close to Home the weather; The Week Ahead the other entries for the next three days.
+// Sport carries the latest results and what is coming up even when no story covers it (Parth, 13 Oct): the paper's
+// Fixture List for the next seven days; Money the market numbers; Close to Home the weather; The Week Ahead the other
+// entries for the next three days.
 // Desk names come from the paper (config desks_v2), so the hosts never file Delhi under Close to Home. Nothing
 // outside the edition. `now` defaults to 14:30 IST on the edition's day, whenever the episode is made.
 const ORDER = ["news", "home", "money", "tech", "sport", "off", "week"];
@@ -117,37 +161,31 @@ export function rundown(E, P = {}, now, paper = {}) {
   for (const name of ["Nifty 50", "Sensex"]) { const i = idx.find(x => x.name === name); if (i && Number.isFinite(i.price)) markets.push(`${name} at ${Math.round(i.price).toLocaleString("en-IN")}, ${i.change_pct >= 0 ? "up" : "down"} ${Math.abs(i.change_pct).toFixed(1)}%${i.session_date && i.session_date !== E.date ? ` (${i.session_date})` : ""}`); }
   if (Number.isFinite(fx?.price)) markets.push(`the rupee at ${fx.price.toFixed(2)} to the dollar`);
   if (Number.isFinite(gold?.per_10g_24k)) markets.push(`24-carat gold at ₹${Math.round(gold.per_10g_24k).toLocaleString("en-IN")} for ten grams`);
-  const NAMES = { madrid: "Real Madrid", india_cricket: "India (cricket)", f1: "Formula One" }, results = [], coming = [], ahead = [], times = [];
-  const SPORT = new Set(["fixtures", "madrid", "paddock", "crease", "deuce", "pitch", "sidelines"]);
+  // What is coming up is the paper's own Fixture List (Parth, 13 Oct: "inspired directly from the fixture list"):
+  // fixtureList() below builds the same rows the page does, and the podcast says those in the next seven days. The
+  // Week Ahead (Mondays) adds only its "why" to a matching row, and its other entries make The Week Ahead segment. A
+  // followed team or driver with no row in the next seven days (or whose feed is down) gets the chronology's Next.
+  const NAMES = { madrid: "Real Madrid", india_cricket: "India (cricket)", f1: "Formula One" }, results = [], coming = [], ahead = [];
+  const SPORT = new Set(["fixtures", "madrid", "paddock", "crease", "deuce", "pitch", "sidelines"]), whys = [];
   for (const w of E.week_ahead || []) {
-    const t = w.time_ist ? Date.parse(`${w.date}T${w.time_ist}:00+05:30`) : Date.parse(`${w.date}T23:59:00+05:30`), sport = SPORT.has(w.area);
-    if (!(t > now - 18e5 && t < now + (sport ? 7 : 3) * 864e5)) continue;
-    const line = `${sayTimes(w.what)}, ${w.time_ist ? sayWhen(t, now) : sayDay(w.date, now)}${w.why ? ` (${w.why})` : ""}`;
-    if (sport) { coming.push(line); if (w.time_ist) times.push(t); } else if (ahead.length < 5) ahead.push(line);
+    const t = w.time_ist ? Date.parse(`${w.date}T${w.time_ist}:00+05:30`) : Date.parse(`${w.date}T23:59:00+05:30`);
+    if (SPORT.has(w.area)) { if (w.why && w.time_ist) whys.push([t, w.why]); continue; }
+    if (t > now - 18e5 && t < now + 3 * 864e5 && ahead.length < 5) ahead.push(`${sayTimes(w.what)}, ${w.time_ist ? sayWhen(t, now) : sayDay(w.date, now)}${w.why ? ` (${w.why})` : ""}`);
   }
-  const near = t => times.some(x => Math.abs(x - t) < 3 * 36e5);
+  const rows = fixtureList(E, paper.follows || {}), have = new Set();
+  for (const f of rows) {
+    const t = Date.parse(f.when_utc);
+    if (f.result) { if (t > now - 60 * 36e5 && t <= now) results.push(`${f.label}: ${f.result} (${sayDay(new Date(t + IST - 4 * 36e5).toISOString().slice(0, 10), now)})`); continue; }
+    if (!(t > now - 18e5 && t < now + 7 * 864e5)) continue;
+    const why = whys.find(([x]) => Math.abs(x - t) < 3 * 36e5)?.[1];
+    coming.push(`${f.label}, ${f.time_tbc ? `${sayDay(new Date(t + IST - 4 * 36e5).toISOString().slice(0, 10), now)}, time to be confirmed` : sayWhen(t, now)}${why ? ` (${why})` : ""}`);
+    have.add(f.entity);
+  }
   for (const [k, c] of Object.entries(E.chronology || {})) {
     const l = c?.last, n = c?.next, lt = Date.parse(l?.when_utc), nt = Date.parse(n?.when_utc);
-    if (lt > now - 60 * 36e5 && lt <= now) results.push(`${NAMES[k] || k}: ${l.label}${l.detail ? `, ${l.detail}` : ""} (${sayDay(new Date(lt + IST - 4 * 36e5).toISOString().slice(0, 10), now)}${new Date(lt + IST).getUTCHours() < 4 ? ", late at night" : ""})`);
-    if (nt > now - 18e5 && !near(nt)) { coming.push(`${NAMES[k] || k} next: ${n.label}${n.detail ? `, ${n.detail}` : ""}, ${nt < now + 6 * 864e5 ? sayWhen(nt, now) : sayDay(new Date(nt + IST - 4 * 36e5).toISOString().slice(0, 10), now)}`); times.push(nt); }
-  }
-  for (const p of E.tennis?.players || []) { const t = Date.parse(p.next_match?.when_utc); if (t > now - 18e5 && t < now + 7 * 864e5 && !near(t)) coming.push(`${p.name}: ${String(p.next_match.text).replace(/,?\s*(today|tomorrow|tonight|monday|tuesday|wednesday|thursday|friday|saturday|sunday)?,?\s*\d{1,2}:\d{2}\s*IST\.?/i, "").replace(/\.$/, "")}, ${sayWhen(t, now)}`); }
-  for (const ev of E.tennis?.events || []) if (ev.note) results.push(`${ev.name}: ${ev.note}`);
-  // the live sport the page itself shows (the edition's snapshot, by the page's own rules): F1 sessions this race
-  // week; the national teams Parth follows (config follows.national_teams: the page's Internationals table, last result
-  // within four days, next within ten); the Warriors only in season (follows.nba_team.in_season_only); the tennis
-  // players' last results. The Week Ahead exists only on Mondays.
-  const soonish = (t, days = 3) => t > now - 18e5 && t < now + days * 864e5;
-  for (const x of ok("f1_next")?.race?.sessions || []) { const t = Date.parse(x.start); if (/qualif|sprint|race/i.test(x.name) && soonish(t) && !near(t)) { coming.push(`Formula One, ${ok("f1_next").race.name}, ${x.name}: ${sayWhen(t, now)}`); times.push(t); } }
-  const nba = ok("nba"), g = (nba?.next || [])[0], gt = Date.parse(g?.date);
-  if (g && (nba.in_season || !paper.follows?.nba_team?.in_season_only) && !g.preseason && soonish(gt, 2)) coming.push(`${nba.team} ${g.home ? "v" : "at"} ${g.opponent}, ${sayWhen(gt, now)}`);
-  const nations = paper.follows?.national_teams || [], intl = ok("intl_football")?.matches || [];
-  for (const team of nations) {
-    const mine = intl.filter(m => m.home === team || m.away === team).sort((a, b) => String(a.when_utc).localeCompare(String(b.when_utc)));
-    const last = mine.filter(m => m.state === "post" && m.score && now - Date.parse(m.when_utc) < 4 * 864e5 && Date.parse(m.when_utc) <= now).pop();
-    const next = mine.find(m => m.state === "pre" && Date.parse(m.when_utc) > now - 18e5 && Date.parse(m.when_utc) - now < 10 * 864e5);
-    if (last && !results.some(r => r.includes(`${last.home} ${last.score}`))) results.push(`${last.home} ${last.score} ${last.away} (international)`);
-    if (next && !coming.some(c => c.startsWith(`${next.home} v ${next.away}`))) coming.push(`${next.home} v ${next.away} (international), ${Date.parse(next.when_utc) < now + 6 * 864e5 ? sayWhen(next.when_utc, now) : sayDay(new Date(Date.parse(next.when_utc) + IST - 4 * 36e5).toISOString().slice(0, 10), now)}`);
+    if (lt > now - 60 * 36e5 && lt <= now && !results.some(r => r.includes(l.label))) results.push(`${NAMES[k] || k}: ${l.label}${l.detail ? `, ${l.detail}` : ""} (${sayDay(new Date(lt + IST - 4 * 36e5).toISOString().slice(0, 10), now)}${new Date(lt + IST).getUTCHours() < 4 ? ", late at night" : ""})`);
+    // a followed team with no Fixture List row in the window (nothing in seven days, or its live feed down): the paper's Next
+    if (nt > now - 18e5 && !have.has(k)) coming.push(`${NAMES[k] || k} next: ${n.label}${n.detail ? `, ${n.detail.replace(/ · /g, ", ")}` : ""}, ${nt < now + 6 * 864e5 ? sayWhen(nt, now) : sayDay(new Date(nt + IST - 4 * 36e5).toISOString().slice(0, 10), now)}`);
   }
   for (const p of ok("tennis_players")?.players || []) { const l = p.last, t = Date.parse(l?.when_utc); if (l && t > now - 36 * 36e5 && t <= now) results.push(`${p.name}: ${l.won ? "beat" : "lost to"} ${l.opponent}, ${l.round}, ${l.event}`); }
   const city = ok("weather")?.cities?.[0], d0 = city?.daily?.[0];
