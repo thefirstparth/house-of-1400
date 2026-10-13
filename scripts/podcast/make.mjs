@@ -72,11 +72,25 @@ async function writeScript(R) {
       catch (e) { last = [e.message]; log(`writer ${m}:`, e.message.split("\n")[0].slice(0, 160)); if (!busy(e)) out.add(m); }
     }
   }
+  // A rewrite goes to the writer that answered, else to the next free strong writer (13 Oct: 3.8 Flash wrote a
+  // 10-minute draft and was busy for every rewrite, so the long draft went out); up to two rounds a minute apart.
+  const rewriteAsk = async (model, prompt) => {
+    const order = first ? [model, ...strong.filter(m => m !== model && !out.has(m))] : [model];
+    let err;
+    for (let round = 0; round < 2; round++) {
+      if (round) await sleep(60000);
+      for (const m of order) {
+        try { const j = await ask(m, prompt, 1); if (m !== model) log(`rewrite by ${m}`); return j; }
+        catch (e) { err = e; log(`rewrite ${m}:`, e.message.split("\n")[0].slice(0, 120)); if (!busy(e)) out.add(m); }
+      }
+    }
+    throw err;
+  };
   for (const model of first ? [first.model] : lite) {
     let prompt = base, best = null;
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
-        const j = attempt === 0 && first ? first.j : await ask(model, prompt, 3);
+        const j = attempt === 0 && first ? first.j : await rewriteAsk(model, prompt);
         const turns = turnsOf(j), probs = checkScript(turns, R, P), hard = probs.filter(p => p.hard);
         log(`script by ${model} (try ${attempt + 1}): ${turns.length} turns, ${probs.length ? probs.map(p => (p.hard ? "HARD " : "") + p.msg).slice(0, 8).join("; ") : "no problems"}`);
         if (!hard.length && (!best || probs.length < best.n)) best = { turns, by: model, n: probs.length };
