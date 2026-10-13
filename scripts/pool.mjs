@@ -42,7 +42,7 @@ try {
   for (const f of w.value.feeds || []) health[f.id] = f.ok ? { fails: 0, last_ok: date } : { fails: (health[f.id]?.fails || 0) + 1, last_ok: health[f.id]?.last_ok || null, error: f.error };
   writeFileSync("ledger/feed-health.json", JSON.stringify({ updated: date, note: "Written by scripts/pool.mjs. A feed failing 7 days in a row is rested (tried again on Mondays).", resting, feeds: health }, null, 1) + "\n");
   out = { date, window: { from, to }, built_at: new Date().toISOString(), feeds: { total: (w.value.feeds || []).length, failed }, candidates: pool.candidates, counts: pool.counts,
-    read: pool.clusters.filter(c => c.text).length, clusters: pool.clusters, headlines: pool.headlines };
+    read: pool.clusters.filter(c => c.text).length, clusters: pool.clusters, headlines: pool.headlines, tennis_leads: pool.tennis_leads || [] };
   const text = compactPool(out, P);
   console.log(text);
   console.log(`\npool: ${out.clusters.length} stories (${out.read} with their article text), ${out.headlines.length} headlines, from ${out.candidates} grouped stories; ${out.feeds.total - failed.length} of ${out.feeds.total} feeds answered. ${text.length} characters.`);

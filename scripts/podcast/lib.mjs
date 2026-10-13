@@ -217,6 +217,8 @@ export function rundown(E, P = {}, now, paper = {}) {
     if (nt > now - 18e5 && !have.has(k)) coming.push(`${NAMES[k] || k} next: ${n.label}${n.detail ? `, ${n.detail.replace(/ · /g, ", ")}` : ""}, ${nt < now + 6 * 864e5 ? sayWhen(nt, now) : sayDay(new Date(nt + IST - 4 * 36e5).toISOString().slice(0, 10), now)}`);
   }
   for (const p of ok("tennis_players")?.players || []) { const l = p.last, t = Date.parse(l?.when_utc); if (l && t > now - 36 * 36e5 && t <= now) results.push(`${p.name}: ${l.won ? "beat" : "lost to"} ${l.opponent}, ${l.round}, ${l.event}`); }
+  // a followed player's next tournament as the paper prints it from a report (from 14 Oct), when he has no match in a draw
+  for (const p of E.tennis?.players || []) { const n = p.next_event; if (n?.text && !p.next_match && !(n.starts && n.starts < E.date)) coming.push(`${p.name} next: ${sayTimes(n.text)}${n.source ? ` (reported by ${n.source})` : ""}`); }
   const city = ok("weather")?.cities?.[0], d0 = city?.daily?.[0];
   const weather = city && d0 ? `${city.name} today: top of ${Math.round(d0.max)} degrees${Number.isFinite(d0.min) ? `, low of ${Math.round(d0.min)}` : ""}, ${d0.rain_prob}% chance of rain` : null;
   const groups = {};

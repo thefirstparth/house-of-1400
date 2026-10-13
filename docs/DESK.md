@@ -52,6 +52,7 @@ Every pool story marked **TOP** or **ANSWER** (a source's own place: Ranchi, Pra
 - **`chronology`:** NEXT and LAST for each followed team and driver, from the snapshot.
 - **`fixtures`:** only India knockouts in other sports. The page builds the rest.
 - **`tennis`:** each followed player's `next_match` at ESPN's time (in the snapshot), plus the events table: every big event on now or within four weeks, and any event a player's line names.
+  - **Next event, from the news (from 14 Oct):** when a player has no match in a draw, his next tournament comes only from a report. The pool lists every report naming his plans (TENNIS: NEXT TOURNAMENT). For each: print it as his `next_event` {`text`, `event`, `starts` (first day, YYYY-MM-DD), `source` (the outlet), `url`}, with the event in the table, or answer `checks.tennis` {`id`, `skip`}. `text` says what the report says, plainly ("Paris Masters, from Monday 26 October; he has confirmed he will play"). Carry yesterday's `next_event` until his match is in a draw or the event starts; if a report says otherwise, drop it with `checks.tennis` {`player`, `dropped`}. Never name an event no report gives.
 - **`screen`:** verdicts on the films in `snapshot.cinema`, with the critics you read.
 - **`trends`:** Talk of the Day, 5 to 7 India and 5 to 7 world rows. Each row has `traffic` and a one-line fact, and every world row has `geo`.
 - **`betting`:** 8 to 10 markets from `node scripts/betting-candidates.mjs`. Keep every carried market, with `since`.

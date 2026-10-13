@@ -457,6 +457,46 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
         } else if (soon(b) && !mine) warnings.push(`tennis: only Tennis Explorer lists ${p.name}'s next match (${say(b)}); check the tournament's order of play and print it (time TBC if unconfirmed)`);
       }
     }
+    // A followed player's next tournament, from the news (Parth, 13 Oct, from the 14 Oct edition). With no match in a
+    // draw, the paper knows his next event only from a report that he has entered, confirmed or pulled out of one. The
+    // pool lists each such report (ledger/pool.json tennis_leads); every one is printed as his next_event or answered,
+    // a printed next_event names its event, start, outlet and link and has a row in the events table, and it is
+    // carried day to day until his match is in a draw, the event starts, or a report says otherwise.
+    if (E.date >= "2026-10-14") {
+      const TP = E.tennis?.players || [], who = n => TP.find(x => x.name === n), ans = E.checks?.tennis || [];
+      const key = x => String(x || "").toLowerCase().replace(/\b(rolex|masters|open|championships?|atp|the|\d{3,4})\b/g, " ").replace(/[^a-z]+/g, " ").trim();
+      const inTable = ev => (E.tennis?.events || []).some(r => { const a = key(r.name), b = key(ev); return a && b && (a.includes(b) || b.includes(a) || a.split(" ").some(w => w.length > 3 && b.split(" ").includes(w))); });
+      for (const p of TP) {
+        const n = p.next_event; if (!n || !(n.event || n.starts || n.url || n.source)) continue; // a plain old-style line is left alone
+        const miss = ["event", "starts", "source", "url"].filter(k => !n[k]);
+        if (miss.length) { errors.push(`tennis: ${p.name}'s next_event needs ${miss.join(", ")} (the event, its first day YYYY-MM-DD, the outlet that reported it and the link)`); continue; }
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(n.starts)) errors.push(`tennis: ${p.name}'s next_event starts "${n.starts}" is not a date (YYYY-MM-DD)`);
+        else if (n.starts < E.date && !p.next_match) errors.push(`tennis: ${p.name}'s next event (${n.event}) began on ${n.starts} and he has no match in its draw; leave it out unless a report says he is still playing`);
+        else if (Date.parse(n.starts) - Date.parse(E.date) > 120 * 864e5) errors.push(`tennis: ${p.name}'s next event starts ${n.starts}, more than four months off; it is not his next one`);
+        if (!/^https?:\/\//.test(n.url)) errors.push(`tennis: ${p.name}'s next_event url must be the report's link`);
+        if (!inTable(n.event)) errors.push(`tennis: ${p.name}'s next event "${n.event}" needs a row in tennis.events (its dates and place)`);
+      }
+      let pl = null; try { pl = read("ledger/pool.json"); } catch {}
+      if (pl?.date === E.date) for (const l of pl.tennis_leads || []) {
+        const p = who(l.player); if (p?.next_match) continue; // he has a match in a draw: the report does not change it
+        if (p?.next_event?.url && p.next_event.url === l.url) continue;
+        const a = ans.find(x => x.id === l.id);
+        if (a?.skip && a.skip.trim().length >= 12) continue;
+        errors.push(`tennis: [${l.id}] "${l.title}" (${l.outlet || "?"}) may say where ${l.player} plays next; print it as his next_event {text, event, starts, source, url}, or answer checks.tennis {id: "${l.id}", skip: "why it is not his next event"}`);
+      }
+      // carried from the previous edition until it no longer holds
+      const prevDate = readdirSync(new URL("content/editions/", `file://${root}`)).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f) && f < `${E.date}.json`).sort().pop()?.slice(0, 10);
+      const PE = prevDate ? prevEdition(prevDate) : null;
+      for (const q of PE?.tennis?.players || []) {
+        const was = q.next_event; if (!was?.event || !was.starts || was.starts < E.date) continue;
+        const p = who(q.name); if (p?.next_match) continue;
+        const k1 = key(p?.next_event?.event), k2 = key(was.event);
+        if (k1 && (k1 === k2 || k1.includes(k2) || k2.includes(k1))) continue;
+        const a = ans.find(x => x.player === q.name && x.dropped && x.dropped.trim().length >= 12);
+        if (a) continue;
+        errors.push(`tennis: yesterday's paper had ${q.name}'s next event as ${was.event} (from ${was.starts}, ${was.source}); carry it as next_event, or say why it no longer holds in checks.tennis {player: "${q.name}", dropped: "..."}`);
+      }
+    }
     // The wire check (from 30 Sep 2026, Parth's review of 29 Sep; scripts/wire-check.mjs): every story the day's news
     // widely agreed on, every story about someone Parth follows from three outlets (lib/trial.js wireCandidates), and
     // every paywalled lead with an open outlet, is carried (a story, a brief or an "Also in" line) or answered in

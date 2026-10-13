@@ -1318,6 +1318,28 @@
         },
         "pool_error": {
           "type": "string"
+        },
+        "tennis": {
+          "type": "array",
+          "description": "Answers to the pool's tennis leads (reports of a followed player's next tournament), from 14 Oct 2026: {id, skip} why a lead is not his next event, or {player, dropped} why a carried next event is no longer his.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "player": {
+                "type": "string"
+              },
+              "skip": {
+                "type": "string"
+              },
+              "dropped": {
+                "type": "string"
+              }
+            }
+          }
         }
       }
     },
