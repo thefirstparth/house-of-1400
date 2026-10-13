@@ -7,3 +7,4 @@ qa-data/
 qa-shots/
 v2/shots/
 .podcast/
+__pycache__/
