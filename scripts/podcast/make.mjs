@@ -17,6 +17,9 @@ import { rundown, writerPrompt, checkScript, fallbackScript, spoken, feedXML, de
 import { layout, mix } from "./studio.mjs";
 
 const args = process.argv.slice(2), FORCE = args.includes("--force"), DRY = args.includes("--dry"), FEED_ONLY = args.includes("--feed");
+// A voice sample (--sample) is a test run on the same day as the episode: it spends at most two voice requests (one
+// solo take per host, no retries, no fallbacks), so the day's episode always keeps at least eight of the ten
+const SAMPLE = args.some(a => a.startsWith("--sample="));
 const H = new URL("../../", import.meta.url).pathname, OUT = `${H}.podcast`;
 const cfg = JSON.parse(readFileSync(`${H}config/house.json`, "utf8")), P = cfg.podcast || {};
 const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
@@ -188,7 +191,7 @@ async function ttsGemini(turns) {
       };
       // two takes at most for each host: a take that will not split is tried once more before the fallback
       let pieces = null;
-      for (let go = 1; go <= 2 && !pieces; go++) {
+      for (let go = 1; go <= (SAMPLE ? 1 : 2) && !pieces; go++) {
         const j = await gemini(model, body, 2), part = j.candidates?.[0]?.content?.parts?.find(p => p.inlineData?.data);
         if (!part) { if (go === 2) throw new Error(`no audio for ${sp} (${j.candidates?.[0]?.finishReason || "?"})`); continue; }
         const take = pcmOf(Buffer.from(part.inlineData.data, "base64"));
@@ -229,7 +232,7 @@ async function ttsGemini(turns) {
   const forms = { steady, "per-turn": perTurn, transcript };
   const lead = forms[P.voice_form] ? P.voice_form : "steady";
   const first = [...(P.voice_form === "solo" ? [[main, "solo", "solo"]] : []), [main, lead, forms[lead]], ...["steady", "per-turn"].filter(n => n !== lead).map(n => [main, n, forms[n]])];
-  const takes = [...first, ...others.map(m => [m, "transcript", transcript])];
+  const takes = SAMPLE && P.voice_form === "solo" ? [[main, "solo", "solo"]] : [...first, ...others.map(m => [m, "transcript", transcript])];
   for (const [model, name, form] of takes) {
     try {
       soloPieces = null;
