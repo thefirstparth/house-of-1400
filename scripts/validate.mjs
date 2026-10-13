@@ -521,17 +521,25 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
         else if (DP.more_max && w > DP.more_max) errors.push(`depth: ${s._where} has a long version of ${w} words; at most ${DP.more_max}`);
       }
       for (const b of items.filter(i => i._kind === "brief")) if (words(b.text) < (DP.brief_min || 0)) errors.push(`depth: ${b._where} "${String(b.headline).slice(0, 50)}" is ${words(b.text)} words; a brief is two sentences, at least ${DP.brief_min} words`);
+      if (E.date >= "2026-10-14") {
+        const B = E.sections?.back || {}, back = [...(B.stories || []), ...(B.briefs || []), ...(B.lines || [])];
+        for (const city of (POOLCFG.quotas || []).filter(q => q.desk === "back").map(q => q.label)) {
+          const n = back.filter(x => new RegExp(`^${city}\\b`, "i").test(x.kicker || x.city || "")).length;
+          if (n > 3) errors.push(`back: ${n} items for ${city}; at most 3 a city (keep the strongest)`);
+        }
+      }
       let pl = null; try { pl = read("ledger/pool.json"); } catch {}
       if (!pl || pl.date !== E.date) errors.push("pool: run `node scripts/pool.mjs` for today (ledger/pool.json is missing or not from today)");
       else if (pl.error) warnings.push(`pool: the pool failed (${pl.error}); the numbers still apply`);
       else if (ED.answer_top) {
         const ans = new Map((E.checks?.pool || []).map(a => [a.id, a]));
-        for (const c of pl.clusters.filter(c => c.top)) {
+        // TOP stories, and (from 14 Oct) each story given a source's own place (Ranchi, Prayagraj, Managing Madrid)
+        for (const c of pl.clusters.filter(c => c.top || (c.quota && E.date >= "2026-10-14"))) {
           const a = ans.get(c.id);
           if (a?.covered_by) { if (!ids.has(a.covered_by)) errors.push(`checks.pool: covered_by "${a.covered_by}" is not an item in this edition`); continue; }
           if (a?.skip) { if (a.skip.trim().length < 15) errors.push(`checks.pool: say why "${c.title}" is not for this paper, in a reason of its own`); continue; }
           if (items.some(it => matchItem(it, [{ title: c.title }, ...(c.also || []).map(t => ({ title: t }))]))) continue;
-          errors.push(`checks.pool: top story [${c.id}] "${c.title}" is neither printed nor answered; print it, or record {id: "${c.id}", covered_by} or {id: "${c.id}", skip: "why not"}`);
+          errors.push(`checks.pool: ${c.top ? "top story" : `${c.quota} story`} [${c.id}] "${c.title}" is neither printed nor answered; print it, or record {id: "${c.id}", covered_by} or {id: "${c.id}", skip: "why not"}`);
         }
       }
     }

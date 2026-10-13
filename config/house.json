@@ -3288,7 +3288,7 @@
     }
   },
   "pool": {
-    "note": "The day's pool and the edition's fixed numbers (from the 13 Oct 2026 edition; lib/pool.js, scripts/pool.mjs, scripts/validate.mjs). The pool: `clusters` stories shortlisted by code, the `top` best whatever their desk, then each desk's `desk_min`, then the rest by score up to `desk_max` per desk; `headlines` more as one-liners. The edition: `edition` sets how many items (stories plus briefs, Back Home not counted) and each desk's floor and ceiling, checked by the validator; `depth` sets the words in a story's long version and a brief. Change a number here, never the prose.",
+    "note": "The day's pool and the edition's fixed numbers (from the 13 Oct 2026 edition; lib/pool.js, scripts/pool.mjs, scripts/validate.mjs). The pool: `clusters` stories shortlisted by code, the `top` best whatever their desk, then each desk's `desk_min`, then the rest by score up to `desk_max` per desk; `headlines` more as one-liners. The edition: `edition` sets how many items (stories plus briefs, Back Home not counted) and each desk's floor and ceiling, checked by the validator; `depth` sets the words in a story's long version and a brief. Change a number here, never the prose. `quotas` (from 14 Oct; Parth, 13 Oct): places of a source's own in the pool, min to max, for Ranchi, Prayagraj and Managing Madrid, whose stories are mostly one outlet's; each is a story the run must print or answer.",
     "from": "2026-10-13",
     "clusters": 50,
     "top": 12,
@@ -3386,7 +3386,30 @@
       "more_min": 150,
       "more_max": 260,
       "brief_min": 22
-    }
+    },
+    "quotas": [
+      {
+        "feed": "gn-ranchi",
+        "label": "Ranchi",
+        "desk": "back",
+        "min": 3,
+        "max": 3
+      },
+      {
+        "feed": "gn-prayagraj",
+        "label": "Prayagraj",
+        "desk": "back",
+        "min": 3,
+        "max": 3
+      },
+      {
+        "feed": "managing-madrid",
+        "label": "Managing Madrid",
+        "desk": "madrid",
+        "min": 1,
+        "max": 2
+      }
+    ]
   },
   "podcast": {
     "note": "The daily episode (scripts/podcast/make.mjs, run by .github/workflows/podcast.yml when an edition is pushed). Free: Gemini free tier, Kokoro fallback. Parth, 12-13 Oct 2026: 6 to 8 minutes; Asha is a woman (Aoede), Ravi a man (Rasalgethi); a conversation, not two readers.",

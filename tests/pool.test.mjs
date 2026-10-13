@@ -88,3 +88,22 @@ test("the compact pool stays within its size for a full day", () => {
   const out = compactPool({ date: "2026-10-13", counts: { desh: 45 }, clusters, headlines: Array.from({ length: 30 }, (_, i) => ({ id: `h-${i}`, desk: "desh", title: `H ${i}`, outlets: ["A"], n: 1, url: "https://x.com" })), window: {} }, { text_chars: { top: 1600, rest: 800 } });
   assert.ok(out.length < 60000, `${out.length} characters`);
 });
+
+test("each city and Managing Madrid get places of their own, local stories first, never listings (Parth, 13 Oct)", () => {
+  const cfg = { pool: { clusters: 6, top: 2, desk_min: {}, quotas: [{ feed: "gn-prayagraj", label: "Prayagraj", desk: "back", min: 2, max: 3 }, { feed: "managing-madrid", label: "Managing Madrid", desk: "madrid", min: 1, max: 2 }] },
+    sources: { feeds: [{ id: "gn-prayagraj", desk: "back", kind: "search" }, { id: "managing-madrid", desk: "madrid", kind: "news" }, { id: "big", desk: "desh", kind: "news" }] } };
+  const d = new Date().toISOString(), st = (title, signals, outlets) => ({ title, url: `https://x.com/${encodeURIComponent(title)}`, outlets, signals, date: d, members: [] });
+  const stories = [
+    ...Array.from({ length: 6 }, (_, i) => st(`Big national story number ${i} about the economy`, ["big#1"], ["A", "B", "C", "D", "E"])),
+    st("Hero bike Price in Prayagraj", ["gn-prayagraj#1"], ["BikeWale"]),
+    st("Township planned along Prayagraj-Rewa highway", ["gn-prayagraj#3"], ["TOI"]),
+    st("Railway special trains for Diwali across the country", ["gn-prayagraj#30"], ["LatestLY"]),
+    st("UPSRTC adds Navratri buses in Prayagraj", ["gn-prayagraj#11"], ["TOI"]),
+    st("Daily Thread: 12 October", ["managing-madrid#1"], ["Managing Madrid"]),
+    st("Scouting Roma: a tough game awaits Real Madrid", ["managing-madrid#2"], ["Managing Madrid"]),
+  ];
+  const p = buildPool({ stories }, cfg), q = p.clusters.filter(c => c.quota);
+  assert.deepEqual(q.filter(c => c.quota === "Prayagraj").map(c => c.title).sort(), ["Township planned along Prayagraj-Rewa highway", "UPSRTC adds Navratri buses in Prayagraj"]);
+  assert.deepEqual(q.filter(c => c.quota === "Managing Madrid").map(c => c.title), ["Scouting Roma: a tough game awaits Real Madrid"]);
+  assert.ok(!p.clusters.some(c => /Price in|Daily Thread/.test(c.title)));
+});

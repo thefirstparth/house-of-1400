@@ -14,7 +14,7 @@ Three tests, in order:
 
 Also print what he may not follow but would find interesting. The pool's TOP stories are the day's biggest whatever their desk. Mark these `new_for_you: true`.
 
-Every pool story marked **TOP** is printed (a story, a brief or an Also in line) or answered in `checks.pool` as `{id, skip: "why"}`. Each answer covers one id, with its own reason.
+Every pool story marked **TOP** or **ANSWER** (a source's own place: Ranchi, Prayagraj, Managing Madrid) is printed (a story, a brief or an Also in line) or answered in `checks.pool` as `{id, skip: "why"}`. Each answer covers one id, with its own reason.
 
 ## The fixed numbers (config `pool.edition`; the validator refuses anything outside them)
 - **18 to 24 items**, counting stories and briefs on the front page and in sections. Also in lines and Back Home do not count.
@@ -32,7 +32,7 @@ Every pool story marked **TOP** is printed (a story, a brief or an Also in line)
   | The Sidelines (`sidelines`) | 2 to 4 |
 
   Madrid, Paddock, Crease, Deuce, Namma, Sales and Screen flex with the news.
-- **Back Home** (`back`, Ranchi and Prayagraj) has no floor and no cap. Zero is fine.
+- **Back Home** (`back`, Ranchi and Prayagraj): from the 14 Oct edition, 1 to 3 items a city. The pool gives each city its own places (marked ANSWER), and every ANSWER story is printed or answered in `checks.pool` like a TOP one, so a city goes without only when you say why. Never more than 3 a city.
 - A desk over its cap moves its weakest items to that section's **Also in** lines (`sections.<id>.lines`, up to six). Use Also in lines freely for good stories that did not make the cut.
 
 ## Writing
