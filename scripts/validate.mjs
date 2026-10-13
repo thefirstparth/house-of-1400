@@ -516,6 +516,9 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
       const full = items.filter(i => i._kind === "story");
       if (ED.full_stories_min && full.length < ED.full_stories_min) errors.push(`numbers: ${full.length} full stories; at least ${ED.full_stories_min} (the front page's lead and seconds count)`);
       for (const s of full) {
+        // the summary (Parth, 13 Oct: "a maximum of 60 words, but 30 doesn't make the cut"), from the 14 Oct edition
+        const sw = words(s.short);
+        if (E.date >= "2026-10-14" && DP.short_min && (sw < DP.short_min || sw > (DP.short_max || 999))) errors.push(`depth: ${s._where} "${String(s.headline).slice(0, 50)}" has a summary (short) of ${sw} words; write ${DP.short_min} to ${DP.short_max}, fact first`);
         const w = words(s.more);
         if (w < (DP.more_min || 0)) errors.push(`depth: ${s._where} "${String(s.headline).slice(0, 50)}" has a long version of ${w} words; write ${DP.more_min} to ${DP.more_max} from the pool's text (background, figures, who said what, what happens next), never repeating the short version`);
         else if (DP.more_max && w > DP.more_max) errors.push(`depth: ${s._where} has a long version of ${w} words; at most ${DP.more_max}`);

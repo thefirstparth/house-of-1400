@@ -409,7 +409,7 @@ addEventListener("pagehide", stopSaying);
 function tools(st, withMore) {
   const link = st.sources?.[0]?.url;
   const id = esc(st.id);
-  return `<div class="tools">${withMore ? `<button class="rm" data-more="${id}" aria-expanded="false">Full story</button>` : ""}${CAN_SAY ? `<button data-say="${id}" aria-pressed="false" title="Read this story aloud">Listen</button>` : ""}${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">Source ↗</a>` : ""}<button data-clip="${id}" title="Share this story as an image">Share</button></div>`;
+  return `<div class="tools">${withMore ? `<button class="rm" data-more="${id}" aria-expanded="false">Read more</button>` : ""}${CAN_SAY ? `<button data-say="${id}" aria-pressed="false" title="Read this story aloud">Listen</button>` : ""}${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">Source ↗</a>` : ""}<button data-clip="${id}" title="Share this story as an image">Share</button></div>`;
 }
 
 const why = (w, tone) => (w?.text ? `<div class="why${tone === "good" || tone === "bad" ? " " + tone : ""}"><b>${w.personal ? "Why it matters for you" : "Why it matters"}</b>${esc(w.text)}</div>` : "");
@@ -471,15 +471,17 @@ const markIn = (st, text, seen) => {
   const h = esc(st.highlight), i = t.indexOf(h); if (i < 0) return t;
   seen.done = true; return `${t.slice(0, i)}<mark class="hl">${h}</mark>${t.slice(i + h.length)}`;
 };
+// The summary, then the long version's first paragraph straight away, and the rest behind "Read more" (Parth, 13 Oct:
+// the summary alone, 30 to 56 words, was not enough and left the space beside a drawing empty)
 function storyHTML(st, { lead = false, kickerPrefix = "" } = {}) {
-  const more = st.more?.length, seen = {};
+  const M = st.more || [], shown = M.length > 1 ? M[0] : null, rest = shown ? M.slice(1) : M, more = rest.length, seen = {};
   const H = lead ? "h2" : "h3", stamp = lead ? stampHTML(st) : "";
   const fig = artFig(st.id);
   return `<article class="${lead ? "lead-story" : "story"}" id="s-${esc(st.id)}" style="--acc:${accent(st.section)}" data-fam="${fam(st.section)}" data-title="${esc(st.headline)}" data-thread="${esc(st.thread_id)}" data-section="${esc(st.section)}">
 <div class="kick">${esc(kickerPrefix + st.kicker)}${newFor(st)}</div><${H}><button data-head="${esc(st.id)}">${esc(st.headline)}</button></${H}>
 ${st.deck ? `<p class="deck">${esc(st.deck)}</p>` : ""}${byline(st)}${stamp}${fig}
-<div class="body"><p class="${lead ? "first" : ""}">${markIn(st, st.short, seen)}</p>
-${more ? `<div class="more" id="more-${esc(st.id)}" hidden>${st.more.map(p => `<p>${markIn(st, p, seen)}</p>`).join("")}</div>` : ""}
+<div class="body"><p class="${lead ? "first" : ""}">${markIn(st, st.short, seen)}</p>${shown ? `\n<p>${markIn(st, shown, seen)}</p>` : ""}
+${more ? `<div class="more" id="more-${esc(st.id)}" hidden>${rest.map(p => `<p>${markIn(st, p, seen)}</p>`).join("")}</div>` : ""}
 ${st.verdict ? `<div class="verdictline" style="color:var(--acc)">${VERDICT_TWI[st.verdict]}</div>` : ""}
 ${why(st.why, st.tone)}</div>${tools(st, more)}</article>`;
 }

@@ -3383,6 +3383,8 @@
       "answer_top": true
     },
     "depth": {
+      "short_min": 50,
+      "short_max": 60,
       "more_min": 150,
       "more_max": 260,
       "brief_min": 22
