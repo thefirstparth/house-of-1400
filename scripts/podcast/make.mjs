@@ -1,4 +1,4 @@
-// The daily episode (Parth, 12-13 Oct 2026: two hosts, Asha (Aoede) and Ravi (Rasalgethi), 6 to 8 minutes, free and
+// The daily episode (Parth, 12-13 Oct 2026: two hosts, Ashu (Aoede) and Tarun (Rasalgethi), from Allahabad, 6 to 8 minutes, free and
 // automatic, for his phone and his wife's in Apple Podcasts). Runs on GitHub Actions when an edition is pushed
 // (.github/workflows/podcast.yml):
 //   1. the running order from the edition (lib.mjs rundown), by the paper's desks, nothing outside it;
@@ -119,13 +119,16 @@ function pcmOf(buf) {
 // 3. The voice
 let voiceModel = null; // the Gemini voice model that made the take (for the episode record and the Telegram message)
 const hostVoice = Object.fromEntries((P.hosts || []).map(h => [h.id, h.voice]));
-const styleOf = t => `${P.style || ""} ${t.speaker} sounds ${(P.moods || {})[t.mood] || t.mood || (P.moods || {}).neutral || "conversational"} here.`.trim();
+// Every line opens with the same fixed description of its speaker, word for word, so the voice and accent stay put for
+// the whole take (Parth, 13 Oct: the man's accent changed several times and it did not sound Indian); the mood is after
+const hostStyle = Object.fromEntries((P.hosts || []).map(h => [h.id, h.voice_style || ""]));
+const styleOf = t => `${hostStyle[t.speaker] || ""} ${t.speaker}'s voice and accent stay exactly the same in every line. ${P.style || ""} Tone of this line: ${(P.moods || {})[t.mood] || t.mood || (P.moods || {}).neutral || "conversational"}.`.trim();
 async function ttsGemini(turns) {
   const speakers = { multiSpeakerVoiceConfig: { speakerVoiceConfigs: Object.entries(hostVoice).map(([speaker, voiceName]) => ({ speaker, voiceConfig: { prebuiltVoiceConfig: { voiceName } } })) } };
   const moods = [...new Set(turns.map(t => t.mood))].filter(m => (P.moods || {})[m]).map(m => `${m}: ${(P.moods || {})[m]}`).join("; ");
   // The transcript as one text with "Name: line" labels (the form Parth's AI Studio tester proved on this model)
   const transcript = list => ({
-    contents: [{ role: "user", parts: [{ text: `${P.style || ""} Match each moment's tone to its news (${moods}); never laugh near sad news. Read this conversation exactly as written:\n\n${list.map(t => `${t.speaker}: ${spoken(t.text, P.pronounce)}`).join("\n")}` }] }],
+    contents: [{ role: "user", parts: [{ text: `${Object.values(hostStyle).join(" ")} Their voices and accents stay exactly the same from the first line to the last. ${P.style || ""} Match each moment's tone to its news (${moods}); never laugh near sad news. Read this conversation exactly as written:\n\n${list.map(t => `${t.speaker}: ${spoken(t.text, P.pronounce)}`).join("\n")}` }] }],
     generationConfig: { responseModalities: ["AUDIO"], speechConfig: speakers },
   });
   // One part per turn with its own style (the documented 3.8 form)

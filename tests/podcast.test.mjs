@@ -45,18 +45,18 @@ test("podcast: a script that reads the paper, laughs at a tragedy or talks about
   const R = rundown(E, P, undefined, paper), hard = ps => ps.filter(p => p.hard).map(p => p.msg).join(" | "), all = ps => ps.map(p => p.msg).join(" | ");
   const chat = ["Max finally won in Singapore, at the tenth attempt.", "Ten tries? Wow.", "Is Riyadh safe now?", "Not really, sadly.", "What about Jantar Mantar?", "Shut to protests.", "And buses?", "BMTC is sharing live data.", "Alcaraz?", "Through in straight sets.", "Roma next for Madrid?", "Yes, on Thursday at twelve thirty a m, late on Wednesday night."];
   const pad = " and that is the gist of the whole afternoon as we heard it from friends over tea".repeat(23);
-  const turns = chat.map((t, i) => ({ speaker: i % 2 ? "Ravi" : "Asha", mood: "warm", text: i % 4 === 0 ? t + pad : t }));
+  const turns = chat.map((t, i) => ({ speaker: i % 2 ? "Tarun" : "Ashu", mood: "warm", text: i % 4 === 0 ? t + pad : t }));
   assert.equal(hard(checkScript(turns, R, P)), "");
   const bad = turns.map(t => ({ ...t }));
-  bad[2] = { speaker: "Asha", mood: "sombre", text: "The Riyadh strike killed thirteen. <laugh>" };
-  bad[3] = { speaker: "Ravi", mood: "warm", text: "Turning to Delhi, we waited for a second source on that." };
-  bad[5] = { speaker: "Ravi", mood: "warm", text: "Max wins in Singapore Max won. He led every session." };
+  bad[2] = { speaker: "Ashu", mood: "sombre", text: "The Riyadh strike killed thirteen. <laugh>" };
+  bad[3] = { speaker: "Tarun", mood: "warm", text: "Turning to Delhi, we waited for a second source on that." };
+  bad[5] = { speaker: "Tarun", mood: "warm", text: "Max wins in Singapore Max won. He led every session." };
   const ps = checkScript(bad, R, P);
   assert.match(hard(ps), /laughter/);
   assert.match(hard(ps), /how the show is made/);
   assert.match(all(ps), /stock phrase "Turning to"/);
   const fb = fallbackScript(R, P);
-  assert.ok(fb.length >= 6 && fb.every(t => ["Asha", "Ravi"].includes(t.speaker)));
+  assert.ok(fb.length >= 6 && fb.every(t => ["Ashu", "Tarun"].includes(t.speaker)));
 });
 
 test("podcast: the hosts are a woman and a man, with different voices", () => {

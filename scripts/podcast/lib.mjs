@@ -179,14 +179,21 @@ export function rundown(E, P = {}, now, paper = {}) {
   const item = (s, depth) => ({ id: s.id, desk: desk(s).name, section: nameOf[s.section] || null, kicker: s.kicker || null, headline: sayTimes(s.headline), tone: ["good", "bad", "mixed"].includes(s.tone) ? s.tone : "neutral", depth, text: sayTimes(cut(storyText(s), depth === "quick" ? 360 : 1100)), why: sayTimes(s.why?.text) || null });
   const snap = E.snapshot || {}, ok = k => (snap[k]?.value && !snap[k]?.error ? snap[k].value : null);
   const idx = ok("markets")?.indices || [], fx = ok("fx"), gold = ok("gold_in");
-  const markets = [];
-  for (const name of ["Nifty 50", "Sensex"]) { const i = idx.find(x => x.name === name); if (i && Number.isFinite(i.price)) markets.push(`${name} at ${Math.round(i.price).toLocaleString("en-IN")}, ${i.change_pct >= 0 ? "up" : "down"} ${Math.abs(i.change_pct).toFixed(1)}%${i.session_date && i.session_date !== E.date ? ` (${i.session_date})` : ""}`); }
-  if (Number.isFinite(fx?.price)) markets.push(`the rupee at ${fx.price.toFixed(2)} to the dollar`);
-  if (Number.isFinite(gold?.per_10g_24k)) markets.push(`24-carat gold at ₹${Math.round(gold.per_10g_24k).toLocaleString("en-IN")} for ten grams`);
-  // What is coming up is the paper's own Fixture List (Parth, 13 Oct: "inspired directly from the fixture list"):
-  // fixtureList() below builds the same rows the page does, and the podcast says those in the next seven days. The
-  // Week Ahead (Mondays) adds only its "why" to a matching row, and its other entries make The Week Ahead segment. A
-  // followed team or driver with no row in the next seven days (or whose feed is down) gets the chronology's Next.
+  // The money figures as a listener needs them (Parth, 13 Oct: "if Sensex is up 0.7%, I don't know what that means"): the
+  // move today, the week and month, and where it sits in its range, from the same figures the Ledger board prints
+  const markets = [], pc = x => `${x >= 0 ? "up" : "down"} ${Math.abs(x).toFixed(1)}%`, n0 = x => Math.round(x).toLocaleString("en-IN");
+  const place = (v, lo, hi, span) => { if (!(hi > lo)) return ""; const f = (v - lo) / (hi - lo); return f <= 0.15 ? `, near its ${span} low (${n0(lo)})` : f >= 0.85 ? `, near its ${span} high (${n0(hi)})` : `, between its ${span} low of ${n0(lo)} and high of ${n0(hi)}`; };
+  for (const name of ["Sensex", "Nifty 50"]) {
+    const i = idx.find(x => x.name === name); if (!(i && Number.isFinite(i.price))) continue;
+    const day = i.session_date && i.session_date !== E.date ? `at the last close (${i.session_date})` : "today";
+    markets.push(`${name} at ${n0(i.price)}, ${pc(i.change_pct)} ${day}${Number.isFinite(i.chg_7d) ? `, ${pc(i.chg_7d)} over the past week` : ""}${Number.isFinite(i.chg_1m) ? `, ${pc(i.chg_1m)} over the past month` : ""}${place(i.price, i.lo3m, i.hi3m, "three-month")}`);
+  }
+  if (Number.isFinite(fx?.price)) markets.push(`the rupee at ${fx.price.toFixed(2)} to the dollar, ${fx.change_pct <= 0 ? "stronger" : "weaker"} by ${Math.abs(fx.change_pct).toFixed(1)}% today${fx.note ? ` (${fx.note})` : ""}`);
+  if (Number.isFinite(gold?.per_10g_24k)) {
+    const g = gold, d = x => x ? new Date(x.replace(/^(\d\d)\/(\d\d)\/(\d{4})$/, "$3-$2-$1") + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "long", timeZone: "UTC" }) : "";
+    markets.push(`24-carat gold at ₹${n0(g.per_10g_24k)} for ten grams, ${Number.isFinite(g.change_pct) ? `${pc(g.change_pct)} since the last rate${g.prev_date ? ` (${d(g.prev_date)})` : ""}` : ""}${Number.isFinite(g.change_7d_pct) ? `, ${pc(g.change_7d_pct)} over the past week` : ""}${Number.isFinite(g.change_1m_pct) ? `, ${pc(g.change_1m_pct)} over the past month` : ""}${g.hi && g.lo ? `; since ${d(g.range_from)} its high was ₹${n0(g.hi)} (${d(g.hi_date)}) and its low ₹${n0(g.lo)} (${d(g.lo_date)})` : ""}`);
+  }
+  const market_notes = Object.entries(E.sections?.ledger?.data?.notes || {}).map(([k, v]) => `${k}: ${v}`).slice(0, 6);
   const NAMES = { madrid: "Real Madrid", india_cricket: "India (cricket)", f1: "Formula One" }, results = [], coming = [], ahead = [];
   const SPORT = new Set(["fixtures", "madrid", "paddock", "crease", "deuce", "pitch", "sidelines"]), whys = [];
   for (const w of E.week_ahead || []) {
@@ -216,7 +223,7 @@ export function rundown(E, P = {}, now, paper = {}) {
   for (const [s, depth] of [...deep.map(s => [s, "deep"]), ...quick.map(s => [s, "quick"])]) { const d = desk(s); (groups[d.id] ||= { desk: d.name, items: [] }).items.push(item(s, depth)); }
   for (const g of Object.values(groups)) g.items.sort((a, b) => (a.depth === b.depth ? 0 : a.depth === "deep" ? -1 : 1));
   const named = id => (paper.desks || []).find(d => d.id === id)?.name || { home: "Close to Home", money: "Money", sport: "Sport" }[id];
-  if (markets.length) (groups.money ||= { desk: named("money"), items: [] }).markets = markets;
+  if (markets.length) Object.assign(groups.money ||= { desk: named("money"), items: [] }, { markets, ...(market_notes.length ? { market_notes } : {}) });
   if (results.length || coming.length) Object.assign(groups.sport ||= { desk: named("sport"), items: [] }, { results, coming });
   if (weather) (groups.home ||= { desk: named("home"), items: [] }).weather = weather;
   if (ahead.length) groups.week = { desk: "The Week Ahead", items: [], coming: ahead };
@@ -227,34 +234,35 @@ export function rundown(E, P = {}, now, paper = {}) {
 export const deepItems = R => [R.lead, ...(R.segments || []).flatMap(s => s.items.filter(i => i.depth === "deep"))].filter(Boolean);
 
 const SERIOUS = new Set(["bad", "sombre", "concerned", "gentle"]);
-export const EXAMPLE = `Asha [delighted]: Right, the chess club. They actually did it.
-Ravi [surprised]: The village side? Beat the city champions?
-Asha [delighted]: Beat them, and in the final round, with the youngest player on the team.
-Ravi [amused]: How young?
-Asha [warm]: Eleven.
-Ravi [excited]: Eleven! I couldn't tie my shoelaces at eleven.
-Asha [matter-of-fact]: And the bad news on the same board: the hall they play in shuts next month.
-Ravi [concerned]: Oh no. So where do they go?
-Asha [gentle]: Nobody knows yet. The council meets on Friday.`;
+export const EXAMPLE = `Ashu [delighted]: Right, the chess club. They actually did it.
+Tarun [surprised]: The village side? Beat the city champions?
+Ashu [delighted]: Beat them, and in the final round, with the youngest player on the team.
+Tarun [amused]: How young?
+Ashu [warm]: Eleven.
+Tarun [excited]: Eleven! I couldn't tie my shoelaces at eleven.
+Ashu [matter-of-fact]: And the bad news on the same board: the hall they play in shuts next month.
+Tarun [concerned]: Oh no. So where do they go?
+Ashu [gentle]: Nobody knows yet. The council meets on Friday.`;
 
 // What the writer is asked for (Gemini, free tier). Parth, 13 Oct 2026: a conversation, not two readers taking turns.
 export function writerPrompt(R, P = {}) {
-  const [A, B] = P.hosts || [{ id: "Asha" }, { id: "Ravi" }], W = P.words || { min: 1050, target: 1200, max: 1400 };
+  const [A, B] = P.hosts || [{ id: "Ashu" }, { id: "Tarun" }], W = P.words || { min: 1050, target: 1200, max: 1400 };
   const moods = Object.keys(P.moods || { neutral: 1 }).join(", ");
   return `You write the script of "${P.title || "The House of 1400"}", a daily podcast made from one family's private afternoon newspaper. The listeners are Parth and his wife in Bengaluru. It must sound like two friends who have both read today's paper, talking it through over chai. It is NOT a news bulletin and NOT two people taking turns to read the paper.
 
 HOSTS
 - ${A.id} (${A.gender || "woman"}): ${A.about || ""}
 - ${B.id} (${B.gender || "man"}): ${B.about || ""}
+Both grew up in Allahabad (Prayagraj) and live in Bengaluru now: Bengaluru is "here", Prayagraj is "back home". They speak natural Indian English, and now and then, where it comes naturally, a Hindi-belt word an Allahabadi would use ("arre", "haan", "bilkul", "ekdum", "yaar"): at most one every four or five turns, never a caricature, never in sad news.
 
 THE SHOW, in this order, the way the paper is laid out (everything comes from the RUNDOWN below)
 1. Open (first two turns): ${A.id} welcomes the listeners to the show BY NAME and gives the day, something like "Good afternoon, and welcome to ${P.title || "The House of 1400"}. It's ${R.day}, I'm ${A.id}..." and ${B.id} says hello too. Mention, lightly and in your own words, that this is ${R.editor}'s paper (the editor), at the open or at the close.
 2. The lead as a hook, and the two talk it through properly.
 3. Page One: the front page's other stories in the order given, each a real back-and-forth, then its briefs briskly.
 4. Then the desk segments in the order given. Items marked "deep" get a real back-and-forth of about 80 to 140 words: one host tells it, the other reacts and asks what a listener would ask (what does it mean for us, why now, who is this), answered from "why" and the text. Items marked "quick" get one or two sentences each; several quick ones can run together briskly. Mention every item.
-5. If you name a segment, use the paper's names: Page One, News, Close to Home, Money, Tech and AI, Sport, Off Duty. "Close to Home" means Bengaluru only. A story from Delhi or anywhere else is News, never "close to home". If a front-page story was about sport, the hosts can say there is more in Sport later.
-6. Sport gets real energy: every sport item, the recent results (skip a result a story already covered; never give a result's clock time), and EVERY match in "coming", even when no story covers it (say each day and time EXACTLY as written, e.g. "on Thursday at twelve thirty a m, late on Wednesday night"; match times must be precise).
-7. Money: the market numbers in one or two lines, no more than three numbers in all.
+5. If you name a segment, use the paper's names: Page One, News, Close to Home, Money, Tech and AI, Sport, Off Duty. "Close to Home" is Bengaluru; a story from Ranchi or Prayagraj (the paper's Back Home, where the listener's parents live) is introduced as "back home in Ranchi" or "back home in Prayagraj", never as Bengaluru news. A story from Delhi or anywhere else is News, never "close to home". If a front-page story was about sport, the hosts can say there is more in Sport later.
+6. Sport gets real energy: every sport item, the recent results (skip a result a story already covered; never give a result's clock time), and EVERY match in "coming", even when no story covers it (say each day and time EXACTLY as written, e.g. "on Thursday at twelve thirty a m, late on Wednesday night"; match times must be precise). Share the fixtures out as a back-and-forth: never more than three matches in one turn.
+7. Money: the listener hears these, so every figure needs its meaning. For each of the "markets" lines say the level (rounded), the move TODAY (say "today"), how the week or month went, and whether it is near a high or a low; use "market_notes" for why it moved. Spread it over a few turns, at most two numbers a turn, rounded ("just above seventy-two and a half thousand", "down about three per cent this month").
 8. "market_expects", if given: one short, playful moment on what the betting markets expect, in words ("the markets make him a near-certainty", "about a two-in-three chance"), at most the two given, wherever it fits best (Sport or just before the close). Never read out a list of percentages.
 9. Weather, if given: one everyday line ("warm, with a fair chance of rain later").
 10. The Week Ahead, if given: a couple of quick lines on what is coming in the next few days.
@@ -299,7 +307,7 @@ const BANNED = /\b(turning to|in other news|moving on|let'?s look at|let us look
 // The checks before voicing. Each problem is { hard, msg }: a hard one means the script is never voiced; soft ones
 // send it back for a rewrite, and after the last try the script with the fewest soft problems is voiced.
 export function checkScript(turns, R, P = {}) {
-  const W = P.words || { min: 1050, max: 1400 }, ids = new Set((P.hosts || [{ id: "Asha" }, { id: "Ravi" }]).map(h => h.id)), out = [];
+  const W = P.words || { min: 1050, max: 1400 }, ids = new Set((P.hosts || [{ id: "Ashu" }, { id: "Tarun" }]).map(h => h.id)), out = [];
   const hard = msg => out.push({ hard: true, msg }), soft = msg => out.push({ hard: false, msg });
   if (!Array.isArray(turns) || turns.length < 8) return [{ hard: true, msg: "fewer than 8 turns" }];
   const n = turns.reduce((a, t) => a + words(t.text).length, 0);
@@ -353,7 +361,7 @@ export function checkScript(turns, R, P = {}) {
 
 // When the writer fails: a plain, correct conversation made by code from the rundown
 export function fallbackScript(R, P = {}) {
-  const [A, B] = (P.hosts || [{ id: "Asha" }, { id: "Ravi" }]).map(h => h.id), turns = [];
+  const [A, B] = (P.hosts || [{ id: "Ashu" }, { id: "Tarun" }]).map(h => h.id), turns = [];
   const say = (speaker, mood, text) => text && turns.push({ speaker, mood, text });
   const first = (s, k = 3) => String(s?.text || "").split(/(?<=[.!?])\s+/).slice(0, k).join(" ");
   say(A, "warm", `Good afternoon. This is ${P.title || "The House of 1400"} for ${R.day}.`);

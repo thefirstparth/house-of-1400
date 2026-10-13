@@ -3414,7 +3414,7 @@
     ]
   },
   "podcast": {
-    "note": "The daily episode (scripts/podcast/make.mjs, run by .github/workflows/podcast.yml when an edition is pushed). Free: Gemini free tier, Kokoro fallback. Parth, 12-13 Oct 2026: 6 to 8 minutes; Asha is a woman (Aoede), Ravi a man (Rasalgethi); a conversation, not two readers.",
+    "note": "The daily episode (scripts/podcast/make.mjs, run by .github/workflows/podcast.yml when an edition is pushed). Free: Gemini free tier, Kokoro fallback. Parth, 12-13 Oct 2026: 6 to 8 minutes; Ashu is a woman (Aoede), Tarun a man (Rasalgethi), both from Allahabad, now in Bengaluru (renamed from Asha and Ravi on 13 Oct); a conversation, not two readers.",
     "title": "The House of 1400",
     "subtitle": "The afternoon paper, as a conversation",
     "author": "T. A. Bhide",
@@ -3440,19 +3440,21 @@
     ],
     "hosts": [
       {
-        "id": "Asha",
+        "id": "Ashu",
         "gender": "woman",
         "voice": "Aoede",
-        "about": "has read the whole paper closely; clear, warm and quick; tells most stories and feels them, glad at good news and quietly upset at bad"
+        "voice_style": "Ashu is a woman from Allahabad (Prayagraj), now living in Bengaluru. She speaks natural Indian English with a warm Indian accent and a light Allahabadi, Hindi-belt lilt.",
+        "about": "grew up in Allahabad and now lives in Bengaluru; has read the whole paper closely; clear, warm and quick; tells most stories and feels them, glad at good news and quietly upset at bad"
       },
       {
-        "id": "Ravi",
+        "id": "Tarun",
         "gender": "man",
         "voice": "Rasalgethi",
-        "about": "curious and expressive; lives for cricket, F1, tennis and Real Madrid and tells the sport himself; asks the \"hang on, why?\" questions a listener would and reacts out loud"
+        "voice_style": "Tarun is a man from Allahabad (Prayagraj), now living in Bengaluru. He speaks natural Indian English with an Indian accent and a light Allahabadi, Hindi-belt lilt.",
+        "about": "Ashu's friend from Allahabad, also in Bengaluru now; curious and expressive; lives for cricket, F1, tennis and Real Madrid and tells the sport himself; asks the \"hang on, why?\" questions a listener would and reacts out loud"
       }
     ],
-    "style": "Two friends in Bengaluru talking through the afternoon's news over chai: warm, natural and unhurried, with real reactions. Both speak Indian English with a natural Indian accent.",
+    "style": "Two old friends from Allahabad (Prayagraj), now in Bengaluru, talking through the afternoon's news over chai: warm, natural and unhurried, with real reactions.",
     "moods": {
       "warm": "warm and friendly",
       "delighted": "delighted, smiling as they speak",
@@ -3475,8 +3477,8 @@
     "kokoro": {
       "lang": "a",
       "voices": {
-        "Asha": "af_heart",
-        "Ravi": "am_michael"
+        "Ashu": "af_heart",
+        "Tarun": "am_michael"
       },
       "note": "Kokoro's best-rated voices (af_heart is graded A); speed and pauses follow each turn's mood (kokoro_voice.py)."
     },
