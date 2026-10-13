@@ -3418,11 +3418,11 @@
     "title": "The House of 1400",
     "subtitle": "The afternoon paper, as a conversation",
     "author": "T. A. Bhide",
-    "minutes": 7,
+    "minutes": 9,
     "words": {
-      "min": 850,
-      "target": 1000,
-      "max": 1150
+      "min": 1050,
+      "target": 1300,
+      "max": 1550
     },
     "keep_days": 14,
     "image": "/podcast-cover.jpg",
@@ -3480,8 +3480,8 @@
       "mixed": "thoughtful and even",
       "neutral": "easy and conversational"
     },
-    "deep_max": 5,
-    "quick_max": 7,
+    "deep_max": 6,
+    "quick_max": 10,
     "kokoro": {
       "lang": "a",
       "voices": {

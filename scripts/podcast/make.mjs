@@ -67,19 +67,6 @@ async function gemini(model, body, tries = 2, waitMs = 300000) {
 // writer that answers does the rewrites (up to three tries in all, each refusal's reasons sent back), and its best
 // script that passes the hard checks is used. Flash Lite only when no strong writer answered; the plain code script
 // only when nothing usable came back.
-// Too long after every rewrite (the writers busy): Flash Lite, which is rarely busy, cuts it to length without touching a
-// fact; the cut is used only if it passes the hard checks and fits. Otherwise the long script stays.
-async function shorten(turns, R, base) {
-  const W = P.words || {}, count = t => t.reduce((a, x) => a + String(x.text).split(/\s+/).length, 0), n = count(turns);
-  const model = (P.text_models || []).find(m => /lite/.test(m));
-  if (!W.max || n <= W.max || !model) return null;
-  const prompt = `${base}\n\nTHE SCRIPT BELOW IS TOO LONG: ${n} words, and the most is ${W.max}. Return the same script cut to about ${W.target} words. Cut whole lines about quick items first, then trim long turns. Keep the open, the lead, Page One, every match and time in Fixture Watch, the money, the Betting Window, Bhide's House Note and the sign-off. Keep the "segment" marks on the lines that stay. Never change, add or round any fact, name, number, time or date, and never write new lines except a short bridge where a cut leaves a gap. Return JSON only, in the same shape.\n${JSON.stringify({ turns })}`;
-  const j = await gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.3 } }, 3, 290000);
-  const text = j.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "", out = JSON.parse(text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1)).turns;
-  const probs = checkScript(out, R, P), m = count(out || []);
-  log(`shortened by ${model}: ${n} to ${m} words, ${probs.length ? probs.map(p => (p.hard ? "HARD " : "") + p.msg).slice(0, 5).join("; ") : "no problems"}`);
-  return !probs.some(p => p.hard) && m <= W.max * 1.05 ? out : null;
-}
 async function writeScript(R) {
   const base = writerPrompt(R, P), all = P.text_models || ["gemini-3.8-flash"], strong = all.filter(m => !/lite/.test(m)), lite = all.filter(m => /lite/.test(m));
   const ask = (model, prompt, tries) => {
@@ -135,8 +122,7 @@ async function writeScript(R) {
     }
     if (best) {
       log(`script chosen: ${model}, ${best.n} soft problem(s) left`);
-      const short = await shorten(best.turns, R, base).catch(e => { log("shortening failed:", e.message.split("\n")[0].slice(0, 160)); return null; });
-      return { turns: short || best.turns, by: model }; // "by" stays the writer (the hold-back reads it)
+      return { turns: best.turns, by: model };
     }
   }
   log("using the plain script made by code; the writer's last problems:", last.slice(0, 4).join("; "));
