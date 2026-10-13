@@ -22,7 +22,8 @@ on:
       dry: { description: "Test: write and voice it, publish nothing (script and MP3 as artifacts)", type: boolean, default: false }
       models: { description: "Only list the Gemini models this key can use", type: boolean, default: false }
       sample: { description: "Only voice this short script file (e.g. scripts/podcast/samples/x.json), nothing published", required: false, default: "" }
-concurrency: { group: podcast, cancel-in-progress: false }
+# a voice sample publishes nothing, so it runs beside an episode run instead of queueing behind it
+concurrency: { group: "podcast${{ inputs.sample && '-sample' || '' }}", cancel-in-progress: false }
 jobs:
   gemini:
     runs-on: ubuntu-latest
