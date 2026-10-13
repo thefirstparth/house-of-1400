@@ -195,8 +195,9 @@ async function ttsGemini(turns) {
         writeFileSync(`${OUT}/solo-${sp}-${go}.wav`, Buffer.concat([wavHeader(take.length), take])); // kept as a run artifact, to see why a split failed
         pieces = splitLines(take, texts.map(t => t.split(/\s+/).length));
         if (!pieces) log(`solo: ${sp}'s take ${go} did not split into ${texts.length} lines${go === 1 ? "; once more" : ""}`);
+        else if (!listen(sp, go, pieces, texts)) { pieces = null; if (go === 1) log(`solo: ${sp}'s take ${go}: once more`); }
       }
-      if (!pieces) throw new Error(`${sp}'s takes did not split into ${texts.length} lines`);
+      if (!pieces) throw new Error(`${sp}'s takes did not cut cleanly into ${texts.length} lines (by the pauses or by ear)`);
       mine.forEach((t, i) => lines.set(t, pieces[i]));
       log(`solo: ${sp}, ${texts.length} lines`);
     }
@@ -204,6 +205,22 @@ async function ttsGemini(turns) {
     const gap = s => Buffer.alloc(Math.round(24000 * s) * 2);
     soloPieces = list.map(t => ({ speaker: t.speaker, pcm: lines.get(t) })); // for the studio's two mics and timing
     return Buffer.concat(list.flatMap((t, i) => [i ? gap(list[i - 1].speaker === t.speaker ? 0.2 : 0.32) : Buffer.alloc(0), lines.get(t)]));
+  };
+  // The listening check (verify_lines.py, Parth, 13 Oct: "how are we sure this will happen accurately?"): every cut
+  // piece is transcribed by an open-source speech-to-text model on the runner and must say its own line. A cut that
+  // fails is rejected like one that would not split. If the check itself cannot run, solo is given up at once (the
+  // steady form is voiced instead): a cut is never published unheard.
+  const listen = (sp, go, pieces, texts) => {
+    const dir = `${OUT}/verify`, job = `${dir}/${sp}-${go}.json`, res = `${dir}/${sp}-${go}.out.json`;
+    mkdirSync(dir, { recursive: true });
+    const list = pieces.map((p, i) => { const f = `${dir}/${sp}-${go}-${i + 1}.wav`; writeFileSync(f, Buffer.concat([wavHeader(p.length), p])); return { wav: f, text: texts[i] }; });
+    writeFileSync(job, JSON.stringify({ model: P.verify_model || "base.en", pieces: list }));
+    try { execFileSync(process.env.PODCAST_PYTHON || "python3", [`${H}scripts/podcast/verify_lines.py`, job, res], { stdio: ["ignore", "inherit", "inherit"], timeout: 8 * 60000 }); }
+    catch (e) { throw new Error(`the listening check could not run (${String(e.message).split("\n")[0].slice(0, 160)}); no unheard cut is used`); }
+    const r = JSON.parse(readFileSync(res, "utf8")), bad = r.pieces.map((x, i) => [i, x]).filter(([, x]) => !x.ok);
+    if (bad.length) log(`solo: ${sp}'s take ${go} cut in the wrong place: line ${bad.map(([i, x]) => `${i + 1} heard "${x.heard.slice(0, 60)}"`).join("; line ")}`);
+    else log(`solo: ${sp}'s take ${go}: every line heard as written`);
+    return !bad.length;
   };
   // One take (Parth, 13 Oct: no chunks). The steady form first (config podcast.voice_form), per-turn second.
   const words = turns.reduce((a, t) => a + spoken(t.text, P.pronounce).split(/\s+/).length, 0);

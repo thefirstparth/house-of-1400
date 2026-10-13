@@ -33,6 +33,13 @@ jobs:
       - uses: actions/setup-node@v5
         with: { node-version: 22 }
       - run: sudo apt-get install -y -qq ffmpeg >/dev/null && npm install --no-save --no-audit --no-fund @vercel/blob
+      # the listening check for the solo voice form (scripts/podcast/verify_lines.py): open-source speech-to-text on the
+      # runner's processor; the model (about 150 MB) is cached between runs
+      - uses: actions/setup-python@v6
+        with: { python-version: "3.12", cache: pip, cache-dependency-path: scripts/podcast/requirements-verify.txt }
+      - uses: actions/cache@v4
+        with: { path: ~/.cache/huggingface, key: whisper-base-en-v1 }
+      - run: python3 -m pip install -q -r scripts/podcast/requirements-verify.txt
       - name: Make the episode
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}

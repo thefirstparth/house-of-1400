@@ -3463,6 +3463,7 @@
     },
     "style": "Two old friends from Allahabad (Prayagraj), now in Bengaluru, talking through the afternoon's news over chai: warm, natural and unhurried, with real reactions.",
     "voice_form": "solo",
+    "verify_model": "base.en",
     "voice_instruction": "Two old friends from Allahabad, now in Bengaluru, chatting about the afternoon's news over chai: warm, natural and unhurried, with real reactions. Ashu is a woman and Tarun is a man. Both speak Indian English with a natural Indian accent, with a light Allahabadi lilt. Each keeps exactly the same voice and accent from the first line to the last.",
     "moods": {
       "warm": "warm and friendly",

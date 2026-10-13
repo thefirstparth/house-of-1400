@@ -173,3 +173,12 @@ test("podcast: the studio lays out jingle, stings, two mics and natural timing, 
   // the same day lays out the same way (a rerun sounds the same)
   assert.equal(layout({ turns, pieces, date: "2026-10-14", pan: {} }).seconds, layout({ turns, pieces, date: "2026-10-14", pan: {} }).seconds);
 });
+
+test("podcast: every solo cut is heard before it is used (the listening check is installed and called)", () => {
+  const make = readFileSync(new URL("../scripts/podcast/make.mjs", import.meta.url), "utf8");
+  const wf = readFileSync(new URL("../.github/workflows/podcast.yml", import.meta.url), "utf8");
+  assert.match(make, /verify_lines\.py/);
+  assert.match(make, /no unheard cut is used/, "a check that cannot run gives up solo, never skips the check");
+  assert.match(wf, /requirements-verify\.txt/);
+  assert.match(readFileSync(new URL("../scripts/podcast/requirements-verify.txt", import.meta.url), "utf8"), /^faster-whisper==\d/m);
+});
