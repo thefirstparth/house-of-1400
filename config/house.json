@@ -3395,9 +3395,9 @@
     "author": "T. A. Bhide",
     "minutes": 7,
     "words": {
-      "min": 1050,
-      "target": 1200,
-      "max": 1400
+      "min": 1000,
+      "target": 1150,
+      "max": 1300
     },
     "keep_days": 14,
     "image": "/podcast-cover.jpg",

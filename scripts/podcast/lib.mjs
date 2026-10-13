@@ -271,6 +271,8 @@ HOW IT SOUNDS
 - Times: say them exactly as the rundown writes them, the twelve-hour way with "a m" or "p m". Never the twenty-four-hour clock and never "IST".
 - Never use these: "Turning to", "In other news", "Moving on", "Let's look at", "Let us look at", "Meanwhile", "Closer to home", "Stay tuned", "On the cricket field".
 - Use only facts in the rundown. Never add a fact, name, number or quote. Short personal reactions are fine ("I'd love to see that").
+- A host's question is answered ONLY with what the rundown says. Never answer "yes", "right there" or "exactly" to a detail the rundown does not state (which terminal, which app, which player); answer with what it does say instead. Best of all, ask questions the rundown can answer.
+- Round honestly: never round a number up past what it is. 0.7 per cent is "under one per cent" or "about three-quarters of a per cent", never "nearly one per cent"; "over three hundred" only when it is over three hundred.
 - Never address the listeners by name; speak to them as "you" if at all.
 - No talk about how the paper or the show is made, about sources or checking, or about anything being missing.
 - Every number, score, time and date in words, the Indian way (lakh and crore). No digits, no symbols like ₹, %, $ or &.

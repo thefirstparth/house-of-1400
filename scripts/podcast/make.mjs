@@ -45,7 +45,8 @@ async function gemini(model, body, tries = 2, waitMs = 300000) {
     const j = await r.json().catch(() => ({}));
     if (r.ok) return j;
     const msg = `${model} ${r.status}: ${j.error?.message || ""}`.slice(0, 600);
-    if ([429, 500, 503].includes(r.status) && i + 1 < tries && !/limit: 0\b|free_tier.*limit.*\b0\b/i.test(msg)) { log(msg, "- busy, waiting a minute"); await sleep(62000); continue; }
+    // out of the day's free requests ("retry in 23h...") is final for this model today: never waited for
+    if ([429, 500, 503].includes(r.status) && i + 1 < tries && !/limit: 0\b|retry in \d+h/i.test(`${msg} ${JSON.stringify(j.error?.details || "")}`)) { log(msg, "- busy, waiting a minute"); await sleep(62000); continue; }
     throw Object.assign(new Error(msg), { http: r.status });
   }
 }
