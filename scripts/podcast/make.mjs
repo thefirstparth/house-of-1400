@@ -4,15 +4,17 @@
 //   1. the running order from the edition (lib.mjs rundown), by the paper's desks, nothing outside it;
 //   2. Gemini (free tier, always the main writer first; "busy" is waited out) writes the conversation; checked and sent
 //      back up to twice; the best script that passes the hard checks is voiced; else Flash Lite; else a plain script;
-//   3. Gemini TTS (free tier) voices it in one take, per-turn mood as style; if that fails or comes back cut short,
-//      Kokoro (open source) voices the same script (the "kokoro" job);
-//   4. ffmpeg levels it and makes an MP3; it goes to Vercel Blob with the feed, episodes older than keep_days removed.
+//   3. Gemini TTS (free tier) voices it: each host alone in one take, cut into lines (solo), else one take of both;
+//      if every Gemini voice fails or comes back cut short, Kokoro (open source) voices the same script ("kokoro" job);
+//   4. the studio (studio.mjs) makes it a radio show and an MP3; it goes to Vercel Blob with the feed, episodes older
+//      than keep_days removed.
 // Never touches the repo. Secrets: GEMINI_API_KEY, BLOB_READ_WRITE_TOKEN (GitHub Actions secrets).
 //   node scripts/podcast/make.mjs [YYYY-MM-DD] [--force] [--dry]   (--feed: only rebuild feed.xml from the kept episodes)
 import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { rundown, writerPrompt, checkScript, fallbackScript, spoken, feedXML, deepItems, splitLines } from "./lib.mjs";
+import { rundown, writerPrompt, checkScript, fallbackScript, spoken, feedXML, deepItems, splitLines, onAir } from "./lib.mjs";
+import { layout, mix } from "./studio.mjs";
 
 const args = process.argv.slice(2), FORCE = args.includes("--force"), DRY = args.includes("--dry"), FEED_ONLY = args.includes("--feed");
 const H = new URL("../../", import.meta.url).pathname, OUT = `${H}.podcast`;
@@ -32,6 +34,14 @@ const log = (...a) => console.log("podcast:", ...a);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 const GEM = "https://generativelanguage.googleapis.com/v1beta/models";
+// Node's fetch gives up on any answer slower than five minutes (13 Oct: two rewrites died at exactly 300 s, "fetch
+// failed", although we allow nine); undici (installed with @vercel/blob) lifts that, each call keeps its own timeout
+try { const { Agent, setGlobalDispatcher } = await import("undici"); setGlobalDispatcher(new Agent({ headersTimeout: 600000, bodyTimeout: 600000 })); } catch { /* the five-minute default stays */ }
+// Deadlines, so the episode still goes out before 15:45 IST however busy Gemini is: the writers start new rounds until
+// WRITE_BY (15:10 IST) and no writer call runs past STOP (15:20 IST); then the best script so far is voiced. A run that
+// starts later (a backup, a test) gets ten and twenty-five minutes from its start.
+const t0 = Date.now(), istAt = (h, m) => Date.parse(`${new Date(t0 + 5.5 * 36e5).toISOString().slice(0, 10)}T${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:00+05:30`);
+const late = t0 > istAt(15, 0), WRITE_BY = late ? t0 + 10 * 60000 : istAt(15, 10), STOP = late ? t0 + 25 * 60000 : istAt(15, 20);
 // "busy" (429, 500, 503) is waited out a minute at a time, up to `tries` attempts in all (the main writer's first
 // try: six, about five minutes; 3.8 Flash was busy for over three minutes at a time on 12-13 Oct, and refused
 // requests count against the free day's twenty)
@@ -57,14 +67,33 @@ async function gemini(model, body, tries = 2, waitMs = 300000) {
 // writer that answers does the rewrites (up to three tries in all, each refusal's reasons sent back), and its best
 // script that passes the hard checks is used. Flash Lite only when no strong writer answered; the plain code script
 // only when nothing usable came back.
+// Too long after every rewrite (the writers busy): Flash Lite, which is rarely busy, cuts it to length without touching a
+// fact; the cut is used only if it passes the hard checks and fits. Otherwise the long script stays.
+async function shorten(turns, R, base) {
+  const W = P.words || {}, count = t => t.reduce((a, x) => a + String(x.text).split(/\s+/).length, 0), n = count(turns);
+  const model = (P.text_models || []).find(m => /lite/.test(m));
+  if (!W.max || n <= W.max || !model) return null;
+  const prompt = `${base}\n\nTHE SCRIPT BELOW IS TOO LONG: ${n} words, and the most is ${W.max}. Return the same script cut to about ${W.target} words. Cut whole lines about quick items first, then trim long turns. Keep the open, the lead, Page One, every match and time in Fixture Watch, the money, the Betting Window, Bhide's House Note and the sign-off. Keep the "segment" marks on the lines that stay. Never change, add or round any fact, name, number, time or date, and never write new lines except a short bridge where a cut leaves a gap. Return JSON only, in the same shape.\n${JSON.stringify({ turns })}`;
+  const j = await gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.3 } }, 3, 290000);
+  const text = j.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "", out = JSON.parse(text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1)).turns;
+  const probs = checkScript(out, R, P), m = count(out || []);
+  log(`shortened by ${model}: ${n} to ${m} words, ${probs.length ? probs.map(p => (p.hard ? "HARD " : "") + p.msg).slice(0, 5).join("; ") : "no problems"}`);
+  return !probs.some(p => p.hard) && m <= W.max * 1.05 ? out : null;
+}
 async function writeScript(R) {
   const base = writerPrompt(R, P), all = P.text_models || ["gemini-3.8-flash"], strong = all.filter(m => !/lite/.test(m)), lite = all.filter(m => /lite/.test(m));
-  const ask = (model, prompt, tries) => gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.9 } }, tries, 540000);
+  const ask = (model, prompt, tries) => {
+    const left = STOP - Date.now();
+    if (left < 45000) return Promise.reject(Object.assign(new Error(`${model}: out of time for the writers`), { http: 0 }));
+    return gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.9 } }, tries, Math.min(540000, left));
+  };
   const turnsOf = j => { const text = j.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "", body = text.replace(/^```(?:json)?|```$/g, "").trim(); return JSON.parse(body.slice(body.indexOf("{"), body.lastIndexOf("}") + 1)).turns; };
   const busy = e => [500, 503].includes(e.http) || (e.http === 429 && !/retry in \d+h/i.test(e.message));
   let first = null, last = [];
   const out = new Set();
-  for (let round = 0; round < 5 && !first; round++) {
+  // five rounds at least, then more while there is time before WRITE_BY (13 Oct redo: every writer busy for minutes)
+  for (let round = 0; (round < 5 || (round < 12 && Date.now() < WRITE_BY)) && !first; round++) {
+    if (strong.every(m => out.has(m))) break; // every strong writer out of free requests (or out of time)
     if (round) { log(`every strong writer busy; round ${round + 1} in a minute`); await sleep(60000); }
     for (const m of strong) {
       if (out.has(m)) continue;
@@ -77,8 +106,10 @@ async function writeScript(R) {
   const rewriteAsk = async (model, prompt) => {
     const order = first ? [model, ...strong.filter(m => m !== model && !out.has(m))] : [model];
     let err;
-    for (let round = 0; round < 2; round++) {
-      if (round) await sleep(60000);
+    // rounds a minute and a half apart while there is time before WRITE_BY (13 Oct redo: eighteen busy refusals in a
+    // row over fourteen minutes, then the unrevised 1,534-word draft went out)
+    for (let round = 0; round === 0 || (round < 8 && Date.now() < WRITE_BY); round++) {
+      if (round) await sleep(90000);
       for (const m of order) {
         try { const j = await ask(m, prompt, 1); if (m !== model) log(`rewrite by ${m}`); return j; }
         catch (e) { err = e; log(`rewrite ${m}:`, e.message.split("\n")[0].slice(0, 120)); if (!busy(e)) out.add(m); }
@@ -102,7 +133,11 @@ async function writeScript(R) {
         if (!best && (e.http || e.name === "TimeoutError" || e.name === "AbortError")) break;
       }
     }
-    if (best) { log(`script chosen: ${model}, ${best.n} soft problem(s) left`); return { turns: best.turns, by: model }; }
+    if (best) {
+      log(`script chosen: ${model}, ${best.n} soft problem(s) left`);
+      const short = await shorten(best.turns, R, base).catch(e => { log("shortening failed:", e.message.split("\n")[0].slice(0, 160)); return null; });
+      return { turns: short || best.turns, by: model }; // "by" stays the writer (the hold-back reads it)
+    }
   }
   log("using the plain script made by code; the writer's last problems:", last.slice(0, 4).join("; "));
   return { turns: fallbackScript(R, P), by: "code" };
@@ -117,7 +152,7 @@ function pcmOf(buf) {
 }
 
 // 3. The voice
-let voiceModel = null; // the Gemini voice model that made the take (for the episode record and the Telegram message)
+let voiceModel = null, soloPieces = null; // the Gemini voice model that made the take (for the episode record and the Telegram message)
 const hostVoice = Object.fromEntries((P.hosts || []).map(h => [h.id, h.voice]));
 // Every line opens with the same fixed description of its speaker, word for word, so the voice and accent stay put for
 // the whole take (Parth, 13 Oct: the man's accent changed several times and it did not sound Indian); the mood is after
@@ -165,17 +200,23 @@ async function ttsGemini(turns) {
         contents: [{ role: "user", parts: [{ text: `${hostStyle[sp] || ""} ${sp} is chatting with an old friend, ${other}, about the afternoon's news over chai: warm, natural and unhurried, with real reactions, never reading. ${sp} keeps exactly the same voice and accent in every line, from the first to the last. Lively and warm for good news, gentle and serious for sad news. These are ${sp}'s lines in the conversation, in order: read each one as a reply in that chat, and leave a pause of two full seconds after every line.\n\n${texts.join("\n\n")}` }] }],
         generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: hostVoice[sp] } } } },
       };
-      const j = await gemini(model, body, 2), part = j.candidates?.[0]?.content?.parts?.find(p => p.inlineData?.data);
-      if (!part) throw new Error(`no audio for ${sp} (${j.candidates?.[0]?.finishReason || "?"})`);
-      const take = pcmOf(Buffer.from(part.inlineData.data, "base64"));
-      writeFileSync(`${OUT}/solo-${sp}.wav`, Buffer.concat([wavHeader(take.length), take])); // kept as a run artifact, to see why a split failed
-      const pieces = splitLines(take, texts.map(t => t.split(/\s+/).length));
-      if (!pieces) throw new Error(`${sp}'s take did not split into ${texts.length} lines`);
+      // two takes at most for each host: a take that will not split is tried once more before the fallback
+      let pieces = null;
+      for (let go = 1; go <= 2 && !pieces; go++) {
+        const j = await gemini(model, body, 2), part = j.candidates?.[0]?.content?.parts?.find(p => p.inlineData?.data);
+        if (!part) { if (go === 2) throw new Error(`no audio for ${sp} (${j.candidates?.[0]?.finishReason || "?"})`); continue; }
+        const take = pcmOf(Buffer.from(part.inlineData.data, "base64"));
+        writeFileSync(`${OUT}/solo-${sp}-${go}.wav`, Buffer.concat([wavHeader(take.length), take])); // kept as a run artifact, to see why a split failed
+        pieces = splitLines(take, texts.map(t => t.split(/\s+/).length));
+        if (!pieces) log(`solo: ${sp}'s take ${go} did not split into ${texts.length} lines${go === 1 ? "; once more" : ""}`);
+      }
+      if (!pieces) throw new Error(`${sp}'s takes did not split into ${texts.length} lines`);
       mine.forEach((t, i) => lines.set(t, pieces[i]));
       log(`solo: ${sp}, ${texts.length} lines`);
     }
     // back in the script's order, a short breath between speakers and a shorter one when the same host goes on
     const gap = s => Buffer.alloc(Math.round(24000 * s) * 2);
+    soloPieces = list.map(t => ({ speaker: t.speaker, pcm: lines.get(t) })); // for the studio's two mics and timing
     return Buffer.concat(list.flatMap((t, i) => [i ? gap(list[i - 1].speaker === t.speaker ? 0.2 : 0.32) : Buffer.alloc(0), lines.get(t)]));
   };
   // One take (Parth, 13 Oct: no chunks). The steady form first (config podcast.voice_form), per-turn second.
@@ -188,12 +229,13 @@ async function ttsGemini(turns) {
   const takes = [...first, ...others.map(m => [m, "transcript", transcript])];
   for (const [model, name, form] of takes) {
     try {
+      soloPieces = null;
       const pcm = form === "solo" ? await solo(turns, model) : await one(turns, form, model), secs = pcm.length / 48000;
       // faster than 230 words a minute means the take was cut off
       if (secs < (words / 230) * 60) throw new Error(`came back cut short (${Math.round(secs)} s for ${words} words)`);
       log(`voice: ${model}, ${name}`); voiceModel = model;
       return pcm;
-    } catch (e) { log(`voicing as one ${name} take on ${model} failed: ${e.message}`); await sleep(21000); }
+    } catch (e) { soloPieces = null; log(`voicing as one ${name} take on ${model} failed: ${e.message}`); await sleep(21000); }
   }
   throw new Error("every one-take voice failed");
 }
@@ -204,6 +246,23 @@ function ttsKokoro(turns) {
   writeFileSync(inp, JSON.stringify({ lang: K.lang || "a", voices: K.voices || {}, turns: turns.map(t => ({ speaker: t.speaker, mood: t.mood, text: spoken(t.text, P.pronounce).replace(/<[^>]+>/g, "") })) }));
   execFileSync(process.env.PODCAST_PYTHON || "python3", [`${H}scripts/podcast/kokoro_voice.py`, inp, wav], { stdio: "inherit", timeout: 40 * 60000 });
   return pcmOf(readFileSync(wav));
+}
+
+// The studio (studio.mjs): jingle, stings, outro, the room, two mics and natural timing, as .podcast/episode.mp3; the
+// seconds it runs. Two mics and timing need each line as its own piece (the solo voice form); a single take gets the
+// rest. If the studio fails for any reason, the plain levelled MP3 goes out instead: the episode never fails here.
+function produce(turns, pcm) {
+  writeFileSync(`${OUT}/episode.wav`, Buffer.concat([wavHeader(pcm.length), pcm]));
+  if (P.studio !== false) {
+    try {
+      const L = layout({ turns, pieces: soloPieces, take: soloPieces ? null : pcm, date, pan: P.pan || {} });
+      mix(L, OUT, `${OUT}/episode.mp3`);
+      log(`studio: ${soloPieces ? "two mics, natural timing" : "one take"}, ${L.marks} sting(s), ${Math.round(L.seconds)} s`);
+      return L.seconds;
+    } catch (e) { log("studio failed, plain mix instead:", e.message.split("\n")[0].slice(0, 200)); }
+  }
+  execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-i", `${OUT}/episode.wav`, "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-ar", "44100", "-ac", "1", "-codec:a", "libmp3lame", "-b:a", "96k", `${OUT}/episode.mp3`]);
+  return pcm.length / 48000;
 }
 
 // 4. Store and publish
@@ -237,9 +296,8 @@ async function main() {
   const sample = args.find(a => a.startsWith("--sample="))?.slice(9);
   if (sample) {
     const { turns } = JSON.parse(readFileSync(`${H}${sample}`, "utf8")), pcm = await ttsGemini(turns);
-    writeFileSync(`${OUT}/episode.wav`, Buffer.concat([wavHeader(pcm.length), pcm]));
-    execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-i", `${OUT}/episode.wav`, "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-ar", "44100", "-ac", "1", "-codec:a", "libmp3lame", "-b:a", "96k", `${OUT}/episode.mp3`]);
-    log(`sample: ${Math.round(pcm.length / 48000)} s from ${sample}`); return;
+    const secs = produce(turns, pcm);
+    log(`sample: ${Math.round(secs)} s from ${sample}`); return;
   }
   const { put, list, del, get } = DRY ? {} : await blob();
   if (FEED_ONLY) { const n = await publishFeed({ put, list, del, get }); log(`feed rebuilt (${n} in the feed)`); log(`FEED ${served("feed.xml")}`); return; }
@@ -253,6 +311,7 @@ async function main() {
   }
   const v = prior ? (prior.v || 1) + 1 : 1, file = v > 1 ? `${date}-v${v}.mp3` : `${date}.mp3`;
   const R = rundown(E, P, undefined, { desks: cfg.desks_v2?.desks, sections: cfg.sections, follows: cfg.follows, betting: cfg.betting });
+  R.on_air = onAir(); // the radio time check, from the clock as the script is written
   if (!R.lead) { log("the edition has no lead; nothing to say"); return; }
   const KOKORO = process.env.PODCAST_VOICE === "kokoro", saved = existsSync(`${OUT}/script.json`) ? JSON.parse(readFileSync(`${OUT}/script.json`, "utf8")) : null;
   // the Kokoro step (podcast.yml) reuses the script the first step wrote
@@ -271,9 +330,7 @@ async function main() {
   if (KOKORO) pcm = ttsKokoro(turns);
   else try { pcm = await ttsGemini(turns); }
   catch (e) { throw new Error(`Gemini voice failed (${e.message}); the Kokoro step takes over`); }
-  writeFileSync(`${OUT}/episode.wav`, Buffer.concat([wavHeader(pcm.length), pcm]));
-  execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-i", `${OUT}/episode.wav`, "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-ar", "44100", "-ac", "1", "-codec:a", "libmp3lame", "-b:a", "96k", `${OUT}/episode.mp3`]);
-  const seconds = pcm.length / 48000, bytes = statSync(`${OUT}/episode.mp3`).size;
+  const seconds = produce(turns, pcm), bytes = statSync(`${OUT}/episode.mp3`).size;
   log(`audio: ${Math.round(seconds)} s, ${Math.round(bytes / 1024)} KB, voice ${voice}`);
   if (DRY) { log("dry run: .podcast/episode.mp3"); return; }
   await put(`${folder}/${file}`, readFileSync(`${OUT}/episode.mp3`), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "audio/mpeg", token: BLOB });

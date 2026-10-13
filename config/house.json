@@ -3420,9 +3420,9 @@
     "author": "T. A. Bhide",
     "minutes": 7,
     "words": {
-      "min": 1000,
-      "target": 1150,
-      "max": 1300
+      "min": 850,
+      "target": 1000,
+      "max": 1150
     },
     "keep_days": 14,
     "image": "/podcast-cover.jpg",
@@ -3454,6 +3454,12 @@
         "about": "Ashu's friend from Allahabad, also in Bengaluru now; curious and expressive; lives for cricket, F1, tennis and Real Madrid and tells the sport himself; asks the \"hang on, why?\" questions a listener would and reacts out loud"
       }
     ],
+    "signoff": "That's The House of 1400 for today. Same time tomorrow, same chai.",
+    "studio": true,
+    "pan": {
+      "Ashu": -0.3,
+      "Tarun": 0.3
+    },
     "style": "Two old friends from Allahabad (Prayagraj), now in Bengaluru, talking through the afternoon's news over chai: warm, natural and unhurried, with real reactions.",
     "voice_form": "solo",
     "voice_instruction": "Two old friends from Allahabad, now in Bengaluru, chatting about the afternoon's news over chai: warm, natural and unhurried, with real reactions. Ashu is a woman and Tarun is a man. Both speak Indian English with a natural Indian accent, with a light Allahabadi lilt. Each keeps exactly the same voice and accent from the first line to the last.",
@@ -3474,8 +3480,8 @@
       "mixed": "thoughtful and even",
       "neutral": "easy and conversational"
     },
-    "deep_max": 6,
-    "quick_max": 10,
+    "deep_max": 5,
+    "quick_max": 7,
     "kokoro": {
       "lang": "a",
       "voices": {

@@ -244,6 +244,19 @@ Ashu [matter-of-fact]: And the bad news on the same board: the hall they play in
 Tarun [concerned]: Oh no. So where do they go?
 Ashu [gentle]: Nobody knows yet. The council meets on Friday.`;
 
+// The parts of the show a musical sting can open (the writer marks the first turn of each; studio.mjs plays it)
+export const SEGMENTS = ["page-one", "news", "back-home", "close-to-home", "money", "tech", "sport", "fixture-watch", "betting-window", "off-duty", "week-ahead", "house-note"];
+// A radio-style time check from the clock at writing time (IST): "a little after two in the afternoon"
+export function onAir(ms = Date.now()) {
+  const d = new Date(ms + IST), h = d.getUTCHours(), m = d.getUTCMinutes(), w = x => ONES[((x + 11) % 12) + 1] || intWords(((x + 11) % 12) + 1);
+  const part = x => (x < 12 ? "in the morning" : x < 17 ? "in the afternoon" : "in the evening");
+  if (m < 10) return `just after ${w(h)} ${part(h)}`;
+  if (m < 25) return `a little after ${w(h)} ${part(h)}`;
+  if (m < 36) return `half past ${w(h)} ${part(h)}`;
+  if (m < 50) return `getting on for ${w(h + 1)} ${part(h + 1)}`;
+  return `just before ${w(h + 1)} ${part(h + 1)}`;
+}
+
 // What the writer is asked for (Gemini, free tier). Parth, 13 Oct 2026: a conversation, not two readers taking turns.
 export function writerPrompt(R, P = {}) {
   const [A, B] = P.hosts || [{ id: "Ashu" }, { id: "Tarun" }], W = P.words || { min: 1050, target: 1200, max: 1400 };
@@ -262,11 +275,16 @@ THE SHOW, in this order, the way the paper is laid out (everything comes from th
 4. Then the desk segments in the order given. Items marked "deep" get a real back-and-forth of about 80 to 140 words: one host tells it, the other reacts and asks what a listener would ask (what does it mean for us, why now, who is this), answered from "why" and the text. Items marked "quick" get one or two sentences each; several quick ones can run together briskly. Mention every item.
 5. If you name a segment, use the paper's names: Page One, News, Close to Home, Money, Tech and AI, Sport, Off Duty. "Close to Home" is Bengaluru; a story from Ranchi or Prayagraj (the paper's Back Home, where the listener's parents live) is introduced as "back home in Ranchi" or "back home in Prayagraj", never as Bengaluru news. A story from Delhi or anywhere else is News, never "close to home". If a front-page story was about sport, the hosts can say there is more in Sport later.
 6. Sport gets real energy: every sport item, the recent results (skip a result a story already covered; never give a result's clock time), and EVERY match in "coming", even when no story covers it (say each day and time EXACTLY as written, e.g. "on Thursday at twelve thirty a m, late on Wednesday night"; match times must be precise). Share the fixtures out as a back-and-forth: never more than three matches in one turn.
-7. Money: the listener hears these, so every figure needs its meaning. For each of the "markets" lines say the level (rounded), the move TODAY (say "today"), how the week or month went, and whether it is near a high or a low; use "market_notes" for why it moved. Spread it over a few turns, at most two numbers a turn, rounded ("just above seventy-two and a half thousand", "down about three per cent this month").
+7. Money: the listener hears these, so every figure needs its meaning. For each of the "markets" lines say the level (rounded), the move TODAY (say "today"), how the week or month went, and whether it is near a high or a low; use "market_notes" for why it moved. Numbers are welcome (Parth likes them), rounded the way people say them ("just above seventy-two and a half thousand", "down about three per cent this month"). Each market (the Sensex, the Nifty, the rupee, gold) comes up in ONE place only, with ONE figure, the one in its "markets" line: if a Money story is about the same market (say, the rupee firming), tell its story in that same moment and never give the level a second time.
 8. "market_expects", if given: one short, playful moment on what the betting markets expect, in words ("the markets make him a near-certainty", "about a two-in-three chance"), at most the two given, wherever it fits best (Sport or just before the close). Never read out a list of percentages.
 9. Weather, if given: one everyday line ("warm, with a fair chance of rain later").
 10. The Week Ahead, if given: a couple of quick lines on what is coming in the next few days.
-11. Close: the House Note retold in the hosts' own words with its punchline intact (if it is about a story already told, do not tell the story again: go straight to the joke), then a short, warm goodbye that names the show again ("That's ${P.title || "The House of 1400"} for today...").
+11. Close: the House Note retold in the hosts' own words with its punchline intact (if it is about a story already told, do not tell the story again: go straight to the joke), then a short, warm goodbye whose very last line is the sign-off, word for word: "${P.signoff || `That's ${P.title || "The House of 1400"} for today.`}"
+
+IT IS A RADIO SHOW, with the habits of one
+- A time check in passing, early on, from "on_air" if given ("it's a little after two here in Bengaluru, and the chai's poured").
+- The same segment names every day, said the way a radio host would: "Page One", then the desks by the paper's names, "Fixture Watch" for the coming matches, "the Betting Window" for what the markets expect, and "Bhide's House Note" for the House Note, introduced like a letter read on air ("and here's Bhide's House Note for today").
+- Mark the FIRST turn of each new part with "segment", one of: ${SEGMENTS.join(", ")}. A short musical sting plays just before that turn, so mark only real changes of part (about five to nine in an episode), never two in a row.
 
 FUN: you have creative headroom in HOW things are said: banter between the two, a running joke, a playful line on the good news, the markets and the House Note. Never in WHAT is said: every fact, name, number, score, date and time stays exactly as in the rundown, and nothing is joked about near bad news.
 
@@ -275,7 +293,7 @@ HOW IT SOUNDS
 - Real feeling that fits each story: delight at a win, shock and quiet sadness at deaths, worry about prices, amusement at the House Note. Never laugh or joke near bad news.
 - Say each fact ONCE. The headline and the text repeat each other; never say the same fact twice.
 - Never copy sentences from the rundown. Retell them the way people talk; contractions are good.
-- Numbers are hard to follow by ear: at most two numbers in a turn, rounded when the exact figure does not matter ("about thirty-two and a half thousand crore", "nearly one per cent"). Leave out numbers that do not matter.
+- Numbers are fine, as many as the story needs, rounded when the exact figure does not matter ("about thirty-two and a half thousand crore"). Never give the same figure twice, and never two different figures for the same thing.
 - Times: say them exactly as the rundown writes them, the twelve-hour way with "a m" or "p m". Never the twenty-four-hour clock and never "IST".
 - Never use these: "Turning to", "In other news", "Moving on", "Let's look at", "Let us look at", "Meanwhile", "Closer to home", "Stay tuned", "On the cricket field".
 - Use only facts in the rundown. Never add a fact, name, number or quote. Short personal reactions are fine ("I'd love to see that").
@@ -285,13 +303,13 @@ HOW IT SOUNDS
 - Never address the listeners by name; speak to them as "you" if at all.
 - No talk about how the paper or the show is made, about sources or checking, or about anything being missing.
 - Every number, score, time and date in words, the Indian way (lakh and crore). No digits, no symbols like ₹, %, $ or &.
-- About ${W.target} words in total (between ${W.min} and ${W.max}).
+- About ${W.target} words in total, and NEVER more than ${W.max} (at least ${W.min}). Keep it tight: when it runs long, give quick items one line each rather than dropping the fixtures, the money or the House Note.
 - "mood" sets the voice for that line; one of: ${moods}. Inline tags, sparingly: <laugh> (light moments only), <sigh>, <short pause>.
 
 EXAMPLE OF THE SOUND ONLY (its facts are invented: never use them; this is the rhythm and feeling to aim for)
 ${EXAMPLE}
 
-Return JSON only: {"turns":[{"speaker":"${A.id}"|"${B.id}","mood":"...","text":"..."}]}
+Return JSON only: {"turns":[{"speaker":"${A.id}"|"${B.id}","mood":"...","text":"...","segment":"(only on the first turn of a part)"}]}
 
 RUNDOWN
 ${JSON.stringify(R, null, 1)}`;
@@ -320,8 +338,16 @@ export function checkScript(turns, R, P = {}) {
     if (/<laugh>|<chuckle>/i.test(txt) && (SERIOUS.has(t.mood) || [...sad].some(w => txt.toLowerCase().includes(w)))) hard(`turn ${i + 1}: laughter in a serious moment`);
     if (PROCESS.test(txt.replace(/<[^>]+>/g, ""))) hard(`turn ${i + 1}: talks about how the show is made ("${txt.match(PROCESS)[0]}")`);
     const b = txt.match(BANNED); if (b) soft(`turn ${i + 1}: uses the stock phrase "${b[0]}"`);
-    if (numberRuns(txt) > 3) soft(`turn ${i + 1}: ${numberRuns(txt)} numbers in one turn (at most two)`);
   });
+  // each market's level in one place only (13 Oct redo: the rupee at "95.25" and then "95.28" two turns later)
+  for (const [name, re] of [["the rupee", /\brupee\b/i], ["the Sensex", /\bsensex\b/i], ["the Nifty", /\bnifty\b(?! it\b| bank\b| midcap| smallcap)/i], ["gold", /\bgold\b/i]]) {
+    const at = turns.map((t, i) => (re.test(t.text) && numberRuns(t.text) ? i : -1)).filter(i => i >= 0);
+    if (at.length > 1) soft(`gives a figure for ${name} in ${at.length} turns (${at.map(i => i + 1).join(", ")}): say it once, in one turn`);
+  }
+  if (P.signoff) { const norm = x => words(x).join(" "); if (!norm(turns.at(-1)?.text).includes(norm(P.signoff))) soft(`the last line is not the sign-off, word for word: "${P.signoff}"`); }
+  const marks = turns.filter(t => t.segment).length;
+  if (marks < 4) soft(`only ${marks} turns carry a "segment" mark (needs one on the first turn of each part, five or more)`);
+  turns.forEach((t, i) => { if (t.segment && !SEGMENTS.includes(t.segment)) soft(`turn ${i + 1}: unknown segment "${t.segment}" (use one of ${SEGMENTS.join(", ")})`); });
   const title = String(P.title || "The House of 1400").toLowerCase().replace("1400", "(1400|fourteen hundred)");
   const named = t => new RegExp(title.replace(/^the /, "")).test(String(t?.text || "").toLowerCase());
   if (!turns.slice(0, 2).some(named)) soft(`the opening does not name the show ("${P.title || "The House of 1400"}") in the first two turns`);
@@ -364,18 +390,21 @@ export function fallbackScript(R, P = {}) {
   const [A, B] = (P.hosts || [{ id: "Ashu" }, { id: "Tarun" }]).map(h => h.id), turns = [];
   const say = (speaker, mood, text) => text && turns.push({ speaker, mood, text });
   const first = (s, k = 3) => String(s?.text || "").split(/(?<=[.!?])\s+/).slice(0, k).join(" ");
-  say(A, "warm", `Good afternoon. This is ${P.title || "The House of 1400"} for ${R.day}.`);
+  say(A, "warm", `Good afternoon. This is ${P.title || "The House of 1400"} for ${R.day}, ${R.editor}'s paper.`);
   if (R.lead) { say(B, R.lead.tone, `The big one today: ${R.lead.headline}.`); say(A, R.lead.tone, first(R.lead)); }
   let k = 0;
+  const SEG = { "Page One": "page-one", News: "news", Money: "money", "Tech and AI": "tech", Sport: "sport", "Off Duty": "off-duty", "The Week Ahead": "week-ahead" };
   for (const g of R.segments || []) {
+    const at = turns.length;
     for (const s of g.items) { const [x, y] = k++ % 2 ? [A, B] : [B, A]; say(x, s.tone, `${s.headline}.`); if (s.depth === "deep") say(y, s.tone, first(s)); }
     if (g.markets?.length) say(B, "neutral", `On the markets: ${g.markets.join("; ")}.`);
     if (g.results?.length) say(A, "neutral", `The latest results: ${g.results.join("; ")}.`);
     if (g.coming?.length) say(B, "neutral", `Coming up: ${g.coming.join("; ")}.`);
     if (g.weather) say(A, "neutral", `And the weather. ${g.weather}.`);
+    if (turns[at]) turns[at].segment = SEG[g.desk] || (/home/i.test(g.desk) ? "close-to-home" : "news");
   }
-  if (R.house_note) say(A, "amused", R.house_note);
-  say(B, "warm", "That's the afternoon. See you tomorrow.");
+  if (R.house_note) { say(A, "amused", `And here's ${R.editor}'s House Note. ${R.house_note}`); turns.at(-1).segment = "house-note"; }
+  say(B, "warm", P.signoff || "That's the afternoon. See you tomorrow.");
   return turns;
 }
 

@@ -1,7 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { spoken, intWords, rundown, checkScript, fallbackScript, feedXML, sayWhen, splitLines } from "../scripts/podcast/lib.mjs";
+import { spoken, intWords, rundown, checkScript, fallbackScript, feedXML, sayWhen, splitLines, onAir, SEGMENTS } from "../scripts/podcast/lib.mjs";
+import { layout, jingle, sting, outro, RATE } from "../scripts/podcast/studio.mjs";
 
 const C = JSON.parse(readFileSync(new URL("../config/house.json", import.meta.url), "utf8")), P = C.podcast;
 const paper = { desks: C.desks_v2.desks, sections: C.sections };
@@ -124,4 +125,45 @@ test("podcast: a host's single-voice take is cut back into its lines at the long
   // nor does one where a pause fell inside a long line and two short lines ran together (pieces far off their words)
   const off = Buffer.concat([quiet(sec(0.3)), noise(sec(2)), quiet(sec(1.6)), noise(sec(2)), quiet(sec(1.6)), noise(sec(9)), quiet(sec(0.3))]);
   assert.ok(splitLines(off, [5, 20, 5]) === null, "pieces far off their word counts must not split");
+});
+
+test("podcast: each market's figure is said once; the sign-off and segment marks are checked (Parth, 13 Oct)", () => {
+  const T = (speaker, text, segment) => ({ speaker, mood: "neutral", text, ...(segment ? { segment } : {}) });
+  const turns = [T("Ashu", "Welcome to The House of 1400, Bhide's paper."), T("Tarun", "Hello!"), ...Array.from({ length: 8 }, (_, i) => T(i % 2 ? "Tarun" : "Ashu", `Line ${i}?`)),
+    T("Ashu", "The rupee firmed to ninety-five point two five today.", "money"), T("Tarun", "Nice."), T("Ashu", "The rupee is at ninety-five point two eight."), T("Tarun", "Bye from The House of 1400.")];
+  const msgs = checkScript(turns, { segments: [], editor: "T. A. Bhide" }, { ...P, words: { min: 10, max: 9999 } }).map(p => p.msg);
+  assert.ok(msgs.some(m => /figure for the rupee in 2 turns/.test(m)), msgs.join(" | "));
+  assert.ok(msgs.some(m => /sign-off/.test(m)));
+  assert.ok(msgs.some(m => /"segment" mark/.test(m)));
+  assert.ok(!msgs.some(m => /numbers in one turn/.test(m)), "numbers are fine now");
+  // the Nifty IT index is not the Nifty
+  const ok = checkScript([...turns.slice(0, 10), T("Ashu", "The Nifty IT index rose three per cent."), T("Tarun", "And the Nifty is at twenty-two thousand.")], { segments: [] }, { ...P, words: { min: 10, max: 9999 } }).map(p => p.msg);
+  assert.ok(!ok.some(m => /the Nifty in/.test(m)), ok.join(" | "));
+  assert.ok(SEGMENTS.includes("fixture-watch") && SEGMENTS.includes("house-note"));
+  assert.equal(onAir(Date.parse("2026-10-14T08:42:00Z")), "a little after two in the afternoon");
+});
+
+test("podcast: the studio lays out jingle, stings, two mics and natural timing, and never clips the music", () => {
+  const tone = (secs, f) => { const n = Math.round(secs * RATE), b = Buffer.alloc(n * 2); for (let i = 0; i < n; i++) b.writeInt16LE(Math.round(9000 * Math.sin(2 * Math.PI * f * i / RATE)), i * 2); return b; };
+  const turns = [], pieces = [];
+  for (let i = 0; i < 24; i++) {
+    const speaker = i % 2 ? "Tarun" : "Ashu", short = i % 5 === 3;
+    turns.push({ speaker, mood: i === 9 ? "sombre" : "neutral", text: short ? "Arre wah!" : "A longer line with quite a few words in it here?", ...(i === 4 || i === 6 || i === 14 ? { segment: "news" } : {}) });
+    pieces.push({ speaker, pcm: tone(short ? 0.6 : 4, speaker === "Ashu" ? 220 : 180) });
+  }
+  const L = layout({ turns, pieces, date: "2026-10-14", pan: { Ashu: -0.3, Tarun: 0.3 } });
+  assert.equal(L.marks, 2, "a sting at turn 5 and turn 15; turn 7 is within twenty seconds of the last");
+  const voiced = pieces.reduce((a, p) => a + p.pcm.length / 2, 0) / RATE;
+  assert.ok(L.seconds > voiced && L.seconds < voiced + 30, `${L.seconds} s for ${voiced} s of voice`);
+  // Ashu speaks first: during her first line the left channel is louder
+  const [vl, vr] = L.voice, k0 = vl.findIndex(x => x !== 0); let dl = 0, dr = 0;
+  for (let k = k0; k < k0 + RATE; k++) { dl += Math.abs(vl[k]); dr += Math.abs(vr[k]); }
+  assert.ok(dl > dr * 1.5, `Ashu sits left (${dl} against ${dr})`);
+  // a single take sits in the middle
+  const one = layout({ turns, take: Buffer.concat(pieces.map(p => p.pcm)), date: "2026-10-14" });
+  let d = 0; for (let k = 0; k < one.voice[0].length; k++) d += Math.abs(one.voice[0][k] - one.voice[1][k]); assert.ok(d < 1e-6);
+  assert.equal(one.marks, 0);
+  for (const b of [jingle(), sting(), outro()]) { let pk = 0; for (const x of b) pk = Math.max(pk, Math.abs(x)); assert.ok(pk > 0.05 && pk < 1, `music peak ${pk}`); }
+  // the same day lays out the same way (a rerun sounds the same)
+  assert.equal(layout({ turns, pieces, date: "2026-10-14", pan: {} }).seconds, layout({ turns, pieces, date: "2026-10-14", pan: {} }).seconds);
 });
