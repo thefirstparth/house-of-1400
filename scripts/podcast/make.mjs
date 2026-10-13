@@ -45,7 +45,7 @@ async function gemini(model, body, tries = 2, waitMs = 300000) {
     const j = await r.json().catch(() => ({}));
     if (r.ok) return j;
     const msg = `${model} ${r.status}: ${j.error?.message || ""}`.slice(0, 600);
-    if ([429, 500, 503].includes(r.status) && i + 1 < tries) { log(msg, "- busy, waiting a minute"); await sleep(62000); continue; }
+    if ([429, 500, 503].includes(r.status) && i + 1 < tries && !/limit: 0\b|free_tier.*limit.*\b0\b/i.test(msg)) { log(msg, "- busy, waiting a minute"); await sleep(62000); continue; }
     throw Object.assign(new Error(msg), { http: r.status });
   }
 }
@@ -105,8 +105,8 @@ async function ttsGemini(turns) {
     contents: [{ role: "user", parts: list.map(t => ({ text: spoken(t.text, P.pronounce), speech_metadata: { speaker: t.speaker, style: styleOf(t) } })) }],
     generationConfig: { responseModalities: ["AUDIO"], speechConfig: speakers },
   });
-  const one = async (list, form) => {
-    const j = await gemini(P.tts_model || "gemini-3.8-flash-tts", form(list), 2);
+  const one = async (list, form, model) => {
+    const j = await gemini(model, form(list), 2);
     const part = j.candidates?.[0]?.content?.parts?.find(p => p.inlineData?.data);
     if (!part) throw new Error(`no audio in the answer (${j.candidates?.[0]?.finishReason || j.promptFeedback?.blockReason || "?"})`);
     log(`audio: ${part.inlineData.mimeType || "?"}`);
@@ -114,15 +114,19 @@ async function ttsGemini(turns) {
   };
   // One take (Parth, 13 Oct: no chunks). Per-turn first, it carries each moment's mood; the transcript form second.
   const words = turns.reduce((a, t) => a + spoken(t.text, P.pronounce).split(/\s+/).length, 0);
-  for (const [name, form] of [["per-turn", perTurn], ["transcript", transcript]]) {
+  // The main voice model in both forms, then the other Gemini voice models (same voices) in the transcript form
+  const [main, ...others] = P.tts_models || [P.tts_model || "gemini-3.8-flash-tts"];
+  const takes = [[main, "per-turn", perTurn], [main, "transcript", transcript], ...others.map(m => [m, "transcript", transcript])];
+  for (const [model, name, form] of takes) {
     try {
-      const pcm = await one(turns, form), secs = pcm.length / 48000;
+      const pcm = await one(turns, form, model), secs = pcm.length / 48000;
       // faster than 230 words a minute means the take was cut off
       if (secs < (words / 230) * 60) throw new Error(`came back cut short (${Math.round(secs)} s for ${words} words)`);
+      log(`voice: ${model}, ${name}`);
       return pcm;
-    } catch (e) { log(`voicing as one ${name} take failed: ${e.message}`); await sleep(21000); }
+    } catch (e) { log(`voicing as one ${name} take on ${model} failed: ${e.message}`); await sleep(21000); }
   }
-  throw new Error("both one-take forms failed");
+  throw new Error("every one-take voice failed");
 }
 
 // Kokoro (open source, on the runner's CPU) voices the same script when Gemini cannot

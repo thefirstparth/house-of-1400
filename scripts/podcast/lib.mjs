@@ -128,7 +128,7 @@ export function rundown(E, P = {}, now, paper = {}) {
   const near = t => times.some(x => Math.abs(x - t) < 3 * 36e5);
   for (const [k, c] of Object.entries(E.chronology || {})) {
     const l = c?.last, n = c?.next, lt = Date.parse(l?.when_utc), nt = Date.parse(n?.when_utc);
-    if (lt > now - 60 * 36e5 && lt <= now) results.push(`${NAMES[k] || k}: ${l.label}${l.detail ? `, ${l.detail}` : ""} (${sayWhen(lt, now)})`);
+    if (lt > now - 60 * 36e5 && lt <= now) results.push(`${NAMES[k] || k}: ${l.label}${l.detail ? `, ${l.detail}` : ""} (${sayDay(new Date(lt + IST - 4 * 36e5).toISOString().slice(0, 10), now)}${new Date(lt + IST).getUTCHours() < 4 ? ", late at night" : ""})`);
     if (nt > now - 18e5 && !near(nt)) { coming.push(`${NAMES[k] || k} next: ${n.label}${n.detail ? `, ${n.detail}` : ""}, ${nt < now + 6 * 864e5 ? sayWhen(nt, now) : sayDay(new Date(nt + IST - 4 * 36e5).toISOString().slice(0, 10), now)}`); times.push(nt); }
   }
   for (const p of E.tennis?.players || []) { const t = Date.parse(p.next_match?.when_utc); if (t > now - 18e5 && t < now + 7 * 864e5 && !near(t)) coming.push(`${p.name}: ${String(p.next_match.text).replace(/,?\s*(today|tomorrow|tonight|monday|tuesday|wednesday|thursday|friday|saturday|sunday)?,?\s*\d{1,2}:\d{2}\s*IST\.?/i, "").replace(/\.$/, "")}, ${sayWhen(t, now)}`); }
@@ -190,11 +190,11 @@ THE SHOW, in this order (everything comes from the RUNDOWN below)
 1. Open (first two turns): ${A.id} welcomes the listeners to the show BY NAME and gives the day, something like "Good afternoon, and welcome to ${P.title || "The House of 1400"}. It's ${R.day}, I'm ${A.id}..." and ${B.id} says hello too. Then straight into the lead as a hook, and the two talk the lead through properly.
 2. Then the desk segments in the order given. Items marked "deep" get a real back-and-forth of about 80 to 140 words: one host tells it, the other reacts and asks what a listener would ask (what does it mean for us, why now, who is this), answered from "why" and the text. Items marked "quick" get one or two sentences each; several quick ones can run together briskly. Mention every item.
 3. If you name a segment, use the paper's desk names: News, Close to Home, Money, Tech and AI, Sport, Off Duty. "Close to Home" means Bengaluru only. A story from Delhi or anywhere else is News, never "close to home".
-4. Sport gets real energy: every sport item, the recent results, and EVERY match in "coming", even when no story covers it (say each day and time EXACTLY as written, e.g. "on Thursday at twelve thirty a m, late on Wednesday night"; match times must be precise).
+4. Sport gets real energy: every sport item, the recent results (skip a result a story already covered; never give a result's clock time), and EVERY match in "coming", even when no story covers it (say each day and time EXACTLY as written, e.g. "on Thursday at twelve thirty a m, late on Wednesday night"; match times must be precise).
 5. Money: the market numbers in one or two lines, no more than three numbers in all.
 6. Weather, if given: one everyday line ("warm, with a fair chance of rain later").
 7. The Week Ahead, if given: a couple of quick lines on what is coming in the next few days.
-8. Close: the House Note retold in the hosts' own words with its punchline intact, then a short, warm goodbye that names the show again ("That's ${P.title || "The House of 1400"} for today...").
+8. Close: the House Note retold in the hosts' own words with its punchline intact (if it is about a story already told, do not tell the story again: go straight to the joke), then a short, warm goodbye that names the show again ("That's ${P.title || "The House of 1400"} for today...").
 
 HOW IT SOUNDS
 - A real conversation: mix longer turns with plenty of quick reactions of two to eight words, each a natural response to exactly what was just said, in your own words (never reuse the example's lines). At least six genuine questions between the hosts.
