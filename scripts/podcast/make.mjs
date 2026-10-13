@@ -126,9 +126,11 @@ const styleOf = t => `${hostStyle[t.speaker] || ""} ${t.speaker}'s voice and acc
 async function ttsGemini(turns) {
   const speakers = { multiSpeakerVoiceConfig: { speakerVoiceConfigs: Object.entries(hostVoice).map(([speaker, voiceName]) => ({ speaker, voiceConfig: { prebuiltVoiceConfig: { voiceName } } })) } };
   const moods = [...new Set(turns.map(t => t.mood))].filter(m => (P.moods || {})[m]).map(m => `${m}: ${(P.moods || {})[m]}`).join("; ");
-  // The transcript as one text with "Name: line" labels (the form Parth's AI Studio tester proved on this model)
+  // The transcript as one text with "Name: line" labels and ONE instruction for the whole take: the form of Parth's
+  // favourite sample (his AI Studio tester, 12 Oct), and the main form from 14 Oct, because a different instruction on
+  // every line let Tarun's voice and accent drift (Parth, 13 Oct). Feeling comes from the words, not per-line styles.
   const transcript = list => ({
-    contents: [{ role: "user", parts: [{ text: `${Object.values(hostStyle).join(" ")} Their voices and accents stay exactly the same from the first line to the last. ${P.style || ""} Match each moment's tone to its news (${moods}); never laugh near sad news. Read this conversation exactly as written:\n\n${list.map(t => `${t.speaker}: ${spoken(t.text, P.pronounce)}`).join("\n")}` }] }],
+    contents: [{ role: "user", parts: [{ text: `${P.voice_instruction || `${P.style || ""} ${Object.values(hostStyle).join(" ")}`} Match each moment's tone to its news: lively and warm for good news, gentle and serious for sad news, never laughing near it. Read this conversation exactly as written:\n\n${list.map(t => `${t.speaker}: ${spoken(t.text, P.pronounce)}`).join("\n")}` }] }],
     generationConfig: { responseModalities: ["AUDIO"], speechConfig: speakers },
   });
   // One part per turn with its own style (the documented 3.8 form)
@@ -143,11 +145,12 @@ async function ttsGemini(turns) {
     log(`audio: ${part.inlineData.mimeType || "?"}`);
     return pcmOf(Buffer.from(part.inlineData.data, "base64"));
   };
-  // One take (Parth, 13 Oct: no chunks). Per-turn first, it carries each moment's mood; the transcript form second.
+  // One take (Parth, 13 Oct: no chunks). The transcript form first (config podcast.voice_form), per-turn second.
   const words = turns.reduce((a, t) => a + spoken(t.text, P.pronounce).split(/\s+/).length, 0);
   // The main voice model in both forms, then the other Gemini voice models (same voices) in the transcript form
   const [main, ...others] = P.tts_models || [P.tts_model || "gemini-3.8-flash-tts"];
-  const takes = [[main, "per-turn", perTurn], [main, "transcript", transcript], ...others.map(m => [m, "transcript", transcript])];
+  const first = P.voice_form === "per-turn" ? [[main, "per-turn", perTurn], [main, "transcript", transcript]] : [[main, "transcript", transcript], [main, "per-turn", perTurn]];
+  const takes = [...first, ...others.map(m => [m, "transcript", transcript])];
   for (const [model, name, form] of takes) {
     try {
       const pcm = await one(turns, form, model), secs = pcm.length / 48000;
