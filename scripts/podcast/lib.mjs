@@ -407,26 +407,48 @@ ${items}
 `;
 }
 
-// Cuts one host's single-voice take (24 kHz, 16-bit mono PCM: every line of theirs read in order, with a long pause
-// between lines) back into its lines: the n-1 longest silences inside the take are the cuts. Returns null when the take
-// does not split cleanly (too few pauses, or a piece far too long or short for its words), and the caller falls back.
+// Cuts one host's single-voice take (24 kHz, 16-bit mono PCM: every line of theirs read in order, with a pause asked
+// for between lines) back into its lines. Each cut is a silence inside the take, chosen together so that they fall in
+// order, near where the line lengths say each line should end, and on the longer pauses (13 Oct: Tarun's first solo
+// take had pauses between lines no longer than the breaths inside them, and "the n-1 longest silences" failed).
+// Returns null when the take does not split cleanly (too few pauses, or a piece far off its line's length), and the
+// caller falls back.
 export function splitLines(pcm, words) {
   const n = words.length, F = 480, frames = Math.floor(pcm.length / 2 / F), rms = new Float64Array(frames);
   for (let f = 0; f < frames; f++) { let s = 0; for (let i = 0; i < F; i++) { const v = pcm.readInt16LE((f * F + i) * 2); s += v * v; } rms[f] = Math.sqrt(s / F); }
   const loud = [...rms].sort((a, b) => a - b)[Math.floor(frames * 0.95)] || 0, thr = Math.max(150, loud * 0.06);
   const quiet = f => rms[f] < thr;
   let a = 0, b = frames - 1; while (a < frames && quiet(a)) a++; while (b > a && quiet(b)) b--;
-  if (n === 1) return a <= b ? [pcm.subarray(a * F * 2, (b + 1) * F * 2)] : null;
+  if (a > b) return null;
+  if (n === 1) return [pcm.subarray(a * F * 2, (b + 1) * F * 2)];
+  // silences of 0.1 s or more inside the take are the possible cuts
   const runs = [];
-  for (let f = a; f <= b; f++) if (quiet(f)) { const s = f; while (f <= b && quiet(f)) f++; runs.push({ s, e: f, len: f - s }); }
+  for (let f = a; f <= b; f++) if (quiet(f)) { const s = f; while (f <= b && quiet(f)) f++; if (f - s >= 5) runs.push({ s, e: f, len: f - s, mid: (s + f) / 2 }); }
   if (runs.length < n - 1) return null;
-  const cuts = runs.slice().sort((x, y) => y.len - x.len).slice(0, n - 1).sort((x, y) => x.s - y.s);
+  // where each line should end, from the words (plus one for each line's own start and finish)
+  const span = b - a, wt = words.map(w => w + 1), all = wt.reduce((x, y) => x + y, 0);
+  const want = []; for (let k = 0, c = 0; k < n - 1; k++) { c += wt[k]; want.push(a + span * c / all); }
+  const longest = Math.max(...runs.map(r => r.len));
+  const cost = (k, j) => 4 * Math.abs(runs[j].mid - want[k]) / span - runs[j].len / longest;
+  // the cheapest set of n-1 cuts in order (dynamic programming over boundaries and candidate silences)
+  const m = runs.length, best = [], from = [];
+  for (let k = 0; k < n - 1; k++) {
+    best.push(new Float64Array(m).fill(Infinity)); from.push(new Int32Array(m).fill(-1));
+    let run = Infinity, at = -1;
+    for (let j = k; j < m - (n - 2 - k); j++) {
+      if (k) { const p = best[k - 1][j - 1]; if (p < run) { run = p; at = j - 1; } if (at < 0) continue; }
+      best[k][j] = (k ? run : 0) + cost(k, j); from[k][j] = at;
+    }
+  }
+  let j = -1, low = Infinity; best[n - 2].forEach((v, i) => { if (v < low) { low = v; j = i; } });
+  if (j < 0) return null;
+  const cuts = []; for (let k = n - 2; k >= 0; k--) { cuts.unshift(runs[j]); j = from[k][j]; }
   const pieces = [];
-  for (let i = 0, from = a; i < n; i++) {
-    let s = from, e = i < n - 1 ? cuts[i].s : b + 1;
+  for (let i = 0, start = a; i < n; i++) {
+    let s = start, e = i < n - 1 ? cuts[i].s : b + 1;
     while (s < e && quiet(s)) s++; while (e > s && quiet(e - 1)) e--;
     pieces.push([Math.max(0, s - 3), Math.min(frames, e + 3)]);
-    if (i < n - 1) from = cuts[i].e;
+    if (i < n - 1) start = cuts[i].e;
   }
   // seconds per word, line by line, against the take's own pace
   const pace = pieces.map(([s, e], i) => ((e - s) * F / 24000) / Math.max(1, words[i]));

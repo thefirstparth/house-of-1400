@@ -167,7 +167,9 @@ async function ttsGemini(turns) {
       };
       const j = await gemini(model, body, 2), part = j.candidates?.[0]?.content?.parts?.find(p => p.inlineData?.data);
       if (!part) throw new Error(`no audio for ${sp} (${j.candidates?.[0]?.finishReason || "?"})`);
-      const pieces = splitLines(pcmOf(Buffer.from(part.inlineData.data, "base64")), texts.map(t => t.split(/\s+/).length));
+      const take = pcmOf(Buffer.from(part.inlineData.data, "base64"));
+      writeFileSync(`${OUT}/solo-${sp}.wav`, Buffer.concat([wavHeader(take.length), take])); // kept as a run artifact, to see why a split failed
+      const pieces = splitLines(take, texts.map(t => t.split(/\s+/).length));
       if (!pieces) throw new Error(`${sp}'s take did not split into ${texts.length} lines`);
       mine.forEach((t, i) => lines.set(t, pieces[i]));
       log(`solo: ${sp}, ${texts.length} lines`);

@@ -110,6 +110,14 @@ test("podcast: a host's single-voice take is cut back into its lines at the long
   const pieces = splitLines(take(words), words);
   assert.equal(pieces.length, words.length);
   pieces.forEach((p, i) => assert.ok(Math.abs(p.length / 48000 - words[i] / 2.6) < 0.6, `line ${i}: ${p.length / 48000} s`));
+  // pauses between lines no longer than the breaths inside long lines (Tarun's take, 13 Oct) still split right
+  const tight = [16, 3, 22, 9], even = Buffer.concat([quiet(sec(0.3)), ...tight.flatMap((w, i) => {
+    const third = sec(w / 2.6 / 3);
+    return [noise(third), quiet(sec(w > 6 ? 0.45 : 0)), noise(third), quiet(sec(w > 6 ? 0.45 : 0)), noise(third), quiet(sec(i < tight.length - 1 ? 0.45 : 0.3))];
+  })]);
+  const cut = splitLines(even, tight);
+  assert.ok(cut, "an evenly paused take must split");
+  cut.forEach((p, i) => assert.ok(Math.abs(p.length / 48000 - tight[i] / 2.6 - (tight[i] > 6 ? 0.9 : 0)) < 0.5, `tight line ${i}: ${p.length / 48000} s`));
   // a take read straight through, with no pauses between the lines, does not split
   const straight = Buffer.concat([quiet(sec(0.3)), ...words.map(w => noise(sec(w / 2.6))), quiet(sec(0.3))]);
   assert.ok(splitLines(straight, words) === null, "a take with no pauses must not split");
