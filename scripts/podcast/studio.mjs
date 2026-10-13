@@ -67,12 +67,13 @@ const wordsIn = t => String(t || "").replace(/<[^>]+>/g, " ").split(/\s+/).filte
 const SERIOUS = new Set(["bad", "sombre", "concerned", "gentle"]);
 
 // Lays out the show. pieces: [{ speaker, pcm }] one per turn (solo), or take: one PCM of the whole conversation.
-// Returns { voice: [L, R], music: [L, R], seconds, marks } (Float32 stereo at RATE).
-export function layout({ turns, pieces, take, date = "", pan = {} }) {
-  const rand = rng(date), J = jingle(), S = sting(), O = outro(), gap = s => Math.round(s * RATE);
+// Returns { voice: [L, R], music: [L, R] or null, seconds, marks } (Float32 stereo at RATE). music: false leaves out
+// the jingle, stings and outro (Parth, 13 Oct: "remove all audio for now", config podcast.music).
+export function layout({ turns, pieces, take, date = "", pan = {}, music = true }) {
+  const rand = rng(date), none = new Float32Array(0), J = music ? jingle() : none, S = music ? sting() : none, O = music ? outro() : none, gap = s => Math.round(s * RATE);
   const lines = pieces ? pieces.map((p, i) => ({ ...turns[i], audio: f32(p.pcm) })) : [{ speaker: null, audio: f32(take) }];
   // where each line starts, in samples
-  let t = J.length - gap(1.1), last = -1e9;
+  let t = music ? J.length - gap(1.1) : gap(0.3), last = -1e9;
   const place = [], stings = [];
   lines.forEach((l, i) => {
     const prev = lines[i - 1], n = l.audio.length;
@@ -85,11 +86,11 @@ export function layout({ turns, pieces, take, date = "", pan = {} }) {
       if (wordsIn(l.text) <= 3 && prev.speaker !== l.speaker && !SERIOUS.has(prev.mood) && !SERIOUS.has(l.mood)) g = -Math.min(0.22, place[i - 1].n / RATE * 0.12);
       t = place[i - 1].at + place[i - 1].n + gap(g);
       // a sting before a marked part (not in the opening, never within twenty seconds of the last)
-      if (l.segment && i > 2 && t - last > gap(20)) { t += gap(0.25); stings.push(t); last = t; t += gap(1.05); }
+      if (music && l.segment && i > 2 && t - last > gap(20)) { t += gap(0.25); stings.push(t); last = t; t += gap(1.05); }
     }
     place.push({ at: Math.max(0, t), n, speaker: l.speaker });
   });
-  const end = place.at(-1).at + place.at(-1).n, outroAt = Math.max(place.at(-1).at - gap(0.6), end - gap(2.2)), total = Math.max(end + gap(3.8), outroAt + O.length);
+  const end = place.at(-1).at + place.at(-1).n, outroAt = Math.max(place.at(-1).at - gap(0.6), end - gap(2.2)), total = music ? Math.max(end + gap(3.8), outroAt + O.length) : end + gap(1);
   const vL = new Float32Array(total), vR = new Float32Array(total), mono = new Float32Array(total);
   // two mics: constant-power pan
   place.forEach((p, i) => {
@@ -107,7 +108,7 @@ export function layout({ turns, pieces, take, date = "", pan = {} }) {
   // turned down if needed, never up; the loudness step after the mix sets the level
   const top = bufs => bufs.reduce((m, b) => { for (const x of b) m = Math.max(m, Math.abs(x)); return m; }, 0);
   for (const bufs of [[vL, vR], [mono]]) { const m = top(bufs); if (m > 0.95) for (const b of bufs) for (let k = 0; k < b.length; k++) b[k] *= 0.95 / m; }
-  return { voice: [vL, vR], music: [mono, mono], seconds: total / RATE, marks: stings.length };
+  return { voice: [vL, vR], music: music ? [mono, mono] : null, seconds: total / RATE, marks: stings.length };
 }
 
 const wav = ([L, R]) => {
@@ -121,9 +122,13 @@ const wav = ([L, R]) => {
 // The mix: voices through the room (EQ, compression, early reflections), the music with a little space, a faint room
 // tone under both, then loudness to podcast level (-16 LUFS) as a 128 kbps stereo MP3.
 export function mix({ voice, music, seconds }, dir, out) {
-  writeFileSync(`${dir}/voice.wav`, wav(voice)); writeFileSync(`${dir}/music.wav`, wav(music));
+  writeFileSync(`${dir}/voice.wav`, wav(voice));
+  const room = "highpass=f=75,equalizer=f=200:t=q:w=1:g=1.5,equalizer=f=6500:t=q:w=1.5:g=-1.5,acompressor=threshold=0.1:ratio=2.5:attack=10:release=150:makeup=1.6,aecho=0.9:0.5:23|37:0.10|0.07";
+  // no music: the voices alone through the same treatment, with no room tone either (nothing added but the voices)
+  if (!music) return execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-i", `${dir}/voice.wav`, "-af", `${room},loudnorm=I=-16:TP=-1.5:LRA=11,aresample=44100`, "-ac", "2", "-codec:a", "libmp3lame", "-b:a", "128k", out]);
+  writeFileSync(`${dir}/music.wav`, wav(music));
   const fc = [
-    "[0:a]highpass=f=75,equalizer=f=200:t=q:w=1:g=1.5,equalizer=f=6500:t=q:w=1.5:g=-1.5,acompressor=threshold=0.1:ratio=2.5:attack=10:release=150:makeup=1.6,aecho=0.9:0.5:23|37:0.10|0.07[v]",
+    `[0:a]${room}[v]`,
     "[1:a]aecho=0.8:0.6:60|97|141:0.3|0.2|0.14,volume=0.55[m]",
     `anoisesrc=color=pink:amplitude=0.0016:sample_rate=${RATE}:duration=${seconds.toFixed(2)},aformat=channel_layouts=stereo[r]`,
     "[v][m][r]amix=inputs=3:normalize=0:duration=first,loudnorm=I=-16:TP=-1.5:LRA=11,aresample=44100[o]",

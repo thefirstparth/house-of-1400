@@ -241,9 +241,9 @@ function produce(turns, pcm) {
   writeFileSync(`${OUT}/episode.wav`, Buffer.concat([wavHeader(pcm.length), pcm]));
   if (P.studio !== false) {
     try {
-      const L = layout({ turns, pieces: soloPieces, take: soloPieces ? null : pcm, date, pan: P.pan || {} });
+      const L = layout({ turns, pieces: soloPieces, take: soloPieces ? null : pcm, date, pan: P.pan || {}, music: P.music !== false });
       mix(L, OUT, `${OUT}/episode.mp3`);
-      log(`studio: ${soloPieces ? "two mics, natural timing" : "one take"}, ${L.marks} sting(s), ${Math.round(L.seconds)} s`);
+      log(`studio: ${soloPieces ? "two mics, natural timing" : "one take"}, ${P.music === false ? "no music" : `${L.marks} sting(s)`}, ${Math.round(L.seconds)} s`);
       return L.seconds;
     } catch (e) { log("studio failed, plain mix instead:", e.message.split("\n")[0].slice(0, 200)); }
   }

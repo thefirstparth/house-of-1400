@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { spoken, intWords, rundown, checkScript, fallbackScript, feedXML, sayWhen, splitLines, onAir, SEGMENTS } from "../scripts/podcast/lib.mjs";
+import { spoken, intWords, rundown, checkScript, fallbackScript, feedXML, sayWhen, splitLines, onAir, SEGMENTS, writerPrompt } from "../scripts/podcast/lib.mjs";
 import { layout, jingle, sting, outro, RATE } from "../scripts/podcast/studio.mjs";
 
 const C = JSON.parse(readFileSync(new URL("../config/house.json", import.meta.url), "utf8")), P = C.podcast;
@@ -131,7 +131,7 @@ test("podcast: each market's figure is said once; the sign-off and segment marks
   const T = (speaker, text, segment) => ({ speaker, mood: "neutral", text, ...(segment ? { segment } : {}) });
   const turns = [T("Ashu", "Welcome to The House of 1400, Bhide's paper."), T("Tarun", "Hello!"), ...Array.from({ length: 8 }, (_, i) => T(i % 2 ? "Tarun" : "Ashu", `Line ${i}?`)),
     T("Ashu", "The rupee firmed to ninety-five point two five today.", "money"), T("Tarun", "Nice."), T("Ashu", "The rupee is at ninety-five point two eight."), T("Tarun", "Bye from The House of 1400.")];
-  const msgs = checkScript(turns, { segments: [], editor: "T. A. Bhide" }, { ...P, words: { min: 10, max: 9999 } }).map(p => p.msg);
+  const msgs = checkScript(turns, { segments: [], editor: "T. A. Bhide" }, { ...P, music: true, words: { min: 10, max: 9999 } }).map(p => p.msg);
   assert.ok(msgs.some(m => /figure for the rupee in 2 turns/.test(m)), msgs.join(" | "));
   assert.ok(msgs.some(m => /sign-off/.test(m)));
   assert.ok(msgs.some(m => /"segment" mark/.test(m)));
@@ -164,6 +164,12 @@ test("podcast: the studio lays out jingle, stings, two mics and natural timing, 
   let d = 0; for (let k = 0; k < one.voice[0].length; k++) d += Math.abs(one.voice[0][k] - one.voice[1][k]); assert.ok(d < 1e-6);
   assert.equal(one.marks, 0);
   for (const b of [jingle(), sting(), outro()]) { let pk = 0; for (const x of b) pk = Math.max(pk, Math.abs(x)); assert.ok(pk > 0.05 && pk < 1, `music peak ${pk}`); }
+  // no music (Parth, 13 Oct): voices only, no stings, no music track, and the writer is not asked for segment marks
+  const quiet = layout({ turns, pieces, date: "2026-10-14", pan: { Ashu: -0.3, Tarun: 0.3 }, music: false });
+  assert.equal(quiet.music, null); assert.equal(quiet.marks, 0);
+  assert.ok(quiet.seconds < L.seconds - 5 && quiet.seconds > voiced - 3, `${quiet.seconds} s without music`);
+  assert.ok(!/musical sting/.test(writerPrompt(rundown(E, P), { ...P, music: false })));
+  assert.ok(!checkScript(Array.from({ length: 10 }, (_, i) => ({ speaker: i % 2 ? "Tarun" : "Ashu", mood: "neutral", text: "Hello there?" })), { segments: [] }, { ...P, music: false }).some(p => /segment/.test(p.msg)));
   // the same day lays out the same way (a rerun sounds the same)
   assert.equal(layout({ turns, pieces, date: "2026-10-14", pan: {} }).seconds, layout({ turns, pieces, date: "2026-10-14", pan: {} }).seconds);
 });

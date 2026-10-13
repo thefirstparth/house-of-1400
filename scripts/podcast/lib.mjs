@@ -284,8 +284,8 @@ THE SHOW, in this order, the way the paper is laid out (everything comes from th
 IT IS A RADIO SHOW, with the habits of one
 - A time check in passing, early on, from "on_air" if given ("it's a little after two here in Bengaluru, and the chai's poured").
 - The same segment names every day, said the way a radio host would: "Page One", then the desks by the paper's names, "Fixture Watch" for the coming matches, "the Betting Window" for what the markets expect, and "Bhide's House Note" for the House Note, introduced like a letter read on air ("and here's Bhide's House Note for today").
-- Mark the FIRST turn of each new part with "segment", one of: ${SEGMENTS.join(", ")}. A short musical sting plays just before that turn, so mark only real changes of part (about five to nine in an episode), never two in a row.
-
+${P.music === false ? "" : `- Mark the FIRST turn of each new part with "segment", one of: ${SEGMENTS.join(", ")}. A short musical sting plays just before that turn, so mark only real changes of part (about five to nine in an episode), never two in a row.
+`}
 FUN: you have creative headroom in HOW things are said: banter between the two, a running joke, a playful line on the good news, the markets and the House Note. Never in WHAT is said: every fact, name, number, score, date and time stays exactly as in the rundown, and nothing is joked about near bad news.
 
 HOW IT SOUNDS
@@ -309,7 +309,7 @@ HOW IT SOUNDS
 EXAMPLE OF THE SOUND ONLY (its facts are invented: never use them; this is the rhythm and feeling to aim for)
 ${EXAMPLE}
 
-Return JSON only: {"turns":[{"speaker":"${A.id}"|"${B.id}","mood":"...","text":"...","segment":"(only on the first turn of a part)"}]}
+Return JSON only: {"turns":[{"speaker":"${A.id}"|"${B.id}","mood":"...","text":"..."${P.music === false ? "" : `,"segment":"(only on the first turn of a part)"`}}]}
 
 RUNDOWN
 ${JSON.stringify(R, null, 1)}`;
@@ -346,7 +346,7 @@ export function checkScript(turns, R, P = {}) {
   }
   if (P.signoff) { const norm = x => words(x).join(" "); if (!norm(turns.at(-1)?.text).includes(norm(P.signoff))) soft(`the last line is not the sign-off, word for word: "${P.signoff}"`); }
   const marks = turns.filter(t => t.segment).length;
-  if (marks < 4) soft(`only ${marks} turns carry a "segment" mark (needs one on the first turn of each part, five or more)`);
+  if (P.music !== false && marks < 4) soft(`only ${marks} turns carry a "segment" mark (needs one on the first turn of each part, five or more)`);
   turns.forEach((t, i) => { if (t.segment && !SEGMENTS.includes(t.segment)) soft(`turn ${i + 1}: unknown segment "${t.segment}" (use one of ${SEGMENTS.join(", ")})`); });
   const title = String(P.title || "The House of 1400").toLowerCase().replace("1400", "(1400|fourteen hundred)");
   const named = t => new RegExp(title.replace(/^the /, "")).test(String(t?.text || "").toLowerCase());

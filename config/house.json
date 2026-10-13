@@ -3456,6 +3456,7 @@
     ],
     "signoff": "That's The House of 1400 for today. Same time tomorrow, same chai.",
     "studio": true,
+    "music": false,
     "pan": {
       "Ashu": -0.3,
       "Tarun": 0.3
