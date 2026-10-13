@@ -272,6 +272,7 @@ HOW IT SOUNDS
 - Never use these: "Turning to", "In other news", "Moving on", "Let's look at", "Let us look at", "Meanwhile", "Closer to home", "Stay tuned", "On the cricket field".
 - Use only facts in the rundown. Never add a fact, name, number or quote. Short personal reactions are fine ("I'd love to see that").
 - A host's question is answered ONLY with what the rundown says. Never answer "yes", "right there" or "exactly" to a detail the rundown does not state (which terminal, which app, which player); answer with what it does say instead. Best of all, ask questions the rundown can answer.
+- Do not add descriptive details the rundown lacks, even small ones: a time of day ("that morning"), a kind of place ("commercial airport"), a size, a mood of a crowd. Colour comes from the hosts' reactions, never from new details.
 - Round honestly: never round a number up past what it is. 0.7 per cent is "under one per cent" or "about three-quarters of a per cent", never "nearly one per cent"; "over three hundred" only when it is over three hundred.
 - Never address the listeners by name; speak to them as "you" if at all.
 - No talk about how the paper or the show is made, about sources or checking, or about anything being missing.
