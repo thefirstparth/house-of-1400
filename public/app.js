@@ -1683,8 +1683,19 @@ function paintSignals() {
     if (!el) { el = document.createElement("div"); el.className = "signal-slot"; secEl.querySelector(".sechead")?.after(el); }
     const html = signalHTML(G[id], LIVE.signals?.as_of);
     if (el.dataset.html !== html) { el.innerHTML = html; el.dataset.html = html; }
+    // The box already gives the next match's forecast, so that match's row does not repeat it (Parth, 13 Oct: the
+    // Roma odds twice in Madridismo); later matches keep theirs. Same sport, within a day of the box's match.
+    // the match's own day: from the market's link (".../crint-ind-wst-2026-10-14"), else its end (a market can settle
+    // days after the match)
+    const slug = String(G[id]?.url || "").match(/(\d{4}-\d{2}-\d{2})(?:[/?#]|$)/)?.[1];
+    const day = !html ? NaN : slug ? Date.parse(slug) : G[id]?.end ? Date.parse(istDate(new Date(G[id].end))) : NaN;
+    for (const a of secEl.querySelectorAll("a.odds[data-sport]")) {
+      const same = Number.isFinite(day) && a.dataset.sport === SIGNAL_SPORT[id] && Math.abs(Date.parse(a.dataset.day) - day) <= 864e5;
+      if (a.hidden !== same) a.hidden = same;
+    }
   }
 }
+const SIGNAL_SPORT = { paddock: "f1", madrid: "football", crease: "cricket", deuce: "tennis" };
 
 // ---- The odds on every upcoming match (Parth, 3 Oct: "every upcoming match, found automatically"; from the 3 Oct
 // edition). /api/live/odds (lib/odds.js) lists the open match markets on Kalshi and Polymarket for everything the
@@ -1724,7 +1735,7 @@ function oddsHTML(m, { fav = false, short = false } = {}) {
   const nm = n => (short || m.sport === "tennis" || m.sport === "f1" ? (n === "Draw" ? n : lastName(n)) : n);
   const o = [...m.outcomes].sort((a, b) => b.prob - a.prob).slice(0, fav ? 1 : 3), at = LIVE.odds?.as_of;
   const when = at ? (istDate(new Date(at)) === istDate() ? istTime(at) : `${fmt(at, { day: "numeric", month: "short" })}, ${istTime(at)}`) : "";
-  return `<a class="odds" href="${esc(m.url)}" target="_blank" rel="noopener" title="${esc(`${m.source}${at ? ` · as of ${when} IST` : ""}`)}">${o.map((x, i) => `<span${i === 0 ? ' class="fav"' : ""}><b class="tnum">${Math.round(x.prob)}%</b> ${esc(nm(x.name))}</span>`).join(" ")} <small>${esc(m.source)}${when ? ` ${esc(when)}` : ""}</small></a>`;
+  return `<a class="odds" data-sport="${esc(m.sport || "")}" data-day="${m.date ? esc(istDate(new Date(m.date))) : ""}" href="${esc(m.url)}" target="_blank" rel="noopener" title="${esc(`${m.source}${at ? ` · as of ${when} IST` : ""}`)}">${o.map((x, i) => `<span${i === 0 ? ' class="fav"' : ""}><b class="tnum">${Math.round(x.prob)}%</b> ${esc(nm(x.name))}</span>`).join(" ")} <small>${esc(m.source)}${when ? ` ${esc(when)}` : ""}</small></a>`;
 }
 // a row's two sides from its label: "Asian Games cricket · India v Pakistan · gold-medal match" -> India, Pakistan
 const sidesOfLabel = l => { const seg = String(l || "").split(" · ").find(x => / v /.test(x)); return seg ? seg.split(" v ").map(x => x.trim()) : null; };
