@@ -406,3 +406,31 @@ ${items}
 </rss>
 `;
 }
+
+// Cuts one host's single-voice take (24 kHz, 16-bit mono PCM: every line of theirs read in order, with a long pause
+// between lines) back into its lines: the n-1 longest silences inside the take are the cuts. Returns null when the take
+// does not split cleanly (too few pauses, or a piece far too long or short for its words), and the caller falls back.
+export function splitLines(pcm, words) {
+  const n = words.length, F = 480, frames = Math.floor(pcm.length / 2 / F), rms = new Float64Array(frames);
+  for (let f = 0; f < frames; f++) { let s = 0; for (let i = 0; i < F; i++) { const v = pcm.readInt16LE((f * F + i) * 2); s += v * v; } rms[f] = Math.sqrt(s / F); }
+  const loud = [...rms].sort((a, b) => a - b)[Math.floor(frames * 0.95)] || 0, thr = Math.max(150, loud * 0.06);
+  const quiet = f => rms[f] < thr;
+  let a = 0, b = frames - 1; while (a < frames && quiet(a)) a++; while (b > a && quiet(b)) b--;
+  if (n === 1) return a <= b ? [pcm.subarray(a * F * 2, (b + 1) * F * 2)] : null;
+  const runs = [];
+  for (let f = a; f <= b; f++) if (quiet(f)) { const s = f; while (f <= b && quiet(f)) f++; runs.push({ s, e: f, len: f - s }); }
+  if (runs.length < n - 1) return null;
+  const cuts = runs.slice().sort((x, y) => y.len - x.len).slice(0, n - 1).sort((x, y) => x.s - y.s);
+  const pieces = [];
+  for (let i = 0, from = a; i < n; i++) {
+    let s = from, e = i < n - 1 ? cuts[i].s : b + 1;
+    while (s < e && quiet(s)) s++; while (e > s && quiet(e - 1)) e--;
+    pieces.push([Math.max(0, s - 3), Math.min(frames, e + 3)]);
+    if (i < n - 1) from = cuts[i].e;
+  }
+  // seconds per word, line by line, against the take's own pace
+  const pace = pieces.map(([s, e], i) => ((e - s) * F / 24000) / Math.max(1, words[i]));
+  const mid = pace.slice().sort((x, y) => x - y)[Math.floor(n / 2)];
+  if (pieces.some(([s, e], i) => e - s < 8 || (words[i] >= 4 && (pace[i] > mid * 2.6 || pace[i] < mid / 2.6)))) return null;
+  return pieces.map(([s, e]) => pcm.subarray(s * F * 2, e * F * 2));
+}

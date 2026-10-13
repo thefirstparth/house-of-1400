@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { spoken, intWords, rundown, checkScript, fallbackScript, feedXML, sayWhen } from "../scripts/podcast/lib.mjs";
+import { spoken, intWords, rundown, checkScript, fallbackScript, feedXML, sayWhen, splitLines } from "../scripts/podcast/lib.mjs";
 
 const C = JSON.parse(readFileSync(new URL("../config/house.json", import.meta.url), "utf8")), P = C.podcast;
 const paper = { desks: C.desks_v2.desks, sections: C.sections };
@@ -97,4 +97,23 @@ test("podcast: what is coming up is the paper's Fixture List (Warriors pre-seaso
   assert.match(coming.join(" | "), /Los Angeles Lakers v Golden State Warriors, pre-season, tomorrow at seven thirty a m/);
   assert.match(coming.join(" | "), /AS Roma v Real Madrid, Champions League, on Wednesday at twelve thirty a m, late tomorrow night/);
   assert.doesNotMatch(coming.join(" | "), /Spain v Georgia/);
+});
+
+test("podcast: a host's single-voice take is cut back into its lines at the long pauses, and a bad take is refused", () => {
+  // speech as noise at about 2.6 words a second with short breaths inside lines, then a long pause between lines
+  const sec = x => Math.round(24000 * x), noise = n => { const b = Buffer.alloc(n * 2); for (let i = 0; i < n; i++) b.writeInt16LE(Math.round((Math.random() * 2 - 1) * 8000), i * 2); return b; };
+  const quiet = n => Buffer.alloc(n * 2), words = [12, 3, 20, 8, 1];
+  const take = lines => Buffer.concat([quiet(sec(0.3)), ...lines.flatMap((w, i) => {
+    const half = sec(w / 2.6 / 2);
+    return [noise(half), quiet(sec(w > 6 ? 0.35 : 0.05)), noise(half), quiet(sec(i < lines.length - 1 ? 1.6 : 0.4))];
+  })]);
+  const pieces = splitLines(take(words), words);
+  assert.equal(pieces.length, words.length);
+  pieces.forEach((p, i) => assert.ok(Math.abs(p.length / 48000 - words[i] / 2.6) < 0.6, `line ${i}: ${p.length / 48000} s`));
+  // a take read straight through, with no pauses between the lines, does not split
+  const straight = Buffer.concat([quiet(sec(0.3)), ...words.map(w => noise(sec(w / 2.6))), quiet(sec(0.3))]);
+  assert.ok(splitLines(straight, words) === null, "a take with no pauses must not split");
+  // nor does one where a pause fell inside a long line and two short lines ran together (pieces far off their words)
+  const off = Buffer.concat([quiet(sec(0.3)), noise(sec(2)), quiet(sec(1.6)), noise(sec(2)), quiet(sec(1.6)), noise(sec(9)), quiet(sec(0.3))]);
+  assert.ok(splitLines(off, [5, 20, 5]) === null, "pieces far off their word counts must not split");
 });

@@ -12,7 +12,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { rundown, writerPrompt, checkScript, fallbackScript, spoken, feedXML, deepItems } from "./lib.mjs";
+import { rundown, writerPrompt, checkScript, fallbackScript, spoken, feedXML, deepItems, splitLines } from "./lib.mjs";
 
 const args = process.argv.slice(2), FORCE = args.includes("--force"), DRY = args.includes("--dry"), FEED_ONLY = args.includes("--feed");
 const H = new URL("../../", import.meta.url).pathname, OUT = `${H}.podcast`;
@@ -153,17 +153,40 @@ async function ttsGemini(turns) {
     log(`audio: ${part.inlineData.mimeType || "?"}`);
     return pcmOf(Buffer.from(part.inlineData.data, "base64"));
   };
+  // Solo: each host alone, all their lines in ONE single-voice take, then cut at the pauses and put back in order. With
+  // one voice in a take there is nothing for the voice or accent to drift towards (Parth, 13 Oct: Tarun still
+  // inconsistent at 5/10 with the steady form). Two calls an episode. If a take will not split cleanly, the steady form.
+  const solo = async (list, model) => {
+    const hosts = [...new Set(list.map(t => t.speaker))], lines = new Map();
+    for (const sp of hosts) {
+      const mine = list.filter(t => t.speaker === sp), texts = mine.map(t => spoken(t.text, P.pronounce));
+      const other = hosts.find(h => h !== sp) || "a friend";
+      const body = {
+        contents: [{ role: "user", parts: [{ text: `${hostStyle[sp] || ""} ${sp} is chatting with an old friend, ${other}, about the afternoon's news over chai: warm, natural and unhurried, with real reactions, never reading. ${sp} keeps exactly the same voice and accent in every line, from the first to the last. Lively and warm for good news, gentle and serious for sad news. These are ${sp}'s lines in the conversation, in order: read each one as a reply in that chat, and leave a pause of two full seconds after every line.\n\n${texts.join("\n\n")}` }] }],
+        generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: hostVoice[sp] } } } },
+      };
+      const j = await gemini(model, body, 2), part = j.candidates?.[0]?.content?.parts?.find(p => p.inlineData?.data);
+      if (!part) throw new Error(`no audio for ${sp} (${j.candidates?.[0]?.finishReason || "?"})`);
+      const pieces = splitLines(pcmOf(Buffer.from(part.inlineData.data, "base64")), texts.map(t => t.split(/\s+/).length));
+      if (!pieces) throw new Error(`${sp}'s take did not split into ${texts.length} lines`);
+      mine.forEach((t, i) => lines.set(t, pieces[i]));
+      log(`solo: ${sp}, ${texts.length} lines`);
+    }
+    // back in the script's order, a short breath between speakers and a shorter one when the same host goes on
+    const gap = s => Buffer.alloc(Math.round(24000 * s) * 2);
+    return Buffer.concat(list.flatMap((t, i) => [i ? gap(list[i - 1].speaker === t.speaker ? 0.2 : 0.32) : Buffer.alloc(0), lines.get(t)]));
+  };
   // One take (Parth, 13 Oct: no chunks). The steady form first (config podcast.voice_form), per-turn second.
   const words = turns.reduce((a, t) => a + spoken(t.text, P.pronounce).split(/\s+/).length, 0);
   // The main voice model in its two accepted forms, then the other Gemini voice models (same voices) in the transcript form
   const [main, ...others] = P.tts_models || [P.tts_model || "gemini-3.8-flash-tts"];
   const forms = { steady, "per-turn": perTurn, transcript };
   const lead = forms[P.voice_form] ? P.voice_form : "steady";
-  const first = [[main, lead, forms[lead]], ...["steady", "per-turn"].filter(n => n !== lead).map(n => [main, n, forms[n]])];
+  const first = [...(P.voice_form === "solo" ? [[main, "solo", "solo"]] : []), [main, lead, forms[lead]], ...["steady", "per-turn"].filter(n => n !== lead).map(n => [main, n, forms[n]])];
   const takes = [...first, ...others.map(m => [m, "transcript", transcript])];
   for (const [model, name, form] of takes) {
     try {
-      const pcm = await one(turns, form, model), secs = pcm.length / 48000;
+      const pcm = form === "solo" ? await solo(turns, model) : await one(turns, form, model), secs = pcm.length / 48000;
       // faster than 230 words a minute means the take was cut off
       if (secs < (words / 230) * 60) throw new Error(`came back cut short (${Math.round(secs)} s for ${words} words)`);
       log(`voice: ${model}, ${name}`); voiceModel = model;
