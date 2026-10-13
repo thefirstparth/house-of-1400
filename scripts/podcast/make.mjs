@@ -133,7 +133,15 @@ async function ttsGemini(turns) {
     contents: [{ role: "user", parts: [{ text: `${P.voice_instruction || `${P.style || ""} ${Object.values(hostStyle).join(" ")}`} Match each moment's tone to its news: lively and warm for good news, gentle and serious for sad news, never laughing near it. Read this conversation exactly as written:\n\n${list.map(t => `${t.speaker}: ${spoken(t.text, P.pronounce)}`).join("\n")}` }] }],
     generationConfig: { responseModalities: ["AUDIO"], speechConfig: speakers },
   });
-  // One part per turn with its own style (the documented 3.8 form)
+  // One part per turn (3.8 refuses a transcript: "Multi-speaker generation requests must specify speech_metadata.speaker
+  // for each text part", sample run of 13 Oct) with the SAME style text on every line of a speaker, word for word: one
+  // instruction for the whole take, as in the transcript form, with no per-line mood to pull the voice around
+  const steadyStyle = sp => `${P.voice_instruction || P.style || ""} ${hostStyle[sp] || ""} Match each moment's tone to its news: lively and warm for good news, gentle and serious for sad news, never laughing near it.`.trim();
+  const steady = list => ({
+    contents: [{ role: "user", parts: list.map(t => ({ text: spoken(t.text, P.pronounce), speech_metadata: { speaker: t.speaker, style: steadyStyle(t.speaker) } })) }],
+    generationConfig: { responseModalities: ["AUDIO"], speechConfig: speakers },
+  });
+  // One part per turn with its own style and mood (the documented 3.8 form)
   const perTurn = list => ({
     contents: [{ role: "user", parts: list.map(t => ({ text: spoken(t.text, P.pronounce), speech_metadata: { speaker: t.speaker, style: styleOf(t) } })) }],
     generationConfig: { responseModalities: ["AUDIO"], speechConfig: speakers },
@@ -145,11 +153,13 @@ async function ttsGemini(turns) {
     log(`audio: ${part.inlineData.mimeType || "?"}`);
     return pcmOf(Buffer.from(part.inlineData.data, "base64"));
   };
-  // One take (Parth, 13 Oct: no chunks). The transcript form first (config podcast.voice_form), per-turn second.
+  // One take (Parth, 13 Oct: no chunks). The steady form first (config podcast.voice_form), per-turn second.
   const words = turns.reduce((a, t) => a + spoken(t.text, P.pronounce).split(/\s+/).length, 0);
-  // The main voice model in both forms, then the other Gemini voice models (same voices) in the transcript form
+  // The main voice model in its two accepted forms, then the other Gemini voice models (same voices) in the transcript form
   const [main, ...others] = P.tts_models || [P.tts_model || "gemini-3.8-flash-tts"];
-  const first = P.voice_form === "per-turn" ? [[main, "per-turn", perTurn], [main, "transcript", transcript]] : [[main, "transcript", transcript], [main, "per-turn", perTurn]];
+  const forms = { steady, "per-turn": perTurn, transcript };
+  const lead = forms[P.voice_form] ? P.voice_form : "steady";
+  const first = [[main, lead, forms[lead]], ...["steady", "per-turn"].filter(n => n !== lead).map(n => [main, n, forms[n]])];
   const takes = [...first, ...others.map(m => [m, "transcript", transcript])];
   for (const [model, name, form] of takes) {
     try {
