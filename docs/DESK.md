@@ -38,7 +38,7 @@ Every pool story marked **TOP** or **ANSWER** (a source's own place: Ranchi, Pra
 ## Writing
 - **Every item carries `section`,** its desk, even on the front page.
 - **`short`:** fact first, 50 to 60 words, neutral (checked from the 14 Oct edition).
-- **`more` (every full story):** 150 to 250 words in 2 to 4 paragraphs, written from the pool's article text. Its first paragraph is printed under the summary straight away (the rest behind "Read more"), so make it the strongest and never a repeat of the summary. Cover the background, the figures, who said what on the record, and what happens next. Never repeat the short version.
+- **`more` (every full story):** 150 to 250 words in 2 to 4 paragraphs, written from the pool's article text. The page shows the summary and why it matters; the long version sits behind "Read more" (13 Oct), so it must stand on its own and never repeat the summary. Cover the background, the figures, who said what on the record, and what happens next. Never repeat the short version.
 - **A brief:** a headline plus two sentences, at least 22 words.
 - **Why it matters:** one sentence, and "for you" only when it is really personal. `tone` is good, bad or mixed only when that is clear.
 - **Sources:** the publisher's own link (the pool's `Source:` line), never a Google News link, never a paywalled outlet only.

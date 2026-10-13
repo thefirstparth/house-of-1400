@@ -471,10 +471,11 @@ const markIn = (st, text, seen) => {
   const h = esc(st.highlight), i = t.indexOf(h); if (i < 0) return t;
   seen.done = true; return `${t.slice(0, i)}<mark class="hl">${h}</mark>${t.slice(i + h.length)}`;
 };
-// The summary, then the long version's first paragraph straight away, and the rest behind "Read more" (Parth, 13 Oct:
-// the summary alone, 30 to 56 words, was not enough and left the space beside a drawing empty)
+// The summary and why it matters on the page, the whole long version behind "Read more" (Parth, 13 Oct, option A:
+// summary, first paragraph and why ran to about 140 words a story, too long; the first paragraph shown earlier that
+// day is withdrawn)
 function storyHTML(st, { lead = false, kickerPrefix = "" } = {}) {
-  const M = st.more || [], shown = M.length > 1 ? M[0] : null, rest = shown ? M.slice(1) : M, more = rest.length, seen = {};
+  const M = st.more || [], shown = null, rest = M, more = rest.length, seen = {};
   const H = lead ? "h2" : "h3", stamp = lead ? stampHTML(st) : "";
   const fig = artFig(st.id);
   return `<article class="${lead ? "lead-story" : "story"}" id="s-${esc(st.id)}" style="--acc:${accent(st.section)}" data-fam="${fam(st.section)}" data-title="${esc(st.headline)}" data-thread="${esc(st.thread_id)}" data-section="${esc(st.section)}">
