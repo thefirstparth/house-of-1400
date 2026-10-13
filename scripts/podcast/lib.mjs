@@ -127,6 +127,23 @@ export function fixtureList(E, follows = {}) {
   return [...keep, ...out, ...T].filter(f => Number.isFinite(Date.parse(f.when_utc))).sort((a, b) => String(a.when_utc).localeCompare(String(b.when_utc)));
 }
 
+// "The market expects", as Page One picks it (v2/layer.js betsPick, config betting.page_one): the busiest prediction
+// markets that touch what Parth follows; the podcast says at most two, each with its favourite (Parth, 13 Oct).
+export function marketsExpect(E, paper = {}, k = 2) {
+  const P = paper.betting?.page_one || {}, F = paper.follows || {};
+  const names = [F.football_club?.name, F.football_club?.name?.replace(/^Real /, ""), F.f1_driver?.name, ...(F.tennis_players || []), "India",
+    ...(F.cricket_team?.priority || []).filter(x => !/^(team|others)$/.test(x)), F.nba_team?.name].filter(Boolean).flatMap(n => [n, lastName(n)]), teams = F.national_teams || [];
+  const has = (t, n) => new RegExp(`\\b${n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(t);
+  const cats = new Set((P.then?.categories || []).map(c => c.toLowerCase())), last = P.last?.pattern ? new RegExp(P.last.pattern, "i") : null;
+  const match = b => / vs?\.? /i.test(b.title || "");
+  const score = b => { const t = `${b.title} ${(b.outcomes || []).map(o => o.name).join(" ")}`;
+    if (names.some(n => has(t, n))) return 3;
+    if (match(b)) return teams.some(n => has(b.title, n)) ? 2 : 0;
+    return cats.has(String(b.category || "").toLowerCase()) ? 2 : last && last.test(`${b.title} ${b.category || ""}`) ? 1 : 0; };
+  return (Array.isArray(E.betting) ? E.betting : []).map((b, i) => ({ b, s: score(b), i })).filter(x => x.s > 0).sort((x, y) => y.s - x.s || (y.b.volume24h || 0) - (x.b.volume24h || 0) || x.i - y.i).slice(0, k)
+    .map(({ b }) => { const o = [...(b.outcomes || [])].sort((x, y) => y.prob - x.prob)[0]; return o ? `${b.title}: the favourite is ${o.name}, about ${Math.round(o.prob)}%` : null; }).filter(Boolean);
+}
+
 // The running order (Parth, 13 Oct 2026): the lead, then the paper's desks in a listening order, each item marked
 // "deep" (a real back-and-forth) or "quick" (a line or two). Deep: the lead and the strongest stories by Bhide's
 // importance score, front-page stories first among equals, at least one from Sport; quick: the rest, up to quick_max.
@@ -151,9 +168,14 @@ export function rundown(E, P = {}, now, paper = {}) {
   const [lead, ...rest] = list;
   const score = s => (imp[s.id] ?? 1) + (front.has(s.id) ? 0.5 : 0) + (s.short ? 0.25 : 0);
   const ranked = rest.map((x, i) => ({ x, i })).sort((a, b) => score(b.x) - score(a.x) || a.i - b.i).map(r => r.x);
-  const deepN = Math.max(0, (P.deep_max || 6) - 1), deep = ranked.slice(0, deepN);
-  if (!deep.some(s => desk(s).id === "sport") && desk(lead || {}).id !== "sport") { const sp = ranked.find(s => desk(s).id === "sport"); if (sp && deep.length) deep[deep.length - 1] = sp; else if (sp) deep.push(sp); }
-  const deepIds = new Set(deep.map(s => s.id)), quick = ranked.filter(s => !deepIds.has(s.id)).slice(0, P.quick_max || 14);
+  // Page One first, as the paper (Parth, 13 Oct): the lead, then the front page's stories in the paper's order (each a
+  // real back-and-forth) and its briefs; then the desks with everything else, the strongest few as back-and-forths
+  // (at least two, and at least one from Sport if the front page has none), the rest in a line or two.
+  const seconds = (E.front?.seconds || []).filter(x => x?.headline && x.id !== lead?.id), fbriefs = (E.front?.briefs || []).filter(x => x?.headline && x.id !== lead?.id);
+  const onFront = new Set([lead?.id, ...seconds.map(x => x.id), ...fbriefs.map(x => x.id)]), others = ranked.filter(x => !onFront.has(x.id));
+  const deep = others.slice(0, Math.max(2, (P.deep_max || 6) - 1 - seconds.length));
+  if (![lead, ...seconds, ...deep].some(x => x && desk(x).id === "sport")) { const sp = others.find(x => desk(x).id === "sport"); if (sp && !deep.includes(sp)) deep.splice(Math.max(0, deep.length - 1), 1, sp); }
+  const deepIds = new Set(deep.map(x => x.id)), quick = others.filter(x => !deepIds.has(x.id)).slice(0, P.quick_max || 18);
   const item = (s, depth) => ({ id: s.id, desk: desk(s).name, section: nameOf[s.section] || null, kicker: s.kicker || null, headline: sayTimes(s.headline), tone: ["good", "bad", "mixed"].includes(s.tone) ? s.tone : "neutral", depth, text: sayTimes(cut(storyText(s), depth === "quick" ? 360 : 1100)), why: sayTimes(s.why?.text) || null });
   const snap = E.snapshot || {}, ok = k => (snap[k]?.value && !snap[k]?.error ? snap[k].value : null);
   const idx = ok("markets")?.indices || [], fx = ok("fx"), gold = ok("gold_in");
@@ -198,8 +220,9 @@ export function rundown(E, P = {}, now, paper = {}) {
   if (results.length || coming.length) Object.assign(groups.sport ||= { desk: named("sport"), items: [] }, { results, coming });
   if (weather) (groups.home ||= { desk: named("home"), items: [] }).weather = weather;
   if (ahead.length) groups.week = { desk: "The Week Ahead", items: [], coming: ahead };
-  const segments = [...ORDER, ...Object.keys(groups).filter(k => !ORDER.includes(k))].filter(k => groups[k]).map(k => groups[k]);
-  return { date: E.date, day: longDate(E.date), lead: lead ? { ...item(lead, "deep"), desk: "Lead" } : null, segments, house_note: E.house_note || null, editor_note: E.big_day ? E.editor_note || null : null };
+  const page1 = [...seconds.map(x => item(x, "deep")), ...fbriefs.map(x => item(x, "quick"))];
+  const segments = [...(page1.length ? [{ desk: "Page One", items: page1 }] : []), ...[...ORDER, ...Object.keys(groups).filter(k => !ORDER.includes(k))].filter(k => groups[k]).map(k => groups[k])];
+  return { date: E.date, day: longDate(E.date), editor: P.author || "T. A. Bhide", lead: lead ? { ...item(lead, "deep"), desk: "Lead" } : null, segments, market_expects: marketsExpect(E, paper), house_note: E.house_note || null, editor_note: E.big_day ? E.editor_note || null : null };
 }
 export const deepItems = R => [R.lead, ...(R.segments || []).flatMap(s => s.items.filter(i => i.depth === "deep"))].filter(Boolean);
 
@@ -224,15 +247,20 @@ HOSTS
 - ${A.id} (${A.gender || "woman"}): ${A.about || ""}
 - ${B.id} (${B.gender || "man"}): ${B.about || ""}
 
-THE SHOW, in this order (everything comes from the RUNDOWN below)
-1. Open (first two turns): ${A.id} welcomes the listeners to the show BY NAME and gives the day, something like "Good afternoon, and welcome to ${P.title || "The House of 1400"}. It's ${R.day}, I'm ${A.id}..." and ${B.id} says hello too. Then straight into the lead as a hook, and the two talk the lead through properly.
-2. Then the desk segments in the order given. Items marked "deep" get a real back-and-forth of about 80 to 140 words: one host tells it, the other reacts and asks what a listener would ask (what does it mean for us, why now, who is this), answered from "why" and the text. Items marked "quick" get one or two sentences each; several quick ones can run together briskly. Mention every item.
-3. If you name a segment, use the paper's desk names: News, Close to Home, Money, Tech and AI, Sport, Off Duty. "Close to Home" means Bengaluru only. A story from Delhi or anywhere else is News, never "close to home".
-4. Sport gets real energy: every sport item, the recent results (skip a result a story already covered; never give a result's clock time), and EVERY match in "coming", even when no story covers it (say each day and time EXACTLY as written, e.g. "on Thursday at twelve thirty a m, late on Wednesday night"; match times must be precise).
-5. Money: the market numbers in one or two lines, no more than three numbers in all.
-6. Weather, if given: one everyday line ("warm, with a fair chance of rain later").
-7. The Week Ahead, if given: a couple of quick lines on what is coming in the next few days.
-8. Close: the House Note retold in the hosts' own words with its punchline intact (if it is about a story already told, do not tell the story again: go straight to the joke), then a short, warm goodbye that names the show again ("That's ${P.title || "The House of 1400"} for today...").
+THE SHOW, in this order, the way the paper is laid out (everything comes from the RUNDOWN below)
+1. Open (first two turns): ${A.id} welcomes the listeners to the show BY NAME and gives the day, something like "Good afternoon, and welcome to ${P.title || "The House of 1400"}. It's ${R.day}, I'm ${A.id}..." and ${B.id} says hello too. Mention, lightly and in your own words, that this is ${R.editor}'s paper (the editor), at the open or at the close.
+2. The lead as a hook, and the two talk it through properly.
+3. Page One: the front page's other stories in the order given, each a real back-and-forth, then its briefs briskly.
+4. Then the desk segments in the order given. Items marked "deep" get a real back-and-forth of about 80 to 140 words: one host tells it, the other reacts and asks what a listener would ask (what does it mean for us, why now, who is this), answered from "why" and the text. Items marked "quick" get one or two sentences each; several quick ones can run together briskly. Mention every item.
+5. If you name a segment, use the paper's names: Page One, News, Close to Home, Money, Tech and AI, Sport, Off Duty. "Close to Home" means Bengaluru only. A story from Delhi or anywhere else is News, never "close to home". If a front-page story was about sport, the hosts can say there is more in Sport later.
+6. Sport gets real energy: every sport item, the recent results (skip a result a story already covered; never give a result's clock time), and EVERY match in "coming", even when no story covers it (say each day and time EXACTLY as written, e.g. "on Thursday at twelve thirty a m, late on Wednesday night"; match times must be precise).
+7. Money: the market numbers in one or two lines, no more than three numbers in all.
+8. "market_expects", if given: one short, playful moment on what the betting markets expect, in words ("the markets make him a near-certainty", "about a two-in-three chance"), at most the two given, wherever it fits best (Sport or just before the close). Never read out a list of percentages.
+9. Weather, if given: one everyday line ("warm, with a fair chance of rain later").
+10. The Week Ahead, if given: a couple of quick lines on what is coming in the next few days.
+11. Close: the House Note retold in the hosts' own words with its punchline intact (if it is about a story already told, do not tell the story again: go straight to the joke), then a short, warm goodbye that names the show again ("That's ${P.title || "The House of 1400"} for today...").
+
+FUN: you have creative headroom in HOW things are said: banter between the two, a running joke, a playful line on the good news, the markets and the House Note. Never in WHAT is said: every fact, name, number, score, date and time stays exactly as in the rundown, and nothing is joked about near bad news.
 
 HOW IT SOUNDS
 - A real conversation: mix longer turns with plenty of quick reactions of two to eight words, each a natural response to exactly what was just said, in your own words (never reuse the example's lines). At least six genuine questions between the hosts.
@@ -288,6 +316,8 @@ export function checkScript(turns, R, P = {}) {
   if (!turns.slice(0, 2).some(named)) soft(`the opening does not name the show ("${P.title || "The House of 1400"}") in the first two turns`);
   if (!turns.slice(-3).some(named)) soft(`the goodbye does not name the show`);
   turns.forEach((t, i) => { if (/\bParth\b/i.test(t.text)) soft(`turn ${i + 1}: addresses the listener by name`); });
+  const ed = lastName(R.editor || P.author || "Bhide"), edRe = new RegExp(`\\b${ed}\\b`, "i");
+  if (![...turns.slice(0, 4), ...turns.slice(-5)].some(t => edRe.test(t.text))) soft(`the editor (${R.editor || P.author || "T. A. Bhide"}) is not mentioned at the open or the close`);
   const avg = n / turns.length, shortN = turns.filter(t => words(t.text).length <= 8).length, qs = turns.filter(t => /\?/.test(t.text)).length;
   if (avg > 40) soft(`turns average ${Math.round(avg)} words: too much reading, not enough conversation`);
   if (shortN < 6) soft(`only ${shortN} quick reactions of eight words or fewer (needs six or more)`);

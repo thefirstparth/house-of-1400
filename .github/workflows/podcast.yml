@@ -1,5 +1,7 @@
 # The daily podcast (scripts/podcast/make.mjs): when each edition is pushed (about 14:12 IST; a push was proven to start
-# it on 12 Oct), and again at 14:40 and 15:55 IST in case it did not (late papers have landed at 15:20 and 15:37). It only writes to Vercel Blob, never to the repo. Free: Gemini free tier, Kokoro fallback.
+# it on 12 Oct), and again at 14:40 and 15:55 IST in case it did not (late papers have landed at 15:20 and 15:37). A
+# script only Flash Lite could write waits for the next run; the 15:55 run (and any run started by hand) is final.
+# It only writes to Vercel Blob, never to the repo. Free: Gemini free tier, Kokoro fallback.
 # Two jobs, so Gemini's log is readable as soon as it ends: "gemini" makes the episode; "kokoro" runs only if it failed,
 # voicing the same script (handed over as an artifact) with the open-source Kokoro.
 name: podcast
@@ -31,7 +33,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
-        run: node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }} ${{ inputs.feed_only && '--feed' || '' }} ${{ inputs.dry && '--dry' || '' }} ${{ inputs.models && '--models' || '' }}
+        run: node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }} ${{ inputs.feed_only && '--feed' || '' }} ${{ inputs.dry && '--dry' || '' }} ${{ inputs.models && '--models' || '' }} ${{ (github.event_name == 'workflow_dispatch' || github.event.schedule == '25 10 * * *') && '--final' || '' }}
       - if: always()
         uses: actions/upload-artifact@v4
         with: { name: podcast-script, path: .podcast/script.json, retention-days: 2, if-no-files-found: ignore }

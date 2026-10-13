@@ -50,28 +50,40 @@ async function gemini(model, body, tries = 2, waitMs = 300000) {
   }
 }
 
-// 2. The script: up to three tries per writer, each refusal's reasons sent back. The main writer is always tried first
-// and its best script that passes the hard checks is used even with soft problems left; Flash Lite only steps in when
-// the main writer produced nothing usable.
+// 2. The script. Gemini's free models are often all "busy" at once, and a refused request still counts against the
+// day's free twenty (12-13 Oct), so the first answer rotates: one request to each strong writer in turn (3.8, 3.7, 3.6,
+// 3.5 Flash), a minute between rounds, up to five rounds; a writer out of free requests for the day is skipped. The
+// writer that answers does the rewrites (up to three tries in all, each refusal's reasons sent back), and its best
+// script that passes the hard checks is used. Flash Lite only when no strong writer answered; the plain code script
+// only when nothing usable came back.
 async function writeScript(R) {
-  const base = writerPrompt(R, P); let last = [];
-  for (const model of P.text_models || ["gemini-3.8-flash"]) {
+  const base = writerPrompt(R, P), all = P.text_models || ["gemini-3.8-flash"], strong = all.filter(m => !/lite/.test(m)), lite = all.filter(m => /lite/.test(m));
+  const ask = (model, prompt, tries) => gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.9 } }, tries, 540000);
+  const turnsOf = j => { const text = j.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "", body = text.replace(/^```(?:json)?|```$/g, "").trim(); return JSON.parse(body.slice(body.indexOf("{"), body.lastIndexOf("}") + 1)).turns; };
+  const busy = e => [500, 503].includes(e.http) || (e.http === 429 && !/retry in \d+h/i.test(e.message));
+  let first = null, last = [];
+  const out = new Set();
+  for (let round = 0; round < 5 && !first; round++) {
+    if (round) { log(`every strong writer busy; round ${round + 1} in a minute`); await sleep(60000); }
+    for (const m of strong) {
+      if (out.has(m)) continue;
+      try { first = { model: m, j: await ask(m, base, 1) }; break; }
+      catch (e) { last = [e.message]; log(`writer ${m}:`, e.message.split("\n")[0].slice(0, 160)); if (!busy(e)) out.add(m); }
+    }
+  }
+  for (const model of first ? [first.model] : lite) {
     let prompt = base, best = null;
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
-        const j = await gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.9 } }, attempt === 0 && model === (P.text_models || [])[0] ? 6 : 2, 540000);
-        const text = j.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
-        const body = text.replace(/^```(?:json)?|```$/g, "").trim(), turns = JSON.parse(body.slice(body.indexOf("{"), body.lastIndexOf("}") + 1)).turns;
-        const probs = checkScript(turns, R, P), hard = probs.filter(p => p.hard);
+        const j = attempt === 0 && first ? first.j : await ask(model, prompt, 3);
+        const turns = turnsOf(j), probs = checkScript(turns, R, P), hard = probs.filter(p => p.hard);
         log(`script by ${model} (try ${attempt + 1}): ${turns.length} turns, ${probs.length ? probs.map(p => (p.hard ? "HARD " : "") + p.msg).slice(0, 8).join("; ") : "no problems"}`);
         if (!hard.length && (!best || probs.length < best.n)) best = { turns, by: model, n: probs.length };
         if (!probs.length) break;
         last = probs.map(p => p.msg);
         prompt = `${base}\n\nYOUR PREVIOUS SCRIPT (below) was sent back for: ${last.join("; ")}. Rewrite it, fixing exactly these and keeping everything else that works.\n${JSON.stringify({ turns })}`;
       } catch (e) {
-        // an answer that could not be read is tried again; a refusal (still busy, or a bad request) or a timeout
-        // moves on to the next writer unless this one already gave a usable script
-        last = [e.message]; log(`writer ${model} failed:`, e.message);
+        last = [e.message]; log(`writer ${model} failed:`, e.message.split("\n")[0].slice(0, 200));
         if (!best && (e.http || e.name === "TimeoutError" || e.name === "AbortError")) break;
       }
     }
@@ -169,12 +181,15 @@ async function main() {
     const { blobs } = await list({ prefix: `${folder}/${date}.json`, token: BLOB });
     if (blobs.length) { log(`episode for ${date} already published`); return; }
   }
-  const R = rundown(E, P, undefined, { desks: cfg.desks_v2?.desks, sections: cfg.sections, follows: cfg.follows });
+  const R = rundown(E, P, undefined, { desks: cfg.desks_v2?.desks, sections: cfg.sections, follows: cfg.follows, betting: cfg.betting });
   if (!R.lead) { log("the edition has no lead; nothing to say"); return; }
   const KOKORO = process.env.PODCAST_VOICE === "kokoro", saved = existsSync(`${OUT}/script.json`) ? JSON.parse(readFileSync(`${OUT}/script.json`, "utf8")) : null;
   // the Kokoro step (podcast.yml) reuses the script the first step wrote
   const { turns, by } = KOKORO && saved?.date === date ? saved : DRY && !KEY ? { turns: fallbackScript(R, P), by: "code" } : await writeScript(R);
   writeFileSync(`${OUT}/script.json`, JSON.stringify({ date, by, turns }, null, 1));
+  // A script from Flash Lite or the code is held back until the day's last run (15:55 IST, or one started by hand),
+  // so a busy hour does not publish the weak version when a strong writer may be free half an hour later
+  if (!DRY && !KOKORO && !args.includes("--final") && (/lite/.test(by) || by === "code")) { log(`script by ${by}: holding it back for the next run (the 15:55 IST run publishes whatever it gets)`); return; }
   log(`script: ${turns.length} turns, ${turns.reduce((a, t) => a + t.text.split(/\s+/).length, 0)} words, by ${by}`);
   if (DRY && !KEY) { log("dry run: script written to .podcast/script.json"); return; }
   let pcm, voice = KOKORO ? "kokoro" : "gemini";

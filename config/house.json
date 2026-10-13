@@ -3404,6 +3404,7 @@
     "text_models": [
       "gemini-3.8-flash",
       "gemini-3.7-flash",
+      "gemini-3.6-flash",
       "gemini-3.5-flash",
       "gemini-3.5-flash-lite"
     ],
@@ -3445,7 +3446,7 @@
       "neutral": "easy and conversational"
     },
     "deep_max": 6,
-    "quick_max": 14,
+    "quick_max": 18,
     "kokoro": {
       "lang": "a",
       "voices": {
@@ -3467,7 +3468,8 @@
       "BMTC": "B M T C",
       "ISRO": "is-ro",
       "Nifty": "Nifty",
-      "Sensex": "Sensex"
+      "Sensex": "Sensex",
+      "Bhide": "Bhi-day"
     }
   }
 }

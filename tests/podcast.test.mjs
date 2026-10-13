@@ -28,12 +28,13 @@ const E = {
 };
 
 test("podcast: the running order follows the paper's desks, lead first, and times are said the way people say them", () => {
-  const R = rundown(E, P, undefined, paper), desk = id => R.segments.find(g => g.items.some(i => i.id === id))?.desk;
+  const R = rundown(E, P, undefined, paper), all = R.segments.flatMap(g => g.items), desk = id => all.find(i => i.id === id)?.desk;
   assert.equal(R.lead.id, "max");
+  assert.deepEqual(R.segments[0].items.map(i => i.id), ["riyadh", "jantar"]); // Page One first, in the paper's order
+  assert.equal(R.segments[0].desk, "Page One");
   assert.equal(desk("jantar"), "News");           // Delhi is News, never Close to Home
   assert.equal(desk("bmtc"), "Close to Home");
   assert.equal(desk("alcaraz"), "Sport");
-  assert.equal(R.segments.find(g => g.desk === "News").items[0].id, "riyadh");
   assert.match(R.segments.find(g => g.desk === "Money").markets[0], /Nifty 50 at 22,365, down 0.7%/);
   assert.match(R.segments.find(g => g.desk === "Sport").coming[0], /on Thursday at twelve thirty a m, late on Wednesday night/);
   assert.equal(sayWhen("2026-10-14T13:30:00Z", Date.parse("2026-10-12T09:00:00Z")), "on Wednesday at seven p m");
