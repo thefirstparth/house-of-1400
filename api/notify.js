@@ -5,6 +5,8 @@ import { config } from "../lib/live.js";
 // Telegram for The House of 1400. No key needed: it can only ever send the deployed edition's own summary, at most
 // once per edition (a marker in Blob), so calling it twice or from anywhere does nothing more.
 //   POST /api/notify?run=main|retry1|retry2|retry3   the daily run, after the edition is live
+//   POST /api/notify?podcast=YYYY-MM-DD&k=<folder>     the podcast job (scripts/podcast/make.mjs), once the day's episode
+//        is in the feed: a separate message, at most once a day, with the writer and voice that made it (Parth, 13 Oct)
 //   GET  /api/notify                                   the Vercel cron at 16:00 IST: sends the summary if the run
 //        did not, or one "no paper today" message if today's edition never went live.
 // Setup: TELEGRAM_BOT_TOKEN in Vercel, then send any message to the bot once. TELEGRAM_CHAT_ID is optional: without
@@ -143,8 +145,32 @@ export function summary(E, origin, run, { cfg = {}, now = Date.now() } = {}) {
   return lines.join("\n");
 }
 
+// The podcast's message: the episode's own record (written by make.mjs next to the MP3, in the private store), so it can
+// only ever announce an episode that is really in the feed, and only today's, once.
+const MODEL_NAMES = m => String(m || "").replace(/^gemini-/, "Gemini ").replace(/-flash-lite/, " Flash Lite").replace(/-flash-tts/, " Flash TTS").replace(/-flash/, " Flash").replace(/-preview/, " (preview)").replace(/-tts/, " TTS");
+async function podcast(url) {
+  const k = url.searchParams.get("k") || "", d = url.searchParams.get("podcast") || "", dry = url.searchParams.has("dry");
+  if (!/^[a-f0-9]{24}$/.test(k) || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return Response.json({ ok: false, sent: false, reason: "bad request" }, { status: 400 });
+  if (!dry && d !== today()) return Response.json({ ok: true, sent: false, reason: "only today's episode is announced" });
+  if (!dry && await marker(`podcast-${d}`)) return Response.json({ ok: true, sent: false, reason: "already sent today" });
+  let m = null;
+  try { const { get } = await import("@vercel/blob"); const r = await get(`podcast/${k}/${d}.json`, { access: "private", useCache: false }); m = r?.stream ? await new Response(r.stream).json() : null; } catch {}
+  if (!m) return Response.json({ ok: true, sent: false, reason: "no episode in the feed for that day" });
+  const backupW = /lite/.test(m.by) || m.by === "code", backupV = m.voice === "kokoro" || (m.voice_model && !/3\.8-flash-tts/.test(m.voice_model));
+  const writer = m.by === "code" ? "the plain script made by code (every Gemini writer failed)" : `${MODEL_NAMES(m.by)}${backupW ? " (backup writer)" : ""}`;
+  const voice = m.voice === "kokoro" ? "Kokoro (backup voice, no Gemini)" : `${MODEL_NAMES(m.voice_model || "gemini-3.8-flash-tts")}${backupV ? " (backup voice)" : ""}`;
+  const mins = Number.isFinite(m.seconds) ? `${Math.floor(m.seconds / 60)} min ${String(Math.round(m.seconds % 60)).padStart(2, "0")} s` : null;
+  const text = [`🎧 <b>Today's podcast is in Apple Podcasts</b> (${esc(longDate(d))})`, `<i>${esc(String(m.title || "").replace(/^[^·]*·\s*/, ""))}</i>`, "",
+    [mins, `script: ${esc(writer)}`, `voice: ${esc(voice)}`].filter(Boolean).join("\n"), "", `<a href="${esc(m.url)}">Listen here →</a>`].join("\n");
+  if (dry) return Response.json({ ok: true, sent: false, text });
+  const out = await send(text);
+  if (out.sent) await mark(`podcast-${d}`, { at: new Date().toISOString(), by: m.by, voice: m.voice_model || m.voice });
+  return Response.json({ ok: true, ...out });
+}
+
 async function handle(request, { cron }) {
   const url = new URL(request.url);
+  if (!cron && url.searchParams.has("podcast")) return podcast(url);
   const origin = (process.env.SITE_URL || url.origin).replace(/\/+$/, "");
   const run = url.searchParams.get("run");
   const E = readLatest();

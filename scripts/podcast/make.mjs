@@ -102,6 +102,7 @@ function pcmOf(buf) {
 }
 
 // 3. The voice
+let voiceModel = null; // the Gemini voice model that made the take (for the episode record and the Telegram message)
 const hostVoice = Object.fromEntries((P.hosts || []).map(h => [h.id, h.voice]));
 const styleOf = t => `${P.style || ""} ${t.speaker} sounds ${(P.moods || {})[t.mood] || t.mood || (P.moods || {}).neutral || "conversational"} here.`.trim();
 async function ttsGemini(turns) {
@@ -134,7 +135,7 @@ async function ttsGemini(turns) {
       const pcm = await one(turns, form, model), secs = pcm.length / 48000;
       // faster than 230 words a minute means the take was cut off
       if (secs < (words / 230) * 60) throw new Error(`came back cut short (${Math.round(secs)} s for ${words} words)`);
-      log(`voice: ${model}, ${name}`);
+      log(`voice: ${model}, ${name}`); voiceModel = model;
       return pcm;
     } catch (e) { log(`voicing as one ${name} take on ${model} failed: ${e.message}`); await sleep(21000); }
   }
@@ -205,11 +206,14 @@ async function main() {
   if (DRY) { log("dry run: .podcast/episode.mp3"); return; }
   await put(`${folder}/${date}.mp3`, readFileSync(`${OUT}/episode.mp3`), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "audio/mpeg", token: BLOB });
   const day = new Date(date + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
-  const meta = { date, title: `${day} · ${R.lead.headline}`, description: deepItems(R).map(s => s.headline).join(" · "), url: served(`${date}.mp3`), bytes, seconds, published: new Date().toISOString(), by, voice };
+  const meta = { date, title: `${day} · ${R.lead.headline}`, description: deepItems(R).map(s => s.headline).join(" · "), url: served(`${date}.mp3`), bytes, seconds, published: new Date().toISOString(), by, voice, voice_model: KOKORO ? "kokoro" : voiceModel };
   await put(`${folder}/${date}.json`, JSON.stringify(meta), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", token: BLOB });
   const n = await publishFeed({ put, list, del, get });
   log(`published ${date} (${n} in the feed)`);
   log(`FEED ${served("feed.xml")}`);
+  // a separate Telegram message that the episode is in Apple Podcasts, with its writer and voice (api/notify.js; once a day)
+  await fetch(`${site}/api/notify?podcast=${date}&k=${folder.split("/")[1]}`, { method: "POST", signal: AbortSignal.timeout(30000) })
+    .then(r => r.json()).then(j => log("telegram:", j.sent ? "sent" : j.reason)).catch(e => log("telegram: not sent:", e.message));
 }
 // exitCode, not process.exit: exiting at once can drop the last log lines on a pipe
 main().catch(e => { console.error("podcast: failed:", e.message); process.exitCode = 1; });
