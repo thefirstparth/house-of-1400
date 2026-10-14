@@ -41,8 +41,9 @@ If `RUN_KEY` is missing or `/api/live` answers 401, record that, skip the snapsh
 3. **Read `docs/DESK.md`** and nothing else of the rules. It holds the tests, the fixed numbers, how to write, and one line for every block of the edition. Open `docs/EDITORIAL.md` only at the section the validator names. Read `ledger/lessons.json` and `ledger/changes.json` only if the validator asks.
 4. **Choose and write from the pool** (DESK.md):
    - 18 to 24 items, at least 8 full stories, within each desk's floor and ceiling;
-   - a long version of 150 to 250 words for every full story, from the pool's text;
-   - every TOP pool story printed or answered in `checks.pool`.
+   - a long version of 100 to 149 words for every full story (under 150 from 15 Oct), from the pool's text;
+   - every TOP pool story printed or answered in `checks.pool`;
+   - from 15 Oct, when prep prints "After yesterday's paper", the move and its reason in the Ledger, recorded in `checks.after_close`.
 
    No web sweeps: the pool has replaced them. Search or fetch only to confirm a fact or fill a time the snapshot lacks, about eight at most. Then write the rest of the edition (DESK.md's list) and `art_scores`.
 5. **Validate:** `npm run validate -- content/editions/YYYY-MM-DD.json`. Fix only what it reports, and re-run. If the same error survives three fixes, stop cleanly without pushing and say what failed; the retry picks it up. Never publish a failing edition.

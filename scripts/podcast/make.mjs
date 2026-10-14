@@ -60,33 +60,56 @@ async function gemini(model, body, tries = 2, waitMs = 300000) {
     const msg = `${model} ${r.status}: ${j.error?.message || ""}`.slice(0, 600);
     // out of the day's free requests ("retry in 23h...") is final for this model today: never waited for
     if ([429, 500, 503].includes(r.status) && i + 1 < tries && !/limit: 0\b|retry in \d+h/i.test(`${msg} ${JSON.stringify(j.error?.details || "")}`)) { log(msg, "- busy, waiting a minute"); await sleep(62000); continue; }
-    throw Object.assign(new Error(msg), { http: r.status });
+    const final = /limit: 0\b|retry in \d+h|PerDay/i.test(`${msg} ${JSON.stringify(j.error?.details || "")}`);
+    throw Object.assign(new Error(final && r.status === 429 ? `${msg} [out of the day's free requests]` : msg), { http: r.status });
   }
 }
 
 // 2. The script. Gemini's free models are often all "busy" at once, and a refused request still counts against the
-// day's free twenty (12-13 Oct), so the first answer rotates: one request to each strong writer in turn (3.8, 3.7, 3.6,
+// day's free twenty (12-13 Oct). The first writer (3.8 Flash) is waited for, a minute at a time, up to ten minutes
+// (14 Oct); then the first answer rotates: one request to each strong writer in turn (3.8, 3.7, 3.6,
 // 3.5 Flash), a minute between rounds, up to five rounds; a writer out of free requests for the day is skipped. The
 // writer that answers does the rewrites (up to three tries in all, each refusal's reasons sent back), and its best
 // script that passes the hard checks is used. Flash Lite only when no strong writer answered; the plain code script
 // only when nothing usable came back.
 async function writeScript(R) {
   const base = writerPrompt(R, P), all = P.text_models || ["gemini-3.8-flash"], strong = all.filter(m => !/lite/.test(m)), lite = all.filter(m => /lite/.test(m));
+  // at most `writer_budget` requests to any one writer in a run (busy refusals count against its free twenty a day too),
+  // so a redo the same day still has requests left
+  const used = {}, budget = P.writer_budget ?? 15;
   const ask = (model, prompt, tries) => {
     const left = STOP - Date.now();
     if (left < 45000) return Promise.reject(Object.assign(new Error(`${model}: out of time for the writers`), { http: 0 }));
+    if ((used[model] || 0) >= budget) return Promise.reject(Object.assign(new Error(`${model}: ${budget} requests used in this run; the rest of its day is kept for a redo`), { http: 0 }));
+    used[model] = (used[model] || 0) + 1;
     return gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.9 } }, tries, Math.min(540000, left));
   };
   const turnsOf = j => { const text = j.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "", body = text.replace(/^```(?:json)?|```$/g, "").trim(); return JSON.parse(body.slice(body.indexOf("{"), body.lastIndexOf("}") + 1)).turns; };
-  const busy = e => [500, 503].includes(e.http) || (e.http === 429 && !/retry in \d+h/i.test(e.message));
+  const busy = e => [500, 503].includes(e.http) || (e.http === 429 && !/retry in \d+h|limit: 0\b|PerDay|day's free requests/i.test(e.message));
   let first = null, last = [];
   const out = new Set();
-  // five rounds at least, then more while there is time before WRITE_BY (13 Oct redo: every writer busy for minutes)
+  // Waiting for the first writer (Parth, 14 Oct: "more tries under the limit for 3.8"; on 14 Oct 3.8 was busy once
+  // and 3.7 wrote the script): while 3.8 is busy it is asked again a minute later, up to `first_writer_waits` (ten)
+  // times, before the next writer is tried. The wait ends at once when 3.8 is out of its day's free requests (a final
+  // refusal is never waited for), at the run's budget for it, or when fewer than ten minutes are left before WRITE_BY,
+  // so the other writers still get their turn.
+  const head = strong[0], waits = P.first_writer_waits ?? 10;
+  let waited = 0;
+  for (let k = 0; head && k <= waits && !first; k++) {
+    if (k) {
+      if (WRITE_BY - Date.now() < 10 * 60000) { log(`${head}: no more waiting, ten minutes to the writing deadline`); break; }
+      log(`${head} busy; asking again in a minute (${k} of ${waits})`); await sleep(60000); waited++;
+    }
+    try { first = { model: head, j: await ask(head, base, 1) }; }
+    catch (e) { last = [e.message]; log(`writer ${head}:`, e.message.split("\n")[0].slice(0, 160)); if (!busy(e)) { out.add(head); break; } }
+  }
+  // then the rotation: five rounds at least, then more while there is time before WRITE_BY (13 Oct redo: every writer
+  // busy for minutes); 3.8, just asked, sits out the first round
   for (let round = 0; (round < 5 || (round < 12 && Date.now() < WRITE_BY)) && !first; round++) {
     if (strong.every(m => out.has(m))) break; // every strong writer out of free requests (or out of time)
     if (round) { log(`every strong writer busy; round ${round + 1} in a minute`); await sleep(60000); }
     for (const m of strong) {
-      if (out.has(m)) continue;
+      if (out.has(m) || (round === 0 && m === head)) continue;
       try { first = { model: m, j: await ask(m, base, 1) }; break; }
       catch (e) { last = [e.message]; log(`writer ${m}:`, e.message.split("\n")[0].slice(0, 160)); if (!busy(e)) out.add(m); }
     }

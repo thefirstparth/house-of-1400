@@ -42,6 +42,26 @@ const jaccard = (a, b) => { const A = toks(a), B = toks(b); const i = [...A].fil
 const opens = (text, printed, n = 6, need = 0) => { const P = toks(printed), A = [...toks(text)].slice(0, n); return A.length >= 3 && A.filter(w => !P.has(w)).length < (need || Math.ceil(A.length / 3)); };
 const prevEdition = date => { try { return read(`content/editions/${date}.json`); } catch { return null; } };
 
+// After yesterday's paper (15 Oct, after the LTCG miss): the paper prints the markets at 14:00 and the market closes
+// at 15:30, so the last hour and a half of every session falls between two papers. On 13 Oct Sitharaman spoke at about
+// 14:20, the Sensex went from +0.9% at the print to +1.5% at the close, its best day in four months, and the next
+// paper only had the next day's trading. Each index named in config pool.after_close whose close moved at least `pct`
+// percent from the price the last paper printed (that paper's own session, still open at the print) is a move the
+// paper owes a reason for. Returns [{name, printed, close, points, pct, day_pct, session}].
+export function afterClose(E, PE, cfg = {}) {
+  const A = cfg.after_close || {}, out = [];
+  const idx = X => new Map((X?.snapshot?.markets?.value?.indices || []).map(i => [i.name, i]));
+  const now = idx(E), was = idx(PE);
+  for (const name of A.indices || []) {
+    const t = now.get(name), y = was.get(name);
+    if (!t || !y || !y.live || !(t.session_date > y.session_date) || !(t.prev > 0) || !(y.price > 0)) continue;
+    const pct = (t.prev / y.price - 1) * 100;
+    if (Math.abs(pct) < (A.pct ?? 0.5)) continue;
+    out.push({ name, printed: y.price, close: t.prev, points: Math.round(t.prev - y.price), pct: +pct.toFixed(2), day_pct: y.prev > 0 ? +((t.prev / y.prev - 1) * 100).toFixed(2) : null, session: y.session_date });
+  }
+  return out;
+}
+
 export function allItems(E) {
   const items = [];
   if (E.front) {
@@ -542,7 +562,8 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     }
     // The pool and the fixed numbers (from config pool.from). Every number comes from config pool, never from here.
     if (POOL) {
-      const ED = POOLCFG.edition || {}, DP = POOLCFG.depth || {}, skipSec = new Set(ED.uncounted || []);
+      // the long version: under 150 words from the 15 Oct edition (Parth, 14 Oct); earlier editions keep 150 to 260
+      const ED = POOLCFG.edition || {}, DP = { ...(POOLCFG.depth || {}), ...(E.date <= "2026-10-14" ? POOLCFG.depth?.until_2026_10_14 : {}) }, skipSec = new Set(ED.uncounted || []);
       const words = x => String(Array.isArray(x) ? x.join(" ") : x || "").split(/\s+/).filter(Boolean).length;
       const deskOf = i => i.section || i._where.match(/^sections\.([a-z_]+)\./)?.[1] || null;
       const counted = items.filter(i => i._kind !== "line" && !skipSec.has(deskOf(i)));
@@ -561,7 +582,7 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
         if (E.date >= "2026-10-14" && DP.short_min && (sw < DP.short_min || sw > (DP.short_max || 999))) errors.push(`depth: ${s._where} "${String(s.headline).slice(0, 50)}" has a summary (short) of ${sw} words; write ${DP.short_min} to ${DP.short_max}, fact first`);
         const w = words(s.more);
         if (w < (DP.more_min || 0)) errors.push(`depth: ${s._where} "${String(s.headline).slice(0, 50)}" has a long version of ${w} words; write ${DP.more_min} to ${DP.more_max} from the pool's text (background, figures, who said what, what happens next), never repeating the short version`);
-        else if (DP.more_max && w > DP.more_max) errors.push(`depth: ${s._where} has a long version of ${w} words; at most ${DP.more_max}`);
+        else if (DP.more_max && w > DP.more_max) errors.push(`depth: ${s._where} has a long version of ${w} words; at most ${DP.more_max} (keep it under ${DP.more_max + 1})`);
       }
       for (const b of items.filter(i => i._kind === "brief")) if (words(b.text) < (DP.brief_min || 0)) errors.push(`depth: ${b._where} "${String(b.headline).slice(0, 50)}" is ${words(b.text)} words; a brief is two sentences, at least ${DP.brief_min} words`);
       if (E.date >= "2026-10-14") {
@@ -584,6 +605,18 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
           if (items.some(it => matchItem(it, [{ title: c.title }, ...(c.also || []).map(t => ({ title: t }))]))) continue;
           errors.push(`checks.pool: ${c.top ? "top story" : `${c.quota} story`} [${c.id}] "${c.title}" is neither printed nor answered; print it, or record {id: "${c.id}", covered_by} or {id: "${c.id}", skip: "why not"}`);
         }
+      }
+    }
+    // After yesterday's paper: a big move between the last print and the close is printed with its reason
+    const AC = POOLCFG.after_close || {};
+    if (AC.from && E.date >= AC.from) {
+      const prevDate = readdirSync(new URL("content/editions/", `file://${root}`)).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f) && f < `${E.date}.json`).sort().pop()?.slice(0, 10);
+      const moves = afterClose(E, prevDate ? prevEdition(prevDate) : null, POOLCFG);
+      const a = E.checks?.after_close;
+      if (moves.length) {
+        const m = moves.map(x => `${x.name} ${x.points > 0 ? "+" : ""}${x.points} points (${x.pct > 0 ? "+" : ""}${x.pct}%) from yesterday's 14:00 print to the close`).join(", ");
+        if (!a?.why || String(a.why).trim().split(/\s+/).length < 8) errors.push(`checks.after_close: after yesterday's paper went to press, ${m}. Find why it moved (the pool's market stories and their text) and print it in the Ledger, then record {why: "the reason, in a sentence", covered_by: "the item's id"}`);
+        else if (!ids.has(a.covered_by)) errors.push(`checks.after_close: covered_by "${a.covered_by || ""}" is not an item in this edition; print the move and its reason (a story, a brief or an Also in line) and give its id`);
       }
     }
     // Lessons (ledger/lessons.json): a story the paper missed and still owes is printed, or its lesson is answered with

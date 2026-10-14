@@ -10,7 +10,7 @@
 // Usage: node scripts/prep.mjs [YYYY-MM-DD]
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
-import { allItems } from "./validate.mjs";
+import { allItems, afterClose } from "./validate.mjs";
 
 const today = process.argv[2] || new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
 const file = `content/editions/${today}.json`;
@@ -34,6 +34,18 @@ run("India's cricket times", ["scripts/cricket-times.mjs"]);
 run("Betting Window candidates", ["scripts/betting-candidates.mjs"]);
 if (!existsSync(file)) writeFileSync(file, JSON.stringify({ date: today }, null, 2) + "\n");
 run(`Live snapshot into ${file}`, ["scripts/snapshot.mjs", file]);
+// After yesterday's paper (from 15 Oct): a big move between the last print and the close, which the paper owes a reason
+try {
+  const C = JSON.parse(readFileSync("config/house.json", "utf8")).pool || {};
+  if (C.after_close?.from && today >= C.after_close.from && past.length) {
+    const moves = afterClose(JSON.parse(readFileSync(file, "utf8")), JSON.parse(readFileSync(`content/editions/${past.at(-1)}`, "utf8")), C);
+    if (moves.length) {
+      hr("After yesterday's paper");
+      for (const m of moves) console.log(`${m.name} closed ${m.session} at ${m.close.toFixed(2)}: ${m.points > 0 ? "+" : ""}${m.points} points (${m.pct > 0 ? "+" : ""}${m.pct}%) after the 14:00 print${m.day_pct != null ? `, ${m.day_pct > 0 ? "+" : ""}${m.day_pct}% on the day` : ""}.`);
+      console.log("Find why in the pool's market stories, print it in the Ledger, and record checks.after_close {why, covered_by} (DESK.md).");
+    }
+  }
+} catch (e) { console.log(`(after-close check skipped: ${e.message})`); }
 // From the 13 Oct 2026 edition: the day's pool (scripts/pool.mjs), the stories to choose from, with their text.
 let poolFrom = null; try { poolFrom = JSON.parse(readFileSync("config/house.json", "utf8")).pool?.from || null; } catch {}
 if (poolFrom && today >= poolFrom) { run("The day's pool", ["scripts/pool.mjs", today]); console.log("\nprep: done. Next: choose and write from the pool (docs/DESK.md), then validate."); }

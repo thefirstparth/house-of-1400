@@ -38,7 +38,7 @@ Every pool story marked **TOP** or **ANSWER** (a source's own place: Ranchi, Pra
 ## Writing
 - **Every item carries `section`,** its desk, even on the front page.
 - **`short`:** fact first, 50 to 60 words, neutral (checked from the 14 Oct edition).
-- **`more` (every full story):** 150 to 250 words in 2 to 4 paragraphs, written from the pool's article text. The page shows the summary and why it matters; the long version sits behind "Read more" (13 Oct), so it must stand on its own and never repeat the summary. Cover the background, the figures, who said what on the record, and what happens next. Never repeat the short version.
+- **`more` (every full story):** 100 to 149 words in 2 or 3 paragraphs (under 150, from the 15 Oct edition), written from the pool's article text. The page shows the summary and why it matters; the long version sits behind "Read more" (13 Oct), so it must stand on its own and never repeat the summary. Cover the background, the figures, who said what on the record, and what happens next. Never repeat the short version.
 - **A brief:** a headline plus two sentences, at least 22 words.
 - **Why it matters:** one sentence, and "for you" only when it is really personal. `tone` is good, bad or mixed only when that is clear.
 - **Sources:** the publisher's own link (the pool's `Source:` line), never a Google News link, never a paywalled outlet only.
@@ -57,6 +57,7 @@ Every pool story marked **TOP** or **ANSWER** (a source's own place: Ranchi, Pra
 - **`trends`:** Talk of the Day, 5 to 7 India and 5 to 7 world rows. Each row has `traffic` and a one-line fact, and every world row has `geo`.
 - **`betting`:** 8 to 10 markets from `node scripts/betting-candidates.mjs`. Keep every carried market, with `since`.
 - **`sections.ledger.data.notes`:** one driver sentence per index, keyed as config names them.
+- **After yesterday's paper (from 15 Oct):** the market closes at 15:30, after the 14:00 paper. When prep (and the validator) says the Sensex or Nifty moved 0.5% or more from yesterday's print to the close, find why in the pool (the market stories and their text name the cause) and print it in the Ledger as a story, brief or Also in line, then record `checks.after_close` {`why`, `covered_by`}. On 13 Oct the Sensex closed up 1,100 points on Sitharaman's LTCG remarks and the paper never said so.
 - **`sections.paddock.data`:** in race week, the preview and `max_note`.
 - **`sections.crease.data.rows`:** the series rows, including "After this".
 - **`art_scores` (Bunty draws from these; without them there is no art):** every printed story and brief as `{story_id, importance 0-3, relevance 0-2, drawable 0-3}`. Importance is its rank in today's paper, relevance is how much it matters to Parth, drawable is whether there is one clear idea for a satirical cartoon. Drawable 0 for death, disaster, violence or anything in poor taste. Code picks the orders from the scores when you publish.

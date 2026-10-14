@@ -3289,7 +3289,7 @@
     }
   },
   "pool": {
-    "note": "The day's pool and the edition's fixed numbers (from the 13 Oct 2026 edition; lib/pool.js, scripts/pool.mjs, scripts/validate.mjs). The pool: `clusters` stories shortlisted by code, the `top` best whatever their desk, then each desk's `desk_min`, then the rest by score up to `desk_max` per desk; `headlines` more as one-liners. The edition: `edition` sets how many items (stories plus briefs, Back Home not counted) and each desk's floor and ceiling, checked by the validator; `depth` sets the words in a story's long version and a brief. Change a number here, never the prose. `quotas` (from 14 Oct; Parth, 13 Oct): places of a source's own in the pool, min to max, for Ranchi, Prayagraj and Managing Madrid, whose stories are mostly one outlet's; each is a story the run must print or answer.",
+    "note": "The day's pool and the edition's fixed numbers (from the 13 Oct 2026 edition; lib/pool.js, scripts/pool.mjs, scripts/validate.mjs). The pool: `clusters` stories shortlisted by code, the `top` best whatever their desk, then each desk's `desk_min`, then the rest by score up to `desk_max` per desk; `headlines` more as one-liners. The edition: `edition` sets how many items (stories plus briefs, Back Home not counted) and each desk's floor and ceiling, checked by the validator; `depth` sets the words in a story's long version and a brief (the long version under 150 words from the 15 Oct edition; `until_2026_10_14` keeps the older editions' 150 to 260). `after_close` (from 15 Oct): an index that moved at least `pct` percent between the last paper's 14:00 print and the close is a move the paper prints with its reason (checks.after_close). Change a number here, never the prose. `quotas` (from 14 Oct; Parth, 13 Oct): places of a source's own in the pool, min to max, for Ranchi, Prayagraj and Managing Madrid, whose stories are mostly one outlet's; each is a story the run must print or answer.",
     "from": "2026-10-13",
     "clusters": 50,
     "top": 12,
@@ -3386,9 +3386,21 @@
     "depth": {
       "short_min": 50,
       "short_max": 60,
-      "more_min": 150,
-      "more_max": 260,
-      "brief_min": 22
+      "more_min": 100,
+      "more_max": 149,
+      "brief_min": 22,
+      "until_2026_10_14": {
+        "more_min": 150,
+        "more_max": 260
+      }
+    },
+    "after_close": {
+      "from": "2026-10-15",
+      "indices": [
+        "Sensex",
+        "Nifty 50"
+      ],
+      "pct": 0.5
     },
     "quotas": [
       {
@@ -3427,6 +3439,8 @@
     },
     "keep_days": 14,
     "image": "/podcast-cover.jpg",
+    "first_writer_waits": 10,
+    "writer_budget": 15,
     "text_models": [
       "gemini-3.8-flash",
       "gemini-3.7-flash",

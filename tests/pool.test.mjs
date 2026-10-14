@@ -107,3 +107,16 @@ test("each city and Managing Madrid get places of their own, local stories first
   assert.deepEqual(q.filter(c => c.quota === "Managing Madrid").map(c => c.title), ["Scouting Roma: a tough game awaits Real Madrid"]);
   assert.ok(!p.clusters.some(c => /Price in|Daily Thread/.test(c.title)));
 });
+
+test("the markets' routine pieces rank below the news, and Google's related headlines count (15 Oct, the LTCG miss)", () => {
+  const ltcg = story("Sitharaman's LTCG tax remarks lift markets; rupee rises", ["hindu#1"], 5);
+  const wire = { items: [{ url: ltcg.url, title: ltcg.title, related: [{ title: "Sensex ends over 1,100 points higher", outlet: "TOI" }] }], stories: [
+    story("Stock market outlook today, 14 Oct: Sensex, Nifty prediction", ["hindu#2"], 5),
+    story("Stocks to watch, Oct 14: Infosys, BHEL, Canara Bank", ["hindu#3"], 5),
+    ltcg,
+  ] };
+  const P = buildPool(wire, { sources: { feeds }, pool: { clusters: 3, top: 3, interest: ["Sensex"] } });
+  assert.equal(P.clusters[0].title, ltcg.title, "the LTCG story leads the routine pieces");
+  const s = Object.fromEntries(P.clusters.map(c => [c.title.slice(0, 12), c.score]));
+  assert.ok(P.clusters[0].score - P.clusters[1].score >= 2.9, `scores ${JSON.stringify(s)}`);
+});

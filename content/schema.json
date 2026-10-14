@@ -1319,6 +1319,19 @@
         "pool_error": {
           "type": "string"
         },
+        "after_close": {
+          "type": "object",
+          "description": "From 15 Oct 2026: when an index in config pool.after_close moved at least that much between the last paper's 14:00 print and the close, why it moved and the id of the item that prints it.",
+          "additionalProperties": false,
+          "properties": {
+            "why": {
+              "type": "string"
+            },
+            "covered_by": {
+              "type": "string"
+            }
+          }
+        },
         "tennis": {
           "type": "array",
           "description": "Answers to the pool's tennis leads (reports of a followed player's next tournament), from 14 Oct 2026: {id, skip} why a lead is not his next event, or {player, dropped} why a carried next event is no longer his.",
