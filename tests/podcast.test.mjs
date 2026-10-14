@@ -193,3 +193,11 @@ test("podcast: a take cut by ear keeps only the lines, from the first line's sta
   [2, 3, 1].forEach((want, i) => assert.ok(Math.abs(p[i].length / 48000 - want) < 0.2, `piece ${i}: ${p[i].length / 48000} s`));
   assert.equal(cutAt(take, [11.95, 8.65]), null, "cuts out of order are refused");
 });
+
+test("podcast: only Ranchi and Prayagraj are 'back home' (14 Oct: 'back home in Bihar')", () => {
+  const T = text => ({ speaker: "Ashu", mood: "neutral", text });
+  const base = Array.from({ length: 9 }, (_, i) => T(`Line ${i}?`));
+  const msgs = t => checkScript([...base, T(t)], { segments: [] }, { ...P, words: { min: 1, max: 9999 } }).map(p => p.msg);
+  assert.ok(msgs("There is tragic news back home in Bihar.").some(m => /back home/.test(m)));
+  assert.ok(!msgs("And back home in Prayagraj, the Magh Mela plans are out.").some(m => /back home/.test(m)));
+});

@@ -355,6 +355,8 @@ export function checkScript(turns, R, P = {}) {
   if (!turns.slice(0, 2).some(named)) soft(`the opening does not name the show ("${P.title || "The House of 1400"}") in the first two turns`);
   if (!turns.slice(-3).some(named)) soft(`the goodbye does not name the show`);
   turns.forEach((t, i) => { if (/\bParth\b/i.test(t.text)) soft(`turn ${i + 1}: addresses the listener by name`); });
+  // "back home" is only Ranchi or Prayagraj (14 Oct: the Bihar boat accident, national news, was called "back home in Bihar")
+  turns.forEach((t, i) => { if (/\bback home\b/i.test(t.text) && !/\b(Ranchi|Prayagraj|Allahabad|Jharkhand)\b/i.test(t.text)) soft(`turn ${i + 1}: says "back home" for somewhere that is not Ranchi or Prayagraj; only those two are back home`); });
   const ed = lastName(R.editor || P.author || "Bhide"), edRe = new RegExp(`\\b${ed}\\b`, "i");
   if (![...turns.slice(0, 4), ...turns.slice(-5)].some(t => edRe.test(t.text))) soft(`the editor (${R.editor || P.author || "T. A. Bhide"}) is not mentioned at the open or the close`);
   const avg = n / turns.length, shortN = turns.filter(t => words(t.text).length <= 8).length, qs = turns.filter(t => /\?/.test(t.text)).length;
