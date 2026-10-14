@@ -1,0 +1,15 @@
+{
+  "note": "Accent check after the 14 Oct episode (Tarun 6.9/10): lines from the 14 Oct script, Tarun-heavy, with the new money wording, voiced with the sharper accent description. Every fact is from the 14 Oct edition.",
+  "turns": [
+    { "speaker": "Tarun", "mood": "matter-of-fact", "text": "Over in Money, the Sensex is down about zero point two per cent so far today, near seventy-two thousand nine hundred, five hundred points off its morning high." },
+    { "speaker": "Ashu", "mood": "matter-of-fact", "text": "Crude went up again after the Houthi strike, and bank shares dragged. The Nifty is down zero point four per cent at about twenty-two thousand six hundred." },
+    { "speaker": "Tarun", "mood": "excited", "text": "And the rupee actually rallied!" },
+    { "speaker": "Ashu", "mood": "warm", "text": "Bilkul. Ninety-five point zero eight to the dollar, its best since the fourteenth of September." },
+    { "speaker": "Tarun", "mood": "excited", "text": "Now for Sport! Turmoil at Manchester United. They lost two-nil at Atlético Madrid, conceded after just fifty-three seconds, and Leny Yoro saw red." },
+    { "speaker": "Ashu", "mood": "amused", "text": "Lisandro Martínez did not hold back." },
+    { "speaker": "Tarun", "mood": "excited", "text": "He pointed straight at the boardroom! Said Michael Carrick has not been backed, and called the recruitment poor. United have won just twice this season, their worst league start in forty years." },
+    { "speaker": "Ashu", "mood": "curious", "text": "Forty years? Really?" },
+    { "speaker": "Tarun", "mood": "warm", "text": "Arre, forty years. And tonight, India play West Indies in Hyderabad, the fourth T twenty, at seven p m." },
+    { "speaker": "Ashu", "mood": "warm", "text": "Chai and cricket, then." }
+  ]
+}
