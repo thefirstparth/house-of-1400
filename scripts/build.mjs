@@ -4,7 +4,14 @@ import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, write
 
 rmSync("dist", { recursive: true, force: true });
 mkdirSync("dist", { recursive: true });
-cpSync("public", "dist", { recursive: true });
+// Only the last art.keep_days days of Bunty's art go into a deployment (Parth, 14 Oct: option A). Vercel keeps a full
+// copy of the site per deployment, and the art archive grows by about 2 MB a day: all of it in every copy would pass
+// the free 10 GB again within months. Older days stay in the repository; their editions show no drawings.
+const ART_KEEP = JSON.parse(readFileSync("config/house.json", "utf8")).art?.keep_days ?? 30;
+const latestDate = existsSync("content/latest.json") ? JSON.parse(readFileSync("content/latest.json", "utf8")).date : null;
+const artCut = latestDate ? new Date(Date.parse(`${latestDate}T12:00:00Z`) - (ART_KEEP - 1) * 864e5).toISOString().slice(0, 10) : "0000-00-00";
+const oldArt = d => /^\d{4}-\d{2}-\d{2}$/.test(d) && d < artCut;
+cpSync("public", "dist", { recursive: true, filter: src => { const m = src.replace(/\\/g, "/").match(/(?:^|\/)public\/art\/(\d{4}-\d{2}-\d{2})(?:\/|$)/); return !(m && oldArt(m[1])); } });
 cpSync("content", "dist/content", { recursive: true, filter: src => !src.endsWith("schema.json") });
 mkdirSync("dist/config", { recursive: true });
 // The page reads the config; the daily run's reading list and the trial settings are not for it.
@@ -56,6 +63,7 @@ try {
   if (existsSync("content/latest.json")) writeFileSync("dist/art/brief.json", JSON.stringify(brief(JSON.parse(readFileSync("content/latest.json", "utf8")), fullConfig), null, 2));
   for (const d of existsSync("public/art") ? readdirSync("public/art") : []) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(d) || !existsSync(`public/art/${d}/manifest.json`)) continue;
+    if (oldArt(d)) { mkdirSync(`dist/art/${d}`, { recursive: true }); writeFileSync(`dist/art/${d}/manifest.json`, JSON.stringify({ date: d, items: [], rejected: [], note: `older than ${ART_KEEP} days: not in the deployment (it stays in the repository)` })); continue; }
     let out;
     try {
       const ed = `content/editions/${d}.json`;
