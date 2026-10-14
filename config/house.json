@@ -3439,6 +3439,10 @@
     },
     "keep_days": 14,
     "image": "/podcast-cover.jpg",
+    "indices": [
+      "Sensex",
+      "Nasdaq-100"
+    ],
     "first_writer_waits": 10,
     "writer_budget": 15,
     "text_models": [

@@ -22,10 +22,35 @@ on:
       dry: { description: "Test: write and voice it, publish nothing (script and MP3 as artifacts)", type: boolean, default: false }
       models: { description: "Only list the Gemini models this key can use", type: boolean, default: false }
       sample: { description: "Only voice this short script file (e.g. scripts/podcast/samples/x.json), nothing published", required: false, default: "" }
-# a voice sample publishes nothing, so it runs beside an episode run instead of queueing behind it
-concurrency: { group: "podcast${{ inputs.sample && '-sample' || '' }}", cancel-in-progress: false }
+      rehearse: { description: "Rehearsal: the script only from the latest paper, at most 2 writer requests, no voice, nothing published; refused after 13:30 IST", type: boolean, default: false }
+# a voice sample or a rehearsal publishes nothing, so it runs beside an episode run instead of queueing behind it
+concurrency: { group: "podcast${{ inputs.sample && '-sample' || inputs.rehearse && '-rehearse' || '' }}", cancel-in-progress: false }
 jobs:
+  # The rehearsal (Parth, 14 Oct: "make sure it doesn't eat my gemini limit and everything is finished before 2 pm"):
+  # refused if it starts after 13:30 IST, killed at 15 minutes, so it is over by 13:45 at the latest; no voice requests
+  # and at most two writer requests (scripts/podcast/make.mjs --rehearse); its own queue, so the episode never waits.
+  rehearse:
+    if: inputs.rehearse
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Only before 13:30 IST
+        run: |
+          now=$(TZ=Asia/Kolkata date +%H%M); echo "IST $now"
+          if [ "$now" -gt 1330 ]; then echo "too close to the episode: no rehearsal after 13:30 IST"; exit 1; fi
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - name: Write the script
+        timeout-minutes: 11
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/podcast/make.mjs --rehearse
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with: { name: podcast-rehearsal-script, path: .podcast/script.json, retention-days: 2, if-no-files-found: ignore, include-hidden-files: true }
   gemini:
+    if: ${{ !inputs.rehearse }}
     runs-on: ubuntu-latest
     timeout-minutes: 50
     steps:
@@ -63,7 +88,7 @@ jobs:
         with: { name: podcast-test-mp3, path: .podcast/episode.mp3, retention-days: 2, if-no-files-found: ignore }
   kokoro:
     needs: gemini
-    if: failure() && !inputs.dry && !inputs.sample && !inputs.force
+    if: failure() && !inputs.dry && !inputs.sample && !inputs.force && !inputs.rehearse
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

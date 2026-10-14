@@ -25,7 +25,7 @@ const E = {
     deuce: { briefs: [{ id: "alcaraz", section: "deuce", kicker: "Tennis", headline: "Alcaraz beats Cerundolo in Shanghai", text: "Straight sets." }] } },
   art_scores: [{ story_id: "max", importance: 3 }, { story_id: "riyadh", importance: 3 }],
   chronology: { madrid: { next: { when_utc: "2026-10-14T19:00:00Z", label: "AS Roma", detail: "Away · Champions League" } } },
-  snapshot: { markets: { value: { indices: [{ name: "Nifty 50", price: 22365, change_pct: -0.69, session_date: "2026-10-12" }] } } },
+  snapshot: { markets: { value: { indices: [{ name: "Sensex", price: 22365, change_pct: -0.69, session_date: "2026-10-12" }] } } },
 };
 
 test("podcast: the running order follows the paper's desks, lead first, and times are said the way people say them", () => {
@@ -36,7 +36,7 @@ test("podcast: the running order follows the paper's desks, lead first, and time
   assert.equal(desk("jantar"), "News");           // Delhi is News, never Close to Home
   assert.equal(desk("bmtc"), "Close to Home");
   assert.equal(desk("alcaraz"), "Sport");
-  assert.match(R.segments.find(g => g.desk === "Money").markets[0], /Nifty 50 at 22,365, down 0.7%/);
+  assert.match(R.segments.find(g => g.desk === "Money").markets[0], /Sensex at 22,365, down 0.7%/);
   assert.match(R.segments.find(g => g.desk === "Sport").coming[0], /on Thursday at twelve thirty a m, late on Wednesday night/);
   assert.equal(sayWhen("2026-10-14T13:30:00Z", Date.parse("2026-10-12T09:00:00Z")), "on Wednesday at seven p m");
   assert.equal(sayWhen("2026-10-12T10:00:00Z", Date.parse("2026-10-12T09:00:00Z")), "today at three thirty p m");
@@ -207,7 +207,10 @@ test("podcast money (14 Oct): still open at two, the range in words, the Nasdaq-
   const Ed = { date: "2026-10-15", front: { lead: { id: "a", section: "desh", headline: "A lead", short: "x" } }, sections: {},
     snapshot: { markets: { value: { indices: [ix("Sensex", 72862, { session_date: "2026-10-15", live: true, market_time: "2026-10-15T08:23:00Z" }), ix("Nifty 50", 24600, { session_date: "2026-10-15", live: true, market_time: "2026-10-15T08:38:00Z", lo3m: 22232, hi3m: 24774 }), ix("Nasdaq-100", 30569, { session_date: "2026-10-14", live: false })] } } } };
   const moves = [{ name: "Sensex", printed: 72566, close: 73034, points: 468, pct: 0.64, day_pct: 1.54, session: "2026-10-14" }];
-  const R = rundown(Ed, P, undefined, { ...paper, after_close: { moves, why: "Sitharaman said she would hear views on removing the LTCG tax." } });
+  const R = rundown(Ed, { ...P, indices: ["Sensex", "Nifty 50", "Nasdaq-100"] }, undefined, { ...paper, after_close: { moves, why: "Sitharaman said she would hear views on removing the LTCG tax." } });
+  // from 15 Oct the show gives the Sensex and the Nasdaq-100 only (Parth, 14 Oct)
+  const only = rundown(Ed, P, undefined, paper).segments.find(g => g.markets).markets;
+  assert.deepEqual(only.map(x => x.split(" at ")[0]), ["Sensex", "the Nasdaq-100, New York's big technology index,"]);
   const m = R.segments.find(g => g.markets);
   assert.match(m.markets[0], /so far today/);
   assert.doesNotMatch(m.markets.join(" "), /between its|71,593|78,955/, "no range figures");

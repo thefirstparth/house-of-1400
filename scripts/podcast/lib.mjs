@@ -187,8 +187,10 @@ export function rundown(E, P = {}, now, paper = {}) {
   const place = (v, lo, hi, span) => { if (!(hi > lo)) return ""; const f = (v - lo) / (hi - lo); return f <= 0.15 ? `, close to its lowest in ${span}` : f >= 0.85 ? `, close to its highest in ${span}` : ""; };
   // The Indian figures are the paper's, from about two o'clock, and the market closes at half past three (14 Oct: the
   // hosts said the Sensex "finished" and the Nifty "closed" an hour before either did)
+  // which indices the show gives (config podcast.indices; Parth, 14 Oct: "Keep Sensex and Nasdaq only")
+  const shown = P.indices || ["Sensex", "Nifty 50", "Nasdaq-100"];
   let open_now = null;
-  for (const name of ["Sensex", "Nifty 50"]) {
+  for (const name of shown.filter(n => !/nasdaq/i.test(n))) {
     const i = idx.find(x => x.name === name); if (!(i && Number.isFinite(i.price))) continue;
     const live = i.live && i.session_date === E.date;
     if (live && i.market_time) open_now ||= new Date(Date.parse(i.market_time) + IST).toISOString().slice(11, 16);
@@ -196,21 +198,21 @@ export function rundown(E, P = {}, now, paper = {}) {
     markets.push(`${name} at ${n0(i.price)}, ${pc(i.change_pct)} ${day}${Number.isFinite(i.chg_7d) ? `, ${pc(i.chg_7d)} over the past week` : ""}${Number.isFinite(i.chg_1m) ? `, ${pc(i.chg_1m)} over the past month` : ""}${place(i.price, i.lo3m, i.hi3m, "three months")}`);
   }
   // the Nasdaq-100 (Parth, 14 Oct): New York trades while India sleeps, so it is always the last close, overnight for us
-  const ndx = idx.find(x => /nasdaq/i.test(x.name));
+  const ndx = shown.some(n => /nasdaq/i.test(n)) ? idx.find(x => /nasdaq/i.test(x.name)) : null;
   if (ndx && Number.isFinite(ndx.price)) {
     const wd = ndx.session_date ? new Date(`${ndx.session_date}T12:00:00Z`).toLocaleDateString("en-GB", { weekday: "long", timeZone: "UTC" }) : null;
     markets.push(`the Nasdaq-100, New York's big technology index, at ${n0(ndx.price)}, ${pc(ndx.change_pct)} at its last close${wd ? ` (${wd} in New York, overnight for us)` : ""}${Number.isFinite(ndx.chg_7d) ? `, ${pc(ndx.chg_7d)} over the past week` : ""}${Number.isFinite(ndx.chg_1m) ? `, ${pc(ndx.chg_1m)} over the past month` : ""}`);
   }
   // after yesterday's paper (from 15 Oct): a big move between yesterday's two o'clock figure and the close, with the
   // paper's reason (checks.after_close); make.mjs finds the moves (lib/after-close.js)
-  const after_close = (paper.after_close?.moves || []).map(m => `${m.name === "Nifty 50" ? "the Nifty" : `the ${m.name}`} closed yesterday at ${n0(m.close)}, ${Math.abs(m.points)} points ${m.points > 0 ? "above" : "below"} the two o'clock figure in yesterday's paper${m.day_pct != null ? `, ${pc(m.day_pct)} on the day` : ""}`);
+  const after_close = (paper.after_close?.moves || []).filter(m => shown.includes(m.name)).map(m => `${m.name === "Nifty 50" ? "the Nifty" : `the ${m.name}`} closed yesterday at ${n0(m.close)}, ${Math.abs(m.points)} points ${m.points > 0 ? "above" : "below"} the two o'clock figure in yesterday's paper${m.day_pct != null ? `, ${pc(m.day_pct)} on the day` : ""}`);
   if (after_close.length && paper.after_close?.why) after_close.push(`why: ${paper.after_close.why}`);
   if (Number.isFinite(fx?.price)) markets.push(`the rupee at ${fx.price.toFixed(2)} to the dollar, ${fx.change_pct <= 0 ? "stronger" : "weaker"} by ${Math.abs(fx.change_pct).toFixed(1)}% today${fx.note ? ` (${fx.note})` : ""}`);
   if (Number.isFinite(gold?.per_10g_24k)) {
     const g = gold, d = x => x ? new Date(x.replace(/^(\d\d)\/(\d\d)\/(\d{4})$/, "$3-$2-$1") + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "long", timeZone: "UTC" }) : "";
     markets.push(`24-carat gold at ₹${n0(g.per_10g_24k)} for ten grams, ${Number.isFinite(g.change_pct) ? `${pc(g.change_pct)} since the last rate${g.prev_date ? ` (${d(g.prev_date)})` : ""}` : ""}${Number.isFinite(g.change_7d_pct) ? `, ${pc(g.change_7d_pct)} over the past week` : ""}${Number.isFinite(g.change_1m_pct) ? `, ${pc(g.change_1m_pct)} over the past month` : ""}${g.hi && g.lo ? `; since ${d(g.range_from)} its high was ₹${n0(g.hi)} (${d(g.hi_date)}) and its low ₹${n0(g.lo)} (${d(g.lo_date)})` : ""}`);
   }
-  const market_notes = Object.entries(E.sections?.ledger?.data?.notes || {}).map(([k, v]) => `${k}: ${v}`).slice(0, 6);
+  const market_notes = Object.entries(E.sections?.ledger?.data?.notes || {}).filter(([k]) => shown.includes(k) || !/^(Sensex|Nifty 50)$/.test(k)).map(([k, v]) => `${k}: ${v}`).slice(0, 6);
   const NAMES = { madrid: "Real Madrid", india_cricket: "India (cricket)", f1: "Formula One" }, results = [], coming = [], ahead = [];
   const SPORT = new Set(["fixtures", "madrid", "paddock", "crease", "deuce", "pitch", "sidelines"]), whys = [];
   for (const w of E.week_ahead || []) {
@@ -242,7 +244,7 @@ export function rundown(E, P = {}, now, paper = {}) {
   for (const [s, depth] of [...deep.map(s => [s, "deep"]), ...quick.map(s => [s, "quick"])]) { const d = desk(s); (groups[d.id] ||= { desk: d.name, items: [] }).items.push(item(s, depth)); }
   for (const g of Object.values(groups)) g.items.sort((a, b) => (a.depth === b.depth ? 0 : a.depth === "deep" ? -1 : 1));
   const named = id => (paper.desks || []).find(d => d.id === id)?.name || { home: "Close to Home", money: "Money", sport: "Sport" }[id];
-  if (markets.length) Object.assign(groups.money ||= { desk: named("money"), items: [] }, { markets, ...(open_now ? { market_open: `the Sensex and Nifty figures are from ${open_now} IST, with the market still open until 15:30` } : {}), ...(after_close.length ? { after_close } : {}), ...(market_notes.length ? { market_notes } : {}) });
+  if (markets.length) Object.assign(groups.money ||= { desk: named("money"), items: [] }, { markets, ...(open_now ? { market_open: `the Indian figures are from ${open_now} IST, with the market still open until 15:30` } : {}), ...(after_close.length ? { after_close } : {}), ...(market_notes.length ? { market_notes } : {}) });
   if (results.length || coming.length) Object.assign(groups.sport ||= { desk: named("sport"), items: [] }, { results, coming });
   if (weather) (groups.home ||= { desk: named("home"), items: [] }).weather = weather;
   if (ahead.length) groups.week = { desk: "The Week Ahead", items: [], coming: ahead };
@@ -294,7 +296,8 @@ THE SHOW, in this order, the way the paper is laid out (everything comes from th
 4. Then the desk segments in the order given. Items marked "deep" get a real back-and-forth of about 80 to 140 words: one host tells it, the other reacts and asks what a listener would ask (what does it mean for us, why now, who is this), answered from "why" and the text. Items marked "quick" get one or two sentences each; several quick ones can run together briskly. Mention every item.
 5. If you name a segment, use the paper's names: Page One, News, Close to Home, Money, Tech and AI, Sport, Off Duty. "Close to Home" is Bengaluru; a story from Ranchi or Prayagraj (the paper's Back Home, where the listener's parents live) is introduced as "back home in Ranchi" or "back home in Prayagraj", never as Bengaluru news. A story from Delhi or anywhere else is News, never "close to home". If a front-page story was about sport, the hosts can say there is more in Sport later.
 6. Sport gets real energy: every sport item, the recent results (skip a result a story already covered; never give a result's clock time), and EVERY match in "coming", even when no story covers it (say each day and time EXACTLY as written, e.g. "on Thursday at twelve thirty a m, late on Wednesday night"; match times must be precise). Share the fixtures out as a back-and-forth: never more than three matches in one turn.
-7. Money: the listener hears these, so every figure needs its meaning. For each of the "markets" lines say the level (rounded), the move today, how the week or month went, and, only when its line says so, that it is close to a three-month high or low (in words; never read out a range). Numbers are welcome (Parth likes them), rounded the way people say them ("just above seventy-two and a half thousand", "down about three per cent this month"). Each market (the Sensex, the Nifty, the Nasdaq-100, the rupee, gold) comes up in ONE place only, with ONE level, the one in its "markets" line: if a Money story is about the same market (say, the rupee firming), tell its story in that same moment and never give the level a second time.
+7. Money: the listener hears these, so every figure needs its meaning. For each of the "markets" lines say the level (rounded), the move today, how the week or month went, and, only when its line says so, that it is close to a three-month high or low (in words; never read out a range). Numbers are welcome (Parth likes them), rounded the way people say them ("just above seventy-two and a half thousand", "down about three per cent this month"). Each market (${(P.indices || ["Sensex", "Nifty 50", "Nasdaq-100"]).map(n => `the ${n}`).join(", ")}, the rupee, gold) comes up in ONE place only, with ONE level, the one in its "markets" line: if a Money story is about the same market (say, the rupee firming), tell its story in that same moment and never give the level a second time.
+   - Only the indices in the "markets" lines${(P.indices || []).includes("Nifty 50") ? "" : ": the Nifty 50 is not part of the show, so never give a Nifty figure"}.
    - "market_open", if given: the Indian markets are STILL OPEN as you speak. Say "so far today" or "as of two o'clock"; NEVER say the Sensex or Nifty closed, finished, ended or settled today.
    - "after_close", if given: yesterday, after the last paper went to press, an index moved a lot before the close. Tell it first, in the SAME turn as that index's figure, with its "why" ("Yesterday, after our paper, the Sensex shot up eleven hundred points by the close, after the Finance Minister said..."), then today's move.
    - The Nasdaq-100 is New York's, and its figure is from the close overnight: say so ("overnight in New York").
@@ -371,6 +374,7 @@ export function checkScript(turns, R, P = {}) {
   const money = (R.segments || []).find(g => g.markets?.length);
   const sentences = t => String(t || "").replace(/<[^>]+>/g, " ").split(/(?<=[.!?])\s+/);
   const INDIA = /\b(sensex|nifty)\b/i, ENDED = /\b(closed|closing|finish(?:ed|ing)?|ended|ending|settled|at the close)\b/i, BEFORE = /\b(yesterday|monday|tuesday|wednesday|thursday|friday|saturday|sunday|last session|after (?:our|the|yesterday's) paper)\b/i;
+  if (money && P.indices && !P.indices.includes("Nifty 50")) turns.forEach((t, i) => { if (/\bnifty\b(?! it\b| bank\b| midcap| smallcap)/i.test(t.text) && numberRuns(t.text)) soft(`turn ${i + 1}: gives a Nifty figure; the show gives only ${P.indices.join(" and ")}`); });
   if (money?.market_open) turns.forEach((t, i) => { const bad = sentences(t.text).find(x => INDIA.test(x) && ENDED.test(x) && !BEFORE.test(x)); if (bad) soft(`turn ${i + 1}: says an Indian index closed or finished today, but the market is still open until 3.30 ("${bad.slice(0, 80)}"); say "so far today" or "as of two o'clock"`); });
   if (money) {
     const stem = w => w.slice(0, 4), CAUSE = /\b(because|due to|thanks to|driven by|on the back of|weigh(?:ed|s|ing)?|dragg(?:ed|ing)|lift(?:ed|ing)|boost(?:ed|ing)?|slow(?:ed|ing|s)?|hurt(?:ing|s)?|push(?:ed|ing)|fuel(?:led|ling)?|spark(?:ed|ing)?|on hopes)\b/i;

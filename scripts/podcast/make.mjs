@@ -17,7 +17,12 @@ import { rundown, writerPrompt, checkScript, fallbackScript, spoken, feedXML, de
 import { layout, mix } from "./studio.mjs";
 import { afterClose } from "../../lib/after-close.js";
 
-const args = process.argv.slice(2), FORCE = args.includes("--force"), DRY = args.includes("--dry"), FEED_ONLY = args.includes("--feed");
+const args = process.argv.slice(2), FORCE = args.includes("--force"), FEED_ONLY = args.includes("--feed");
+// A rehearsal (--rehearse; Parth, 14 Oct: "make sure it doesn't eat my gemini limit and everything is finished before
+// 2 pm"): the script only, from the latest paper, with at most two writer requests in all and no voice at all, done in
+// ten minutes; nothing published. The episode run's writers are capped at 15 requests each (writer_budget) of the
+// free 20 a day, so two rehearsals (four requests) can never take a request the episode needs; voice requests: none.
+const REHEARSE = args.includes("--rehearse"), DRY = args.includes("--dry") || REHEARSE;
 // A voice sample (--sample) is a test run on the same day as the episode: it spends at most two voice requests (one
 // solo take per host, no retries, no fallbacks), so the day's episode always keeps at least eight of the ten
 const SAMPLE = args.some(a => a.startsWith("--sample="));
@@ -45,7 +50,7 @@ try { const { Agent, setGlobalDispatcher } = await import("undici"); setGlobalDi
 // WRITE_BY (15:10 IST) and no writer call runs past STOP (15:20 IST); then the best script so far is voiced. A run that
 // starts later (a backup, a test) gets ten and twenty-five minutes from its start.
 const t0 = Date.now(), istAt = (h, m) => Date.parse(`${new Date(t0 + 5.5 * 36e5).toISOString().slice(0, 10)}T${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:00+05:30`);
-const late = t0 > istAt(15, 0), WRITE_BY = late ? t0 + 10 * 60000 : istAt(15, 10), STOP = late ? t0 + 25 * 60000 : istAt(15, 20);
+const late = t0 > istAt(15, 0), WRITE_BY = REHEARSE ? t0 + 6 * 60000 : late ? t0 + 10 * 60000 : istAt(15, 10), STOP = REHEARSE ? t0 + 10 * 60000 : late ? t0 + 25 * 60000 : istAt(15, 20);
 // "busy" (429, 500, 503) is waited out a minute at a time, up to `tries` attempts in all (the main writer's first
 // try: six, about five minutes; 3.8 Flash was busy for over three minutes at a time on 12-13 Oct, and refused
 // requests count against the free day's twenty)
@@ -77,10 +82,13 @@ async function writeScript(R) {
   const base = writerPrompt(R, P), all = P.text_models || ["gemini-3.8-flash"], strong = all.filter(m => !/lite/.test(m)), lite = all.filter(m => /lite/.test(m));
   // at most `writer_budget` requests to any one writer in a run (busy refusals count against its free twenty a day too),
   // so a redo the same day still has requests left
-  const used = {}, budget = P.writer_budget ?? 15;
+  const used = {}, budget = P.writer_budget ?? 15, cap = REHEARSE ? 2 : Infinity;
+  let total = 0;
   const ask = (model, prompt, tries) => {
     const left = STOP - Date.now();
     if (left < 45000) return Promise.reject(Object.assign(new Error(`${model}: out of time for the writers`), { http: 0 }));
+    if (total >= cap) return Promise.reject(Object.assign(new Error(`${model}: the rehearsal's ${cap} writer requests are used`), { http: 0 }));
+    total++;
     if ((used[model] || 0) >= budget) return Promise.reject(Object.assign(new Error(`${model}: ${budget} requests used in this run; the rest of its day is kept for a redo`), { http: 0 }));
     used[model] = (used[model] || 0) + 1;
     return gemini(model, { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.9 } }, tries, Math.min(540000, left));
@@ -94,7 +102,7 @@ async function writeScript(R) {
   // times, before the next writer is tried. The wait ends at once when 3.8 is out of its day's free requests (a final
   // refusal is never waited for), at the run's budget for it, or when fewer than ten minutes are left before WRITE_BY,
   // so the other writers still get their turn.
-  const head = strong[0], waits = P.first_writer_waits ?? 10;
+  const head = strong[0], waits = REHEARSE ? 0 : P.first_writer_waits ?? 10;
   let waited = 0;
   for (let k = 0; head && k <= waits && !first; k++) {
     if (k) {
@@ -107,7 +115,7 @@ async function writeScript(R) {
   // then the rotation: five rounds at least, then more while there is time before WRITE_BY (13 Oct redo: every writer
   // busy for minutes); 3.8, just asked, sits out the first round
   for (let round = 0; (round < 5 || (round < 12 && Date.now() < WRITE_BY)) && !first; round++) {
-    if (strong.every(m => out.has(m))) break; // every strong writer out of free requests (or out of time)
+    if (strong.every(m => out.has(m)) || total >= cap) break; // every strong writer out of free requests (or out of time), or the rehearsal's requests used
     if (round) { log(`every strong writer busy; round ${round + 1} in a minute`); await sleep(60000); }
     for (const m of strong) {
       if (out.has(m) || (round === 0 && m === head)) continue;
@@ -122,7 +130,7 @@ async function writeScript(R) {
     let err;
     // rounds a minute and a half apart while there is time before WRITE_BY (13 Oct redo: eighteen busy refusals in a
     // row over fourteen minutes, then the unrevised 1,534-word draft went out)
-    for (let round = 0; round === 0 || (round < 8 && Date.now() < WRITE_BY); round++) {
+    for (let round = 0; round === 0 || (round < 8 && Date.now() < WRITE_BY && total < cap); round++) {
       if (round) await sleep(90000);
       for (const m of order) {
         try { const j = await ask(m, prompt, 1); if (m !== model) log(`rewrite by ${m}`); return j; }
@@ -373,6 +381,12 @@ async function main() {
   // the Kokoro step (podcast.yml) reuses the script the first step wrote
   const { turns, by } = KOKORO && saved?.date === date ? saved : DRY && !KEY ? { turns: fallbackScript(R, P), by: "code" } : await writeScript(R);
   writeFileSync(`${OUT}/script.json`, JSON.stringify({ date, by, turns }, null, 1));
+  if (REHEARSE) {
+    const probs = by === "code" ? [] : checkScript(turns, R, P);
+    log(`rehearsal: script by ${by}, ${turns.length} turns, ${turns.reduce((a, t) => a + t.text.split(/\s+/).length, 0)} words; ${probs.length ? `left: ${probs.map(p => p.msg).join("; ")}` : "no problems left"}`);
+    turns.forEach((t, i) => console.log(`${String(i + 1).padStart(2)} ${t.speaker}: ${t.text}`));
+    log("rehearsal: no voice, nothing published"); return;
+  }
   // A script from Flash Lite or the code is held back once: at the edition push, and only before 14:35 IST, so the
   // 14:40 run can try the strong writers again. Every later run publishes whatever it gets (Parth, 13 Oct: the
   // episode is ready before 15:45 IST at any cost).
