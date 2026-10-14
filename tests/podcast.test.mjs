@@ -240,3 +240,14 @@ test("podcast: Real Madrid weighs 7% more (Parth, 14 Oct), Atlético does not", 
   assert.ok(got.includes("rm"), got.join(","));
   assert.ok(!got.includes("atleti") || got.indexOf("atleti") > got.indexOf("rm"), "Atlético is not Real Madrid");
 });
+
+test("podcast: Sport gets 20% more places, gently (Parth, 14 Oct): four become five, from its own next-best stories", () => {
+  const b = (id, section, headline) => ({ id, section, headline, text: "Something happened." });
+  const Ed = { date: "2026-10-14", front: { lead: { id: "lead", section: "desh", headline: "A lead", short: "x" } },
+    sections: { desh: { briefs: [1, 2, 3, 4, 5, 6].map(i => b(`n${i}`, "desh", `News item ${i}`)) },
+      pitch: { briefs: [1, 2, 3, 4, 5, 6].map(i => b(`s${i}`, "pitch", `Football item ${i}`)) } } };
+  const art = [...[1, 2, 3, 4].map(i => ({ story_id: `s${i}`, importance: 2 })), ...[1, 2, 3, 4, 5, 6].map(i => ({ story_id: `n${i}`, importance: 2 }))];
+  const sport = W => { const R = rundown({ ...Ed, art_scores: art }, { ...P, deep_max: 2, quick_max: 8, weights: W }, undefined, paper); return [R.lead, ...R.segments.flatMap(g => g.items)].filter(i => i.desk === "Sport").map(i => i.id); };
+  assert.equal(sport([]).length, 4);
+  assert.deepEqual(sport([{ desk: "sport", factor: 1.2 }]).sort(), ["s1", "s2", "s3", "s4", "s5"]);
+});

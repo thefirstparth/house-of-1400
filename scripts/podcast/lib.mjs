@@ -168,8 +168,9 @@ export function rundown(E, P = {}, now, paper = {}) {
   const [lead, ...rest] = list;
   // a follow weighted up for the show (config podcast.weights; Parth, 14 Oct: "7% more importance to Real Madrid"): its
   // stories rank that much higher for a back-and-forth and a place in the show, and the writer gets that much more of them
-  // (by the paper's section, or the exact words in the kicker or headline: "Real Madrid", never Atlético)
-  const weight = s => (P.weights || []).reduce((w, x) => (s.section === x.section || (x.words && new RegExp(`\\b${x.words}\\b`, "i").test(`${s.kicker || ""} ${s.headline || ""}`)) ? Math.max(w, x.factor || 1) : w), 1);
+  // (by the paper's section, or the exact words in the kicker or headline: "Real Madrid", never Atlético). A desk's
+  // weight works on its share of the show instead (below), so it is not counted here.
+  const weight = s => (P.weights || []).filter(x => !x.desk).reduce((w, x) => ((x.section && s.section === x.section) || (x.words && new RegExp(`\\b${x.words}\\b`, "i").test(`${s.kicker || ""} ${s.headline || ""}`)) ? w * (x.factor || 1) : w), 1);
   const score = s => ((imp[s.id] ?? 1) + (front.has(s.id) ? 0.5 : 0) + (s.short ? 0.25 : 0)) * weight(s);
   const ranked = rest.map((x, i) => ({ x, i })).sort((a, b) => score(b.x) - score(a.x) || a.i - b.i).map(r => r.x);
   // Page One first, as the paper (Parth, 13 Oct): the lead, then the front page's stories in the paper's order (each a
@@ -180,6 +181,19 @@ export function rundown(E, P = {}, now, paper = {}) {
   const deep = others.slice(0, Math.max(2, (P.deep_max || 6) - 1 - seconds.length));
   if (![lead, ...seconds, ...deep].some(x => x && desk(x).id === "sport")) { const sp = others.find(x => desk(x).id === "sport"); if (sp && !deep.includes(sp)) deep.splice(Math.max(0, deep.length - 1), 1, sp); }
   const deepIds = new Set(deep.map(x => x.id)), quick = others.filter(x => !deepIds.has(x.id)).slice(0, P.quick_max || 18);
+  // A desk weighted up (config podcast.weights {desk, factor}; Parth, 14 Oct: Sport "1.2x or 20% higher than current,
+  // but not forcefully"): the desk gets that many more places than the paper's own order gave it, rounded (four Sport
+  // items become five), filled with its next-best stories in place of the weakest quick items from other desks. Never
+  // more than its stories that are left: nothing is padded. (A weight on the score itself flipped every tie, the scores
+  // being whole numbers, and turned four Sport items into nine on 14 Oct.)
+  for (const x of (P.weights || []).filter(x => x.desk && x.factor > 1)) {
+    const inShow = [lead, ...seconds, ...fbriefs, ...deep, ...quick].filter(Boolean), mine = s => desk(s).id === x.desk;
+    const k = inShow.filter(mine).length, target = Math.round(k * x.factor), spare = others.filter(s => mine(s) && !inShow.includes(s));
+    for (let n = k; n < target && spare.length; n++) {
+      const out = [...quick].reverse().find(s => !mine(s)); if (!out) break;
+      quick.splice(quick.indexOf(out), 1, spare.shift());
+    }
+  }
   const item = (s, depth) => ({ id: s.id, desk: desk(s).name, section: nameOf[s.section] || null, kicker: s.kicker || null, headline: sayTimes(s.headline), tone: ["good", "bad", "mixed"].includes(s.tone) ? s.tone : "neutral", depth, text: sayTimes(cut(storyText(s), Math.round((depth === "quick" ? 360 : 1100) * weight(s)))), why: sayTimes(s.why?.text) || null });
   const snap = E.snapshot || {}, ok = k => (snap[k]?.value && !snap[k]?.error ? snap[k].value : null);
   const idx = ok("markets")?.indices || [], fx = ok("fx"), gold = ok("gold_in");

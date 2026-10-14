@@ -3445,6 +3445,10 @@
     ],
     "weights": [
       {
+        "desk": "sport",
+        "factor": 1.2
+      },
+      {
         "section": "madrid",
         "words": "Real Madrid",
         "factor": 1.07
