@@ -487,11 +487,21 @@ export function fallbackScript(R, P = {}) {
 
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 // The private feed (Apple Podcasts "Follow a Show by URL"); itunes:block keeps it out of Apple's directory
+// The episode's own transcript (Parth, 14 Oct): every line as the script has it, with its speaker and its time in the
+// episode, as WebVTT, the form Apple Podcasts reads from the feed (podcast:transcript). cues[i] = [start, end] seconds.
+export function vttOf(turns, cues) {
+  const ts = s => { const ms = Math.max(0, Math.round(s * 1000)), h = Math.floor(ms / 36e5), m = Math.floor(ms / 6e4) % 60, x = Math.floor(ms / 1000) % 60;
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(x).padStart(2, "0")}.${String(ms % 1000).padStart(3, "0")}`; };
+  const clean = t => String(t || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/-->/g, "->");
+  const cuesOut = turns.map((t, i) => (cues?.[i] && clean(t.text) ? `${i + 1}\n${ts(cues[i][0])} --> ${ts(Math.max(cues[i][1], cues[i][0] + 0.5))}\n<v ${t.speaker}>${clean(t.text)}` : null)).filter(Boolean);
+  return cuesOut.length ? `WEBVTT\n\n${cuesOut.join("\n\n")}\n` : null;
+}
+
 export function feedXML({ P = {}, base, episodes, image }) {
   const items = episodes.slice().sort((a, b) => b.date.localeCompare(a.date)).map(e => `  <item>
     <title>${esc(e.title)}</title>
     <description>${esc(e.description)}</description>
-    <enclosure url="${esc(e.url)}" length="${e.bytes}" type="audio/mpeg"/>
+    <enclosure url="${esc(e.url)}" length="${e.bytes}" type="audio/mpeg"/>${e.transcript_url ? `\n    <podcast:transcript url="${esc(e.transcript_url)}" type="text/vtt" language="en"/>` : ""}
     <guid isPermaLink="false">h1400-${e.date}${e.v > 1 ? `-v${e.v}` : ""}</guid>
     <pubDate>${new Date(e.published).toUTCString()}</pubDate>
     <itunes:duration>${Math.round(e.seconds)}</itunes:duration>
@@ -502,7 +512,7 @@ export function feedXML({ P = {}, base, episodes, image }) {
   // moves any app still on the old secret address (itunes:new-feed-url). Unlisted (podcast.listed false): blocked.
   const L = P.listed && P.feed_url, O = P.owner || {}, [cat, sub] = String(P.category || "News/Daily News").split("/");
   return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:podcast="https://podcastindex.org/namespace/1.0">
 <channel>
   <title>${esc(P.title || "The House of 1400")}</title>
   <link>${esc(base)}</link>

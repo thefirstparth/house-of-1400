@@ -13,7 +13,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync, readdirSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { rundown, writerPrompt, checkScript, fallbackScript, spoken, feedXML, deepItems, splitLines, cutAt, onAir } from "./lib.mjs";
+import { rundown, writerPrompt, checkScript, fallbackScript, spoken, feedXML, deepItems, splitLines, cutAt, onAir, vttOf } from "./lib.mjs";
 import { layout, mix } from "./studio.mjs";
 import { afterClose } from "../../lib/after-close.js";
 
@@ -173,7 +173,7 @@ function pcmOf(buf) {
 }
 
 // 3. The voice
-let voiceModel = null, soloPieces = null; // the Gemini voice model that made the take (for the episode record and the Telegram message)
+let voiceModel = null, soloPieces = null, studioCues = null; // the Gemini voice model that made the take (for the episode record and the Telegram message)
 const hostVoice = Object.fromEntries((P.hosts || []).map(h => [h.id, h.voice]));
 // Every line opens with the same fixed description of its speaker, word for word, so the voice and accent stay put for
 // the whole take (Parth, 13 Oct: the man's accent changed several times and it did not sound Indian); the mood is after
@@ -314,12 +314,30 @@ function produce(turns, pcm) {
     try {
       const L = layout({ turns, pieces: soloPieces, take: soloPieces ? null : pcm, date, pan: P.pan || {}, music: P.music !== false });
       mix(L, OUT, `${OUT}/episode.mp3`);
+      studioCues = L.cues;
       log(`studio: ${soloPieces ? "two mics, natural timing" : "one take"}, ${P.music === false ? "no music" : `${L.marks} sting(s)`}, ${Math.round(L.seconds)} s`);
       return L.seconds;
     } catch (e) { log("studio failed, plain mix instead:", e.message.split("\n")[0].slice(0, 200)); }
   }
   execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-i", `${OUT}/episode.wav`, "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-ar", "44100", "-ac", "1", "-codec:a", "libmp3lame", "-b:a", "96k", `${OUT}/episode.mp3`]);
   return pcm.length / 48000;
+}
+
+// The transcript (Parth, 14 Oct): each line's time is the studio's own placing when the hosts were voiced alone; else the
+// finished episode is heard by the listening model (verify_lines.py align) and the script's lines are matched to it.
+// Never holds the episode back: any failure means no transcript, and Apple shows its own.
+function transcriptOf(turns, mp3) {
+  if (studioCues?.length === turns.length) return vttOf(turns, studioCues);
+  const dir = `${OUT}/verify`, wav = `${dir}/episode16k.wav`, job = `${dir}/episode-align.json`, res = `${dir}/episode-align.out.json`;
+  mkdirSync(dir, { recursive: true });
+  execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-i", mp3, "-ac", "1", "-ar", "16000", "-c:a", "pcm_s16le", wav]);
+  const lines = turns.map(t => spoken(t.text, P.pronounce));
+  writeFileSync(job, JSON.stringify({ model: P.verify_model || "base.en", take: wav, lines }));
+  execFileSync(process.env.PODCAST_PYTHON || "python3", [`${H}scripts/podcast/verify_lines.py`, job, res], { stdio: ["ignore", "inherit", "inherit"], timeout: 6 * 60000 });
+  const r = JSON.parse(readFileSync(res, "utf8"));
+  if (!r.ok) throw new Error(r.why || "not aligned");
+  const b = [r.start, ...r.cuts, r.end];
+  return vttOf(turns, turns.map((_, i) => [b[i], b[i + 1]]));
 }
 
 // 4. Store and publish
@@ -333,14 +351,16 @@ async function publishFeed({ put, list, del, get }) {
   const episodes = [], old = [];
   for (const b of blobs.filter(b => /\d{4}-\d{2}-\d{2}\.json$/.test(b.pathname))) {
     const d = b.pathname.match(/(\d{4}-\d{2}-\d{2})\.json$/)[1];
-    if (d < cut) { old.push(b.url, b.url.replace(/\.json$/, ".mp3")); continue; }
+    if (d < cut) { old.push(b.url, b.url.replace(/\.json$/, ".mp3")); continue; } // (an old transcript goes below)
     const g = await get(b.pathname, { access: "private", useCache: false, token: BLOB }).catch(() => null);
     const m = g?.stream ? await new Response(g.stream).json().catch(() => null) : null; if (m) episodes.push(m);
   }
   if (old.length) { await del(old, { token: BLOB }).catch(e => log("could not delete old episodes:", e.message)); log(`removed ${old.length / 2} old episode(s)`); }
+  const oldVtt = blobs.filter(b => /\.vtt$/.test(b.pathname) && (b.pathname.match(/(\d{4}-\d{2}-\d{2})/)?.[1] || "9") < cut).map(b => b.url);
+  if (oldVtt.length) await del(oldVtt, { token: BLOB }).catch(() => {});
   const image = P.image ? new URL(P.image, site + "/").href : null;
   // every episode's address follows the route in use, whatever was recorded when it was published
-  for (const e of episodes) if (e.url) e.url = served(e.url.split("/").pop());
+  for (const e of episodes) { if (e.url) e.url = served(e.url.split("/").pop()); if (e.transcript) e.transcript_url = served(e.transcript); }
   await put(`${folder}/feed.xml`, feedXML({ P: { ...P, feed_url: `${site}/listen` }, base: site, episodes, image }), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/rss+xml; charset=utf-8", cacheControlMaxAge: 300, token: BLOB });
   return episodes.length;
 }
@@ -405,15 +425,24 @@ async function main() {
   catch (e) { throw new Error(`Gemini voice failed (${e.message}); the Kokoro step takes over`); }
   const seconds = produce(turns, pcm), bytes = statSync(`${OUT}/episode.mp3`).size;
   log(`audio: ${Math.round(seconds)} s, ${Math.round(bytes / 1024)} KB, voice ${voice}`);
+  let vtt = null;
+  // (hearing a whole episode takes a minute or two: not when the 15:45 deadline is close)
+  if (!KOKORO && (studioCues || late || Date.now() < istAt(15, 30))) {
+    try { vtt = transcriptOf(turns, `${OUT}/episode.mp3`); if (vtt) { writeFileSync(`${OUT}/episode.vtt`, vtt); log(`transcript: ${turns.length} lines, ${studioCues ? "from the studio" : "by ear"}`); } }
+    catch (e) { vtt = null; log("transcript: none,", String(e.message).split("\n")[0].slice(0, 160)); }
+  }
   if (DRY) { log("dry run: .podcast/episode.mp3"); return; }
   await put(`${folder}/${file}`, readFileSync(`${OUT}/episode.mp3`), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "audio/mpeg", token: BLOB });
+  const vttFile = file.replace(/\.mp3$/, ".vtt");
+  if (vtt) await put(`${folder}/${vttFile}`, vtt, { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "text/vtt; charset=utf-8", token: BLOB }).catch(e => { vtt = null; log("transcript: not stored,", e.message); });
   const day = new Date(date + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
-  const meta = { date, title: `${day} · ${R.lead.headline}`, description: deepItems(R).map(s => s.headline).join(" · "), url: served(file), v, bytes, seconds, published: new Date().toISOString(), by, voice, voice_model: KOKORO ? "kokoro" : voiceModel };
+  const meta = { date, title: `${day} · ${R.lead.headline}`, description: deepItems(R).map(s => s.headline).join(" · "), url: served(file), v, bytes, seconds, published: new Date().toISOString(), by, voice, voice_model: KOKORO ? "kokoro" : voiceModel, ...(vtt ? { transcript: vttFile } : {}) };
   await put(`${folder}/${date}.json`, JSON.stringify(meta), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", token: BLOB });
   const n = await publishFeed({ put, list, del, get });
   log(`published ${date}${v > 1 ? ` (take ${v})` : ""} (${n} in the feed)`);
   const was = prior?.url?.split("/").pop();
   if (was && was !== file) await del(`${folder}/${was}`, { token: BLOB }).then(() => log(`removed the old take ${was}`)).catch(e => log(`could not remove the old take ${was}:`, e.message));
+  if (prior?.transcript && prior.transcript !== vttFile) await del(`${folder}/${prior.transcript}`, { token: BLOB }).catch(() => {});
   log(`FEED ${served("feed.xml")}`);
   // a separate Telegram message that the episode is in Apple Podcasts, with its writer and voice (api/notify.js; once a day)
   await fetch(`${site}/api/notify?podcast=${date}&k=${folder.split("/")[1]}`, { method: "POST", signal: AbortSignal.timeout(30000) })

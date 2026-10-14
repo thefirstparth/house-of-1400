@@ -108,7 +108,9 @@ export function layout({ turns, pieces, take, date = "", pan = {}, music = true 
   // turned down if needed, never up; the loudness step after the mix sets the level
   const top = bufs => bufs.reduce((m, b) => { for (const x of b) m = Math.max(m, Math.abs(x)); return m; }, 0);
   for (const bufs of [[vL, vR], [mono]]) { const m = top(bufs); if (m > 0.95) for (const b of bufs) for (let k = 0; k < b.length; k++) b[k] *= 0.95 / m; }
-  return { voice: [vL, vR], music: music ? [mono, mono] : null, seconds: total / RATE, marks: stings.length };
+  // where each line sits in the episode, in seconds, for the transcript (one take: unknown, null)
+  const cues = pieces ? place.map(p => [p.at / RATE, (p.at + p.n) / RATE]) : null;
+  return { voice: [vL, vR], music: music ? [mono, mono] : null, seconds: total / RATE, marks: stings.length, cues };
 }
 
 const wav = ([L, R]) => {

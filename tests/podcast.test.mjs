@@ -269,3 +269,13 @@ test("podcast feed, listed (14 Oct): no block, owner, category, the public addre
   assert.match(xml, /<itunes:new-feed-url>https:\/\/house14\.vercel\.app\/listen<\/itunes:new-feed-url>/);
   assert.match(feedXML({ P: { ...P, listed: false, feed_url: "x" }, base: "b", episodes: [ep] }), /<itunes:block>Yes<\/itunes:block>/);
 });
+
+test("podcast transcript (14 Oct): each line with its speaker and time, as WebVTT; tags and arrows made safe", async () => {
+  const { vttOf } = await import("../scripts/podcast/lib.mjs");
+  const v = vttOf([{ speaker: "Ashu", text: "Hello <sigh> & welcome --> in" }, { speaker: "Tarun", text: "Haan!" }], [[0, 2.5], [2.5, 3.1]]);
+  assert.equal(v, "WEBVTT\n\n1\n00:00:00.000 --> 00:00:02.500\n<v Ashu>Hello &amp; welcome -> in\n\n2\n00:00:02.500 --> 00:00:03.100\n<v Tarun>Haan!\n");
+  assert.equal(vttOf([{ speaker: "Ashu", text: "x" }], null), null);
+  const xml = feedXML({ P: { ...P, feed_url: "https://h/listen" }, base: "https://h", episodes: [{ date: "2026-10-14", title: "t", description: "d", url: "https://h/listen/2026-10-14.mp3", transcript_url: "https://h/listen/2026-10-14.vtt", bytes: 1, seconds: 1, published: "2026-10-14T10:00:00Z" }] });
+  assert.match(xml, /xmlns:podcast="https:\/\/podcastindex\.org\/namespace\/1\.0"/);
+  assert.match(xml, /<podcast:transcript url="https:\/\/h\/listen\/2026-10-14\.vtt" type="text\/vtt" language="en"\/>/);
+});

@@ -5,7 +5,7 @@
 // Since 14 Oct the show is listed (Apple Podcasts, Spotify): the public address is /listen (the feed) and
 // /listen/<file>. The folder is the one in the store that holds the feed (there is one), looked up once per instance,
 // so it never depends on which copy of the Blob token this function has. The old secret address still works.
-const OK_K = /^[a-f0-9]{24}$/, OK_F = /^(feed\.xml|\d{4}-\d{2}-\d{2}(-v\d+)?\.mp3)$/;
+const OK_K = /^[a-f0-9]{24}$/, OK_F = /^(feed\.xml|\d{4}-\d{2}-\d{2}(-v\d+)?\.(mp3|vtt))$/;
 let folderOf = null;
 async function ownFolder() {
   if (folderOf) return folderOf;
@@ -20,13 +20,13 @@ async function serve(request, head) {
   if (pub) { try { k = await ownFolder(); } catch { k = ""; } }
   if (!OK_K.test(k) || !OK_F.test(f)) return new Response("Not found", { status: 404 });
   const { get } = await import("@vercel/blob");
-  const range = request.headers.get("range"), mp3 = f.endsWith(".mp3");
+  const range = request.headers.get("range"), mp3 = f.endsWith(".mp3"), vtt = f.endsWith(".vtt");
   let r;
   try { r = await get(`podcast/${k}/${f}`, { access: "private", useCache: mp3, headers: range ? { range } : undefined }); }
   catch { return new Response("Not found", { status: 404 }); }
   if (!r?.stream) return new Response("Not found", { status: 404 });
   const h = new Headers({
-    "content-type": mp3 ? "audio/mpeg" : "application/rss+xml; charset=utf-8",
+    "content-type": mp3 ? "audio/mpeg" : vtt ? "text/vtt; charset=utf-8" : "application/rss+xml; charset=utf-8",
     "accept-ranges": "bytes",
     "cache-control": mp3 ? "public, max-age=86400" : "public, max-age=300",
     "x-robots-tag": "noindex",
