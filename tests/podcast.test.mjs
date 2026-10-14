@@ -201,3 +201,27 @@ test("podcast: only Ranchi and Prayagraj are 'back home' (14 Oct: 'back home in 
   assert.ok(msgs("There is tragic news back home in Bihar.").some(m => /back home/.test(m)));
   assert.ok(!msgs("And back home in Prayagraj, the Magh Mela plans are out.").some(m => /back home/.test(m)));
 });
+
+test("podcast money (14 Oct): still open at two, the range in words, the Nasdaq-100, yesterday's late move", () => {
+  const ix = (name, price, extra) => ({ name, price, change_pct: -0.3, chg_7d: 0.2, chg_1m: -2.7, lo3m: 71593, hi3m: 78955, ...extra });
+  const Ed = { date: "2026-10-15", front: { lead: { id: "a", section: "desh", headline: "A lead", short: "x" } }, sections: {},
+    snapshot: { markets: { value: { indices: [ix("Sensex", 72862, { session_date: "2026-10-15", live: true, market_time: "2026-10-15T08:23:00Z" }), ix("Nifty 50", 24600, { session_date: "2026-10-15", live: true, market_time: "2026-10-15T08:38:00Z", lo3m: 22232, hi3m: 24774 }), ix("Nasdaq-100", 30569, { session_date: "2026-10-14", live: false })] } } } };
+  const moves = [{ name: "Sensex", printed: 72566, close: 73034, points: 468, pct: 0.64, day_pct: 1.54, session: "2026-10-14" }];
+  const R = rundown(Ed, P, undefined, { ...paper, after_close: { moves, why: "Sitharaman said she would hear views on removing the LTCG tax." } });
+  const m = R.segments.find(g => g.markets);
+  assert.match(m.markets[0], /so far today/);
+  assert.doesNotMatch(m.markets.join(" "), /between its|71,593|78,955/, "no range figures");
+  assert.match(m.markets[1], /close to its highest in three months/);
+  assert.match(m.markets.find(x => /Nasdaq/.test(x)), /last close \(Wednesday in New York, overnight for us\)/);
+  assert.match(m.market_open, /13:53 IST/);
+  assert.match(m.after_close[0], /closed yesterday at 73,034, 468 points above/);
+  assert.match(m.after_close.at(-1), /LTCG/);
+  const t = Array.from({ length: 8 }, (_, i) => ({ speaker: i % 2 ? "Tarun" : "Ashu", text: "Right." }));
+  t[2].text = "The Sensex finished down a little today.";
+  t[3].text = "Yesterday, after our paper, the Sensex closed eleven hundred points up.";
+  t[4].text = "The Nifty slipped because investors fear American tariffs and election jitters.";
+  const msgs = checkScript(t, R, P).map(p => p.msg);
+  assert.ok(msgs.some(x => /turn 3: says an Indian index closed/.test(x)), msgs.join(" | "));
+  assert.ok(!msgs.some(x => /turn 4: says an Indian index closed/.test(x)), "yesterday's close is fine");
+  assert.ok(msgs.some(x => /turn 5: gives a reason/.test(x)), msgs.join(" | "));
+});

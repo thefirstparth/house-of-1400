@@ -10,11 +10,12 @@
 //      than keep_days removed.
 // Never touches the repo. Secrets: GEMINI_API_KEY, BLOB_READ_WRITE_TOKEN (GitHub Actions secrets).
 //   node scripts/podcast/make.mjs [YYYY-MM-DD] [--force] [--dry]   (--feed: only rebuild feed.xml from the kept episodes)
-import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync, readdirSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { rundown, writerPrompt, checkScript, fallbackScript, spoken, feedXML, deepItems, splitLines, cutAt, onAir } from "./lib.mjs";
 import { layout, mix } from "./studio.mjs";
+import { afterClose } from "../../lib/after-close.js";
 
 const args = process.argv.slice(2), FORCE = args.includes("--force"), DRY = args.includes("--dry"), FEED_ONLY = args.includes("--feed");
 // A voice sample (--sample) is a test run on the same day as the episode: it spends at most two voice requests (one
@@ -358,7 +359,14 @@ async function main() {
     if (blobs.length) { const g = await get(`${folder}/${date}.json`, { access: "private", useCache: false, token: BLOB }).catch(() => null); prior = g?.stream ? await new Response(g.stream).json().catch(() => null) : null; }
   }
   const v = prior ? (prior.v || 1) + 1 : 1, file = v > 1 ? `${date}-v${v}.mp3` : `${date}.mp3`;
-  const R = rundown(E, P, undefined, { desks: cfg.desks_v2?.desks, sections: cfg.sections, follows: cfg.follows, betting: cfg.betting });
+  // a big move after yesterday's paper went to press, with the paper's reason (from 15 Oct; lib/after-close.js)
+  let after_close = null;
+  try {
+    const prev = readdirSync(`${H}content/editions`).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f) && f < `${date}.json`).sort().pop();
+    const AC = cfg.pool?.after_close;
+    if (prev && AC?.from && date >= AC.from) { const moves = afterClose(E, JSON.parse(readFileSync(`${H}content/editions/${prev}`, "utf8")), cfg.pool); if (moves.length) after_close = { moves, why: E.checks?.after_close?.why || null }; }
+  } catch (e) { log("after-close: skipped,", e.message); }
+  const R = rundown(E, P, undefined, { desks: cfg.desks_v2?.desks, sections: cfg.sections, follows: cfg.follows, betting: cfg.betting, after_close });
   R.on_air = onAir(); // the radio time check, from the clock as the script is written
   if (!R.lead) { log("the edition has no lead; nothing to say"); return; }
   const KOKORO = process.env.PODCAST_VOICE === "kokoro", saved = existsSync(`${OUT}/script.json`) ? JSON.parse(readFileSync(`${OUT}/script.json`, "utf8")) : null;
