@@ -497,15 +497,24 @@ export function feedXML({ P = {}, base, episodes, image }) {
     <itunes:duration>${Math.round(e.seconds)}</itunes:duration>
     <itunes:explicit>false</itunes:explicit>
   </item>`).join("\n");
+  // Listed in Apple Podcasts, Spotify and the rest (Parth, 14 Oct: "I don't care, tell me how"): no block, the owner's
+  // name and email (Spotify sends its ownership code there), a category, and the feed's public address, which also
+  // moves any app still on the old secret address (itunes:new-feed-url). Unlisted (podcast.listed false): blocked.
+  const L = P.listed && P.feed_url, O = P.owner || {}, [cat, sub] = String(P.category || "News/Daily News").split("/");
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
 <channel>
   <title>${esc(P.title || "The House of 1400")}</title>
   <link>${esc(base)}</link>
-  <description>${esc(P.subtitle || "")}</description>
+  <description>${esc(P.description || P.subtitle || "")}</description>
   <language>en-in</language>
-  <itunes:author>${esc(P.author || "")}</itunes:author>
-  <itunes:block>Yes</itunes:block>
+  <itunes:author>${esc(P.author || "")}</itunes:author>${L ? `
+  <itunes:new-feed-url>${esc(P.feed_url)}</itunes:new-feed-url>
+  <itunes:owner><itunes:name>${esc(O.name || P.author || "")}</itunes:name><itunes:email>${esc(O.email || "")}</itunes:email></itunes:owner>
+  <itunes:category text="${esc(cat)}">${sub ? `<itunes:category text="${esc(sub)}"/>` : ""}</itunes:category>
+  <itunes:type>episodic</itunes:type>
+  <itunes:summary>${esc(P.description || P.subtitle || "")}</itunes:summary>` : `
+  <itunes:block>Yes</itunes:block>`}
   <itunes:explicit>false</itunes:explicit>${image ? `\n  <itunes:image href="${esc(image)}"/>\n  <image><url>${esc(image)}</url><title>${esc(P.title || "The House of 1400")}</title><link>${esc(base)}</link></image>` : ""}
 ${items}
 </channel>

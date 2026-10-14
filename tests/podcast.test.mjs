@@ -259,3 +259,13 @@ test("podcast: Sport says where the follows stand: league, championship, series 
   const g = rundown(Ed, P, undefined, { ...paper, follows: C.follows }).segments.find(x => x.standings);
   assert.deepEqual(g.standings, ["Real Madrid: 4th in La Liga on 18 points after 8 games, 6 behind the leaders Barcelona", "Max Verstappen: 4th in the drivers' championship on 221 points, 119 behind the leader Kimi Antonelli", "India's cricket, West Indies: T20Is, 5 matches, 3 played, India lead 2–1"]);
 });
+
+test("podcast feed, listed (14 Oct): no block, owner, category, the public address; unlisted stays blocked", () => {
+  const ep = { date: "2026-10-14", title: "t", description: "d", url: "https://house14.vercel.app/listen/2026-10-14.mp3", bytes: 1, seconds: 1, published: "2026-10-14T10:00:00Z" };
+  const xml = feedXML({ P: { ...P, feed_url: "https://house14.vercel.app/listen" }, base: "https://house14.vercel.app", episodes: [ep] });
+  assert.doesNotMatch(xml, /itunes:block/);
+  assert.match(xml, /<itunes:owner><itunes:name>Parth Bhatia<\/itunes:name><itunes:email>parth@bhatia\.page<\/itunes:email><\/itunes:owner>/);
+  assert.match(xml, /<itunes:category text="News"><itunes:category text="Daily News"\/><\/itunes:category>/);
+  assert.match(xml, /<itunes:new-feed-url>https:\/\/house14\.vercel\.app\/listen<\/itunes:new-feed-url>/);
+  assert.match(feedXML({ P: { ...P, listed: false, feed_url: "x" }, base: "b", episodes: [ep] }), /<itunes:block>Yes<\/itunes:block>/);
+});

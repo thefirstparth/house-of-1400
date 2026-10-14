@@ -3439,6 +3439,13 @@
     },
     "keep_days": 14,
     "image": "/podcast-cover.jpg",
+    "listed": true,
+    "owner": {
+      "name": "Parth Bhatia",
+      "email": "parth@bhatia.page"
+    },
+    "category": "News/Daily News",
+    "description": "The House of 1400 is an afternoon newspaper read aloud as a conversation. Every day at about three, Ashu and Tarun, two friends from Allahabad now in Bengaluru, talk through T. A. Bhide's paper over chai: the day's big news from India and the world, markets and money, tech and AI, and a lot of sport.",
     "indices": [
       "Sensex",
       "Nasdaq-100"

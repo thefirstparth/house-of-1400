@@ -325,7 +325,8 @@ function produce(turns, pcm) {
 // 4. Store and publish
 async function blob() { return import("@vercel/blob"); }
 const site = (cfg.site?.url || process.env.SITE_URL || "https://house14.vercel.app").replace(/\/+$/, "");
-const served = f => `${site}/${folder}/${f}`; // the site's /podcast/<secret>/<file> route (api/podcast.js)
+// the site's public /listen/<file> route once the show is listed (14 Oct), else /podcast/<secret>/<file> (api/podcast.js)
+const served = f => (P.listed ? `${site}/listen/${f}` : `${site}/${folder}/${f}`);
 // the feed from every episode still kept; older ones are deleted
 async function publishFeed({ put, list, del, get }) {
   const { blobs } = await list({ prefix: `${folder}/`, token: BLOB }), cut = new Date(Date.now() - (P.keep_days || 14) * 864e5).toISOString().slice(0, 10);
@@ -338,7 +339,9 @@ async function publishFeed({ put, list, del, get }) {
   }
   if (old.length) { await del(old, { token: BLOB }).catch(e => log("could not delete old episodes:", e.message)); log(`removed ${old.length / 2} old episode(s)`); }
   const image = P.image ? new URL(P.image, site + "/").href : null;
-  await put(`${folder}/feed.xml`, feedXML({ P, base: site, episodes, image }), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/rss+xml; charset=utf-8", cacheControlMaxAge: 300, token: BLOB });
+  // every episode's address follows the route in use, whatever was recorded when it was published
+  for (const e of episodes) if (e.url) e.url = served(e.url.split("/").pop());
+  await put(`${folder}/feed.xml`, feedXML({ P: { ...P, feed_url: `${site}/listen` }, base: site, episodes, image }), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/rss+xml; charset=utf-8", cacheControlMaxAge: 300, token: BLOB });
   return episodes.length;
 }
 async function main() {
@@ -357,7 +360,7 @@ async function main() {
     log(`sample: ${Math.round(secs)} s from ${sample}`); return;
   }
   const { put, list, del, get } = DRY ? {} : await blob();
-  if (FEED_ONLY) { const n = await publishFeed({ put, list, del, get }); log(`feed rebuilt (${n} in the feed)`); log(`FEED ${served("feed.xml")}`); return; }
+  if (FEED_ONLY) { const n = await publishFeed({ put, list, del, get }); log(`feed rebuilt (${n} in the feed)`); log(`FEED ${P.listed ? `${site}/listen` : served("feed.xml")}`); return; }
   // --force on a published day is a redo: the new take goes up under a new file and episode id (-v2, -v3), the feed
   // switches to it, and only then is the old file deleted, so a failed redo leaves the old episode up (Parth, 13 Oct)
   let prior = null;

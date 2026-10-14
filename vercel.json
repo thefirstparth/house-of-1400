@@ -33,6 +33,14 @@
     {
       "source": "/podcast/:k/:f",
       "destination": "/api/podcast?k=:k&f=:f"
+    },
+    {
+      "source": "/listen",
+      "destination": "/api/podcast?pub=1&f=feed.xml"
+    },
+    {
+      "source": "/listen/:f",
+      "destination": "/api/podcast?pub=1&f=:f"
     }
   ],
   "functions": {

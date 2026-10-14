@@ -2,10 +2,22 @@
 // podcast/<secret>/). Served here so Apple Podcasts can fetch them: /podcast/<secret>/feed.xml and
 // /podcast/<secret>/YYYY-MM-DD.mp3 (or -v2.mp3, a redo) (vercel.json rewrites to this function). The secret folder name is the only key:
 // anything else is a plain 404. Byte ranges are passed through, which Apple Podcasts uses to stream.
+// Since 14 Oct the show is listed (Apple Podcasts, Spotify): the public address is /listen (the feed) and
+// /listen/<file>. The folder is the one in the store that holds the feed (there is one), looked up once per instance,
+// so it never depends on which copy of the Blob token this function has. The old secret address still works.
 const OK_K = /^[a-f0-9]{24}$/, OK_F = /^(feed\.xml|\d{4}-\d{2}-\d{2}(-v\d+)?\.mp3)$/;
+let folderOf = null;
+async function ownFolder() {
+  if (folderOf) return folderOf;
+  const { list } = await import("@vercel/blob");
+  const { blobs } = await list({ prefix: "podcast/", limit: 1000 });
+  return (folderOf = blobs.map(b => b.pathname.match(/^podcast\/([a-f0-9]{24})\/feed\.xml$/)?.[1]).find(Boolean) || "");
+}
 
 async function serve(request, head) {
-  const url = new URL(request.url), k = url.searchParams.get("k") || "", f = url.searchParams.get("f") || "";
+  const url = new URL(request.url), pub = url.searchParams.has("pub"), f = url.searchParams.get("f") || (pub ? "feed.xml" : "");
+  let k = url.searchParams.get("k") || "";
+  if (pub) { try { k = await ownFolder(); } catch { k = ""; } }
   if (!OK_K.test(k) || !OK_F.test(f)) return new Response("Not found", { status: 404 });
   const { get } = await import("@vercel/blob");
   const range = request.headers.get("range"), mp3 = f.endsWith(".mp3");
