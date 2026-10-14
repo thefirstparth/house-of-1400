@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-13T08:44:13.928Z",
-  "last_edition": "2026-10-13",
+  "last_updated": "2026-10-14T08:44:20.156Z",
+  "last_edition": "2026-10-14",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -25,14 +25,14 @@
     },
     {
       "thread_id": "india-markets-daily",
-      "title": "HCLTech leads a 3% IT rally and the rupee firms to 95.25 after the RBI's curbs",
+      "title": "Sensex gives up a 500-point gain on crude and bank selling, while the rupee has its best day in a month",
       "entities": [],
       "facts": {
         "sensex_close": "71909.7",
         "nifty_close": "22421.95",
         "date": "2026-10-01",
         "sensex_move": "down over 1,000 points intraday",
-        "nifty": "22,261 (-1.51%)",
+        "nifty": "22,628 (-0.4%)",
         "trigger": "Hormuz plan rejected, oil up",
         "level": "2026 low",
         "fii_sept": "20695 crore",
@@ -40,7 +40,7 @@
         "bofa": "100 bps hikes through H1 2027",
         "us10y": ">5.3%",
         "weeks": "8",
-        "sensex": "72,391 (+466) 10:55",
+        "sensex": "72,862 (-0.2%) 14:00",
         "brent": ">$102",
         "fii_9d": "~₹57,000 cr",
         "tcs_pat": "₹13,884 cr (+15%)",
@@ -48,11 +48,12 @@
         "dividend": "₹12, record 14 Oct",
         "hcltech": "+7%",
         "nifty_it": "+3%",
-        "usdinr": "95.25"
+        "usdinr": "95.09",
+        "fii_13oct": "-₹1,305 cr"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-13",
-      "last_change": "2026-10-13",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -382,18 +383,20 @@
     },
     {
       "thread_id": "metro-pink-line",
-      "title": "Safety commissioner finishes inspecting the Pink Line's elevated stretch; opening depends on BMRCL's fixes",
+      "title": "BMRCL will answer the safety commissioner's points on the Pink Line next week",
       "entities": [],
       "facts": {
         "expected": "mid-October",
         "stretch": "Kalena Agrahara–Tavarekere 7.5 km",
         "protest": "symbolic opening by residents",
         "cmrs": "6-8 Oct",
-        "status": "inspection complete"
+        "status": "inspection complete",
+        "observations": "received 9 Oct",
+        "reply": "next week"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-09",
-      "last_change": "2026-10-09",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -556,7 +559,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "CJP leaders slip into Jantar Mantar with the Tiranga a day after it was closed to protest, and are detained",
+      "title": "CJP leaders Saurav Das and Ashutosh Ranka sent to jail for five days for entering Jantar Mantar",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -589,11 +592,14 @@
         "orders": "no illegal detention, Metro and internet restored",
         "cjp_leaders": "released",
         "new_sites": "Ramlila Ground, Burari, CBD Ground",
-        "site": "de-notified 12 Oct"
+        "site": "de-notified 12 Oct",
+        "remand": "5 days judicial custody",
+        "jailed": "Das, Ranka",
+        "bond": "Shinde"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-13",
-      "last_change": "2026-10-13",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1336,16 +1342,18 @@
     },
     {
       "thread_id": "india-us-ties-2026",
-      "title": "US trade chief says a deal with India is not imminent, a day after the Modi–Trump call",
+      "title": "Jaishankar says the US trade deal is heading to a 'landing point', and Rubio will visit Mumbai and Jamnagar next week",
       "entities": [],
       "facts": {
         "call": "2026-09-30",
         "law": "tariffs up to 100% on Russian oil buyers",
-        "greer": "deal not imminent"
+        "greer": "deal not imminent",
+        "status": "heading towards a landing point",
+        "rubio": "Mumbai, Jamnagar 17-22 Oct"
       },
       "first_printed": "2026-09-29",
-      "last_printed": "2026-10-02",
-      "last_change": "2026-10-02",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1797,18 +1805,21 @@
     },
     {
       "thread_id": "gemini-4-2026",
-      "title": "Google's Gemini 4 Argon goes first to vetted security teams, not the public",
+      "title": "Google opens Gemini 4 Argon to paying users, weeks after holding it back over misuse risks",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "access": "paying users",
+        "api": "50% off to end of November"
+      },
       "first_printed": "2026-10-01",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "workshop"
+      "section": "ai"
     },
     {
       "thread_id": "asiad-wrestling-2026",
@@ -2315,7 +2326,7 @@
     },
     {
       "thread_id": "saudi-houthi-2026",
-      "title": "Houthis hit Riyadh for a third day and strike Dammam; IndiGo and Akasa stop Saudi flights until 17 October",
+      "title": "Houthis set an Aramco building on fire and fire another missile at Riyadh; Trump weighs joining the Saudi strikes",
       "entities": [],
       "facts": {
         "pact": "activated 5 Oct",
@@ -2329,12 +2340,14 @@
         "saturday": "13 dead, 308 injured",
         "indian": "1 dead",
         "sunday": "1 dead, 11 injured",
-        "flights": "IndiGo, Akasa suspended to 17 Oct",
-        "dammam": "hit"
+        "flights": "suspended to 17 Oct",
+        "dammam": "hit",
+        "aramco": "admin building fire 13 Oct",
+        "riyadh": "missile intercepted 14 Oct"
       },
       "first_printed": "2026-10-04",
-      "last_printed": "2026-10-13",
-      "last_change": "2026-10-13",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3063,7 +3076,7 @@
     },
     {
       "thread_id": "ind-wi-t20is-2026",
-      "title": "Abhishek's 69 from 30 balls and Arshdeep's three wickets put India 2–1 up",
+      "title": "India can win the West Indies series in Hyderabad tonight, at 19:00",
       "entities": [],
       "facts": {
         "wi": "209/7",
@@ -3071,11 +3084,12 @@
         "iyer": "102* (43)",
         "rank": 7,
         "series": "2-1",
-        "margin": "14 runs"
+        "margin": "14 runs",
+        "next": "4th T20I Hyderabad 14 Oct"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-12",
-      "last_change": "2026-10-12",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3295,18 +3309,22 @@
     },
     {
       "thread_id": "apple-october-event-2026",
-      "title": "Apple is said to hold an event on 13 October for a home hub with a screen, a new HomePod mini and Apple TV",
+      "title": "Apple launches HomeView, a $299 screen for the home run by Siri AI, and a new HomePod mini",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "price": "$299",
+        "on_sale": "November",
+        "screen": "7-inch"
+      },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "tech"
+      "section": "ai"
     },
     {
       "thread_id": "telecom-tariffs-2026",
@@ -3373,15 +3391,16 @@
     },
     {
       "thread_id": "ukraine-war-2026",
-      "title": "Russian glide bombs hit two buses in Kramatorsk, killing at least 30",
+      "title": "Zelensky meets Burnham in Downing Street days after Trump said Ukraine needed a new president",
       "entities": [],
       "facts": {
         "dead": 30,
-        "place": "Kramatorsk"
+        "place": "Kramatorsk",
+        "meeting": "Burnham, Downing Street, 14 Oct"
       },
       "first_printed": "2026-10-07",
-      "last_printed": "2026-10-09",
-      "last_change": "2026-10-09",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3875,12 +3894,15 @@
     },
     {
       "thread_id": "us-politics-2026",
-      "title": "Federal agents search Ilhan Omar's Washington home in an immigration fraud inquiry",
+      "title": "Trump's new press secretary calls him 'my husband' and leaves her first briefing after 14 minutes",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "press_secretary": "Katie Zacharia",
+        "briefing": "14 minutes"
+      },
       "first_printed": "2026-10-13",
-      "last_printed": "2026-10-13",
-      "last_change": "2026-10-13",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4025,12 +4047,15 @@
     },
     {
       "thread_id": "man-utd-2026",
-      "title": "Carrick says Manchester United will 'come out fighting' at Atlético despite their worst start in 40 years",
+      "title": "Lisandro Martínez blames Manchester United's board after a 2–0 defeat at Atlético Madrid",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "score": "Atlético 2-0 United",
+        "red": "Yoro"
+      },
       "first_printed": "2026-10-13",
-      "last_printed": "2026-10-13",
-      "last_change": "2026-10-13",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4145,12 +4170,14 @@
     },
     {
       "thread_id": "iiit-ranchi-2026",
-      "title": "IIIT Ranchi students protest for a third day after a first-year student's death",
+      "title": "Education ministry sets up a three-member panel on the IIIT Ranchi student's death",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "panel": "three members, led by Rajni Abbi"
+      },
       "first_printed": "2026-10-13",
-      "last_printed": "2026-10-13",
-      "last_change": "2026-10-13",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4166,6 +4193,333 @@
       "first_printed": "2026-10-13",
       "last_printed": "2026-10-13",
       "last_change": "2026-10-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "pope-leo-health-2026",
+      "title": "Pope Leo XIV has lung cancer; surgeons remove part of his right lung and say the operation went well",
+      "entities": [],
+      "facts": {
+        "diagnosis": "lung adenocarcinoma",
+        "surgery": "lower lobe of right lung removed, 13 Oct",
+        "stay": "about a week"
+      },
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "bihar-boat-2026",
+      "title": "Thirteen dead, most of them children, as a boat capsizes in the Ganga in Bihar's Vaishali",
+      "entities": [],
+      "facts": {
+        "dead": 13,
+        "missing": "3-4",
+        "rescued": 7,
+        "aid": "₹4 lakh each"
+      },
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "openai-security-2026",
+      "title": "OpenAI engineer charged with hiding a recording device in its executive meeting room",
+      "entities": [],
+      "facts": {
+        "arrested": "9 Oct",
+        "max_sentence": "5 years, $250,000"
+      },
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "air-india-security-2026",
+      "title": "Frankfurt–Delhi Air India flight diverted to Jaipur after a bomb threat",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-the-chemist-who-shot-dead-an",
+      "title": "The chemist who shot dead an anti-drug activist in Punjab's Mansa has been arrested",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-canadas-prime-minister-mark-carney-is",
+      "title": "Canada's Prime Minister Mark Carney is reported to be in line as chief guest for Republic Day",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-kimberly-guilfoyle-resigns-as-us-ambassador",
+      "title": "Kimberly Guilfoyle resigns as US ambassador to Greece after reports of misconduct; she calls the claims false",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-bank-of-america-is-fined-12bn",
+      "title": "Bank of America is fined $1.2bn for failing to stop money laundering",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "iss-cargo-2026",
+      "title": "SpaceX launches its 35th cargo mission to the International Space Station for NASA",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "arsenal-2026",
+      "title": "Arsenal beat Lille 3–0 for a 12th straight Champions League home win",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "world-cup-2030",
+      "title": "Netflix buys the 2030 World Cup rights in Spain, its first men's World Cup",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "kohli-business-2026",
+      "title": "Virat Kohli joins LinkedIn, and Satya Nadella welcomes him in the comments",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "aus-in-sa-2026",
+      "title": "Hazlewood takes a career-best six for 49 as Australia beat South Africa by 214 runs in Durban",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "afg-ban-test-2026",
+      "title": "Sediqullah Atal bats 332 balls for 111 to save Afghanistan's Test against Bangladesh",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "line-yuvraj-singh-joins-delhi-capitals-coaching",
+      "title": "Yuvraj Singh joins Delhi Capitals' coaching staff for the next IPL season",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "line-britains-sonay-kartal-ranked-170th-after",
+      "title": "Britain's Sonay Kartal, ranked 170th after injury, beats ninth seed Belinda Bencic 6–0 7–5 in Wuhan",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "deuce"
+    },
+    {
+      "thread_id": "madrid-next-roma",
+      "title": "Madrid play Roma at the Olimpico tonight, with Huijsen back in the squad",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "line-kolkata-will-host-a-barcelona-v",
+      "title": "Kolkata will host a Barcelona v Real Madrid legends match",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "f1-calendar-2026",
+      "title": "Formula 1 returns to Africa with a 10-year deal to race in Rwanda",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "line-verstappen-races-in-the-gt-world",
+      "title": "Verstappen races in the GT World Challenge season finale at Portimão",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "allahabad-hc-2026",
+      "title": "Allahabad High Court says a late postal delivery cannot cost a candidate a job",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-14",
+      "last_printed": "2026-10-14",
+      "last_change": "2026-10-14",
       "status": "active",
       "votes": {
         "up": 0,
