@@ -176,6 +176,11 @@
       "source": "/apple",
       "destination": "https://podcasts.apple.com/podcast/id6822812092",
       "permanent": false
+    },
+    {
+      "source": "/spotify",
+      "destination": "https://open.spotify.com/show/5jzvjVkYh7KG7vxLOJ45bu",
+      "permanent": false
     }
   ]
 }
