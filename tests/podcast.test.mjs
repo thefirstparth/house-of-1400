@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { spoken, intWords, rundown, checkScript, fallbackScript, feedXML, sayWhen, splitLines, onAir, SEGMENTS, writerPrompt } from "../scripts/podcast/lib.mjs";
+import { spoken, intWords, rundown, checkScript, fallbackScript, feedXML, sayWhen, splitLines, cutAt, onAir, SEGMENTS, writerPrompt } from "../scripts/podcast/lib.mjs";
 import { layout, jingle, sting, outro, RATE } from "../scripts/podcast/studio.mjs";
 
 const C = JSON.parse(readFileSync(new URL("../config/house.json", import.meta.url), "utf8")), P = C.podcast;
@@ -181,4 +181,15 @@ test("podcast: every solo cut is heard before it is used (the listening check is
   assert.match(make, /no unheard cut is used/, "a check that cannot run gives up solo, never skips the check");
   assert.match(wf, /requirements-verify\.txt/);
   assert.match(readFileSync(new URL("../scripts/podcast/requirements-verify.txt", import.meta.url), "utf8"), /^faster-whisper==\d/m);
+});
+
+test("podcast: a take cut by ear keeps only the lines, from the first line's start to the last line's end (14 Oct)", () => {
+  const sec = x => Math.round(24000 * x), noise = n => { const b = Buffer.alloc(n * 2); for (let i = 0; i < n; i++) b.writeInt16LE(Math.round((Math.random() * 2 - 1) * 8000), i * 2); return b; };
+  const quiet = n => Buffer.alloc(n * 2);
+  // 6 s of instructions read out loud, then three lines of 2, 3 and 1 seconds with short gaps
+  const take = Buffer.concat([noise(sec(6)), quiet(sec(0.5)), noise(sec(2)), quiet(sec(0.3)), noise(sec(3)), quiet(sec(0.3)), noise(sec(1)), quiet(sec(0.4))]);
+  const p = cutAt(take, [8.65, 11.95], { start: 6.4, end: 13.2 });
+  assert.equal(p.length, 3);
+  [2, 3, 1].forEach((want, i) => assert.ok(Math.abs(p[i].length / 48000 - want) < 0.2, `piece ${i}: ${p[i].length / 48000} s`));
+  assert.equal(cutAt(take, [11.95, 8.65]), null, "cuts out of order are refused");
 });

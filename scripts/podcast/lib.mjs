@@ -487,3 +487,23 @@ export function splitLines(pcm, words) {
   if (pieces.some(([s, e], i) => e - s < 8 || (words[i] >= 4 && (pace[i] > mid * 2.6 || pace[i] < mid / 2.6)))) return null;
   return pieces.map(([s, e]) => pcm.subarray(s * F * 2, e * F * 2));
 }
+
+// Cuts a host's take at given times (seconds, from the listening model's word times: verify_lines.py align): each cut
+// moves to the quietest 20 ms within a quarter second either side, and each piece is trimmed of its silent ends.
+export function cutAt(pcm, secs, { start = 0, end = null } = {}) {
+  const F = 480, frames = Math.floor(pcm.length / 2 / F), rms = new Float64Array(frames);
+  for (let f = 0; f < frames; f++) { let s = 0; for (let i = 0; i < F; i++) { const v = pcm.readInt16LE((f * F + i) * 2); s += v * v; } rms[f] = Math.sqrt(s / F); }
+  const loud = [...rms].sort((a, b) => a - b)[Math.floor(frames * 0.95)] || 0, thr = Math.max(150, loud * 0.06), quiet = f => rms[f] < thr;
+  const at = secs.map(x => { const c = Math.round(x * 50); let best = c; for (let f = Math.max(1, c - 12); f <= Math.min(frames - 2, c + 12); f++) if (rms[f] < rms[best] || best >= frames) best = f; return Math.max(1, Math.min(frames - 1, best)); });
+  if (at.some((x, i) => i && x <= at[i - 1])) return null;
+  const b0 = Math.max(0, Math.min(at[0] ?? frames, Math.floor(start * 50))), b1 = end == null ? frames : Math.min(frames, Math.max(at.at(-1) ?? 0, Math.ceil(end * 50)));
+  const bounds = [b0, ...at, b1];
+  const pieces = [];
+  for (let i = 0; i + 1 < bounds.length; i++) {
+    let s = bounds[i], e = bounds[i + 1];
+    while (s < e && quiet(s)) s++; while (e > s && quiet(e - 1)) e--;
+    if (e - s < 8) return null;
+    pieces.push(pcm.subarray(Math.max(0, s - 3) * F * 2, Math.min(frames, e + 3) * F * 2));
+  }
+  return pieces;
+}

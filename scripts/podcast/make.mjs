@@ -13,7 +13,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { rundown, writerPrompt, checkScript, fallbackScript, spoken, feedXML, deepItems, splitLines, onAir } from "./lib.mjs";
+import { rundown, writerPrompt, checkScript, fallbackScript, spoken, feedXML, deepItems, splitLines, cutAt, onAir } from "./lib.mjs";
 import { layout, mix } from "./studio.mjs";
 
 const args = process.argv.slice(2), FORCE = args.includes("--force"), DRY = args.includes("--dry"), FEED_ONLY = args.includes("--feed");
@@ -185,20 +185,26 @@ async function ttsGemini(turns) {
     for (const sp of hosts) {
       const mine = list.filter(t => t.speaker === sp), texts = mine.map(t => spoken(t.text, P.pronounce));
       const other = hosts.find(h => h !== sp) || "a friend";
+      // One part per line with the speaker and a fixed style as metadata (14 Oct: a single text with the instruction in
+      // front was read out loud, "Ashu is a woman from Allahabad..."; metadata never is), only this host's lines
       const body = {
-        contents: [{ role: "user", parts: [{ text: `${hostStyle[sp] || ""} ${sp} is chatting with an old friend, ${other}, about the afternoon's news over chai: warm, natural and unhurried, with real reactions, never reading. ${sp} keeps exactly the same voice and accent in every line, from the first to the last. Lively and warm for good news, gentle and serious for sad news. These are ${sp}'s lines in the conversation, in order: read each one as a reply in that chat, and leave a pause of two full seconds after every line.\n\n${texts.join("\n\n")}` }] }],
-        generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: hostVoice[sp] } } } },
+        contents: [{ role: "user", parts: texts.map(text => ({ text, speech_metadata: { speaker: sp, style: `${steadyStyle(sp)} Leave a clear pause after each line.` } })) }],
+        generationConfig: { responseModalities: ["AUDIO"], speechConfig: speakers },
       };
       // two takes at most for each host: a take that will not split is tried once more before the fallback
       let pieces = null;
-      for (let go = 1; go <= (SAMPLE ? 1 : 2) && !pieces; go++) {
+      // one take a host (14 Oct): a take the pauses cannot cut is cut by ear instead of asking Gemini again
+      for (let go = 1; go <= 1 && !pieces; go++) {
         const j = await gemini(model, body, 2), part = j.candidates?.[0]?.content?.parts?.find(p => p.inlineData?.data);
         if (!part) { if (go === 2) throw new Error(`no audio for ${sp} (${j.candidates?.[0]?.finishReason || "?"})`); continue; }
         const take = pcmOf(Buffer.from(part.inlineData.data, "base64"));
         writeFileSync(`${OUT}/solo-${sp}-${go}.wav`, Buffer.concat([wavHeader(take.length), take])); // kept as a run artifact, to see why a split failed
         pieces = splitLines(take, texts.map(t => t.split(/\s+/).length));
-        if (!pieces) log(`solo: ${sp}'s take ${go} did not split into ${texts.length} lines${go === 1 ? "; once more" : ""}`);
-        else if (!listen(sp, go, pieces, texts)) { pieces = null; if (go === 1) log(`solo: ${sp}'s take ${go}: once more`); }
+        if (!pieces) log(`solo: ${sp}'s take ${go} did not split into ${texts.length} lines by its pauses; cutting it by ear`);
+        else if (!listen(sp, go, pieces, texts)) pieces = null;
+        // the same take cut by ear (the listening model's word times), before asking Gemini for another take
+        if (!pieces) { pieces = byEar(sp, go, take, texts); if (pieces && !listen(sp, `${go}e`, pieces, texts)) pieces = null; }
+        if (!pieces && go === 1 && !SAMPLE) log(`solo: ${sp}'s take ${go}: once more`);
       }
       if (!pieces) throw new Error(`${sp}'s takes did not cut cleanly into ${texts.length} lines (by the pauses or by ear)`);
       mine.forEach((t, i) => lines.set(t, pieces[i]));
@@ -224,6 +230,19 @@ async function ttsGemini(turns) {
     if (bad.length) log(`solo: ${sp}'s take ${go} cut in the wrong place: line ${bad.map(([i, x]) => `${i + 1} heard "${x.heard.slice(0, 60)}"`).join("; line ")}`);
     else log(`solo: ${sp}'s take ${go}: every line heard as written`);
     return !bad.length;
+  };
+  // Cutting by ear: the listening model times every word of the whole take, and the cuts go between the lines' words
+  const byEar = (sp, go, take, texts) => {
+    const dir = `${OUT}/verify`, wav = `${dir}/${sp}-${go}-take.wav`, job = `${dir}/${sp}-${go}-align.json`, res = `${dir}/${sp}-${go}-align.out.json`;
+    mkdirSync(dir, { recursive: true }); writeFileSync(wav, Buffer.concat([wavHeader(take.length), take]));
+    writeFileSync(job, JSON.stringify({ model: P.verify_model || "base.en", take: wav, lines: texts }));
+    try { execFileSync(process.env.PODCAST_PYTHON || "python3", [`${H}scripts/podcast/verify_lines.py`, job, res], { stdio: ["ignore", "inherit", "inherit"], timeout: 8 * 60000 }); }
+    catch (e) { log(`solo: cutting by ear could not run (${String(e.message).split("\n")[0].slice(0, 120)})`); return null; }
+    const r = JSON.parse(readFileSync(res, "utf8"));
+    if (!r.ok) { log(`solo: ${sp}'s take ${go} could not be cut by ear: ${r.why}`); return null; }
+    const pieces = cutAt(take, r.cuts, { start: r.start, end: r.end });
+    if (!pieces) log(`solo: ${sp}'s take ${go}: the cuts by ear did not hold`);
+    return pieces;
   };
   // One take (Parth, 13 Oct: no chunks). The steady form first (config podcast.voice_form), per-turn second.
   const words = turns.reduce((a, t) => a + spoken(t.text, P.pronounce).split(/\s+/).length, 0);
