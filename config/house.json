@@ -3443,6 +3443,13 @@
       "Sensex",
       "Nasdaq-100"
     ],
+    "weights": [
+      {
+        "section": "madrid",
+        "words": "Real Madrid",
+        "factor": 1.07
+      }
+    ],
     "first_writer_waits": 10,
     "writer_budget": 15,
     "text_models": [

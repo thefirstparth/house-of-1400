@@ -166,7 +166,11 @@ export function rundown(E, P = {}, now, paper = {}) {
   const seen = new Set(), list = items.filter(i => i?.headline && !seen.has(i.id) && seen.add(i.id));
   const imp = Object.fromEntries((E.art_scores || []).map(x => [x.story_id, x.importance ?? 1]));
   const [lead, ...rest] = list;
-  const score = s => (imp[s.id] ?? 1) + (front.has(s.id) ? 0.5 : 0) + (s.short ? 0.25 : 0);
+  // a follow weighted up for the show (config podcast.weights; Parth, 14 Oct: "7% more importance to Real Madrid"): its
+  // stories rank that much higher for a back-and-forth and a place in the show, and the writer gets that much more of them
+  // (by the paper's section, or the exact words in the kicker or headline: "Real Madrid", never Atlético)
+  const weight = s => (P.weights || []).reduce((w, x) => (s.section === x.section || (x.words && new RegExp(`\\b${x.words}\\b`, "i").test(`${s.kicker || ""} ${s.headline || ""}`)) ? Math.max(w, x.factor || 1) : w), 1);
+  const score = s => ((imp[s.id] ?? 1) + (front.has(s.id) ? 0.5 : 0) + (s.short ? 0.25 : 0)) * weight(s);
   const ranked = rest.map((x, i) => ({ x, i })).sort((a, b) => score(b.x) - score(a.x) || a.i - b.i).map(r => r.x);
   // Page One first, as the paper (Parth, 13 Oct): the lead, then the front page's stories in the paper's order (each a
   // real back-and-forth) and its briefs; then the desks with everything else, the strongest few as back-and-forths
@@ -176,7 +180,7 @@ export function rundown(E, P = {}, now, paper = {}) {
   const deep = others.slice(0, Math.max(2, (P.deep_max || 6) - 1 - seconds.length));
   if (![lead, ...seconds, ...deep].some(x => x && desk(x).id === "sport")) { const sp = others.find(x => desk(x).id === "sport"); if (sp && !deep.includes(sp)) deep.splice(Math.max(0, deep.length - 1), 1, sp); }
   const deepIds = new Set(deep.map(x => x.id)), quick = others.filter(x => !deepIds.has(x.id)).slice(0, P.quick_max || 18);
-  const item = (s, depth) => ({ id: s.id, desk: desk(s).name, section: nameOf[s.section] || null, kicker: s.kicker || null, headline: sayTimes(s.headline), tone: ["good", "bad", "mixed"].includes(s.tone) ? s.tone : "neutral", depth, text: sayTimes(cut(storyText(s), depth === "quick" ? 360 : 1100)), why: sayTimes(s.why?.text) || null });
+  const item = (s, depth) => ({ id: s.id, desk: desk(s).name, section: nameOf[s.section] || null, kicker: s.kicker || null, headline: sayTimes(s.headline), tone: ["good", "bad", "mixed"].includes(s.tone) ? s.tone : "neutral", depth, text: sayTimes(cut(storyText(s), Math.round((depth === "quick" ? 360 : 1100) * weight(s)))), why: sayTimes(s.why?.text) || null });
   const snap = E.snapshot || {}, ok = k => (snap[k]?.value && !snap[k]?.error ? snap[k].value : null);
   const idx = ok("markets")?.indices || [], fx = ok("fx"), gold = ok("gold_in");
   // The money figures as a listener needs them (Parth, 13 Oct: "if Sensex is up 0.7%, I don't know what that means"): the

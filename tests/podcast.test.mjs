@@ -228,3 +228,15 @@ test("podcast money (14 Oct): still open at two, the range in words, the Nasdaq-
   assert.ok(!msgs.some(x => /turn 4: says an Indian index closed/.test(x)), "yesterday's close is fine");
   assert.ok(msgs.some(x => /turn 5: gives a reason/.test(x)), msgs.join(" | "));
 });
+
+test("podcast: Real Madrid weighs 7% more (Parth, 14 Oct), Atlético does not", () => {
+  const C2 = { ...P, weights: [{ section: "madrid", words: "Real Madrid", factor: 1.07 }], quick_max: 1, deep_max: 2 };
+  const Ed = { date: "2026-10-14", front: { lead: { id: "lead", section: "desh", headline: "A lead", short: "x" } },
+    sections: { pitch: { briefs: [{ id: "atleti", section: "pitch", headline: "United lose at Atlético Madrid", text: "Two-nil." }, { id: "other", section: "pitch", headline: "Arsenal beat Lille", text: "Three-nil." }, { id: "third", section: "pitch", headline: "Inter draw at home", text: "One-all." }] },
+      madrid: { briefs: [{ id: "rm", section: "madrid", headline: "Madrid play Roma tonight", text: "Huijsen is back." }] } } };
+  const ids = R => [R.lead, ...R.segments.flatMap(g => g.items)].map(i => i.id);
+  assert.ok(!ids(rundown(Ed, { ...C2, weights: [] }, undefined, paper)).includes("rm"), "without the weight, the paper's order decides");
+  const got = ids(rundown(Ed, C2, undefined, paper));
+  assert.ok(got.includes("rm"), got.join(","));
+  assert.ok(!got.includes("atleti") || got.indexOf("atleti") > got.indexOf("rm"), "Atlético is not Real Madrid");
+});
