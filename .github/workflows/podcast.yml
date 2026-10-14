@@ -85,7 +85,14 @@ jobs:
         with: { name: podcast-solo-takes, path: .podcast/solo-*.wav, retention-days: 2, if-no-files-found: ignore, include-hidden-files: true }
       - if: always() && (inputs.dry || inputs.sample || inputs.force)
         uses: actions/upload-artifact@v4
-        with: { name: podcast-test-mp3, path: .podcast/episode.mp3, retention-days: 2, if-no-files-found: ignore }
+        with:
+          name: podcast-test-mp3
+          path: |
+            .podcast/episode.mp3
+            .podcast/episode.vtt
+          retention-days: 2
+          if-no-files-found: ignore
+          include-hidden-files: true
   kokoro:
     needs: gemini
     if: failure() && !inputs.dry && !inputs.sample && !inputs.force && !inputs.rehearse
