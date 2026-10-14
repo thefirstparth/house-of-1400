@@ -171,6 +171,11 @@
       "source": "/markets",
       "destination": "https://getandaaza.vercel.app/",
       "permanent": true
+    },
+    {
+      "source": "/apple",
+      "destination": "https://podcasts.apple.com/podcast/id6822812092",
+      "permanent": false
     }
   ]
 }
