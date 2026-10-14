@@ -251,3 +251,11 @@ test("podcast: Sport gets 20% more places, gently (Parth, 14 Oct): four become f
   assert.equal(sport([]).length, 4);
   assert.deepEqual(sport([{ desk: "sport", factor: 1.2 }]).sort(), ["s1", "s2", "s3", "s4", "s5"]);
 });
+
+test("podcast: Sport says where the follows stand: league, championship, series (Parth, 14 Oct)", () => {
+  const Ed = { date: "2026-10-14", front: { lead: { id: "lead", section: "desh", headline: "A lead", short: "x" } }, sections: { crease: { data: { rows: [{ label: "West Indies", text: "T20Is · 5 matches, 3 played · India lead 2–1" }, { label: "Next", text: "4th T20I" }] } } },
+    snapshot: { laliga_table: { value: { rows: [{ rank: 1, team: "Barcelona", points: 24, played: 8 }, { rank: 2, team: "Atlético Madrid", points: 19, played: 8 }, { rank: 4, team: "Real Madrid", points: 18, played: 8 }] } },
+      f1_standings: { value: { drivers: [{ pos: 1, name: "Andrea Kimi Antonelli", shown: "Kimi Antonelli", points: 340 }, { pos: 4, name: "Max Verstappen", points: 221 }] } } } };
+  const g = rundown(Ed, P, undefined, { ...paper, follows: C.follows }).segments.find(x => x.standings);
+  assert.deepEqual(g.standings, ["Real Madrid: 4th in La Liga on 18 points after 8 games, 6 behind the leaders Barcelona", "Max Verstappen: 4th in the drivers' championship on 221 points, 119 behind the leader Kimi Antonelli", "India's cricket, West Indies: T20Is, 5 matches, 3 played, India lead 2–1"]);
+});
