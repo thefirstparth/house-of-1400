@@ -310,7 +310,7 @@ export function onAir(ms = Date.now()) {
 export function writerPrompt(R, P = {}) {
   const [A, B] = P.hosts || [{ id: "Ashu" }, { id: "Tarun" }], W = P.words || { min: 1050, target: 1200, max: 1400 };
   const moods = Object.keys(P.moods || { neutral: 1 }).join(", ");
-  return `You write the script of "${P.title || "The House of 1400"}", a daily podcast made from one family's private afternoon newspaper. The listeners are Parth and his wife in Bengaluru. It must sound like two friends who have both read today's paper, talking it through over chai. It is NOT a news bulletin and NOT two people taking turns to read the paper.
+  return `You write the script of "${P.title || "The House of 1400"}", a daily podcast made from one family's private afternoon newspaper. The family it is made for lives in Bengaluru, but the show is public (Apple Podcasts, Spotify): never name a listener or mention anyone's family. It must sound like two friends who have both read today's paper, talking it through over chai. It is NOT a news bulletin and NOT two people taking turns to read the paper.
 
 HOSTS
 - ${A.id} (${A.gender || "woman"}): ${A.about || ""}
@@ -318,7 +318,7 @@ HOSTS
 Both grew up in Allahabad (Prayagraj) and live in Bengaluru now: Bengaluru is "here", Prayagraj is "back home". They speak natural Indian English, and now and then, where it comes naturally, a Hindi-belt word an Allahabadi would use ("arre", "haan", "bilkul", "ekdum", "yaar"): at most one every four or five turns, never a caricature, never in sad news.
 
 THE SHOW, in this order, the way the paper is laid out (everything comes from the RUNDOWN below)
-1. Open (first two turns): ${A.id} welcomes the listeners to the show BY NAME and gives the day, something like "Good afternoon, and welcome to ${P.title || "The House of 1400"}. It's ${R.day}, I'm ${A.id}..." and ${B.id} says hello too. Mention, lightly and in your own words, that this is ${R.editor}'s paper (the editor), at the open or at the close.
+1. Open (first two turns): ${A.id} welcomes the listeners, names the show and gives the day, something like "Good afternoon, and welcome to ${P.title || "The House of 1400"}. It's ${R.day}, I'm ${A.id}..." and ${B.id} says hello too. Mention, lightly and in your own words, that this is ${R.editor}'s paper (the editor), at the open or at the close.
 2. The lead as a hook, and the two talk it through properly.
 3. Page One: the front page's other stories in the order given, each a real back-and-forth, then its briefs briskly.
 4. Then the desk segments in the order given. Items marked "deep" get a real back-and-forth of about 80 to 140 words: one host tells it, the other reacts and asks what a listener would ask (what does it mean for us, why now, who is this), answered from "why" and the text. Items marked "quick" get one or two sentences each; several quick ones can run together briskly. Mention every item.
@@ -426,6 +426,8 @@ export function checkScript(turns, R, P = {}) {
   if (!turns.slice(0, 2).some(named)) soft(`the opening does not name the show ("${P.title || "The House of 1400"}") in the first two turns`);
   if (!turns.slice(-3).some(named)) soft(`the goodbye does not name the show`);
   turns.forEach((t, i) => { if (/\bParth\b/i.test(t.text)) soft(`turn ${i + 1}: addresses the listener by name`); });
+  // the show is public (15 Oct rehearsal: "hello to your wife listening in with us"): never a listener's family
+  turns.forEach((t, i) => { if (/\byour (wife|husband|dad|father|mum|mom|mother|family|parents)\b/i.test(t.text)) soft(`turn ${i + 1}: mentions the listener's family; the show is public, so never`); });
   // "back home" is only Ranchi or Prayagraj (14 Oct: the Bihar boat accident, national news, was called "back home in Bihar")
   turns.forEach((t, i) => { if (/\bback home\b/i.test(t.text) && !/\b(Ranchi|Prayagraj|Allahabad|Jharkhand)\b/i.test(t.text)) soft(`turn ${i + 1}: says "back home" for somewhere that is not Ranchi or Prayagraj; only those two are back home`); });
   const ed = lastName(R.editor || P.author || "Bhide"), edRe = new RegExp(`\\b${ed}\\b`, "i");

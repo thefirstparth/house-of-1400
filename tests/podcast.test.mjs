@@ -202,6 +202,16 @@ test("podcast: only Ranchi and Prayagraj are 'back home' (14 Oct: 'back home in 
   assert.ok(!msgs("And back home in Prayagraj, the Magh Mela plans are out.").some(m => /back home/.test(m)));
 });
 
+test("podcast: the show is public, so no listener's name or family (15 Oct rehearsal)", () => {
+  const T = text => ({ speaker: "Ashu", mood: "neutral", text });
+  const base = Array.from({ length: 9 }, (_, i) => T(`Line ${i}?`));
+  const msgs = t => checkScript([...base, T(t)], { segments: [] }, { ...P, words: { min: 1, max: 9999 } }).map(p => p.msg);
+  assert.ok(msgs("Good afternoon, and hello to your wife listening in with us.").some(m => /family/.test(m)));
+  assert.ok(msgs("Good afternoon, Parth.").some(m => /by name/.test(m)));
+  assert.ok(!msgs("His wife told CBS News he is also battling cancer.").some(m => /family/.test(m)));
+  assert.ok(!writerPrompt({ day: "Thursday 15 October", editor: "T. A. Bhide" }, P).includes("Parth and his wife"));
+});
+
 test("podcast money (14 Oct): still open at two, the range in words, the Nasdaq-100, yesterday's late move", () => {
   const ix = (name, price, extra) => ({ name, price, change_pct: -0.3, chg_7d: 0.2, chg_1m: -2.7, lo3m: 71593, hi3m: 78955, ...extra });
   const Ed = { date: "2026-10-15", front: { lead: { id: "a", section: "desh", headline: "A lead", short: "x" } }, sections: {},
