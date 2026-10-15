@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-14T08:44:20.156Z",
-  "last_edition": "2026-10-14",
+  "last_updated": "2026-10-15T08:46:16.746Z",
+  "last_edition": "2026-10-15",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -559,7 +559,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "CJP leaders Saurav Das and Ashutosh Ranka sent to jail for five days for entering Jantar Mantar",
+      "title": "Supreme Court asks the Centre to explain its prohibitory orders and alleged police assaults on protesters",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -576,7 +576,7 @@
         "karnataka": "Form 7 probe ordered",
         "mumbai": "Thackeray march",
         "kerala": "vigilance probe",
-        "sc": "no suspension; notice to Centre and ECI",
+        "sc": "notices issued; CCTV to be preserved",
         "march": "6 Oct, stopped on Parliament Street",
         "bjd": "joined",
         "sc_immunity_remark": "5 Oct",
@@ -595,11 +595,12 @@
         "site": "de-notified 12 Oct",
         "remand": "5 days judicial custody",
         "jailed": "Das, Ranka",
-        "bond": "Shinde"
+        "bond": "Shinde",
+        "next_protest": "Connaught Place, 16 Oct"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1494,22 +1495,24 @@
     },
     {
       "thread_id": "anthropic-ipo-2026",
-      "title": "Anthropic's prospectus shows revenue up twelvefold and an $8 billion operating loss",
+      "title": "Anthropic tells investors its revenue rose 45% to $16.8bn in a quarter as it prepares to list; AI chip stocks tumble",
       "entities": [],
       "facts": {
         "revenue_2025": "$4.59bn",
         "operating_loss_2025": "$8.06bn",
-        "q2_2026_revenue": "$11.5bn"
+        "q2_2026_revenue": "$11.5bn",
+        "q3_revenue": "$16.8bn (+45%)",
+        "listing": "expected by year end"
       },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-09-30",
-      "last_change": "2026-09-30",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "workshop"
+      "section": "ai"
     },
     {
       "thread_id": "mrpl-blast-2026",
@@ -2718,12 +2721,15 @@
     },
     {
       "thread_id": "sebi-cas-2026",
-      "title": "SEBI to stop using the closing auction to settle futures and options for at least a year, Reuters reports",
+      "title": "SEBI's market panel backs keeping a 30-minute average price to settle F&O expiries",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "settlement": "30-min VWAP kept",
+        "comments": "~20,000"
+      },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3076,20 +3082,21 @@
     },
     {
       "thread_id": "ind-wi-t20is-2026",
-      "title": "India can win the West Indies series in Hyderabad tonight, at 19:00",
+      "title": "Shai Hope's hundred and Keemo Paul's five wickets beat India by 24 runs; the series goes to Bengaluru at 2–2",
       "entities": [],
       "facts": {
-        "wi": "209/7",
+        "wi": "247",
         "ind": "223",
         "iyer": "102* (43)",
         "rank": 7,
-        "series": "2-1",
-        "margin": "14 runs",
-        "next": "4th T20I Hyderabad 14 Oct"
+        "series": "2-2",
+        "margin": "24 runs",
+        "next": "4th T20I Hyderabad 14 Oct",
+        "decider": "Bengaluru 17 Oct"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3391,16 +3398,18 @@
     },
     {
       "thread_id": "ukraine-war-2026",
-      "title": "Zelensky meets Burnham in Downing Street days after Trump said Ukraine needed a new president",
+      "title": "Zelensky says Ukraine will resume strikes on Russian refineries and accuses the US of cutting intelligence and slowing Starlink",
       "entities": [],
       "facts": {
         "dead": 30,
         "place": "Kramatorsk",
-        "meeting": "Burnham, Downing Street, 14 Oct"
+        "meeting": "Burnham, Downing Street, 14 Oct",
+        "strikes": "refineries to resume",
+        "us": "intelligence and Starlink cut, Zelensky says"
       },
       "first_printed": "2026-10-07",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3736,18 +3745,20 @@
     },
     {
       "thread_id": "messi-miami-2026",
-      "title": "Messi scores twice for Inter Miami in his first game since leaving Argentina",
+      "title": "Messi's Inter Miami clinch an MLS playoff place by beating New York City",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "playoffs": "clinched"
+      },
       "first_printed": "2026-10-11",
-      "last_printed": "2026-10-11",
-      "last_change": "2026-10-11",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "pitch"
+      "section": "sidelines"
     },
     {
       "thread_id": "kipchoge-2026",
@@ -3894,15 +3905,16 @@
     },
     {
       "thread_id": "us-politics-2026",
-      "title": "Trump's new press secretary calls him 'my husband' and leaves her first briefing after 14 minutes",
+      "title": "No state bar lists Katie Zacharia, the White House press secretary presented as a lawyer",
       "entities": [],
       "facts": {
         "press_secretary": "Katie Zacharia",
-        "briefing": "14 minutes"
+        "briefing": "14 minutes",
+        "bar": "no state registration found"
       },
       "first_printed": "2026-10-13",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4241,15 +4253,16 @@
     },
     {
       "thread_id": "openai-security-2026",
-      "title": "OpenAI engineer charged with hiding a recording device in its executive meeting room",
+      "title": "OpenAI bugging suspect had booked a one-way flight to Saudi Arabia, prosecutors say",
       "entities": [],
       "facts": {
         "arrested": "9 Oct",
-        "max_sentence": "5 years, $250,000"
+        "max_sentence": "5 years, $250,000",
+        "flight": "12 Oct, one-way"
       },
       "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4454,12 +4467,15 @@
     },
     {
       "thread_id": "madrid-next-roma",
-      "title": "Madrid play Roma at the Olimpico tonight, with Huijsen back in the squad",
+      "title": "Madrid come from 3–1 down to beat Roma 4–3, with Espí, Endrick and Rüdiger scoring off corners",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "score": "Roma 3-4 Madrid",
+        "scorers": "Mbappé, Espí, Endrick, Rüdiger"
+      },
       "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4520,6 +4536,376 @@
       "first_printed": "2026-10-14",
       "last_printed": "2026-10-14",
       "last_change": "2026-10-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "conversion-reservation-2026",
+      "title": "Supreme Court rules that converts to Islam cannot claim backward class reservation on the strength of their old caste",
+      "entities": [],
+      "facts": {
+        "bench": "Mishra, Chandrashekhar JJ",
+        "upheld": "Madras HC, 25 June"
+      },
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "pakistan-school-collapse-2026",
+      "title": "School roof collapse in Peshawar kills at least 27 children and a teacher",
+      "entities": [],
+      "facts": {
+        "dead": "27 pupils, 1 teacher",
+        "injured": "40+"
+      },
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "idbi-stake-sale-2026",
+      "title": "Government sells control of IDBI Bank to Canada's Fairfax for about $5.5 billion; the shares fall 7%",
+      "entities": [],
+      "facts": {
+        "stake": "60.7%",
+        "value": "~$5.5bn",
+        "idbi_move": "-7% 15 Oct"
+      },
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "imran-khan-oci-2026",
+      "title": "Actor Imran Khan told to leave India by 28 October after joining an anti-CEC protest",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-marco-rubio-will-skip-delhi-on",
+      "title": "Marco Rubio will skip Delhi on his India visit next week and go to Mumbai and Jamnagar",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "leap-second-2026",
+      "title": "The world's timekeepers meet near Paris to decide whether to scrap the leap second",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-federal-agents-seize-ilhan-omars-phone",
+      "title": "Federal agents seize Ilhan Omar's phone and summon her relatives in a criminal inquiry",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-iran-reports-a-cargo-ship-sank",
+      "title": "Iran reports a cargo ship sank after hitting a mine in the Strait of Hormuz",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-sally-rooney-says-her-books-will",
+      "title": "Sally Rooney says her books will be withdrawn from sale in the UK over her support for Palestine Action",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "ai-stocks-2026",
+      "title": "South Korea halts trading as the Kospi crashes 8% in an AI chip sell-off",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "line-netflix-will-cut-about-1000-jobs",
+      "title": "Netflix will cut about 1,000 jobs as its growth slows",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "line-phones-must-show-the-callers-registered",
+      "title": "Phones must show the caller's registered name from 1 November, the government says",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "openai-lawsuits-2026",
+      "title": "Eight US states sue OpenAI, saying ChatGPT harms children",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-youtube-will-label-ai-generated-songs-across",
+      "title": "YouTube will label AI-generated songs across its platforms",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "xbox-2026",
+      "title": "Xbox shrinks its gamepad into a $50 Nano controller",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "ucl-2026",
+      "title": "PSG beat Manchester City 4–2 at the Etihad",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "liverpool-2026",
+      "title": "Barcola scores a hat-trick as Liverpool win 6–3 at LASK",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "six-kings-slam-2026",
+      "title": "Six Kings Slam in Riyadh moved from October to 27–30 December",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "namma-metro-2026",
+      "title": "Namma Metro carries a donor heart across the city in 18 minutes",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "vinicius-discipline-2026",
+      "title": "Vinícius banned for four league games and will miss the Clásico on 25 October",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "red-bull-2026",
+      "title": "Laurent Mekies signs on as Red Bull team principal until the end of 2031",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "up-panchayat-2026",
+      "title": "Allahabad High Court orders UP's gram panchayat elections within three months, with the 27% OBC quota",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "prayagraj-housing-2026",
+      "title": "Yogi Adityanath lays the foundation for 602 flats on land taken back from Atiq Ahmad",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "ranchi-health-2026",
+      "title": "CMPDIL to open a cut-price AMRIT pharmacy at its Ranchi headquarters",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-15",
+      "last_printed": "2026-10-15",
+      "last_change": "2026-10-15",
       "status": "active",
       "votes": {
         "up": 0,
