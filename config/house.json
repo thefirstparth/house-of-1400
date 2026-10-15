@@ -3432,11 +3432,7 @@
     "subtitle": "The afternoon paper, as a conversation",
     "author": "T. A. Bhide",
     "minutes": 9,
-    "words": {
-      "min": 1050,
-      "target": 1300,
-      "max": 1550
-    },
+    "words": { "min": 950, "target": 1150, "max": 1400 },
     "keep_days": 14,
     "image": "/podcast-cover.jpg",
     "listed": true,
@@ -3522,7 +3518,7 @@
       "neutral": "easy and conversational"
     },
     "deep_max": 6,
-    "quick_max": 10,
+    "quick_max": 7,
     "kokoro": {
       "lang": "a",
       "voices": {

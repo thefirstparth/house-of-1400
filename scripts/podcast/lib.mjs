@@ -194,7 +194,7 @@ export function rundown(E, P = {}, now, paper = {}) {
       quick.splice(quick.indexOf(out), 1, spare.shift());
     }
   }
-  const item = (s, depth) => ({ id: s.id, desk: desk(s).name, section: nameOf[s.section] || null, kicker: s.kicker || null, headline: sayTimes(s.headline), tone: ["good", "bad", "mixed"].includes(s.tone) ? s.tone : "neutral", depth, text: sayTimes(cut(storyText(s), Math.round((depth === "quick" ? 360 : 1100) * weight(s)))), why: sayTimes(s.why?.text) || null });
+  const item = (s, depth) => ({ id: s.id, desk: desk(s).name, section: nameOf[s.section] || null, kicker: s.kicker || null, headline: sayTimes(s.headline), tone: ["good", "bad", "mixed"].includes(s.tone) ? s.tone : "neutral", depth, text: sayTimes(cut(storyText(s), Math.round((depth === "quick" ? 360 : 850) * weight(s)))), why: sayTimes(s.why?.text) || null });
   const snap = E.snapshot || {}, ok = k => (snap[k]?.value && !snap[k]?.error ? snap[k].value : null);
   const idx = ok("markets")?.indices || [], fx = ok("fx"), gold = ok("gold_in");
   // The money figures as a listener needs them (Parth, 13 Oct: "if Sensex is up 0.7%, I don't know what that means"): the
@@ -242,7 +242,9 @@ export function rundown(E, P = {}, now, paper = {}) {
   for (const f of rows) {
     const t = Date.parse(f.when_utc);
     if (f.result) { if (t > now - 60 * 36e5 && t <= now) results.push(`${f.label}: ${f.result} (${sayDay(new Date(t + IST - 4 * 36e5).toISOString().slice(0, 10), now)})`); continue; }
-    if (!(t > now - 18e5 && t < now + 7 * 864e5)) continue;
+    // the next five days (15 Oct: seven days of fixtures, three teams twice each, made Fixture Watch the longest
+    // stretch of a 12-minute episode; a match six days out comes up again in the days before it)
+    if (!(t > now - 18e5 && t < now + 5 * 864e5)) continue;
     const why = whys.find(([x]) => Math.abs(x - t) < 3 * 36e5)?.[1];
     coming.push(`${f.label}, ${f.time_tbc ? `${sayDay(new Date(t + IST - 4 * 36e5).toISOString().slice(0, 10), now)}, time to be confirmed` : sayWhen(t, now)}${why ? ` (${why})` : ""}`);
     have.add(f.entity);
@@ -357,7 +359,7 @@ HOW IT SOUNDS
 - Never address the listeners by name; speak to them as "you" if at all.
 - No talk about how the paper or the show is made, about sources or checking, or about anything being missing.
 - Every number, score, time and date in words, the Indian way (lakh and crore). No digits, no symbols like ₹, %, $ or &.
-- About ${W.target} words in total, and NEVER more than ${W.max} (at least ${W.min}). Keep it tight: when it runs long, give quick items one line each rather than dropping the fixtures, the money or the House Note.
+- About ${W.target} words in total, and NEVER more than ${W.max} (at least ${W.min}): about ${Math.round(W.target / 150)} minutes on air. A budget that fits: the lead about one hundred and fifty words, each other back-and-forth story about eighty, each quick item ONE sentence, Money about one hundred and fifty, Fixture Watch about eighty. Long monologues are the usual way a script runs over: no turn over sixty words. Keep it tight: when it runs long, give quick items one line each rather than dropping the fixtures, the money or the House Note.
 - "mood" sets the voice for that line; one of: ${moods}. Inline tags, sparingly: <laugh> (light moments only), <sigh>, <short pause>.
 
 EXAMPLE OF THE SOUND ONLY (its facts are invented: never use them; this is the rhythm and feeling to aim for)
@@ -377,6 +379,15 @@ const shingles = (ws, k) => { const out = []; for (let i = 0; i + k <= ws.length
 const BANNED = /\b(turning to|in other news|moving on|let'?s look at|let us look at|meanwhile|closer to home|stay tuned|on the cricket field)\b/i;
 
 // The checks before voicing. Each problem is { hard, msg }: a hard one means the script is never voiced; soft ones
+// What a rewrite is told when the draft runs long (15 Oct: told only "2006 words (needs 1050 to 1550)", two rewrites came
+// back at 2,070 and 1,913 words): how many words to cut and where they usually are, keeping what the show must carry.
+export function cutNote(turns, P = {}) {
+  const W = P.words || { target: 1150, max: 1400 }, n = (turns || []).reduce((a, t) => a + words(t?.text).length, 0);
+  if (n <= W.max) return "";
+  const long = (turns || []).map((t, i) => [i + 1, words(t?.text).length]).filter(([, k]) => k > 60).map(([i, k]) => `turn ${i} (${k})`);
+  return `LENGTH: the script is ${n} words; bring it down to about ${W.target} (never over ${W.max}), cutting about ${n - W.target} words. Cut, in this order: quick items to ONE sentence each; ${long.length ? `the long turns (${long.slice(0, 8).join(", ")}) to under sixty words` : "any turn over sixty words"}; details in the back-and-forths a listener will not miss. Keep the lead, every fixture with its time, the money figures, the House Note and the goodbye.`;
+}
+
 // send it back for a rewrite, and after the last try the script with the fewest soft problems is voiced.
 export function checkScript(turns, R, P = {}) {
   const W = P.words || { min: 1050, max: 1400 }, ids = new Set((P.hosts || [{ id: "Ashu" }, { id: "Tarun" }]).map(h => h.id)), out = [];

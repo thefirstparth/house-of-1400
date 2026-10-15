@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { spoken, intWords, rundown, checkScript, fallbackScript, feedXML, sayWhen, splitLines, cutAt, onAir, SEGMENTS, writerPrompt } from "../scripts/podcast/lib.mjs";
+import { spoken, intWords, rundown, checkScript, fallbackScript, feedXML, sayWhen, splitLines, cutAt, onAir, SEGMENTS, writerPrompt, cutNote } from "../scripts/podcast/lib.mjs";
 import { layout, jingle, sting, outro, RATE } from "../scripts/podcast/studio.mjs";
 
 const C = JSON.parse(readFileSync(new URL("../config/house.json", import.meta.url), "utf8")), P = C.podcast;
@@ -210,6 +210,20 @@ test("podcast: the show is public, so no listener's name or family (15 Oct rehea
   assert.ok(msgs("Good afternoon, Parth.").some(m => /by name/.test(m)));
   assert.ok(!msgs("His wife told CBS News he is also battling cancer.").some(m => /family/.test(m)));
   assert.ok(!writerPrompt({ day: "Thursday 15 October", editor: "T. A. Bhide" }, P).includes("Parth and his wife"));
+});
+
+test("podcast length (15 Oct: 1,858 words, 12 minutes 23): a budget the writer can follow and a cut note for a long draft", () => {
+  const C = JSON.parse(readFileSync(new URL("../config/house.json", import.meta.url), "utf8")).podcast;
+  assert.ok(C.words.max <= 1400 && C.words.target <= 1200, "about nine minutes at most");
+  const p = writerPrompt({ day: "Thursday 15 October", editor: "T. A. Bhide" }, C);
+  assert.match(p, /no turn over sixty words/);
+  const T = (n, w = "word") => ({ speaker: "Ashu", mood: "neutral", text: Array(n).fill(w).join(" ") + "." });
+  assert.equal(cutNote([T(50), T(50)], C), "");
+  const note = cutNote([...Array(30)].map(() => T(55)).concat([T(110)]), C);
+  assert.match(note, /LENGTH: the script is 1760 words; bring it down to about 1150 \(never over 1400\), cutting about 610 words/);
+  assert.match(note, /turn 31 \(110\)/);
+  const make = readFileSync(new URL("../scripts/podcast/make.mjs", import.meta.url), "utf8");
+  assert.match(make, /REWRITE_BY = Math\.min\(WRITE_BY, t0 \+ 16 \* 60000\)/);
 });
 
 test("podcast money (14 Oct): still open at two, the range in words, the Nasdaq-100, yesterday's late move", () => {

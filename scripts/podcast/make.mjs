@@ -13,7 +13,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync, readdirSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { rundown, writerPrompt, checkScript, fallbackScript, spoken, feedXML, deepItems, splitLines, cutAt, onAir, vttOf } from "./lib.mjs";
+import { rundown, writerPrompt, checkScript, fallbackScript, spoken, feedXML, deepItems, splitLines, cutAt, onAir, vttOf, cutNote } from "./lib.mjs";
 import { layout, mix } from "./studio.mjs";
 import { afterClose } from "../../lib/after-close.js";
 
@@ -51,6 +51,10 @@ try { const { Agent, setGlobalDispatcher } = await import("undici"); setGlobalDi
 // starts later (a backup, a test) gets ten and twenty-five minutes from its start.
 const t0 = Date.now(), istAt = (h, m) => Date.parse(`${new Date(t0 + 5.5 * 36e5).toISOString().slice(0, 10)}T${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:00+05:30`);
 const late = t0 > istAt(15, 0), WRITE_BY = REHEARSE ? t0 + 6 * 60000 : late ? t0 + 10 * 60000 : istAt(15, 10), STOP = REHEARSE ? t0 + 10 * 60000 : late ? t0 + 25 * 60000 : istAt(15, 20);
+// Rewrites of a script that could already go out stop sixteen minutes into the run (15 Oct: twelve minutes of busy
+// rewrites after a ten-minute wait for 3.8 put the episode out at 14:43 instead of about 14:20); WRITE_BY above is for
+// a run that has no usable script yet.
+const REWRITE_BY = Math.min(WRITE_BY, t0 + 16 * 60000);
 // "busy" (429, 500, 503) is waited out a minute at a time, up to `tries` attempts in all (the main writer's first
 // try: six, about five minutes; 3.8 Flash was busy for over three minutes at a time on 12-13 Oct, and refused
 // requests count against the free day's twenty)
@@ -125,12 +129,13 @@ async function writeScript(R) {
   }
   // A rewrite goes to the writer that answered, else to the next free strong writer (13 Oct: 3.8 Flash wrote a
   // 10-minute draft and was busy for every rewrite, so the long draft went out); up to two rounds a minute apart.
+  let usable = false; // a script that could go out is in hand: rewrites stop at REWRITE_BY
   const rewriteAsk = async (model, prompt) => {
     const order = first ? [model, ...strong.filter(m => m !== model && !out.has(m))] : [model];
     let err;
     // rounds a minute and a half apart while there is time before WRITE_BY (13 Oct redo: eighteen busy refusals in a
     // row over fourteen minutes, then the unrevised 1,534-word draft went out)
-    for (let round = 0; round === 0 || (round < 8 && Date.now() < WRITE_BY && total < cap); round++) {
+    for (let round = 0; round === 0 || (round < 8 && Date.now() < (usable ? REWRITE_BY : WRITE_BY) && total < cap); round++) {
       if (round) await sleep(90000);
       for (const m of order) {
         try { const j = await ask(m, prompt, 1); if (m !== model) log(`rewrite by ${m}`); return j; }
@@ -140,16 +145,24 @@ async function writeScript(R) {
     throw err;
   };
   for (const model of first ? [first.model] : lite) {
-    let prompt = base, best = null;
+    let prompt = base, best = null, long = null;
+    const LEN = /^\d+ words \(needs/, wordsIn = t => t.reduce((a, x) => a + String(x.text || "").split(/\s+/).filter(Boolean).length, 0);
     for (let attempt = 0; attempt < 3; attempt++) {
+      if (attempt && usable && Date.now() > REWRITE_BY) { log("no more rewrites: sixteen minutes into the run, the best script so far goes out"); break; }
       try {
         const j = attempt === 0 && first ? first.j : await rewriteAsk(model, prompt);
         const turns = turnsOf(j), probs = checkScript(turns, R, P), hard = probs.filter(p => p.hard);
         log(`script by ${model} (try ${attempt + 1}): ${turns.length} turns, ${probs.length ? probs.map(p => (p.hard ? "HARD " : "") + p.msg).slice(0, 8).join("; ") : "no problems"}`);
-        if (!hard.length && (!best || probs.length < best.n)) best = { turns, by: model, n: probs.length };
+        // the best: no hard problem, within the length before over it, then the fewest problems; a draft whose only hard
+        // problem is its length is kept apart, the shortest, for when nothing better comes before the rewrites stop
+        const isLong = probs.some(p => LEN.test(p.msg)) && wordsIn(turns) > (P.words?.max || 1400), rank = (isLong ? 1000 : 0) + probs.length;
+        if (!hard.length && (!best || rank < best.rank)) best = { turns, by: model, n: probs.length, rank };
+        if (hard.length && hard.every(p => LEN.test(p.msg)) && wordsIn(turns) > (P.words?.max || 1400) && (!long || wordsIn(turns) < long.w)) long = { turns, by: model, n: probs.length, w: wordsIn(turns) };
+        usable = usable || !!best || !!long;
         if (!probs.length) break;
         last = probs.map(p => p.msg);
-        prompt = `${base}\n\nYOUR PREVIOUS SCRIPT (below) was sent back for: ${last.join("; ")}. Rewrite it, fixing exactly these and keeping everything else that works.\n${JSON.stringify({ turns })}`;
+        const cut = cutNote(turns, P);
+        prompt = `${base}\n\nYOUR PREVIOUS SCRIPT (below) was sent back for: ${last.join("; ")}. Rewrite it, fixing exactly these and keeping everything else that works.${cut ? `\n${cut}` : ""}\n${JSON.stringify({ turns })}`;
       } catch (e) {
         last = [e.message]; log(`writer ${model} failed:`, e.message.split("\n")[0].slice(0, 200));
         if (!best && (e.http || e.name === "TimeoutError" || e.name === "AbortError")) break;
@@ -158,6 +171,10 @@ async function writeScript(R) {
     if (best) {
       log(`script chosen: ${model}, ${best.n} soft problem(s) left`);
       return { turns: best.turns, by: model };
+    }
+    if (long) {
+      log(`script chosen: ${model}, too long at ${long.w} words but every rewrite busy or out of time`);
+      return { turns: long.turns, by: model };
     }
   }
   log("using the plain script made by code; the writer's last problems:", last.slice(0, 4).join("; "));
