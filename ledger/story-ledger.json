@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-15T08:46:16.746Z",
-  "last_edition": "2026-10-15",
+  "last_updated": "2026-10-16T08:44:24.894Z",
+  "last_edition": "2026-10-16",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -559,7 +559,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Supreme Court asks the Centre to explain its prohibitory orders and alleged police assaults on protesters",
+      "title": "Prashant Bhushan says the anti-CEC protest is now a fight for 'regime change'; Rajnath Singh accuses the Congress of wanting Bangladesh-style upheaval",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -596,11 +596,14 @@
         "remand": "5 days judicial custody",
         "jailed": "Das, Ranka",
         "bond": "Shinde",
-        "next_protest": "Connaught Place, 16 Oct"
+        "next_protest": "Connaught Place, 16 Oct",
+        "bhushan": "'we want regime change'",
+        "rajnath": "Bangladesh-style regime change charge",
+        "cp_march": "16 Oct, select group allowed"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-15",
-      "last_change": "2026-10-15",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1343,18 +1346,20 @@
     },
     {
       "thread_id": "india-us-ties-2026",
-      "title": "Jaishankar says the US trade deal is heading to a 'landing point', and Rubio will visit Mumbai and Jamnagar next week",
+      "title": "Goyal says the first phase of the US trade deal is final and being drafted, but India wants an edge over its rivals first",
       "entities": [],
       "facts": {
         "call": "2026-09-30",
         "law": "tariffs up to 100% on Russian oil buyers",
         "greer": "deal not imminent",
         "status": "heading towards a landing point",
-        "rubio": "Mumbai, Jamnagar 17-22 Oct"
+        "rubio": "Mumbai, Jamnagar 17-22 Oct",
+        "first_phase": "finalised, legal drafting",
+        "china_deficit": ">$100bn Jan-Sep"
       },
       "first_printed": "2026-09-29",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3267,16 +3272,18 @@
     },
     {
       "thread_id": "iphone-duo-2026",
-      "title": "iPhone Duo comes to India at ₹2,99,900; pre-orders open on 16 October",
+      "title": "Apple's foldable iPhone Duo goes on pre-order in South Korea ahead of its 23 October release",
       "entities": [],
       "facts": {
         "price_from": "₹2,99,900",
         "preorder": "16 Oct",
-        "sale": "23 Oct"
+        "sale": "23 Oct",
+        "release": "23 Oct",
+        "preorders": "SKT from 16 Oct"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3398,18 +3405,20 @@
     },
     {
       "thread_id": "ukraine-war-2026",
-      "title": "Zelensky says Ukraine will resume strikes on Russian refineries and accuses the US of cutting intelligence and slowing Starlink",
+      "title": "Ukraine strikes a refinery near Moscow as the 'energy ceasefire' collapses, and part of its Starlink service is restored",
       "entities": [],
       "facts": {
         "dead": 30,
         "place": "Kramatorsk",
         "meeting": "Burnham, Downing Street, 14 Oct",
         "strikes": "refineries to resume",
-        "us": "intelligence and Starlink cut, Zelensky says"
+        "us": "intelligence and Starlink cut, Zelensky says",
+        "strike": "Ryazan refinery, 15 Oct",
+        "starlink": "on-the-move service restored"
       },
       "first_printed": "2026-10-07",
-      "last_printed": "2026-10-15",
-      "last_change": "2026-10-15",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3552,18 +3561,20 @@
     },
     {
       "thread_id": "starlink-india-2026",
-      "title": "Musk blames Indian 'oligarchs' for holding up Starlink; the government calls it baseless",
+      "title": "Reliance says it has 'never feared competition' after Musk calls Ambani 'the real boss of India'",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "jio_satellite": "awaiting clearance"
+      },
       "first_printed": "2026-10-08",
-      "last_printed": "2026-10-08",
-      "last_change": "2026-10-08",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "tech"
+      "section": "desh"
     },
     {
       "thread_id": "nobel-chemistry-2026",
@@ -3646,17 +3657,20 @@
     },
     {
       "thread_id": "rupee-defence-2026",
-      "title": "RBI clamps down on dollar demand to defend the rupee, and will sell dollars straight to the three state oil companies",
+      "title": "The RBI's rupee defence gives the currency its best week in four years, but hedging costs hit a decade high",
       "entities": [],
       "facts": {
         "ferr": "20% cash on forwards > $2m",
         "threshold": "$100m to $5m",
         "omc_window": "from 12 Oct",
-        "rebooking": "banned"
+        "rebooking": "banned",
+        "week": "+1.9%",
+        "usd_inr_14h": "94.98",
+        "3m_forward": "6.54%, highest since May 2016"
       },
       "first_printed": "2026-10-10",
-      "last_printed": "2026-10-10",
-      "last_change": "2026-10-10",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3905,16 +3919,17 @@
     },
     {
       "thread_id": "us-politics-2026",
-      "title": "No state bar lists Katie Zacharia, the White House press secretary presented as a lawyer",
+      "title": "A watchdog asks California's bar to investigate Katie Zacharia for calling herself a lawyer",
       "entities": [],
       "facts": {
         "press_secretary": "Katie Zacharia",
         "briefing": "14 minutes",
-        "bar": "no state registration found"
+        "bar": "no state registration found",
+        "complaint": "Campaign for Accountability, California State Bar"
       },
       "first_printed": "2026-10-13",
-      "last_printed": "2026-10-15",
-      "last_change": "2026-10-15",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4885,12 +4900,15 @@
     },
     {
       "thread_id": "prayagraj-housing-2026",
-      "title": "Yogi Adityanath lays the foundation for 602 flats on land taken back from Atiq Ahmad",
+      "title": "Yogi Adityanath renames Atiq Ahmed's old stronghold Kasari-Masari as Shri Krishna Puri",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "name": "Shri Krishna Puri",
+        "flats": "602 then 598"
+      },
       "first_printed": "2026-10-15",
-      "last_printed": "2026-10-15",
-      "last_change": "2026-10-15",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4906,6 +4924,424 @@
       "first_printed": "2026-10-15",
       "last_printed": "2026-10-15",
       "last_change": "2026-10-15",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "us-shootings-2026",
+      "title": "Teenager kills three children and a teacher at an Oregon primary school before a bystander shoots him dead",
+      "entities": [],
+      "facts": {
+        "dead": "3 children, 1 teacher",
+        "attacker": "16, shot by bystander"
+      },
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "hindu-temple-plot-us-2026",
+      "title": "India protests after a teenager with a white-supremacist manifesto is charged over a foiled shooting at a Hindu temple in Illinois",
+      "entities": [],
+      "facts": {
+        "accused": "Alexandros Paporakis, 19",
+        "arrested": "11 Oct",
+        "charges": "terrorist threat, weapon possession"
+      },
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "ai-agents-security-2026",
+      "title": "AI agents broke into Indian companies' live systems during testing and read confidential data, CERT-In says",
+      "entities": [],
+      "facts": {
+        "advisory": "critical, 15 Oct",
+        "source": "voluntary disclosures by model providers"
+      },
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "gulf-flights-2026",
+      "title": "Air India cancels all flights to Riyadh, Dammam and Jeddah until 20 October",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-a-ramlila-committee-in-pitampura-will",
+      "title": "A Ramlila committee in Pitampura will burn a 30-foot cockroach effigy alongside Ravana on Dussehra",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-trump-calls-off-the-pentagons-plan",
+      "title": "Trump calls off the Pentagon's plan to livestream the execution of the Fort Hood shooter, Nidal Hasan",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-a-magnitude-69-earthquake-strikes-russias",
+      "title": "A magnitude 6.9 earthquake strikes Russia's Kamchatka, and Japan issues a mistaken 9.9 warning",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-another-tanker-catches-fire-near-hormuz",
+      "title": "Another tanker catches fire near Hormuz after two cargo ships are sunk in attacks",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-ukraine-has-run-out-of-us-made",
+      "title": "Ukraine has run out of US-made Patriot interceptors, a report says",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-reform-uk-faces-questions-over-candidate",
+      "title": "Reform UK faces questions over candidate vetting after undercover filming",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "bank-deposits-2026",
+      "title": "Bank deposits reach a record ₹284 trillion, lifted by the RBI's dollar-deposit window",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "line-yes-banks-at-1-bond-ruling-will",
+      "title": "Yes Bank's AT-1 bond ruling will hit its earnings but not its ratings, S&P says",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "line-mutual-funds-stop-taking-bulk-subscriptions",
+      "title": "Mutual funds stop taking bulk subscriptions to gold ETFs",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "amazon-ai-devices-2026",
+      "title": "Amazon's Bee launches a $74.99 AI wearable and a $99.99 recorder that clips to a phone",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-chatgpts-chrome-extension-can-now-read",
+      "title": "ChatGPT's Chrome extension can now read the browser tabs you have open",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "tesla-roadster-2026",
+      "title": "Tesla shows a Roadster that flips through the air on SpaceX thrusters and does 0 to 60 mph in under a second",
+      "entities": [],
+      "facts": {
+        "0_60": "<1 s",
+        "versions": "Performance, Thrust, Rocket"
+      },
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "line-apples-homeview-puts-its-home-controls",
+      "title": "Apple's HomeView puts its home controls on a seven-inch screen",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "europa-league-2026",
+      "title": "Crystal Palace lose 3–2 at Lyon on Pierre Sage's return to his old club",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "man-united-2026",
+      "title": "Roy Keane calls Manchester United 'a circus' after Lisandro Martínez criticises the club's bosses",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "tennis-integrity-2026",
+      "title": "Serbian player Stefan Milićević banned from tennis until 2050 for fixing matches and recruiting others to fix",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "mlb-postseason-2026",
+      "title": "Brewers sweep the Dodgers to reach their first World Series in 44 years",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "wta-wuhan-2026",
+      "title": "Sonay Kartal, ranked 170th after a back injury, beats Svitolina to reach the Wuhan semi-finals",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "deuce"
+    },
+    {
+      "thread_id": "karnataka-sting-2026",
+      "title": "Kumaraswamy goes to Bengaluru's police commissioner and dares officers to question him over the Siddaramaiah video",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "verstappen-records-2026",
+      "title": "Verstappen has now won at every track on this year's calendar but one, the Madring",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "prayagraj-names-2026",
+      "title": "Adityanath asks for a Teliyarganj crossing to be named after freedom fighter Masuriyadin Pasi",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "ranchi-business-2026",
+      "title": "JCB opens a dealership in Ranchi to run sales and service for 15 Jharkhand districts",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "ranchi-durga-puja-2026",
+      "title": "Ranchi police hold flag marches across the city ahead of Durga Puja",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-16",
+      "last_printed": "2026-10-16",
+      "last_change": "2026-10-16",
       "status": "active",
       "votes": {
         "up": 0,
