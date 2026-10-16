@@ -3518,7 +3518,7 @@
       "neutral": "easy and conversational"
     },
     "deep_max": 6,
-    "quick_max": 7,
+    "quick_max": 8,
     "kokoro": {
       "lang": "a",
       "voices": {

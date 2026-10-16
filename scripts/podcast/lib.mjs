@@ -180,7 +180,27 @@ export function rundown(E, P = {}, now, paper = {}) {
   const onFront = new Set([lead?.id, ...seconds.map(x => x.id), ...fbriefs.map(x => x.id)]), others = ranked.filter(x => !onFront.has(x.id));
   const deep = others.slice(0, Math.max(2, (P.deep_max || 6) - 1 - seconds.length));
   if (![lead, ...seconds, ...deep].some(x => x && desk(x).id === "sport")) { const sp = others.find(x => desk(x).id === "sport"); if (sp && !deep.includes(sp)) deep.splice(Math.max(0, deep.length - 1), 1, sp); }
-  const deepIds = new Set(deep.map(x => x.id)), quick = others.filter(x => !deepIds.has(x.id)).slice(0, P.quick_max || 18);
+  // The quick items (16 Oct: chosen by importance alone, the paper's order breaking ties, so News took every tie and
+  // whole desks fell out: no Bengaluru, Prayagraj or Ranchi story since 13 Oct, one Sport story on 16 Oct). Now each
+  // desk with a story left gets a where first, and so do Bengaluru, Prayagraj and Ranchi each (Back Home's two cities by
+  // the kicker); then the rest go by importance, a tie to the desk with the smallest share of its stories in the show so far (a
+  // desk with six stories in the paper gets more than one with two), then the paper's order. A desk's weight (Sport's
+  // 1.2) then works as before, below.
+  const deepIds = new Set(deep.map(x => x.id)), D = s => desk(s).id, where = s => (s.section === "back" ? `back:${String(s.kicker || "").split(/\s*·\s*/)[0]}` : s.section === "namma" ? "namma" : D(s));
+  const byDesk = {}, byPlace = new Set(), size = {};
+  for (const x of list) size[D(x)] = (size[D(x)] || 0) + 1;
+  for (const x of [lead, ...seconds, ...fbriefs, ...deep].filter(Boolean)) { byDesk[D(x)] = (byDesk[D(x)] || 0) + 1; byPlace.add(where(x)); }
+  const pool = others.filter(x => !deepIds.has(x.id)), order = new Map(pool.map((x, i) => [x.id, i])), quick = [], Q = P.quick_max || 18;
+  const take = x => { quick.push(x); byDesk[D(x)] = (byDesk[D(x)] || 0) + 1; byPlace.add(where(x)); };
+  for (const x of pool) if (!byPlace.has(where(x)) && quick.length < Q) take(x);
+  while (quick.length < Q) {
+    const left = pool.filter(x => !quick.includes(x)); if (!left.length) break;
+    left.sort((x, y) => score(y) - score(x) || (byDesk[D(x)] || 0) / size[D(x)] - (byDesk[D(y)] || 0) / size[D(y)] || order.get(x.id) - order.get(y.id));
+    take(left[0]);
+  }
+  quick.sort((x, y) => order.get(x.id) - order.get(y.id));
+  // a where's only story in the show is never swapped out for a weighted desk's (below)
+  const firstOf = new Set(quick.filter(x => [lead, ...seconds, ...fbriefs, ...deep, ...quick].filter(y => y && where(y) === where(x)).length === 1));
   // A desk weighted up (config podcast.weights {desk, factor}; Parth, 14 Oct: Sport "1.2x or 20% higher than current,
   // but not forcefully"): the desk gets that many more places than the paper's own order gave it, rounded (four Sport
   // items become five), filled with its next-best stories in place of the weakest quick items from other desks. Never
@@ -190,7 +210,7 @@ export function rundown(E, P = {}, now, paper = {}) {
     const inShow = [lead, ...seconds, ...fbriefs, ...deep, ...quick].filter(Boolean), mine = s => desk(s).id === x.desk;
     const k = inShow.filter(mine).length, target = Math.round(k * x.factor), spare = others.filter(s => mine(s) && !inShow.includes(s));
     for (let n = k; n < target && spare.length; n++) {
-      const out = [...quick].reverse().find(s => !mine(s)); if (!out) break;
+      const out = [...quick].reverse().find(s => !mine(s) && !firstOf.has(s)); if (!out) break; // never a desk's only story
       quick.splice(quick.indexOf(out), 1, spare.shift());
     }
   }
@@ -596,12 +616,32 @@ export function splitLines(pcm, words) {
 }
 
 // Cuts a host's take at given times (seconds, from the listening model's word times: verify_lines.py align): each cut
-// moves to the quietest 20 ms within a quarter second either side, and each piece is trimmed of its silent ends.
+// goes into the real pause between the two lines, the longest stretch of silence near the estimate, and each piece is
+// trimmed of its silent ends. (16 Oct: the cut moved to the quietest 20 ms within a quarter second, and the listening
+// model's times run early on a line that ends in a number, so four of 64 cuts fell inside a word, at the little dip of
+// a "t" in "eighty-nine": "...to eighty-" ended one line and "nine" opened the host's next. A pause between lines runs
+// 0.3 to 0.8 s; a dip inside a word, 20 to 80 ms.) The search runs 0.8 s either side, never past halfway to the next
+// estimate; a cut with no pause of at least 0.12 s there is refused (null), and the caller falls back.
 export function cutAt(pcm, secs, { start = 0, end = null } = {}) {
   const F = 480, frames = Math.floor(pcm.length / 2 / F), rms = new Float64Array(frames);
   for (let f = 0; f < frames; f++) { let s = 0; for (let i = 0; i < F; i++) { const v = pcm.readInt16LE((f * F + i) * 2); s += v * v; } rms[f] = Math.sqrt(s / F); }
   const loud = [...rms].sort((a, b) => a - b)[Math.floor(frames * 0.95)] || 0, thr = Math.max(150, loud * 0.06), quiet = f => rms[f] < thr;
-  const at = secs.map(x => { const c = Math.round(x * 50); let best = c; for (let f = Math.max(1, c - 12); f <= Math.min(frames - 2, c + 12); f++) if (rms[f] < rms[best] || best >= frames) best = f; return Math.max(1, Math.min(frames - 1, best)); });
+  const est = secs.map(x => Math.round(x * 50)), W = 40, MIN = 6;
+  const at = est.map((c, k) => {
+    const lo = Math.max(1, c - W, k ? Math.ceil((est[k - 1] + c) / 2) : 1), hi = Math.min(frames - 2, c + W, k < est.length - 1 ? Math.floor((c + est[k + 1]) / 2) : frames - 2);
+    let best = null;
+    for (let f = lo; f <= hi; f++) {
+      if (!quiet(f)) continue;
+      let e = f; while (e + 1 <= hi && quiet(e + 1)) e++;
+      // the whole pause, even where it runs past the window, is what counts
+      let s0 = f; while (s0 - 1 >= 0 && quiet(s0 - 1)) s0--; let e0 = e; while (e0 + 1 < frames && quiet(e0 + 1)) e0++;
+      const len = e0 - s0 + 1, mid = Math.round((Math.max(s0, lo) + Math.min(e0, hi)) / 2), score = len - Math.abs(mid - c) / 4;
+      if (len >= MIN && (!best || score > best.score)) best = { mid, score };
+      f = e;
+    }
+    return best ? best.mid : -1;
+  });
+  if (at.some(x => x < 0)) return null;
   if (at.some((x, i) => i && x <= at[i - 1])) return null;
   const b0 = Math.max(0, Math.min(at[0] ?? frames, Math.floor(start * 50))), b1 = end == null ? frames : Math.min(frames, Math.max(at.at(-1) ?? 0, Math.ceil(end * 50)));
   const bounds = [b0, ...at, b1];
@@ -610,7 +650,7 @@ export function cutAt(pcm, secs, { start = 0, end = null } = {}) {
     let s = bounds[i], e = bounds[i + 1];
     while (s < e && quiet(s)) s++; while (e > s && quiet(e - 1)) e--;
     if (e - s < 8) return null;
-    pieces.push(pcm.subarray(Math.max(0, s - 3) * F * 2, Math.min(frames, e + 3) * F * 2));
+    pieces.push(pcm.subarray(Math.max(0, s - 3) * F * 2, Math.min(frames, e + 5) * F * 2)); // a little more after: a soft last sound ("-teen") fades under the threshold
   }
   return pieces;
 }

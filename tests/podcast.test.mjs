@@ -183,6 +183,20 @@ test("podcast: every solo cut is heard before it is used (the listening check is
   assert.match(readFileSync(new URL("../scripts/podcast/requirements-verify.txt", import.meta.url), "utf8"), /^faster-whisper==\d/m);
 });
 
+test("podcast: a cut by ear goes into the pause, never the dip inside a word (16 Oct: \"eighty-\" | \"nine\")", () => {
+  const sec = x => Math.round(24000 * x), noise = n => { const b = Buffer.alloc(n * 2); for (let i = 0; i < n; i++) b.writeInt16LE(Math.round((Math.random() * 2 - 1) * 8000), i * 2); return b; };
+  const quiet = n => Buffer.alloc(n * 2);
+  // line one runs to 3.0 s with a 60 ms dip (the "t" of "eighty") at 2.6 s; the real pause is 3.0 to 3.5 s; line two to 5.5 s
+  const take = Buffer.concat([noise(sec(2.6)), quiet(sec(0.06)), noise(sec(0.34)), quiet(sec(0.5)), noise(sec(2)), quiet(sec(0.3))]);
+  // the listening model's time runs early, right on the dip
+  const p = cutAt(take, [2.63]);
+  assert.equal(p.length, 2);
+  assert.ok(Math.abs(p[0].length / 48000 - 3.0) < 0.2, `line one keeps its last sound: ${p[0].length / 48000} s`);
+  assert.ok(Math.abs(p[1].length / 48000 - 2.0) < 0.2, `line two starts at its first word: ${p[1].length / 48000} s`);
+  // no pause anywhere near: refused, so the caller falls back rather than cutting a word
+  assert.equal(cutAt(Buffer.concat([noise(sec(6))]), [3]), null);
+});
+
 test("podcast: a take cut by ear keeps only the lines, from the first line's start to the last line's end (14 Oct)", () => {
   const sec = x => Math.round(24000 * x), noise = n => { const b = Buffer.alloc(n * 2); for (let i = 0; i < n; i++) b.writeInt16LE(Math.round((Math.random() * 2 - 1) * 8000), i * 2); return b; };
   const quiet = n => Buffer.alloc(n * 2);
@@ -274,6 +288,17 @@ test("podcast: Sport gets 20% more places, gently (Parth, 14 Oct): four become f
   const sport = W => { const R = rundown({ ...Ed, art_scores: art }, { ...P, deep_max: 2, quick_max: 8, weights: W }, undefined, paper); return [R.lead, ...R.segments.flatMap(g => g.items)].filter(i => i.desk === "Sport").map(i => i.id); };
   assert.equal(sport([]).length, 4);
   assert.deepEqual(sport([{ desk: "sport", factor: 1.2 }]).sort(), ["s1", "s2", "s3", "s4", "s5"]);
+});
+
+test("podcast: every desk, and Bengaluru, Prayagraj and Ranchi each, gets a place before News takes the ties (16 Oct)", () => {
+  const b = (id, section, headline, kicker) => ({ id, section, headline, kicker, text: "Something happened." });
+  const Ed = { date: "2026-10-16", front: { lead: { id: "lead", section: "desh", headline: "A lead", short: "x" } },
+    sections: { desh: { briefs: [1, 2, 3, 4, 5, 6].map(i => b(`n${i}`, "desh", `News item ${i}`)) },
+      pitch: { briefs: [b("s1", "pitch", "Palace lose at Lyon")] }, namma: { briefs: [b("blr", "namma", "Kumaraswamy at the police commissioner's")] },
+      back: { briefs: [b("p1", "back", "Kasari-Masari renamed", "Prayagraj"), b("p2", "back", "Teliyarganj crossing", "Prayagraj"), b("r1", "back", "JCB opens in Ranchi", "Ranchi")] } } };
+  const R = rundown(Ed, { ...P, deep_max: 2, quick_max: 4, weights: [] }, undefined, paper), ids = [R.lead, ...R.segments.flatMap(g => g.items)].map(i => i.id);
+  for (const id of ["blr", "p1", "r1", "s1"]) assert.ok(ids.includes(id), `${id} missing: ${ids.join(",")}`);
+  assert.ok(!ids.includes("p2"), "Prayagraj's second story waits until every place has one");
 });
 
 test("podcast: Sport says where the follows stand: league, championship, series (Parth, 14 Oct)", () => {
