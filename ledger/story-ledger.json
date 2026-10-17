@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-16T08:44:24.894Z",
-  "last_edition": "2026-10-16",
+  "last_updated": "2026-10-17T08:46:24.971Z",
+  "last_edition": "2026-10-17",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -559,7 +559,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "Prashant Bhushan says the anti-CEC protest is now a fight for 'regime change'; Rajnath Singh accuses the Congress of wanting Bangladesh-style upheaval",
+      "title": "CJP founder Abhijeet Dipke is detained again and goes before a magistrate, as Delhi Police file 10 FIRs over attacks on protesters",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -582,7 +582,7 @@
         "sc_immunity_remark": "5 Oct",
         "fir": "trespass, Parliament Street police station",
         "cji": "intervened for lawyers",
-        "firs": 25,
+        "firs": "at least 10",
         "charges": "assault on police, obstruction",
         "cec_security": "raised",
         "murmu": "8 pm Friday",
@@ -599,11 +599,14 @@
         "next_protest": "Connaught Place, 16 Oct",
         "bhushan": "'we want regime change'",
         "rajnath": "Bangladesh-style regime change charge",
-        "cp_march": "16 Oct, select group allowed"
+        "cp_march": "16 Oct, select group allowed",
+        "dipke": "before SEM court, 17 Oct",
+        "dmk": "demands CEC's removal, paper ballots",
+        "un": "India rejects rapporteur Gina Romero"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-16",
-      "last_change": "2026-10-16",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1346,7 +1349,7 @@
     },
     {
       "thread_id": "india-us-ties-2026",
-      "title": "Goyal says the first phase of the US trade deal is final and being drafted, but India wants an edge over its rivals first",
+      "title": "Trump waives the Russia sanctions law two days before it bites, lifting the threat of 100% tariffs on India",
       "entities": [],
       "facts": {
         "call": "2026-09-30",
@@ -1355,17 +1358,20 @@
         "status": "heading towards a landing point",
         "rubio": "Mumbai, Jamnagar 17-22 Oct",
         "first_phase": "finalised, legal drafting",
-        "china_deficit": ">$100bn Jan-Sep"
+        "china_deficit": ">$100bn Jan-Sep",
+        "order": "executive order, Fri 16 Oct",
+        "waived": "100% tariffs on top 5 buyers of Russian oil; 500% on Russian goods",
+        "deadline": "Sun 18 Oct"
       },
       "first_printed": "2026-09-29",
-      "last_printed": "2026-10-16",
-      "last_change": "2026-10-16",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "desh"
+      "section": "videsh"
     },
     {
       "thread_id": "india-reservoirs-2026",
@@ -3272,18 +3278,20 @@
     },
     {
       "thread_id": "iphone-duo-2026",
-      "title": "Apple's foldable iPhone Duo goes on pre-order in South Korea ahead of its 23 October release",
+      "title": "iPhone Duo pre-orders sell out in seconds in China, and some deliveries slip",
       "entities": [],
       "facts": {
         "price_from": "₹2,99,900",
         "preorder": "16 Oct",
         "sale": "23 Oct",
         "release": "23 Oct",
-        "preorders": "SKT from 16 Oct"
+        "preorders": "SKT from 16 Oct",
+        "price": "$1,999",
+        "screens": "5.4 and 7.6 in"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-16",
-      "last_change": "2026-10-16",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3919,17 +3927,19 @@
     },
     {
       "thread_id": "us-politics-2026",
-      "title": "A watchdog asks California's bar to investigate Katie Zacharia for calling herself a lawyer",
+      "title": "Katie Zacharia is out as White House press secretary after five days, after Trump says the job 'is not for her'",
       "entities": [],
       "facts": {
         "press_secretary": "Katie Zacharia",
         "briefing": "14 minutes",
         "bar": "no state registration found",
-        "complaint": "Campaign for Accountability, California State Bar"
+        "complaint": "Campaign for Accountability, California State Bar",
+        "days": "5",
+        "first_briefing": "14 minutes"
       },
       "first_printed": "2026-10-13",
-      "last_printed": "2026-10-16",
-      "last_change": "2026-10-16",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4137,12 +4147,14 @@
     },
     {
       "thread_id": "eci-sir-karnataka-2026",
-      "title": "Bengaluru police detain about 100 marching to the state election office against the voter-roll revision",
+      "title": "Bengaluru police let the CJP march with the Tiranga from Town Hall to the Quit India Memorial",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "route": "Town Hall to Quit India Memorial"
+      },
       "first_printed": "2026-10-13",
-      "last_printed": "2026-10-13",
-      "last_change": "2026-10-13",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4705,12 +4717,16 @@
     },
     {
       "thread_id": "ai-stocks-2026",
-      "title": "South Korea halts trading as the Kospi crashes 8% in an AI chip sell-off",
+      "title": "The Nasdaq falls 2.2% as worries grow that debt-laden AI companies cannot repay their loans, and oil jumps 3%",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "nasdaq": "-2.15% to 26,137.85",
+        "sp500": "-1.10% to 7,658.62",
+        "coreweave_bonds": ">15% yield"
+      },
       "first_printed": "2026-10-15",
-      "last_printed": "2026-10-15",
-      "last_change": "2026-10-15",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4855,18 +4871,20 @@
     },
     {
       "thread_id": "vinicius-discipline-2026",
-      "title": "Vinícius banned for four league games and will miss the Clásico on 25 October",
+      "title": "The Spanish federation rejects Real Madrid's appeal against Vinícius's four-match ban",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "ban": "four matches, upheld"
+      },
       "first_printed": "2026-10-15",
-      "last_printed": "2026-10-15",
-      "last_change": "2026-10-15",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "madrid"
+      "section": "pitch"
     },
     {
       "thread_id": "red-bull-2026",
@@ -4933,15 +4951,17 @@
     },
     {
       "thread_id": "us-shootings-2026",
-      "title": "Teenager kills three children and a teacher at an Oregon primary school before a bystander shoots him dead",
+      "title": "The Oregon school gunman was a former pupil who targeted a special needs class, and a teacher wrestled him before a father shot him",
       "entities": [],
       "facts": {
         "dead": "3 children, 1 teacher",
-        "attacker": "16, shot by bystander"
+        "attacker": "16, former pupil",
+        "rounds": "up to 15 fired, 44 more carried",
+        "named": "Rhoam Summer 5, Meghan Lambert 25"
       },
       "first_printed": "2026-10-16",
-      "last_printed": "2026-10-16",
-      "last_change": "2026-10-16",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5246,12 +5266,14 @@
     },
     {
       "thread_id": "mlb-postseason-2026",
-      "title": "Brewers sweep the Dodgers to reach their first World Series in 44 years",
+      "title": "The Brewers become the first team to avenge an NLCS sweep against the same opponent a year later",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "wins": "103"
+      },
       "first_printed": "2026-10-16",
-      "last_printed": "2026-10-16",
-      "last_change": "2026-10-16",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5342,6 +5364,428 @@
       "first_printed": "2026-10-16",
       "last_printed": "2026-10-16",
       "last_change": "2026-10-16",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "sc-internet-right-2026",
+      "title": "Supreme Court rules that internet access is a fundamental right for everyone, children included, and suggests a 'child mode' for social media",
+      "entities": [],
+      "facts": {
+        "articles": "21 and 19(1)(a)",
+        "bench": "Pardiwala, Vinod Chandran",
+        "date": "17 Oct"
+      },
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "west-bank-settlers-2026",
+      "title": "Masked settlers attack Palestinian olive pickers in the West Bank, injuring 12 including four Americans and a foreign journalist",
+      "entities": [],
+      "facts": {
+        "injured": "12, incl. 4 US citizens",
+        "place": "near Abu Falah"
+      },
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "bank-results-2026",
+      "title": "Axis Bank's quarterly profit rises 38% to ₹7,003 crore as loans grow 23% and bad loans fall",
+      "entities": [],
+      "facts": {
+        "profit": "₹7,003 cr, +38%",
+        "nii": "₹15,371 cr, +12%",
+        "gnpa": "1.16%"
+      },
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "advani-health-2026",
+      "title": "L.K. Advani, 98, is admitted to Delhi's Apollo Hospital with a chest infection",
+      "entities": [],
+      "facts": {
+        "age": "98",
+        "hospital": "Apollo, Delhi"
+      },
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "industrial-accidents-2026",
+      "title": "Five workers are killed in an explosion at a chemical plant in Gujarat's Bharuch",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-five-of-a-family-three-of",
+      "title": "Five of a family, three of them children, die in Greater Noida after eating noodles for dinner; police suspect food poisoning",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-deva-the-composer-who-took-chennais",
+      "title": "Deva, the composer who took Chennai's gaana into Tamil cinema, dies at 75",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-three-mexicans-are-jailed-for-158",
+      "title": "Three Mexicans are jailed for 158 years each for killing Australian and US surfers",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-houthis-fire-two-missiles-at-aden",
+      "title": "Houthis fire two missiles at Aden airport, Yemen's government says",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-amazon-deforestation-in-brazil-falls-to",
+      "title": "Amazon deforestation in Brazil falls to its lowest in nearly 40 years",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-the-pope-is-pictured-for-the",
+      "title": "The Pope is pictured for the first time since his surgery and cancer diagnosis",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "rbl-emirates-nbd-2026",
+      "title": "RBI approves folding Emirates NBD's three Indian branches into RBL Bank from 1 December",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "line-china-weighs-new-export-bans-on",
+      "title": "China weighs new export bans on AI, biotechnology and solar technology",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "ai-regulation-2026",
+      "title": "Anthropic pitches US lawmakers its own draft bill on frontier AI safety, Politico reports",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "app-store-rules-2026",
+      "title": "Apple's new App Store rules explicitly ban AI 'nudify' apps and threaten removal for weak safeguards",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-trumps-ai-task-force-will-commission",
+      "title": "Trump's AI task force will commission a report on the technology's risks",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "nvidia-pcs-2026",
+      "title": "The first Nvidia RTX Spark laptops go on sale for local AI work, from about $2,600",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "line-astronomers-find-the-first-green-star",
+      "title": "Astronomers find the first green star, just after it swallowed its planet",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "madrid-tebas-2026",
+      "title": "Real Madrid demand Javier Tebas resign after the La Liga president compares the club's media methods to Goebbels",
+      "entities": [],
+      "facts": {
+        "demand": "Tebas resign as La Liga president and RFEF vice-president",
+        "trigger": "Goebbels comparison on X"
+      },
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "bellingham-contract-2026",
+      "title": "Jude Bellingham agrees a new Real Madrid contract to June 2031",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "boxing-heavyweights-2026",
+      "title": "Daniel Dubois defends his WBO heavyweight title against Fabio Wardley at the O2 tonight",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "india-selectors-2026",
+      "title": "Wasim Jaffer and Ramesh Powar are interviewed for the national selection panel after Ajit Agarkar's exit",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "bengaluru-t20-travel-2026",
+      "title": "Namma Metro runs until 1.30am tonight for the India-West Indies decider at the Chinnaswamy",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "prayagraj-health-2026",
+      "title": "Park Hospital breaks ground on a ₹200 crore, 550-bed hospital in Prayagraj",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "prayagraj-court-2026",
+      "title": "Allahabad High Court grants bail to Vikas Dubey's driver in the 2020 Bikru police massacre case",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "prayagraj-navratri-2026",
+      "title": "Darganj takes out its Kali Swang procession for Navratri",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "ranchi-hotels-2026",
+      "title": "A Golden Tulip hotel is being readied to open in Ranchi, and names its sales director",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-17",
+      "last_printed": "2026-10-17",
+      "last_change": "2026-10-17",
       "status": "active",
       "votes": {
         "up": 0,
