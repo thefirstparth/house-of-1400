@@ -44,3 +44,18 @@ test("twelvedata: the rupee falls back Yahoo, Twelve Data, then ExchangeRate-API
     await assert.rejects(tdChart("NSEI", { yahoo: "^NSEI" }), e => !e.message.includes("secret-key-123") && /401/.test(e.message));
   } finally { globalThis.fetch = real; if (env === undefined) delete process.env.TWELVEDATA_KEY; else process.env.TWELVEDATA_KEY = env; }
 });
+
+test("money backup: NSE's own level for its indices and Moneycontrol's for the Sensex (18 Oct)", async () => {
+  const { nseQuoteOf, moneycontrolQuoteOf } = await import("../lib/live.js");
+  const row = { index: "NIFTY 50", last: 23146.15, previousClose: 22997.35, oneWeekAgoVal: 22520.45, oneMonthAgoVal: 23270.6, oneWeekAgo: "09-Oct-2026", date30dAgo: "17-Sep-2026", previousDay: "16-Oct-2026" };
+  const hours = { tz: "Asia/Kolkata", open: "09:15", close: "15:30", days: [1, 2, 3, 4, 5] };
+  const q = nseQuoteOf(row, "16-Oct-2026 15:30", { yahoo: "^NSEI", hours, now: new Date("2026-10-18T06:00:00Z") });
+  assert.equal(q.symbol, "^NSEI"); assert.equal(q.price, 23146.15); assert.equal(q.prev, 22997.35);
+  assert.equal(Math.round(q.change_pct * 100) / 100, 0.65); assert.equal(q.session_date, "2026-10-16"); assert.equal(q.live, false, "a Sunday");
+  assert.equal(q.chg_7d, 2.78); assert.equal(q.returns_source, "NSE"); assert.equal(q.source, "NSE"); assert.equal(q.spark30, null);
+  const live = nseQuoteOf(row, "16-Oct-2026 11:00", { yahoo: "^NSEI", hours, now: new Date("2026-10-16T05:40:00Z") });
+  assert.equal(live.live, true, "a Friday at 11:10 IST");
+  const m = moneycontrolQuoteOf({ pricecurrent: "74729.27", priceprevclose: "74315.61", lastupd_epoch: "1792147202", market_state: "CLOSED", cl1wPerChange: "3.11", cl1wDt: "2026-10-09", cl1mPerChange: "0.53", cl1mDt: "2026-09-16" }, { yahoo: "^BSESN", hours });
+  assert.equal(m.price, 74729.27); assert.equal(m.session_date, "2026-10-16"); assert.equal(m.live, false); assert.equal(m.chg_1m, 0.53); assert.equal(m.source, "Moneycontrol");
+  assert.throws(() => moneycontrolQuoteOf({ pricecurrent: "" }, {}), /no level/);
+});

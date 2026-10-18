@@ -563,37 +563,37 @@
     "indices": [
       {
         "name": "Sensex",
-        "yahoo": "^BSESN", "twelvedata": "BSESN",
+        "yahoo": "^BSESN",
         "exchange": "India",
         "published": "in;SEN"
       },
       {
         "name": "Nifty 50",
-        "yahoo": "^NSEI", "twelvedata": "NSEI",
+        "yahoo": "^NSEI",
         "exchange": "India",
         "nse": "NIFTY 50"
       },
       {
         "name": "Nifty Bank",
-        "yahoo": "^NSEBANK", "twelvedata": "NSEBANK",
+        "yahoo": "^NSEBANK",
         "exchange": "India",
         "nse": "NIFTY BANK"
       },
       {
         "name": "Nifty IT",
-        "yahoo": "^CNXIT", "twelvedata": "CNXIT",
+        "yahoo": "^CNXIT",
         "exchange": "India",
         "nse": "NIFTY IT"
       },
       {
         "name": "S&P 500",
-        "yahoo": "^GSPC", "twelvedata": "SPX",
+        "yahoo": "^GSPC",
         "exchange": "US",
         "published": "us;SPX"
       },
       {
         "name": "Nasdaq-100",
-        "yahoo": "^NDX", "twelvedata": "NDX",
+        "yahoo": "^NDX",
         "exchange": "US"
       }
     ],
@@ -604,7 +604,7 @@
     "cross": [
       {
         "name": "Brent crude",
-        "yahoo": "BZ=F", "twelvedata": "XBR/USD"
+        "yahoo": "BZ=F"
       },
       {
         "name": "USD/INR",
@@ -765,7 +765,7 @@
         ],
         "vix": {
           "name": "India VIX",
-          "yahoo": "^INDIAVIX", "twelvedata": "INDIAVIX"
+          "yahoo": "^INDIAVIX", "nse": "INDIA VIX"
         }
       },
       "US": {
