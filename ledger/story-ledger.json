@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-17T08:46:24.971Z",
-  "last_edition": "2026-10-17",
+  "last_updated": "2026-10-18T08:49:41.274Z",
+  "last_edition": "2026-10-18",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -559,7 +559,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "CJP founder Abhijeet Dipke is detained again and goes before a magistrate, as Delhi Police file 10 FIRs over attacks on protesters",
+      "title": "CJP founder Abhijeet Dipke is released after a day in detention, on conditions his party has not disclosed",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -602,11 +602,13 @@
         "cp_march": "16 Oct, select group allowed",
         "dipke": "before SEM court, 17 Oct",
         "dmk": "demands CEC's removal, paper ballots",
-        "un": "India rejects rapporteur Gina Romero"
+        "un": "India rejects rapporteur Gina Romero",
+        "released": "Sat 17 Oct",
+        "age": "31"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-17",
-      "last_change": "2026-10-17",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1349,7 +1351,7 @@
     },
     {
       "thread_id": "india-us-ties-2026",
-      "title": "Trump waives the Russia sanctions law two days before it bites, lifting the threat of 100% tariffs on India",
+      "title": "Rubio lands in India but skips Delhi, meeting Jaishankar in Mumbai, as Trump says 'a lot of you don't know' what his sanctions decision means",
       "entities": [],
       "facts": {
         "call": "2026-09-30",
@@ -1361,17 +1363,20 @@
         "china_deficit": ">$100bn Jan-Sep",
         "order": "executive order, Fri 16 Oct",
         "waived": "100% tariffs on top 5 buyers of Russian oil; 500% on Russian goods",
-        "deadline": "Sun 18 Oct"
+        "deadline": "Sun 18 Oct",
+        "talks": "Mumbai, Mon 19 Oct",
+        "then": "Jamnagar refinery",
+        "review": "60 days"
       },
       "first_printed": "2026-09-29",
-      "last_printed": "2026-10-17",
-      "last_change": "2026-10-17",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "videsh"
+      "section": "desh"
     },
     {
       "thread_id": "india-reservoirs-2026",
@@ -2446,16 +2451,18 @@
     },
     {
       "thread_id": "jio-ipo-2026",
-      "title": "Jio seeks a valuation of about $114 billion; the IPO opens in the week of 19 October",
+      "title": "Jio Platforms sets a price band of ₹1,065 to ₹1,119 for an IPO worth up to ₹30,213 crore, which would be India's biggest",
       "entities": [],
       "facts": {
         "valuation": "about $114bn",
         "opens": "week of 19 Oct",
-        "size": "about $3.4bn"
+        "size": "up to ₹30,213 cr",
+        "band": "₹1,065–1,119",
+        "dates": "anchor 19 Oct; public 21–23 Oct"
       },
       "first_printed": "2026-10-04",
-      "last_printed": "2026-10-06",
-      "last_change": "2026-10-06",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3093,21 +3100,22 @@
     },
     {
       "thread_id": "ind-wi-t20is-2026",
-      "title": "Shai Hope's hundred and Keemo Paul's five wickets beat India by 24 runs; the series goes to Bengaluru at 2–2",
+      "title": "Rain washes out the series decider at the Chinnaswamy, and India and West Indies share the T20I series 2–2",
       "entities": [],
       "facts": {
         "wi": "247",
         "ind": "223",
         "iyer": "102* (43)",
         "rank": 7,
-        "series": "2-2",
+        "series": "2–2",
         "margin": "24 runs",
         "next": "4th T20I Hyderabad 14 Oct",
-        "decider": "Bengaluru 17 Oct"
+        "decider": "Bengaluru 17 Oct",
+        "5th": "abandoned"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-15",
-      "last_change": "2026-10-15",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3278,7 +3286,7 @@
     },
     {
       "thread_id": "iphone-duo-2026",
-      "title": "iPhone Duo pre-orders sell out in seconds in China, and some deliveries slip",
+      "title": "Apple Stores are told to warn shoppers there will be no iPhone Duo stock for walk-ins on launch day",
       "entities": [],
       "facts": {
         "price_from": "₹2,99,900",
@@ -3287,11 +3295,12 @@
         "release": "23 Oct",
         "preorders": "SKT from 16 Oct",
         "price": "$1,999",
-        "screens": "5.4 and 7.6 in"
+        "screens": "5.4 and 7.6 in",
+        "launch": "Fri 23 Oct"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-17",
-      "last_change": "2026-10-17",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4241,16 +4250,18 @@
     },
     {
       "thread_id": "pope-leo-health-2026",
-      "title": "Pope Leo XIV has lung cancer; surgeons remove part of his right lung and say the operation went well",
+      "title": "Pope Leo leaves hospital four days after lung cancer surgery and walks unaided to his car",
       "entities": [],
       "facts": {
         "diagnosis": "lung adenocarcinoma",
-        "surgery": "lower lobe of right lung removed, 13 Oct",
-        "stay": "about a week"
+        "surgery": "lower lobe of right lung removed, Tue",
+        "stay": "about a week",
+        "age": "71",
+        "discharged": "Sat 17 Oct"
       },
       "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4918,15 +4929,16 @@
     },
     {
       "thread_id": "prayagraj-housing-2026",
-      "title": "Yogi Adityanath renames Atiq Ahmed's old stronghold Kasari-Masari as Shri Krishna Puri",
+      "title": "Prayagraj Development Authority moves against a one-acre plot near Airavat Crossing linked to Atiq Ahmed's wife",
       "entities": [],
       "facts": {
         "name": "Shri Krishna Puri",
-        "flats": "602 then 598"
+        "flats": "602 then 598",
+        "plot": "~1 acre near Airavat Crossing"
       },
       "first_printed": "2026-10-15",
-      "last_printed": "2026-10-16",
-      "last_change": "2026-10-16",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5188,21 +5200,24 @@
     },
     {
       "thread_id": "tesla-roadster-2026",
-      "title": "Tesla shows a Roadster that flips through the air on SpaceX thrusters and does 0 to 60 mph in under a second",
+      "title": "Tesla opens Roadster reservations in India at ₹50 lakh, or ₹2.5 crore for the version with thrusters",
       "entities": [],
       "facts": {
         "0_60": "<1 s",
-        "versions": "Performance, Thrust, Rocket"
+        "versions": "Performance, Thrust, Rocket",
+        "performance": "₹50.06 lakh",
+        "thrust": "₹2.50 crore",
+        "production": "2028"
       },
       "first_printed": "2026-10-16",
-      "last_printed": "2026-10-16",
-      "last_change": "2026-10-16",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "tech"
+      "section": "ledger"
     },
     {
       "thread_id": "line-apples-homeview-puts-its-home-controls",
@@ -5283,12 +5298,15 @@
     },
     {
       "thread_id": "wta-wuhan-2026",
-      "title": "Sonay Kartal, ranked 170th after a back injury, beats Svitolina to reach the Wuhan semi-finals",
+      "title": "Into the Wuhan Open final: Kartal saves six set points against Ostapenko and plays Maja Chwalinska for the title today",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "rank": "170",
+        "semi": "7-6 7-6 v Ostapenko"
+      },
       "first_printed": "2026-10-16",
-      "last_printed": "2026-10-16",
-      "last_change": "2026-10-16",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5392,15 +5410,18 @@
     },
     {
       "thread_id": "west-bank-settlers-2026",
-      "title": "Masked settlers attack Palestinian olive pickers in the West Bank, injuring 12 including four Americans and a foreign journalist",
+      "title": "Settlers attack European diplomats' cars and a French mayor in the West Bank, a day after beating a Washington Post photographer",
       "entities": [],
       "facts": {
         "injured": "12, incl. 4 US citizens",
-        "place": "near Abu Falah"
+        "place": "near Abu Falah",
+        "diplomats": "France, Belgium, Poland",
+        "mayor": "Bernard Baudoux, 78",
+        "journalist": "Heidi Levine, Washington Post"
       },
       "first_printed": "2026-10-17",
-      "last_printed": "2026-10-17",
-      "last_change": "2026-10-17",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5690,12 +5711,15 @@
     },
     {
       "thread_id": "boxing-heavyweights-2026",
-      "title": "Daniel Dubois defends his WBO heavyweight title against Fabio Wardley at the O2 tonight",
+      "title": "Daniel Dubois stops Fabio Wardley in two rounds at the O2 to keep his WBO heavyweight title",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "result": "TKO round 2",
+        "title": "WBO"
+      },
       "first_printed": "2026-10-17",
-      "last_printed": "2026-10-17",
-      "last_change": "2026-10-17",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5786,6 +5810,341 @@
       "first_printed": "2026-10-17",
       "last_printed": "2026-10-17",
       "last_change": "2026-10-17",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "kolkata-puja-crush-2026",
+      "title": "At least 17 people are killed in a crush at a Durga Puja gathering in Kolkata as sudden rain sends crowds running for shelter",
+      "entities": [],
+      "facts": {
+        "dead": "at least 17 (later reports 19)",
+        "injured": "25",
+        "gwalior": "14 dead, ~40 injured"
+      },
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "canada-wainwright-fire-2026",
+      "title": "At least seven are reported killed and dozens hurt as a live-fire drill sets off a blaze at a Canadian army base",
+      "entities": [],
+      "facts": {
+        "dead": "at least 7 (Global News)",
+        "place": "CFB Wainwright, Alberta",
+        "cause": "unconfirmed; drill reportedly hit a gas line"
+      },
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "france-protests-2026",
+      "title": "More than 1,200 are arrested as protests over schools and living costs turn violent across France and Limoges town hall burns",
+      "entities": [],
+      "facts": {
+        "arrested": "1,200+",
+        "marchers": "est. 550,000",
+        "police_injured": "150"
+      },
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "us-h1b-2026",
+      "title": "JD Vance says his 'indentured servants' remark about H-1B workers may have been 'imperfect', and invokes his Indian in-laws",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-indias-embassy-in-riyadh-tells-indians",
+      "title": "India's embassy in Riyadh tells Indians in Saudi Arabia not to stand on roofs or balconies during Houthi strikes",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-the-drug-price-regulator-caps-trade",
+      "title": "The drug price regulator caps trade margins on 137 non-scheduled medicines",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-a-pickup-truck-drives-through-a",
+      "title": "A pickup truck drives through a youth soccer game in Wichita, Kansas, killing a six-year-old boy and a man",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-two-tankers-catch-fire-off-iran",
+      "title": "Two tankers catch fire off Iran after being hit",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-hurricane-trudy-strengthens-as-it-heads",
+      "title": "Hurricane Trudy strengthens as it heads for land",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "hdfc-bank-2026",
+      "title": "HDFC Bank's profit rises 5% to ₹19,510 crore, and deputy MD Kaizad Bharucha will step down on 31 December",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "ai-agent-negotiation-2026",
+      "title": "Anthropic is asking law firms how lawyers negotiate, to write rules for AI agents that bargain for their users",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "jaxa-mmx-2026",
+      "title": "Japan is set to launch the first mission to bring back soil from Phobos, one of the two small moons of Mars",
+      "entities": [],
+      "facts": {
+        "launch": "Tue 20 Oct, H3",
+        "duration": "5 years",
+        "target": "Phobos"
+      },
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "line-apple-will-hold-an-event-in",
+      "title": "Apple will hold an event in Los Angeles on 28 October, Bloomberg's Mark Gurman says",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "man-city-maresca-2026",
+      "title": "Maresca becomes the first Premier League manager to win his first seven games as City beat Ipswich 3–2 and go six clear",
+      "entities": [],
+      "facts": {
+        "score": "3–2 v Ipswich",
+        "run": "7 wins from 7",
+        "lead": "6 points"
+      },
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "chelsea-2026",
+      "title": "Chelsea's Emi Martínez has surgery after a collision with Everton's Branthwaite, as Neto's double ends Everton's unbeaten start",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "mourinho-vinicius-2026",
+      "title": "Mourinho says he would have left Spain long ago if he were Vinícius, as Madrid host Sevilla without him tonight",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "rb-leipzig-2026",
+      "title": "Bayern beat RB Leipzig 6–1 with a Luis Díaz hat-trick, days before Leipzig face Real Madrid",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "nasa-puffins-2026",
+      "title": "Bengaluru-born astronomer Ramya Anche will lead NASA's $20 million PUFFINS telescope mission",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "karnataka-high-court-2026",
+      "title": "The Karnataka Cabinet will decide this month on Bangalore Turf Club land for a new High Court building, Shivakumar says",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "bokaro-durga-puja-2026",
+      "title": "More than 100 Durga Puja pandals in Bokaro recreate famous temples and monuments",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "prayagraj-roads-2026",
+      "title": "An eight-year-old girl is killed by a reversing car near her home in Kareli",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-18",
+      "last_printed": "2026-10-18",
+      "last_change": "2026-10-18",
       "status": "active",
       "votes": {
         "up": 0,

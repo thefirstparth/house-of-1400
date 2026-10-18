@@ -1,20 +1,8 @@
 {
-  "date": "2026-10-17",
+  "date": "2026-10-18",
   "source": "Cricbuzz",
-  "checked_at": "2026-10-17T08:38:09.462Z",
+  "checked_at": "2026-10-18T08:43:20.152Z",
   "matches": [
-    {
-      "desc": "5th T20I",
-      "format": "T20",
-      "series": "West Indies tour of India, 2026",
-      "opponent": "West Indies",
-      "start": "2026-10-17T13:30:00.000Z",
-      "ist": "Sat 17 Oct, 19:00",
-      "time_announced": true,
-      "ground": "M.Chinnaswamy Stadium",
-      "city": "Bengaluru",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/151602"
-    },
     {
       "desc": "1st T20I",
       "format": "T20",
@@ -413,19 +401,6 @@
     }
   ],
   "series": [
-    {
-      "name": "West Indies tour of India, 2026",
-      "opponent": "West Indies",
-      "from": "2026-10-17",
-      "parts": [
-        {
-          "format": "T20",
-          "total": 5,
-          "played": 4
-        }
-      ],
-      "now": true
-    },
     {
       "name": "India tour of New Zealand 2026",
       "opponent": "New Zealand",
