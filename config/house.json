@@ -3543,5 +3543,39 @@
       "Sensex": "Sensex",
       "Bhide": "Bhi-day"
     }
+  },
+  "tv": {
+    "note": "The TV launcher's home-screen lines (/api/live/tv, lib/tv.js; tv-vibehack; Parth, 18 Oct 2026, design B3). The sport is the Sport app's own events() run on the server; these settings are the TV's only (the Sport app keeps its own lists).",
+    "national_teams": ["Brazil", "Spain"],
+    "window_days": 15,
+    "results_hours": 3,
+    "off_hours": 12,
+    "max_items": 4,
+    "long_name": 16,
+    "long_name_note": "A side's name longer than this many characters is sent in its short form (follows.sport_app_short_teams, Real Madrid as Madrid); the TV can still step down to the short form when a line does not fit.",
+    "minutes": { "football": 115, "intl": 115, "nba": 150, "tennis": 180, "f1": 60, "T20": 210, "ODI": 480, "TEST": 7200 },
+    "minutes_note": "How long an event usually runs, for the results window (results_hours after the end): F1 sessions use their own length; a Test is held for its five days because its last day is not known in advance.",
+    "evening_from": 18,
+    "evening_note": "From this IST hour the weather word describes tomorrow (\"Rain tomorrow\").",
+    "weather_words": [
+      { "word": "Very heavy rain", "rain_mm": 115.6 },
+      { "word": "Heavy rain", "rain_mm": 64.5 },
+      { "word": "Storms likely", "codes": [95, 96, 97, 98, 99], "rain_prob": 50 },
+      { "word": "Rain likely", "rain_prob": 60, "rain_mm": 2.5 },
+      { "word": "Extreme heat", "max": 45 },
+      { "word": "Very hot", "max": 40 },
+      { "word": "Feels very hot", "feels_max": 42 },
+      { "word": "Very cold", "min_at_most": 4 },
+      { "word": "Cold night", "min_at_most": 10 },
+      { "word": "Fog", "codes": [45, 48] }
+    ],
+    "weather_words_note": "First match wins; a word needs every figure it names (rain_mm, rain_prob, max, feels_max: at least; min_at_most: at most; codes: WMO weather codes). IMD's own rainfall bands where they exist.",
+    "nowcast_cities": ["Bengaluru"],
+    "nowcast_min_level": 2,
+    "nowcast_note": "IMD's nowcast covers Bengaluru only here. Level 1 (light rain, light snow, a low chance of lightning) is not a warning on the TV, as Sachet's light rain is not on the page; 2 is moderate rain or a light thunderstorm.",
+    "nba_two_word_nicknames": ["Trail Blazers"],
+    "weather_last_good_hours": 3,
+    "metno_user_agent": "house-of-1400/1.0 parth@bhatia.page",
+    "alert_after_hours": 24
   }
 }

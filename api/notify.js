@@ -40,7 +40,7 @@ async function chatId(token) {
   return id || null;
 }
 
-async function send(text) {
+export async function send(text) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   if (!token) return { sent: false, reason: "TELEGRAM_BOT_TOKEN is not set in Vercel" };
   const chat = await chatId(token);

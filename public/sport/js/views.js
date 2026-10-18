@@ -1,7 +1,7 @@
 // Sport V2, the screens. Every fixture or result is a match row (ui.row) with both sides; every screen opens with what
 // is live or next (ui.hero); tables, standings and stats follow. Tap any row for its sheet.
 import { D, S, esc, t, fmt, hm, dayKey, dayLabel, when, shortDate, longDate, span, same, last, ordinal, gpName, gpShort, val,
-  follows, club, clubId, favDriver, nbaTeam, nbaAbbr, sn, short, raceMarket, oddsFor, f1Kind, sessionMarket, events, nbaOn, meetRecord, atp, soccerMark, sinceLast, resultWord } from "./core.js";
+  follows, club, clubId, favDriver, nbaTeam, nbaAbbr, sn, short, raceMarket, oddsFor, f1Kind, sessionMarket, events, nbaOn, meetRecord, atp, soccerMark, sinceLast, resultWord, liveOrder } from "./core.js";
 import { mark, tag, live, countdown, moreBox, blk, seg, header, jump, sources, formSquares, rankList, barRow, row, sessionRow, hero, goalsLine, cricketCard, ICON, sideName, priceAt } from "./ui.js";
 
 const list = (rows, n, what) => (rows.length ? `<div class="list">${rows.slice(0, n).join("")}${rows.length > n ? moreBox(`${rows.length - n} more ${what}`, rows.slice(n).join("")) : ""}</div>` : "");
@@ -57,9 +57,7 @@ export function viewHome() {
     const dt = new Date(sel + "T12:00:00+05:30").toISOString();
     return `<div class="page">${head}${dayRail(all, sel)}${blk(esc(fmt(dt, { weekday: "long" }) + " " + shortDate(dt)), list.length ? `<div class="list">${list.map(e => row(e)).join("")}</div>` : `<p class="foot">No fixture listed for this day in the feeds yet.</p>`, `<button type="button" class="chip" data-ui="day" data-v="">Back to today</button>`, "day")}</div>`;
   }
-  const RANK = { football: 0, f1: 1, cricket: 2, intl: 3, tennis: 4, nba: 5 };
-  const rich = e => (e.sa != null || e.liveTop || e.liveOrder ? 0 : 1);
-  const lives = E.filter(e => e.state === "live").sort((a, b) => rich(a) - rich(b) || RANK[a.sp] - RANK[b.sp] || t(a.start) - t(b.start));
+  const lives = E.filter(e => e.state === "live").sort(liveOrder);
   // a live feed lost (a saved copy too old to believe), or a match called off today: a row, said plainly
   const odd = E.filter(e => e.state === "off" && (e.seen || e.offWhy) && Math.abs(now - t(e.start)) < 12 * 36e5);
   // just finished: inside three hours
