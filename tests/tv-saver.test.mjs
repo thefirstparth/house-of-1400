@@ -13,13 +13,15 @@ const NOW = Date.parse("2026-10-18T03:30:00Z"); // Sunday 09:00 IST
 const H = 36e5, D = 864e5, iso = ms => new Date(ms).toISOString();
 
 // ------------------------------------------------------------------ the day in a minute
-const glance = n => Array.from({ length: n }, (_, i) => ({ line: `Line ${i + 1} — with a dash`, color: ["desh", "videsh", "ledger", "sidelines", "ai"][i % 5] }));
+const glance = n => Array.from({ length: n }, (_, i) => ({ line: `Line ${i + 1} — with a dash`, subject: i === 0 ? "Line 1" : "Elsewhere", section: "World — India", color: ["desh", "videsh", "ledger", "sidelines", "ai"][i % 5] }));
 test("saver: the edition's glance lines word for word, each with its desk's night colour", () => {
   const m = minuteOf({ date: "2026-10-17", printed_at: "2026-10-17T08:46:00Z", glance: glance(9) }, cfg, NOW);
   assert.equal(m.kind, "edition"); assert.equal(m.date, "2026-10-17"); assert.equal(m.lines.length, 9, "all lines; the TV pages them five at a time");
   assert.equal(m.lines[0].text, "Line 1, with a dash", "no em-dashes on the TV");
   assert.deepEqual(m.lines.slice(0, 5).map(l => l.desk), ["news", "news", "money", "sport", "tech"]);
   assert.equal(m.lines[2].colour, "#F0A3C9"); assert.equal(m.lines[3].colour, "#F4A06A");
+  assert.equal(m.lines[0].subject, "Line 1", "the subject, for bold, only when the line starts with it"); assert.equal(m.lines[1].subject, undefined);
+  assert.equal(m.lines[0].section, "World, India", "the section tag, without em-dashes");
   assert.equal(minuteOf({ date: "2026-10-17", printed_at: "2026-10-17T08:46:00Z", glance: glance(4) }, cfg, NOW).lines.length, 4, "five or fewer: one page");
 });
 
@@ -40,6 +42,7 @@ test("saver: headlines are the feed's top five in its order, publisher taken off
   const h = headlinesOf(items, "Google News");
   assert.equal(h.kind, "headlines"); assert.equal(h.source, "Google News");
   assert.deepEqual(h.lines.map(l => l.text), ["First, big news", "Second story", "Third story", "Story 3", "Story 4"]);
+  assert.deepEqual(h.lines.slice(0, 3).map(l => l.source), ["NDTV", "Mint", "The Hindu"], "each headline's source, for its tag");
   assert.equal(headlinesOf([], "Google News"), null);
 });
 
