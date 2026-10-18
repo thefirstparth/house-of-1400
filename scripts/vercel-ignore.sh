@@ -8,6 +8,8 @@
 #     that run on GitHub, the GitHub workflow, design proofs, notes). The daily edition, art and site code always deploy.
 # When unsure (no previous deployment to compare with, a git error), it builds.
 ref="${VERCEL_GIT_COMMIT_REF:-}"
+# tv-feed: the TV feed's branch, previewed before it is merged (DECISIONS, 18 Oct 2026); removed at the merge
+if [ "$ref" = "tv-feed" ]; then echo "ignore: tv-feed is previewed, building"; exit 1; fi
 if [ -n "$ref" ] && [ "$ref" != "main" ]; then echo "ignore: branch $ref is not main, no deployment"; exit 0; fi
 prev="${VERCEL_GIT_PREVIOUS_SHA:-}"
 [ -z "$prev" ] && { echo "ignore: no previous deployment to compare with, building"; exit 1; }

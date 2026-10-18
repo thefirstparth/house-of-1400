@@ -7,6 +7,11 @@ export const TZ = "Asia/Kolkata";
 export const KEYS = ["football", "madrid_hub", "club_stats", "intl_hub", "f1_next", "f1_sessions", "f1_standings", "f1_last", "f1_market", "f1_hub", "odds", "crease", "tennis_players", "tennis", "tennis_hub", "nba"];
 export const D = {}; // key -> { value, as_of, source, stale }
 export const S = { cfg: null, snap: null, lastLoad: 0, loading: false, route: "home", UI: { day: null, match: null, table: "liga", leaders: "goals", f1table: "drivers", f1mkt: "race" } };
+// What events() reads: this phone's feeds (D, with each copy's stale flag and time) and config, or a set passed in from
+// outside (the TV feed on the server, /api/live/tv), so the app and the TV run the same logic and never disagree.
+let FROM = null;
+const src = () => FROM?.data || D;
+const cfgNow = () => (FROM ? FROM.cfg : S.cfg);
 
 // ------------------------------------------------------------------ small helpers
 export const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -44,7 +49,7 @@ const norm = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLow
 export const same = (a, b) => { const x = norm(a), y = norm(b); return !!x && !!y && (x === y || ` ${x} `.includes(` ${y} `) || ` ${y} `.includes(` ${x} `)); };
 // A surname: the last word, except "Vinícius Júnior" is "Vinícius"; particles stay with it ("de Jong", "Van Dijk")
 export const last = n => {
-  const two = (S.cfg?.follows?.sport_app_compound_surnames || []).find(x => String(n || "").endsWith(" " + x));
+  const two = (cfgNow()?.follows?.sport_app_compound_surnames || []).find(x => String(n || "").endsWith(" " + x));
   if (two) return two;
   const w = String(n || "").split(" ").filter(Boolean); let i = w.length > 1 && /^(J[uú]nior|Jr\.?|Neto|Filho)$/i.test(w.at(-1)) ? w.length - 2 : w.length - 1;
   const end = i; while (i > 1 && /^(de|da|di|do|dos|das|du|del|della|van|von|der|den|ter|le|la)$/i.test(w[i - 1])) i--;
@@ -54,7 +59,7 @@ export const initials = n => { const w = String(n || "").split(/\s+/).filter(Boo
 export const ordinal = n => `${n}${n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] || "th"}`;
 export const gpName = n => String(n || "").replace(/ in .*$/, "");
 export const gpShort = n => gpName(n).replace(/Grand Prix/, "GP");
-export const val = k => D[k]?.value || null;
+export const val = k => src()[k]?.value || null;
 
 // ------------------------------------------------------------------ loading
 async function getJSON(url, ms = 25000) {
@@ -112,7 +117,7 @@ export async function loadAll(onEach) {
 }
 
 // ------------------------------------------------------------------ what Parth follows
-export const follows = () => S.cfg?.follows || {};
+export const follows = () => cfgNow()?.follows || {};
 export const club = () => follows().football_club?.name || "Real Madrid";
 export const clubId = () => val("madrid_hub")?.club_id || String(follows().football_club?.espn_id || 86);
 export const favDriver = () => follows().f1_driver?.name || "Max Verstappen";
@@ -189,7 +194,7 @@ export function f1State(s, res, now = Date.now(), sameWk = true) {
   // ESPN's order at the flag stands in, marked provisional, until two sources agree on the result
   const prov = state === "done" && !res && ended && ES?.top?.length ? ES.top : null;
   return { state: state === "late" || state === "due" ? "next" : state, late: state === "late", due: state === "due", unconfirmed, pause, offWhy: seen ? null : (state === "off" && offW) || null, seen, start, liveTop: state === "live" ? ES?.top || null : null, liveOrder: state === "live" ? ES?.order || null : null, mins, prov,
-    saved: state === "live" && D.f1_sessions?.stale ? D.f1_sessions.as_of : null };
+    saved: state === "live" && src().f1_sessions?.stale ? src().f1_sessions.as_of : null };
 }
 
 // A feed that says "in play" is believed only so long after the start: beyond it, a saved copy has gone stale and the
@@ -199,7 +204,7 @@ const sane = (sp, start, state, now) => (state === "live" && now - t(start) > LI
 // A saved copy (the feed failed) is believed to be live for ten minutes after it was taken, in every sport; after that
 // the event says when it was last seen live and is never drawn as live (QA, 10 Oct: a copy kept quali live for 50 min)
 export const SAVED_FOR = 10 * 6e4;
-const lost = (k, now) => (D[k]?.stale && D[k].as_of && now - t(D[k].as_of) > SAVED_FOR ? D[k].as_of : null);
+const lost = (k, now) => { const X = src()[k]; return X?.stale && X.as_of && now - t(X.as_of) > SAVED_FOR ? X.as_of : null; };
 // Postponed, cancelled, abandoned: said in a word in the status track
 export const offWord = s => (/postpon/i.test(s) ? "Postponed" : /cancel/i.test(s) ? "Cancelled" : /abandon/i.test(s) ? "Abandoned" : /no result/i.test(s) ? "No result" : /suspend/i.test(s) ? "Suspended" : null);
 // a cricket stoppage in a word for the status track; the full status goes in the hero
@@ -209,8 +214,17 @@ const pauseWord = s => PAUSE.find(([r]) => r.test(s || ""))?.[1] || null;
 // { sp, id, start, state: live|next|done|off, a, b, ma, mb (marks), sa, sb (scores), won: a|b|null, comp, venue,
 //   who, href, ... }. A mark is { t: soccer|nba|cricket|player, id?, abbr?, name }; the UI draws it.
 export const soccerMark = (id, name) => ({ t: "soccer", id, name });
-export function events(all = false) {
-  const out = [], now = Date.now();
+// from: { data: { key: { value, as_of, source, stale } }, cfg, now } to run on feeds held elsewhere (the server); without
+// it, this phone's own (D, S.cfg, the clock). using() runs any of these helpers (short names too) on such a set.
+export function using(from, fn) {
+  const prev = FROM; FROM = from;
+  try { return fn(); } finally { FROM = prev; }
+}
+export function events(all = false, from = null) {
+  return from ? using(from, () => eventList(all, from.now ?? Date.now())) : eventList(all, FROM?.now ?? Date.now());
+}
+function eventList(all, now) {
+  const out = [];
   // Real Madrid: football (live state and score) over madrid_hub (the season)
   const F = val("football"), H = val("madrid_hub"), cname = club(), cid = clubId();
   const fx = new Map();
@@ -230,17 +244,17 @@ export function events(all = false) {
     out.push({ sp: "football", id: "rm" + m.id, mid: String(m.id), start: m.date, state, a, b, ma: soccerMark(home ? cid : m.opponent_id, a), mb: soccerMark(home ? m.opponent_id : cid, b),
       comp: m.competition, venue: m.venue, sa: home ? m.us : m.them, sb: home ? m.them : m.us, clock: m.clock || LV?.detail || null,
       won: m.winner === "us" ? (home ? "a" : "b") : m.winner === "them" ? (home ? "b" : "a") : null, who: "Madrid", key: "madrid", href: "#football", late: late === "late", starting: late === "starting", offWhy: off && !susp ? offWord(det) || det : null, seen, pause: state === "live" && susp ? "Suspended" : null,
-      saved: state === "live" && D.football?.stale ? D.football.as_of : null,
+      saved: state === "live" && src().football?.stale ? src().football.as_of : null,
       ev: LV?.events?.length ? LV.events : m.events || (H?.recent && String(H.recent.match_id) === String(m.id) ? H.recent.events : null) });
   }
   // The national sides (this feed is cached for an hour: a match under way is live without a score)
   for (const T of val("intl_hub")?.teams || []) for (const m of [...T.next, ...(T.last ? [T.last] : [])]) {
-    if (D.intl_hub?.stale && !m.completed && t(m.date) < now - SAVED_FOR) continue;
+    if (src().intl_hub?.stale && !m.completed && t(m.date) < now - SAVED_FOR) continue;
     // live only on the feed's own word ("in"), never from the clock; still "pre" after kick-off is starting, then late
     const st = m.completed ? "done" : m.state === "post" || t(m.date) < now - 3 * 36e5 ? "off" : m.state === "in" ? "live" : "next";
     if (st === "next" && now - t(m.date) > 2 * 36e5) continue;
     // the feed read after kick-off and still "pre": Delayed; a feed not read since: no live word on it after 15 minutes
-    const lt = st === "next" && t(m.date) < now ? (D.intl_hub?.as_of && t(D.intl_hub.as_of) - t(m.date) > 15 * 6e4 ? "late" : now - t(m.date) > 15 * 6e4 ? "nolive" : "starting") : null;
+    const lt = st === "next" && t(m.date) < now ? (src().intl_hub?.as_of && t(src().intl_hub.as_of) - t(m.date) > 15 * 6e4 ? "late" : now - t(m.date) > 15 * 6e4 ? "nolive" : "starting") : null;
     out.push({ sp: "intl", id: "nt" + m.id, start: m.date, state: st, a: m.home, b: m.away, ma: soccerMark(m.home_id, m.home), mb: soccerMark(m.away_id, m.away), abbrA: m.home_abbr, abbrB: m.away_abbr,
       comp: m.competition, venue: m.venue, sa: m.completed || st === "live" ? m.hs ?? null : null, sb: m.completed || st === "live" ? m.as ?? null : null, won: m.completed ? (+m.hs > +m.as ? "a" : +m.hs < +m.as ? "b" : null) : null,
       late: lt === "late", starting: lt === "starting", nolive: lt === "nolive", who: T.name, key: "nt:" + T.name, href: "#football/nations" });
@@ -256,7 +270,7 @@ export function events(all = false) {
       if (state === "live" && /won by|match tied|no result|drawn|abandon/i.test(m.status || "")) state = /abandon|no result/i.test(m.status) ? "off" : "done";
       const seen = state === "live" ? lost("crease", now) : null; if (seen) state = "off";
       const pause = state === "live" ? pauseWord(m.status) : null;
-      out.push({ sp: "cricket", id: "in" + m.id, start: m.start, state, pause, seen, offWhy: state === "off" && !seen ? offWord(m.status || "") || null : null, saved: state === "live" && D.crease?.stale ? D.crease.as_of : null, a: "India", b: m.opponent, ma: { t: "cricket", name: "India" }, mb: { t: "cricket", name: m.opponent },
+      out.push({ sp: "cricket", id: "in" + m.id, start: m.start, state, pause, seen, offWhy: state === "off" && !seen ? offWord(m.status || "") || null : null, saved: state === "live" && src().crease?.stale ? src().crease.as_of : null, a: "India", b: m.opponent, ma: { t: "cricket", name: "India" }, mb: { t: "cricket", name: m.opponent },
         sa: mine ? mine[2] : null, sb: theirs ? theirs[2] : null, oa: mine?.[3] || null, ob: theirs?.[3] || null, score: m.score,
         comp: m.desc, venue: [m.ground, m.city].filter(Boolean).join(", "), city: m.city, status: m.status, won: m.won === true ? "a" : m.won === false ? "b" : null, tbc: m.time_announced === false,
         who: "India", key: "india", href: "#cricket", card: C.last_card && String(C.last_card.match_id) === String(m.id) ? C.last_card : null });
@@ -280,7 +294,7 @@ export function events(all = false) {
     const tst = p.next ? sane("tennis", p.next.when_utc, p.next.live ? (lost("tennis_players", now) ? "off" : "live") : "next", now) : null;
     // the order of play runs late: past its time and not on court, it stays next ("Not yet on court") for six hours
     const tlt = tst === "next" && !p.next.tbd && t(p.next.when_utc) < now ? (now - t(p.next.when_utc) < 15 * 6e4 ? "starting" : "late") : null;
-    if (p.next && !(t(p.next.when_utc) < now - 6 * 36e5 && !p.next.live)) out.push({ sp: "tennis", id: "tn" + p.name + p.next.when_utc, start: p.next.when_utc, state: tst, late: tlt === "late", starting: tlt === "starting", seen: p.next.live && tst === "off" ? D.tennis_players?.as_of : null, tbc: !!p.next.tbd || p.agree === false, held: p.next.held || null, a: p.name, b: p.next.opponent, ma: { t: "player", name: p.name }, mb: p.next.opponent ? { t: "player", name: p.next.opponent } : null,
+    if (p.next && !(t(p.next.when_utc) < now - 6 * 36e5 && !p.next.live)) out.push({ sp: "tennis", id: "tn" + p.name + p.next.when_utc, start: p.next.when_utc, state: tst, late: tlt === "late", starting: tlt === "starting", seen: p.next.live && tst === "off" ? src().tennis_players?.as_of : null, tbc: !!p.next.tbd || p.agree === false, held: p.next.held || null, a: p.name, b: p.next.opponent, ma: { t: "player", name: p.name }, mb: p.next.opponent ? { t: "player", name: p.next.opponent } : null,
       comp: sn([p.next.event, p.next.round].filter(Boolean).join(", ")), venue: p.next.court, player: p.name, who: last(p.name), key: "tn:" + p.name, href: "#tennis", then: p.agree ? p.backup?.then || null : null });
     if (p.last) {
       const sets = [...String(p.last.note || "").replace(/^.*?\bbt\b/, "").matchAll(/(\d+)-(\d+)(?:\s*\((\d+)-(\d+)\))?/g)].map(x => [Number(x[1]), Number(x[2])]);
@@ -297,7 +311,7 @@ export function events(all = false) {
     let nst = sane("nba", g.date, g.live && !fin ? "live" : g.completed || fin ? "done" : t(g.date) < now - 3 * 36e5 ? "off" : "next", now);
     const seen = nst === "live" ? lost("nba", now) : null; if (seen) nst = "off";
     const nlt = nst === "next" && t(g.date) < now ? (now - t(g.date) < 15 * 6e4 ? "starting" : "late") : null;
-    out.push({ sp: "nba", id: "nb" + g.id, start: g.date, state: nst, seen, late: nlt === "late", starting: nlt === "starting", saved: nst === "live" && D.nba?.stale ? D.nba.as_of : null, a, b,
+    out.push({ sp: "nba", id: "nb" + g.id, start: g.date, state: nst, seen, late: nlt === "late", starting: nlt === "starting", saved: nst === "live" && src().nba?.stale ? src().nba.as_of : null, a, b,
       ma: { t: "nba", abbr: g.home ? me : g.opponent_abbr, name: a }, mb: { t: "nba", abbr: g.home ? g.opponent_abbr : me, name: b },
       comp: g.preseason ? "Preseason" : "NBA", sa: g.score ? (g.home ? g.score.us : g.score.them) : null, sb: g.score ? (g.home ? g.score.them : g.score.us) : null,
       won: g.winner === "us" ? (g.home ? "a" : "b") : g.winner === "them" ? (g.home ? "b" : "a") : null, clock: g.clock, who: "Warriors", key: "nba", href: "#nba",
@@ -308,6 +322,10 @@ export function events(all = false) {
   const ids = new Set();
   return out.filter(e => e.start && !isNaN(t(e.start)) && !ids.has(e.id) && ids.add(e.id)).sort((x, y) => t(x.start) - t(y.start));
 }
+// Two things live at once: the one with a score (or an F1 order) first, then football, F1, cricket, national sides,
+// tennis, the NBA, then the earlier start. The home screen and the TV feed both sort by it.
+export const SPORT_RANK = { football: 0, f1: 1, cricket: 2, intl: 3, tennis: 4, nba: 5 };
+export const liveOrder = (a, b) => (a.sa != null || a.liveTop || a.liveOrder ? 0 : 1) - (b.sa != null || b.liveTop || b.liveOrder ? 0 : 1) || SPORT_RANK[a.sp] - SPORT_RANK[b.sp] || t(a.start) - t(b.start);
 export const nbaOn = () => { const B = val("nba"); return !!B && (B.in_season || (B.next || []).some(g => t(g.date) - Date.now() < 10 * 864e5) || (B.last && Date.now() - t(B.last.date) < 3 * 864e5)); };
 // India's result in a few words: "Won by 8 wkts", "Lost by 5 wkts", else the status as given
 export function resultWord(m) {

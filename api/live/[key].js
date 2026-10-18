@@ -10,9 +10,10 @@ import { OPENAQ, OPENAQ_CACHE } from "../../lib/openaq.js";
 import { OFFDUTY, OFFDUTY_CACHE } from "../../lib/offduty.js";
 import { SPORTAPP, SPORTAPP_CACHE } from "../../lib/sportapp.js";
 import { POOL, POOL_CACHE } from "../../lib/pool.js";
+import { TV, TV_CACHE } from "../../lib/tv.js";
 
-// The paper's keys, The Ledger's extra blocks (lib/money.js), Madridismo's competitions (lib/football.js), the odds on every followed match (lib/odds.js), Bengaluru's rain gauges (lib/rain.js) and the trial's keys (lib/trial.js).
-const LIVE = { ...PAPER, ...MONEY, ...CREASE, ...FOOTBALL, ...ODDS, ...RAIN, ...IMD, ...OPENAQ, ...OFFDUTY, ...SPORTAPP, ...POOL, ...TRIAL }, CACHE = { ...PAPER_CACHE, ...MONEY_CACHE, ...CREASE_CACHE, ...FOOTBALL_CACHE, ...ODDS_CACHE, ...RAIN_CACHE, ...IMD_CACHE, ...OPENAQ_CACHE, ...OFFDUTY_CACHE, ...SPORTAPP_CACHE, ...POOL_CACHE, ...TRIAL_CACHE };
+// The paper's keys, The Ledger's extra blocks (lib/money.js), Madridismo's competitions (lib/football.js), the odds on every followed match (lib/odds.js), Bengaluru's rain gauges (lib/rain.js), the TV launcher's lines (lib/tv.js) and the trial's keys (lib/trial.js).
+const LIVE = { ...PAPER, ...MONEY, ...CREASE, ...FOOTBALL, ...ODDS, ...RAIN, ...IMD, ...OPENAQ, ...OFFDUTY, ...SPORTAPP, ...POOL, ...TV, ...TRIAL }, CACHE = { ...PAPER_CACHE, ...MONEY_CACHE, ...CREASE_CACHE, ...FOOTBALL_CACHE, ...ODDS_CACHE, ...RAIN_CACHE, ...IMD_CACHE, ...OPENAQ_CACHE, ...OFFDUTY_CACHE, ...SPORTAPP_CACHE, ...POOL_CACHE, ...TV_CACHE, ...TRIAL_CACHE };
 
 // GET /api/live/<key>. Returns {ok, value, source, as_of, stale}.
 export async function GET(request) {
@@ -48,6 +49,8 @@ export async function GET(request) {
     if (games.some(g => g.state === "in" || g.live || (g.state === "pre" && Date.parse(g.date) < now && now - Date.parse(g.date) < 3 * 36e5))) [s, swr] = [60, 60];
     else { const t = games.map(g => (Date.parse(g.date) - now) / 1000).filter(x => x > 0).sort((a, b) => a - b)[0]; if (t < s) [s, swr] = [Math.max(60, Math.round(t)), 60]; }
   }
+  // The TV's lines: held a minute while anything is live or starts (or was due to start) within 15 minutes
+  if (key === "tv" && out.ok && (out.value?.sport || []).some(x => x.state === "live" || (x.state === "next" && Date.parse(x.start) - Date.now() < 15 * 6e4))) [s, swr] = [60, 60];
   // The ATP list without ESPN's photos and ids (ESPN did not answer): held 10 minutes, not an hour, so photos come back
   if (key === "tennis_hub" && out.ok && out.value?.espn === false) [s, swr] = [600, 600];
   // Weather Union's gauges are read once a slot (every 30 minutes by day, 2 hours at night): held until the next slot
