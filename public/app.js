@@ -989,7 +989,7 @@ function indexBoard(M, G, D) {
   const anyCalc = [...(M?.indices || []), ...(M?.cross || [])].some(q => q.returns_calc) || !!G;
   const moods = Object.keys(CFG.markets.mood || {}).map(k => M?.mood?.[k]).filter(Boolean);
   return `<div class="board-wrap"><div class="board" data-fam="money"><div class="tbl"><table><thead><tr><th>Market</th><th class="r">Level</th><th class="r">1D</th><th class="r">7D</th><th class="r">1M</th><th class="r">30 days</th></tr></thead><tbody>${rows}</tbody></table></div>
-${aboutFig(`Levels from Yahoo Finance, gold from IBJA. 7D and 1M as Moneycontrol publishes them${anyCalc ? "; † where no source we can reach publishes the figure, it is worked out from official daily closes" : ""}. Hover a figure for its date.`)}${staleNote("markets")}</div>
+${aboutFig(`Levels from ${[...new Set([...(M?.indices || []), ...(M?.cross || [])].map(q => q.source || "Yahoo Finance"))].join(" and ") || "Yahoo Finance"}, gold from IBJA. 7D and 1M as Moneycontrol publishes them${anyCalc ? "; † where no source we can reach publishes the figure, it is worked out from official daily closes" : ""}. Hover a figure for its date.`)}${staleNote("markets")}</div>
 ${moods.length ? `<div class="moods">${moods.map(moodCard).join("")}${aboutFig(esc(CFG.markets.mood?.method || ""))}</div>` : ""}</div>`;
 }
 // A published mood reading (Tickertape for India, CNN for the US): the publisher's own bands and words, its

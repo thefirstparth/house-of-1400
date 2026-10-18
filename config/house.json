@@ -563,37 +563,37 @@
     "indices": [
       {
         "name": "Sensex",
-        "yahoo": "^BSESN",
+        "yahoo": "^BSESN", "twelvedata": "BSESN",
         "exchange": "India",
         "published": "in;SEN"
       },
       {
         "name": "Nifty 50",
-        "yahoo": "^NSEI",
+        "yahoo": "^NSEI", "twelvedata": "NSEI",
         "exchange": "India",
         "nse": "NIFTY 50"
       },
       {
         "name": "Nifty Bank",
-        "yahoo": "^NSEBANK",
+        "yahoo": "^NSEBANK", "twelvedata": "NSEBANK",
         "exchange": "India",
         "nse": "NIFTY BANK"
       },
       {
         "name": "Nifty IT",
-        "yahoo": "^CNXIT",
+        "yahoo": "^CNXIT", "twelvedata": "CNXIT",
         "exchange": "India",
         "nse": "NIFTY IT"
       },
       {
         "name": "S&P 500",
-        "yahoo": "^GSPC",
+        "yahoo": "^GSPC", "twelvedata": "SPX",
         "exchange": "US",
         "published": "us;SPX"
       },
       {
         "name": "Nasdaq-100",
-        "yahoo": "^NDX",
+        "yahoo": "^NDX", "twelvedata": "NDX",
         "exchange": "US"
       }
     ],
@@ -604,11 +604,11 @@
     "cross": [
       {
         "name": "Brent crude",
-        "yahoo": "BZ=F"
+        "yahoo": "BZ=F", "twelvedata": "XBR/USD"
       },
       {
         "name": "USD/INR",
-        "yahoo": "INR=X"
+        "yahoo": "INR=X", "twelvedata": "USD/INR"
       },
       {
         "name": "Gold 24K",
@@ -616,7 +616,7 @@
       },
       {
         "name": "Bitcoin",
-        "yahoo": "BTC-USD"
+        "yahoo": "BTC-USD", "twelvedata": "BTC/USD"
       }
     ],
     "dma_sources": {
@@ -765,7 +765,7 @@
         ],
         "vix": {
           "name": "India VIX",
-          "yahoo": "^INDIAVIX"
+          "yahoo": "^INDIAVIX", "twelvedata": "INDIAVIX"
         }
       },
       "US": {
