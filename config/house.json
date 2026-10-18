@@ -594,7 +594,8 @@
       {
         "name": "Nasdaq-100",
         "yahoo": "^NDX",
-        "exchange": "US"
+        "exchange": "US",
+        "nasdaq": "NDX"
       }
     ],
     "top_two": [
@@ -805,6 +806,8 @@
     "returns_note": "7D and 1M are published figures: NSE's own for the Nifty indices (nseindia.com allIndices, from 3 Oct 2026; Parth: NSE instead of the Moneycontrol scrape), Moneycontrol's only where NSE cannot publish them (the Sensex is BSE's; the S&P 500). Where no reliable source publishes them (Nasdaq-100, Brent, the rupee, gold and Bitcoin today), they are worked out from official daily closes and marked as calculated."
   },
   "weather": {
+    "metno_user_agent": "house-of-1400/1.0 parth@bhatia.page",
+    "metno_note": "MET Norway's Locationforecast backs up Open-Meteo per city (lib/live.js weather); its terms ask for an identifying User-Agent.",
     "imd": {
       "note": "IMD's nowcast stations and SILAM air-quality cities for the paper's places (lib/imd.js; Parth, 3 Oct). Bengaluru's nowcast is the stronger of the city and HAL stations (the airport at BIAL is 30 km north). SILAM has no Ranchi; its nearest city, Dhanbad, is 150 km away, so Ranchi has no air outlook.",
       "nowcast_stations": {
@@ -3575,7 +3578,36 @@
     "nowcast_note": "IMD's nowcast covers Bengaluru only here. Level 1 (light rain, light snow, a low chance of lightning) is not a warning on the TV, as Sachet's light rain is not on the page; 2 is moderate rain or a light thunderstorm.",
     "nba_two_word_nicknames": ["Trail Blazers"],
     "weather_last_good_hours": 3,
-    "metno_user_agent": "house-of-1400/1.0 parth@bhatia.page",
-    "alert_after_hours": 24
+    "alert_after_hours": 24,
+    "saver": {
+      "note": "The screensaver's parts (/api/live/tv?saver=1, lib/tv-saver.js; tv-vibehack's Today and Sport modes; Parth, 18 Oct 2026). Plain code on the site's own getters, never a model.",
+      "edition_max_hours": 36,
+      "edition_note": "The day in a minute is the edition's glance lines, word for word. An edition older than this (by printed_at) gives way to the headlines below.",
+      "desk_colours": { "news": "#A9C2EE", "home": "#86CFF3", "sport": "#F4A06A", "tech": "#C0AAF4", "money": "#F0A3C9", "off": "#E9C766" },
+      "desk_colours_note": "The paper's night desk colours (docs/DESIGN.md night-desk-*); a glance line's section is mapped to its desk by desks_v2.",
+      "headlines": [
+        { "feed": "gn-in-top", "label": "Google News", "health": "google_news" },
+        { "feed": "hindu-national", "label": "The Hindu", "health": "the_hindu" }
+      ],
+      "headline_count": 5,
+      "money": {
+        "rows": [
+          { "name": "Sensex", "label": "Sensex", "kind": "index", "market": "India" },
+          { "name": "Nifty 50", "label": "Nifty 50", "kind": "index", "market": "India" },
+          { "name": "S&P 500", "label": "S&P 500", "kind": "index", "market": "US" },
+          { "name": "Nasdaq-100", "label": "Nasdaq 100", "kind": "index", "market": "US" },
+          { "name": "USD/INR", "label": "USD / INR", "kind": "usdinr" },
+          { "label": "Gold 24K · 10 g", "kind": "gold", "gold": true }
+        ],
+        "market_names": { "India": "India", "US": "US" },
+        "rows_note": "name: the paper's name in markets (indices or cross); market: the hours in markets.hours that say open or closed."
+      },
+      "sport_before_min": 60,
+      "sport_after_min": 30,
+      "windows_days": 15,
+      "sport_note": "Sport mode from sport_before_min before any followed event's start until sport_after_min after its end (tv.minutes), or while anything is live. The windows inside windows_days go to the TV so it switches by its own clock.",
+      "results_days": 10,
+      "max_rows": 5
+    }
   }
 }
