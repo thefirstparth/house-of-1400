@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { spoken, intWords, rundown, checkScript, fallbackScript, feedXML, sayWhen, splitLines, cutAt, onAir, SEGMENTS, writerPrompt, cutNote } from "../scripts/podcast/lib.mjs";
 import { layout, jingle, sting, outro, RATE } from "../scripts/podcast/studio.mjs";
 
@@ -210,6 +211,20 @@ test("podcast: a cut that leaves one line far too slow and the next far too fast
   assert.ok(Math.abs(p[1].length / 48000 - 7.3) < 0.3, `line two keeps its first words: ${p[1].length / 48000} s`);
   // short lines are left alone (their pace varies too much to judge)
   assert.ok(Math.abs(cutAt(take, [9.75], { words: [6, 6] })[0].length / 48000 - 9.6) < 0.25);
+});
+
+test("podcast: the listening check does not fail a right cut on a laugh, a plural or a Hindi word (19 Oct)", (t) => {
+  // "<laugh> Priorities sorted, ekdum!" heard as "Haha, priority sorted, egg." failed the check, so the day went out as
+  // one take with no transcript
+  const code = `import sys, json; sys.path.insert(0, "scripts/podcast"); import verify_lines as v
+want = v.words("<laugh> Priorities sorted, ekdum!", True); got = v.words("Haha, priority sorted, egg.", False)
+print(json.dumps({"want": want, "got": got, "f1": v.f1(want, got), "arre": v.words("Arre wah!", True)}))`;
+  let out;
+  try { out = JSON.parse(execFileSync("python3", ["-c", code], { encoding: "utf8" })); } catch { t.skip("python3 with numpy not here"); return; }
+  assert.deepEqual(out.want, ["priority", "sorted"]);
+  assert.deepEqual(out.got, ["priority", "sorted", "egg"]);
+  assert.ok(out.f1 >= 0.35, `f1 ${out.f1}`);
+  assert.deepEqual(out.arre, ["arre", "wah"], "a line of Hindi words alone keeps them");
 });
 
 test("podcast: a take cut by ear keeps only the lines, from the first line's start to the last line's end (14 Oct)", () => {
