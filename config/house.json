@@ -3521,6 +3521,7 @@
       "neutral": "easy and conversational"
     },
     "deep_max": 6,
+    "fixtures": { "max": 3, "order": ["madrid", "india_cricket", "f1", "tennis", "nba"], "why": "Fixture Watch is the soonest match of each follow in this order, at most max of them (Parth, 19 Oct: eight read as a list took 45 seconds)" },
     "quick_max": 8,
     "kokoro": {
       "lang": "a",

@@ -1353,6 +1353,31 @@
               }
             }
           }
+        },
+        "figures": {
+          "type": "array",
+          "$comment": "Not printed. From the 20 Oct 2026 edition (Parth, 19 Oct: the Anthropic headline and House Note gave '20%' a meaning its story did not): what each figure in a headline, a day-in-a-minute line or the House Note counts, read against the story's own sentence (validate.mjs).",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "where",
+              "figure",
+              "means"
+            ],
+            "properties": {
+              "where": {
+                "type": "string"
+              },
+              "figure": {
+                "type": "string"
+              },
+              "means": {
+                "type": "string",
+                "minLength": 12
+              }
+            }
+          }
         }
       }
     },

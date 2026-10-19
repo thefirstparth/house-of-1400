@@ -220,6 +220,9 @@ export function rundown(E, P = {}, now, paper = {}) {
   // The money figures as a listener needs them (Parth, 13 Oct: "if Sensex is up 0.7%, I don't know what that means"): the
   // move today, the week and month, and where it sits in its range, from the same figures the Ledger board prints
   const markets = [], pc = x => `${x >= 0 ? "up" : "down"} ${Math.abs(x).toFixed(1)}%`, n0 = x => Math.round(x).toLocaleString("en-IN");
+  // a level as the ear takes it, three figures (Parth, 19 Oct: "one lakh forty-six thousand four hundred and ten rupees"
+  // read in full was hard to follow): 73,804 is "about 73,800", ₹1,46,410 "about ₹1,46,000"
+  const ear = x => { if (Math.abs(x) < 1000) return n0(x); const k = 10 ** (Math.floor(Math.log10(Math.abs(x))) - 2); return `about ${(Math.round(x / k) * k).toLocaleString("en-IN")}`; };
   // where it sits, in words only (Parth, 14 Oct: "between its low of twenty-two thousand two hundred and thirty-two and
   // high of twenty-four thousand seven hundred and seventy-four" was too much): near a three-month low or high, else nothing
   const place = (v, lo, hi, span) => { if (!(hi > lo)) return ""; const f = (v - lo) / (hi - lo); return f <= 0.15 ? `, close to its lowest in ${span}` : f >= 0.85 ? `, close to its highest in ${span}` : ""; };
@@ -233,13 +236,17 @@ export function rundown(E, P = {}, now, paper = {}) {
     const live = i.live && i.session_date === E.date;
     if (live && i.market_time) open_now ||= new Date(Date.parse(i.market_time) + IST).toISOString().slice(11, 16);
     const day = i.session_date && i.session_date !== E.date ? `at the last close (${i.session_date})` : live ? "so far today" : "today";
-    markets.push(`${name} at ${n0(i.price)}, ${pc(i.change_pct)} ${day}${Number.isFinite(i.chg_7d) ? `, ${pc(i.chg_7d)} over the past week` : ""}${Number.isFinite(i.chg_1m) ? `, ${pc(i.chg_1m)} over the past month` : ""}${place(i.price, i.lo3m, i.hi3m, "three months")}`);
+    markets.push(`${name} at ${ear(i.price)}, ${pc(i.change_pct)} ${day}${Number.isFinite(i.chg_7d) ? `, ${pc(i.chg_7d)} over the past week` : ""}${Number.isFinite(i.chg_1m) ? `, ${pc(i.chg_1m)} over the past month` : ""}${place(i.price, i.lo3m, i.hi3m, "three months")}`);
   }
-  // the Nasdaq-100 (Parth, 14 Oct): New York trades while India sleeps, so it is always the last close, overnight for us
+  // the Nasdaq-100 (Parth, 14 Oct): New York trades while India sleeps, so its figure is the last close: overnight for
+  // us only when New York traded the day before the paper's date; after a weekend or a US holiday it is that day's close
+  // (19 Oct: on a Monday the hosts said "overnight in New York" of Friday's close)
   const ndx = shown.some(n => /nasdaq/i.test(n)) ? idx.find(x => /nasdaq/i.test(x.name)) : null;
   if (ndx && Number.isFinite(ndx.price)) {
     const wd = ndx.session_date ? new Date(`${ndx.session_date}T12:00:00Z`).toLocaleDateString("en-GB", { weekday: "long", timeZone: "UTC" }) : null;
-    markets.push(`the Nasdaq-100, New York's big technology index, at ${n0(ndx.price)}, ${pc(ndx.change_pct)} at its last close${wd ? ` (${wd} in New York, overnight for us)` : ""}${Number.isFinite(ndx.chg_7d) ? `, ${pc(ndx.chg_7d)} over the past week` : ""}${Number.isFinite(ndx.chg_1m) ? `, ${pc(ndx.chg_1m)} over the past month` : ""}`);
+    const gap = ndx.session_date ? Math.round((Date.parse(`${E.date}T12:00:00Z`) - Date.parse(`${ndx.session_date}T12:00:00Z`)) / 864e5) : null;
+    const when = !wd ? "" : gap === 1 ? ` (${wd} in New York, overnight for us)` : ` (${wd}'s close in New York; New York has not traded since, so it is NOT overnight: say "on ${wd}" or "at ${wd}'s close")`;
+    markets.push(`the Nasdaq-100, New York's big technology index, at ${ear(ndx.price)}, ${pc(ndx.change_pct)} at its last close${when}${Number.isFinite(ndx.chg_7d) ? `, ${pc(ndx.chg_7d)} over the past week` : ""}${Number.isFinite(ndx.chg_1m) ? `, ${pc(ndx.chg_1m)} over the past month` : ""}`);
   }
   // after yesterday's paper (from 15 Oct): a big move between yesterday's two o'clock figure and the close, with the
   // paper's reason (checks.after_close); make.mjs finds the moves (lib/after-close.js)
@@ -248,10 +255,11 @@ export function rundown(E, P = {}, now, paper = {}) {
   if (Number.isFinite(fx?.price)) markets.push(`the rupee at ${fx.price.toFixed(2)} to the dollar, ${fx.change_pct <= 0 ? "stronger" : "weaker"} by ${Math.abs(fx.change_pct).toFixed(1)}% today${fx.note ? ` (${fx.note})` : ""}`);
   if (Number.isFinite(gold?.per_10g_24k)) {
     const g = gold, d = x => x ? new Date(x.replace(/^(\d\d)\/(\d\d)\/(\d{4})$/, "$3-$2-$1") + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "long", timeZone: "UTC" }) : "";
-    markets.push(`24-carat gold at ₹${n0(g.per_10g_24k)} for ten grams, ${Number.isFinite(g.change_pct) ? `${pc(g.change_pct)} since the last rate${g.prev_date ? ` (${d(g.prev_date)})` : ""}` : ""}${Number.isFinite(g.change_7d_pct) ? `, ${pc(g.change_7d_pct)} over the past week` : ""}${Number.isFinite(g.change_1m_pct) ? `, ${pc(g.change_1m_pct)} over the past month` : ""}${g.hi && g.lo ? `; since ${d(g.range_from)} its high was ₹${n0(g.hi)} (${d(g.hi_date)}) and its low ₹${n0(g.lo)} (${d(g.lo_date)})` : ""}`);
+    const months = g.range_from ? Math.max(1, Math.round((Date.parse(`${E.date}T12:00:00Z`) - Date.parse(`${g.range_from}T12:00:00Z`)) / (30.4 * 864e5))) : 3;
+    markets.push(`24-carat gold at ${ear(g.per_10g_24k).replace(/^about /, "about ₹")} for ten grams, ${Number.isFinite(g.change_pct) ? `${pc(g.change_pct)} since the last rate${g.prev_date ? ` (${d(g.prev_date)})` : ""}` : ""}${Number.isFinite(g.change_7d_pct) ? `, ${pc(g.change_7d_pct)} over the past week` : ""}${Number.isFinite(g.change_1m_pct) ? `, ${pc(g.change_1m_pct)} over the past month` : ""}${g.hi && g.lo ? place(g.per_10g_24k, g.lo, g.hi, `${months} months`) : ""}`);
   }
   const market_notes = Object.entries(E.sections?.ledger?.data?.notes || {}).filter(([k]) => shown.includes(k) || !/^(Sensex|Nifty 50)$/.test(k)).map(([k, v]) => `${k}: ${v}`).slice(0, 6);
-  const NAMES = { madrid: "Real Madrid", india_cricket: "India (cricket)", f1: "Formula One" }, results = [], coming = [], ahead = [];
+  const NAMES = { madrid: "Real Madrid", india_cricket: "India (cricket)", f1: "Formula One" }, results = [], next = [], ahead = [];
   const SPORT = new Set(["fixtures", "madrid", "paddock", "crease", "deuce", "pitch", "sidelines"]), whys = [];
   for (const w of E.week_ahead || []) {
     const t = w.time_ist ? Date.parse(`${w.date}T${w.time_ist}:00+05:30`) : Date.parse(`${w.date}T23:59:00+05:30`);
@@ -266,18 +274,24 @@ export function rundown(E, P = {}, now, paper = {}) {
     // stretch of a 12-minute episode; a match six days out comes up again in the days before it)
     if (!(t > now - 18e5 && t < now + 5 * 864e5)) continue;
     const why = whys.find(([x]) => Math.abs(x - t) < 3 * 36e5)?.[1];
-    coming.push(`${f.label}, ${f.time_tbc ? `${sayDay(new Date(t + IST - 4 * 36e5).toISOString().slice(0, 10), now)}, time to be confirmed` : sayWhen(t, now)}${why ? ` (${why})` : ""}`);
+    next.push({ t, entity: f.entity, text: `${f.label}, ${f.time_tbc ? `${sayDay(new Date(t + IST - 4 * 36e5).toISOString().slice(0, 10), now)}, time to be confirmed` : sayWhen(t, now)}${why ? ` (${why})` : ""}` });
     have.add(f.entity);
   }
   for (const [k, c] of Object.entries(E.chronology || {})) {
     const l = c?.last, n = c?.next, lt = Date.parse(l?.when_utc), nt = Date.parse(n?.when_utc);
     if (lt > now - 60 * 36e5 && lt <= now && !results.some(r => r.includes(l.label))) results.push(`${NAMES[k] || k}: ${l.label}${l.detail ? `, ${l.detail}` : ""} (${sayDay(new Date(lt + IST - 4 * 36e5).toISOString().slice(0, 10), now)}${new Date(lt + IST).getUTCHours() < 4 ? ", late at night" : ""})`);
     // a followed team with no Fixture List row in the window (nothing in seven days, or its live feed down): the paper's Next
-    if (nt > now - 18e5 && !have.has(k)) coming.push(`${NAMES[k] || k} next: ${n.label}${n.detail ? `, ${n.detail.replace(/ · /g, ", ")}` : ""}, ${nt < now + 6 * 864e5 ? sayWhen(nt, now) : sayDay(new Date(nt + IST - 4 * 36e5).toISOString().slice(0, 10), now)}`);
+    if (nt > now - 18e5 && !have.has(k)) next.push({ t: nt, entity: k, text: `${NAMES[k] || k} next: ${n.label}${n.detail ? `, ${n.detail.replace(/ · /g, ", ")}` : ""}, ${nt < now + 6 * 864e5 ? sayWhen(nt, now) : sayDay(new Date(nt + IST - 4 * 36e5).toISOString().slice(0, 10), now)}` });
   }
   for (const p of ok("tennis_players")?.players || []) { const l = p.last, t = Date.parse(l?.when_utc); if (l && t > now - 36 * 36e5 && t <= now) results.push(`${p.name}: ${l.won ? "beat" : "lost to"} ${l.opponent}, ${l.round}, ${l.event}`); }
   // a followed player's next tournament as the paper prints it from a report (from 14 Oct), when he has no match in a draw
-  for (const p of E.tennis?.players || []) { const n = p.next_event; if (n?.text && !p.next_match && !(n.starts && n.starts < E.date)) coming.push(`${p.name} next: ${sayTimes(n.text)}${n.source ? ` (reported by ${n.source})` : ""}`); }
+  for (const p of E.tennis?.players || []) { const n = p.next_event; if (n?.text && !p.next_match && !(n.starts && n.starts < E.date)) next.push({ t: n.starts ? Date.parse(`${n.starts}T12:00:00+05:30`) : Infinity, entity: "tennis", text: `${p.name} next: ${sayTimes(n.text)}${n.source ? ` (reported by ${n.source})` : ""}` }); }
+  // Fixture Watch is the matches that matter, not the whole list (Parth, 19 Oct: eight fixtures read as a list took 45
+  // seconds): the soonest match of each follow in the order of config podcast.fixtures.order (the club, India, the
+  // driver, the tennis players, the NBA team), at most podcast.fixtures.max of them, then told in time order
+  const FX = P.fixtures || {}, fxOrder = FX.order || ["madrid", "india_cricket", "f1", "tennis", "nba"], rank = e => (fxOrder.includes(e) ? fxOrder.indexOf(e) : fxOrder.length);
+  const firsts = [...new Set(next.map(x => x.entity))].map(e => next.filter(x => x.entity === e).sort((a, b) => a.t - b.t)[0]);
+  const coming = firsts.sort((a, b) => rank(a.entity) - rank(b.entity)).slice(0, FX.max ?? 3).sort((a, b) => a.t - b.t).map(x => x.text);
   const city = ok("weather")?.cities?.[0], d0 = city?.daily?.[0];
   const weather = city && d0 ? `${city.name} today: top of ${Math.round(d0.max)} degrees${Number.isFinite(d0.min) ? `, low of ${Math.round(d0.min)}` : ""}, ${d0.rain_prob}% chance of rain` : null;
   const groups = {};
@@ -344,13 +358,15 @@ THE SHOW, in this order, the way the paper is laid out (everything comes from th
 2. The lead as a hook, and the two talk it through properly.
 3. Page One: the front page's other stories in the order given, each a real back-and-forth, then its briefs briskly.
 4. Then the desk segments in the order given. Items marked "deep" get a real back-and-forth of about 80 to 140 words: one host tells it, the other reacts and asks what a listener would ask (what does it mean for us, why now, who is this), answered from "why" and the text. Items marked "quick" get one or two sentences each; several quick ones can run together briskly. Mention every item.
-5. If you name a segment, use the paper's names: Page One, News, Close to Home, Money, Tech and AI, Sport, Off Duty. "Close to Home" is Bengaluru; a story from Ranchi or Prayagraj (the paper's Back Home, where the listener's parents live) is introduced as "back home in Ranchi" or "back home in Prayagraj", never as Bengaluru news. A story from Delhi or anywhere else is News, never "close to home". If a front-page story was about sport, the hosts can say there is more in Sport later.
-6. Sport gets real energy${(P.weights || []).some(x => x.desk === "sport" && x.factor > 1) ? `, and about ${Math.round(((P.weights.find(x => x.desk === "sport").factor) - 1) * 100)}% more airtime than you would naturally give it (its stories, the results, "standings", Fixture Watch and the Betting Window together): a line more on what a result means or where they stand, ONLY from the rundown, with the time taken from quick items elsewhere; on a quiet sport day it stays short, never padded. "standings", if given: weave each in once, where it gives a result or a coming match its meaning ("that keeps Madrid fourth, six behind Barcelona"), never as a list` : ""}: every sport item, the recent results (skip a result a story already covered; never give a result's clock time), and EVERY match in "coming", even when no story covers it (say each day and time EXACTLY as written, e.g. "on Thursday at twelve thirty a m, late on Wednesday night"; match times must be precise). Share the fixtures out as a back-and-forth: never more than three matches in one turn.
+5. If you name a segment, use the paper's names: Page One, News, Close to Home, Money, Tech and AI, Sport, Off Duty. Say each name ONCE, as its part begins ("On Page One today..."), never inside a question and never again on each story: "Did our stock market take a hit on Page One today?" and "What is Anthropic doing on Page One?" are wrong. "Close to Home" is Bengaluru; a story from Ranchi or Prayagraj (the paper's Back Home, where the listener's parents live) is introduced as "back home in Ranchi" or "back home in Prayagraj", never as Bengaluru news. A story from Delhi or anywhere else is News, never "close to home". If a front-page story was about sport, the hosts can say there is more in Sport later.
+6. Sport gets real energy${(P.weights || []).some(x => x.desk === "sport" && x.factor > 1) ? `, and about ${Math.round(((P.weights.find(x => x.desk === "sport").factor) - 1) * 100)}% more airtime than you would naturally give it (its stories, the results, "standings", Fixture Watch and the Betting Window together): a line more on what a result means or where they stand, ONLY from the rundown, with the time taken from quick items elsewhere; on a quiet sport day it stays short, never padded. "standings", if given: weave each in once, where it gives a result or a coming match its meaning ("that keeps Madrid fourth, six behind Barcelona"), never as a list` : ""}: every sport item, the recent results (skip a result a story already covered; never give a result's clock time), and EVERY match in "coming" (Fixture Watch: two or three matches that matter, already chosen), even when no story covers it (say each day and time EXACTLY as written, e.g. "on Thursday at twelve thirty a m, late on Wednesday night"; match times must be precise). Share the fixtures out as a back-and-forth: never more than three matches in one turn.
 7. Money: the listener hears these, so every figure needs its meaning. For each of the "markets" lines say the level (rounded), the move today, how the week or month went, and, only when its line says so, that it is close to a three-month high or low (in words; never read out a range). Numbers are welcome (Parth likes them), rounded the way people say them ("just above seventy-two and a half thousand", "down about three per cent this month"). Each market (${(P.indices || ["Sensex", "Nifty 50", "Nasdaq-100"]).map(n => `the ${n}`).join(", ")}, the rupee, gold) comes up in ONE place only, with ONE level, the one in its "markets" line: if a Money story is about the same market (say, the rupee firming), tell its story in that same moment and never give the level a second time.
    - Only the indices in the "markets" lines${(P.indices || []).includes("Nifty 50") ? "" : ": the Nifty 50 is not part of the show, so never give a Nifty figure"}.
    - "market_open", if given: the Indian markets are STILL OPEN as you speak. Say "so far today" or "as of two o'clock"; NEVER say the Sensex or Nifty closed, finished, ended or settled today.
    - "after_close", if given: yesterday, after the last paper went to press, an index moved a lot before the close. Tell it first, in the SAME turn as that index's figure, with its "why" ("Yesterday, after our paper, the Sensex shot up eleven hundred points by the close, after the Finance Minister said..."), then today's move.
-   - The Nasdaq-100 is New York's, and its figure is from the close overnight: say so ("overnight in New York").
+   - Say each level as its line gives it: the levels are already rounded for the ear ("about seventy-three thousand eight hundred"). Never read a figure to the last rupee, paisa or cent.
+   - At most two markets in one turn; pass Money back and forth like the rest of the show, never one long turn of figures.
+   - The Nasdaq-100 is New York's: say when its figure is from exactly as its line does. "Overnight in New York" ONLY when its line says overnight; otherwise name the day ("at Friday's close in New York"), never "overnight" or "last night".
    - Why a market moved comes ONLY from "market_notes", "after_close" and the Money stories' own text and "why it matters". Never add a cause or an effect of your own.
 8. "market_expects", if given: one short, playful moment on what the betting markets expect, in words ("the markets make him a near-certainty", "about a two-in-three chance"), at most the two given, wherever it fits best (Sport or just before the close). Never read out a list of percentages.
 9. Weather, if given: one everyday line ("warm, with a fair chance of rain later").
@@ -365,9 +381,11 @@ ${P.music === false ? "" : `- Mark the FIRST turn of each new part with "segment
 FUN: you have creative headroom in HOW things are said: banter between the two, a running joke, a playful line on the good news, the markets and the House Note. Never in WHAT is said: every fact, name, number, score, date and time stays exactly as in the rundown, and nothing is joked about near bad news.
 
 HOW IT SOUNDS
-- A real conversation: mix longer turns with plenty of quick reactions of two to eight words, each a natural response to exactly what was just said, in your own words (never reuse the example's lines). At least six genuine questions between the hosts.
+- A real conversation: mix longer turns with plenty of quick reactions of two to eight words, each a natural response to exactly what was just said, in your own words (never reuse the example's lines).
+- Both hosts tell the news. Share the telling roughly evenly (neither host above about three-fifths of the words): ${B.id} leads some stories and ${A.id} reacts and asks about them, not ${A.id} telling and ${B.id} asking all the way through. Six to ten genuine questions in all, from both hosts; most replies are reactions, opinions or the next fact, not another question.
 - Real feeling that fits each story: delight at a win, shock and quiet sadness at deaths, worry about prices, amusement at the House Note. Never laugh or joke near bad news.
 - Say each fact ONCE. The headline and the text repeat each other; never say the same fact twice.
+- When an item's headline and its text seem to give a figure different meanings, the text is right: tell it the text's way.
 - Never copy sentences from the rundown. Retell them the way people talk; contractions are good.
 - Numbers are fine, as many as the story needs, rounded when the exact figure does not matter ("about thirty-two and a half thousand crore"). Never give the same figure twice, and never two different figures for the same thing.
 - Times: say them exactly as the rundown writes them, the twelve-hour way with "a m" or "p m". Never the twenty-four-hour clock and never "IST".
@@ -379,7 +397,7 @@ HOW IT SOUNDS
 - Never address the listeners by name; speak to them as "you" if at all.
 - No talk about how the paper or the show is made, about sources or checking, or about anything being missing.
 - Every number, score, time and date in words, the Indian way (lakh and crore). No digits, no symbols like ₹, %, $ or &.
-- About ${W.target} words in total, and NEVER more than ${W.max} (at least ${W.min}): about ${Math.round(W.target / 150)} minutes on air. A budget that fits: the lead about one hundred and fifty words, each other back-and-forth story about eighty, each quick item ONE sentence, Money about one hundred and fifty, Fixture Watch about eighty. Long monologues are the usual way a script runs over: no turn over sixty words. Keep it tight: when it runs long, give quick items one line each rather than dropping the fixtures, the money or the House Note.
+- About ${W.target} words in total, and NEVER more than ${W.max} (at least ${W.min}): about ${Math.round(W.target / 150)} minutes on air. A budget that fits: the lead about one hundred and fifty words, each other back-and-forth story about eighty, each quick item ONE sentence, Money about one hundred and fifty, Fixture Watch about fifty. Long monologues are the usual way a script runs over: no turn over sixty words. Keep it tight: when it runs long, give quick items one line each rather than dropping the fixtures, the money or the House Note.
 - "mood" sets the voice for that line; one of: ${moods}. Inline tags, sparingly: <laugh> (light moments only), <sigh>, <short pause>.
 
 EXAMPLE OF THE SOUND ONLY (its facts are invented: never use them; this is the rhythm and feeling to aim for)
@@ -426,7 +444,8 @@ export function checkScript(turns, R, P = {}) {
   });
   // each market's level in one place only (13 Oct redo: the rupee at "95.25" and then "95.28" two turns later)
   for (const [name, re] of [["the rupee", /\brupee\b/i], ["the Sensex", /\bsensex\b/i], ["the Nifty", /\bnifty\b(?! it\b| bank\b| midcap| smallcap)/i], ["the Nasdaq", /\bnasdaq\b/i], ["gold", /\bgold\b/i]]) {
-    const at = turns.map((t, i) => (re.test(t.text) && numberRuns(t.text) ? i : -1)).filter(i => i >= 0);
+    // (gold's price, not a gold medal: 19 Oct, a shooter's gold counted as a second gold figure)
+    const at = turns.map((t, i) => (re.test(t.text) && numberRuns(t.text) && (name !== "gold" || /\b(grams?|carat|rupees?|lakh)\b/i.test(t.text)) ? i : -1)).filter(i => i >= 0);
     if (at.length > 1) soft(`gives a figure for ${name} in ${at.length} turns (${at.map(i => i + 1).join(", ")}): say it once, in one turn`);
   }
   // money said right (14 Oct): an open market never "closed" today, and a reason only when the paper gives it
@@ -448,6 +467,19 @@ export function checkScript(turns, R, P = {}) {
       }
     });
   }
+  // 19 Oct audit: "overnight in New York" of Friday's close on a Monday; three markets read out in one 64-word turn
+  if (money && !money.markets.some(m => /nasdaq/i.test(m) && /overnight for us/.test(m))) turns.forEach((t, i) => { const bad = sentences(t.text).find(x => /\b(overnight|last night)\b/i.test(x) && /\b(nasdaq|wall street|new york|us markets?|american markets?)\b/i.test(x)); if (bad) soft(`turn ${i + 1}: calls New York's figure "overnight", but its last close was not last night ("${bad.slice(0, 80)}"); name the day, as its Money line does`); });
+  if (money) turns.forEach((t, i) => { const k = [/\bsensex\b/i, /\bnifty\b/i, /\bnasdaq\b/i, /\brupee\b/i, /\bgold\b/i, /\b(brent|crude|oil)\b/i, /\bbitcoin\b/i].filter(re => re.test(t.text)).length; if (k > 2 && numberRuns(t.text) > 2) soft(`turn ${i + 1}: reads out ${k} markets in one turn; at most two, passed back and forth`); });
+  turns.forEach((t, i) => { const k = words(t.text).length; if (k > 60) soft(`turn ${i + 1}: ${k} words; no turn over sixty`); });
+  // 19 Oct: "Page One" five times, twice inside a question; one host did two-thirds of the telling and the other asked
+  // eighteen of his thirty turns
+  const p1 = turns.filter(t => /\bpage one\b/i.test(t.text)).length;
+  if (p1 > 2) soft(`says "Page One" in ${p1} turns: once, as the front page begins`);
+  turns.forEach((t, i) => { if (sentences(t.text).some(x => /\?/.test(x) && /\bon page one\b/i.test(x))) soft(`turn ${i + 1}: puts "Page One" inside a question; name the segment once, as it begins`); });
+  const share = {}, asks = {};
+  for (const t of turns) { share[t.speaker] = (share[t.speaker] || 0) + words(t.text).length; if (/\?/.test(t.text)) asks[t.speaker] = (asks[t.speaker] || 0) + 1; }
+  for (const [who, w] of Object.entries(share)) if (n && w / n > 0.62) soft(`${who} has ${Math.round((w / n) * 100)}% of the words; share the telling (neither host above about three-fifths)`);
+  for (const [who, q] of Object.entries(asks)) if (q > 10) soft(`${who} asks ${q} questions; six to ten in all from both hosts, the rest reactions and opinions`);
   if (P.signoff) { const norm = x => words(x).join(" "); if (!norm(turns.at(-1)?.text).includes(norm(P.signoff))) soft(`the last line is not the sign-off, word for word: "${P.signoff}"`); }
   const marks = turns.filter(t => t.segment).length;
   if (P.music !== false && marks < 4) soft(`only ${marks} turns carry a "segment" mark (needs one on the first turn of each part, five or more)`);
@@ -525,7 +557,8 @@ const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").re
 export function vttOf(turns, cues) {
   const ts = s => { const ms = Math.max(0, Math.round(s * 1000)), h = Math.floor(ms / 36e5), m = Math.floor(ms / 6e4) % 60, x = Math.floor(ms / 1000) % 60;
     return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(x).padStart(2, "0")}.${String(ms % 1000).padStart(3, "0")}`; };
-  const clean = t => String(t || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/-->/g, "->");
+  // (no em or en dash between words in the paper's copy, the transcript included: a comma takes its place)
+  const clean = t => String(t || "").replace(/<[^>]+>/g, " ").replace(/\s*[\u2014\u2013]\s*/g, ", ").replace(/\s+/g, " ").trim().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/-->/g, "->");
   const cuesOut = turns.map((t, i) => (cues?.[i] && clean(t.text) ? `${i + 1}\n${ts(cues[i][0])} --> ${ts(Math.max(cues[i][1], cues[i][0] + 0.5))}\n<v ${t.speaker}>${clean(t.text)}` : null)).filter(Boolean);
   return cuesOut.length ? `WEBVTT\n\n${cuesOut.join("\n\n")}\n` : null;
 }

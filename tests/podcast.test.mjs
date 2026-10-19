@@ -37,7 +37,7 @@ test("podcast: the running order follows the paper's desks, lead first, and time
   assert.equal(desk("jantar"), "News");           // Delhi is News, never Close to Home
   assert.equal(desk("bmtc"), "Close to Home");
   assert.equal(desk("alcaraz"), "Sport");
-  assert.match(R.segments.find(g => g.desk === "Money").markets[0], /Sensex at 22,365, down 0.7%/);
+  assert.match(R.segments.find(g => g.desk === "Money").markets[0], /Sensex at about 22,400, down 0.7%/);
   assert.match(R.segments.find(g => g.desk === "Sport").coming[0], /on Thursday at twelve thirty a m, late on Wednesday night/);
   assert.equal(sayWhen("2026-10-14T13:30:00Z", Date.parse("2026-10-12T09:00:00Z")), "on Wednesday at seven p m");
   assert.equal(sayWhen("2026-10-12T10:00:00Z", Date.parse("2026-10-12T09:00:00Z")), "today at three thirty p m");
@@ -357,4 +357,37 @@ test("podcast transcript (14 Oct): each line with its speaker and time, as WebVT
   const xml = feedXML({ P: { ...P, feed_url: "https://h/listen" }, base: "https://h", episodes: [{ date: "2026-10-14", title: "t", description: "d", url: "https://h/listen/2026-10-14.mp3", transcript_url: "https://h/listen/2026-10-14.vtt", bytes: 1, seconds: 1, published: "2026-10-14T10:00:00Z" }] });
   assert.match(xml, /xmlns:podcast="https:\/\/podcastindex\.org\/namespace\/1\.0"/);
   assert.match(xml, /<podcast:transcript url="https:\/\/h\/listen\/2026-10-14\.vtt" type="text\/vtt" language="en"\/>/);
+});
+
+test("podcast: New York's close is overnight only after a weekday; Fixture Watch is the follows' next matches; Money levels rounded", () => {
+  const ndx = d => ({ name: "Nasdaq-100", price: 29187.5, change_pct: -2.5, session_date: d });
+  const P2 = { ...P, indices: ["Sensex", "Nasdaq-100"] };
+  const at = (date, d) => rundown({ ...E, date, snapshot: { markets: { value: { indices: [ndx(d)] } } } }, P2, Date.parse(`${date}T09:00:00Z`), paper).segments.find(g => g.desk === "Money").markets[0];
+  assert.match(at("2026-10-19", "2026-10-16"), /about 29,200.*Friday's close in New York.*NOT overnight/); // a Monday paper
+  assert.match(at("2026-10-15", "2026-10-14"), /Wednesday in New York, overnight for us/);
+  const R = rundown({ ...E, date: "2026-10-19", snapshot: { markets: { value: { indices: [ndx("2026-10-16")] } } } }, P2, Date.parse("2026-10-19T09:00:00Z"), paper);
+  const said = (text, speaker = "Ashu") => checkScript([...Array(10)].map((_, i) => ({ speaker: i % 2 ? "Tarun" : "Ashu", mood: "warm", text: "A line." })).concat([{ speaker, mood: "warm", text }]), R, P2).map(p => p.msg).join(" | ");
+  assert.match(said("Overnight in New York, the Nasdaq fell."), /not last night/);
+  assert.doesNotMatch(said("At Friday's close in New York, the Nasdaq fell."), /not last night/);
+  // the soonest match of each follow, at most three, in time order (19 Oct: eight read as a list)
+  const F = { ...E, date: "2026-10-19", chronology: {
+    madrid: { next: { when_utc: "2026-10-21T19:00:00Z", label: "RB Leipzig" } },
+    india_cricket: { next: { when_utc: "2026-10-22T07:00:00Z", label: "New Zealand" } },
+    f1: { next: { when_utc: "2026-10-23T18:00:00Z", label: "United States GP" } },
+    nba: { next: { when_utc: "2026-10-20T02:00:00Z", label: "Lakers" } } } };
+  const coming = rundown(F, P, Date.parse("2026-10-19T09:00:00Z"), paper).segments.find(g => g.desk === "Sport").coming;
+  assert.equal(coming.length, 3);
+  assert.deepEqual(coming.map(c => c.split(" next")[0]), ["Real Madrid", "India (cricket)", "Formula One"]);
+});
+
+test("podcast: Page One once, never in a question; the hosts share the telling; at most two markets a turn", () => {
+  const R = rundown(E, P, undefined, paper);
+  const turns = [...Array(12)].map((_, i) => ({ speaker: i % 2 ? "Tarun" : "Ashu", mood: "warm", text: i % 2 ? "What happened on Page One?" : "On Page One, a long story told at length by one host who does nearly all of the talking in this show today." }));
+  const msgs = checkScript(turns, R, P).map(p => p.msg).join(" | ");
+  assert.match(msgs, /says "Page One" in 12 turns/);
+  assert.match(msgs, /puts "Page One" inside a question/);
+  assert.match(msgs, /Ashu has \d+% of the words/);
+  const R2 = rundown({ ...E, snapshot: { markets: { value: { indices: [{ name: "Sensex", price: 73804, change_pct: -1.2, session_date: "2026-10-12" }] } } } }, P, undefined, paper);
+  const m = checkScript([...turns.slice(0, 10), { speaker: "Ashu", mood: "warm", text: "The Sensex is at seventy-three thousand eight hundred, the rupee at ninety-four point nine three, and gold at one lakh forty-six thousand rupees for ten grams." }], R2, P).map(p => p.msg).join(" | ");
+  assert.match(m, /reads out 3 markets in one turn/);
 });

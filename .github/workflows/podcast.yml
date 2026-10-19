@@ -22,6 +22,7 @@ on:
       dry: { description: "Test: write and voice it, publish nothing (script and MP3 as artifacts)", type: boolean, default: false }
       models: { description: "Only list the Gemini models this key can use", type: boolean, default: false }
       sample: { description: "Only voice this short script file (e.g. scripts/podcast/samples/x.json), nothing published", required: false, default: "" }
+      transcript: { description: "Only attach this checked transcript file (e.g. scripts/podcast/transcripts/2026-10-19.vtt) to the date's published episode", required: false, default: "" }
       rehearse: { description: "Rehearsal: the script only from the latest paper, at most 2 writer requests, no voice, nothing published; refused after 13:30 IST", type: boolean, default: false }
 # a voice sample or a rehearsal publishes nothing, so it runs beside an episode run instead of queueing behind it
 concurrency: { group: "podcast${{ inputs.sample && '-sample' || inputs.rehearse && '-rehearse' || '' }}", cancel-in-progress: false }
@@ -76,7 +77,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
-        run: node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }} ${{ inputs.feed_only && '--feed' || '' }} ${{ inputs.dry && '--dry' || '' }} ${{ inputs.models && '--models' || '' }} ${{ inputs.sample && format('--sample={0}', inputs.sample) || '' }} ${{ github.event_name != 'push' && '--final' || '' }}
+        run: node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }} ${{ inputs.feed_only && '--feed' || '' }} ${{ inputs.dry && '--dry' || '' }} ${{ inputs.models && '--models' || '' }} ${{ inputs.sample && format('--sample={0}', inputs.sample) || '' }} ${{ inputs.transcript && format('--transcript={0}', inputs.transcript) || '' }} ${{ github.event_name != 'push' && '--final' || '' }}
       - if: always()
         uses: actions/upload-artifact@v4
         with: { name: podcast-script, path: .podcast/script.json, retention-days: 2, if-no-files-found: ignore }
@@ -95,7 +96,7 @@ jobs:
           include-hidden-files: true
   kokoro:
     needs: gemini
-    if: failure() && !inputs.dry && !inputs.sample && !inputs.force && !inputs.rehearse
+    if: failure() && !inputs.dry && !inputs.sample && !inputs.force && !inputs.rehearse && !inputs.transcript
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

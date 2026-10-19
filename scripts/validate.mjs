@@ -237,6 +237,33 @@ export function validateEdition(E, { ledger = null, schema = read("content/schem
     else if (!String(g.line).includes(g.subject)) warnings.push(`glance: subject "${g.subject}" is not copied exactly from its line "${g.line}"`);
   }
 
+  // Figures keep their meaning (Parth, 19 Oct 2026, from the 20 Oct edition). That day the story said Anthropic put 5%
+  // of its shares into a fund, up to 2% more for each 50% rise in value, and roughly 20% to good causes in total; the
+  // headline made it "5%... rising to about 20% as it grows" and the House Note "gave a fifth of itself to a fund", and
+  // the podcast repeated it. Code cannot tell what a figure means, so each one in a headline, a day-in-a-minute line or
+  // the House Note is shown beside the story's own sentences with the same number, and the run says in its own words
+  // what it counts in checks.figures {where, figure, means}, fixing the line when the two disagree.
+  if (E.date >= "2026-10-20") {
+    const FIG = /(?:[₹$£€]\s?[\d.,]*\d(?:\s?(?:lakh crore|lakh|crore|billion|million|bn|trillion))?)|(?:\b\d[\d.,]*(?:\s?(?:%|per cent|lakh crore|crore|lakh|billion|million|trillion)))|\b(?:a|one|two|three)[- ](?:half|third|quarter|fifth|tenth)s?\b|\b(?:halved|doubled?|tripled?|quadrupled)\b/gi;
+    const FRAC = { half: ["50%", "half"], third: ["33%", "third"], quarter: ["25%", "quarter"], fifth: ["20%", "fifth"], tenth: ["10%", "tenth"], halved: ["half", "halv"], double: ["doubl", "twice"], doubled: ["doubl", "twice"], triple: ["tripl", "three times"], tripled: ["tripl", "three times"], quadrupled: ["quadrupl", "four times"] };
+    const keysOf = f => { const w = f.toLowerCase().match(/[a-z]+$/)?.[0]; if (FRAC[w] && !/\d/.test(f)) return FRAC[w]; const d = f.match(/\d[\d.,]*/)?.[0].replace(/[.,]$/, ""); return d ? [d] : []; };
+    const body = s => [s.short, s.text, ...(s.more || []), s.why?.text].filter(Boolean).join(" ");
+    // a number matches only whole ("20" is not in "$200"), and a bare number not as a date ("Tuesday 20 October")
+    const has = (x, k) => { const t = x.toLowerCase(); return k.some(y => (/^\d/.test(y) ? new RegExp(`(?<![\\d.,])${y.replace(/[.,%]/g, c => `\\${c}`)}(?![\\d]|,\\d| (?:january|february|march|april|may|june|july|august|september|october|november|december))`).test(t) : t.includes(y))); };
+    const sentenceOf = (t, f) => String(t || "").split(/(?<=[.!?])\s+/).find(x => x.includes(f)) || String(t || "");
+    const said = (s, f) => (s ? body(s) : "").split(/(?<=[.!?])\s+/).filter(x => has(x, keysOf(f))).slice(0, 2);
+    const want = [];
+    for (const s of items.filter(i => i._kind !== "line")) for (const m of String(s.headline || "").matchAll(FIG)) want.push({ where: `headline:${s.id}`, figure: m[0].trim(), line: s.headline, story: s });
+    for (const g of E.glance || []) for (const m of String(g.line || "").matchAll(FIG)) want.push({ where: `glance:${g.target}`, figure: m[0].trim(), line: g.line, story: items.find(i => i.id === g.target) });
+    for (const m of String(E.house_note || "").matchAll(FIG)) { const f = m[0].trim(), k = keysOf(f); want.push({ where: "house_note", figure: f, line: E.house_note, story: items.find(i => i._kind !== "line" && has(body(i), k)) }); }
+    const ans = E.checks?.figures || [];
+    for (const x of want) {
+      if (ans.some(a => a.where === x.where && a.figure === x.figure && String(a.means || "").trim().length >= 12)) continue;
+      const lines = said(x.story, x.figure);
+      errors.push(`figures: ${x.where} says "${x.figure}" in "${sentenceOf(x.line, x.figure).slice(0, 180)}". The story's text: ${lines.length ? lines.map(l => `"${l.slice(0, 220)}"`).join(" ") : "(the story's text never gives it; it must come from the article)"}. If they disagree, fix the line; then answer checks.figures {where: "${x.where}", figure: "${x.figure}", means: "what it counts, of what, by when, in your words"}`);
+    }
+  }
+
   // Tennis: NEXT EVENT when no match is confirmed
   for (const p of E.tennis?.players || []) if (!p.next_match && !p.next_event && !p.note) warnings.push(`tennis: ${p.name} has no next match, next event or note`);
 

@@ -18,6 +18,9 @@ import { layout, mix } from "./studio.mjs";
 import { afterClose } from "../../lib/after-close.js";
 
 const args = process.argv.slice(2), FORCE = args.includes("--force"), FEED_ONLY = args.includes("--feed");
+// --transcript=FILE: attach a checked transcript (WebVTT, in the repo) to the day's published episode and rebuild the
+// feed; the audio is not touched (19 Oct 2026: that day's episode went out without one)
+const TRANSCRIPT = args.find(a => a.startsWith("--transcript="))?.slice(13);
 // A rehearsal (--rehearse; Parth, 14 Oct: "make sure it doesn't eat my gemini limit and everything is finished before
 // 2 pm"): the script only, from the latest paper, with at most two writer requests in all and no voice at all, done in
 // ten minutes; nothing published. The episode run's writers are capped at 15 requests each (writer_budget) of the
@@ -398,6 +401,18 @@ async function main() {
   }
   const { put, list, del, get } = DRY ? {} : await blob();
   if (FEED_ONLY) { const n = await publishFeed({ put, list, del, get }); log(`feed rebuilt (${n} in the feed)`); log(`FEED ${P.listed ? `${site}/listen` : served("feed.xml")}`); return; }
+  if (TRANSCRIPT) {
+    const vtt = readFileSync(`${H}${TRANSCRIPT}`, "utf8");
+    if (!/^WEBVTT/.test(vtt) || !/-->/.test(vtt)) throw new Error(`${TRANSCRIPT} is not a WebVTT transcript`);
+    const g = await get(`${folder}/${date}.json`, { access: "private", useCache: false, token: BLOB }).catch(() => null);
+    const meta = g?.stream ? await new Response(g.stream).json().catch(() => null) : null;
+    if (!meta?.url) throw new Error(`no published episode for ${date}`);
+    const vttFile = meta.url.split("/").pop().replace(/\.mp3$/, ".vtt");
+    await put(`${folder}/${vttFile}`, vtt, { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "text/vtt; charset=utf-8", token: BLOB });
+    await put(`${folder}/${date}.json`, JSON.stringify({ ...meta, transcript: vttFile }), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", token: BLOB });
+    const n = await publishFeed({ put, list, del, get });
+    log(`transcript ${vttFile} attached to ${date} (${(vtt.match(/-->/g) || []).length} lines); feed rebuilt (${n} in the feed)`); return;
+  }
   // --force on a published day is a redo: the new take goes up under a new file and episode id (-v2, -v3), the feed
   // switches to it, and only then is the old file deleted, so a failed redo leaves the old episode up (Parth, 13 Oct)
   let prior = null;

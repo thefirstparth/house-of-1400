@@ -40,6 +40,7 @@ Every pool story marked **TOP** or **ANSWER** (a source's own place: Ranchi, Pra
 - **`short`:** fact first, 50 to 60 words, neutral (checked from the 14 Oct edition).
 - **`more` (every full story):** 100 to 149 words in 2 or 3 paragraphs (under 150, from the 15 Oct edition), written from the pool's article text. The page shows the summary and why it matters; the long version sits behind "Read more" (13 Oct), so it must stand on its own and never repeat the summary. Cover the background, the figures, who said what on the record, and what happens next. Never repeat the short version.
 - **A brief:** a headline plus two sentences, at least 22 words.
+- **Figures keep their meaning (from the 20 Oct edition):** a headline, a day-in-a-minute line or the House Note gives a figure only as the story's text does: what it counts, of what, by when. On 19 Oct the text said Anthropic put 5% of its shares into a fund, up to 2% more for each 50% rise in value, and roughly 20% to good causes in total; the headline made it "rising to about 20% as it grows" and the House Note "gave a fifth of itself to a fund", and the podcast repeated it. The validator shows each such figure beside the story's own sentence: fix the line if they disagree, then say what it counts in `checks.figures` {`where`, `figure`, `means`}.
 - **Why it matters:** one sentence, and "for you" only when it is really personal. `tone` is good, bad or mixed only when that is clear.
 - **Sources:** the publisher's own link (the pool's `Source:` line), never a Google News link, never a paywalled outlet only.
 - **A follow-up to a thread printed this week** (prep lists them) leads with what changed and carries `update: {since, new}`. One home per thread: no story appears twice anywhere in the paper.
@@ -67,6 +68,7 @@ Every pool story marked **TOP** or **ANSWER** (a source's own place: Ranchi, Pra
   - `letters`: what you did with each letter.
   - `lessons` and `changes`: when the validator asks.
   - `pool`.
+  - `figures`: what each figure in a headline, a day-in-a-minute line and the House Note counts, as the validator lists them.
 - **Mondays:** `week_ahead` (6 to 12 dated items across at least 3 areas) and `sections.ledger.data.monday`.
 
 ## Keeping the run cheap
