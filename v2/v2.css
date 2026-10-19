@@ -264,6 +264,21 @@ body.on-one .layout{padding-top:0}
  .dlead .lead-story:has(figure.art-wide)>figure.art{grid-column:1;grid-row:span 2;margin:6px 0 0}
  .dlead .lead-story:has(figure.art-wide)>figure.art img{width:100%;max-height:none}
  .dlead .lead-story:has(figure.art-wide)>.body,.dlead .lead-story:has(figure.art-wide)>.tools{grid-column:2}
+ /* a 4:3 drawing (an order the editor changed) sits beside the text the same way, held to its own shape */
+ .dlead .lead-story:has(figure.art-standard){display:grid;grid-template-columns:minmax(0,min(52%,calc(var(--vh,100vh) * .6 * 4 / 3))) minmax(0,1fr);column-gap:40px;align-items:start}
+ .dlead .lead-story:has(figure.art-standard)>:not(figure.art):not(.body):not(.tools){grid-column:1/-1}
+ .dlead .lead-story:has(figure.art-standard)>figure.art{grid-column:1;grid-row:span 2;margin:6px 0 0}
+ .dlead .lead-story:has(figure.art-standard)>figure.art img{width:100%;max-height:none}
+ .dlead .lead-story:has(figure.art-standard)>.body,.dlead .lead-story:has(figure.art-standard)>.tools{grid-column:2}
+ /* No drawing (Parth, 19 Oct 2026: the Tiger Shroff lead, drawn for no one under Bhide's rule on violence, left the
+    right half of the page empty). The lead is laid out for text: the story on the left in slightly larger type, Why it
+    matters beside it on the right, Read more opening under the story. The layout comes from the story itself, so a
+    lead with no drawing or a late one always fills the width, and a drawing that lands later takes its layout above.
+    scripts/space-check.mjs checks every desk, with and without the day's drawings. */
+ .dlead .lead-story:not(:has(figure.art))>.body{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);grid-template-rows:auto auto 1fr;column-gap:44px;align-items:start;font-size:clamp(18.5px,1.1vw,21px)}
+ .dlead .lead-story:not(:has(figure.art))>.body>*,.dlead .lead-story:not(:has(figure.art))>.body p{grid-column:1;max-width:none}
+ .dlead .lead-story:not(:has(figure.art))>.body>.why{grid-column:2;grid-row:1/-1;margin-top:4px}
+ .dlead .lead-story:not(:has(figure.art)) h2{max-width:48ch}
 }
 
 /* ---------- The Fixture List: each day in sport groups, under a small label ---------- */
