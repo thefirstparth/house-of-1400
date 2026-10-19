@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-const { pick, item, endOf, weatherWord, warningFor, cityLine, parseMetno, track } = await import("../lib/tv.js");
+const { pick, item, endOf, weatherWord, warningFor, cityLine, parseMetno, track, restOfDay } = await import("../lib/tv.js");
 const { events, using } = await import("../public/sport/js/core.js");
 
 const cfg = JSON.parse(readFileSync(new URL("../config/house.json", import.meta.url), "utf8"));
@@ -166,4 +166,23 @@ test("tv: one Telegram message after a day down, one when back, at most one a da
   r = track(S, { nba: false }, T, NOW + 3 * day, names); r = track(S, { nba: true }, T, NOW + 3 * day + H, names);
   assert.equal(r.msgs.length, 0, "a short outage says nothing");
   assert.ok(!r.msgs.join("").includes("—"));
+});
+
+test("tv weather: the word is for the hours still ahead, never the morning that has passed (19 Oct: \"Fog\" at 2 pm in Prayagraj)", () => {
+  // Prayagraj on 19 Oct as Open-Meteo had it: fog at 5 and 6 am (the whole day's code 45), clear from 7 am
+  const hours = Array.from({ length: 24 }, (_, h) => ({ time: `2026-10-19T${String(h).padStart(2, "0")}:00`, temp: h < 7 ? 22 : 30, feels: h < 7 ? 23 : 33, rain_prob: 0, rain_mm: 0, code: h === 5 || h === 6 ? 45 : 0 }));
+  const at = hm => Date.parse(`2026-10-19T${hm}:00+05:30`);
+  const w = { now: 32, feels: 34, hum: 52, today: { max: 32, min: 24, rain_mm: 0, rain_prob: 0, code: 45, feels_max: 34 }, tomorrow: { max: 31, min: 23, rain_mm: 0, rain_prob: 0, code: 0, feels_max: 33 }, hours, source: "Open-Meteo" };
+  const word = hm => cityLine({ name: "Prayagraj" }, w, null, T, at(hm)).word;
+  assert.equal(word("14:08"), undefined, "no fog at 2 pm");
+  assert.equal(word("05:30"), "Fog", "fog while it is there");
+  assert.equal(restOfDay(hours, at("14:08"), T.evening_from).code, 0);
+  // rain later today still shows; rain that has passed does not
+  const rainAt = h => hours.map(x => (Number(x.time.slice(11, 13)) === h ? { ...x, rain_prob: 80, rain_mm: 5, code: 63 } : x));
+  assert.equal(cityLine({ name: "Prayagraj" }, { ...w, hours: rainAt(16) }, null, T, at("14:08")).word, "Rain likely");
+  assert.equal(cityLine({ name: "Prayagraj" }, { ...w, hours: rainAt(9) }, null, T, at("14:08")).word, undefined);
+  // without hours (MET Norway's backup, whose "today" already starts now) the day's figures are used, as before
+  assert.equal(cityLine({ name: "Prayagraj" }, { ...w, hours: null }, null, T, at("14:08")).word, "Fog");
+  // the TV asks the shared weather key for every city's hours
+  assert.match(readFileSync(new URL("../lib/tv.js", import.meta.url), "utf8"), /PAPER\.weather\(new URLSearchParams\("hourly=all"\)\)/);
 });
