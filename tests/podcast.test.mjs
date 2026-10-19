@@ -197,6 +197,21 @@ test("podcast: a cut by ear goes into the pause, never the dip inside a word (16
   assert.equal(cutAt(Buffer.concat([noise(sec(6))]), [3]), null);
 });
 
+test("podcast: a cut that leaves one line far too slow and the next far too fast moves to the right pause (18 Oct)", () => {
+  const sec = x => Math.round(24000 * x), noise = n => { const b = Buffer.alloc(n * 2); for (let i = 0; i < n; i++) b.writeInt16LE(Math.round((Math.random() * 2 - 1) * 8000), i * 2); return b; };
+  const quiet = n => Buffer.alloc(n * 2);
+  // line one: 20 words in 7 s; the pause between the lines 0.6 s; line two: 20 words, 2 s, a comma pause of 0.3 s, 5 s
+  const take = Buffer.concat([noise(sec(7)), quiet(sec(0.6)), noise(sec(2)), quiet(sec(0.3)), noise(sec(5)), quiet(sec(0.3))]);
+  // the listening model put the line's end at the comma ("...Ballon d'Or. Bhide noted the tragedy in Kolkata, | ...")
+  const wrong = cutAt(take, [9.75]);
+  assert.ok(Math.abs(wrong[0].length / 48000 - 9.6) < 0.25, "without the line lengths, the comma pause is kept");
+  const p = cutAt(take, [9.75], { words: [20, 20] });
+  assert.ok(Math.abs(p[0].length / 48000 - 7.0) < 0.25, `line one ends at its own end: ${p[0].length / 48000} s`);
+  assert.ok(Math.abs(p[1].length / 48000 - 7.3) < 0.3, `line two keeps its first words: ${p[1].length / 48000} s`);
+  // short lines are left alone (their pace varies too much to judge)
+  assert.ok(Math.abs(cutAt(take, [9.75], { words: [6, 6] })[0].length / 48000 - 9.6) < 0.25);
+});
+
 test("podcast: a take cut by ear keeps only the lines, from the first line's start to the last line's end (14 Oct)", () => {
   const sec = x => Math.round(24000 * x), noise = n => { const b = Buffer.alloc(n * 2); for (let i = 0; i < n; i++) b.writeInt16LE(Math.round((Math.random() * 2 - 1) * 8000), i * 2); return b; };
   const quiet = n => Buffer.alloc(n * 2);

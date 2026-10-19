@@ -66,11 +66,17 @@ def align(job, model):
         # "Bilkul" on 14 Oct, where "2024" was one heard word for three script words and a count went wrong); with no
         # real pause, the unmatched words are shared out by how many each line has at that edge
         pauses = [(heard[i + 1][1] - heard[i][2], i) for i in range(a, b)]
-        longest, at = max(pauses)
-        if longest < 0.25:
-            gap = list(range(a + 1, b))
-            give = round(len(gap) * tail / (tail + lead)) if tail + lead else len(gap) // 2
-            at = gap[give - 1] if give > 0 else a
+        gap = list(range(a + 1, b))
+        give = round(len(gap) * tail / (tail + lead)) if tail + lead else len(gap) // 2
+        expect = gap[give - 1] if give > 0 else a
+        # where the words say the line ends, not the longest pause the model heard (18 Oct, twice: "Bhide" heard as "we
+        # already" and "Ballon d'Or" as "balloon door" left eleven unmatched words between two lines, and the longest
+        # pause among them was the comma after "French riots", inside the next line; and the model ran "Shaista Parveen"
+        # into "Jio Platforms" with no pause at all, though the take has 0.6 s there, so the cut went to the comma after
+        # "wife"). A pause the model heard is used only right at that place; otherwise the place itself, and the real
+        # pause in the sound is found from it (lib.mjs cutAt)
+        near = [(p, i) for p, i in pauses if abs(i - expect) <= 1]
+        at = max(near)[1] if near and max(near)[0] >= 0.25 else expect
         cuts.append(round((heard[at][2] + heard[at + 1][1]) / 2, 3))
     start = max(0.0, heard[m[min(hit[0])]][1] - 0.15 - 0.4 * (min(hit[0]) - min(idx[0])))
     end = heard[m[max(hit[-1])]][2] + 0.25 + 0.4 * (max(idx[-1]) - max(hit[-1]))

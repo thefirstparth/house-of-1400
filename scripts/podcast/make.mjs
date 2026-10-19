@@ -289,7 +289,7 @@ async function ttsGemini(turns) {
     catch (e) { log(`solo: cutting by ear could not run (${String(e.message).split("\n")[0].slice(0, 120)})`); return null; }
     const r = JSON.parse(readFileSync(res, "utf8"));
     if (!r.ok) { log(`solo: ${sp}'s take ${go} could not be cut by ear: ${r.why}`); return null; }
-    const pieces = cutAt(take, r.cuts, { start: r.start, end: r.end });
+    const pieces = cutAt(take, r.cuts, { start: r.start, end: r.end, words: texts.map(t => t.split(/\s+/).length) });
     if (!pieces) log(`solo: ${sp}'s take ${go}: the cuts by ear did not hold`);
     return pieces;
   };

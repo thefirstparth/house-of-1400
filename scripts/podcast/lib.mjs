@@ -622,7 +622,7 @@ export function splitLines(pcm, words) {
 // a "t" in "eighty-nine": "...to eighty-" ended one line and "nine" opened the host's next. A pause between lines runs
 // 0.3 to 0.8 s; a dip inside a word, 20 to 80 ms.) The search runs 0.8 s either side, never past halfway to the next
 // estimate; a cut with no pause of at least 0.12 s there is refused (null), and the caller falls back.
-export function cutAt(pcm, secs, { start = 0, end = null } = {}) {
+export function cutAt(pcm, secs, { start = 0, end = null, words = null } = {}) {
   const F = 480, frames = Math.floor(pcm.length / 2 / F), rms = new Float64Array(frames);
   for (let f = 0; f < frames; f++) { let s = 0; for (let i = 0; i < F; i++) { const v = pcm.readInt16LE((f * F + i) * 2); s += v * v; } rms[f] = Math.sqrt(s / F); }
   const loud = [...rms].sort((a, b) => a - b)[Math.floor(frames * 0.95)] || 0, thr = Math.max(150, loud * 0.06), quiet = f => rms[f] < thr;
@@ -644,6 +644,36 @@ export function cutAt(pcm, secs, { start = 0, end = null } = {}) {
   if (at.some(x => x < 0)) return null;
   if (at.some((x, i) => i && x <= at[i - 1])) return null;
   const b0 = Math.max(0, Math.min(at[0] ?? frames, Math.floor(start * 50))), b1 = end == null ? frames : Math.min(frames, Math.max(at.at(-1) ?? 0, Math.ceil(end * 50)));
+  // The pace check (18 Oct: the listening model heard "Bhide" as "we already", and the cut went into the comma pause
+  // after "French riots", inside the next line: the Betting Window line ran 1.8 words a second and the House Note after
+  // it 4.2, against about 2.7). Two neighbouring lines of four words or more whose paces differ by more than 1.45
+  // times have their cut in the wrong place: it moves to the pause nearest where the words say the first line ends
+  // (the longest within 1.2 s of that point), if that brings the two paces closer.
+  if (words && words.length === at.length + 1) {
+    const spoken = new Int32Array(frames + 1); for (let f = 0; f < frames; f++) spoken[f + 1] = spoken[f] + (quiet(f) ? 0 : 1); // frames of sound before f
+    const pauseNear = (want, lo, hi) => {
+      let best = null;
+      for (let f = Math.max(lo, want - 60); f <= Math.min(hi, want + 60); f++) {
+        if (!quiet(f)) continue;
+        let e = f; while (e + 1 <= hi && quiet(e + 1)) e++;
+        const len = e - f + 1, mid = Math.round((f + e) / 2), score = len - Math.abs(mid - want) / 4;
+        if (len >= MIN && (!best || score > best.score)) best = { mid, score };
+        f = e;
+      }
+      return best?.mid;
+    };
+    for (let k = 0; k < at.length; k++) {
+      const s0 = k ? at[k - 1] : b0, e1 = k + 1 < at.length ? at[k + 1] : b1, w0 = words[k], w1 = words[k + 1];
+      if (w0 < 12 || w1 < 12) continue; // short lines vary too much in pace to judge
+      // pace on the sound only (a pause inside a line, after "Regime change?", is not slow speech)
+      const ratio = c => ((spoken[c] - spoken[s0]) / w0) / ((spoken[e1] - spoken[c]) / w1), off = c => Math.abs(Math.log(ratio(c)));
+      if (off(at[k]) < Math.log(1.7)) continue;
+      // where the words say the first line ends, counted in sound, then the longest pause near it
+      const target = spoken[s0] + (spoken[e1] - spoken[s0]) * w0 / (w0 + w1); let want = s0; while (want < e1 && spoken[want] < target) want++;
+      const c = pauseNear(want, s0 + 8, e1 - 8);
+      if (c != null && off(c) < Math.log(1.3)) at[k] = c;
+    }
+  }
   const bounds = [b0, ...at, b1];
   const pieces = [];
   for (let i = 0; i + 1 < bounds.length; i++) {
