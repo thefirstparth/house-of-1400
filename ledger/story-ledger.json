@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-18T08:49:41.274Z",
-  "last_edition": "2026-10-18",
+  "last_updated": "2026-10-19T08:50:24.523Z",
+  "last_edition": "2026-10-19",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -1351,7 +1351,7 @@
     },
     {
       "thread_id": "india-us-ties-2026",
-      "title": "Rubio lands in India but skips Delhi, meeting Jaishankar in Mumbai, as Trump says 'a lot of you don't know' what his sanctions decision means",
+      "title": "Rubio says an India-US trade deal is 'very close' and helped decide the Russia waiver, before meeting Jaishankar in Mumbai on Tuesday",
       "entities": [],
       "facts": {
         "call": "2026-09-30",
@@ -1364,13 +1364,15 @@
         "order": "executive order, Fri 16 Oct",
         "waived": "100% tariffs on top 5 buyers of Russian oil; 500% on Russian goods",
         "deadline": "Sun 18 Oct",
-        "talks": "Mumbai, Mon 19 Oct",
+        "talks": "Mumbai, Tue 20 Oct",
         "then": "Jamnagar refinery",
-        "review": "60 days"
+        "review": "60 days",
+        "deal": "\"very close\"",
+        "bessent": "Europe refused secondary tariffs"
       },
       "first_printed": "2026-09-29",
-      "last_printed": "2026-10-18",
-      "last_change": "2026-10-18",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3286,7 +3288,7 @@
     },
     {
       "thread_id": "iphone-duo-2026",
-      "title": "Apple Stores are told to warn shoppers there will be no iPhone Duo stock for walk-ins on launch day",
+      "title": "iPhone Duo shipping dates slip to late January as Gurman says Apple made a 'major mistake' starting pre-orders in 70 countries",
       "entities": [],
       "facts": {
         "price_from": "₹2,99,900",
@@ -3296,11 +3298,13 @@
         "preorders": "SKT from 16 Oct",
         "price": "$1,999",
         "screens": "5.4 and 7.6 in",
-        "launch": "Fri 23 Oct"
+        "launch": "Fri 23 Oct",
+        "ship": "~25 Jan",
+        "countries": "70+"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-18",
-      "last_change": "2026-10-18",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4400,12 +4404,15 @@
     },
     {
       "thread_id": "arsenal-2026",
-      "title": "Arsenal beat Lille 3–0 for a 12th straight Champions League home win",
+      "title": "Noni Madueke's second-half goal gives champions Arsenal a 1–0 win at Nottingham Forest",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "score": "Forest 0–1 Arsenal",
+        "scorer": "Madueke"
+      },
       "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4929,16 +4936,17 @@
     },
     {
       "thread_id": "prayagraj-housing-2026",
-      "title": "Prayagraj Development Authority moves against a one-acre plot near Airavat Crossing linked to Atiq Ahmed's wife",
+      "title": "Kasari-Masari, once Atiq Ahmed's stronghold, is to be renamed Sri Krishnapuri, with homes for 1,200 poor families",
       "entities": [],
       "facts": {
         "name": "Shri Krishna Puri",
         "flats": "602 then 598",
-        "plot": "~1 acre near Airavat Crossing"
+        "plot": "~1 acre near Airavat Crossing",
+        "homes": "for 1,200 families"
       },
       "first_printed": "2026-10-15",
-      "last_printed": "2026-10-18",
-      "last_change": "2026-10-18",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5251,12 +5259,15 @@
     },
     {
       "thread_id": "man-united-2026",
-      "title": "Roy Keane calls Manchester United 'a circus' after Lisandro Martínez criticises the club's bosses",
+      "title": "Manchester United draw 1–1 at Leeds and have seven points from seven games, but Carrick calls it 'a fresh start'",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "score": "Leeds 1–1 United",
+        "points": "7 from 7"
+      },
       "first_printed": "2026-10-16",
-      "last_printed": "2026-10-16",
-      "last_change": "2026-10-16",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5298,15 +5309,16 @@
     },
     {
       "thread_id": "wta-wuhan-2026",
-      "title": "Into the Wuhan Open final: Kartal saves six set points against Ostapenko and plays Maja Chwalinska for the title today",
+      "title": "Chwalinska comes from a set down to beat Kartal 2-6 6-4 6-2 for her first WTA title, in Wuhan",
       "entities": [],
       "facts": {
         "rank": "170",
-        "semi": "7-6 7-6 v Ostapenko"
+        "semi": "7-6 7-6 v Ostapenko",
+        "score": "2-6 6-4 6-2"
       },
       "first_printed": "2026-10-16",
-      "last_printed": "2026-10-18",
-      "last_change": "2026-10-18",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5410,18 +5422,19 @@
     },
     {
       "thread_id": "west-bank-settlers-2026",
-      "title": "Settlers attack European diplomats' cars and a French mayor in the West Bank, a day after beating a Washington Post photographer",
+      "title": "Israeli police arrest suspects over the settler attacks on European diplomats and a US photojournalist",
       "entities": [],
       "facts": {
         "injured": "12, incl. 4 US citizens",
         "place": "near Abu Falah",
         "diplomats": "France, Belgium, Poland",
         "mayor": "Bernard Baudoux, 78",
-        "journalist": "Heidi Levine, Washington Post"
+        "journalist": "Heidi Levine, Washington Post",
+        "arrests": "suspects held"
       },
       "first_printed": "2026-10-17",
-      "last_printed": "2026-10-18",
-      "last_change": "2026-10-18",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5450,15 +5463,17 @@
     },
     {
       "thread_id": "advani-health-2026",
-      "title": "L.K. Advani, 98, is admitted to Delhi's Apollo Hospital with a chest infection",
+      "title": "Discharged: L.K. Advani leaves Apollo Hospital in Delhi after recovering from a chest infection",
       "entities": [],
       "facts": {
         "age": "98",
-        "hospital": "Apollo, Delhi"
+        "hospital": "Apollo, Delhi",
+        "admitted": "16 Oct",
+        "discharged": "19 Oct"
       },
       "first_printed": "2026-10-17",
-      "last_printed": "2026-10-17",
-      "last_change": "2026-10-17",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5819,16 +5834,17 @@
     },
     {
       "thread_id": "kolkata-puja-crush-2026",
-      "title": "At least 17 people are killed in a crush at a Durga Puja gathering in Kolkata as sudden rain sends crowds running for shelter",
+      "title": "Seven held over the Kolkata Durga Puja crush are sent to police custody for 10 days, as the toll reaches 19",
       "entities": [],
       "facts": {
-        "dead": "at least 17 (later reports 19)",
+        "dead": "19",
         "injured": "25",
-        "gwalior": "14 dead, ~40 injured"
+        "gwalior": "14 dead, ~40 injured",
+        "custody": "7 accused, 10 days"
       },
       "first_printed": "2026-10-18",
-      "last_printed": "2026-10-18",
-      "last_change": "2026-10-18",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5838,16 +5854,17 @@
     },
     {
       "thread_id": "canada-wainwright-fire-2026",
-      "title": "At least seven are reported killed and dozens hurt as a live-fire drill sets off a blaze at a Canadian army base",
+      "title": "Canada names the four soldiers killed in the Wainwright base fire, fewer than first reported, with 19 of 39 injured in critical condition",
       "entities": [],
       "facts": {
-        "dead": "at least 7 (Global News)",
+        "dead": "4, named",
         "place": "CFB Wainwright, Alberta",
-        "cause": "unconfirmed; drill reportedly hit a gas line"
+        "cause": "grass fire, under investigation",
+        "hospital": "39, 19+ critical"
       },
       "first_printed": "2026-10-18",
-      "last_printed": "2026-10-18",
-      "last_change": "2026-10-18",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5857,16 +5874,18 @@
     },
     {
       "thread_id": "france-protests-2026",
-      "title": "More than 1,200 are arrested as protests over schools and living costs turn violent across France and Limoges town hall burns",
+      "title": "Macron says looters will pay and vows to hold accountable those who 'sought to bring down the Republic' as arrests reach 2,400",
       "entities": [],
       "facts": {
-        "arrested": "1,200+",
+        "arrested": "2,400",
         "marchers": "est. 550,000",
-        "police_injured": "150"
+        "police_injured": "150",
+        "nunez": "resignation refused",
+        "marseille": "gatherings banned"
       },
       "first_printed": "2026-10-18",
-      "last_printed": "2026-10-18",
-      "last_change": "2026-10-18",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5996,16 +6015,17 @@
     },
     {
       "thread_id": "jaxa-mmx-2026",
-      "title": "Japan is set to launch the first mission to bring back soil from Phobos, one of the two small moons of Mars",
+      "title": "Japan's Phobos sample mission is set to lift off at 1.11am IST on Tuesday from Tanegashima",
       "entities": [],
       "facts": {
-        "launch": "Tue 20 Oct, H3",
+        "launch": "Tue 20 Oct, 01:11 IST",
         "duration": "5 years",
-        "target": "Phobos"
+        "target": "Phobos",
+        "return": "2031"
       },
       "first_printed": "2026-10-18",
-      "last_printed": "2026-10-18",
-      "last_change": "2026-10-18",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
       "status": "active",
       "votes": {
         "up": 0,
@@ -6145,6 +6165,326 @@
       "first_printed": "2026-10-18",
       "last_printed": "2026-10-18",
       "last_change": "2026-10-18",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "tiger-shroff-attack-2026",
+      "title": "Gunmen fire at Bollywood actor Tiger Shroff's car in Juhu; he survives, and three suspects are held in Rajasthan",
+      "entities": [],
+      "facts": {
+        "place": "Juhu, Mumbai, Sun evening",
+        "injured": "2 incl. driver",
+        "detained": "3 in Rajasthan, one a minor"
+      },
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "india-markets-2026",
+      "title": "The Sensex falls 1.2% by 2pm as HDFC Bank, ICICI and Axis slide after their results and foreign investors keep selling",
+      "entities": [],
+      "facts": {
+        "sensex": "73,804, -1.2% at 14:00",
+        "nifty": "22,878, -1.2%",
+        "drags": "HDFC Bank, ICICI Bank, Axis Bank"
+      },
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "anthropic-public-benefit-2026",
+      "title": "Anthropic puts 5% of its shares into a public benefit fund, rising to about 20% as it grows, and Musk says give them away directly",
+      "entities": [],
+      "facts": {
+        "now": "5% of shares",
+        "extra": "up to 2% per 50% value rise",
+        "total": "~20%"
+      },
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-one-person-is-killed-in-clashes",
+      "title": "One person is killed in clashes between two communities in Manipur's Thoubal district, and prohibitory orders are imposed",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-an-austrian-airlines-flight-from-tel",
+      "title": "An Austrian Airlines flight from Tel Aviv to Vienna diverts to Sofia after a bomb threat; nothing is found",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-trumps-approval-falls-to-33-in",
+      "title": "Trump's approval falls to 33% in a Washington Post-ABC-Ipsos poll, lower than at any point in his first term",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-kenya-confirms-an-eighth-ebola-case",
+      "title": "Kenya confirms an eighth Ebola case as the regional outbreak widens",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "nifty-targets-2026",
+      "title": "Bernstein cuts its year-end Nifty target to 25,000 and says a capital gains tax cut alone will not bring back foreign investors",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "openai-bugging-2026",
+      "title": "The OpenAI engineer accused of bugging an executive meeting room was in frequent WhatsApp contact with a Saudi royal, prosecutors say",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-apple-is-building-a-home-ai",
+      "title": "Apple is building a home AI device with a screen on a robotic arm that turns to face whoever is speaking, Bloomberg's Mark Gurman reports",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-apple-may-announce-new-macbook-pro",
+      "title": "Apple may announce new MacBook Pro, iMac and iPad mini models on 27 or 28 October, a report says",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "madrid-next-sevilla",
+      "title": "Mbappé scores twice as Madrid beat Sevilla 4–1 without Vinícius and stay six points behind Barcelona before the Clásico",
+      "entities": [],
+      "facts": {
+        "score": "4–1",
+        "scorers": "Güler, Mbappé 2 (1 pen), Diomande; Bueno",
+        "gap": "6 behind Barcelona"
+      },
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "asian-para-games-2026",
+      "title": "Mona Agarwal beats Avani Lekhara by 0.4 points on the last shot as India take gold and silver on the Asian Para Games' first day",
+      "entities": [],
+      "facts": {
+        "gold": "Mona Agarwal, 250.0 (Games record)",
+        "silver": "Avani Lekhara, 249.6",
+        "place": "Nagoya"
+      },
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "barcelona-psg-2026",
+      "title": "Barcelona visit Luis Enrique's PSG at the Parc des Princes on Wednesday, nine years after the 6–1 comeback he called the greatest ever",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "atp-shanghai-2026",
+      "title": "Alejandro Davidovich Fokina comes from a set and a break down to beat Rafael Jodar for his first Masters title, in Shanghai",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "deuce"
+    },
+    {
+      "thread_id": "namma-metro-pink-2026",
+      "title": "The Pink Line's cost has doubled to ₹17,346 crore, and its underground stretch now costs more than ₹1,000 crore a km",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "namma-metro-cards-2026",
+      "title": "Commuters switching to NCMC cards cannot move the balance from their old Namma Metro smart cards or get it refunded",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "verstappen-gtwce-2026",
+      "title": "Verstappen finishes ninth in his GT World Challenge Europe guest drive at Portimão",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "ranchi-crime-2026",
+      "title": "A Class 11 student is found dead near her home in Ranchi district, and police suspect rape and murder",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "prayagraj-highway-crash-2026",
+      "title": "Four are killed when a truck rams an SUV parked on an overbridge on the Prayagraj-Varanasi highway",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-19",
+      "last_printed": "2026-10-19",
+      "last_change": "2026-10-19",
       "status": "active",
       "votes": {
         "up": 0,
