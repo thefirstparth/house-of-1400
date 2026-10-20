@@ -2,7 +2,7 @@
 // design and screenshot it at phone, laptop and monitor sizes, light and dark; v2 is shot on every desk. The live
 // figures come from the edition's own press-time snapshot and the clock is held at 15:00 IST on its day, so the
 // shots match what Parth saw at press time. Reports page errors, sideways scroll, overlapping text, tables wider than
-// their column and whether Page One fits one screen. Shots go to v2/shots/<tag>/ (not kept in git).
+// their column and whether Page One fits one screen. GLASS=1 shoots the Glass look (/?glass, from 20 Oct 2026). Shots go to v2/shots/<tag>/ (not kept in git).
 import { chromium } from "playwright-core";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { extname } from "node:path";
@@ -57,7 +57,7 @@ D.prototype=R.prototype;D.now=function(){return R.now()+O};D.parse=R.parse;D.UTC
     return existsSync(f) ? r.fulfill({ body: readFileSync(f), contentType: TYPES[extname(f)] || "application/octet-stream" }) : r.fulfill({ status: 404, body: "" });
   });
   const errs = []; p.on("pageerror", e => errs.push(e.message)); p.on("console", m => m.type() === "error" && !/Failed to load resource|ERR_FAILED/.test(m.text()) && errs.push(m.text()));
-  await p.goto(`https://house14.test${path}${mode === "v2" ? "?v2" : "?v1"}#d-${DESKS[0] === "page" ? "one" : DESKS[0]}`); await p.waitForTimeout(3000);
+  await p.goto(`https://house14.test${path}${mode === "v2" ? (process.env.GLASS ? "?v2&glass" : "?v2") : "?v1"}#d-${DESKS[0] === "page" ? "one" : DESKS[0]}`); await p.waitForTimeout(3000);
   for (const d of DESKS) {
     if (mode === "v2" && d !== DESKS[0]) { await p.click(`#dtabs a[data-desk="${d}"]`); await p.waitForTimeout(900); }
     await p.evaluate(() => document.querySelectorAll("img[loading=lazy]").forEach(i => (i.loading = "eager"))); await p.waitForTimeout(400);
@@ -71,7 +71,7 @@ D.prototype=R.prototype;D.now=function(){return R.now()+O};D.parse=R.parse;D.UTC
       for (let i = 0; i < els.length && overlaps.length < 10; i++) for (let j = i + 1; j < els.length; j++) { const [a, A] = els[i], [c, B] = els[j]; if (a.contains(c) || c.contains(a)) continue; if (A.left < B.right - 2 && B.left < A.right - 2 && A.top < B.bottom - 2 && B.top < A.bottom - 2) { overlaps.push(`${a.textContent.trim().slice(0, 30)} × ${c.textContent.trim().slice(0, 30)}`); break; } }
       const end = document.querySelector(".p1end")?.getBoundingClientRect().bottom;
       return {
-        design: window.H1400V2 ? "v2" : "v1",
+        design: (window.H1400V2 ? "v2" : "v1") + (document.documentElement.classList.contains("look-glass") ? " glass" : ""),
         // against the screen's own width: a phone browser quietly widens the page to fit anything that overflows
         sideways: Math.max(document.documentElement.scrollWidth, innerWidth) - VW,
         sections: [...document.querySelectorAll("#main section.sec")].filter(s => !s.hidden).map(s => s.id).join(" "),

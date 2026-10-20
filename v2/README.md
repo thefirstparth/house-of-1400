@@ -70,3 +70,10 @@ Live on the real site since 1 Oct 2026; **the default for everyone since 4 Oct 2
 
 ## Switching over
 Done on 4 Oct 2026: v2 is the default in `withV2`, v1 behind `?v1`. Still to do, later: retire v1: fold the layer into `app.js`, `v2.css` into `styles.css`, drop the old section colours and the patch list. Log it in DECISIONS.md and SPEC.md.
+
+## The Glass look (behind /?glass, from 20 Oct 2026)
+Parth picked Direction 10, "Glass, Swiss-tuned", from the redesign mockups and asked to try it on the real paper before deciding (DECISIONS.md, 20 Oct). It is a look over v2, not a new design: the same blocks, order, navigation, live data and behaviours.
+- **The switch:** `/?glass` turns it on and the device remembers it (localStorage `h1400-look` = `glass`); `/?glass=off` (or "Back to the current design" in the look's foot) turns it off; `?v1` still wins. A script just before `</head>` (`GLASS` in assemble.mjs, after the saved Night/Day choice) sets `class="look-glass"` and `data-theme="light"` on `<html>` before the first paint. One mid-tone theme, no night: the Night/Auto buttons are hidden and `setTheme` keeps it light.
+- **Files:** `glass.css`, appended to `/v2.css` after `v2.css`; every rule starts with `html.look-glass` (tests/glass.test.mjs checks it), so without the class the page is v2 to the pixel. In `layer.js`, behind `GLASS`: the small nameplate and the live figures (`#now`) move into the desk bar, `setTheme`/`followSun` stay light, and the foot carries "Back to the current design". The two nameplate lookups that said `#dtop .np` now say `.np` (there is one either way).
+- **Page One:** still fitted by fitOne/balanceOne, which measure the cards as they are. On a short laptop window (under 900px tall) the look is a little more compact, and more so under 780px. Zoom at 1470x830: 0.89 (v2 0.93); 1440x900: 0.91 (0.99); 1920x1080: 1.11. On windows 720px tall or less it can print fewer of the day in a minute's lines than v2 (the usual fallback, never below five).
+- **QA:** `GLASS=1 node v2/shot.mjs <tag> v2` shoots the look (it adds `&glass` to the URL); everything else as above.

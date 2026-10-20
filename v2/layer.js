@@ -4,6 +4,9 @@
 // row of tabs (config desks_v2), the day's lead at the top of its own section, which opens its desk. The build
 // (v2/assemble.mjs) patches it into a copy of app.js as /v2.js; app.js itself is never changed by it.
 let NEWDESKS = [];
+// The Glass look (Direction 10, behind /?glass from 20 Oct 2026; v2/assemble.mjs sets the class before first paint):
+// one mid-tone theme, the desk bar carrying the small nameplate and the live figures, a way back in the foot
+const GLASS = document.documentElement.classList.contains("look-glass");
 let DESK = { id: (location.hash.match(/^#d-([a-z]+)$/) || [])[1] || "one", name: "", sections: [] };
 function desksInit() {
   if (NEWDESKS.length || !CFG) return;
@@ -72,6 +75,7 @@ function shellStatic() {
   // Page One's tab carries a small, still day in dots, shown once the masthead has scrolled away (Parth, 2 Oct)
   $("#dtabs ol").innerHTML = NEWDESKS.map(d => `<li><a href="${deskHref(d.id)}" data-desk="${d.id}" style="--c:var(--d-${d.id})"${d === DESK ? ' aria-current="page"' : ""}>${d.id === "one" ? `<span class="tl">${esc(d.name)}</span><span class="tmk" aria-hidden="true"></span>` : esc(d.name)}</a></li>`).join("");
   tabMark();
+  if (GLASS) { const nav = $("#dtabs"), np = $(".np"), now = $("#now"); if (np && np.parentElement !== nav) nav.prepend(np); if (now && now.parentElement !== nav) nav.append(now); }
   // Phone tabs (review, 2 Oct): the current tab starts the row, so no sliver of the one before it shows; an edge fades
   // only where a tab is cut by it, so the row reads as one that scrolls.
   const ol = $("#dtabs ol"), fade = () => {
@@ -112,7 +116,7 @@ function deskFoot() {
   return `<div class="nextdesk"><a href="${deskHref(nx.id)}" data-desk="${nx.id}" style="--c:var(--d-${nx.id})">Next: <b>${esc(nx.name)}</b> →</a></div>` + footLine();
 }
 const lastDesk = () => NEWDESKS.at(-1)?.id || "off";
-const footNav = () => `<nav><a href="/editor">The editor and letters</a><a href="/archive">Archive</a><a href="?v1" data-v1>The old design</a></nav>`;
+const footNav = () => `<nav><a href="/editor">The editor and letters</a><a href="/archive">Archive</a><a href="?v1" data-v1>The old design</a>${GLASS ? `<a href="/?glass=off">Back to the current design</a>` : ""}</nav>`;
 const credit = () => `<span class="credit">Built by <a href="https://bhatia.page/projects/house-of-1400" target="_blank">Parth Bhatia</a></span>`;
 const footLine = () => `<footer class="dfoot">${footNav()}<span>${esc(`The House of 1400 · ${longDate(E.date)} · No. ${E.edition_no}`)}</span>${credit()}</footer>`;
 // The desk's sections in order, with the lead's section first when the lead is on this desk
@@ -825,7 +829,7 @@ function alignPlate() {
 // the desk pages' small nameplate: the same centre line, on the still figure (its ink's middle is 0.006 of the size
 // below the middle of its canvas: the outline runs from 0.722 above the baseline to 0.014 below, wordmark.js)
 function alignMini() {
-  const np = document.querySelector("#dtop .np"), w = np?.querySelector(".words"), hof = w?.querySelector(".hof"), c = np?.querySelector(".n canvas");
+  const np = document.querySelector(".np"), w = np?.querySelector(".words"), hof = w?.querySelector(".hof"), c = np?.querySelector(".n canvas");
   if (!c || !hof || !np.offsetParent) return;
   const z = zoomOf(), size = parseFloat(getComputedStyle(np.querySelector(".n")).fontSize) || 28;
   w.style.transform = "none";
@@ -877,7 +881,7 @@ function tabMark() {
 addEventListener("resize", () => { if (NEWDESKS.length && DESK.id !== "one") mountMini(); });
 let miniKey = "", unmountMini = () => {};
 function mountMini() {
-  const n = document.querySelector("#dtop .np .n"); if (!n || !E) return;
+  const n = document.querySelector(".np .n"); if (!n || !E) return;
   const size = parseFloat(getComputedStyle(n).fontSize) || 28, key = `${E.date}|${size}`;
   if (key === miniKey && n.querySelector("canvas")) return;
   miniKey = key; unmountMini(); unmountMini = () => {};
@@ -1021,6 +1025,7 @@ const isDark = () => { const r = document.documentElement; return r.getAttribute
 const chosen = () => { try { return localStorage.getItem("h1400-theme"); } catch { return null; } };
 function setTheme(mode) {
   const r = document.documentElement;
+  if (GLASS) mode = "light";
   if (r.getAttribute("data-theme") !== mode) r.setAttribute("data-theme", mode);
   // the phone's own bar takes the paper's colour
   const paper = getComputedStyle(r).getPropertyValue("--paper").trim();
@@ -1028,6 +1033,7 @@ function setTheme(mode) {
   dthemeLabel();
 }
 function followSun() {
+  if (GLASS) return setTheme("light");
   if (chosen()) return;
   const h = CFG?.weather?.always?.[0]; if (!h) return;
   setTheme(h1400Day(h.lat, h.lon, Date.now())[0] ? "light" : "dark");

@@ -78,7 +78,9 @@ export function assemble({ app = read("public/app.js"), styles = read("public/st
   rep('${fixturesBlock()}</div>`, "Next 7 days · IST")', '${fixturesV2()}</div>`, "Next 7 days · IST")');
   rep("fixtures: fixturesBlock,", "fixtures: fixturesV2,");
   const css = styles.replace(/border-radius:([^;}]+)/g, (m, v) => "border-radius:" + v.replace(/(\d+(?:\.\d+)?)px/g, (x, n) => (Number(n) >= 99 ? "3px" : Number(n) > 4 ? "4px" : x)))
-    + "\n" + FONTS() + "\n" + read("v2/v2.css");
+    + "\n" + FONTS() + "\n" + read("v2/v2.css")
+    // the Glass look (Direction 10, behind ?glass from 20 Oct 2026): every rule scoped under html.look-glass
+    + "\n" + read("v2/glass.css");
   return { js, css, head: read("v2/head.html") };
 }
 
@@ -90,13 +92,20 @@ export function withV2(html, head, js, css, home = null) {
   const a = html.indexOf('<link rel="preconnect" href="https://fonts.googleapis.com">'), m = html.match(/<link rel="stylesheet" href="\/styles\.css[^"]*">/);
   if (a < 0 || !m || m.index < a) throw new Error("index.html: the stylesheet links are not where v2 expects them");
   const v1head = html.slice(a, m.index + m[0].length), app = html.match(/<script type="module" src="\/app\.js[^"]*"><\/script>/);
-  if (!app || !html.includes("<body>\n")) throw new Error("index.html: the script or body is not where v2 expects it");
+  if (!app || !html.includes("<body>\n") || !html.includes("</head>\n")) throw new Error("index.html: the script or body is not where v2 expects it");
   return html
     .replace("</title>\n", () => `</title>\n${decide}\n${home ? night(home) : ""}`)
     .replace(v1head, () => `<script>document.write(window.H1400V2?${tag(`<link rel="stylesheet" href="${css}">`)}:${tag(v1head)})</script>`)
+    .replace("</head>\n", () => `${GLASS}\n</head>\n`)
     .replace("<body>\n", () => `<body>\n<script>if(window.H1400V2)document.write(${tag(head)})</script>\n`)
     .replace(app[0], () => `<script>document.write(window.H1400V2?${tag(`<script type="module" src="${js}"></script>`)}:${tag(app[0])})</script>`);
 }
+
+// The Glass look (Parth, 20 Oct 2026: Direction 10, "Glass, Swiss-tuned", to try on the real paper before deciding):
+// /?glass turns it on and this device remembers it (h1400-look), /?glass=off turns it off, and ?v1 still wins. It runs
+// last in the head, after a saved Night/Day choice and the sun, because the look has one mid-tone theme and no night:
+// html gets the class look-glass (v2/glass.css scopes every rule under it) and data-theme="light", before first paint.
+const GLASS = `<script>(function(){var q=location.search,k="h1400-look",m=q.match(/[?&]glass(?:=([^&]*))?(?:&|$)/),off=!!m&&/^(off|0|no)$/.test(m[1]||""),G=!!m&&!off;try{if(off)localStorage.removeItem(k);else if(m)localStorage.setItem(k,"glass");G=localStorage.getItem(k)==="glass"}catch(e){}if(window.H1400V2&&G){var r=document.documentElement;r.classList.add("look-glass");r.setAttribute("data-theme","light")}})()</script>`;
 
 // Night by the sun (Parth, 2 Oct: "auto-dark at night, chosen before the page appears"): before the first paint, a v2
 // page with no theme chosen on this device takes day or night from the home city's sunrise and sunset. A choice made

@@ -1,0 +1,425 @@
+/* ================================================================ THE GLASS LOOK (Direction 10, "Glass, Swiss-tuned")
+   Behind /?glass from 20 Oct 2026 (v2/README.md, DECISIONS.md): Parth picked it from the redesign mockups and asked to
+   see it on the real paper before deciding. The same blocks, order, navigation, live data and behaviours as v2; only the
+   look changes: one mid-tone theme with no night, a floating frosted desk bar, data and stories on flat cards, big
+   figures in Libre Franklin, flat desk colour (the desk's opening card, a small square by each heading), everything
+   flush left. Every rule here is scoped under html.look-glass (tests/glass.test.mjs), so without the class the page is
+   exactly v2. */
+
+/* ---------- one mid-tone theme (the class comes with data-theme="light"; these win over any night token) ---------- */
+html.look-glass:root,html.look-glass:root[data-theme]{
+  --paper:#e3e0d9;--sheet:#f2f0eb;--surface:#e9e6df;--surface2:#dcd8cf;--ink:#151411;--ink2:#4d4a43;--muted:#5c5850;--rule:#cdc8be;--rule2:#dedad1;
+  --good:#0a6e3c;--bad:#b3231b;--inverse:#151411;--on-inverse:#f2f0eb;
+  /* the desk colours are v2's; three are a step darker so their text passes 4.5:1 on the ground as well as on a card */
+  --d-one:#15140f;--d-news:#1f3f73;--d-home:#08679a;--d-sport:#a9400c;--d-tech:#6a3fb5;--d-money:#9b2f6e;--d-off:#7e5b00;
+  --g-card:#f2f0eb;--g-card2:#e9e6df;--g-track:rgba(21,20,17,.10);--g-r:12px;--g-r2:8px;--g-gap:24px;--g-p:24px;
+  --g-gut:clamp(16px,3vw,40px);
+  --shadow:0 18px 40px -18px rgba(40,30,15,.35);
+  color-scheme:light;
+}
+html.look-glass body{background:var(--paper);-webkit-font-smoothing:antialiased}
+html.look-glass #dtheme,html.look-glass #dauto{display:none!important}
+
+/* ---------- run line ---------- */
+html.look-glass .drun{padding:9px 0 7px;font:400 13px/1.4 var(--sans);color:var(--muted);font-variant-numeric:tabular-nums}
+html.look-glass #r-date{font-weight:600;color:var(--ink)}
+html.look-glass #r-now{font-weight:600;color:var(--ink)}
+html.look-glass #r-read b{color:var(--ink2)}
+
+/* ---------- Page One's nameplate: flush left on the grid, under one solid rule ---------- */
+html.look-glass body.on-one #bigplate{justify-content:flex-start;border-top:2px solid var(--ink);padding:10px 0 0}
+
+/* ---------- the floating frosted desk bar: the small nameplate, the desks as pills, the live figures ---------- */
+html.look-glass .dbar{display:none}
+html.look-glass nav.dtabs{position:sticky;top:10px;z-index:30;display:flex;align-items:center;gap:20px;box-sizing:border-box;
+  width:min(calc(100% - 2 * var(--g-gut)),calc(var(--pw,1240px) - 2 * var(--g-gut)));margin:8px auto 0;min-height:50px;padding:5px 10px 5px 18px;
+  border:0;border-radius:18px;background:rgba(242,240,235,.66);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 0 0 1px rgba(255,255,255,.3),0 10px 28px -14px rgba(40,30,15,.28),0 1px 2px rgba(40,30,15,.06)}
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){html.look-glass nav.dtabs{background:rgba(242,240,235,.97)}}
+html.look-glass body.on-one nav.dtabs{padding-left:8px}
+/* the nameplate and the live figures sit in the bar now: v2's tab styling is not theirs */
+html.look-glass nav.dtabs>a.np,html.look-glass nav.dtabs .now a{border:0;background:none;text-align:left;text-transform:none;letter-spacing:0;white-space:nowrap}
+html.look-glass nav.dtabs>a.np{display:inline-flex;flex:none;padding:2px 2px 2px 0;font:inherit;color:var(--ink)}
+html.look-glass nav.dtabs .now a{display:inline-block;padding:0;font:inherit;color:var(--ink)}
+html.look-glass body.on-one nav.dtabs .np{display:none}
+html.look-glass nav.dtabs ol{display:flex;flex:0 1 auto;gap:2px;margin:0;padding:3px;max-width:none;border-radius:999px;background:rgba(21,20,17,.055);min-width:0;overflow-x:auto;scrollbar-width:none}
+html.look-glass nav.dtabs ol::-webkit-scrollbar{display:none}
+html.look-glass nav.dtabs li{flex:none}
+html.look-glass nav.dtabs ol a{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 13px;border:0;border-radius:999px;background:none;
+  font:500 15px/1 var(--sans);letter-spacing:0;text-transform:none;color:var(--ink2);text-align:left;white-space:nowrap}
+html.look-glass nav.dtabs ol a::before{content:"";width:8px;height:8px;flex:none;background:var(--c)}
+html.look-glass nav.dtabs ol a:hover{background:rgba(255,255,255,.6)}
+html.look-glass nav.dtabs ol a[aria-current]{background:var(--c);color:#fff;font-weight:600}
+html.look-glass nav.dtabs ol a[aria-current]::before{background:#fff}
+html.look-glass nav.dtabs ol a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+html.look-glass nav.dtabs .tmk{padding-top:0}
+html.look-glass nav.dtabs .now{flex:none;display:flex;gap:18px;margin-left:auto;padding-right:8px;font:400 14px/1.2 var(--sans);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink)}
+html.look-glass nav.dtabs .now .k{font:600 11.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+html.look-glass nav.dtabs .now b{font-weight:700}
+
+/* ---------- cards ---------- */
+html.look-glass .layout{padding-top:14px}
+/* (each list is :where(), so the rules after it can set a block's own padding) */
+html.look-glass :where(.p1 .stack>section,.p1 .stack>#p1-eve:not(:empty),.p1 .stack>#p1-since:not(:empty),.p1end){background:var(--g-card);border-radius:var(--g-r)}
+html.look-glass #main :where(section.sec>[data-live]:not(:empty),article.story,.item,.dlead .lead-story,.signal){background:var(--g-card);border-radius:var(--g-r);padding:20px var(--g-p) var(--g-p);border:0}
+html.look-glass #main .signal{border:1px dashed color-mix(in srgb,var(--ink) 30%,transparent)}
+
+/* section heads: one solid rule, the name in ink with a square in the desk's colour, the line beside it */
+html.look-glass section.sec{margin-top:56px}
+html.look-glass section.sec:first-of-type{margin-top:40px}
+html.look-glass .sechead{border-top:2px solid var(--ink);padding:14px 0 0;margin-bottom:var(--g-gap)}
+html.look-glass .sechead>div{display:flex;flex-wrap:wrap;column-gap:var(--g-gap);row-gap:4px;align-items:baseline}
+/* the name takes four of the twelve columns (more when it needs them); the line starts on the fifth */
+html.look-glass .sechead h2{flex:0 0 auto;min-width:calc((100% - 11 * var(--g-gap)) / 3 + 3 * var(--g-gap));display:flex;align-items:center;gap:14px;font:600 40px/1.1 var(--hl);letter-spacing:-.01em;color:var(--ink)}
+html.look-glass .sechead h2::before{content:"";width:14px;height:14px;flex:none;background:var(--d)}
+html.look-glass .sechead span{flex:1 1 300px;margin:0;font:italic 400 19px/1.3 var(--hl);color:var(--ink2)}
+
+/* ---------- desks: the flat colour card at the top ---------- */
+html.look-glass .dopen{margin-top:20px;padding:28px var(--g-p) 24px;border-radius:14px;background:var(--d);color:#fff}
+html.look-glass .dopen h1{font:600 120px/.9 var(--hl);letter-spacing:-.03em;color:#fff}
+html.look-glass .dopen .asub{color:rgba(255,255,255,.88)}
+html.look-glass .jump{display:flex;flex-wrap:wrap;gap:6px;margin-top:28px;font:500 15px/1 var(--sans)}
+html.look-glass .jump a{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:var(--g-r2);background:rgba(255,255,255,.15);color:#fff}
+html.look-glass .jump a:not(:last-child)::after{content:none}
+html.look-glass .jump a:hover{background:rgba(255,255,255,.26);color:#fff;text-decoration:none}
+
+/* ---------- the next desk and the foot ---------- */
+html.look-glass .nextdesk{border-top:2px solid var(--ink)}
+html.look-glass .dfoot{border-top:1px solid var(--rule)}
+
+/* ---------- Page One: the same blocks, balanced by balanceOne, each on its card ---------- */
+html.look-glass .p1{--g-gap:20px}
+html.look-glass .p1body{gap:var(--g-gap);padding:0 0 var(--g-gap)}
+html.look-glass .p1 .stack{gap:var(--g-gap)}
+html.look-glass .p1 .stack>section,html.look-glass .p1 .stack>#p1-eve:not(:empty){padding:14px 20px 16px}
+html.look-glass .p1 .bh{align-items:center;margin:0 0 10px;padding-top:0;border-top:0}
+html.look-glass .p1 .bh h2{display:flex;align-items:center;gap:10px;font:600 22px/1.1 var(--hl);letter-spacing:-.01em;color:var(--ink)}
+html.look-glass .p1 .bh h2::before{content:"";width:12px;height:12px;flex:none;background:var(--c,var(--ink))}
+html.look-glass .p1 .bh a{font:600 13.5px var(--sans);color:var(--c,var(--ink))}
+html.look-glass .p1 .bh a:hover{text-decoration:underline;text-underline-offset:3px}
+html.look-glass #p1-minute .bh{gap:4px}
+html.look-glass #p1-minute .bh a,html.look-glass .p1 #p1-minute .bh .say{display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border-radius:var(--g-r2);background:rgba(21,20,17,.055);font:500 13.5px/1 var(--sans);color:var(--ink2)}
+html.look-glass .p1 #p1-minute .bh .say{margin-left:auto}
+html.look-glass #p1-minute .bh a:hover,html.look-glass .p1 #p1-minute .bh .say:hover{background:rgba(21,20,17,.1);color:var(--ink);text-decoration:none}
+html.look-glass .p1 #p1-minute .bh .say[aria-pressed="true"]{background:var(--ink);color:var(--g-card)}
+/* the day in a minute: the lead large, the lines under one solid rule */
+html.look-glass .p1 .leadh{margin:0 0 12px}
+html.look-glass .p1 .leadh .lab{font:700 11.5px var(--sans);letter-spacing:.09em}
+html.look-glass .p1 .leadh h3{margin-top:3px;font:600 26px/1.13 var(--hl);letter-spacing:-.012em}
+html.look-glass .p1 ol.min{border-top:2px solid var(--ink);column-gap:var(--g-gap)}
+html.look-glass .p1 ol.min a{padding:6px 0 7px;border-top:1px solid var(--rule2)}
+html.look-glass .p1 ol.min li:first-child a{border-top:0}
+html.look-glass .p1 ol.min .lab{font:700 10.5px var(--sans);letter-spacing:.09em}
+html.look-glass .p1 ol.min b{font:500 15.5px/1.3 var(--hl);font-variation-settings:"opsz" 16}
+html.look-glass .p1 ol.min b strong{font-weight:600}
+/* Sport this week */
+html.look-glass .p1 ul.rows li{grid-template-columns:62px 1fr;padding:5px 0;border-top:1px solid var(--rule2);font:400 13px/1.35 var(--sans);color:var(--ink2)}
+html.look-glass .p1 ul.rows li:first-child{border-top:0;padding-top:0}
+html.look-glass .p1 ul.rows .lab{font:700 10.5px var(--sans);letter-spacing:.09em;color:var(--c)}
+html.look-glass .p1 ul.rows b{font:600 14.5px/1.25 var(--sans);color:var(--ink)}
+/* Money: the Sensex big and solid */
+html.look-glass .p1 .mny .sx{flex-wrap:wrap;align-items:flex-end;column-gap:12px;row-gap:2px}
+html.look-glass .p1 .mny .sx .k:first-child{flex-basis:100%;font:700 11.5px var(--sans);letter-spacing:.1em;color:var(--ink2)}
+html.look-glass .p1 .mny .sx b{font:700 46px/.86 var(--sans);letter-spacing:-.045em;font-variant-numeric:tabular-nums lining-nums;margin-left:-2px}
+html.look-glass .p1 .mny .sx span.tnum{display:inline-flex;align-items:center;height:24px;padding:0 8px;margin-bottom:2px;border-radius:3px;font:700 14px/1 var(--sans);background:rgba(21,20,17,.07)}
+html.look-glass .p1 .mny .sx span.tnum.dn{background:rgba(179,35,27,.12)}
+html.look-glass .p1 .mny .sx span.tnum.up{background:rgba(10,110,60,.13)}
+html.look-glass .p1 .mny .sx .k:last-child{margin-bottom:6px}
+html.look-glass .p1 .mny .mst{margin:7px 0 4px;font:400 13px/1.4 var(--sans);color:var(--ink2)}
+html.look-glass .p1 .mny table{margin-top:4px;border-top:2px solid var(--ink);font:400 14.5px/1.3 var(--sans);font-variant-numeric:tabular-nums}
+html.look-glass .p1 .mny thead{display:none}
+html.look-glass .p1 .mny td{padding:4px 0;border-top:1px solid var(--rule2)}
+html.look-glass .p1 .mny tbody tr:first-child td{border-top:0}
+html.look-glass .p1 .mny td.l{font-weight:600}
+html.look-glass .p1 .mny td.v{color:var(--ink);font-weight:400}
+html.look-glass .p1 .mny td.r{font-weight:600;width:68px}
+html.look-glass .p1 .fear{gap:var(--g-gap);margin-top:2px;padding-top:8px;border-top:1px solid var(--rule2);font:600 11px/1.4 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+html.look-glass .p1 .fear span{flex:1}
+html.look-glass .p1 .fear span b{margin-top:0;font:700 19px/1.1 var(--sans);letter-spacing:-.02em;text-transform:none}
+/* Weather: the temperature big and solid */
+html.look-glass .p1 .wx3 .wxplace{color:var(--ink2)}
+html.look-glass .p1 .wx3 .now{gap:16px;align-items:flex-start}
+html.look-glass .p1 .wx3 .t{font:700 54px/.84 var(--sans);letter-spacing:-.05em;font-variant-numeric:tabular-nums lining-nums;margin-left:-3px}
+html.look-glass .p1 .wx3 .c b{font:italic 400 17px/1.25 var(--hl)}
+html.look-glass .p1 .wx3 .reads,html.look-glass .p1 .wx3 .elsewhere{border-color:var(--rule2)}
+/* The market expects: the odds big, flat bars on a track, the card itself the forecast's dashed box */
+html.look-glass .p1 #p1-bets{border:1px dashed color-mix(in srgb,var(--ink) 30%,transparent)}
+html.look-glass .p1 #p1-bets [data-p1="bets"]{border:0;padding:0}
+html.look-glass .p1 ol.bets li{display:grid;grid-template-columns:auto max-content minmax(40px,1fr);column-gap:12px;row-gap:2px;align-items:baseline;padding:8px 0;border-top:1px solid var(--rule2)}
+html.look-glass .p1 ol.bets .o{display:contents}
+html.look-glass .p1 ol.bets .t{grid-column:2/4;grid-row:1}
+html.look-glass .p1 ol.bets .o b{grid-column:1;grid-row:1/3;align-self:end}
+html.look-glass .p1 ol.bets .o span:not(.bar){grid-column:2;grid-row:2;font:600 14px/1.2 var(--sans);color:var(--ink)}
+html.look-glass .p1 ol.bets .bar{grid-column:3;grid-row:2}
+html.look-glass .p1 ol.bets li:first-child{padding-top:0;border-top:0}
+html.look-glass .p1 ol.bets .t{font:500 13.5px/1.3 var(--sans);color:var(--ink2)}
+html.look-glass .p1 ol.bets .o b{font:700 30px/1 var(--sans);letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+html.look-glass .p1 ol.bets .bar{align-self:center;height:8px;margin:0;border-radius:0;background:var(--g-track)}
+html.look-glass .p1 ol.bets .bar i{border-radius:0}
+/* the House Note and the foot */
+html.look-glass .p1end{border-top:0;padding:6px 20px;column-gap:var(--g-gap)}
+html.look-glass .p1end .hn{border-top:0;font:400 15px/1.42 var(--serif);padding:6px 0}
+html.look-glass .p1end .hn b{font:700 11.5px var(--sans);letter-spacing:.09em;color:var(--ink2);min-width:96px}
+html.look-glass .p1end .foot{border-top:0;font:500 13px var(--sans);color:var(--ink2)}
+html.look-glass .p1end .foot nav{column-gap:14px}
+html.look-glass .p1end .foot nav a{text-decoration:underline;text-decoration-color:rgba(21,20,17,.3);text-underline-offset:4px}
+html.look-glass .p1end .foot a.next{background:var(--ink);color:var(--g-card);border:0;border-radius:var(--g-r2);padding:12px 16px;font:600 14px var(--sans)}
+
+/* ---------- desks: blocks in a section, one gap apart ---------- */
+html.look-glass #main section.sec{display:flex;flex-direction:column;gap:var(--g-gap)}
+html.look-glass #main section.sec>*{margin-top:0;margin-bottom:0}
+html.look-glass #main section.sec>:empty,html.look-glass #main section.sec>.signal-slot:not(:has(.signal)){display:none}
+html.look-glass #main section.sec>.sechead{margin-bottom:0}
+html.look-glass #main .after-data{margin-top:var(--g-gap)}
+html.look-glass #main :is(.cols2,.cols3){gap:var(--g-gap);background:none}
+html.look-glass #main :is(.cols2,.cols3)>*{min-width:0}
+html.look-glass #main :not(.cols2):not(.cols3)>.item+.item,html.look-glass #main .stack>.story+.story{margin-top:var(--g-gap)}
+html.look-glass #main .dlead{margin:0;padding:0;border:0}
+
+/* stories on cards */
+html.look-glass #main .kick,html.look-glass #main .item .tag{font:700 11.5px/1.3 var(--sans);letter-spacing:.09em}
+html.look-glass #main .story h3{font:600 26px/1.16 var(--hl);letter-spacing:-.008em;text-wrap:pretty}
+html.look-glass #main .lead-story h2{font-weight:600;letter-spacing:-.012em;text-wrap:balance}
+html.look-glass #main .item h4{font-family:var(--hl);font-weight:600;letter-spacing:-.006em}
+html.look-glass #main .by{font:600 11.5px/1.3 var(--sans);font-variant-caps:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:10px 0 14px;padding-bottom:12px;border-bottom:1px solid var(--rule2)}
+html.look-glass #main .lead-story p.first::first-letter,html.look-glass #main .sec .story:first-of-type>.body>p:first-child::first-letter{color:var(--d)}
+html.look-glass #main .why{border-radius:var(--g-r2);padding:14px 16px 15px;background:color-mix(in srgb,var(--d) 9%,var(--g-card))}
+html.look-glass #main .why b{color:var(--d)}
+html.look-glass #main .why.good{background:color-mix(in srgb,var(--good) 12%,var(--g-card))}
+html.look-glass #main .why.bad{background:color-mix(in srgb,var(--bad) 10%,var(--g-card))}
+html.look-glass #main .why.good b{color:var(--good)}
+html.look-glass #main .why.bad b{color:var(--bad)}
+html.look-glass #main .tools{gap:6px;margin-top:20px}
+html.look-glass #main .tools button,html.look-glass #main .tools a{display:inline-flex;align-items:center;height:auto;min-height:40px;margin:0;padding:0 14px;border:0;border-radius:var(--g-r2);background:rgba(21,20,17,.06);color:var(--ink);font:500 14px/1 var(--sans);text-decoration:none;cursor:pointer}
+html.look-glass #main .tools button:hover,html.look-glass #main .tools a:hover{background:rgba(21,20,17,.11)}
+html.look-glass #main .tools .rm{background:var(--d);color:#fff;font-weight:600}
+html.look-glass #main .tools .rm:hover{background:var(--d);filter:brightness(1.1)}
+html.look-glass #main .src a,html.look-glass #main .item .src{font:600 11.5px/1.3 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* drawings: at the top of their card, the credit a small frosted pill on the corner */
+html.look-glass #main figure.art{position:relative}
+html.look-glass #main figure.art figcaption{position:absolute;left:12px;bottom:12px;margin:0;padding:6px 11px;border-radius:999px;font:500 12px/1 var(--sans);letter-spacing:0;text-transform:none;color:var(--ink);
+  background:rgba(242,240,235,.76);-webkit-backdrop-filter:blur(12px) saturate(1.3);backdrop-filter:blur(12px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){html.look-glass #main figure.art figcaption{background:rgba(242,240,235,.94)}}
+html.look-glass #main figure.art img{border-radius:var(--g-r2)}
+html.look-glass #main figure.art.art-brief figcaption{left:6px;bottom:6px;padding:4px 7px;font-size:10.5px}
+/* a story with its drawing: the drawing takes eight of the twelve columns, edge to edge at the card's left; the story
+   reads in the other four (on a phone the drawing heads the card) */
+@media (min-width:900px){
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art){display:grid;align-items:start;padding:0;column-gap:var(--g-gap);
+   grid-template-columns:minmax(0,calc((100% - 11 * var(--g-gap)) * 8 / 12 + 7 * var(--g-gap))) minmax(0,1fr);grid-template-rows:auto auto auto auto 1fr}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art)>*{grid-column:2;min-width:0;max-width:none;padding-right:var(--g-p)}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art)>:first-child{padding-top:26px}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art)>figure.art{grid-column:1;grid-row:1/-1;float:none;width:auto;margin:0;padding:0;align-self:start}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art)>figure.art img{width:100%;height:auto;max-height:calc(var(--vh,100vh) * .7);object-fit:cover;border-radius:var(--g-r) 0 0 var(--g-r)}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art)>.body{columns:auto;overflow:visible}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art)>.tools{align-self:end;padding-bottom:var(--g-p)}
+ html.look-glass #main .dlead>.lead-story:has(>figure.art) h2{font-size:32px;line-height:1.12;margin:4px 0 0;max-width:none}
+ html.look-glass #main .dlead>.lead-story:has(>figure.art) .deck{font-size:18px}
+}
+
+/* Also in: an outlined box, its label on the left, the lines from the fifth column */
+html.look-glass #main .alsoin{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--g-gap);align-items:start;margin:0;padding:20px 0 8px;border:0;border-radius:var(--g-r);box-shadow:inset 0 0 0 1.5px rgba(21,20,17,.13)}
+html.look-glass #main .alsoin h4{grid-column:1/span 4;display:flex;align-items:center;gap:10px;margin:0;padding:5px 0 0 var(--g-p);font:700 11.5px/1.3 var(--sans);letter-spacing:.09em;color:var(--d)}
+html.look-glass #main .alsoin h4::before{content:"";width:10px;height:10px;flex:none;background:var(--d)}
+html.look-glass #main .alsoin ul{grid-column:5/span 8;padding-right:var(--g-p)}
+html.look-glass #main .alsoin li{display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:10px 0 12px;border-top:1px solid var(--rule2);border-bottom:0}
+html.look-glass #main .alsoin li:first-child{border-top:0;padding-top:0}
+html.look-glass #main .alsoin a{font:500 17px/1.4 var(--hl)}
+html.look-glass #main .alsoin small{flex:none;margin:0;font:500 13px/1.3 var(--sans);color:var(--muted)}
+
+/* the forecasts: the dashed box is the card */
+html.look-glass #main #betting [data-live="betting"]{background:none;padding:0;border-radius:0}
+html.look-glass #main #betting [data-live="betting"]>*:first-child{background:var(--g-card);border-radius:var(--g-r);padding:20px var(--g-p) var(--g-p)}
+
+/* the bar on a narrower laptop: tighter pills, the live figures without their labels */
+@media (max-width:1399px) and (min-width:861px){
+ html.look-glass nav.dtabs{gap:14px}
+ html.look-glass nav.dtabs ol a{padding:0 11px;font-size:14.5px;gap:7px}
+ html.look-glass nav.dtabs .now{gap:14px}
+ html.look-glass nav.dtabs .now .k{display:none}
+}
+
+/* The Fixture List: each day on its own card */
+html.look-glass #main #fixtures>[data-live]{background:none;padding:0;border-radius:0}
+html.look-glass #main .agenda.fx3.flowed{gap:var(--g-gap)}
+html.look-glass #main .agenda.fx3 .day{background:var(--g-card);border-radius:var(--g-r);padding:18px var(--g-p) 8px}
+html.look-glass #main .agenda.fx3.flowed .col>.day+.day{margin-top:var(--g-gap)}
+html.look-glass #main .agenda.fx3.flowed .col>.day+.day h3{margin-top:0}
+html.look-glass #main .agenda.fx3 .day h3.big{border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:2px}
+html.look-glass #main .agenda.fx3 .day h3.big .dn{font:700 54px/.8 var(--sans);letter-spacing:-.05em;font-variant-numeric:tabular-nums lining-nums}
+html.look-glass #main .agenda.fx3 .day h3.big .dw{font-size:12px}
+html.look-glass #main .agenda.fx3 li.fx .t{font:700 17px/1.3 var(--sans);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+html.look-glass #main .agenda.fx3 li.on{border-radius:var(--g-r2);background:color-mix(in srgb,var(--c) 9%,var(--g-card))}
+html.look-glass #main .agenda.fx3 .fxm .track,html.look-glass #main .agenda.fx3 .fxm .track i{border-radius:0}
+html.look-glass #main .agenda.fx3 .fxm .track{height:8px;background:var(--g-track)}
+html.look-glass #main .agenda.fx3 .tg{border-radius:3px}
+/* data that sits beside stories (The Crease) is a card too; panels inside a card are a quieter shade */
+html.look-glass #main .split-data>[data-live]:not(:empty){background:var(--g-card);border-radius:var(--g-r);padding:20px var(--g-p) var(--g-p)}
+html.look-glass #main .panel{background:var(--g-card2);border:0;border-radius:var(--g-r2)}
+html.look-glass #main .split{gap:var(--g-gap)}
+/* an Also in that sits inside a column: the same outlined box, its label over its lines */
+html.look-glass #main :not(section.sec)>.alsoin{display:block;padding:16px 20px 6px}
+html.look-glass #main :not(section.sec)>.alsoin h4{padding:0 0 10px}
+html.look-glass #main :not(section.sec)>.alsoin ul{padding:0}
+html.look-glass #main :not(section.sec)>.alsoin li{flex-direction:column;gap:2px}
+/* The Crease on a wide screen: its data's parts join the section's grid (v2), so the next match is a card and the
+   series, the next tour and the sources one card under it */
+@media (min-width:900px){
+ html.look-glass #main #crease .split{row-gap:0}
+ html.look-glass #main #crease .split-data .cz>.cz-next{background:var(--g-card);border-radius:var(--g-r);padding:20px var(--g-p) var(--g-p);align-self:start}
+ html.look-glass #main #crease .split-data .cz>:not(.cz-next){background:var(--g-card);padding-inline:var(--g-p);margin:0}
+ html.look-glass #main #crease .split-data .cz>.cz-next+*{margin-top:var(--g-gap);border-radius:var(--g-r) var(--g-r) 0 0;padding-top:8px}
+ html.look-glass #main #crease .split-data .cz>:last-child{border-radius:0 0 var(--g-r) var(--g-r);padding-bottom:16px}
+}
+html.look-glass #main #crease .split-data .cz>.cz-line{max-width:none}
+html.look-glass #main .split-stories>*+*{margin-top:var(--g-gap)}
+html.look-glass #main .f1-next li{border:0;border-radius:var(--g-r2);background:var(--g-card2)}
+/* The Ledger's board and moods: one card, no boxes inside it */
+html.look-glass #main .board{background:none;border:0;padding:0;border-radius:0}
+html.look-glass #main .mood{background:var(--g-card2);border:0;border-radius:var(--g-r2)}
+html.look-glass #main .board-wrap{margin-bottom:0}
+
+/* ---------- below 900px: a story's drawing heads its card, edge to edge ---------- */
+@media (max-width:899px){
+ html.look-glass #main :is(article.story,.lead-story):has(>figure.art:not(.art-brief)){display:flex;flex-direction:column}
+ html.look-glass #main :is(article.story,.lead-story)>figure.art:not(.art-brief){order:-1;float:none;width:auto;margin:-20px calc(-1 * var(--g-p)) 16px}
+ html.look-glass #main :is(article.story,.lead-story)>figure.art:not(.art-brief) img{width:100%;max-height:none;border-radius:var(--g-r) var(--g-r) 0 0}
+}
+
+/* ---------- phones and small tablets: the bar in two rows, the nameplate and the figures over the desks ---------- */
+@media (max-width:860px){
+ html.look-glass nav.dtabs{flex-wrap:wrap;gap:4px 8px;width:auto;margin:10px 8px 0;padding:6px;top:8px;min-height:0;border-radius:16px}
+ html.look-glass body.on-one nav.dtabs{padding-left:6px}
+ html.look-glass nav.dtabs>a.np{order:1;padding:4px 0 4px 5px}
+ html.look-glass nav.dtabs .now{order:2;gap:10px;padding:4px 5px 4px 0;font-size:14px}
+ /* on a phone the figures keep only their readings (the labels would not fit beside the nameplate) */
+ html.look-glass nav.dtabs .now .k{display:none}
+ html.look-glass body.on-one nav.dtabs .now{display:none}
+ html.look-glass nav.dtabs ol{order:3;flex:1 1 100%;border-radius:12px}
+ html.look-glass nav.dtabs ol a{min-height:44px;padding:0 14px;border-radius:10px}
+}
+@media (max-width:760px){
+ html.look-glass:root{--g-gap:16px;--g-p:18px;--g-r:10px}
+ html.look-glass .drun{padding:8px 0 8px}
+ html.look-glass body.on-one #bigplate{padding-top:14px}
+ html.look-glass .layout{padding-top:14px}
+ html.look-glass .p1{--g-gap:16px}
+ html.look-glass .p1 .stack>section,html.look-glass .p1 .stack>#p1-eve:not(:empty){padding:16px 18px 18px}
+ html.look-glass .p1 .bh{flex-wrap:wrap}
+ html.look-glass .p1 #p1-minute .bh h2{flex-basis:100%;margin-bottom:6px}
+ html.look-glass .p1 #p1-minute .bh .say{margin-left:0}
+ html.look-glass .p1 .leadh h3{font-size:26px}
+ html.look-glass .p1 ol.min b{font-size:17px}
+ html.look-glass .p1 ol.min .lab{font-size:11px}
+ html.look-glass .p1 ul.rows li{font-size:14px}
+ html.look-glass .p1 ul.rows .lab{font-size:11px}
+ html.look-glass .p1 .mny .sx b{font-size:60px}
+ html.look-glass .p1 .wx3 .t{font-size:64px}
+ html.look-glass .p1end{padding:16px 18px 18px}
+ html.look-glass .p1end .hn b{display:block;margin-bottom:4px}
+ html.look-glass .p1end .foot{flex-direction:column;align-items:stretch;gap:12px}
+ html.look-glass .p1end .foot a.next{text-align:center;padding:15px 18px}
+ html.look-glass .dopen{margin-top:16px;padding:22px var(--g-p) 18px;border-radius:var(--g-r)}
+ html.look-glass .dopen h1{font-size:clamp(52px,17vw,76px)}
+ html.look-glass .jump{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:20px calc(-1 * var(--g-p)) 0;padding:0 var(--g-p);row-gap:6px}
+ html.look-glass .jump::-webkit-scrollbar{display:none}
+ html.look-glass .jump a{flex:none;min-height:44px;padding:0 14px;margin:0;font-size:14.5px}
+ html.look-glass section.sec{margin-top:40px}
+ html.look-glass .sechead{padding-top:12px}
+ html.look-glass .sechead h2{min-width:0;font-size:34px}
+ html.look-glass .sechead span{flex-basis:100%;font-size:17px}
+ html.look-glass #main :where(section.sec>[data-live]:not(:empty),article.story,.item,.dlead .lead-story,.signal){padding:16px var(--g-p) 20px}
+ html.look-glass #main :is(article.story,.lead-story)>figure.art:not(.art-brief){margin-top:-16px}
+ html.look-glass #main .tools{flex-wrap:nowrap;gap:5px}
+ html.look-glass #main .tools button,html.look-glass #main .tools a{flex:1 1 auto;justify-content:center;min-height:44px;padding:0 8px;white-space:nowrap}
+ html.look-glass #main .alsoin,html.look-glass #main section.sec>.alsoin{display:block;padding:16px var(--g-p) 6px}
+ html.look-glass #main .alsoin h4{padding:0 0 10px}
+ html.look-glass #main .alsoin ul{padding:0}
+ html.look-glass #main .alsoin li{flex-direction:column;gap:2px}
+ html.look-glass #main .agenda.fx3 .day{padding:16px var(--g-p) 6px}
+}
+@media (max-width:900px){html.look-glass #main :is(.od-films,.od-soon){grid-template-columns:minmax(0,1fr)}}
+@media (max-width:760px){
+ html.look-glass .sechead h2{flex-wrap:wrap;row-gap:4px}
+ html.look-glass #main [data-live]>*{min-width:0}
+}
+@media (max-width:860px){
+ html.look-glass nav.dtabs .now a:first-child{font-size:14px}
+ html.look-glass nav.dtabs .now a{padding-block:12px;margin-block:-12px}
+}
+/* the narrowest phones: the temperature without the sky's word */
+@media (max-width:400px){
+ html.look-glass nav.dtabs .now a:first-child{font-size:0}
+ html.look-glass nav.dtabs .now a:first-child b{font-size:14px}
+}
+@media (max-width:760px){
+ html.look-glass .sechead h2{flex:1 1 100%}
+ /* In Cinemas on a phone card: a critic's line may break between the paper and the name */
+ html.look-glass #main .od-ev{grid-template-columns:84px minmax(0,1fr)}
+ html.look-glass #main .od-cr{flex-wrap:wrap;white-space:normal}
+}
+html.look-glass #main .agenda.fx3:not(.flowed) .day+.day{margin-top:var(--g-gap)}
+@media (max-width:760px){
+ /* a card that holds a table gives it the width it had on the plain page */
+ html.look-glass #main section.sec>[data-live]:has(table):not(:empty),html.look-glass #main .split-data>[data-live]:has(table){padding-inline:10px}
+}
+@media (max-width:760px){
+ html.look-glass #madrid .tbl table{font-size:13px}
+ html.look-glass #madrid .tbl td,html.look-glass #madrid .tbl th{padding-right:4px}
+}
+/* The market expects: the Forecast tag and the way to the Betting Window share a foot row (as in the mockup), so the
+   head is the name alone and never wraps */
+html.look-glass .p1 #p1-bets{position:relative;padding-bottom:50px}
+html.look-glass .p1 #p1-bets .bh h2::after{position:absolute;left:20px;bottom:16px;margin:0}
+html.look-glass .p1 #p1-bets .bh>a{position:absolute;right:20px;bottom:10px;padding:6px 0}
+html.look-glass .p1 #p1-bets ol.bets li:last-child{padding-bottom:12px;border-bottom:1px solid var(--rule2)}
+/* pinned: Page One's tab shows the day in dots (v2); on the look's filled pill they sit on a light pill ringed in ink */
+html.look-glass nav.dtabs.stuck ol a[data-desk="one"]::before{visibility:hidden}
+html.look-glass nav.dtabs.stuck ol a[data-desk="one"][aria-current]{background:rgba(255,255,255,.75);box-shadow:inset 0 0 0 2px var(--ink)}
+html.look-glass .acal .ed a{border:0;border-radius:var(--g-r2);background:var(--g-card)}
+
+/* ---------- Page One on a short laptop window (most of them: a MacBook Air's is 830px): a little more compact, so the
+   page still fits one screen with every line at a size close to v2's ---------- */
+@media (min-width:1001px) and (max-height:899px){
+ html.look-glass body.on-one #bigplate{--np:112px;padding-top:8px}
+ html.look-glass nav.dtabs{min-height:46px;margin-top:6px}
+ html.look-glass nav.dtabs ol a{min-height:34px}
+ html.look-glass .layout{padding-top:12px}
+ html.look-glass .p1{--g-gap:16px}
+ html.look-glass .p1 .stack>section,html.look-glass .p1 .stack>#p1-eve:not(:empty){padding:12px 18px 14px}
+ html.look-glass .p1 #p1-bets{padding-bottom:44px}
+ html.look-glass .p1 #p1-bets .bh h2::after{left:18px;bottom:13px}
+ html.look-glass .p1 #p1-bets .bh>a{right:18px;bottom:7px}
+ html.look-glass .p1 .bh{margin-bottom:8px}
+ html.look-glass .p1 .mny .sx b{font-size:42px}
+ html.look-glass .p1 .wx3 .t{font-size:48px}
+ html.look-glass .p1 ol.bets .o b{font-size:27px}
+ html.look-glass .p1 ol.bets li{padding:6px 0}
+ html.look-glass .p1 .leadh h3{font-size:25px}
+}
+@media (min-width:1001px) and (max-height:899px){
+ html.look-glass .p1 .mny table{font-size:13.5px}
+ html.look-glass .p1 .fear span b{font-size:17px}
+}
+@media (min-width:1001px) and (max-height:779px){
+ html.look-glass body.on-one #bigplate{--np:100px}
+ html.look-glass .p1 .mny .sx .k:first-child{flex-basis:auto;align-self:center;margin-bottom:0}
+ html.look-glass .p1 .mny .sx b{font-size:38px}
+ html.look-glass .p1 .wx3 .t{font-size:44px}
+}
+@media (min-width:1001px) and (max-height:779px){
+ html.look-glass .p1{--g-gap:12px}
+ html.look-glass .p1 .stack>section,html.look-glass .p1 .stack>#p1-eve:not(:empty){padding:10px 16px 12px}
+ html.look-glass .p1 #p1-bets{padding-bottom:40px}
+ html.look-glass .p1 #p1-bets .bh h2::after{left:16px;bottom:11px}
+ html.look-glass .p1 #p1-bets .bh>a{right:16px;bottom:5px}
+ html.look-glass .p1 .bh h2{font-size:20px}
+ html.look-glass .p1 ul.rows li{padding:4px 0}
+ html.look-glass .p1end{padding:2px 16px}
+ html.look-glass .drun{padding:6px 0 5px}
+}
+@media (max-width:760px){
+ html.look-glass .p1 #p1-minute .bh{justify-content:flex-start;gap:6px}
+ html.look-glass .p1 #p1-bets .bh>a{padding:12px 0;bottom:3px}
+}
