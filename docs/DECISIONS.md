@@ -1121,3 +1121,9 @@ Parth picked Direction 10, "Glass, Swiss-tuned", from the redesign mockups and a
 - One mid-tone theme (ground #E3E0D9), no night mode in this look: it is light whatever the sun, the device or a saved Night choice, and the Night/Auto buttons are hidden.
 - What it is: the halftone 1400 flush left under one rule; a floating frosted desk bar (the small nameplate, the desks as pills, the live figures); stories and data on flat 12px cards; drawings at the top of their cards with a frosted credit; big figures in Libre Franklin; the desk's colour as a flat opening card and a square by each heading. Three desk colours are a step darker in this look (Close to Home, Sport, Off Duty) so their text passes 4.5:1 on the ground. Forecasts keep their dashed box and "Forecast" tag (2 Oct).
 - Files: v2/glass.css (every rule under `html.look-glass`, tests/glass.test.mjs), the switch in v2/assemble.mjs, a few gated lines in v2/layer.js. v2/README.md has the details.
+
+## Vercel deployment storage, again (20 Oct 2026)
+Parth, with the usage page at 8.55 of 10 GB Deployment Storage: "go A and B".
+- (A) The 14 Oct skip step was never switched on: `scripts/vercel-ignore.sh` existed and the 14 Oct entry names `vercel.json ignoreCommand`, but the line was missing from vercel.json, so every push to main still built (Vercel's GitHub status shows "Deployment has completed" on docs-only commits of 19 Oct). 56 of the 250 deployments in the 30 days to 20 Oct changed nothing the site uses. vercel.json now has `"ignoreCommand": "bash scripts/vercel-ignore.sh"`.
+- (B) Only the last 14 days of Bunty's art go into a deployment (config `art.keep_days`, was 30): about 15 MB less per deployment (each was about 42 MB, 32 MB of it art). Older days stay in the repository; their editions show no drawings on the site.
+- Build sessions push to main once per approved batch.
