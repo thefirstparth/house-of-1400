@@ -1118,7 +1118,7 @@ async function archiveV2() {
       if (!e) { cells.push(`<li class="${ds > today ? "fut" : "none"}${ds === today ? " today" : ""}"><span class="adn">${d}${ds === today ? `<span class="atoday">Today</span>` : ""}</span></li>`); continue; }
       const strip = (e.desks || []).map(([k, v]) => `<i style="flex:${v};background:var(--d-${k})"></i>`).join("");
       // the figure says what it is (QA panel, 20 Oct 2026), and today's tile says it is today
-      const mk = e.sensex == null ? "" : `<span class="mk ${e.sensex >= 0 ? "rise" : "fall"}" title="Sensex at press time ${e.sensex >= 0 ? "+" : ""}${e.sensex}%"><i></i>Sensex ${e.sensex >= 0 ? "+" : ""}${e.sensex}%</span>`;
+      const mk = e.sensex == null ? "" : `<span class="mk ${e.sensex >= 0 ? "rise" : "fall"}" title="Sensex at press time ${e.sensex >= 0 ? "+" : ""}${e.sensex}%"><i></i><span class="mkl">Sensex </span>${e.sensex >= 0 ? "+" : "\u2212"}${Math.abs(e.sensex)}%</span>`;
       cells.push(`<li class="ed${ds === today ? " today" : ""}"><a href="/e/${ds}"${ds === today ? ' aria-current="date"' : ""}><span class="adn">${d}${ds === today ? `<span class="atoday">Today</span>` : ""}</span>${mk}<b>${esc(e.lead || "")}</b><span class="meta">No. ${e.no}${e.items ? ` · ${e.items} items` : ""}</span>${strip ? `<span class="strip" aria-hidden="true">${strip}</span>` : ""}</a></li>`);
     }
     return `<section class="amonth"><h2>${esc(name(ym))}</h2><ol class="awk" aria-hidden="true">${["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(w => `<li>${w}</li>`).join("")}</ol><ol class="acal">${cells.join("")}</ol></section>`;

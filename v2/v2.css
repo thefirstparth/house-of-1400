@@ -482,6 +482,8 @@ html.vs-open{overflow:hidden}
 .acal .mk{position:absolute;top:10px;right:10px;font:600 11.5px var(--sans);color:var(--muted)}
 .acal .mk i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;vertical-align:1px}
 .acal .mk.rise i{background:var(--good)}.acal .mk.fall i{background:var(--bad)}
+/* the word "Sensex" only where the tile has room for it; on a phone the dot and figure sit in the corner (QA panel round 2) */
+@media (max-width:760px){.acal .mk .mkl{display:none}}
 .acal .fut{opacity:.45}
 .acal b{font:600 14.5px/1.3 var(--hl);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .acal .meta{margin-top:auto;font:500 11.5px var(--sans);color:var(--muted)}
