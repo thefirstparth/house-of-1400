@@ -47,6 +47,15 @@ test("desks: an India story on a general feed is Desh, a world one Videsh", () =
   assert.equal(deskOf(story("North Korea fires missiles towards the sea", ["gn-in-top#4"], 5), F), "videsh");
 });
 
+test("desks: a headline naming Real Madrid is Madridismo's whatever feed carried it; Atlético is not", () => {
+  const F = { ...Object.fromEntries(feeds.map(f => [f.id, f])), "espn-fc": { id: "espn-fc", kind: "news", section: "pitch" }, tm: { id: "tm", kind: "news", section: "pitch" } };
+  const trent = story("Transfer rumors, news: Premier League clubs eye Alexander-Arnold amid Real Madrid uncertainty", ["espn-fc#1", "tm#1"], 3);
+  assert.equal(deskOf(trent, F), "pitch"); // without the club, as on 20 Oct
+  assert.equal(deskOf(trent, F, "Real Madrid"), "madrid");
+  assert.equal(deskOf(story("Atlético Madrid beat Villarreal 2-0", ["espn-fc#2"], 3), F, "Real Madrid"), "pitch");
+  assert.equal(deskOf(story("Arsenal win at Nottingham Forest", ["espn-fc#3"], 3), F, "Real Madrid"), "pitch");
+});
+
 test("a site's subscription banner inside the article body is dropped", () => {
   const body = "Subscribed with another email? Logout and Login with that one. The Hindu On Books Books of the week, reviews, excerpts, new titles and features. " + "The Supreme Court on Monday heard the petition on the electoral rolls. ".repeat(6);
   const html = `<script type="application/ld+json">${JSON.stringify({ articleBody: body })}</script>`;
