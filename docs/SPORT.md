@@ -9,7 +9,8 @@ sides, F1 and Verstappen, India, Alcaraz and Djokovic, the Warriors). Built 10 O
   Each feed's last copy is kept on the phone and shown, marked with its time, until a fresh one arrives.
 - `/sport-sw.js`: the service worker (scope `/sport`): the app's files network-first, crests cache-first.
 - Install: open house14.vercel.app/sport in Safari, Share, Add to Home Screen (Chrome on Android: Install app).
-- Fonts: Barlow Condensed for figures (OFL, `fonts/`), the system font for text.
+- Look: the Glass family (S2, from 20 Oct 2026): `glass.css` over `app.css`, every rule under `html.sglass` (set in the markup), the halftone 1400 nameplate `np-1400.svg` in the top bar. `/sport?classic` keeps the V3 look on a device for a few days (localStorage `sport-look`), `?classic=off` returns. Light, or warm charcoal on the moon button.
+- Fonts (OFL, `fonts/`): Libre Franklin for the interface and figures, Newsreader for headings, UnifrakturMaguntia for the nameplate's "The"; Barlow Condensed for figures in the classic look.
 - Match sheet: tap any result, fixture, session or calendar row (or a result card) for its sheet: the score and
   scorers (or the market), when and where, and Add to calendar for one still to come (`/api/ics`, a text/calendar
   file built from the query; nothing stored).

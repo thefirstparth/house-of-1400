@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-IN">
+<html lang="en-IN" class="sglass">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -8,7 +8,8 @@
 <meta name="description" content="Everything Parth follows: Real Madrid, Formula 1, India, Alcaraz and Djokovic, the Warriors.">
 <meta name="theme-color" content="#f3f3f5" id="themeColor">
 <meta name="color-scheme" content="light">
-<script>try{if(localStorage.getItem("sport-theme")==="dark"){document.documentElement.dataset.theme="dark";document.getElementById("themeColor").content="#000000"}}catch(e){}</script>
+<script>/* the Glass family look is the default (20 Oct 2026); ?classic keeps the V3 look on this device for a few days, ?classic=off ends it */try{var h=document.documentElement,q=location.search;if(/[?&]classic=off(&|$)/.test(q))localStorage.removeItem("sport-look");else if(/[?&]classic(&|=|$)/.test(q))localStorage.setItem("sport-look","classic");if(localStorage.getItem("sport-look")==="classic")h.classList.remove("sglass")}catch(e){}</script>
+<script>try{var g=document.documentElement.classList.contains("sglass"),t=document.getElementById("themeColor");if(g)t.content="#e3e0d9";if(localStorage.getItem("sport-theme")==="dark"){document.documentElement.dataset.theme="dark";t.content=g?"#1c1b18":"#000000"}}catch(e){}</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -17,14 +18,16 @@
 <link rel="manifest" href="/sport/manifest.webmanifest">
 <link rel="icon" href="/sport/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/sport/icon-180.png">
-<link rel="preload" href="/sport/fonts/barlow-condensed-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/sport/fonts/libre-franklin-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://a.espncdn.com" crossorigin>
 <link rel="stylesheet" href="/sport/app.css">
+<link rel="stylesheet" href="/sport/glass.css">
 </head>
 <body>
 <div id="app">
   <header class="top" id="top">
     <div class="top-in">
+      <a class="np14" href="/" aria-label="The House of 1400, the paper"><span class="words" aria-hidden="true"><span class="the">The</span><span class="hof">House of</span></span><img src="/sport/np-1400.svg" alt="" width="66" height="24"></a>
       <div class="top-title" id="topTitle" aria-hidden="true"></div>
       <div class="top-btns">
         <button class="refresh theme" id="theme" type="button" aria-label="Dark mode" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="moon" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/><g class="sun"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></svg></button>

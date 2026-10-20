@@ -1,0 +1,218 @@
+@font-face{font-family:"Libre Franklin";src:url("/sport/fonts/libre-franklin-latin-wght-normal.woff2") format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Libre Franklin";src:url("/sport/fonts/libre-franklin-latin-ext-wght-normal.woff2") format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Newsreader";src:url("/sport/fonts/newsreader-latin-opsz-normal.woff2") format("woff2");font-weight:200 800;font-display:swap}
+@font-face{font-family:"UnifrakturMaguntia";src:url("/sport/fonts/unifrakturmaguntia-latin-400-normal.woff2") format("woff2");font-weight:400;font-display:swap}
+/* ================================================================ Sport, the Glass family look (S2; Parth, 20 Oct 2026)
+   The paper's Glass look on the Sport app (docs/DECISIONS.md, 20 Oct 2026). Laid over app.css, which stays the V3 app:
+   every rule here sits under html.sglass, which index.html sets before first paint. /sport?classic drops the class on
+   this device (localStorage sport-look) and the app is exactly V3 again; /sport?classic=off brings it back.
+   Part one (from mockup S1): the tokens, a mid-tone ground, soft cards with 12px corners and no hard edges, frosted
+   bars with pills, the dark switch in warm charcoal. Part two (S2): the paper's type and identity further down. */
+.np14{display:none}
+html.sglass:root,html.sglass:root[data-theme="light"]{
+  --bg:#e3e0d9;--surface:#f2f0eb;--sunk:#e7e4dd;--ink:#151411;--ink2:#4d4a43;--muted:#5c5850;
+  --line2:rgba(21,20,17,.11);--line:rgba(21,20,17,.2);
+  --live:#bf2319;--win:#0a6e3c;--loss:#b3231b; /* live a step darker than the mockup's #c9261c: 4.5:1 on the ground too */
+  /* the tab colours: flat, each passes 4.5:1 for white text on it and for its own text on a card */
+  --c-home:#a9400c;--football:#7e5b00;--intl:#7e5b00;--f1:#b8231a;--cricket:#08679a;--tennis:#4d6b00;--nba:#3443b8;
+  --glass:rgba(242,240,235,.9);--glass-edge:rgba(21,20,17,.06);--glass-rim:rgba(255,255,255,.6);
+  --g-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 0 0 1px rgba(255,255,255,.3),0 10px 28px -14px rgba(40,30,15,.28),0 1px 2px rgba(40,30,15,.06);
+  --r:12px;--r-s:8px;--track:rgba(21,20,17,.06);
+}
+/* the dark switch (kept, Parth 20 Oct): the same tokens in warm charcoal, set by the moon button (localStorage sport-theme) */
+html.sglass:root[data-theme="dark"]{
+  --bg:#1c1b18;--surface:#262521;--sunk:#302e29;--ink:#f1eee7;--ink2:#cfcabf;--muted:#a39d91;
+  --line2:rgba(241,238,231,.12);--line:rgba(241,238,231,.22);
+  --live:#ff6a5e;--win:#5cc98c;--loss:#ff8077;
+  --c-home:#ef7a3c;--football:#d9b24a;--intl:#d9b24a;--f1:#ff6b5f;--cricket:#5fb0e6;--tennis:#b5cf3c;--nba:#9aa6ff;
+  --glass:rgba(38,37,33,.84);--glass-edge:rgba(255,255,255,.06);--glass-rim:rgba(255,255,255,.08);
+  --g-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 10px 28px -14px rgba(0,0,0,.6);
+  --track:rgba(241,238,231,.08);
+}
+html.sglass body{background:var(--bg)}
+html.sglass :focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* ---------- surfaces: soft cards, no hairline edge ---------- */
+html.sglass :is(.list,.card,.hero,.empty,.kv,.then,.blk>details.more,.x,.rail-in){box-shadow:none}
+html.sglass .hero.is-live{box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--live) 75%,transparent)}
+html.sglass .list+.list,html.sglass .card+.list,html.sglass .list+.card,html.sglass .hero+.list,html.sglass .hero+.card,html.sglass .hero+.hero{margin-top:12px}
+html.sglass .stat,html.sglass .step{background:var(--sunk);border-radius:var(--r-s)}
+html.sglass .mk.photo,html.sglass .mk.mono{box-shadow:none;background:var(--sunk)}
+html.sglass .tag{background:color-mix(in srgb,var(--c) 11%,var(--surface))}
+html.sglass .chip,html.sglass .badge{background:var(--track)}
+html.sglass .badge.ok{background:color-mix(in srgb,var(--win) 12%,var(--surface))}
+html.sglass :is(.badge.sp-tennis,.badge.sp-cricket){background:color-mix(in srgb,var(--c) 11%,var(--surface))}
+html.sglass .skel{background:linear-gradient(90deg,var(--surface) 0,var(--sunk) 50%,var(--surface) 100%);background-size:200% 100%}
+html.sglass .mkt .track i{border-radius:0;background:color-mix(in srgb,var(--c) 26%,var(--sunk))}
+html.sglass .mkt .track i.lead{background:var(--c)}
+html.sglass .mkt .track i.d{background:rgba(21,20,17,.14)}
+html.sglass .mkt .track{height:8px;gap:3px}
+html.sglass .bar-row .tk,html.sglass .rank .tr{border-radius:0;background:var(--track);height:8px}
+html.sglass .bar-row .tk i,html.sglass .rank .tr i{border-radius:0}
+html.sglass .rank .tr i{background:rgba(21,20,17,.22)}
+html.sglass .rank .tr i.lead{background:var(--ink2)}
+html.sglass .rank .tr i.me{background:var(--f1)}
+html.sglass .tbl tr.me td,html.sglass .li.me,html.sglass .bar-row.me,html.sglass .formt .fr.me{background:color-mix(in srgb,var(--ink) 5%,var(--surface))}
+html.sglass .tbl tr.me td{background:color-mix(in srgb,var(--football) 10%,var(--surface))}
+html.sglass .pitch{border-radius:0}
+html.sglass .card.flush{border-radius:var(--r)}
+
+/* ---------- the top bar: at rest the buttons sit on a small frosted pill; once content scrolls under, the whole bar
+   floats, frosted, inset from the edges (the paper's desk bar) ---------- */
+html.sglass .top{animation:none!important;background:transparent;border-bottom:0;padding-top:calc(var(--safe-t) + 6px);transition:none}
+html.sglass .top-in{height:50px;margin:0 8px;padding:0 4px 0 14px;border-radius:18px;grid-template-columns:96px 1fr 96px;transition:background .25s var(--spring-fx),box-shadow .25s var(--spring-fx)}
+html.sglass .top-btns{justify-self:end;gap:0;padding:3px;border-radius:999px;background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);box-shadow:var(--g-shadow)}
+html.sglass .refresh{color:var(--ink)}
+html.sglass .refresh:active{background:var(--track)}
+html.sglass .top.solid .top-in{background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);box-shadow:var(--g-shadow)}
+html.sglass .top.solid .top-btns{background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+html.sglass body:has(.jump) .top.solid .top-in{border-radius:18px 18px 0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){html.sglass{--glass:rgba(242,240,235,.97)}}
+html.sglass main{padding-top:4px}
+
+/* ---------- the jump strip: a frosted track under the bar, the current part a filled pill ---------- */
+html.sglass .jump{top:calc(56px + var(--safe-t));margin:12px -8px 0;padding:0;background:none;box-shadow:none!important}
+html.sglass .jump-in{gap:2px;margin:0;padding:4px;border-radius:16px;background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);box-shadow:var(--g-shadow);scroll-padding:0 8px}
+html.sglass body:has(.top.solid) .jump-in{border-radius:0 0 18px 18px;box-shadow:0 10px 28px -14px rgba(40,30,15,.28),0 1px 2px rgba(40,30,15,.06)}
+html.sglass .jump a{min-height:44px;min-width:44px;justify-content:center;padding:0 14px;border-radius:12px;background:none;box-shadow:none;color:var(--ink2);font-weight:600}
+html.sglass .jump a[aria-current]{background:var(--ink);color:var(--surface)}
+html.sglass .jump a::after{inset:-2px 0}
+
+/* ---------- the tab bar: frosted, 18px corners, the current tab a filled pill ---------- */
+html.sglass .tabs{border-radius:20px;padding:5px;background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);box-shadow:var(--g-shadow),0 0 0 .5px var(--glass-edge)}
+html.sglass .tab-pill{border-radius:15px;background:var(--ink);box-shadow:none}
+html.sglass .tabs a{border-radius:15px;color:var(--ink2);transition:color .25s var(--spring-fx)}
+html.sglass .tabs a[aria-current]{color:var(--surface)}
+
+/* ---------- controls: the day rail and the segmented switches on the same track ---------- */
+html.sglass .rail-in{border-radius:16px;background:var(--surface)}
+html.sglass .rail-pill{border-radius:12px;background:var(--ink)}
+html.sglass .day{border-radius:12px}
+html.sglass .day.on,html.sglass .day.on .dn,html.sglass .day.on b{color:var(--surface)}
+html.sglass .seg{border-radius:12px;background:var(--track);padding:3px}
+html.sglass .seg .thumb{border-radius:9px;background:var(--surface);box-shadow:0 1px 2px rgba(40,30,15,.12)}
+html.sglass .seg button{border-radius:9px;min-height:44px}
+html.sglass .pick{border-radius:12px;min-height:44px;background:var(--surface);box-shadow:none}
+html.sglass .pick.on{background:var(--ink);color:var(--surface)}
+html.sglass .btn{border-radius:12px;background:var(--ink);color:var(--surface)}
+html.sglass .btn.ghost{background:var(--surface);color:var(--ink);box-shadow:none}
+html.sglass .x{background:var(--surface)}
+html.sglass .cal{background:var(--track)}
+html.sglass .stale{background:var(--track)}
+html.sglass .order li b,html.sglass .pod b,html.sglass .fpos{background:var(--sunk);border-radius:6px}
+html.sglass .order li:first-child b,html.sglass .pod span:first-child b,html.sglass .fpos.p1{background:#e2b520;color:#1a1300}
+html.sglass .fpos.p2{background:#bcbab3;color:#15140f}
+html.sglass .fpos.p3{background:#c98a4f;color:#1d1006}
+html.sglass .fpos.none{background:transparent}
+html.sglass .fpos.out{background:color-mix(in srgb,var(--loss) 12%,var(--surface))}
+html.sglass .form i{border-radius:4px}
+html.sglass .form i.D{background:#6f6b62}
+
+/* ---------- sheets: the ground, 18px corners ---------- */
+html.sglass .sheet{background:var(--bg);border-radius:20px 20px 0 0}
+html.sglass .sheet-bg{background:rgba(28,24,16,.34)}
+html.sglass .acts{background:var(--bg);box-shadow:0 -16px 14px -6px var(--bg)}
+
+/* ---------- the laptop: the bar and the strip keep to the column ---------- */
+@media (min-width:700px){
+  html.sglass .top-in{max-width:664px;margin:0 auto}
+  html.sglass .top{padding-top:10px}
+}
+html.sglass[data-theme="dark"] .mkt .track i.d,html.sglass[data-theme="dark"] .rank .tr i{background:rgba(241,238,231,.2)}
+html.sglass[data-theme="dark"] .mkt .track i{background:color-mix(in srgb,var(--c) 30%,var(--sunk))}
+html.sglass[data-theme="dark"] .mkt .track i.lead{background:var(--c)}
+html.sglass[data-theme="dark"] .rank .tr i.lead{background:var(--ink2)}
+html.sglass[data-theme="dark"] .tbl tr.me td{background:color-mix(in srgb,var(--football) 16%,var(--surface))}
+html.sglass[data-theme="dark"] .fpos.p2{background:color-mix(in srgb,#bcbab3 45%,#262521);color:#f1eee7}
+html.sglass[data-theme="dark"] .fpos.p3{background:color-mix(in srgb,#c98a4f 50%,#262521);color:#ffe6cf}
+html.sglass[data-theme="dark"] :is(.fpos.p1,.order li:first-child b,.pod span:first-child b){background:color-mix(in srgb,#e2b520 46%,#262521);color:#fff3c4}
+html.sglass[data-theme="dark"] .form i.D{background:#3a3833;color:#d6d1c6}
+html.sglass[data-theme="dark"] .tbl tr.me td.pos{color:var(--ink2)}
+/* V3's dark form chips, remixed on the charcoal card (20% keeps the W at 4.9:1) */
+html.sglass[data-theme="dark"] .form i.W{background:color-mix(in srgb,var(--win) 20%,#262521)}
+html.sglass[data-theme="dark"] .form i.L{background:color-mix(in srgb,var(--loss) 24%,#262521)}
+
+/* ================================================================ Part two: the Glass family (S2)
+   S1 plus the paper's type and identity: Libre Franklin for the UI and every figure (tabular), Newsreader for page and
+   block headings with a square in the tab's colour, the small halftone 1400 nameplate in the top bar (always frosted,
+   as on the paper), and one flat colour per tab: the current tab, the current part of a page and the heading squares. */
+html.sglass:root{
+  --sans:"Libre Franklin",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --num:"Libre Franklin",system-ui,sans-serif;
+  --hl:"Newsreader",Georgia,serif;--black:"UnifrakturMaguntia","Old English Text MT",serif;
+  --n-row:1.04rem;--n-hero:2.35rem;--n-clock:2.6rem;
+  --tab:var(--c-home);--t-body:.87rem;
+}
+html.sglass body[data-tab="football"]{--tab:var(--football)}
+html.sglass body[data-tab="f1"]{--tab:var(--f1)}
+html.sglass body[data-tab="cricket"]{--tab:var(--cricket)}
+html.sglass body[data-tab="tennis"]{--tab:var(--tennis)}
+html.sglass body[data-tab="nba"]{--tab:var(--nba)}
+html.sglass body{font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.003em}
+
+/* figures: Libre Franklin, solid and tabular (Board was one 700 condensed face; this one is wider, so a step smaller) */
+html.sglass :is(.st b,.ln .sc,.day b,.mid .nums,.mid.cr span,.crs span,.clock,.stat b,.tbl td,.fpos,.rkn,.yr,.pod span,.bar-row b,.bar-row .ps,.formt .ps,.rank .p,.mkt .lab b,.line b,.order li b,.tl .tl-r b,.num,.step .pct,.step .lvp,.vsw,.pl b,.form i){font-family:var(--num);font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums lining-nums}
+html.sglass :is(.mid .nums,.clock){letter-spacing:-.045em;font-weight:700}
+html.sglass .ln .sc,html.sglass .st b{font-weight:650}
+html.sglass .ln.win .sc{font-weight:750}
+html.sglass .st b.w{letter-spacing:-.01em;font-size:.94rem}
+html.sglass .st b.w.l{font-size:.84rem}
+html.sglass .sc.sets{gap:8px}
+html.sglass .tbl td{font-weight:550;font-size:.92rem}
+html.sglass .tbl td.pts{font-weight:700}
+html.sglass .day b{font-size:1.08rem}
+html.sglass .day:disabled b{font-weight:500}
+html.sglass .stat b,html.sglass .crs span,html.sglass .mid.cr span,html.sglass .mid .nums.sm{font-size:1.36rem}
+html.sglass .pl span{font-family:var(--sans);font-weight:600;font-size:.74rem;letter-spacing:-.01em}
+html.sglass .pl b{font-size:.9rem}
+html.sglass .live{letter-spacing:.06em;font-weight:750}
+html.sglass .st.lv b .live{font-family:var(--num);letter-spacing:.02em}
+html.sglass .ln .nm{font-weight:500}
+html.sglass .ln.win .nm{font-weight:700}
+html.sglass :is(.tag,.badge,.chip,.note,.prov,.perf small){letter-spacing:0}
+html.sglass .perf small{letter-spacing:.06em}
+
+/* headings: Newsreader, the paper's square in the tab's colour */
+html.sglass .ph h1{font:600 2.05rem/1.06 var(--hl);letter-spacing:-.018em}
+html.sglass .blk-h{margin:0 2px 10px}
+html.sglass .blk-h h2,html.sglass .who-h h2{display:flex;align-items:center;gap:10px;font:600 1.32rem/1.15 var(--hl);letter-spacing:-.01em}
+html.sglass .blk-h h2::before{content:"";width:11px;height:11px;flex:none;background:var(--tab)}
+html.sglass .sheet-h b{font:600 1.3rem/1.15 var(--hl);letter-spacing:-.01em}
+html.sglass .f1t .big{font:600 1.55rem/1.08 var(--hl);letter-spacing:-.015em}
+html.sglass .sub-h{font-weight:650;letter-spacing:.06em;text-transform:uppercase;font-size:.7rem;color:var(--ink2)}
+html.sglass .sub-h span{letter-spacing:0;text-transform:none;font-size:.76rem}
+html.sglass .srcs summary{text-decoration:underline;text-decoration-color:rgba(21,20,17,.3);text-underline-offset:4px}
+
+/* the top bar: always the floating frosted bar, the small nameplate on the left, the page's name beside it once
+   the page heading scrolls away */
+html.sglass .top-in{grid-template-columns:auto minmax(0,1fr) auto;column-gap:10px;padding:0 3px 0 12px;background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);box-shadow:var(--g-shadow)}
+html.sglass .top-btns{background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0}
+html.sglass .top-title{grid-column:2;text-align:left;font:600 1.02rem/1.2 var(--hl);letter-spacing:-.005em;padding-left:11px;border-left:1px solid var(--line)}
+html.sglass .np14{grid-column:1;grid-row:1;display:inline-flex;align-items:center;gap:6px;min-height:44px;color:var(--ink);text-decoration:none;white-space:nowrap}
+html.sglass .np14 .words{display:flex;flex-direction:column;align-items:center;gap:1px}
+html.sglass .np14 .the{font:400 19px/.9 var(--black)}
+html.sglass .np14 .hof{font:600 7.5px/1 var(--sans);letter-spacing:.32em;text-transform:uppercase;margin-right:-.32em}
+html.sglass .np14 img{display:block;height:25px;width:auto}
+html.sglass[data-theme="dark"] .np14 img{filter:brightness(1.35) saturate(.9)}
+
+/* one flat colour per tab */
+html.sglass .tab-pill{background:var(--tab);transition:transform .5s var(--spring),background .3s var(--spring-fx)}
+html.sglass .tabs a[aria-current]{color:#fff}
+html.sglass .tabs a{font-weight:600}
+html.sglass .jump a[aria-current]{background:var(--tab);color:#fff}
+html.sglass[data-theme="dark"] .tabs a[aria-current],html.sglass[data-theme="dark"] .jump a[aria-current]{color:#15140f}
+html.sglass .pick{font-weight:600}
+html.sglass .ph{padding-top:16px}
+html.sglass .clock small{letter-spacing:0}
+@media (min-width:700px){
+  html.sglass .np14 .the{font-size:22px}
+  html.sglass .np14 .hof{font-size:8.5px}
+  html.sglass .np14 img{height:30px}
+}
+/* the narrowest phones (375): the day rail reaches 6px into the gutter on a 2px track, so each of its eight days stays a
+   44px target (V3's 4px track left them 42px wide) */
+@media (min-width:360px) and (max-width:399px){
+  html.sglass body:not(.big) .rail{margin-left:-6px;margin-right:-6px}
+  html.sglass body:not(.big) .rail-in{padding:2px}
+  html.sglass body:not(.big) .rail-pill{top:2px;bottom:2px;left:2px;width:calc((100% - 4px) / 8)}
+}

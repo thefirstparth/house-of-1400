@@ -1,8 +1,8 @@
 // The Sport app's service worker (scope /sport): the app's own files network-first with the last copy as a fallback,
 // so an update shows at once and the app still opens offline; team crests cache-first. Live data is never cached
 // here: the app keeps its own last copy of each feed, marked with its time.
-const CACHE = "sport-v3f";
-const SHELL = ["/sport", "/sport/app.css", "/sport/app.js", "/sport/js/core.js", "/sport/js/ui.js", "/sport/js/views.js", "/sport/js/morph.js", "/sport/manifest.webmanifest", "/sport/icon.svg", "/sport/fonts/barlow-condensed-latin-700-normal.woff2", "/sport/fonts/barlow-condensed-latin-600-normal.woff2", "/sport/fonts/barlow-condensed-latin-500-normal.woff2"];
+const CACHE = "sport-v4a"; // v4a: the Glass family look (glass.css, its fonts, the 1400 nameplate), 20 Oct 2026
+const SHELL = ["/sport", "/sport/app.css", "/sport/glass.css", "/sport/np-1400.svg", "/sport/app.js", "/sport/js/core.js", "/sport/js/ui.js", "/sport/js/views.js", "/sport/js/morph.js", "/sport/manifest.webmanifest", "/sport/icon.svg", "/sport/fonts/barlow-condensed-latin-700-normal.woff2", "/sport/fonts/barlow-condensed-latin-600-normal.woff2", "/sport/fonts/barlow-condensed-latin-500-normal.woff2", "/sport/fonts/libre-franklin-latin-wght-normal.woff2", "/sport/fonts/libre-franklin-latin-ext-wght-normal.woff2", "/sport/fonts/newsreader-latin-opsz-normal.woff2", "/sport/fonts/unifrakturmaguntia-latin-400-normal.woff2"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith("sport-") && k !== CACHE && k !== CACHE + "-img").map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", e => {
