@@ -61,6 +61,8 @@ D.prototype=R.prototype;D.now=function(){return R.now()+O};D.parse=R.parse;D.UTC
   for (const d of DESKS) {
     if (mode === "v2" && d !== DESKS[0]) { await p.click(`#dtabs a[data-desk="${d}"]`); await p.waitForTimeout(900); }
     await p.evaluate(() => document.querySelectorAll("img[loading=lazy]").forEach(i => (i.loading = "eager"))); await p.waitForTimeout(400);
+    // every drawing decoded, so a shot never catches its empty box
+    await p.evaluate(() => Promise.race([Promise.all([...document.querySelectorAll("#main img")].map(i => i.decode().catch(() => {}))), new Promise(r => setTimeout(r, 4000))]));
     const name = `${wh}-${theme}-${d}`;
     await p.screenshot({ path: `${O}${name}-top.png` });
     if (!touch || d === "one" || mode === "v1" || process.env.FULL) await p.screenshot({ path: `${O}${name}-full.png`, fullPage: true, scale: "css" });

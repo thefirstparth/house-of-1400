@@ -655,9 +655,74 @@ function setZoom(z, w) {
 // up to 1920px of layout so lines never run too long on an ultra-wide screen.
 function fitDesk() {
   const W = innerWidth, H = innerHeight;
-  if (W < 1100) return setZoom(1, 0);
-  const z = Math.max(1, Math.min(W / 1440, H / 760, 1.8));
-  setZoom(z, Math.min(W / z, 1920));
+  if (W < 1100) setZoom(1, 0);
+  else { const z = Math.max(1, Math.min(W / 1440, H / 760, 1.8)); setZoom(z, Math.min(W / z, 1920)); }
+  if (GLASS) glassArt();
+}
+// GLASS: a story's drawing beside its text (Parth, 20 Oct 2026, on a News lead whose text ran far below its drawing:
+// "fix it dynamically, irrespective of whether the image exists or not"; and the drawings are never cropped). Each card
+// tries its drawing at 62% down to 30% of its width, never wider than the file stays sharp (820px on screen, or the
+// file's width / 1.4 if more), measures the text column at each and keeps the width at which the drawing and the text
+// are nearest the same height. If the text is still more than 1.35 times the drawing's height, the card flows instead
+// (glass.css g-flow): the headline across, the drawing heading the first of two text columns. The drawing is always
+// shown whole at its own shape. Runs on every desk fit (a resize, a desk, the live refresh), when the fonts arrive,
+// when Read more opens or closes and when a drawing lands or goes.
+const GART = { hi: 0.62, lo: 0.3, step: 0.02, tall: 1.35, sharp: 820, flowAt: 1000 };
+function glassArt() {
+  if (!GLASS) return;
+  const z = parseFloat(document.getElementById("layout")?.style.zoom) || 1;
+  for (const c of document.querySelectorAll("#main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story)")) {
+    const img = c.querySelector(":scope > figure.art > img");
+    c.classList.remove("g-flow", "g-meas", "g-head");
+    for (const k of ["--g-artf", "--g-cols", "--g-artmax"]) c.style.removeProperty(k);
+    if (!img || innerWidth < 900) continue;
+    const ar = img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : Number(img.getAttribute("width")) / Number(img.getAttribute("height")) || 4 / 3;
+    const sharp = Math.max(GART.sharp, (img.naturalWidth || Number(img.getAttribute("width")) || 0) / 1.4); // on screen, in CSS px
+    // two ways to sit beside the drawing: the whole story beside it, or the headline across and the text beside it;
+    // the second is taken only when it leaves clearly less empty space
+    const body = c.querySelector(":scope > .body");
+    c.classList.add("g-meas");
+    const tryMode = head => {
+      c.classList.toggle("g-head", head);
+      const cs = getComputedStyle(c), r0 = c.getBoundingClientRect(), px = k => parseFloat(cs[k]) * z || 0;
+      const W = r0.width - px("paddingLeft") - px("paddingRight"); if (W <= 0) return null;
+      const hi = Math.max(GART.lo, Math.min(GART.hi, sharp / W));
+      let best = null;
+      for (let f = hi; f >= GART.lo - 1e-6; f -= GART.step) {
+        c.style.setProperty("--g-artf", f.toFixed(3));
+        const r = c.getBoundingClientRect(), top = head && body ? body.getBoundingClientRect().top : r.top + px("paddingTop");
+        const text = r.bottom - px("paddingBottom") - top, art = f * W / ar;
+        // the empty space beside the shorter of the two: under the drawing, or under the text
+        const area = Math.abs(text - art) * (text > art ? f : 1 - f) * W;
+        if (!best || area < best.area - 1) best = { f, area, text, art, head, W };
+      }
+      return best;
+    };
+    const a = tryMode(false), h = tryMode(true);
+    c.classList.remove("g-meas");
+    if (!a) { c.classList.remove("g-head"); continue; }
+    const best = h && h.area < a.area * 0.7 ? h : a;
+    c.classList.toggle("g-head", best.head);
+    c.style.setProperty("--g-artf", best.f.toFixed(3));
+    if (best.text > GART.tall * best.art) {
+      c.classList.remove("g-head"); c.classList.add("g-flow");
+      c.style.setProperty("--g-cols", c.getBoundingClientRect().width / z >= GART.flowAt ? "2" : "1");
+      c.style.setProperty("--g-artmax", `${Math.round(sharp / z)}px`);
+    }
+  }
+}
+if (GLASS) {
+  document.fonts?.ready.then(() => glassArt());
+  // Read more and Read less change the text's height (the paper's own handler runs first)
+  document.addEventListener("click", e => { if (e.target.closest("[data-more]")) setTimeout(glassArt, 0); });
+  // a drawing that lands, is redrawn or is taken away after the page is up (app.js loadArt)
+  let artT = 0;
+  const mo = new MutationObserver(ms => {
+    if (!ms.some(m => [...m.addedNodes, ...m.removedNodes].some(n => n.nodeType === 1 && (n.matches("figure.art, article") || n.querySelector?.("figure.art"))))) return;
+    cancelAnimationFrame(artT); artT = requestAnimationFrame(glassArt);
+  });
+  addEventListener("DOMContentLoaded", () => { const m = document.getElementById("main"); if (m) mo.observe(m, { childList: true, subtree: true }); });
+  if (document.readyState !== "loading") { const m = document.getElementById("main"); if (m) mo.observe(m, { childList: true, subtree: true }); }
 }
 // Page One's blocks find their column (Parth, 2 Oct, on a MacBook Air: "so much white space, and what happened to
 // the font size?"). The page scales until its tallest column fits the screen, so one tall column (Weather with

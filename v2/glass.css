@@ -3,7 +3,7 @@
    see it on the real paper before deciding. The same blocks, order, navigation, live data and behaviours as v2; only the
    look changes: one mid-tone theme with no night, a floating frosted desk bar, data and stories on flat cards, big
    figures in Libre Franklin, flat desk colour (the desk's opening card, a small square by each heading), everything
-   flush left. Every rule here is scoped under html.look-glass (tests/glass.test.mjs), so without the class the page is
+   flush left (the nameplate centred again from 20 Oct). Every rule here is scoped under html.look-glass (tests/glass.test.mjs), so without the class the page is
    exactly v2. */
 
 /* ---------- one mid-tone theme (the class comes with data-theme="light"; these win over any night token) ---------- */
@@ -26,8 +26,9 @@ html.look-glass #r-date{font-weight:600;color:var(--ink)}
 html.look-glass #r-now{font-weight:600;color:var(--ink)}
 html.look-glass #r-read b{color:var(--ink2)}
 
-/* ---------- Page One's nameplate: flush left on the grid, under one solid rule ---------- */
-html.look-glass body.on-one #bigplate{justify-content:flex-start;border-top:2px solid var(--ink);padding:10px 0 0}
+/* ---------- Page One's nameplate: centred under one solid rule (Parth, 20 Oct 2026: flush left left the band empty,
+   "it was ideally better when the logo and masthead were in the centre") ---------- */
+html.look-glass body.on-one #bigplate{justify-content:center;border-top:2px solid var(--ink);padding:10px 0 0}
 
 /* ---------- the floating frosted desk bar: the small nameplate, the desks as pills, the live figures ---------- */
 html.look-glass .dbar{display:none}
@@ -42,7 +43,9 @@ html.look-glass nav.dtabs>a.np,html.look-glass nav.dtabs .now a{border:0;backgro
 html.look-glass nav.dtabs>a.np{display:inline-flex;flex:none;padding:2px 2px 2px 0;font:inherit;color:var(--ink)}
 html.look-glass nav.dtabs .now a{display:inline-block;padding:0;font:inherit;color:var(--ink)}
 html.look-glass body.on-one nav.dtabs .np{display:none}
-html.look-glass nav.dtabs ol{display:flex;flex:0 1 auto;gap:2px;margin:0;padding:3px;max-width:none;border-radius:999px;background:rgba(21,20,17,.055);min-width:0;overflow-x:auto;scrollbar-width:none}
+/* the desks' track fills the bar's free width and its pills share it (Parth, 20 Oct 2026: "a lot of extra white space
+   there"), up to a cap, centred, so the pills never float apart on a very wide screen */
+html.look-glass nav.dtabs ol{display:flex;flex:1 1 auto;justify-content:space-between;gap:2px;margin:0;padding:3px;max-width:none;border-radius:999px;background:rgba(21,20,17,.055);min-width:0;overflow-x:auto;scrollbar-width:none}
 html.look-glass nav.dtabs ol::-webkit-scrollbar{display:none}
 html.look-glass nav.dtabs li{flex:none}
 html.look-glass nav.dtabs ol a{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 13px;border:0;border-radius:999px;background:none;
@@ -203,20 +206,49 @@ html.look-glass #main figure.art figcaption{position:absolute;left:12px;bottom:1
 @supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){html.look-glass #main figure.art figcaption{background:rgba(242,240,235,.94)}}
 html.look-glass #main figure.art img{border-radius:var(--g-r2)}
 html.look-glass #main figure.art.art-brief figcaption{left:6px;bottom:6px;padding:4px 7px;font-size:10.5px}
-/* a story with its drawing: the drawing takes eight of the twelve columns, edge to edge at the card's left; the story
-   reads in the other four (on a phone the drawing heads the card) */
+/* a story with its drawing (Parth, 20 Oct 2026: "Unbelievable amount of white space ... fix it dynamically, irrespective
+   of whether the image exists or not", and "never crop" the drawings): the drawing sits at the card's left edge at the
+   width layer.js glassArt picks for this card (--g-artf, a share of the card: the width at which the drawing and the
+   text column are nearest the same height, 30% to 62%, never past the file's sharp size), the story beside it. When
+   the text would still be far taller than the drawing, the card flows (g-flow): the headline across, the drawing heading
+   the first of two text columns. The drawing always shows whole, at its own shape (on a phone it heads the card). */
 @media (min-width:900px){
- html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art){display:grid;align-items:start;padding:0;column-gap:var(--g-gap);
-   grid-template-columns:minmax(0,calc((100% - 11 * var(--g-gap)) * 8 / 12 + 7 * var(--g-gap))) minmax(0,1fr);grid-template-rows:auto auto auto auto 1fr}
- html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art)>*{grid-column:2;min-width:0;max-width:none;padding-right:var(--g-p)}
- html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art)>:first-child{padding-top:26px}
- html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art)>figure.art{grid-column:1;grid-row:1/-1;float:none;width:auto;margin:0;padding:0;align-self:start}
- html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art)>figure.art img{width:100%;height:auto;max-height:calc(var(--vh,100vh) * .7);object-fit:cover;border-radius:var(--g-r) 0 0 var(--g-r)}
- html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art)>.body{columns:auto;overflow:visible}
- html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art)>.tools{align-self:end;padding-bottom:var(--g-p)}
- html.look-glass #main .dlead>.lead-story:has(>figure.art) h2{font-size:32px;line-height:1.12;margin:4px 0 0;max-width:none}
- html.look-glass #main .dlead>.lead-story:has(>figure.art) .deck{font-size:18px}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art):not(.g-flow){display:grid;align-items:start;padding:0;column-gap:var(--g-gap);
+   grid-template-columns:minmax(0,calc(var(--g-artf,.5) * 100%)) minmax(0,1fr);grid-template-rows:auto auto auto auto 1fr}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art):not(.g-flow)>*{grid-column:2;min-width:0;max-width:none;padding-right:var(--g-p)}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art):not(.g-flow)>:first-child{padding-top:26px}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art):not(.g-flow)>figure.art{grid-column:1;grid-row:1/-1;float:none;width:auto;margin:0;padding:0;align-self:start}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art):not(.g-flow)>figure.art img{width:100%;max-height:none;border-radius:var(--g-r) 0 0 var(--g-r)}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art):not(.g-flow)>.body{columns:auto;overflow:visible}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art):not(.g-flow)>.tools{align-self:end;padding-bottom:var(--g-p)}
+ html.look-glass #main .dlead>.lead-story:has(>figure.art):not(.g-flow) h2{font-size:32px;line-height:1.12;margin:4px 0 0;max-width:none}
+ html.look-glass #main .dlead>.lead-story:has(>figure.art):not(.g-flow) .deck{font-size:18px}
+ /* the headline across (g-head): when a big headline would leave the text column far taller than a wide drawing, the
+    kicker, headline and byline run across the card and only the story's text sits beside the drawing */
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art).g-head:not(.g-flow){padding:20px var(--g-p) var(--g-p);grid-template-rows:none}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art).g-head:not(.g-flow)>*{padding-right:0}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art).g-head:not(.g-flow)>:first-child{padding-top:0}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art).g-head:not(.g-flow)>:not(figure.art):not(.body):not(.tools){grid-column:1/-1}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art).g-head:not(.g-flow)>figure.art{grid-row:auto/span 2;margin-top:4px}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art).g-head:not(.g-flow)>figure.art img{border-radius:var(--g-r2)}
+ html.look-glass #main :is(.solo>.story,.cols2.mixed>.story.wide,.dlead>.lead-story):has(>figure.art).g-head:not(.g-flow)>.tools{padding-bottom:0}
+ html.look-glass #main .dlead>.lead-story:has(>figure.art).g-head:not(.g-flow) h2{font-size:40px;line-height:1.08;max-width:40ch}
+ /* while glassArt measures a card, its drawing steps out, so the card is the text column's height */
+ html.look-glass #main .g-meas>figure.art{display:none}
+ /* the card that flows: the headline, deck and byline across; the drawing heads the first column, the text runs on */
+ html.look-glass #main .g-flow{display:block;columns:var(--g-cols,2);column-gap:calc(var(--g-gap) * 1.5)}
+ html.look-glass #main .g-flow>*{column-span:all}
+ html.look-glass #main .g-flow>:is(figure.art,.body){column-span:none}
+ html.look-glass #main .g-flow>figure.art{float:none;width:auto;margin:4px 0 18px;padding:0;break-inside:avoid}
+ html.look-glass #main .g-flow>figure.art img{width:100%;max-width:var(--g-artmax,none);max-height:none;border-radius:var(--g-r2)}
+ html.look-glass #main .g-flow>.body{columns:auto;overflow:visible}
+ html.look-glass #main .g-flow>.body p{max-width:none}
+ html.look-glass #main .g-flow .why{break-inside:avoid}
+ html.look-glass #main .g-flow>.tools{margin-top:20px}
 }
+/* a drawing is never cropped or squeezed in this look: its own shape, whatever box it sits in (a box held to part of
+   the screen's height narrows the drawing, never cuts it) */
+html.look-glass #main figure.art img{height:auto;object-fit:fill}
 
 /* Also in: an outlined box, its label on the left, the lines from the fifth column */
 html.look-glass #main .alsoin{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--g-gap);align-items:start;margin:0;padding:20px 0 8px;border:0;border-radius:var(--g-r);box-shadow:inset 0 0 0 1.5px rgba(21,20,17,.13)}
@@ -374,9 +406,10 @@ html.look-glass .p1 #p1-bets{position:relative;padding-bottom:50px}
 html.look-glass .p1 #p1-bets .bh h2::after{position:absolute;left:20px;bottom:16px;margin:0}
 html.look-glass .p1 #p1-bets .bh>a{position:absolute;right:20px;bottom:10px;padding:6px 0}
 html.look-glass .p1 #p1-bets ol.bets li:last-child{padding-bottom:12px;border-bottom:1px solid var(--rule2)}
-/* pinned: Page One's tab shows the day in dots (v2); on the look's filled pill they sit on a light pill ringed in ink */
-html.look-glass nav.dtabs.stuck ol a[data-desk="one"]::before{visibility:hidden}
-html.look-glass nav.dtabs.stuck ol a[data-desk="one"][aria-current]{background:rgba(255,255,255,.75);box-shadow:inset 0 0 0 2px var(--ink)}
+/* pinned: v2's Page One tab turns into the day in dots once the masthead scrolls away; in this look the bar already
+   carries the nameplate, so the tab always reads "Page One" with its square (Parth, 20 Oct 2026: 1400 twice) */
+html.look-glass nav.dtabs .tmk{display:none}
+html.look-glass nav.dtabs.stuck a[data-desk="one"] .tl{opacity:1}
 html.look-glass .acal .ed a{border:0;border-radius:var(--g-r2);background:var(--g-card)}
 
 /* ---------- Page One on a short laptop window (most of them: a MacBook Air's is 830px): a little more compact, so the
