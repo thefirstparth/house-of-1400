@@ -55,9 +55,10 @@ test("the switch: /?glass turns the look on and the device remembers it, ?glass=
   assert.ok(glass, "the glass script sits just before </head>");
   assert.ok(out.indexOf('localStorage.getItem("h1400-theme")') < out.indexOf("h1400-look"));
   const run = (search, { v2 = true, stored = null } = {}) => {
-    const store = new Map(stored ? [["h1400-look", stored]] : []), classes = new Set(), attrs = {};
-    const doc = { documentElement: { classList: { add: c => classes.add(c) }, setAttribute: (k, v) => (attrs[k] = v) } };
+    const store = new Map(stored ? [["h1400-look", stored]] : []), classes = new Set(), attrs = {}, preload = [];
+    const doc = { documentElement: { classList: { add: c => classes.add(c) }, setAttribute: (k, v) => (attrs[k] = v) }, createElement: () => ({}), head: { appendChild: l => preload.push(l) } };
     new Function("location", "localStorage", "window", "document", glass[1])({ search }, { getItem: k => store.get(k) ?? null, setItem: (k, v) => store.set(k, v), removeItem: k => store.delete(k) }, { H1400V2: v2 }, doc);
+    run.preload = preload;
     return [classes.has("look-glass"), attrs["data-theme"] || null, store.get("h1400-look") ?? null];
   };
   assert.deepEqual(run(""), [false, null, null]); // the default is unchanged
@@ -65,6 +66,13 @@ test("the switch: /?glass turns the look on and the device remembers it, ?glass=
   assert.deepEqual(run("?glass=1&x"), [true, "light", "glass"]);
   assert.deepEqual(run("", { stored: "glass" }), [true, "light", "glass"]); // remembered on this device
   assert.deepEqual(run("?glass=off", { stored: "glass" }), [false, null, null]);
+  // the way off is read in any case, and "false" is one (QA panel, 20 Oct 2026: ?glass=OFF turned it on)
+  for (const q of ["?glass=OFF", "?glass=false", "?glass=No", "?glass=0"]) assert.deepEqual(run(q, { stored: "glass" }), [false, null, null], q);
+  // with the look on, the nameplate's faces are fetched first (a slow line never shows a stand-in for long)
+  run("?glass");
+  assert.deepEqual(run.preload.map(l => [l.rel, l.as, l.href]), [["preload", "font", "/fonts/unifrakturmaguntia-latin-400-normal.woff2"], ["preload", "font", "/fonts/libre-franklin-latin-wght-normal.woff2"]]);
+  run("");
+  assert.equal(run.preload.length, 0);
   assert.deepEqual(run("?v1&glass", { v2: false }), [false, null, "glass"]); // ?v1 wins; the choice waits for v2
   assert.deepEqual(run("?glassy"), [false, null, null]);
 });
@@ -72,6 +80,7 @@ test("the switch: /?glass turns the look on and the device remembers it, ?glass=
 test("the layer keeps the look's behaviour behind its class", () => {
   const { js } = assemble();
   assert.match(js, /const GLASS = document\.documentElement\.classList\.contains\("look-glass"\)/);
-  assert.match(js, /\$\{GLASS \? `<a href="\/\?glass=off">Back to the current design<\/a>` : ""\}/);
+  // the way back keeps the reader's place: the same edition and desk (QA panel, 20 Oct 2026)
+  assert.match(js, /\$\{GLASS \? `<a href="\$\{esc\(location\.pathname\)\}\?glass=off\$\{deskHref\(DESK\.id\)\}">Leave the Glass look<\/a>` : ""\}/);
   assert.match(js, /if \(GLASS\) mode = "light";/);
 });
