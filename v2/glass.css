@@ -47,6 +47,8 @@ html.look-glass body.on-one nav.dtabs .np{display:none}
    there"), up to a cap, centred, so the pills never float apart on a very wide screen */
 html.look-glass nav.dtabs ol{display:flex;flex:1 1 auto;justify-content:space-between;gap:2px;margin:0;padding:3px;max-width:none;border-radius:999px;background:rgba(21,20,17,.055);min-width:0;overflow-x:auto;scrollbar-width:none}
 html.look-glass nav.dtabs ol::-webkit-scrollbar{display:none}
+/* a tab the row snaps to starts just inside the track, so the tab before it never shows a sliver (and no edge fade) */
+html.look-glass nav.dtabs ol{scroll-padding-inline:2px}
 html.look-glass nav.dtabs li{flex:none}
 html.look-glass nav.dtabs ol a{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 13px;border:0;border-radius:999px;background:none;
   font:500 15px/1 var(--sans);letter-spacing:0;text-transform:none;color:var(--ink2);text-align:left;white-space:nowrap}
@@ -269,7 +271,6 @@ html.look-glass #main #betting [data-live="betting"]>*:first-child{background:va
  html.look-glass nav.dtabs{gap:14px}
  html.look-glass nav.dtabs ol a{padding:0 11px;font-size:14.5px;gap:7px}
  html.look-glass nav.dtabs .now{gap:14px}
- html.look-glass nav.dtabs .now .k{display:none}
 }
 
 /* The Fixture List: each day on its own card */
@@ -325,8 +326,6 @@ html.look-glass #main .board-wrap{margin-bottom:0}
  html.look-glass body.on-one nav.dtabs{padding-left:6px}
  html.look-glass nav.dtabs>a.np{order:1;padding:4px 0 4px 5px}
  html.look-glass nav.dtabs .now{order:2;gap:10px;padding:4px 5px 4px 0;font-size:14px}
- /* on a phone the figures keep only their readings (the labels would not fit beside the nameplate) */
- html.look-glass nav.dtabs .now .k{display:none}
  html.look-glass body.on-one nav.dtabs .now{display:none}
  html.look-glass nav.dtabs ol{order:3;flex:1 1 100%;border-radius:12px}
  html.look-glass nav.dtabs ol a{min-height:44px;padding:0 14px;border-radius:10px}
@@ -379,11 +378,6 @@ html.look-glass #main .board-wrap{margin-bottom:0}
 @media (max-width:860px){
  html.look-glass nav.dtabs .now a:first-child{font-size:14px}
  html.look-glass nav.dtabs .now a{padding-block:12px;margin-block:-12px}
-}
-/* the narrowest phones: the temperature without the sky's word */
-@media (max-width:400px){
- html.look-glass nav.dtabs .now a:first-child{font-size:0}
- html.look-glass nav.dtabs .now a:first-child b{font-size:14px}
 }
 @media (max-width:760px){
  html.look-glass .sechead h2{flex:1 1 100%}
@@ -455,4 +449,123 @@ html.look-glass .acal .ed a{border:0;border-radius:var(--g-r2);background:var(--
 @media (max-width:760px){
  html.look-glass .p1 #p1-minute .bh{justify-content:flex-start;gap:6px}
  html.look-glass .p1 #p1-bets .bh>a{padding:12px 0;bottom:3px}
+}
+
+/* ================================================================ QA panel, round 1 (20 Oct 2026, section A: Glass only)
+   Ten readers and Parth read the look on the real paper (v2/README.md, The Glass look). What changed, item by item: */
+/* A5 the frosted bar: more fill behind the text, darker labels, the red change at 4.5:1, a 2px focus ring */
+html.look-glass:root{--warn:#7a5400}
+html.look-glass nav.dtabs{background:rgba(242,240,235,.92)}
+html.look-glass nav.dtabs ol a{color:#3a3830}
+html.look-glass nav.dtabs ol a[aria-current]{color:#fff}
+html.look-glass nav.dtabs .now .k{color:#4d4a43}
+html.look-glass nav.dtabs .now .dn{color:#a8231b}
+html.look-glass :is(nav.dtabs a,#main .tools button,#main .tools a,.p1 .bh a,.p1 .bh .say,.p1end a,.jump a):focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+html.look-glass .jump a:focus-visible{outline-color:#fff}
+/* A5/A6/A9 the live figures make room in steps when the bar is tight (layer.js glassBar): the sky's word first, then
+   the city's name, then the temperature, then the Sensex's change; "Sensex" stays unless nothing else fits */
+html.look-glass nav.dtabs .now .k{display:inline}
+html.look-glass nav.dtabs.g-fit1 .now .sky,html.look-glass nav.dtabs.g-fit2 .now a:first-child .k,html.look-glass nav.dtabs.g-fit3 .now a[data-to="sky"],html.look-glass nav.dtabs.g-fit4 .now span.tnum,html.look-glass nav.dtabs.g-fit5 .now .k{display:none}
+/* the desks never scroll in the one-row bar: when they would not fit, the bar takes two rows (g-two, as on a phone) */
+html.look-glass nav.dtabs:not(.g-two) ol{min-width:max-content}
+html.look-glass nav.dtabs.g-two{flex-wrap:wrap;gap:4px 8px;min-height:0;padding:6px;border-radius:16px}
+html.look-glass body.on-one nav.dtabs.g-two{padding-left:6px}
+html.look-glass nav.dtabs.g-two>a.np{order:1;padding:4px 0 4px 5px}
+html.look-glass nav.dtabs.g-two .now{order:2;gap:10px;padding:4px 5px 4px 0}
+html.look-glass body.on-one nav.dtabs.g-two .now{display:none}
+html.look-glass nav.dtabs.g-two ol{order:3;flex:1 1 100%;border-radius:12px;min-width:0}
+html.look-glass body:not(.on-one) nav.dtabs.g-two{padding-bottom:4px}
+html.look-glass nav.dtabs.g-two ol a{min-height:44px;padding:0 12px;border-radius:10px}
+/* A6 pinned with two rows (a phone, or a narrow window), only the desks stay on screen: the nameplate and figures row
+   scrolls away (layer.js sets --g-row1, the height of that row) */
+html.look-glass body:not(.on-one) nav.dtabs.g-two{top:calc(6px - var(--g-row1,0px))}
+@media (max-width:860px){
+ html.look-glass nav.dtabs .now .k{display:inline}
+ html.look-glass nav.dtabs .now a:first-child{font-size:14px}
+ html.look-glass nav.dtabs ol a{padding:0 11px;gap:7px;font-size:14.5px}
+ html.look-glass nav.dtabs ol a::before{width:7px;height:7px}
+}
+/* the narrowest phones: the desks' own colour in their names instead of a square, so four desks show at 375px */
+@media (max-width:420px){
+ html.look-glass nav.dtabs ol{gap:2px}
+ html.look-glass nav.dtabs ol a{padding:0 9px;font-size:14px;color:var(--c)}
+ html.look-glass nav.dtabs ol a::before{display:none}
+ html.look-glass nav.dtabs ol a[aria-current]{color:#fff}
+}
+/* A7 a jump lands below the pinned bar (--g-barh: the bar's visible height, from layer.js) */
+html.look-glass #main :is(section.sec,[id]){scroll-margin-top:calc(var(--g-barh,72px) + 12px)}
+/* A8 a desk's opening card on a laptop: the name and the jumps on one row, less padding; a desk with one section or
+   none shows no jump that only repeats it */
+@media (min-width:761px){
+ html.look-glass .dopen:has(>.jump){display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;column-gap:32px;row-gap:14px;padding:20px var(--g-p) 22px}
+ html.look-glass .dopen:has(>.jump) h1{font-size:96px;line-height:.86;margin:0}
+ html.look-glass .dopen:has(>.jump) .jump{margin:0 0 2px;justify-content:flex-end;flex:0 1 auto}
+}
+@media (min-width:761px) and (max-height:900px){html.look-glass .dopen:has(>.jump) h1{font-size:80px}}
+html.look-glass .jump:empty,html.look-glass .jump:has(>a:only-child){display:none}
+/* A10 The market expects: the Forecast tag beside its name again; the way to the Betting Window stays at the foot */
+html.look-glass .p1 #p1-bets .bh h2::after{position:static;margin-left:10px}
+html.look-glass .p1 #p1-bets{padding-bottom:44px}
+/* A12 day-only blocks on cards: Since we printed, The Week Ahead, the Monday note, the Stage's new shows, The Crease's
+   next match wherever it sits, the followed side's row in a table */
+html.look-glass .after14{border:0;border-radius:var(--g-r);background:var(--g-card);margin:0 0 var(--g-gap);overflow:hidden}
+html.look-glass .after14 .lab{padding:10px 18px;border-right:1px solid var(--rule2);color:var(--ink)}
+html.look-glass .after14 li{padding:10px 14px;font-size:14.5px}
+html.look-glass .p1 .stack>#p1-since:not(:empty){background:none}
+html.look-glass .p1 .stack .after14{margin:0;border:0;border-radius:var(--g-r);background:var(--g-card);padding:2px 18px 8px}
+html.look-glass .p1 .stack .after14 .lab{margin:0 0 2px;padding:10px 0 8px;background:none;border:0;border-bottom:1px solid var(--rule2)}
+html.look-glass .p1 .stack .after14 .lab span{color:var(--ink)}
+@media (max-width:760px){
+ html.look-glass .after14{padding:4px var(--g-p) 6px}
+ html.look-glass .after14 .lab{border-right:0;border-bottom:1px solid var(--rule2);padding:10px 0 8px}
+ html.look-glass .after14 li{padding:9px 0}
+}
+html.look-glass #main #week .week7{border-top:0;border-radius:var(--g-r);background:var(--g-card);padding:16px var(--g-p) 18px}
+html.look-glass #main #week .week7 .wcol{border-left-color:var(--rule2)}
+html.look-glass #main .monday{border-radius:var(--g-r2);background:color-mix(in srgb,var(--d) 8%,var(--g-card))}
+html.look-glass #main .monday .mood{background:none;border:0;border-radius:0;padding:0}
+html.look-glass #main .od-newc{border:0;border-radius:var(--g-r2);background:var(--g-card2)}
+html.look-glass #main .cz>.cz-next{background:var(--g-card);border-radius:var(--g-r);padding:20px var(--g-p) var(--g-p)}
+html.look-glass #main .split-data>[data-live] .cz>.cz-next{padding-inline:0;background:none}
+/* A13 on a slow line the nameplate waits for its own faces (layer.js adds g-fonts), its room kept */
+html.look-glass:not(.g-fonts) :is(#bigplate,.np) :is(.words,.n){visibility:hidden}
+/* A14 Page One's cards end level: the last card in each column takes the column's height (after balanceOne) */
+html.look-glass .p1body.g-level{align-items:stretch}
+html.look-glass .p1body.g-level>.stack>:not(:empty):not(:has(~ :not(:empty))){flex-grow:1}
+/* A15 "All the news" is a link, not a third grey pill; pills on a phone are 40px; the desk card's jumps stand out */
+html.look-glass .p1 #p1-minute .bh a{background:none;padding:0 4px;font:600 13.5px var(--sans);color:var(--ink)}
+html.look-glass .p1 #p1-minute .bh a:hover{background:none;text-decoration:underline;text-underline-offset:3px}
+@media (max-width:760px){html.look-glass .p1 #p1-minute .bh a,html.look-glass .p1 #p1-minute .bh .say{min-height:40px}}
+html.look-glass .jump a{background:rgba(255,255,255,.2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.38);font-weight:600}
+/* A16 the Sensex's 1D sits on the line of its change, not up in the air */
+html.look-glass .p1 .mny .sx .k:last-child{align-self:flex-end;margin:0 0 6px -4px}
+/* A17 "Next up" in white */
+html.look-glass #main .agenda.fx3 .tg.nx{color:#fff}
+/* A18 print: white paper, no bar, no shadows, no buttons */
+@media print{
+ html.look-glass body,html.look-glass:root{background:#fff}
+ html.look-glass nav.dtabs,html.look-glass #main .tools,html.look-glass .p1 .bh .say{display:none!important}
+ html.look-glass #main :where(section.sec>[data-live]:not(:empty),article.story,.item,.dlead .lead-story,.signal),html.look-glass :where(.p1 .stack>section,.p1end){background:#fff;box-shadow:none;border:1px solid #ccc}
+ html.look-glass .dopen{background:#fff;color:#000;border:2px solid #000}
+ html.look-glass .dopen h1{color:#000}
+}
+/* A4/A14 Page One wins back height for its type (the bar costs a row the current look does not have): a tighter
+   masthead and cards on laptop windows, tighter still under 780px, so every line of the day in a minute stays */
+@media (min-width:1001px) and (max-height:899px){
+ html.look-glass .p1 ol.min a{padding:5px 0 6px}
+ html.look-glass .p1 .leadh{margin-bottom:10px}
+ html.look-glass .p1end .hn{padding:4px 0}
+}
+@media (min-width:1001px) and (max-height:779px){
+ html.look-glass body.on-one #bigplate{--np:84px;padding-top:6px}
+ html.look-glass nav.dtabs{min-height:40px;margin-top:4px;padding-block:3px}
+ html.look-glass nav.dtabs ol a{min-height:30px}
+ html.look-glass .layout{padding-top:8px}
+ html.look-glass .p1{--g-gap:10px}
+ html.look-glass .p1 .stack>section,html.look-glass .p1 .stack>#p1-eve:not(:empty){padding:8px 14px 10px}
+ html.look-glass .p1 .bh{margin-bottom:6px}
+ html.look-glass .p1 .leadh h3{font-size:22px}
+ html.look-glass .p1 ol.min a{padding:4px 0 5px}
+ html.look-glass .p1 ul.rows li{padding:3px 0}
+ html.look-glass .p1 ol.bets li{padding:4px 0}
 }

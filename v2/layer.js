@@ -47,10 +47,10 @@ function frontItems(id, kind) {
 }
 function paintShell() {
   const w = LIVE.weather?.value?.cities?.[0], M = LIVE.markets?.value, ix = M?.indices?.[0];
-  const sky = w?.current ? `<a href="${deskHref("home")}" data-desk="home" data-to="sky"><span class="k">${esc(CFG.paper.home_city)}</span> <b class="tnum">${Math.round(w.current.temp)}°</b> ${esc(wx(w.current.code)[1].toLowerCase())}</a>` : "";
+  const sky = w?.current ? `<a href="${deskHref("home")}" data-desk="home" data-to="sky"><span class="k">${esc(CFG.paper.home_city)}</span> <b class="tnum">${Math.round(w.current.temp)}°</b> ${GLASS ? `<span class="sky">${esc(wx(w.current.code)[1].toLowerCase())}</span>` : esc(wx(w.current.code)[1].toLowerCase())}</a>` : "";
   const mk = ix ? `<a href="${deskHref("money")}" data-desk="money" data-to="ledger"><span class="k">${esc(ix.name)}</span> <b class="tnum">${inr(ix.price, 0)}</b> <span class="tnum ${dir(ix.change_pct)}">${pct(ix.change_pct)}</span></a>` : "";
   const html = sky + mk, el = $("#now");
-  if (el && el.dataset.html !== html) { el.innerHTML = html; el.dataset.html = html; }
+  if (el && el.dataset.html !== html) { el.innerHTML = html; el.dataset.html = html; if (GLASS) glassBar(); }
   if (DESK.id === "one") paintOne();
 }
 // The date and time now (Parth, 3 Oct: "we are not showing the current date and time anywhere ... I don't want it
@@ -75,28 +75,33 @@ function shellStatic() {
   // Page One's tab carries a small, still day in dots, shown once the masthead has scrolled away (Parth, 2 Oct)
   $("#dtabs ol").innerHTML = NEWDESKS.map(d => `<li><a href="${deskHref(d.id)}" data-desk="${d.id}" style="--c:var(--d-${d.id})"${d === DESK ? ' aria-current="page"' : ""}>${d.id === "one" ? `<span class="tl">${esc(d.name)}</span><span class="tmk" aria-hidden="true"></span>` : esc(d.name)}</a></li>`).join("");
   tabMark();
-  if (GLASS) { const nav = $("#dtabs"), np = $(".np"), now = $("#now"); if (np && np.parentElement !== nav) nav.prepend(np); if (now && now.parentElement !== nav) nav.append(now); }
+  if (GLASS) { const nav = $("#dtabs"), np = $(".np"), now = $("#now"); if (np && np.parentElement !== nav) nav.prepend(np); if (now && now.parentElement !== nav) nav.append(now); glassBar(); }
   // Phone tabs (review, 2 Oct): the current tab starts the row, so no sliver of the one before it shows; an edge fades
   // only where a tab is cut by it, so the row reads as one that scrolls.
-  const ol = $("#dtabs ol"), fade = () => {
-    const L = ol.scrollLeft, R = L + ol.clientWidth, cut = [...ol.children].map(li => [li.offsetLeft, li.offsetLeft + li.offsetWidth]);
-    ol.classList.toggle("more-l", cut.some(([a, b]) => a < L - 1 && b > L + 1));
-    ol.classList.toggle("more-r", R < ol.scrollWidth - 2);
-  };
+  const ol = $("#dtabs ol"), fade = () => tabsFade(ol);
   if (!ol.dataset.wired) { ol.dataset.wired = 1; ol.addEventListener("scroll", fade, { passive: true }); addEventListener("resize", fade); }
-  requestAnimationFrame(() => {
-    const li = ol.querySelector("[aria-current]")?.parentElement;
-    if (li && ol.scrollWidth > ol.clientWidth) {
-      // start the row at a tab, the current one if the row can scroll that far, else the furthest tab that still shows it
-      const max = ol.scrollWidth - ol.clientWidth, starts = [...ol.children].map((x, i) => (i ? x.offsetLeft - 4 : 0));
-      const fit = starts.filter(b => b <= max && b <= starts[[...ol.children].indexOf(li)] && b + ol.clientWidth >= li.offsetLeft + li.offsetWidth + 4);
-      ol.scrollLeft = fit.length ? Math.max(...fit) : max;
-    }
-    fade();
-  });
+  requestAnimationFrame(tabsHome);
   document.title = `${DESK.id === "one" ? "" : DESK.name + " · "}The House of 1400 · ${longDate(E.date)}`;
   document.documentElement.style.setProperty("--d", `var(--d-${DESK.id})`);
   document.body.classList.toggle("on-one", DESK.id === "one");
+}
+// The phone's tab row starts at a tab: the current one if the row can scroll that far, else the furthest tab that still
+// shows it; an edge fades only where a tab is cut by it (Glass: measured from the track's own padding, so the tab before
+// is not counted as cut and its fade never covers the current one).
+function tabsHome() {
+  const ol = $("#dtabs ol"); if (!ol) return;
+  const li = ol.querySelector("[aria-current]")?.parentElement, off = GLASS ? ol.offsetLeft : 0;
+  if (li && ol.scrollWidth > ol.clientWidth) {
+    const max = ol.scrollWidth - ol.clientWidth, starts = [...ol.children].map((x, i) => (i ? x.offsetLeft - off - (GLASS ? 2 : 4) : 0));
+    const fit = starts.filter(b => b <= max && b <= starts[[...ol.children].indexOf(li)] && b + ol.clientWidth >= li.offsetLeft - off + li.offsetWidth + 4);
+    ol.scrollLeft = fit.length ? Math.max(...fit) : max;
+  }
+  tabsFade(ol);
+}
+function tabsFade(ol) {
+  const off = GLASS ? ol.offsetLeft : 0, L = ol.scrollLeft, R = L + ol.clientWidth, cut = [...ol.children].map(x => [x.offsetLeft - off, x.offsetLeft - off + x.offsetWidth]);
+  ol.classList.toggle("more-l", cut.some(([a, b]) => a < L - 1 && b > L + 1));
+  ol.classList.toggle("more-r", R < ol.scrollWidth - 2);
 }
 function deskOpener() {
   desksInit(); refile(); shellStatic();
@@ -116,7 +121,7 @@ function deskFoot() {
   return `<div class="nextdesk"><a href="${deskHref(nx.id)}" data-desk="${nx.id}" style="--c:var(--d-${nx.id})">Next: <b>${esc(nx.name)}</b> →</a></div>` + footLine();
 }
 const lastDesk = () => NEWDESKS.at(-1)?.id || "off";
-const footNav = () => `<nav><a href="/editor">The editor and letters</a><a href="/archive">Archive</a><a href="?v1" data-v1>The old design</a>${GLASS ? `<a href="/?glass=off">Back to the current design</a>` : ""}</nav>`;
+const footNav = () => `<nav><a href="/editor">The editor and letters</a><a href="/archive">Archive</a><a href="?v1" data-v1>The old design</a>${GLASS ? `<a href="${esc(location.pathname)}?glass=off${deskHref(DESK.id)}">Leave the Glass look</a>` : ""}</nav>`;
 const credit = () => `<span class="credit">Built by <a href="https://bhatia.page/projects/house-of-1400" target="_blank">Parth Bhatia</a></span>`;
 const footLine = () => `<footer class="dfoot">${footNav()}<span>${esc(`The House of 1400 · ${longDate(E.date)} · No. ${E.edition_no}`)}</span>${credit()}</footer>`;
 // The desk's sections in order, with the lead's section first when the lead is on this desk
@@ -657,7 +662,7 @@ function fitDesk() {
   const W = innerWidth, H = innerHeight;
   if (W < 1100) setZoom(1, 0);
   else { const z = Math.max(1, Math.min(W / 1440, H / 760, 1.8)); setZoom(z, Math.min(W / z, 1920)); }
-  if (GLASS) glassArt();
+  if (GLASS) { glassBar(); glassArt(); }
 }
 // GLASS: a story's drawing beside its text (Parth, 20 Oct 2026, on a News lead whose text ran far below its drawing:
 // "fix it dynamically, irrespective of whether the image exists or not"; and the drawings are never cropped). Each card
@@ -711,6 +716,45 @@ function glassArt() {
     }
   }
 }
+// GLASS: the desk bar fits its width (QA panel, 20 Oct 2026). The live figures give up the sky's word, then the city's
+// name, then the temperature, then the Sensex's change, then "Sensex"; if the desks still would not fit on one row (they never scroll there), the bar takes two rows,
+// as on a phone. Pinned with two rows, only the desks stay on screen (--g-row1, glass.css); --g-barh is the bar's
+// visible height, so a jump lands below it.
+function glassBar() {
+  if (!GLASS) return;
+  const nav = document.getElementById("dtabs"), ol = nav?.querySelector("ol"), now = document.getElementById("now"), np = nav?.querySelector(".np");
+  if (!nav || !ol) return;
+  const phone = matchMedia("(max-width:860px)").matches;
+  const vis = e => e && e.offsetParent !== null && getComputedStyle(e).display !== "none";
+  const over = two => {
+    if (!two && ol.scrollWidth > ol.clientWidth + 1) return true;
+    if (!vis(now)) return false;
+    const r = now.getBoundingClientRect(), n = nav.getBoundingClientRect();
+    if (r.right > n.right + 1 || now.scrollWidth > now.clientWidth + 1) return true;
+    if (two && vis(np)) { const p = np.getBoundingClientRect(); if (r.top >= p.bottom - 2 || r.left < p.right) return true; }
+    if (!two && nav.scrollWidth > nav.clientWidth + 1) return true;
+    return false;
+  };
+  let fit = 0, two = phone;
+  const set = () => { nav.classList.toggle("g-two", two); for (const k of [1, 2, 3, 4, 5]) nav.classList.toggle(`g-fit${k}`, fit >= k); };
+  set();
+  while (over(two)) {
+    if (fit < 5) { fit++; set(); continue; }
+    if (two) break;
+    two = true; fit = 0; set();
+  }
+  const z = parseFloat(nav.style.zoom) || 1, cs = getComputedStyle(nav);
+  const row1 = two ? Math.max(0, ol.offsetTop - parseFloat(cs.paddingTop)) + parseFloat(cs.paddingTop) : 0;
+  nav.style.setProperty("--g-row1", `${Math.round(row1)}px`);
+  const top = parseFloat(getComputedStyle(nav).top) || 0;
+  document.documentElement.style.setProperty("--g-barh", `${Math.round((top + nav.offsetHeight) * z)}px`);
+}
+if (GLASS) {
+  addEventListener("resize", () => glassBar());
+  // the nameplate shows once its own faces are in (never later than 3 seconds), so a slow line never shows a stand-in
+  const ready = () => { document.documentElement.classList.add("g-fonts"); alignPlate(); alignMini(); glassBar(); tabsHome(); };
+  Promise.race([document.fonts?.ready || Promise.resolve(), new Promise(r => setTimeout(r, 3000))]).then(ready);
+}
 if (GLASS) {
   document.fonts?.ready.then(() => glassArt());
   // Read more and Read less change the text's height (the paper's own handler runs first)
@@ -738,7 +782,14 @@ if (GLASS) {
 // Blocks that step aside, in this order, only when the reader has zoomed in with ⌘+ (fitOne)
 const P1GIVE = ["eve", "bets", "weather", "sport"];
 const P1BLOCKS = ["money", "weather", "sport", "bets", "eve", "since"], P1HOME = [1, 2, 1, 2, 0, 0], P1WIDE = [1.5, 1.25, 1];
+// (Glass: the cards in each column end level, g-level, but only once the blocks have been measured at their own height)
 function balanceOne() {
+  const b = GLASS && document.querySelector(".p1body");
+  if (b) b.classList.remove("g-level");
+  balanceCols();
+  if (b) b.classList.add("g-level");
+}
+function balanceCols() {
   const body = document.querySelector(".p1body"), news = document.getElementById("p1-minute"), cols = [...document.querySelectorAll(".p1body > .stack")];
   if (!body || !news || cols.length !== 3) return;
   const blocks = P1BLOCKS.map(id => document.getElementById(`p1-${id}`));
