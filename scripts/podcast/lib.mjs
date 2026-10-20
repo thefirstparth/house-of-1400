@@ -186,10 +186,14 @@ export function rundown(E, P = {}, now, paper = {}) {
   // the kicker); then the rest go by importance, a tie to the desk with the smallest share of its stories in the show so far (a
   // desk with six stories in the paper gets more than one with two), then the paper's order. A desk's weight (Sport's
   // 1.2) then works as before, below.
+  // A place is a story of the desk's own, in its own part of the show (20 Oct audit: the lead, India and New Zealand's
+  // trade deal, was Money's, so Money's place counted as used and Brent above $110 had to win a tie): the lead and the
+  // rest of Page One are told on Page One and use up no desk's place, so Money, News and Tech each still get one.
   const deepIds = new Set(deep.map(x => x.id)), D = s => desk(s).id, where = s => (s.section === "back" ? `back:${String(s.kicker || "").split(/\s*·\s*/)[0]}` : s.section === "namma" ? "namma" : D(s));
   const byDesk = {}, byPlace = new Set(), size = {};
   for (const x of list) size[D(x)] = (size[D(x)] || 0) + 1;
-  for (const x of [lead, ...seconds, ...fbriefs, ...deep].filter(Boolean)) { byDesk[D(x)] = (byDesk[D(x)] || 0) + 1; byPlace.add(where(x)); }
+  for (const x of [lead, ...seconds, ...fbriefs, ...deep].filter(Boolean)) byDesk[D(x)] = (byDesk[D(x)] || 0) + 1;
+  for (const x of deep) byPlace.add(where(x));
   const pool = others.filter(x => !deepIds.has(x.id)), order = new Map(pool.map((x, i) => [x.id, i])), quick = [], Q = P.quick_max || 18;
   const take = x => { quick.push(x); byDesk[D(x)] = (byDesk[D(x)] || 0) + 1; byPlace.add(where(x)); };
   for (const x of pool) if (!byPlace.has(where(x)) && quick.length < Q) take(x);
@@ -199,8 +203,9 @@ export function rundown(E, P = {}, now, paper = {}) {
     take(left[0]);
   }
   quick.sort((x, y) => order.get(x.id) - order.get(y.id));
-  // a where's only story in the show is never swapped out for a weighted desk's (below)
-  const firstOf = new Set(quick.filter(x => [lead, ...seconds, ...fbriefs, ...deep, ...quick].filter(y => y && where(y) === where(x)).length === 1));
+  // a where's only story of its own in the show (Page One not counted, as above) is never swapped out for a weighted
+  // desk's (below; 20 Oct: Sport's 1.2 took out Brent above $110, Money's only story beside the lead)
+  const firstOf = new Set(quick.filter(x => [...deep, ...quick].filter(y => where(y) === where(x)).length === 1));
   // A desk weighted up (config podcast.weights {desk, factor}; Parth, 14 Oct: Sport "1.2x or 20% higher than current,
   // but not forcefully"): the desk gets that many more places than the paper's own order gave it, rounded (four Sport
   // items become five), filled with its next-best stories in place of the weakest quick items from other desks. Never
@@ -371,7 +376,7 @@ THE SHOW, in this order, the way the paper is laid out (everything comes from th
 8. "market_expects", if given: one short, playful moment on what the betting markets expect, in words ("the markets make him a near-certainty", "about a two-in-three chance"), at most the two given, wherever it fits best (Sport or just before the close). Never read out a list of percentages.
 9. Weather, if given: one everyday line ("warm, with a fair chance of rain later").
 10. The Week Ahead, if given: a couple of quick lines on what is coming in the next few days.
-11. Close: the House Note retold in the hosts' own words with its punchline intact (if it is about a story already told, do not tell the story again: go straight to the joke), then a short, warm goodbye whose very last line is the sign-off, word for word: "${P.signoff || `That's ${P.title || "The House of 1400"} for today.`}"
+11. Close: the House Note retold in the hosts' own words with its punchline intact (if it is about a story already told, do not tell the story again: go straight to the joke). When the House Note is a plain summary with no joke in it, the hosts may close with one light, natural line of their own that fits the day: never forced, never a pun for its own sake, and within the length above. Then a short, warm goodbye whose very last line is the sign-off, word for word: "${P.signoff || `That's ${P.title || "The House of 1400"} for today.`}"
 
 IT IS A RADIO SHOW, with the habits of one
 - A time check in passing, early on, from "on_air" if given ("it's a little after two here in Bengaluru, and the chai's poured").
@@ -504,14 +509,20 @@ export function checkScript(turns, R, P = {}) {
   const copied = turns.map((t, i) => [i, shingles(words(t.text), 8).find(s => paper.has(s))]).filter(x => x[1]);
   if (copied.length) soft(`reads the paper word for word in ${copied.length} turn(s), e.g. turn ${copied[0][0] + 1}: "${copied[0][1]}"`);
   // a fact said twice: six words in a row repeated in another turn
+  // (20 Oct: the Sensex down 1.2% and the Nasdaq up 1.2% are two facts: a run with a figure in it, repeated in turns that
+  // name different markets, is not a repeat)
+  const MKTS = [/\bsensex\b/i, /\bnifty\b/i, /\b(nasdaq|new york|wall street)\b/i, /\brupee\b/i, /\bgold\b/i, /\b(brent|crude|oil)\b/i, /\bbitcoin\b/i];
+  const mkts = t => MKTS.map((re, k) => (re.test(t) ? k : -1)).filter(k => k >= 0), apart = (a, b) => { const x = mkts(turns[a].text), y = mkts(turns[b].text); return x.length && y.length && !x.some(k => y.includes(k)); };
   const seenAt = new Map(), twice = [];
-  turns.forEach((t, i) => { for (const s of new Set(shingles(words(t.text), 6))) { if (seenAt.has(s) && seenAt.get(s) !== i) twice.push(s); else seenAt.set(s, i); } });
+  turns.forEach((t, i) => { for (const s of new Set(shingles(words(t.text), 6))) { if (seenAt.has(s) && seenAt.get(s) !== i) { if (!(s.split(" ").some(w => NUMW.has(w)) && apart(seenAt.get(s), i))) twice.push(s); } else seenAt.set(s, i); } });
   if (twice.length) soft(`says the same thing twice: "${twice[0]}"`);
   // the example's own lines reused (Flash Lite dropped "Thirteen. That's terrible." into the money news, 13 Oct test)
   const ex = new Set(shingles(words(EXAMPLE.replace(/^\w+ \[[^\]]+\]: /gm, "")), 4));
   const reused = turns.map((t, i) => [i, shingles(words(t.text), 4).find(s => ex.has(s))]).filter(x => x[1]);
   if (reused.length) soft(`reuses the example's lines in turn ${reused[0][0] + 1}: "${reused[0][1]}"`);
-  const H24 = /\b(i s t|ist|(thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|twenty-one|twenty-two|twenty-three) (hundred|oh [a-z]+|fifteen|thirty|forty-five)( hours)?)\b/i;
+  // (20 Oct: "back to Earth in twenty thirty-one" is a year, not 20:30: a year runs on into "-one", or follows "in", "by",
+  // "since", a month and the like)
+  const H24 = /\b(i s t|ist|(?<!\b(?:in|by|since|until|till|from|of|before|after|year|the|january|february|march|april|may|june|july|august|september|october|november|december) )(thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|twenty-one|twenty-two|twenty-three) (hundred|oh [a-z]+|fifteen|thirty|forty-five)(?![-a-z])( hours)?)\b/i;
   turns.forEach((t, i) => { const m = String(t.text).match(H24); if (m) soft(`turn ${i + 1}: twenty-four-hour clock or IST ("${m[0]}"); use "a m" or "p m"`); });
   // every match time is said exactly as written (the clock words, e.g. "twelve thirty a m")
   const said = turns.map(t => String(t.text)).join(" ").toLowerCase().replace(/\b([ap])\.\s?m\.?/g, "$1 m").replace(/\b([ap])m\b/g, "$1 m").replace(/-/g, " ");

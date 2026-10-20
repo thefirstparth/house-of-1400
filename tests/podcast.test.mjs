@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
-import { spoken, intWords, rundown, checkScript, fallbackScript, feedXML, sayWhen, splitLines, cutAt, onAir, SEGMENTS, writerPrompt, cutNote } from "../scripts/podcast/lib.mjs";
+import { spoken, intWords, rundown, checkScript, fallbackScript, feedXML, sayWhen, splitLines, cutAt, onAir, SEGMENTS, writerPrompt, cutNote, vttOf } from "../scripts/podcast/lib.mjs";
 import { layout, jingle, sting, outro, RATE } from "../scripts/podcast/studio.mjs";
 
 const C = JSON.parse(readFileSync(new URL("../config/house.json", import.meta.url), "utf8")), P = C.podcast;
@@ -390,4 +390,65 @@ test("podcast: Page One once, never in a question; the hosts share the telling; 
   const R2 = rundown({ ...E, snapshot: { markets: { value: { indices: [{ name: "Sensex", price: 73804, change_pct: -1.2, session_date: "2026-10-12" }] } } } }, P, undefined, paper);
   const m = checkScript([...turns.slice(0, 10), { speaker: "Ashu", mood: "warm", text: "The Sensex is at seventy-three thousand eight hundred, the rupee at ninety-four point nine three, and gold at one lakh forty-six thousand rupees for ten grams." }], R2, P).map(p => p.msg).join(" | ");
   assert.match(m, /reads out 3 markets in one turn/);
+});
+
+test("podcast, 20 Oct audit: the lead uses up no desk's place; Sport's 1.2 never takes a desk's last story; India's cricket weighs 7% more", () => {
+  const Ed = JSON.parse(readFileSync(new URL("../content/editions/2026-10-20.json", import.meta.url), "utf8"));
+  const R = rundown(Ed, P, undefined, { ...paper, follows: C.follows }), ids = [R.lead, ...R.segments.flatMap(g => g.items)].map(i => i.id);
+  const of = name => R.segments.filter(g => g.desk === name).flatMap(g => g.items).map(i => i.id);
+  assert.equal(R.lead.id, "india-nz-fta-in-force"); // Money's story, told as the lead
+  assert.deepEqual(of("Money"), ["brent-tops-110"], "Money still gets a story of its own, and Sport's extra place does not take it");
+  assert.deepEqual(of("Tech & AI"), ["mmx-launched-phobos"]);
+  assert.ok(of("News").length >= 1);
+  assert.ok(ids.includes("ojha-chief-selector"), "the new chief selector beats the gossip on a tie");
+  for (const id of ["svitolina-monfils-split", "ronaldo-suspended-portugal"]) assert.ok(!ids.includes(id), `${id}: ${ids.join(",")}`);
+  // Sport keeps its own: the Madrid preview and four in all
+  assert.equal(of("Sport").length, 4);
+  // without Madrid's and the cricket's weights, the paper's order decides and Sport's share takes no desk's only story
+  const W = rundown(Ed, { ...P, weights: P.weights.filter(w => w.desk) }, undefined, { ...paper, follows: C.follows });
+  assert.ok(W.segments.find(g => g.desk === "Money").items.some(i => i.id === "brent-tops-110"));
+  assert.ok(P.weights.some(w => w.section === "crease" && w.factor === P.weights.find(x => x.section === "madrid").factor));
+});
+
+test("podcast, 20 Oct audit: a spoken year is not a 24-hour clock; two markets moving by the same amount are not a repeat", () => {
+  const T = (speaker, text) => ({ speaker, mood: "neutral", text }), base = Array.from({ length: 8 }, (_, i) => T(i % 2 ? "Tarun" : "Ashu", `Line ${i}?`));
+  const msgs = turns => checkScript([...base, ...turns], { segments: [] }, { ...P, words: { min: 10, max: 9999 } }).map(p => p.msg).join(" | ");
+  const years = msgs([T("Tarun", "It reaches Phobos in August twenty twenty-seven, and brings it back to Earth in twenty thirty-one."), T("Ashu", "By twenty thirty, maybe more. Two thousand and thirty-one is a long wait.")]);
+  assert.doesNotMatch(years, /twenty-four-hour clock/);
+  assert.match(msgs([T("Tarun", "Kick-off is at twenty thirty, so stay up.")]), /twenty-four-hour clock or IST \("twenty thirty"\)/);
+  assert.match(msgs([T("Tarun", "The match starts at nineteen hundred hours.")]), /twenty-four-hour clock/);
+  const money = msgs([T("Tarun", "Yesterday the Sensex fell one point two per cent to about seventy-three thousand nine hundred."), T("Ashu", "And at Monday's close the Nasdaq rose one point two per cent to about twenty-nine thousand five hundred.")]);
+  assert.doesNotMatch(money, /says the same thing twice/);
+  const again = msgs([T("Tarun", "Yesterday the Sensex fell one point two per cent to about seventy-three thousand."), T("Ashu", "Right, so the Sensex fell one point two per cent to about seventy-three thousand.")]);
+  assert.match(again, /says the same thing twice/);
+});
+
+test("podcast, 20 Oct audit: RB Leipzig is voiced as R B Leipzig, and the transcript keeps the real spelling", () => {
+  assert.equal(spoken("Madrid host RB Leipzig on Wednesday.", P.pronounce), "Madrid host R B Leipzig on Wednesday.");
+  assert.match(vttOf([{ speaker: "Tarun", text: "Madrid host RB Leipzig." }], [[0, 2]]), /Madrid host RB Leipzig\./);
+});
+
+test("podcast, 20 Oct audit: a plain House Note may get one light closing line of the hosts' own", () => {
+  const w = writerPrompt(rundown(E, P, undefined, paper), P);
+  assert.match(w, /House Note is a plain summary with no joke in it, the hosts may close with one light, natural line of their own that fits the day: never forced, never a pun for its own sake/);
+  assert.doesNotMatch(w, /—/, "no em dashes in the writers' brief");
+});
+
+test("podcast, 20 Oct audit: the listening check passes a line whose only miss is one unspellable name from the script", (t) => {
+  const code = `import sys, json; sys.path.insert(0, "scripts/podcast"); import verify_lines as v
+lines = ["Goofy from Nagarbhavi won the Fat Dogs contest!", "Bachonker McChonketh? Seriously, yaar?", "And back home in Prayagraj, a merchant navy officer is stranded."]
+ok = lambda texts, heard: [x["ok"] for x in v.judge(texts, heard)]
+print(json.dumps({
+  "name": ok(lines, [lines[0], "Bachelor Mick Chonk Kit? Seriously?", lines[2]]),
+  "other_word": ok(lines, [lines[0], "Bachelor Mick Chonk Kit? Curious?", lines[2]]),
+  "two_names": ok(["Goofy won it.", "Bachonker McChonketh met Ricky Jefferies.", "Fine."], ["Goofy won it.", "Bachelor Mick Chonk met Rikki Jeffers.", "Fine."]),
+  "common": ok(["Goofy won it.", "Seriously? What a name.", "Fine."], ["Goofy won it.", "Curious? Wet a gnome.", "Fine."]),
+  "names": v.names("Huge week! Madrid host RB Leipzig. Bachonker McChonketh, though. So Goofy won. Who, I ask?")}))`;
+  let out;
+  try { out = JSON.parse(execFileSync("python3", ["-c", code], { encoding: "utf8" })); } catch { t.skip("python3 with numpy not here"); return; }
+  assert.deepEqual(out.name, [true, true, true], "one name the recogniser cannot spell, every other word heard");
+  assert.equal(out.other_word[1], false, "another word missed as well: not heard");
+  assert.equal(out.two_names[1], false, "two names missed: not heard");
+  assert.equal(out.common[1], false, "a common word is never excused");
+  assert.deepEqual(out.names, [["rb", "leipzig"], ["bachonker", "mcchonketh"], ["goofy"]]);
 });

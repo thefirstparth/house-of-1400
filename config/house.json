@@ -3460,6 +3460,10 @@
         "section": "madrid",
         "words": "Real Madrid",
         "factor": 1.07
+      },
+      {
+        "section": "crease",
+        "factor": 1.07
       }
     ],
     "first_writer_waits": 10,
@@ -3545,7 +3549,8 @@
       "ISRO": "is-ro",
       "Nifty": "Nifty",
       "Sensex": "Sensex",
-      "Bhide": "Bhi-day"
+      "Bhide": "Bhi-day",
+      "RB Leipzig": "R B Leipzig"
     }
   },
   "tv": {

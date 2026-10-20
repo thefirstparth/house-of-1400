@@ -36,6 +36,70 @@ def words(text, spoken):
         ws = [w for w in ws if w not in FILLERS]
     return [stem(w) for w in ws]
 
+# 20 Oct: Tarun's "Bachonker McChonketh! What a name." (the runner-up in Bengaluru's Fat Dogs contest, a name made up
+# for a dog) is a name no recogniser can spell. A line whose every other word is heard, in order, counts as heard when
+# the only words missed are ONE proper noun from the script: capitalised there, not a common word, and a sentence's
+# first word only when the name runs on into a second capitalised word ("Bachonker McChonketh") or has a capital
+# inside it ("McChonketh"). Never two names in a line, and never a line that is the name alone.
+COMMON = set("a an the and but or so if of in on at to for from by with as is are was were be been it its it's this that "
+             "these those he she we they you i i'm i'd i'll me my our your his her their what who why how when where which "
+             "yes no not oh ok okay well now then there here just really very also still even only too all some any "
+             "one two three good great right wow wait look so sure hang".split())
+def names(text):
+    # the proper nouns of a script line, each as its words (as words() gives them)
+    out, run = [], []
+    toks = re.findall(r"[A-Za-z][A-Za-z']*(?:-[A-Za-z']+)*|[.!?]", re.sub(r"<[^>]+>", " ", text))
+    def close():
+        common = lambda w: w.lower() in COMMON or w.lower() in HINDI
+        while run and common(run[0][1]): run.pop(0)  # "So Goofy won": the sentence's "So" is not the name
+        while run and common(run[-1][1]): run.pop()
+        if run:
+            ws = [w for _, w in run]
+            first_only = run[0][0] and len(run) == 1 and not re.search(r".[A-Z]", ws[0])
+            if not first_only and not any(common(w) for w in ws):
+                out.append([stem(x) for w in ws for x in w.lower().split("-")])
+        run.clear()
+    start = True
+    for t in toks:
+        if t in ".!?": close(); start = True; continue
+        if t[0].isupper(): run.append((start, t))
+        else: close()
+        start = False
+    close()
+    return out
+
+def name_excused(text, want, got):
+    # the missed words of the line are exactly one proper noun's words, and at least one other word was heard
+    hit = set()
+    for b in SequenceMatcher(None, want, got, autojunk=False).get_matching_blocks():
+        hit.update(range(b.a, b.a + b.size))
+    missed = [i for i in range(len(want)) if i not in hit]
+    if not missed or len(hit) < 1: return False
+    for nm in names(text):
+        for s in range(len(want) - len(nm) + 1):
+            if want[s:s + len(nm)] == nm and all(s <= i < s + len(nm) for i in missed) and len(want) > len(nm): return True
+    return False
+
+def judge(texts, heard):
+    # each piece against its own line and its neighbours (main, below; tests/podcast.test.mjs calls it directly)
+    want = [words(t, True) for t in texts]
+    got = [words(h, False) for h in heard]
+    out = []
+    for i, (w, g) in enumerate(zip(want, got)):
+        own = f1(w, g)
+        if len(w) < 3:
+            ok = len(g) <= len(w) + 5  # a short reaction stays short
+        else:
+            near = [f1(want[j], g) for j in (i - 1, i + 1) if 0 <= j < len(want) and len(want[j]) >= 3]
+            # lenient on the words (an accent, a Hindi word or a name can be misheard); strict on order and length: a
+            # piece closer to a neighbouring line, or far longer than its own, is a cut in the wrong place
+            ok = own >= 0.35 and all(own >= x for x in near) and len(g) <= 1.6 * len(w) + 4
+            if not ok and len(g) <= 1.6 * len(w) + 4 and name_excused(texts[i], w, g):
+                own = max(own, 0.35)  # one unspellable name, every other word heard
+                ok = all(own >= x for x in near)
+        out.append({"f1": round(own, 2), "ok": ok, "heard": heard[i][:300]})
+    return out
+
 def audio(path):
     # the WAV read here, 16-bit mono, resampled to the model's 16 kHz: no audio decoder library to break on the day
     with wave.open(path) as w:
@@ -129,19 +193,7 @@ def main():
     for p in job["pieces"]:
         segs, _ = model.transcribe(audio(p["wav"]), language="en", beam_size=1, vad_filter=False, condition_on_previous_text=False)
         heard.append(" ".join(s.text for s in segs).strip())
-    want = [words(p["text"], True) for p in job["pieces"]]
-    got = [words(h, False) for h in heard]
-    out = []
-    for i, (w, g) in enumerate(zip(want, got)):
-        own = f1(w, g)
-        if len(w) < 3:
-            ok = len(g) <= len(w) + 5  # a short reaction stays short
-        else:
-            near = [f1(want[j], g) for j in (i - 1, i + 1) if 0 <= j < len(want) and len(want[j]) >= 3]
-            # lenient on the words (an accent, a Hindi word or a name can be misheard); strict on order and length: a
-            # piece closer to a neighbouring line, or far longer than its own, is a cut in the wrong place
-            ok = own >= 0.35 and all(own >= x for x in near) and len(g) <= 1.6 * len(w) + 4
-        out.append({"f1": round(own, 2), "ok": ok, "heard": heard[i][:300]})
+    out = judge([p["text"] for p in job["pieces"]], heard)
     json.dump({"ok": all(x["ok"] for x in out), "pieces": out}, open(sys.argv[2], "w"), indent=1)
     bad = [i for i, x in enumerate(out) if not x["ok"]]
     print(f"verify: {len(out)} lines, {len(out) - len(bad)} match" + (f"; line(s) {', '.join(str(i + 1) for i in bad)} do not" if bad else ""))

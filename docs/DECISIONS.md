@@ -1127,3 +1127,13 @@ Parth, with the usage page at 8.55 of 10 GB Deployment Storage: "go A and B".
 - (A) The 14 Oct skip step was never switched on: `scripts/vercel-ignore.sh` existed and the 14 Oct entry names `vercel.json ignoreCommand`, but the line was missing from vercel.json, so every push to main still built (Vercel's GitHub status shows "Deployment has completed" on docs-only commits of 19 Oct). 56 of the 250 deployments in the 30 days to 20 Oct changed nothing the site uses. vercel.json now has `"ignoreCommand": "bash scripts/vercel-ignore.sh"`.
 - (B) Only the last 14 days of Bunty's art go into a deployment (config `art.keep_days`, was 30): about 15 MB less per deployment (each was about 42 MB, 32 MB of it art). Older days stay in the repository; their editions show no drawings on the site.
 - Build sessions push to main once per approved batch.
+
+## 20 Oct 2026: the 20 Oct podcast audit
+Parth approved the audit's recommendations 1 to 7, "all as recommended". All in the podcast only (scripts/podcast, config podcast).
+1. The story cutter: a story told on Page One (the lead included) uses up no desk's place, so Money, News and Tech each still get a story of their own when they have one (20 Oct: the lead, India and New Zealand's trade deal, was Money's, and Money had nothing else in the show).
+2. Sport's 1.2 never takes out a desk's or a home city's last story of its own (20 Oct it swapped out Brent above $110, Money's only other story, for Svitolina).
+3. India's cricket weighs 7% more, like Real Madrid (config podcast.weights, section crease), so selector and series news beats gossip on a tie (20 Oct: Pragyan Ojha replacing Ajit Agarkar as chief selector lost every tie to Ronaldo and Svitolina).
+4. The listening check (verify_lines.py) counts a line as heard when its only miss is one proper noun from the script that the recogniser cannot spell ("Bachonker McChonketh"): capitalised, not a common word, one name a line, every other word heard.
+5. Two script checks that misfired: a spoken year ("twenty thirty-one", "in twenty thirty") is not a 24-hour clock, and two different markets moving by the same amount (the Sensex down 1.2%, the Nasdaq up 1.2%) are not "the same thing twice".
+6. "RB Leipzig" is voiced as "R B Leipzig" (config podcast.pronounce; it came out "Arbi Leipzig" two days running); the transcript keeps "RB Leipzig".
+7. The House Note stays as the paper prints it. When it is a plain summary, the writers' brief lets the hosts close with one light, natural line of their own that fits the day, never forced and never a pun for its own sake, within the length rules. EDITORIAL.md, DESK.md and the validator are unchanged.
