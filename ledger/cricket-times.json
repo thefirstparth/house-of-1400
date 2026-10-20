@@ -1,7 +1,7 @@
 {
-  "date": "2026-10-19",
+  "date": "2026-10-20",
   "source": "Cricbuzz",
-  "checked_at": "2026-10-19T08:43:27.016Z",
+  "checked_at": "2026-10-20T08:43:15.663Z",
   "matches": [
     {
       "desc": "1st T20I",
@@ -433,6 +433,24 @@
           "format": "T20",
           "total": null,
           "played": null
+        }
+      ],
+      "now": true
+    },
+    {
+      "name": "Sri Lanka tour of India, 2026",
+      "opponent": "Sri Lanka",
+      "from": "2026-12-13",
+      "parts": [
+        {
+          "format": "ODI",
+          "total": 3,
+          "played": 0
+        },
+        {
+          "format": "T20",
+          "total": 3,
+          "played": 0
         }
       ],
       "now": false

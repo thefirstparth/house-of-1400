@@ -1,64 +1,63 @@
 {
-  "date": "2026-10-19",
-  "from": "2026-10-18",
+  "date": "2026-10-20",
+  "from": "2026-10-19",
   "carry": [
-    {
-      "id": "pm:brazil-presidential-election",
-      "title": "Brazil Presidential Election",
-      "since": "2026-10-12",
-      "reason": "#2 by 24h volume"
-    },
     {
       "id": "pm:us-iran-ceasefire-continues-throughptptpt",
       "title": "US-Iran ceasefire continues through...?",
       "since": "2026-10-08",
-      "reason": "#3 by 24h volume"
+      "reason": "#1 by 24h volume"
     },
     {
       "id": "pm:ballon-dor-winner-2026",
       "title": "Ballon d'Or Winner 2026",
       "since": "2026-09-25",
-      "reason": "#4 by 24h volume"
+      "reason": "#2 by 24h volume; Harry Kane moved 6.8 pts since printed"
     },
     {
-      "id": "pm:next-french-presidential-election",
-      "title": "Next French Presidential Election",
-      "since": "2026-10-09",
-      "reason": "#5 by 24h volume"
+      "id": "pm:brazil-presidential-election",
+      "title": "Brazil Presidential Election",
+      "since": "2026-10-12",
+      "reason": "#3 by 24h volume"
     },
     {
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
       "title": "UEFA Champions League: 2027 Champion",
       "since": "2026-09-25",
-      "reason": "#6 by 24h volume"
+      "reason": "#5 by 24h volume"
     },
     {
-      "id": "pm:epl-2027-champion-20260701200428749",
-      "title": "EPL: 2027 Champion",
-      "since": "2026-10-18",
-      "reason": "#18 by 24h volume"
+      "id": "pm:next-french-presidential-election",
+      "title": "Next French Presidential Election",
+      "since": "2026-10-09",
+      "reason": "#6 by 24h volume"
     }
   ],
   "dropped": [
     {
-      "id": "pm:bab-el-mandeb-strait-effectively-closed-by",
-      "title": "Bab el-Mandeb Strait effectively closed by...?",
-      "why": "cooled: outside the ranking by volume, moved 1.2 pts"
+      "id": "pm:epl-2027-champion-20260701200428749",
+      "title": "EPL: 2027 Champion",
+      "why": "cooled: #21 by volume, moved 3.0 pts"
     },
     {
-      "id": "pm:wta-chwalin-kartal-2026-10-18",
-      "title": "Wuhan Tennis Open: Maja Chwalinska vs Sonay Kartal",
+      "id": "pm:anthropic-ipo-by",
+      "title": "Anthropic IPO by __?",
+      "why": "cooled: #42 by volume, moved 0.0 pts"
+    },
+    {
+      "id": "pm:laliga-2027-champion-20260701200737375",
+      "title": "LALIGA: 2027 Champion",
+      "why": "cooled: #29 by volume, moved 0.0 pts"
+    },
+    {
+      "id": "pm:ucl-mnc-aek1-2026-10-20",
+      "title": "Manchester City FC vs. AEK",
       "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:lal-rea-sev-2026-10-18",
-      "title": "Real Madrid CF vs. Sevilla FC",
-      "why": "cooled: #38 by volume, moved 0.0 pts"
-    },
-    {
-      "id": "pm:next-press-secretary-announced-byptptpt",
-      "title": "Next Press Secretary announced by...?",
-      "why": "cooled: #31 by volume, moved 4.0 pts"
+      "id": "pm:which-company-has-the-best-ai-model-end-of-october",
+      "title": "Which company has the best AI model end of October?",
+      "why": "cooled: #43 by volume, moved 2.6 pts"
     }
   ]
 }
