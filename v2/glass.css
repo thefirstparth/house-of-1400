@@ -455,7 +455,7 @@ html.look-glass .acal .ed a{border:0;border-radius:var(--g-r2);background:var(--
    Ten readers and Parth read the look on the real paper (v2/README.md, The Glass look). What changed, item by item: */
 /* A5 the frosted bar: more fill behind the text, darker labels, the red change at 4.5:1, a 2px focus ring */
 html.look-glass:root{--warn:#7a5400}
-html.look-glass nav.dtabs{background:rgba(242,240,235,.92)}
+html.look-glass nav.dtabs{background:rgba(242,240,235,.96)}
 html.look-glass nav.dtabs ol a{color:#3a3830}
 html.look-glass nav.dtabs ol a[aria-current]{color:#fff}
 html.look-glass nav.dtabs .now .k{color:#4d4a43}
