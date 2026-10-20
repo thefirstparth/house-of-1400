@@ -7,7 +7,11 @@ let NEWDESKS = [];
 // The Glass look (Direction 10, behind /?glass from 20 Oct 2026; v2/assemble.mjs sets the class before first paint):
 // one mid-tone theme, the desk bar carrying the small nameplate and the live figures, a way back in the foot
 const GLASS = document.documentElement.classList.contains("look-glass");
-let DESK = { id: (location.hash.match(/^#d-([a-z]+)$/) || [])[1] || "one", name: "", sections: [] };
+// The desk in the address, lowercased first (QA panel, 20 Oct 2026: "#d-Money" opens Money too)
+const deskInHash = () => (location.hash.toLowerCase().match(/^#d-([a-z]+)$/) || [])[1] || null;
+let DESK = { id: deskInHash() || "one", name: "", sections: [] };
+// Smooth scrolling, except for a reader who asks for less motion (QA panel, 20 Oct 2026)
+const SMOOTH = () => (matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth");
 function desksInit() {
   if (NEWDESKS.length || !CFG) return;
   NEWDESKS = CFG.desks_v2?.desks || [{ id: "one", name: "Page One", sections: [] }, ...CFG.desks.map(d => ({ id: d.id, name: d.name, sections: d.sections }))];
@@ -59,6 +63,8 @@ function paintShell() {
 let nowT = 0;
 function tickNow() {
   const el = $("#r-now"); if (!el) return;
+  // a past edition (/e/<date>) is that day's paper: no clock reading today's time beside it (QA panel, 20 Oct 2026)
+  if (ROUTE?.kind === "edition") { el.innerHTML = ""; el.hidden = true; return; }
   const d = new Date(), day = o => d.toLocaleDateString("en-GB", { ...o, timeZone: TZ }), t = istTime(d.toISOString()), other = istDate(d) !== E?.date;
   const html = `<span class="lg">${esc(day({ weekday: "short" }))} ${esc(day({ day: "numeric", month: "short" }))} · ${t} IST</span><span class="sh">${other ? `${esc(day({ weekday: "short" }))} ` : ""}${t}</span>`;
   if (el.innerHTML !== html) el.innerHTML = html;
@@ -78,31 +84,49 @@ function shellStatic() {
   if (GLASS) { const nav = $("#dtabs"), np = $(".np"), now = $("#now"); if (np && np.parentElement !== nav) nav.prepend(np); if (now && now.parentElement !== nav) nav.append(now); }
   // Phone tabs (review, 2 Oct): the current tab starts the row, so no sliver of the one before it shows; an edge fades
   // only where a tab is cut by it, so the row reads as one that scrolls.
-  const ol = $("#dtabs ol"), fade = () => {
-    const L = ol.scrollLeft, R = L + ol.clientWidth, cut = [...ol.children].map(li => [li.offsetLeft, li.offsetLeft + li.offsetWidth]);
-    ol.classList.toggle("more-l", cut.some(([a, b]) => a < L - 1 && b > L + 1));
-    ol.classList.toggle("more-r", R < ol.scrollWidth - 2);
-  };
-  if (!ol.dataset.wired) { ol.dataset.wired = 1; ol.addEventListener("scroll", fade, { passive: true }); addEventListener("resize", fade); }
-  requestAnimationFrame(() => {
-    const li = ol.querySelector("[aria-current]")?.parentElement;
-    if (li && ol.scrollWidth > ol.clientWidth) {
-      // start the row at a tab, the current one if the row can scroll that far, else the furthest tab that still shows it
-      const max = ol.scrollWidth - ol.clientWidth, starts = [...ol.children].map((x, i) => (i ? x.offsetLeft - 4 : 0));
-      const fit = starts.filter(b => b <= max && b <= starts[[...ol.children].indexOf(li)] && b + ol.clientWidth >= li.offsetLeft + li.offsetWidth + 4);
-      ol.scrollLeft = fit.length ? Math.max(...fit) : max;
-    }
-    fade();
-  });
+  const ol = $("#dtabs ol");
+  if (!ol.dataset.wired) { ol.dataset.wired = 1; ol.addEventListener("scroll", tabFade, { passive: true }); addEventListener("resize", tabFade); }
+  requestAnimationFrame(tabsToCurrent);
   document.title = `${DESK.id === "one" ? "" : DESK.name + " · "}The House of 1400 · ${longDate(E.date)}`;
   document.documentElement.style.setProperty("--d", `var(--d-${DESK.id})`);
   document.body.classList.toggle("on-one", DESK.id === "one");
 }
+function tabFade() {
+  const ol = $("#dtabs ol"); if (!ol) return;
+  const L = ol.scrollLeft, R = L + ol.clientWidth, cut = [...ol.children].map(li => [li.offsetLeft, li.offsetLeft + li.offsetWidth]);
+  ol.classList.toggle("more-l", cut.some(([a, b]) => a < L - 1 && b > L + 1));
+  ol.classList.toggle("more-r", R < ol.scrollWidth - 2);
+}
+// The current tab in view: also after a resize or a turn of the phone (QA panel, 20 Oct 2026)
+function tabsToCurrent() {
+  const ol = $("#dtabs ol"); if (!ol) return;
+  const li = ol.querySelector("[aria-current]")?.parentElement;
+  if (li && ol.scrollWidth > ol.clientWidth) {
+    // start the row at a tab, the current one if the row can scroll that far, else the furthest tab that still shows it
+    const max = ol.scrollWidth - ol.clientWidth, starts = [...ol.children].map((x, i) => (i ? x.offsetLeft - 4 : 0));
+    const fit = starts.filter(b => b <= max && b <= starts[[...ol.children].indexOf(li)] && b + ol.clientWidth >= li.offsetLeft + li.offsetWidth + 4);
+    ol.scrollLeft = fit.length ? Math.max(...fit) : max;
+  }
+  tabFade();
+}
 function deskOpener() {
   desksInit(); refile(); shellStatic();
   if (DESK.id === "one") return pageOne();
-  return `<header class="dopen"><h1>${esc(DESK.name)}</h1><nav class="jump" id="jump" aria-label="In ${esc(DESK.name)}"></nav></header>`;
+  return `<header class="dopen"><h1 tabindex="-1">${esc(DESK.name)}</h1><nav class="jump" id="jump" aria-label="In ${esc(DESK.name)}"></nav></header>`;
 }
+// Headings in order (QA panel, 20 Oct 2026): one h1 per desk, and no level skipped on the way down (a data block's
+// small h5 straight under a story's h3 reads as level 4). Only the level read aloud changes (aria-level), not the look.
+function headingOrder() {
+  let prev = 1;
+  for (const h of document.querySelectorAll("#main :is(h1,h2,h3,h4,h5,h6)")) {
+    if (h.dataset.lv) h.removeAttribute("aria-level"), h.removeAttribute("role");
+    if (!h.classList.contains("sr") && !(h.checkVisibility ? h.checkVisibility() : h.getClientRects().length)) continue; // hidden or folded away
+    const own = Number(h.getAttribute("aria-level") || h.tagName[1]);
+    if (own > prev + 1) { h.setAttribute("role", "heading"); h.setAttribute("aria-level", String(prev + 1)); h.dataset.lv = 1; prev += 1; }
+    else prev = own;
+  }
+}
+document.addEventListener("toggle", () => headingOrder(), true); // a folded part opened or closed
 function paintJump() {
   const el = $("#jump"); if (!el) return;
   const ids = deskOrder().filter(id => { const s = document.getElementById(id); return s && !s.hidden; });
@@ -251,11 +275,12 @@ function fixturesV2() {
       const st = f.time_tbc ? "next" : fixState(f, n), sp = sportOfEntity(f.entity), { title, sub } = fxTitle(f), w = watchOn(f);
       const when = f.time_tbc ? "TBC" : f.until_utc ? `to ${sparkLabel(istDate(new Date(f.until_utc)))}` : istTime(f.when_utc);
       const extra = f.source === "ESPN" ? [f.court, f.other && `another listing says ${f.other}`].filter(Boolean) : [];
-      const tag = st === "done" ? '<span class="tg fin">Final</span>' : st === "on" ? '<span class="tg on"><i></i>Live</span>' : f === next ? `<span class="tg nx">Next up · ${esc(fxUntil(Date.parse(f.when_utc)))}</span>` : "";
+      const ngt = !f.time_tbc && !f.until_utc ? nightTag(f.when_utc, "tg ngt") : "";
+      const tag = st === "done" ? '<span class="tg fin" title="Finished">FT</span>' : st === "on" ? '<span class="tg on"><i></i>Live</span>' : f === next ? `<span class="tg nx">Next up · ${esc(fxUntil(Date.parse(f.when_utc)))}</span>` : "";
       const live = st === "on" && f.score ? `<div class="fxlive"><b class="tnum">${esc(f.score)}</b>${scoreAt(f.scoreKey) ? ` <small>${esc(scoreAt(f.scoreKey))}</small>` : ""}</div>` : "";
       const due = st === "due" || (st === "next" && f.held) ? `<div class="fxdue">${esc(dueWhy(f))}</div>` : "";
       return `<li class="fx sp-${sp || "more"} ${st === "span" || st === "due" ? "next" : st}${f === next ? " nxt" : ""}"><span class="t tnum">${esc(when)}</span><div class="what">
-        <div class="kick">${fxIcon(sp)}${esc(sportOf(f))}${tag}</div>
+        <div class="kick">${fxIcon(sp)}${esc(sportOf(f))}${tag}${ngt}</div>
         <div class="ti">${esc(title)}</div>${sub || w || extra.length ? `<div class="meta">${[sub, ...extra].filter(Boolean).map(esc).join(" · ")}${w ? `<span class="tv">${FX_TV}${esc(w)}</span>` : ""}</div>` : ""}
         ${live}${due}${st === "done" ? fxResult(f) : fxOdds(f)}</div></li>`;
     }).join("")}</ul></div>`;
@@ -334,7 +359,17 @@ function eveningHTML() {
   const s = (E.screen || []).find(x => x.verdict === "must" && !x.coming_soon); if (!s) return "";
   return `<a class="pick" href="${deskHref("off")}" data-desk="off" data-to="screen" style="--c:var(--d-off)"><span class="v">Must watch</span><b>${esc(s.title)}</b><p>${esc([s.where, s.release].filter(Boolean).join(" · "))}. ${esc(String(s.reason || "").split(". ")[0])}.</p></a>`;
 }
-const when1 = iso => { const n = Math.round((Date.parse(istDate(new Date(iso))) - Date.parse(istDate())) / 864e5); return `${n === 0 ? "today" : n === 1 ? "tomorrow" : istDay(iso)}, ${istTime(iso)}`; };
+// "today, 19:30 IST" (QA panel, 20 Oct 2026: the card names its zone), with the night tag after it when one applies
+const when1 = (iso, night = true) => { const n = Math.round((Date.parse(istDate(new Date(iso))) - Date.parse(istDate())) / 864e5); return `${n === 0 ? "today" : n === 1 ? "tomorrow" : istDay(iso)}, ${istTime(iso)} IST${night ? nightTag(iso) : ""}`; };
+// A start from midnight to 05:59 IST is watched the night before (QA panel, 20 Oct 2026): the date stays IST's and a
+// small tag names that night ("Wed night"). Only for a start whose time is known: a time still to be announced never
+// gets one.
+const nightOf = iso => {
+  const t = Date.parse(iso); if (!Number.isFinite(t)) return "";
+  const h = Number(istTime(new Date(t).toISOString()).slice(0, 2));
+  return h >= 0 && h < 6 ? `${fmt(new Date(t - 864e5).toISOString(), { weekday: "short" })} night` : "";
+};
+const nightTag = (iso, cls = "ngt") => { const x = nightOf(iso); return x ? ` <span class="${cls}">${esc(x)}</span>` : ""; };
 // Sport this week (Parth, 2 Oct: "should be in ascending order; India v West Indies is missing"): the next match of
 // everything he follows, in time order, a match under way first. "Everything" is each India cricket series in the
 // live schedule (the Asian Games side and the West Indies series both count), Real Madrid, the F1 race and each
@@ -358,10 +393,10 @@ function sportHTML(max = 5) {
     all.push({ sport: "Madrid", key: "madrid", t, title: `${m.home ? "v" : "at"} ${m.opponent}`, sub: m.state === "in" ? `${live("Live")}${sc ? ` ${esc(sc)}${scoreAt("football") ? ` <span class="nw">· ${esc(scoreAt("football"))}</span>` : ""}` : ""}${on(watchOn({ competition: m.competition, label: m.name }))}` : `${esc(m.competition)} · ${m.time_confirmed ? when1(m.date) : istDay(m.date)}${on(watchOn({ competition: m.competition, label: m.name }))}`, live: m.state === "in" });
   }
   const race = f1?.sessions?.at(-1);
-  if (race && Date.parse(race.start) + race.minutes * 6e4 > n) all.push({ sport: "F1", key: "f1", t: Date.parse(race.start), title: `${f1.name.replace(/ in [A-Z][a-z]+$/, "")}${f1.locality ? `, ${f1.locality}` : ""}`, sub: `Race ${when1(race.start)}${on(watchOn({ entity: "f1" }))}` });
+  if (race && Date.parse(race.start) + race.minutes * 6e4 > n) all.push({ sport: "F1", key: "f1", t: Date.parse(race.start), title: `${f1.name.replace(/ in [A-Z][a-z]+$/, "")}${f1.locality ? `, ${f1.locality}` : ""}`, sub: `Race ${when1(race.start, race.time_confirmed !== false)}${on(watchOn({ entity: "f1" }))}` });
   for (const p of T) {
     const nx = p.next, nm = lastName(p.name); if (!nx?.when_utc || (!nx.live && Date.parse(nx.when_utc) < n - 3 * 36e5)) continue;
-    all.push({ sport: "Tennis", key: `tn:${p.name}`, t: Date.parse(nx.when_utc), title: `${nm} v ${nx.opponent || "TBC"}`, sub: `${nx.live ? live("Live") : when1(nx.when_utc)}${on(watchOn({ entity: "tennis", label: `${nm} v ${nx.opponent}`, event: nx.event }))}`, live: !!nx.live });
+    all.push({ sport: "Tennis", key: `tn:${p.name}`, t: Date.parse(nx.when_utc), title: `${nm} v ${nx.opponent || "TBC"}`, sub: `${nx.live ? live("Live") : when1(nx.when_utc, !nx.tbd)}${on(watchOn({ entity: "tennis", label: `${nm} v ${nx.opponent}`, event: nx.event }))}`, live: !!nx.live });
   }
   all.sort((a, b) => a.t - b.t);
   const pick = new Set(), keys = new Set(), within = d => x => x.t - n < d * 864e5;
@@ -517,15 +552,27 @@ ${sun}<p class="reads">${reads}</p>${rest}${alertLine()}${others ? `<p class="el
 // Money (Parth, 1 Oct: "The % change is 1 day change? What do you show on a weekend?"): each figure's change on its
 // latest session, headed 1D; a dot and a line say whether the market is live or closed, and which session's close
 // the figure is when it is closed (Friday's on a weekend).
+// The session a figure belongs to, as YYYY-MM-DD, or "" when the figure does not say
+const sessionDay = x => (/^\d{4}-\d\d-\d\d$/.test(x?.session_date || "") ? x.session_date : "");
+// IBJA's rate date is written DD/MM/YYYY
+const goldDay = G => { const m = String(G?.rate_date || "").match(/^(\d\d)\/(\d\d)\/(\d{4})$/); return m ? `${m[3]}-${m[2]}-${m[1]}` : ""; };
+// The rupee's moves in neutral ink in the Ledger, all periods, as on Page One (QA panel, 20 Oct 2026): a weaker or
+// stronger rupee is not good or bad news in itself. The row is the config's cross whose Yahoo symbol is INR=X.
+const fxNeutral = name => name === (CFG?.markets?.cross || []).find(c => c.yahoo === "INR=X")?.name;
 function moneyHTML() {
   const M = LIVE.markets?.value; if (!M?.indices?.length) return "";
   const q = n => M.indices.find(x => x.name === n), sx = q("Sensex"), nf = q("Nifty 50"), sp = q("S&P 500"), br = (M.cross || []).find(x => /brent/i.test(x.name)), fx = (M.cross || []).find(x => /USD\/INR/i.test(x.name)), G = LIVE.gold_in?.value;
-  const closeOf = x => (x?.live ? "" : x?.session_date && x.session_date !== istDate() ? ` <small>${esc(fmt(x.session_date + "T12:00:00Z", { weekday: "short" }))}</small>` : "");
+  // every line whose figure is an earlier session's close carries that session's day ("Fri"), from the figure's own
+  // date (QA panel, 20 Oct 2026: not only the Nifty and the S&P); a figure without a date gets no tag
+  const today = ROUTE?.kind === "edition" ? E.date : istDate();
+  const closeOf = x => { const d = sessionDay(x); return x && !x.live && d && d < today ? ` <small>${esc(fmt(d + "T12:00:00Z", { weekday: "short" }))}</small>` : ""; };
   const dot = x => `<i class="mdot ${x?.live ? "on" : ""}" title="${esc(x ? hoursLine(x) : "")}"></i>`;
-  const row = (nm, v, c, x) => `<tr><td class="l">${x ? dot(x) : ""}${nm}${closeOf(x)}</td><td class="v tnum">${v}</td><td class="r tnum ${dir(c)}">${pct(c)}</td></tr>`;
-  const mood = m => (m ? `<span>${esc(m.region)} mood<b class="${m.score < 45 ? "dn" : m.score > 55 ? "up" : ""}">${m.score} · ${esc(String(m.word || moodWord(m.score)).toLowerCase())}</b></span>` : "");
+  const row = (nm, v, c, x, tagOf = x, ink = dir(c)) => `<tr><td class="l">${x ? dot(x) : ""}${nm}${closeOf(tagOf)}</td><td class="v tnum">${v}</td><td class="r tnum ${ink}">${pct(c)}</td></tr>`;
+  // each mood with its own reading's time, from its publisher (Tickertape, CNN), not the board's
+  const moodAt = m => { const t = Date.parse(m?.as_of || ""); if (!Number.isFinite(t)) return ""; const iso = new Date(t).toISOString(); return istDate(new Date(t)) === today ? istTime(iso) : `${fmt(iso, { weekday: "short" })} ${istTime(iso)}`; };
+  const mood = m => (m ? `<span>${esc(m.region)} mood${moodAt(m) ? `<i class="mat tnum"> · ${esc(moodAt(m))}</i>` : ""}<b class="${m.score < 45 ? "dn" : m.score > 55 ? "up" : ""}">${m.score} · ${esc(String(m.word || moodWord(m.score)).toLowerCase())}</b></span>` : "");
   return `<div class="mny">${sx ? `<div class="sx"><span class="k">Sensex</span><b class="tnum">${inr(sx.price)}</b><span class="tnum ${dir(sx.change_pct)}">${pct(sx.change_pct)}</span><span class="k">1D</span></div><p class="mst">${dot(sx)}${esc(hoursLine(sx))}</p>` : ""}
-<table><thead><tr><th></th><th></th><th class="r">1D</th></tr></thead><tbody>${nf ? row("Nifty 50", inr(nf.price), nf.change_pct, nf) : ""}${sp ? row("S&P 500", inr(sp.price), sp.change_pct, sp) : ""}${fx ? `<tr><td class="l">USD/INR</td><td class="v tnum">₹${fx.price.toFixed(2)}</td><td class="r tnum">${pct(fx.change_pct)}</td></tr>` : ""}${br ? row("Brent", "$" + br.price.toFixed(2), br.change_pct, br.live != null ? br : null) : ""}${G?.per_10g_24k ? row("Gold 24K", "₹" + inr(G.per_10g_24k), G.change_pct) : ""}</tbody></table>
+<table><thead><tr><th></th><th></th><th class="r">1D</th></tr></thead><tbody>${nf ? row("Nifty 50", inr(nf.price), nf.change_pct, nf) : ""}${sp ? row("S&P 500", inr(sp.price), sp.change_pct, sp) : ""}${fx ? row("USD/INR", `₹${fx.price.toFixed(2)}`, fx.change_pct, null, fx, "") : ""}${br ? row("Brent", "$" + br.price.toFixed(2), br.change_pct, br.live != null ? br : null, br) : ""}${G?.per_10g_24k ? row("Gold 24K", "₹" + inr(G.per_10g_24k), G.change_pct, null, { session_date: goldDay(G) }) : ""}</tbody></table>
 <div class="fear">${mood(M.mood?.India)}${mood(M.mood?.US)}</div></div>${staleNote("markets")}`;
 }
 // The market expects (Parth, 1 Oct: "How is Brazil important?"): the busiest markets that touch what he follows
@@ -550,7 +597,8 @@ function betsHTML(k = 3) {
   // live prices where the market is in the live feed (every 5 minutes), else the edition's own
   const liveM = !LIVE.betting?.stale && LIVE.betting?.value?.markets || [], idOf = b => (b.id?.includes(":") ? b.id : `pm:${b.id}`);
   return `<ol class="bets" style="--c:var(--d-news)">${list.map(b => { const L = liveM.find(m => m.id === idOf(b)), o = [...((L?.outcomes?.length ? L.outcomes : b.outcomes) || [])].sort((x, y) => y.prob - x.prob)[0]; if (!o) return "";
-    return `<li data-bet="${esc(b.id)}" tabindex="0" role="button" aria-label="${esc(b.title)}: in detail"><span class="t">${esc(vsV(b.title).replace(/^UEFA /, ""))}</span><span class="o"><b class="tnum">${Math.round(o.prob)}%</b><span>${esc(outcomeLabel(o.name))}</span><span class="bar"><i style="width:${Math.max(0, Math.min(100, o.prob))}%"></i></span></span></li>`; }).join("")}</ol>`;
+    // a real button in each list item (QA panel, 20 Oct 2026: the list keeps its items, the button its role)
+    return `<li><button type="button" class="bet" data-bet="${esc(b.id)}" aria-label="${esc(b.title)}: in detail"><span class="t">${esc(vsV(b.title).replace(/^UEFA /, ""))}</span><span class="o"><b class="tnum">${Math.round(o.prob)}%</b><span>${esc(outcomeLabel(o.name))}</span><span class="bar"><i style="width:${Math.max(0, Math.min(100, o.prob))}%"></i></span></span></button></li>`; }).join("")}</ol>`;
 }
 // ---------------------------------------------------------------- Since the paper went out (Parth, 2 Oct)
 // What changed after this edition was printed, timestamped, from the live figures the page already reads: a market's
@@ -628,7 +676,7 @@ function sinceHTML() {
 
 const blk = (id, desk, title, link, to, body, extra = "") => (body ? `<section class="blk" id="p1-${id}" style="--c:var(--d-${desk})"><div class="bh"><h2>${title}</h2>${extra}<a href="${deskHref(desk)}" data-desk="${desk}" data-to="${to}">${link} →</a></div><div data-p1="${id}">${body}</div></section>` : "");
 function pageOne() {
-  return `<div class="p1"><div id="p1-since" data-p1="since">${sinceHTML()}</div><div class="p1body"><div class="stack c1"><section class="news" id="p1-minute"><div class="bh" style="--c:var(--d-one)"><h2>The day in a minute</h2>${CAN_SAY ? `<button class="say" data-say="minute" aria-pressed="false" title="Read The day in a minute aloud">Listen</button>` : ""}<a href="${deskHref("news")}" data-desk="news">All the news →</a></div><div data-p1="minute">${minuteHTML(p1lines)}</div></section><div class="eve" id="p1-eve" data-p1="evening">${eveningHTML()}</div></div>
+  return `<div class="p1"><h1 class="sr" id="p1-title" tabindex="-1">${esc(DESK.name || "Page One")}</h1><div id="p1-since" data-p1="since">${sinceHTML()}</div><div class="p1body"><div class="stack c1"><section class="news" id="p1-minute"><div class="bh" style="--c:var(--d-one)"><h2>The day in a minute</h2>${CAN_SAY ? `<button class="say" data-say="minute" aria-pressed="false" title="Read The day in a minute aloud">Listen</button>` : ""}<a href="${deskHref("news")}" data-desk="news">All the news →</a></div><div data-p1="minute">${minuteHTML(p1lines)}</div></section><div class="eve" id="p1-eve" data-p1="evening">${eveningHTML()}</div></div>
 <div class="stack c2">${blk("money", "money", "Money", "The Ledger", "ledger", moneyHTML())}${blk("sport", "sport", "Sport this week", "Sport", "fixtures", sportHTML(6))}</div>
 <div class="stack c3">${blk("weather", "home", "Weather", "Sky &amp; Streets", "sky", weatherHTML(), `<span class="bhx" data-p1="wxhead">${hereHead()}</span>`)}${blk("bets", "news", "The market expects", "Betting Window", "betting", betsHTML(3))}</div></div></div>`;
 }
@@ -782,6 +830,17 @@ function browserZoom() {
   const r = outerWidth && innerWidth ? outerWidth / innerWidth : 1;
   return r > 1.04 && r < 4 ? r : 1;
 }
+// The trimming rule on its own (tests/qa-panel.test.mjs): from n lines, while the page does not fit and more than min
+// remain, drop one line, or two, only if that makes the page shorter; else put them back and stop. Returns the lines kept.
+function p1Trim(n, min, fits, tall, set) {
+  while (!fits() && n > min) {
+    const before = tall(); let kept = n;
+    for (let k = 1; k <= 2 && n - k >= min; k++) { set(n - k); if (tall() < before - 1) { kept = n - k; break; } }
+    if (kept === n) { set(n); tall(); break; }
+    n = kept;
+  }
+  return n;
+}
 function fitOne() {
   setZoom(1, 0);
   if (DESK.id !== "one" || !document.querySelector(".p1end")) return;
@@ -800,6 +859,13 @@ function fitOne() {
   const U = browserZoom(), KEY = `h1400-z100:${screen.width}x${screen.height}`;
   const at = (z, s = ".p1end") => { setZoom(z, Math.min(W / z, 2600)); return bottom(s) <= innerHeight; };
   const LO = 0.8; // lines are dropped (never below five) before the type goes under this
+  // A line of the day in a minute goes only when that shortens the tallest column, so the page can then fit (QA panel,
+  // 20 Oct 2026): when another column is the tallest, every line stays. One line or two at a time (in two columns, one
+  // line less may leave the column as tall as it was).
+  const trimMinute = z => {
+    const tall = () => { at(z); balanceOne(); at(z); return bottom(".p1end"); };
+    p1lines = p1Trim(p1lines, P1MIN, () => at(z), tall, n => { p1lines = n; paintOne(); });
+  };
   const search = (s, top) => {
     let lo = LO, hi = Math.max(LO, top);
     if (at(hi, s)) return hi;
@@ -818,7 +884,7 @@ function fitOne() {
       el.style.display = "none"; balanceOne();
       if (!at(top) && bottom(".p1end") >= before - 2) { el.style.display = ""; balanceOne(); }
     }
-    while (!at(top) && p1lines > P1MIN) { p1lines--; paintOne(); }
+    trimMinute(top);
     // then bring back, most important first, every block that fits at the size the page can reach
     const reach = search(".p1end", top);
     for (const id of [...P1GIVE].reverse()) {
@@ -827,7 +893,7 @@ function fitOne() {
       if (!at(reach)) { el.style.display = "none"; balanceOne(); }
     }
   }
-  while (!at(LO) && p1lines > P1MIN) { p1lines--; paintOne(); }
+  trimMinute(LO);
   // zoomed in, Page One never scrolls: if even the smallest type would not fit, blocks keep stepping aside
   if (U > 1.04) for (const id of P1GIVE) {
     if (at(LO)) break;
@@ -1001,10 +1067,11 @@ async function archiveV2() {
     for (let d = 1; d <= n; d++) {
       const ds = `${ym}-${String(d).padStart(2, "0")}`, e = by.get(ds);
       if (!e && ds < first) { cells.push(`<li class="pad" aria-hidden="true"></li>`); continue; } // before the first edition
-      if (!e) { cells.push(`<li class="${ds > today ? "fut" : "none"}${ds === today ? " today" : ""}"><span class="adn">${d}</span></li>`); continue; }
+      if (!e) { cells.push(`<li class="${ds > today ? "fut" : "none"}${ds === today ? " today" : ""}"><span class="adn">${d}${ds === today ? `<span class="atoday">Today</span>` : ""}</span></li>`); continue; }
       const strip = (e.desks || []).map(([k, v]) => `<i style="flex:${v};background:var(--d-${k})"></i>`).join("");
-      const mk = e.sensex == null ? "" : `<span class="mk ${e.sensex >= 0 ? "rise" : "fall"}" title="Sensex ${e.sensex >= 0 ? "+" : ""}${e.sensex}%"><i></i>${e.sensex >= 0 ? "+" : ""}${e.sensex}%</span>`;
-      cells.push(`<li class="ed${ds === today ? " today" : ""}"><a href="/e/${ds}"><span class="adn">${d}</span>${mk}<b>${esc(e.lead || "")}</b><span class="meta">No. ${e.no}${e.items ? ` · ${e.items} items` : ""}</span>${strip ? `<span class="strip" aria-hidden="true">${strip}</span>` : ""}</a></li>`);
+      // the figure says what it is (QA panel, 20 Oct 2026), and today's tile says it is today
+      const mk = e.sensex == null ? "" : `<span class="mk ${e.sensex >= 0 ? "rise" : "fall"}" title="Sensex at press time ${e.sensex >= 0 ? "+" : ""}${e.sensex}%"><i></i>Sensex ${e.sensex >= 0 ? "+" : ""}${e.sensex}%</span>`;
+      cells.push(`<li class="ed${ds === today ? " today" : ""}"><a href="/e/${ds}"${ds === today ? ' aria-current="date"' : ""}><span class="adn">${d}${ds === today ? `<span class="atoday">Today</span>` : ""}</span>${mk}<b>${esc(e.lead || "")}</b><span class="meta">No. ${e.no}${e.items ? ` · ${e.items} items` : ""}</span>${strip ? `<span class="strip" aria-hidden="true">${strip}</span>` : ""}</a></li>`);
     }
     return `<section class="amonth"><h2>${esc(name(ym))}</h2><ol class="awk" aria-hidden="true">${["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(w => `<li>${w}</li>`).join("")}</ol><ol class="acal">${cells.join("")}</ol></section>`;
   };
@@ -1029,7 +1096,7 @@ function liveFx() {
       if (!first && was != null && was !== t && !stillPage()) { el.classList.remove("tick"); void el.offsetWidth; el.classList.add("tick"); }
     });
   }
-  FX.seen = now;
+  FX.seen = now; headingOrder();
   if (stillPage() || !("IntersectionObserver" in window)) return;
   FX.io ||= new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; FX.io.unobserve(e.target); const key = FX.wait.get(e.target); FX.wait.delete(e.target); if (FX.drawn.has(key)) return; FX.drawn.add(key); drawIn(e.target); }), { rootMargin: "0px 0px -6% 0px" });
   const count = new Map(), keyOf = (el, kind) => { const box = el.closest("[data-live],[data-p1],section.sec"), b = box?.dataset.live || box?.dataset.p1 || box?.id || "page", c = `${b}|${kind}`, n = count.get(c) || 0; count.set(c, n + 1); return `${c}|${n}`; };
@@ -1063,23 +1130,78 @@ function drawIn(el) {
 }
 
 // ---------------------------------------------------------------- moving between desks
-function showDesk(id, to, open) {
+// Back and Forward step through the desks visited (QA panel, 20 Oct 2026): a change of desk by a tap pushes a history
+// entry (how "push"); Back or Forward (popstate, hashchange) shows the desk in the address without writing one (how
+// "pop"); the first showing and a jump within a desk replace the entry. After a change of desk, the keyboard's focus
+// moves to the desk's title (styled only for :focus-visible, so a mouse shows no ring) and a polite live region names
+// it ("Money desk").
+const histMode = (same, how) => (how === "pop" ? null : how === "push" && !same ? "push" : "replace");
+function showDesk(id, to, open, how) {
   desksInit();
   const d = NEWDESKS.find(x => x.id === id) || NEWDESKS[0];
   const same = d === DESK; DESK = d;
   if (!same) { render(); scrollTo({ top: 0 }); }
-  if (location.hash !== deskHref(d.id)) history.replaceState(null, "", deskHref(d.id));
+  const mode = histMode(same, how);
+  if (mode && location.hash !== deskHref(d.id)) history[mode === "push" ? "pushState" : "replaceState"](null, "", deskHref(d.id));
   requestAnimationFrame(() => {
     fitMonitor(); if (d.id === "one") mountMark(); else { unmountMark(); mountMini(); } liveFx();
-    if (to) { const el = document.getElementById(to) || document.getElementById("s-" + to); if (el) { if (open && el.tagName === "DETAILS") el.open = true; setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), same ? 0 : 60); } }
+    if (!same && how) deskFocus(d);
+    if (to) { const el = document.getElementById(to) || document.getElementById("s-" + to); if (el) { if (open && el.tagName === "DETAILS") el.open = true; setTimeout(() => land(el), same ? 0 : 60); } }
   });
+}
+function deskFocus(d) {
+  const t = document.querySelector(d.id === "one" ? "#p1-title" : "#main .dopen h1");
+  if (t) { t.tabIndex = -1; t.focus({ preventScroll: true }); }
+  let say = document.getElementById("desksay");
+  if (!say) { say = document.createElement("div"); say.id = "desksay"; say.className = "sr"; say.setAttribute("aria-live", "polite"); document.body.append(say); }
+  say.textContent = "";
+  setTimeout(() => { say.textContent = d.id === "one" ? d.name : `${d.name} desk`; }, 60);
+}
+// A jump lands on its target and stays there (Page One's "Betting Window" link landed in the News stories above it):
+// drawings, fonts and the live refresh can still move the page after the scroll, so for two seconds the target is put
+// back under the bar if it has drifted, unless the reader has scrolled or pressed a key meanwhile.
+let landTok = 0;
+function land(el) {
+  const tok = ++landTok, stop = () => { landTok++; };
+  // below the pinned desk bar as it is when pinned (its height and its top), in either look
+  const want = () => { const b = document.getElementById("dtabs"); return b ? b.getBoundingClientRect().height + Math.max(0, parseFloat(getComputedStyle(b).top) || 0) + 8 : 8; };
+  const go = behavior => scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + scrollY - want()), behavior });
+  go(SMOOTH());
+  for (const ev of ["wheel", "touchstart", "keydown", "mousedown"]) addEventListener(ev, stop, { once: true, passive: true });
+  for (const ms of [700, 1300, 2000]) setTimeout(() => {
+    if (tok !== landTok || !el.isConnected || el.hidden) return;
+    if (Math.abs(el.getBoundingClientRect().top - want()) > 8) go("auto");
+  }, ms);
 }
 document.addEventListener("click", e => {
   const a = e.target.closest("[data-desk]"); if (!a) return;
   e.preventDefault(); e.stopPropagation();
   if (!E) { location.href = "/" + deskHref(a.dataset.desk); return; } // the archive has no edition: go to today's paper
-  showDesk(a.dataset.desk, a.dataset.to, !!a.dataset.open);
+  showDesk(a.dataset.desk, a.dataset.to, !!a.dataset.open, "push");
 }, true);
+// "Skip to the news" (the first thing a Tab reaches, shown only then): to the desk's title, without touching the address
+document.addEventListener("click", e => {
+  if (!e.target.closest("[data-skip]")) return;
+  e.preventDefault();
+  const t = document.querySelector("#p1-title, #main .dopen h1, #main h1, #main h2");
+  if (t) { t.tabIndex = -1; t.focus({ preventScroll: true }); t.scrollIntoView({ block: "start", behavior: SMOOTH() }); }
+});
+// After Read more or Read less the button stays in view (the text above or below it has just changed height)
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-more]"); if (!b) return;
+  requestAnimationFrame(() => requestAnimationFrame(() => { if (b.isConnected) b.scrollIntoView({ block: "nearest", behavior: SMOOTH() }); }));
+});
+// A resize or a turn of the phone: the current tab back in view, and Page One's wordmark drawn again at its new size
+// (it changes across the phone breakpoint and with a phone's width)
+let resizeV2 = 0;
+const onResizeV2 = () => { clearTimeout(resizeV2); resizeV2 = setTimeout(() => {
+  if (!NEWDESKS.length) return;
+  tabsToCurrent();
+  const n = document.querySelector("#bigplate .n");
+  if (DESK.id === "one" && n && plateGeom && Math.abs(Math.round((parseFloat(getComputedStyle(n).height) || 98) / 1.02) - plateGeom.size) > 1) mountMark();
+}, 160); };
+addEventListener("resize", onResizeV2);
+addEventListener("orientationchange", onResizeV2);
 // v2 is the default since 4 Oct 2026 (Parth: "push it to main"); the old design stays one tap away for a while
 // (?v1, remembered on this device; ?v2 forgets it)
 document.addEventListener("click", e => { if (e.target.closest("[data-v1]")) { try { localStorage.setItem("h1400-design", "v1"); } catch {} } }, true);
@@ -1120,7 +1242,14 @@ document.addEventListener("click", e => {
     followSun();
   }
 });
-addEventListener("hashchange", () => { const m = location.hash.match(/^#d-([a-z]+)$/); if (m && NEWDESKS.length && m[1] !== DESK.id) showDesk(m[1]); });
+// Back, Forward, or a desk typed into the address: show that desk (lowercased), writing no new history entry
+const fromAddress = () => {
+  const id = deskInHash(); if (!id || !NEWDESKS.length || !E) return;
+  if (id !== DESK.id) showDesk(id, null, false, "pop");
+  if (location.hash !== deskHref(DESK.id)) history.replaceState(null, "", deskHref(DESK.id)); // "#d-Money" reads "#d-money"
+};
+addEventListener("hashchange", fromAddress);
+addEventListener("popstate", fromAddress);
 
 // ---------------------------------------------------------------- images that cannot load leave no box behind
 document.addEventListener("error", e => {
