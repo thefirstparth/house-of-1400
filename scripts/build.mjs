@@ -102,6 +102,20 @@ try {
   html = withV2(html, v2.head, `/v2.js?v=${ver("v2.js")}`, `/v2.css?v=${ver("v2.css")}`, fullConfig.weather?.always?.[0]);
   console.log("build: v2 ready (the default; ?v1 for the old design)");
 } catch (e) { console.warn(`build: v2 skipped, the paper ships in the old design only: ${e.message}`); }
+// The paper as an app (20 Oct 2026; v2/README.md "Install"): dist/paper-sw.js is public/paper-sw.js with its version (a
+// hash of the page's files, so a new build of the page is a new worker and the older caches go) and the shell it keeps
+// for an offline open. Today's edition is in the shell but stays network-first like everything that changes.
+{
+  const sw = readFileSync("public/paper-sw.js", "utf8");
+  const v2files = [...new Set(html.match(/\/v2\.(?:js|css)\?v=[0-9a-f]+/g) || [])];
+  const pre = ["/", "/content/latest.json", "/config/house.json", "/manifest.webmanifest", "/favicon.svg", "/icons/icon-192.png", ...v2files,
+    ...["unifrakturmaguntia-latin-400-normal", "libre-franklin-latin-wght-normal"].map(f => `/fonts/${f}.woff2`).filter(f => existsSync(`dist${f}`))];
+  const h = createHash("sha256").update(html).update(sw);
+  for (const f of ["v2.js", "v2.css", "app.js", "styles.css"]) if (existsSync(`dist/${f}`)) h.update(readFileSync(`dist/${f}`));
+  const out = sw.replace(/^const VERSION = "[^"]*";$/m, () => `const VERSION = "${h.digest("hex").slice(0, 10)}";`).replace(/^const PRECACHE = \[[^\]]*\];$/m, () => `const PRECACHE = ${JSON.stringify(pre)};`);
+  if (out === sw || !/const VERSION = "[0-9a-f]{10}"/.test(out) || out.includes('const PRECACHE = ["/"];')) console.warn("build: paper-sw.js not versioned (its VERSION or PRECACHE line moved)");
+  writeFileSync("dist/paper-sw.js", out);
+}
 writeFileSync("dist/index.html", html);
 writeFileSync("dist/build.json", JSON.stringify({ built_at: new Date().toISOString() }));
 console.log("build: dist ready");

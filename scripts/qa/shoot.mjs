@@ -8,7 +8,7 @@ const tag = process.argv[2] || "now", O = `qa-shots/${tag}/`; mkdirSync(O, { rec
 const b = await chromium.launch({ executablePath: process.env.CHROMIUM || "/opt/pw-browsers/chromium", proxy: process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY, bypass: "localhost,127.0.0.1" } : undefined, args: ["--ignore-certificate-errors"] });
 const report = {};
 for (const [w, theme] of [[1300, "light"], [390, "light"], [1300, "dark"], [390, "dark"]]) {
-  const ctx = await b.newContext({ viewport: { width: w, height: 900 }, colorScheme: theme, ignoreHTTPSErrors: true });
+  const ctx = await b.newContext({ serviceWorkers: "block", viewport: { width: w, height: 900 }, colorScheme: theme, ignoreHTTPSErrors: true });
   const p = await ctx.newPage();
   await p.route("**/api/live/**", r => { const k = new URL(r.request().url()).pathname.split("/").pop(), f = `qa-data/${k}.json`; return existsSync(f) ? r.fulfill({ body: readFileSync(f), contentType: "application/json" }) : r.fulfill({ status: 500, body: '{"ok":false}' }); });
   const errs = []; p.on("pageerror", e => errs.push(e.message));

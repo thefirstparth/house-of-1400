@@ -50,7 +50,11 @@ function frontItems(id, kind) {
   return kind === "story" ? (F.seconds || []).filter(x => x?.section === id) : (F.briefs || []).filter(x => x?.section === id);
 }
 function paintShell() {
-  const w = LIVE.weather?.value?.cities?.[0], M = LIVE.markets?.value, ix = M?.indices?.[0];
+  // The strip has no room for an "as of" line (20 Oct 2026, the paper as an app): once a live fetch has failed (offline,
+  // or both sources down), a reading from the edition's snapshot is left out here rather than shown as if it were live.
+  // The blocks below keep it, with its time. A past edition's page says at the top that its figures are from press time.
+  const fresh = L => (L && !(L.stale && liveTried && ROUTE.kind !== "edition") ? L.value : null);
+  const w = fresh(LIVE.weather)?.cities?.[0], M = fresh(LIVE.markets), ix = M?.indices?.[0];
   const sky = w?.current ? `<a href="${deskHref("home")}" data-desk="home" data-to="sky"><span class="k">${esc(CFG.paper.home_city)}</span> <b class="tnum">${Math.round(w.current.temp)}°</b> ${GLASS ? `<span class="sky">${esc(wx(w.current.code)[1].toLowerCase())}</span>` : esc(wx(w.current.code)[1].toLowerCase())}</a>` : "";
   const mk = ix ? `<a href="${deskHref("money")}" data-desk="money" data-to="ledger"><span class="k">${esc(ix.name)}</span> <b class="tnum">${inr(ix.price, 0)}</b> <span class="tnum ${dir(ix.change_pct)}">${pct(ix.change_pct)}</span></a>` : "";
   const html = sky + mk, el = $("#now");
@@ -619,7 +623,7 @@ function sinceItems() {
   // every row: its time (when it happened, or when the result came in), a label, the line (Parth, 2 Oct: "one alignment")
   const add = (t, label, desk, text, extra = {}) => { if (t > P && t <= n) out.push({ t, when: istTime(new Date(t).toISOString()), label, desk, text, ...extra }); };
   // a market's close
-  const M = LIVE.markets?.value;
+  const M = !LIVE.markets?.stale && LIVE.markets?.value; // a close only from a live reading, never from the snapshot
   for (const name of ["Sensex", "S&P 500"]) {
     const q = M?.indices?.find(x => x.name === name), ex = CFG.markets.indices.find(i => i.name === name)?.exchange, s = ex && session(ex);
     if (!q || q.live || !s?.closeAt || !Number.isFinite(q.price) || !Number.isFinite(q.change_pct)) continue;
@@ -659,7 +663,8 @@ function sinceItems() {
   // sunset and sunrise at home
   const c = LIVE.weather?.value?.cities?.[0], off = c?.utc_offset_seconds ?? 19800;
   for (const d of (c?.daily || []).slice(0, 2)) for (const [k, v] of [["Sunset", d.sunset], ["Sunrise", d.sunrise]]) {
-    const t = localMs(v, off); if (Number.isFinite(t) && c?.current) add(t, "Weather", "home", `${k} in ${CFG.paper.home_city}; now ${Math.round(c.current.temp)}° and ${wx(c.current.code)[1].toLowerCase()}.`);
+    // "now" only from a live reading: from the edition's snapshot (offline, or the sources down) the time alone (20 Oct 2026)
+    const t = localMs(v, off); if (Number.isFinite(t) && c?.current) add(t, "Weather", "home", LIVE.weather.stale ? `${k} in ${CFG.paper.home_city}.` : `${k} in ${CFG.paper.home_city}; now ${Math.round(c.current.temp)}° and ${wx(c.current.code)[1].toLowerCase()}.`);
   }
   // a forecast that has moved since press
   const liveM = !LIVE.betting?.stale && LIVE.betting?.value?.markets || [], min = CFG.betting?.carry?.min_move_pts || 5;
@@ -698,6 +703,8 @@ const ZOOMED = ["dtop", "dtabs", "layout", "late", "pastbar"];
 function setZoom(z, w) {
   for (const id of ZOOMED) { const el = document.getElementById(id); if (el) el.style.zoom = z === 1 ? "" : String(z); }
   document.documentElement.style.setProperty("--pw", w ? `${Math.round(w)}px` : "");
+  // the zoom itself, for lengths that must stay true on screen (Glass's 2px focus ring, the skip link's landing)
+  document.documentElement.style.setProperty("--z", String(z));
   // the screen's height in the page's own (zoomed) pixels, so a drawing can be held to part of the screen at any zoom
   document.documentElement.style.setProperty("--vh", `${Math.round(innerHeight / z)}px`);
 }

@@ -14,6 +14,13 @@ var P=window.PRE0={cfg:g("/config/house.json")};if(p==="/"||p==="/today"||p.inde
 ["weather","f1_next","f1_standings","f1_last","football","laliga_table","markets","gold_in","nba","signals"].forEach(function(k){P.live[k]=g("/api/live/"+k,"no-cache")})}})();
 </script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<!-- The paper as an app (20 Oct 2026): installs from Safari (Share, Add to Home Screen) or Chrome (Install app) and opens in the Glass look -->
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="1400">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Fonts load without blocking the first paint; the blackletter face is cut down to the three letters of "The". -->
@@ -48,5 +55,6 @@ var P=window.PRE0={cfg:g("/config/house.json")};if(p==="/"||p==="/today"||p.inde
 <div class="toast" id="toast" role="status" hidden></div>
 <div class="modal" id="modal" hidden></div>
 <script type="module" src="/app.js"></script>
+<script>/* the paper's network-first worker (paper-sw.js), on the paper's pages only: never on a poster */(function(){var p=location.pathname;if(!("serviceWorker" in navigator)||/[?&]poster=/.test(location.search)||p.indexOf("/poster/")===0)return;addEventListener("load",function(){navigator.serviceWorker.register("/paper-sw.js",{scope:"/",updateViaCache:"none"}).catch(function(){})})})()</script>
 </body>
 </html>

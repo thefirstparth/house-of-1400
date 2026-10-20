@@ -70,7 +70,7 @@ function measure({ GAP, MIN_WIDTH, SHAPE, phone }) {
 
 async function visit(b, { E, look, art, w, h, dpr, phone, desks }) {
   const snap = E.snapshot || {};
-  const ctx = await b.newContext({ viewport: { width: w, height: h }, ...(phone ? { deviceScaleFactor: dpr, isMobile: true, hasTouch: true } : {}) });
+  const ctx = await b.newContext({ serviceWorkers: "block", viewport: { width: w, height: h }, ...(phone ? { deviceScaleFactor: dpr, isMobile: true, hasTouch: true } : {}) });
   const fails = [];
   try {
     const T0 = Date.parse(`${E.date}T09:30:00Z`);

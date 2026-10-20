@@ -765,6 +765,15 @@ html.vs-open{overflow:hidden}
 /* Money: the rupee's moves in neutral ink in the Ledger; a mood's own time; the dagger's key on phones */
 .board tr.neutral :is(td,small).up,.board tr.neutral :is(td,small).dn{color:var(--ink)}
 .board tr.neutral sup.calc{color:var(--muted)}
+/* the Ledger's small change figures at 4.5:1 or more (QA panel, round 2, 20 Oct 2026): a solid muted ink a touch
+   darker than the muted ink at 85% they had (4.39:1 on Glass's card, 4.40:1 on the paper); night, print and
+   Increase contrast keep their own */
+:root{--fig-ink:#6b675f;--fig-op:1}
+:root[data-theme="dark"]{--fig-ink:initial;--fig-op:initial}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--fig-ink:initial;--fig-op:initial}}
+@media (prefers-contrast:more){:root{--fig-ink:initial;--fig-op:initial}}
+@media print{:root{--fig-ink:initial;--fig-op:initial}}
+.board tr:not(.neutral,.on) td.r small{color:var(--fig-ink,var(--muted));opacity:var(--fig-op,.85)}
 .p1 .fear .mat{font-style:normal;font-weight:500}
 .calckey{display:none;margin:6px 0 0;font:500 12px/1.4 var(--sans);color:var(--muted)}
 @media (max-width:760px){

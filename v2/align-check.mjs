@@ -13,7 +13,7 @@ const b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" })
 for (const [name, spec0] of Object.entries(DEV)) {
   if (only && !only.includes(name)) continue;
   const spec = PH[spec0] || spec0, [dims, dpr0] = spec.split("@"), [w, h] = dims.split("x").map(Number), ph = w < 760;
-  const ctx = await b.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: Number(dpr0) || (ph ? 2 : 1), isMobile: ph, hasTouch: ph });
+  const ctx = await b.newContext({ serviceWorkers: "block", viewport: { width: w, height: h }, deviceScaleFactor: Number(dpr0) || (ph ? 2 : 1), isMobile: ph, hasTouch: ph });
   const T0 = Date.parse(`${E.date}T09:30:00Z`);
   await ctx.addInitScript(`(function(){var R=Date,O=${T0}-R.now();function D(){var a=[].slice.call(arguments);return a.length?new(Function.prototype.bind.apply(R,[null].concat(a))):new R(R.now()+O)}D.prototype=R.prototype;D.now=function(){return R.now()+O};D.parse=R.parse;D.UTC=R.UTC;window.Date=D;})();try{sessionStorage.setItem("h1400-pressed","1")}catch(e){}`);
   const p = await ctx.newPage(); const errs = []; p.on("pageerror", e => errs.push(e.message));

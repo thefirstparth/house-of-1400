@@ -52,7 +52,7 @@ export async function fitCheck({ sizes = SIZES, log = console.log } = {}) {
   const fails = [];
   try {
     for (const [name, [w, h]] of Object.entries(sizes)) {
-      const ctx = await b.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 2 });
+      const ctx = await b.newContext({ serviceWorkers: "block", viewport: { width: w, height: h }, deviceScaleFactor: 2 });
       const T0 = Date.parse(`${E.date}T09:30:00Z`);
       await ctx.addInitScript(`(function(){var R=Date,O=${T0}-R.now();function D(){var a=[].slice.call(arguments);return a.length?new(Function.prototype.bind.apply(R,[null].concat(a))):new R(R.now()+O)}D.prototype=R.prototype;D.now=function(){return R.now()+O};D.parse=R.parse;D.UTC=R.UTC;window.Date=D;})();try{sessionStorage.setItem("h1400-pressed","1")}catch(e){}`);
       const p = await ctx.newPage(), errs = [];
@@ -94,7 +94,7 @@ export async function fitCheck({ sizes = SIZES, log = console.log } = {}) {
     // by stepping blocks aside and printing fewer lines; with this heaviest paper the text grows least (about x1.05 and
     // x1.10; on 12 Oct's real paper x1.09 and x1.22), so the check asks only that it grows.
     const size = async Z => {
-      const ctx = await b.newContext({ viewport: { width: Math.round(1470 / Z), height: Math.round(832 / Z) }, deviceScaleFactor: 2 * Z });
+      const ctx = await b.newContext({ serviceWorkers: "block", viewport: { width: Math.round(1470 / Z), height: Math.round(832 / Z) }, deviceScaleFactor: 2 * Z });
       if (Z !== 1) await ctx.addInitScript(`try{localStorage.setItem("h1400-zoom-test","${Z}")}catch(e){}`);
       const p = await ctx.newPage();
       await p.route(/^https?:/, r => r.abort());

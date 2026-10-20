@@ -1,0 +1,18 @@
+{
+  "id": "/",
+  "name": "The House of 1400",
+  "short_name": "1400",
+  "description": "The afternoon paper, printed at 14:00 IST, with live markets, weather and fixtures.",
+  "lang": "en",
+  "start_url": "/?glass",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#e3e0d9",
+  "theme_color": "#e3e0d9",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/icon-180.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

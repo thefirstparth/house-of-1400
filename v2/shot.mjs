@@ -42,7 +42,7 @@ const report = {};
 for (const sz of SIZES) {
   const [wh, theme] = sz.split("-"), spec = PHONES[wh] || wh, [dims, dpr0] = spec.split("@"), [w, h] = dims.split("x").map(Number);
   const phone = !!PHONES[wh] || w < 760, touch = phone || /@/.test(spec) || w === 820 || w === 1180, dpr = Number(dpr0) || (phone ? 2 : touch ? 2 : 1);
-  const ctx = await b.newContext({ viewport: { width: w, height: h }, colorScheme: theme, deviceScaleFactor: dpr, hasTouch: touch, isMobile: touch });
+  const ctx = await b.newContext({ serviceWorkers: "block", viewport: { width: w, height: h }, colorScheme: theme, deviceScaleFactor: dpr, hasTouch: touch, isMobile: touch });
   await ctx.addInitScript(`(function(){var R=Date,O=${T0}-R.now();function D(){var a=[].slice.call(arguments);return a.length?new(Function.prototype.bind.apply(R,[null].concat(a))):new R(R.now()+O)}
 D.prototype=R.prototype;D.now=function(){return R.now()+O};D.parse=R.parse;D.UTC=R.UTC;window.Date=D;})();`);
   const p = await ctx.newPage();

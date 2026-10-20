@@ -56,7 +56,7 @@ html.look-glass nav.dtabs ol a::before{content:"";width:8px;height:8px;flex:none
 html.look-glass nav.dtabs ol a:hover{background:rgba(255,255,255,.6)}
 html.look-glass nav.dtabs ol a[aria-current]{background:var(--c);color:#fff;font-weight:600}
 html.look-glass nav.dtabs ol a[aria-current]::before{background:#fff}
-html.look-glass nav.dtabs ol a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+html.look-glass nav.dtabs ol a:focus-visible{outline:calc(2.1px / var(--z,1)) solid var(--ink);outline-offset:calc(2px / var(--z,1))}
 html.look-glass nav.dtabs .tmk{padding-top:0}
 html.look-glass nav.dtabs .now{flex:none;display:flex;gap:18px;margin-left:auto;padding-right:8px;font:400 14px/1.2 var(--sans);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink)}
 html.look-glass nav.dtabs .now .k{font:600 11.5px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
@@ -86,7 +86,7 @@ html.look-glass .dopen .asub{color:rgba(255,255,255,.88)}
 html.look-glass .jump{display:flex;flex-wrap:wrap;gap:6px;margin-top:28px;font:500 15px/1 var(--sans)}
 html.look-glass .jump a{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:var(--g-r2);background:rgba(255,255,255,.15);color:#fff}
 html.look-glass .jump a:not(:last-child)::after{content:none}
-html.look-glass .jump a:hover{background:rgba(255,255,255,.26);color:#fff;text-decoration:none}
+html.look-glass .jump a:hover{background:rgba(0,0,0,.28);color:#fff;text-decoration:none}
 
 /* ---------- the next desk and the foot ---------- */
 html.look-glass .nextdesk{border-top:2px solid var(--ink)}
@@ -460,7 +460,9 @@ html.look-glass nav.dtabs ol a{color:#3a3830}
 html.look-glass nav.dtabs ol a[aria-current]{color:#fff}
 html.look-glass nav.dtabs .now .k{color:#4d4a43}
 html.look-glass nav.dtabs .now .dn{color:#a8231b}
-html.look-glass :is(nav.dtabs a,#main .tools button,#main .tools a,.p1 .bh a,.p1 .bh .say,.p1end a,.jump a):focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+/* the ring is 2px on screen at any zoom (QA panel, round 2, 20 Oct 2026): the bar and the page carry a CSS zoom
+   (--z, set with it by layer.js), and 2px at zoom 0.89 drew 1px; 2.1px keeps the rounding on the right side */
+html.look-glass :is(nav.dtabs a,#main .tools button,#main .tools a,.p1 .bh a,.p1 .bh .say,.p1end a,.jump a):focus-visible{outline:calc(2.1px / var(--z,1)) solid var(--ink);outline-offset:calc(2px / var(--z,1))}
 html.look-glass .jump a:focus-visible{outline-color:#fff}
 /* A5/A6/A9 the live figures make room in steps when the bar is tight (layer.js glassBar): the sky's word first, then
    the city's name, then the temperature, then the Sensex's change; "Sensex" stays unless nothing else fits */
@@ -494,6 +496,8 @@ html.look-glass body:not(.on-one) nav.dtabs.g-two{top:calc(6px - var(--g-row1,0p
 }
 /* A7 a jump lands below the pinned bar (--g-barh: the bar's visible height, from layer.js) */
 html.look-glass #main :is(section.sec,[id]){scroll-margin-top:calc(var(--g-barh,72px) + 12px)}
+/* "Skip to the news" lands the desk's title (and its chips) 12px below the pinned bar, at any zoom (QA panel, round 2) */
+html.look-glass #main :is(.dopen h1,#p1-title){scroll-margin-top:calc((var(--g-barh,72px) + 12px) / var(--z,1))}
 /* A8 a desk's opening card on a laptop: the name and the jumps on one row, less padding; a desk with one section or
    none shows no jump that only repeats it */
 @media (min-width:761px){
@@ -536,7 +540,9 @@ html.look-glass .p1body.g-level>.stack>:not(:empty):not(:has(~ :not(:empty))){fl
 html.look-glass .p1 #p1-minute .bh a{background:none;padding:0 4px;font:600 13.5px var(--sans);color:var(--ink)}
 html.look-glass .p1 #p1-minute .bh a:hover{background:none;text-decoration:underline;text-underline-offset:3px}
 @media (max-width:760px){html.look-glass .p1 #p1-minute .bh a,html.look-glass .p1 #p1-minute .bh .say{min-height:40px}}
-html.look-glass .jump a{background:rgba(255,255,255,.2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.38);font-weight:600}
+/* the section chips on a desk's opening card: a darker fill, so the white names stay 4.5:1 or more on every desk
+   (QA panel, round 2: a light tint gave 3.99 to 4.46:1 on Off Duty, Close to Home, Sport and Tech) */
+html.look-glass .jump a{background:rgba(0,0,0,.16);box-shadow:inset 0 0 0 1px rgba(255,255,255,.38);font-weight:600}
 /* A16 the Sensex's 1D sits on the line of its change, not up in the air */
 html.look-glass .p1 .mny .sx .k:last-child{align-self:flex-end;margin:0 0 6px -4px}
 /* A17 "Next up" in white */
