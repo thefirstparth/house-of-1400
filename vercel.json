@@ -182,5 +182,14 @@
       "destination": "https://open.spotify.com/show/5jzvjVkYh7KG7vxLOJ45bu",
       "permanent": false
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": {
+      "claude/**": false,
+      "codex/**": false,
+      "bunty-art-*": false,
+      "sport-b-preview": false,
+      "tv-ours": false
+    }
+  }
 }

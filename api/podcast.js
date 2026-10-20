@@ -28,7 +28,9 @@ async function serve(request, head) {
   const h = new Headers({
     "content-type": mp3 ? "audio/mpeg" : vtt ? "text/vtt; charset=utf-8" : "application/rss+xml; charset=utf-8",
     "accept-ranges": "bytes",
-    "cache-control": mp3 ? "public, max-age=86400" : "public, max-age=300",
+    // the feed and transcripts held five minutes at Vercel's CDN too (20 Oct 2026: every Apple, Spotify and app check of
+    // the feed was a function call and a Blob read); an episode's audio as before
+    "cache-control": mp3 ? "public, max-age=86400" : "public, max-age=300, s-maxage=300, stale-while-revalidate=600",
     "x-robots-tag": "noindex",
   });
   for (const k2 of ["content-length", "content-range", "etag", "last-modified"]) { const v = r.headers.get(k2); if (v) h.set(k2, v); }
