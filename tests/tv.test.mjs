@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-const { pick, item, oursOf, endOf, weatherWord, warningFor, cityLine, parseMetno, track, restOfDay } = await import("../lib/tv.js");
+const { pick, item, oursOf, endOf, weatherWord, warningFor, cityLine, parseMetno, track, restOfDay, skyOf } = await import("../lib/tv.js");
 const { events, using } = await import("../public/sport/js/core.js");
 
 const cfg = JSON.parse(readFileSync(new URL("../config/house.json", import.meta.url), "utf8"));
@@ -208,3 +208,13 @@ test("tv: ours marks the one followed side, and only one", () => {
   assert.equal(oursOf({ sp: "f1", a: "Max Verstappen", b: "Lando Norris" }, cfg), null);
 });
 
+
+test("tv weather: the sky right now, from the current weather code", () => {
+  assert.equal(skyOf(0), "clear"); assert.equal(skyOf(1), "clear"); assert.equal(skyOf(2), "partly"); assert.equal(skyOf(3), "overcast");
+  assert.equal(skyOf(45), "fog"); assert.equal(skyOf(48), "fog"); assert.equal(skyOf(61), "rain"); assert.equal(skyOf(81), "rain");
+  assert.equal(skyOf(95), "storm"); assert.equal(skyOf(99), "storm"); assert.equal(skyOf(null), null); assert.equal(skyOf(undefined), null);
+  const w = { now: 22, feels: 22, code: 3, today: { max: 27, min: 19, rain_prob: 10, rain_mm: 0, code: 3 }, source: "Open-Meteo" };
+  const at = Date.parse("2026-10-20T15:00:00+05:30");
+  assert.equal(cityLine({ name: "Bengaluru" }, w, null, T, at).sky, "overcast");
+  assert.ok(!("sky" in cityLine({ name: "Bengaluru" }, { ...w, code: null }, null, T, at)), "no code, no sky (MET Norway's backup)");
+});
