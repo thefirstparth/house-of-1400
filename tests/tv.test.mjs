@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-const { pick, item, endOf, weatherWord, warningFor, cityLine, parseMetno, track, restOfDay } = await import("../lib/tv.js");
+const { pick, item, oursOf, endOf, weatherWord, warningFor, cityLine, parseMetno, track, restOfDay } = await import("../lib/tv.js");
 const { events, using } = await import("../public/sport/js/core.js");
 
 const cfg = JSON.parse(readFileSync(new URL("../config/house.json", import.meta.url), "utf8"));
@@ -186,3 +186,25 @@ test("tv weather: the word is for the hours still ahead, never the morning that 
   // the TV asks the shared weather key for every city's hours
   assert.match(readFileSync(new URL("../lib/tv.js", import.meta.url), "utf8"), /PAPER\.weather\(new URLSearchParams\("hourly=all"\)\)/);
 });
+
+test("tv: ours marks the one followed side, and only one", () => {
+  const ctx = { cfg, T, codes: {}, f1city: null };
+  const run = e => using({ data: {}, cfg, now: NOW }, () => item(e, ctx));
+  // one followed side, in each sport, on either side
+  assert.equal(run(ev("football", 5, "next", { a: "Real Madrid", b: "Sevilla" })).ours, "a");
+  assert.equal(run(ev("football", 5, "next", { a: "Getafe", b: "Real Madrid" })).ours, "b");
+  assert.equal(run(ev("cricket", 5, "live", { a: "India", b: "New Zealand", sa: "120/2" })).ours, "a");
+  assert.equal(run(ev("nba", 5, "next", { a: "Los Angeles Lakers", b: "Golden State Warriors" })).ours, "b");
+  assert.equal(run(ev("tennis", 5, "next", { a: "Jannik Sinner", b: "Carlos Alcaraz" })).ours, "b");
+  assert.equal(run(ev("intl", 5, "next", { a: "Brazil", b: "Chile" })).ours, "a");
+  // both followed, or neither: nothing
+  assert.equal(run(ev("tennis", 5, "next", { a: "Novak Djokovic", b: "Carlos Alcaraz" })).ours, undefined);
+  assert.equal(run(ev("intl", 5, "next", { a: "Spain", b: "Portugal" })).ours, undefined);
+  assert.equal(run(ev("football", 5, "next", { a: "Getafe", b: "Sevilla" })).ours, undefined);
+  // sport by sport: India in football is not the cricket team; Atlético Madrid is not Real Madrid
+  assert.equal(oursOf({ sp: "intl", a: "India", b: "Brazil" }, cfg), "b");
+  assert.equal(oursOf({ sp: "football", a: "Atlético Madrid", b: "Sevilla" }, cfg), null);
+  // F1 never has one
+  assert.equal(oursOf({ sp: "f1", a: "Max Verstappen", b: "Lando Norris" }, cfg), null);
+});
+
