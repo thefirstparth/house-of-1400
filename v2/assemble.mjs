@@ -61,7 +61,24 @@ export function assemble({ app = read("public/app.js"), styles = read("public/st
   rep('  if (ROUTE.kind === "archive") return renderArchive();', '  if (ROUTE.kind === "archive") return archiveV2();');
   // The Week Ahead in seven columns, Monday to Sunday
   rep('S.week = secWrap("week", weekBlock(),', 'S.week = secWrap("week", weekV2(),');
-  rep("  paintSignals();\n", "  paintSignals(); paintJump(); liveFx(); flowAgenda(); paintMarks();\n");
+  // QA panel, 20 Oct 2026. A jump within a desk keeps the desk in the address and lands below the bar (layer.js land);
+  // smooth scrolling only for a reader who has not asked for less motion (layer.js SMOOTH)
+  rep('if (t.dataset.go) { const el = document.getElementById("s-" + t.dataset.go) || document.getElementById(t.dataset.go); el && el.scrollIntoView({ behavior: "smooth", block: "start" }); return; }',
+    'if (t.dataset.go) { e.preventDefault(); const el = document.getElementById("s-" + t.dataset.go) || document.getElementById(t.dataset.go); el && land(el); return; }');
+  if (!js.includes('behavior: "smooth"')) throw new Error("v2: smooth scroll anchor missing");
+  js = js.replaceAll('behavior: "smooth"', "behavior: SMOOTH()");
+  // the rupee in neutral ink in the Ledger, every period and its 30-day line (layer.js fxNeutral)
+  rep('    const col = (q.chg_1m ?? q.change_pct) < 0 ? "var(--bad)" : "var(--good)";\n    return `<tr><td class="ix">',
+    '    const nt = fxNeutral(name), col = nt ? "var(--muted)" : (q.chg_1m ?? q.change_pct) < 0 ? "var(--bad)" : "var(--good)";\n    return `<tr${nt ? \' class="neutral"\' : ""}><td class="ix">');
+  // a key for the dagger under the board, shown on phones, where the Sources note is folded away
+  rep('<th class="r">30 days</th></tr></thead><tbody>${rows}</tbody></table></div>',
+    '<th class="r">30 days</th></tr></thead><tbody>${rows}</tbody></table></div>${anyCalc ? `<p class="calckey"><sup class="calc">†</sup> Worked out from official daily closes</p>` : ""}');
+  // Madridismo's table: the night tag beside a start from midnight to 05:59 IST
+  rep('${e.time_confirmed ? esc(istFull(e.date)) : esc(istDay(e.date)) + ", time TBC"}', '${e.time_confirmed ? esc(istFull(e.date)) + nightTag(e.date) : esc(istDay(e.date)) + ", time TBC"}');
+  // a brief and "Also in" sit beside the section's stories (h3), under its h2: read as level 3, so no level is skipped
+  rep("newFor(b)}<h4>${esc(b.headline)}</h4>", 'newFor(b)}<h4 role="heading" aria-level="3">${esc(b.headline)}</h4>');
+  rep('<div class="alsoin"><h4>Also in', '<div class="alsoin"><h4 role="heading" aria-level="3">Also in');
+  rep("  paintSignals();\n", "  paintSignals(); paintJump(); liveFx(); flowAgenda(); paintMarks(); headingOrder();\n");
   // Page One fits one screen and desk pages fill the width, with their masthead and tabs (layer.js, fitOne, fitDesk)
   rep("function fitMonitor() {", "function fitMonitor() {\n  return E && DESK.id === \"one\" ? fitOne() : fitDesk();");
   rep("  render();\n  loadArt();", "  render();\n  loadArt(); showDesk(DESK.id); followSun(); dthemeLabel(); hereBoot();");

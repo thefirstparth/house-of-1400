@@ -744,3 +744,41 @@ html.vs-open{overflow:hidden}
   @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#fffaf0;--ink2:#f3eee2;--muted:#dcd5c4;--rule:#77715f;--rule2:#5c574b;--d-news:#c7d8f5;--d-home:#a8def7;--d-sport:#f8bc93;--d-tech:#d3c4f7;--d-money:#8be8bd;--d-off:#f0d688}}
   :root[data-theme="dark"]{--ink:#fffaf0;--ink2:#f3eee2;--muted:#dcd5c4;--rule:#77715f;--rule2:#5c574b;--d-news:#c7d8f5;--d-home:#a8def7;--d-sport:#f8bc93;--d-tech:#d3c4f7;--d-money:#8be8bd;--d-off:#f0d688}
 }
+
+/* ---------- the QA panel's items (Parth, 20 Oct 2026: "all as recommended"; both looks) ---------- */
+/* visually hidden, still read aloud: Page One's title, the live region that names a desk */
+.sr{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+/* "Skip to the news": the first thing a Tab reaches, seen only then */
+.skip{position:absolute;left:12px;top:-60px;z-index:100;padding:10px 14px;background:var(--ink);color:var(--paper);font:600 14px var(--sans);text-decoration:none;border-radius:4px}
+.skip:focus{top:8px}
+/* a desk's title takes the focus after a change of desk: a ring only for the keyboard */
+.dopen h1:focus,#p1-title:focus{outline:none}
+.dopen h1:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+/* a jump lands below the pinned desk bar, as sections already do */
+#main :is(article,.dlead,[id^="s-"]){scroll-margin-top:60px}
+#main [data-more]{scroll-margin-top:60px;scroll-margin-bottom:16px}
+/* the night before, for a start from midnight to 05:59 IST ("Wed night") */
+.ngt{display:inline-block;margin-left:4px;padding:0 5px;border:1px solid var(--rule);border-radius:3px;font:600 10.5px/1.5 var(--sans);letter-spacing:.04em;color:var(--muted);white-space:nowrap;vertical-align:1px}
+.agenda.fx3 .tg.ngt{margin-left:6px;border:1px solid var(--rule);color:var(--muted);background:none}
+/* Money: the rupee's moves in neutral ink in the Ledger; a mood's own time; the dagger's key on phones */
+.board tr.neutral :is(td,small).up,.board tr.neutral :is(td,small).dn{color:var(--ink)}
+.board tr.neutral sup.calc{color:var(--muted)}
+.p1 .fear .mat{font-style:normal;font-weight:500}
+.calckey{display:none;margin:6px 0 0;font:500 12px/1.4 var(--sans);color:var(--muted)}
+@media (max-width:760px){
+ /* the open/closed rows stay on a phone (the last-column rule was hiding them): one slim line each */
+ .board tr.grp th{display:table-cell;padding:10px 4px 2px;font-size:11px;line-height:1.3;white-space:normal}
+ .board tr.grp th .mstate{margin-left:6px;padding:1px 6px;font-size:11px;letter-spacing:0;text-transform:none;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+ .calckey{display:block}
+}
+/* Page One's markets as buttons in a list: the button takes the item's place in both looks */
+.p1 ol.bets button.bet{all:unset;box-sizing:border-box;display:grid;grid-template-columns:subgrid;grid-template-rows:subgrid;grid-column:1/-1;grid-row:span 2;width:100%;cursor:pointer}
+.p1 ol.bets button.bet:focus-visible{outline:2px solid var(--c);outline-offset:3px}
+.p1 ol.bets button.bet:hover .t{text-decoration:underline;text-underline-offset:3px}
+/* the archive: today's tile says so */
+.acal .atoday{display:block;margin-top:5px;font:700 10.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+/* small Sources links: a finger's height to tap (44px), the look unchanged */
+#main .src a{padding-block:12px;margin-block:-12px}
+#main details.figsrc>summary{padding-block:14px;margin-block:-14px}
+/* source notes keep a readable measure */
+#main .figsrc p,#main .src{max-width:80ch}
