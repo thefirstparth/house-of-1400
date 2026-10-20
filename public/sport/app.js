@@ -201,7 +201,8 @@ $("#refresh").addEventListener("click", () => { vibe(); loadAll(true); });
 // ------------------------------------------------------------------ theme: light unless dark is chosen, kept on the phone
 const setTheme = dark => {
   document.documentElement.dataset.theme = dark ? "dark" : "light";
-  $("#themeColor")?.setAttribute("content", dark ? "#000000" : "#f3f3f5");
+  const glass = document.documentElement.classList.contains("sglass"); // the Glass family look (glass.css), unless ?classic
+  $("#themeColor")?.setAttribute("content", glass ? (dark ? "#1c1b18" : "#e3e0d9") : (dark ? "#000000" : "#f3f3f5"));
   const b = $("#theme"); b.setAttribute("aria-pressed", String(dark)); b.setAttribute("aria-label", "Dark mode");
   try { localStorage.setItem("sport-theme", dark ? "dark" : "light"); } catch {}
 };
