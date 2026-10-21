@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-20T08:50:12.548Z",
-  "last_edition": "2026-10-20",
+  "last_updated": "2026-10-21T08:51:23.911Z",
+  "last_edition": "2026-10-21",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -559,7 +559,7 @@
     },
     {
       "thread_id": "eci-sir-dissent-2026",
-      "title": "CJP founder Abhijeet Dipke is released after a day in detention, on conditions his party has not disclosed",
+      "title": "Pleas withdrawn: CJP leaders Saurav Das and Ashutosh Ranka drop their Delhi High Court challenge after the judge questions it",
       "entities": [],
       "facts": {
         "objections": "14",
@@ -604,11 +604,13 @@
         "dmk": "demands CEC's removal, paper ballots",
         "un": "India rejects rapporteur Gina Romero",
         "released": "Sat 17 Oct",
-        "age": "31"
+        "age": "31",
+        "custody order": "19 Oct",
+        "judge": "Justice Subramonium Prasad"
       },
       "first_printed": "2026-09-25",
-      "last_printed": "2026-10-18",
-      "last_change": "2026-10-18",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1351,7 +1353,7 @@
     },
     {
       "thread_id": "india-us-ties-2026",
-      "title": "Rubio begins a three-day India visit and meets Jaishankar in Mumbai this afternoon, with a tribute to the 26/11 victims",
+      "title": "Trump says the India-US trade deal is 'pretty close' after Rubio and Jaishankar's talks in Mumbai, as Rubio urges India to buy more US energy and arms",
       "entities": [],
       "facts": {
         "call": "2026-09-30",
@@ -1364,16 +1366,16 @@
         "order": "executive order, Fri 16 Oct",
         "waived": "100% tariffs on top 5 buyers of Russian oil; 500% on Russian goods",
         "deadline": "Sun 18 Oct",
-        "talks": "Mumbai, Tue afternoon",
+        "talks": "Mumbai, Tue 20 Oct",
         "then": "Jamnagar refinery",
         "review": "60 days",
         "deal": "\"very close\"",
         "bessent": "Europe refused secondary tariffs",
-        "next": "Jamnagar"
+        "next": "Rubio at Jamnagar refinery, Wed"
       },
       "first_printed": "2026-09-29",
-      "last_printed": "2026-10-20",
-      "last_change": "2026-10-20",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1514,18 +1516,21 @@
     },
     {
       "thread_id": "anthropic-ipo-2026",
-      "title": "Anthropic tells investors its revenue rose 45% to $16.8bn in a quarter as it prepares to list; AI chip stocks tumble",
+      "title": "Anthropic's draft IPO filing shows a net loss of more than $80bn in the first half of 2026, mostly accounting charges, the WSJ reports",
       "entities": [],
       "facts": {
         "revenue_2025": "$4.59bn",
         "operating_loss_2025": "$8.06bn",
         "q2_2026_revenue": "$11.5bn",
         "q3_revenue": "$16.8bn (+45%)",
-        "listing": "expected by year end"
+        "listing": "expected by year end",
+        "H1 2026 net loss": "over $80bn",
+        "accounting charges": "$72bn",
+        "H1 revenue": "$16.3bn"
       },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-10-15",
-      "last_change": "2026-10-15",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2456,18 +2461,19 @@
     },
     {
       "thread_id": "jio-ipo-2026",
-      "title": "Jio Platforms' IPO opens on Wednesday, seeking ₹30,213 crore in what would be India's biggest IPO",
+      "title": "Fully subscribed in 100 minutes: Jio Platforms' ₹30,213 crore issue sets a record on its first day",
       "entities": [],
       "facts": {
         "valuation": "about $114bn",
         "opens": "week of 19 Oct",
         "size": "₹30,213 crore",
         "band": "₹1,065–1,119",
-        "dates": "21–23 Oct"
+        "dates": "21–23 Oct",
+        "closes": "23 Oct"
       },
       "first_printed": "2026-10-04",
-      "last_printed": "2026-10-20",
-      "last_change": "2026-10-20",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3291,7 +3297,7 @@
     },
     {
       "thread_id": "iphone-duo-2026",
-      "title": "iPhone Duo shipping dates slip to late January as Gurman says Apple made a 'major mistake' starting pre-orders in 70 countries",
+      "title": "The iPhone Duo ships to buyers on Friday, and a video shows the screen above its hinge gives under a finger",
       "entities": [],
       "facts": {
         "price_from": "₹2,99,900",
@@ -3299,15 +3305,16 @@
         "sale": "23 Oct",
         "release": "23 Oct",
         "preorders": "SKT from 16 Oct",
-        "price": "$1,999",
+        "price": "from $1,999",
         "screens": "5.4 and 7.6 in",
         "launch": "Fri 23 Oct",
         "ship": "~25 Jan",
-        "countries": "70+"
+        "countries": "70+",
+        "ships": "Fri 23 Oct"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-19",
-      "last_change": "2026-10-19",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3429,7 +3436,7 @@
     },
     {
       "thread_id": "ukraine-war-2026",
-      "title": "Ukraine strikes a refinery near Moscow as the 'energy ceasefire' collapses, and part of its Starlink service is restored",
+      "title": "Musk himself ordered the Starlink slowdown that grounded Ukraine's drones last week, the Wall Street Journal reports",
       "entities": [],
       "facts": {
         "dead": 30,
@@ -3438,11 +3445,13 @@
         "strikes": "refineries to resume",
         "us": "intelligence and Starlink cut, Zelensky says",
         "strike": "Ryazan refinery, 15 Oct",
-        "starlink": "on-the-move service restored"
+        "starlink": "on-the-move service restored",
+        "source": "Wall Street Journal, citing US officials",
+        "effect": "Ukrainian drones made ineffective"
       },
       "first_printed": "2026-10-07",
-      "last_printed": "2026-10-16",
-      "last_change": "2026-10-16",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5880,7 +5889,7 @@
     },
     {
       "thread_id": "france-protests-2026",
-      "title": "France's interior minister admits police 'lost control' in some cities, as Trump blames immigrants and unrest spreads to Italy and Albania",
+      "title": "France's parliament speaker proposes an inquiry into who organised Saturday's riots, as the prime minister blames far-left groups",
       "entities": [],
       "facts": {
         "arrested": "2,400",
@@ -5889,11 +5898,13 @@
         "nunez": "resignation refused",
         "marseille": "gatherings banned",
         "italy detained": "250+",
-        "diesel": "+200,000 t a month from UAE, Bahrain"
+        "diesel": "+200,000 t a month from UAE, Bahrain",
+        "riots": "Sat 17 Oct",
+        "inquiry": "proposed by Yaël Braun-Pivet"
       },
       "first_printed": "2026-10-18",
-      "last_printed": "2026-10-20",
-      "last_change": "2026-10-20",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
       "status": "active",
       "votes": {
         "up": 0,
@@ -6480,15 +6491,17 @@
     },
     {
       "thread_id": "ranchi-crime-2026",
-      "title": "The Ranchi student found dead had gone out with her seven-year-old cousin, who was found injured and later told the family what happened",
+      "title": "Arrested: a 23-year-old man is held over the rape and murder of a 17-year-old girl in Ranchi",
       "entities": [],
       "facts": {
         "age": "17",
-        "village": "Mardu"
+        "village": "Mardu",
+        "arrested": "23-year-old man, Wed",
+        "victim": "17-year-old girl"
       },
       "first_printed": "2026-10-19",
-      "last_printed": "2026-10-20",
-      "last_change": "2026-10-20",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
       "status": "active",
       "votes": {
         "up": 0,
@@ -6599,15 +6612,17 @@
     },
     {
       "thread_id": "australia-mp-attack-2026",
-      "title": "Australian MP Helen Haines loses a leg after a man allegedly rams her twice with his car outside her office",
+      "title": "Both legs amputated: Australian MP Helen Haines is stable as the man accused of ramming her appears in court",
       "entities": [],
       "facts": {
         "where": "Wangaratta, Victoria",
-        "arrested": "man, 43"
+        "arrested": "man, 43",
+        "accused": "Brendan Nugent, 43",
+        "next hearing": "February"
       },
       "first_printed": "2026-10-20",
-      "last_printed": "2026-10-20",
-      "last_change": "2026-10-20",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
       "status": "active",
       "votes": {
         "up": 0,
@@ -6707,12 +6722,15 @@
     },
     {
       "thread_id": "oil-prices-2026",
-      "title": "Brent crude tops $110 a barrel, its highest in five months, as tanker attacks in the Strait of Hormuz cut Gulf oil exports",
+      "title": "Brent crude climbs again to $110 a barrel as US stockpiles fall and Gulf supply fears persist",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "Brent": "$110.30",
+        "WTI": "$99.12"
+      },
       "first_printed": "2026-10-20",
-      "last_printed": "2026-10-20",
-      "last_change": "2026-10-20",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
       "status": "active",
       "votes": {
         "up": 0,
@@ -6827,16 +6845,16 @@
     },
     {
       "thread_id": "madrid-next-leipzig",
-      "title": "Real Madrid host RB Leipzig in the Champions League four days before the Clásico, as Leipzig arrive after a 6–1 loss at Bayern",
+      "title": "Vinícius returns to the starting XI as Real Madrid host RB Leipzig tonight, Mourinho says, four days before the Clásico",
       "entities": [],
       "facts": {
         "kick-off": "Thu 22 Oct, 00:30 IST",
         "venue": "Bernabéu",
-        "next": "Barcelona away, Sun"
+        "next": "Barcelona away, Sun 25 Oct"
       },
       "first_printed": "2026-10-20",
-      "last_printed": "2026-10-20",
-      "last_change": "2026-10-20",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
       "status": "active",
       "votes": {
         "up": 0,
@@ -6972,6 +6990,508 @@
       "first_printed": "2026-10-20",
       "last_printed": "2026-10-20",
       "last_change": "2026-10-20",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "spacex-tesla-merger-2026",
+      "title": "Musk says merging Tesla and SpaceX would be 'a good idea', and both companies have set up special committees to study it",
+      "entities": [],
+      "facts": {
+        "Tesla": "about $1.5tn",
+        "SpaceX": "$2tn",
+        "Tesla results": "Wed 21 Oct"
+      },
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "india-un-rights-2026",
+      "title": "India tells the UN it opposes 'unverified allegations' after UN experts urge it to stop using excessive force against protesters",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-investigators-say-a-month-of-surveillance",
+      "title": "Investigators say a month of surveillance and an earlier attempted weapon delivery came before the attack on Tiger Shroff",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-eight-web-security-keys-of-a",
+      "title": "Eight web security keys of a firm used by government departments and PSUs have leaked, The Hindu reports",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-tamil-nadus-chief-minister-vijay-chairs",
+      "title": "Tamil Nadu's Chief Minister Vijay chairs a meeting on preparations for the northeast monsoon as rain continues",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "uk-north-sea-2026",
+      "title": "Britain approves drilling at the Jackdaw gasfield in the North Sea, and climate campaigners condemn the decision",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-alberta-rejects-starting-a-separation-process",
+      "title": "Alberta rejects starting a separation process by about 76% to 24%, and Carney says Albertans 'chose Canada'",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-nigeria-confirms-an-ebola-case-linked",
+      "title": "Nigeria confirms an Ebola case linked to the outbreak in East Africa",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-british-fighter-jets-will-help-protect",
+      "title": "British fighter jets will help protect Saudi Arabia from Houthi attacks",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-italy-approves-sweeping-security-measures-in",
+      "title": "Italy approves sweeping security measures in response to youth protests",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-netflix-cuts-its-ad-revenue-forecast",
+      "title": "Netflix cuts its ad revenue forecast for the year to $2.7bn from $3bn after its slowest revenue growth in years",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "line-salesforce-agrees-to-buy-the-customer",
+      "title": "Salesforce agrees to buy the customer engagement company Braze for about $5.66bn",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "line-asian-shares-rise-led-by-a",
+      "title": "Asian shares rise, led by a 4% gain in Korea, as strong company earnings lift Wall Street",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "chatgpt-locked-chats-2026",
+      "title": "ChatGPT now lets users lock individual chats behind a PIN, Face ID or Touch ID",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-google-brings-its-more-personal-gemini",
+      "title": "Google brings its more personal Gemini, which can read Gmail, Calendar and Maps, to Android Auto and cars with Google built in",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-hpe-plans-to-test-ai-and",
+      "title": "HPE plans to test AI and high-performance computing on the Moon",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-spacex-launches-its-starfall-return-capsule",
+      "title": "SpaceX launches its Starfall return capsule for the second time, on the Bandwagon-5 rideshare",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "line-phps-maintainers-release-patches-for-two",
+      "title": "PHP's maintainers release patches for two vulnerabilities rated 9.2 out of 10 and urge all users to upgrade",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "line-apple-ceo-john-ternus-says-design",
+      "title": "Apple CEO John Ternus says design still decides what goes into its products, including touches that are simply fun",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "line-samsung-plans-six-foldable-phones-for",
+      "title": "Samsung plans six foldable phones for 2027 to take on the iPhone Duo, a report says",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "man-city-ifr-2026",
+      "title": "The football regulator says it has 'absolute power' to force Manchester City's owners to sell if the club's guilty verdict stands",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "psg-barcelona-2026",
+      "title": "PSG beat Barcelona 4–2 in the Champions League, handing Hansi Flick's side their first defeat of the season",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "line-liverpool-come-from-two-goals-down",
+      "title": "Liverpool come from two goals down to beat Villarreal 4–3 in the Champions League, with Rio Ngumoha starring",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "line-erik-ten-hag-says-cristiano-ronaldo",
+      "title": "Erik ten Hag says Cristiano Ronaldo 'let the team and me down' at Manchester United",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "shami-2026",
+      "title": "Mohammed Shami says he is 'still at my peak' and has not given up on an India return after missing the New Zealand tour",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "sooryavanshi-2026",
+      "title": "Shreyas Iyer says Vaibhav Sooryavanshi 'can't walk in right now' because India's openers keep scoring",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "ind-nz-t20is-2026",
+      "title": "India start a five-match T20I series in Christchurch on Thursday, with Bhuvneshwar Kumar back after nearly four years",
+      "entities": [],
+      "facts": {
+        "first T20I": "Thu 22 Oct, 12:30 IST",
+        "venue": "Hagley Oval, Christchurch"
+      },
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "line-harmanpreet-kaurs-six-hitting-leads-indias-women",
+      "title": "Harmanpreet Kaur's six-hitting leads India's women to a 92-run win and a 3–0 T20I sweep of Zimbabwe",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "hebbal-tunnel-2026",
+      "title": "Over 1,500 people object to felling 1,128 trees for the Hebbal short tunnel, the Greater Bengaluru Authority says",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "line-sewage-overflow-during-the-rains-causes",
+      "title": "Sewage overflow during the rains causes a mass fish kill at Siddapura lake",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "verstappen-cota-2026",
+      "title": "Verstappen expects a rough ride on the bumps in Austin this weekend and jokes he will 'need to order a new spine'",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "ranchi-durga-immersion-2026",
+      "title": "Ranchi's traffic stays restricted today as Durga idols are taken for immersion at Badka Talab",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "prayagraj-dussehra-2026",
+      "title": "Thousands gather for Dussehra garba and dandiya at Jagmal Ka Hata in Prayagraj before the goddess's idol is immersed",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-21",
+      "last_printed": "2026-10-21",
+      "last_change": "2026-10-21",
       "status": "active",
       "votes": {
         "up": 0,
