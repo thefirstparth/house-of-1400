@@ -56,7 +56,7 @@ export async function GET(request) {
   if (key === "tennis_hub" && out.ok && out.value?.espn === false) [s, swr] = [600, 600];
   // Weather Union's gauges are read once a slot (every 30 minutes by day, 2 hours at night): held until the next slot
   if (key === "rain" && out.ok) { [s, swr] = [out.hold_s || rainTtl(), 60]; delete out.hold_s; }
-  const personal = url.searchParams.has("lat");
+  const personal = url.searchParams.has("lat") || (key === "wx" && url.searchParams.has("check"));
   const headers = { "cache-control": out.ok && !personal ? `public, s-maxage=${s}, stale-while-revalidate=${swr}` : "no-store" };
   // The weather app (its own site, the weather repo) reads wx from the phone; the feed holds no coordinates or keys
   if (key === "wx") headers["access-control-allow-origin"] = "*";
