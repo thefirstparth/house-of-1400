@@ -107,14 +107,17 @@ test("the words: the day's line, the tile's chip, the headline across the cities
   const h = (t, o = {}) => ({ t: `2026-10-23T${t}:00`, temp: 24, p: 5, mm: 0, k: "clear", day: true, ...o });
   const base = { name: "Gurugram", now: { vis_km: 2.3 }, today: { p: 3 }, air: { v: 281, cat: "Poor", days: [{ d: "2026-10-23", v: 281, cat: "Poor" }, { d: "2026-10-26", v: 380, cat: "Very poor" }] },
     hours: [h("08"), h("10", { temp: 28 }), h("13", { temp: 31 }), h("16", { temp: 29 }), h("21", { temp: 22, day: false })] };
-  assert.equal(lineFor(base), "Misty start. Dry, 31° by 1 pm. The air is poor today and very poor by Monday.");
+  assert.equal(lineFor(base), "Dry and warming to 31° by 1 pm. Mist, 2.3 km. The air is poor today and very poor by Monday.");
   assert.deepEqual(chipFor(base), { kind: "air", text: "Air poor" });
   const wet = { name: "Bengaluru", now: {}, today: { p: 99 }, air: { v: 14, cat: "Good", days: [] }, hours: [h("08", { p: 20 }), h("14", { p: 60, mm: 3 }), h("17", { p: 90, mm: 9, k: "storm" })] };
-  assert.equal(lineFor(wet), "Rain from about 2 pm, with thunder likely. About 12 mm in all.");
+  assert.equal(lineFor(wet), "Rain from about 2 pm, with thunder likely, about 12 mm.");
   assert.deepEqual(chipFor(wet), { kind: "rain", text: "Rain 2 pm" });
   assert.equal(headlineFor([{ ...wet, chip: chipFor(wet) }, { ...base, chip: chipFor(base) }]), "Rain in Bengaluru after 2 pm. Air is poor in Gurugram.");
   // no chances at all: never "dry"
-  assert.equal(lineFor({ ...base, air: null, now: {}, hours: base.hours.map(x => ({ ...x, p: null })) }), "31° by 1 pm. Down to 22° tonight.");
+  assert.equal(lineFor({ ...base, air: null, now: {}, hours: base.hours.map(x => ({ ...x, p: null })) }), "Up to 31° by 1 pm. Down to 22° tonight.");
+  // raining now and most of the day, with mist in the morning: one sentence, then the mist
+  const now = { name: "Bengaluru", now: { vis_km: 2, at: "2026-10-23T06:15" }, today: { p: 100 }, air: null, hours: Array.from({ length: 12 }, (_, i) => h(String(6 + i).padStart(2, "0"), { p: 80, mm: .5 })) };
+  assert.equal(lineFor(now), "Rain now and on and off all day, about 6 mm. Mist this morning, 2 km.");
 });
 
 test("the family points come from the environment; a bad value falls back to the city centre", () => {
