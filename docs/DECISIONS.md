@@ -1174,3 +1174,12 @@ Parth, 20 Oct: "do it with qa", on the proposal to make the main paper an instal
 
 ## Blob reads, again (23 Oct 2026)
 Parth, with the usage page at 9.1K of 10K Blob simple operations: "Only you can solve this." Every Blob read is a simple operation. The podcast feed and transcripts (api/podcast.js) were held five minutes at Vercel's CDN, so Apple, Spotify and the apps polling them all day meant up to about 290 reads a day each. They are now held five minutes only from 13:30 to 16:30 IST (when a new episode comes out) and the rest of the day until 13:30, at most six hours. The TV feed's alarm state (lib/tv.js) and the gold history (lib/live.js) are re-read from Blob every six hours instead of every hour, per server.
+
+## 23 Oct 2026: a feed for the four-city weather app
+Parth, 22 to 23 Oct, in a build session for his new weather app (its own repo, `weather`): four cities on one screen, Bengaluru, Prayagraj, Ranchi and Gurugram, for him and his family; design A from two rounds of mockups; sources decided from published evaluations ("decide now based on online data and public reviews"; the write-up is the weather repo's docs/SOURCES.md).
+- A new live key, `wx` (lib/wxapp.js, config `wxapp`), so the app's figures come from the same server as the paper's and the TV's. The paper's own `weather` key and the TV's feed are unchanged; Gurugram is in the app only ("No, only this app").
+- The forecast is named, not left to Open-Meteo's best match: ECMWF IFS at 9 km, with chances of rain from ECMWF's 51-run ensemble. Measured now, warnings, the nowcast, the gauges and the weeks and months reuse the paper's code and keys.
+- Air is on India's CPCB scale in the app (the paper keeps the US AQI from CAMS).
+- Google's Weather and Air Quality APIs are used only when GOOGLE_MAPS_KEY is set (Parth: "No card is better but I can add if it helps. No problem if cost stays 0"): weather as the backup forecast, air first. Daily quotas in Google's console (650 per weather method, 500 for air) keep it inside the free 70,000 a month; the code holds the same caps per instance.
+- The family points (Parth's map links, 22 Oct) live in the Vercel env var WEATHER_POINTS and never in git or in the feed.
+
