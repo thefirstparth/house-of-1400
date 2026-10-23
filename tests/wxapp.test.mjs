@@ -118,7 +118,7 @@ test("the words: the day's line, the tile's chip, the headline across the cities
   assert.equal(lineFor(base), "Dry and warming to 31° by 1 pm. Mist, 2.3 km. The air is poor today and very poor by Monday.");
   assert.deepEqual(chipFor(base), { kind: "air", text: "Air poor" });
   const wet = { name: "Bengaluru", now: {}, today: { p: 99 }, air: { v: 14, cat: "Good", days: [] }, hours: [h("08", { p: 20 }), h("14", { p: 60, mm: 3 }), h("17", { p: 90, mm: 9, k: "storm" })] };
-  assert.equal(lineFor(wet), "Rain from about 2 pm, with thunder likely, about 12 mm.");
+  assert.equal(lineFor(wet), "A few showers, then rain from about 2 pm, with thunder likely, about 12 mm.");
   assert.deepEqual(chipFor(wet), { kind: "rain", text: "Rain 2 pm" });
   assert.equal(headlineFor([{ ...wet, chip: chipFor(wet) }, { ...base, chip: chipFor(base) }]), "Rain in Bengaluru after 2 pm. Air is poor in Gurugram.");
   // no chances at all: never "dry"
