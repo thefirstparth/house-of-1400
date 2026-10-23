@@ -70,6 +70,9 @@ test("Google's answers in the same shape, with its own chances", () => {
   assert.equal(g.hours[0].t, "2026-10-23T09:00"); assert.equal(g.hours[2].p, 60); assert.equal(g.hours[2].code, 51);
   assert.deepEqual([g.days[0].d, g.days[0].hi, g.days[0].lo, g.days[0].p, g.days[0].rise, g.days[0].set], ["2026-10-23", 32, 18, 20, "06:26", "17:45"]);
   assert.throws(() => fromGoogle({}, null, null));
+  // before 7 am IST Google's first day is still yesterday's: it is dropped
+  const early = fromGoogle(cur, hrs, { forecastDays: [{ ...dys.forecastDays[0], displayDate: { year: 2026, month: 10, day: 22 } }, dys.forecastDays[0]] }, Date.parse("2026-10-23T01:20:00Z"));
+  assert.deepEqual(early.days.map(d => d.d), ["2026-10-23"]);
   assert.deepEqual(airFromGoogle({ indexes: [{ code: "uaqi", aqi: 40 }, { code: "ind_cpcb", aqi: 231, dominantPollutant: "pm10" }] }), { v: 231, cat: "Poor", lead: "PM10", src: "Google Air Quality, India's scale" });
   assert.equal(airFromGoogle({ indexes: [{ code: "uaqi", aqi: 40 }] }), null);
 });
