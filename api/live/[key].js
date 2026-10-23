@@ -11,9 +11,10 @@ import { OFFDUTY, OFFDUTY_CACHE } from "../../lib/offduty.js";
 import { SPORTAPP, SPORTAPP_CACHE } from "../../lib/sportapp.js";
 import { POOL, POOL_CACHE } from "../../lib/pool.js";
 import { TV, TV_CACHE } from "../../lib/tv.js";
+import { WXAPP, WXAPP_CACHE } from "../../lib/wxapp.js";
 
-// The paper's keys, The Ledger's extra blocks (lib/money.js), Madridismo's competitions (lib/football.js), the odds on every followed match (lib/odds.js), Bengaluru's rain gauges (lib/rain.js), the TV launcher's lines (lib/tv.js) and the trial's keys (lib/trial.js).
-const LIVE = { ...PAPER, ...MONEY, ...CREASE, ...FOOTBALL, ...ODDS, ...RAIN, ...IMD, ...OPENAQ, ...OFFDUTY, ...SPORTAPP, ...POOL, ...TV, ...TRIAL }, CACHE = { ...PAPER_CACHE, ...MONEY_CACHE, ...CREASE_CACHE, ...FOOTBALL_CACHE, ...ODDS_CACHE, ...RAIN_CACHE, ...IMD_CACHE, ...OPENAQ_CACHE, ...OFFDUTY_CACHE, ...SPORTAPP_CACHE, ...POOL_CACHE, ...TV_CACHE, ...TRIAL_CACHE };
+// The paper's keys, The Ledger's extra blocks (lib/money.js), Madridismo's competitions (lib/football.js), the odds on every followed match (lib/odds.js), Bengaluru's rain gauges (lib/rain.js), the TV launcher's lines (lib/tv.js), the weather app's feed (lib/wxapp.js) and the trial's keys (lib/trial.js).
+const LIVE = { ...PAPER, ...MONEY, ...CREASE, ...FOOTBALL, ...ODDS, ...RAIN, ...IMD, ...OPENAQ, ...OFFDUTY, ...SPORTAPP, ...POOL, ...TV, ...WXAPP, ...TRIAL }, CACHE = { ...PAPER_CACHE, ...MONEY_CACHE, ...CREASE_CACHE, ...FOOTBALL_CACHE, ...ODDS_CACHE, ...RAIN_CACHE, ...IMD_CACHE, ...OPENAQ_CACHE, ...OFFDUTY_CACHE, ...SPORTAPP_CACHE, ...POOL_CACHE, ...TV_CACHE, ...WXAPP_CACHE, ...TRIAL_CACHE };
 
 // GET /api/live/<key>. Returns {ok, value, source, as_of, stale}.
 export async function GET(request) {
@@ -56,7 +57,8 @@ export async function GET(request) {
   // Weather Union's gauges are read once a slot (every 30 minutes by day, 2 hours at night): held until the next slot
   if (key === "rain" && out.ok) { [s, swr] = [out.hold_s || rainTtl(), 60]; delete out.hold_s; }
   const personal = url.searchParams.has("lat");
-  return Response.json(out, {
-    headers: { "cache-control": out.ok && !personal ? `public, s-maxage=${s}, stale-while-revalidate=${swr}` : "no-store" },
-  });
+  const headers = { "cache-control": out.ok && !personal ? `public, s-maxage=${s}, stale-while-revalidate=${swr}` : "no-store" };
+  // The weather app (its own site, the weather repo) reads wx from the phone; the feed holds no coordinates or keys
+  if (key === "wx") headers["access-control-allow-origin"] = "*";
+  return Response.json(out, { headers });
 }

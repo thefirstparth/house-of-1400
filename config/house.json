@@ -3615,5 +3615,22 @@
       "results_days": 10,
       "max_rows": 5
     }
+  },
+  "wxapp": {
+    "note": "The four-city weather app (the weather repo; /api/live/wx, lib/wxapp.js; Parth, 23 Oct 2026, design A). Coordinates here are city centres: the family points come from the Vercel env var WEATHER_POINTS ({\"blr\":[lat,lon],...}) and never leave the server (the feed carries no coordinates). Forecast: ECMWF IFS at 9 km via Open-Meteo (models tried in order), rain chances from ECMWF's 51-run ensemble, measured now from IMD and METAR stations, IMD warnings via Sachet and IMD's nowcast, air on India's CPCB scale from CAMS (Google's Air Quality API first when GOOGLE_MAPS_KEY is set). Google's Weather API, then MET Norway, stand in when Open-Meteo fails. docs/DATA.md, wx.",
+    "points_env": "WEATHER_POINTS",
+    "google_env": "GOOGLE_MAPS_KEY",
+    "models": [
+      "ecmwf_ifs",
+      "ecmwf_ifs025"
+    ],
+    "ensemble_model": "ecmwf_ifs025",
+    "alert_radius_km": 60,
+    "cities": [
+      { "id": "blr", "name": "Bengaluru", "state": "Karnataka", "lat": 12.97, "lon": 77.59, "elev": 920, "stations": { "imd": ["43295", "43296"], "metar": ["VOBG"] }, "nowcast": ["Bengaluru City", "Bengaluru HAL"], "alert_names": ["Bengaluru", "Bangalore"], "rain_places": ["home", "office"], "outlook": "Bengaluru" },
+      { "id": "pyj", "name": "Prayagraj", "state": "Uttar Pradesh", "lat": 25.44, "lon": 81.85, "elev": 98, "stations": { "imd": ["42474"], "metar": ["VEAB"] }, "nowcast": ["Prayagraj"], "alert_names": ["Prayagraj", "Allahabad"], "outlook": "Prayagraj" },
+      { "id": "rnc", "name": "Ranchi", "state": "Jharkhand", "lat": 23.34, "lon": 85.31, "elev": 651, "stations": { "imd": ["42701"], "metar": ["VERC"] }, "nowcast": ["Ranchi"], "alert_names": ["Ranchi"], "outlook": "Ranchi" },
+      { "id": "ggn", "name": "Gurugram", "state": "Haryana", "lat": 28.46, "lon": 77.03, "elev": 217, "stations": { "metar": ["VIDP"] }, "nowcast": ["Gurugram", "Palam"], "alert_names": ["Gurugram", "Gurgaon"] }
+    ]
   }
 }
