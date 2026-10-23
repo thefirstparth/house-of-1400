@@ -28,7 +28,10 @@ async function serve(request, head) {
   const { get } = await import("@vercel/blob");
   const range = request.headers.get("range"), mp3 = f.endsWith(".mp3"), vtt = f.endsWith(".vtt");
   let r;
-  try { r = await get(`podcast/${k}/${f}`, { access: "private", useCache: mp3, headers: range ? { range } : undefined }); }
+  // An episode's audio never changes once published (a redo is a new file, -v2), so it is read whole and held at Vercel's
+  // CDN for a year (23 Oct 2026: every listen and every piece an app asked for was a function call and a Blob read; the
+  // store was suspended). The CDN answers byte ranges from its copy; a first request with a range gets the whole file.
+  try { r = await get(`podcast/${k}/${f}`, { access: "private", useCache: mp3, headers: range && !mp3 ? { range } : undefined }); }
   catch { return new Response("Not found", { status: 404 }); }
   if (!r?.stream) return new Response("Not found", { status: 404 });
   const h = new Headers({
@@ -38,7 +41,7 @@ async function serve(request, head) {
     // the feed was a function call and a Blob read); an episode's audio as before
     // (23 Oct 2026: still the month's Blob reads; Apple, Spotify and the apps poll the feed all day) five minutes only from
     // 13:30 to 16:30 IST, when a new episode comes out; the rest of the day until 13:30, at most six hours
-    "cache-control": mp3 ? "public, max-age=86400" : `public, max-age=300, s-maxage=${feedAge()}, stale-while-revalidate=600`,
+    "cache-control": mp3 ? "public, max-age=86400, s-maxage=31536000, immutable" : `public, max-age=300, s-maxage=${feedAge()}, stale-while-revalidate=600`,
     "x-robots-tag": "noindex",
   });
   for (const k2 of ["content-length", "content-range", "etag", "last-modified"]) { const v = r.headers.get(k2); if (v) h.set(k2, v); }
