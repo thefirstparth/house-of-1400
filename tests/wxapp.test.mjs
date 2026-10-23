@@ -73,6 +73,11 @@ test("Google's answers in the same shape, with its own chances", () => {
   // before 7 am IST Google's first day is still yesterday's: it is dropped
   const early = fromGoogle(cur, hrs, { forecastDays: [{ ...dys.forecastDays[0], displayDate: { year: 2026, month: 10, day: 22 } }, dys.forecastDays[0]] }, Date.parse("2026-10-23T01:20:00Z"));
   assert.deepEqual(early.days.map(d => d.d), ["2026-10-23"]);
+  // a "now" feels-like out of step with Google's own forecast for this hour gives way to the hour's gap
+  const odd = { ...cur, currentTime: "2026-10-23T01:40:00Z", temperature: T(20.7), feelsLikeTemperature: T(24.4) };
+  const hr = { forecastHours: [{ ...hrs.forecastHours[0], interval: { startTime: "2026-10-23T01:30:00Z" }, temperature: T(17.2), feelsLikeTemperature: T(17.2) }] };
+  assert.equal(fromGoogle(odd, hr, dys, NOW).now.feels, 20.7);
+  assert.equal(fromGoogle({ ...odd, feelsLikeTemperature: T(21.5) }, hr, dys, NOW).now.feels, 21.5); // within 1.5 degrees: Google's own
   assert.deepEqual(airFromGoogle({ indexes: [{ code: "uaqi", aqi: 40 }, { code: "ind_cpcb", aqi: 231, dominantPollutant: "pm10" }] }), { v: 231, cat: "Poor", lead: "PM10", src: "Google Air Quality, India's scale" });
   assert.equal(airFromGoogle({ indexes: [{ code: "uaqi", aqi: 40 }] }), null);
 });
