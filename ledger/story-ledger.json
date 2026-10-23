@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-22T08:50:16.543Z",
-  "last_edition": "2026-10-22",
+  "last_updated": "2026-10-23T08:49:28.926Z",
+  "last_edition": "2026-10-23",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -2466,7 +2466,7 @@
     },
     {
       "thread_id": "jio-ipo-2026",
-      "title": "Jio Platforms' IPO is subscribed 3.64 times by its second day, with the retail portion full",
+      "title": "Jio Platforms' IPO is the first in the world to draw more than one crore applications, and closes today",
       "entities": [],
       "facts": {
         "valuation": "about $114bn",
@@ -2476,11 +2476,12 @@
         "dates": "21–23 Oct",
         "closes": "Fri 23 Oct",
         "overall": "3.64 times",
-        "institutions": "9.42 times"
+        "institutions": "9.42 times",
+        "applications": "over one crore"
       },
       "first_printed": "2026-10-04",
-      "last_printed": "2026-10-22",
-      "last_change": "2026-10-22",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3304,7 +3305,7 @@
     },
     {
       "thread_id": "iphone-duo-2026",
-      "title": "Apple warns of 'limited' iPhone Duo stock for walk-in buyers on Friday because of 'extraordinary' demand",
+      "title": "The iPhone Duo goes on sale, in an early test for Apple's new chief executive, John Ternus",
       "entities": [],
       "facts": {
         "price_from": "₹2,99,900",
@@ -3318,11 +3319,12 @@
         "ship": "~25 Jan",
         "countries": "70+",
         "ships": "Fri 23 Oct",
-        "on sale": "Fri 23 Oct"
+        "on sale": "Fri 23 Oct",
+        "IDC": "44% of foldable value, 31% of units"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-22",
-      "last_change": "2026-10-22",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3444,7 +3446,7 @@
     },
     {
       "thread_id": "ukraine-war-2026",
-      "title": "Putin agrees in principle to restart three-way peace talks after a three-hour meeting with Witkoff, and Abu Dhabi is floated for November",
+      "title": "Trump says Ukraine's Starlink access is back, but officials say the service is still capped and air defences are suffering",
       "entities": [],
       "facts": {
         "dead": 30,
@@ -3456,11 +3458,13 @@
         "starlink": "on-the-move service restored",
         "source": "Wall Street Journal, citing US officials",
         "effect": "Ukrainian drones made ineffective",
-        "possible talks": "Abu Dhabi, around 10 Nov"
+        "possible talks": "Abu Dhabi, around 10 Nov",
+        "cap": "161 km/h",
+        "Trump": "'He put it back'"
       },
       "first_printed": "2026-10-07",
-      "last_printed": "2026-10-22",
-      "last_change": "2026-10-22",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3961,7 +3965,7 @@
     },
     {
       "thread_id": "us-politics-2026",
-      "title": "JD Vance tells Republicans to stop 'whining' about Vivek Ramaswamy's ad featuring his opponent's estranged mother",
+      "title": "Trump tells Ramaswamy to 'ride with it' as Amy Acton calls his ad featuring her estranged mother 'despicable'",
       "entities": [],
       "facts": {
         "press_secretary": "Katie Zacharia",
@@ -3970,11 +3974,14 @@
         "complaint": "Campaign for Accountability, California State Bar",
         "days": "5",
         "first_briefing": "14 minutes",
-        "ad": "features Donna Arthur, Amy Acton's mother"
+        "ad": "features Donna Arthur, Amy Acton's mother",
+        "election": "3 Nov",
+        "Acton": "called the ad 'despicable'",
+        "DeWine": "reportedly asked for it to be taken down"
       },
       "first_printed": "2026-10-13",
-      "last_printed": "2026-10-22",
-      "last_change": "2026-10-22",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
       "status": "active",
       "votes": {
         "up": 0,
@@ -6228,19 +6235,21 @@
     },
     {
       "thread_id": "india-markets-2026",
-      "title": "The Nifty falls 0.9% by 2pm, a third day of losses, as Brent climbs past $112 on the Saudi attacks",
+      "title": "The Sensex swings 1,100 points from its high as small and mid-sized shares fall for a seventh straight session",
       "entities": [],
       "facts": {
         "sensex": "73,804, -1.2% at 14:00",
         "nifty": "22,878, -1.2%",
         "drags": "HDFC Bank, ICICI Bank, Axis Bank",
-        "Nifty 50 at 2pm": "about 22,616, down 0.9%",
-        "Brent": "about $112",
-        "Wednesday close": "22,811.35, down 0.34%"
+        "Nifty 50 at 2pm": "about 22,554, down 0.6%",
+        "Brent": "about $109",
+        "Wednesday close": "22,811.35, down 0.34%",
+        "Sensex at 2pm": "about 72,964, down 0.4%",
+        "broader markets": "down up to 3%, seventh straight session"
       },
       "first_printed": "2026-10-19",
-      "last_printed": "2026-10-22",
-      "last_change": "2026-10-22",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7038,12 +7047,15 @@
     },
     {
       "thread_id": "india-un-rights-2026",
-      "title": "India tells the UN it opposes 'unverified allegations' after UN experts urge it to stop using excessive force against protesters",
+      "title": "India tells the UN that Pakistan did not even take back the bodies of its own soldiers killed in Kargil",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "speaker": "Bhavika Mangalanandan",
+        "report": "Special Rapporteur Nazila Ghanea"
+      },
       "first_printed": "2026-10-21",
-      "last_printed": "2026-10-21",
-      "last_change": "2026-10-21",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7416,16 +7428,18 @@
     },
     {
       "thread_id": "ind-nz-t20is-2026",
-      "title": "India bring in Reddy and Mayank and send New Zealand in at Christchurch, where Glenn Phillips hits a fifty",
+      "title": "India chase 226 to win the first T20I, and Ishan Kishan is ruled out of Saturday's second with a strain",
       "entities": [],
       "facts": {
         "first T20I": "Thu 22 Oct, 12:30 IST",
         "venue": "Hagley Oval, Christchurch",
-        "toss": "India, chose to bowl"
+        "toss": "India, chose to bowl",
+        "result": "India won by four wickets, chasing 226",
+        "next": "2nd T20I, Sat 24 Oct, 12:30 IST"
       },
       "first_printed": "2026-10-21",
-      "last_printed": "2026-10-22",
-      "last_change": "2026-10-22",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7480,12 +7494,15 @@
     },
     {
       "thread_id": "verstappen-cota-2026",
-      "title": "Verstappen expects a rough ride on the bumps in Austin this weekend and jokes he will 'need to order a new spine'",
+      "title": "Verstappen calls Austin's bumps 'unacceptable', as Antonelli arrives with his first mathematical chance of the title",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "race": "United States GP, Austin, Sun 25 Oct",
+        "Antonelli": "20, first mathematical title chance"
+      },
       "first_printed": "2026-10-21",
-      "last_printed": "2026-10-21",
-      "last_change": "2026-10-21",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7525,17 +7542,19 @@
     },
     {
       "thread_id": "php2shell-2026",
-      "title": "Governments take websites offline as two PHP flaws found with AI help put most of the web at risk",
+      "title": "Britain takes 32 government services offline as the scramble to patch the PHP flaws spreads, and Japan plans cyberattack drills",
       "entities": [],
       "facts": {
         "name": "PHP2Shell",
         "first reported": "11 Aug, Calif with OpenAI",
         "second reported": "24 Aug, Wiz",
-        "share of websites": "about 70% (Wiz)"
+        "share of websites": "about 70% (Wiz)",
+        "UK services down": "32 unavailable, 4 partly",
+        "breaches": "none reported so far"
       },
       "first_printed": "2026-10-22",
-      "last_printed": "2026-10-22",
-      "last_change": "2026-10-22",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7900,6 +7919,519 @@
       "first_printed": "2026-10-22",
       "last_printed": "2026-10-22",
       "last_change": "2026-10-22",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "india-china-border-2026",
+      "title": "Indian and Chinese troops are still facing off at several places along the Arunachal border, the ITBP's chief says",
+      "entities": [],
+      "facts": {
+        "who": "ITBP DG Shatrujeet Singh Kapur",
+        "where": "several locations in Arunachal, including near Taksing",
+        "since": "July"
+      },
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "tibet-quake-2026",
+      "title": "A magnitude 7.0 earthquake kills at least 16 people in Tibet's Nagqu region and brings down 339 homes",
+      "entities": [],
+      "facts": {
+        "magnitude": "7.0",
+        "killed": "at least 16",
+        "injured": "65",
+        "homes collapsed": "339",
+        "relocated": "more than 12,400"
+      },
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "openai-funding-2026",
+      "title": "OpenAI nears a $30bn funding round at a $1.25tn valuation, led by Coatue and UAE investors, CNBC reports",
+      "entities": [],
+      "facts": {
+        "raise": "up to $30bn",
+        "valuation": "$1.25tn before the money",
+        "March valuation": "$852bn"
+      },
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "yemen-yacht-indians-2026",
+      "title": "The Houthis say they are rescuing 14 Indians from a yacht off Yemen, and India's embassy says it is trying to establish the facts",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "india-eu-trade-2026",
+      "title": "Piyush Goyal tells Europe in Berlin it is 'inviting disaster' with its carbon tax on steel imports",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-new-york-city-bans-horse-drawn-carriages",
+      "title": "New York City bans horse-drawn carriages by 2028 after an Indian tourist died following a carriage accident in Central Park",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-neha-bora-tells-the-delhi-high",
+      "title": "Neha Bora tells the Delhi High Court there is nothing wrong with seeking regime change in a democracy",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-uttar-pradeshs-draft-voter-list-carries",
+      "title": "Uttar Pradesh's draft voter list carries joke entries such as 'Ram Ne Yadav Ko Mara', and the Election Commission is not amused",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "shamonda-2026",
+      "title": "France reports the first known human infection with the Shamonda virus, a livestock disease, and says there is no wider risk",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-tom-skerritt-the-star-of-top",
+      "title": "Tom Skerritt, the star of Top Gun, Alien and Picket Fences, has died at 93",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-a-judge-orders-trump-to-give",
+      "title": "A judge orders Trump to give a deposition in his lawsuit against the BBC by 11 December",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-grenades-on-a-range-sparked-the",
+      "title": "Grenades on a range sparked the fire that killed four soldiers at a Canadian military base, officials say",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-silver-falls-below-2-lakh-a",
+      "title": "Silver falls below ₹2 lakh a kilo and gold slips to ₹1.43 lakh as rate fears grow",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "line-us-tech-shares-fall-as-oil",
+      "title": "US tech shares fall as oil climbs and investors worry about AI spending",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "line-canva-builds-its-own-ai-model",
+      "title": "Canva builds its own AI model, Craft, as a new source of revenue",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-mit-researchers-left-13-ai-agents",
+      "title": "MIT researchers left 13 AI agents on a virtual island with nothing to do, and they started to play",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-amazon-renames-kindle-unlimited-as-kindle",
+      "title": "Amazon renames Kindle Unlimited as Kindle+ and adds AI-narrated audiobooks at $12 a month",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "zuckerberg-tax-2026",
+      "title": "Meta gives Zuckerberg more shares so he can pay California's proposed billionaire tax without leaving the state",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "line-ea-shuts-down-bioware-and-cancels",
+      "title": "EA shuts down BioWare and cancels the next Mass Effect game",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "line-an-australian-court-rules-apple-must",
+      "title": "An Australian court rules Apple must allow third-party app stores on the iPhone",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "line-samsung-says-fold8-sales-in-europe",
+      "title": "Samsung says Fold8 sales in Europe are up 45% on last year's Fold7",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "ballon-dor-2026",
+      "title": "Harry Kane, the favourite for the Ballon d'Or, says the wait for Monday's announcement is stressful for his family",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "celtic-2026",
+      "title": "Celtic lose to Celta Vigo in the Europa League after leading early in the second half",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "madrid-next-barcelona",
+      "title": "Barcelona's 19-year-old Xavi Espart is set to start at right-back in Sunday's Clásico, with Koundé not fit to begin",
+      "entities": [],
+      "facts": {
+        "kick-off": "Mon 26 Oct, 01:30 IST",
+        "venue": "Camp Nou",
+        "Tebas complaint": "filed by the CSD with the TAD"
+      },
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "brook-2026",
+      "title": "Harry Brook hits the fastest double century in ODI history, in 114 balls, beating Shubman Gill's 117",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "medvedev-2026",
+      "title": "Medvedev reaches the Almaty quarter-finals in 52 minutes and calls Sinner and Alcaraz 'in a good way, freaks'",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "line-shikhar-mohan-joins-the-india-a",
+      "title": "Shikhar Mohan joins the India A squad for the last two four-day games against New Zealand A",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "bengaluru-metro-2026",
+      "title": "Trial runs on the 19.75-km KR Puram to Silk Board metro stretch should start by the end of October",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "line-three-spicejet-flights-from-bengaluru-to",
+      "title": "Three SpiceJet flights from Bengaluru to Kolkata and Mumbai are delayed into the early hours",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "ranchi-civic-2026",
+      "title": "Ranchi Municipal Corporation clears 14 illegal structures near Karbala Chowk to ease traffic",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "jharkhand-bjp-2026",
+      "title": "BJP president Nitin Nabin arrives in Ranchi on Friday evening for a three-day visit to Jharkhand",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "prayagraj-wildlife-2026",
+      "title": "Blackbucks at Prayagraj's Chand Khamariya sanctuary rise to 604, up from 508 in 2022",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "prayagraj-metro-2026",
+      "title": "RITES submits a ₹12,000 crore plan for a two-corridor Prayagraj metro, with an extension to the airport",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-23",
+      "last_printed": "2026-10-23",
+      "last_change": "2026-10-23",
       "status": "active",
       "votes": {
         "up": 0,

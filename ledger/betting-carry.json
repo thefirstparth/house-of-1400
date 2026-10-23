@@ -1,63 +1,63 @@
 {
-  "date": "2026-10-22",
-  "from": "2026-10-21",
+  "date": "2026-10-23",
+  "from": "2026-10-22",
   "carry": [
-    {
-      "id": "pm:us-iran-ceasefire-continues-throughptptpt",
-      "title": "US-Iran ceasefire continues through...?",
-      "since": "2026-10-08",
-      "reason": "#1 by 24h volume"
-    },
-    {
-      "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
-      "title": "UEFA Champions League: 2027 Champion",
-      "since": "2026-09-25",
-      "reason": "#2 by 24h volume"
-    },
     {
       "id": "pm:ballon-dor-winner-2026",
       "title": "Ballon d'Or Winner 2026",
       "since": "2026-09-25",
-      "reason": "#3 by 24h volume"
+      "reason": "#1 by 24h volume"
+    },
+    {
+      "id": "pm:us-iran-ceasefire-continues-throughptptpt",
+      "title": "US-Iran ceasefire continues through...?",
+      "since": "2026-10-08",
+      "reason": "#2 by 24h volume"
     },
     {
       "id": "pm:brazil-presidential-election",
       "title": "Brazil Presidential Election",
       "since": "2026-10-12",
-      "reason": "#4 by 24h volume"
+      "reason": "#3 by 24h volume"
     },
     {
       "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
       "title": "Prime Minister of Israel after the next election?",
       "since": "2026-10-20",
-      "reason": "#5 by 24h volume"
+      "reason": "#4 by 24h volume"
     },
     {
       "id": "pm:next-french-presidential-election",
       "title": "Next French Presidential Election",
       "since": "2026-10-09",
-      "reason": "#7 by 24h volume"
+      "reason": "#5 by 24h volume"
+    },
+    {
+      "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
+      "title": "UEFA Champions League: 2027 Champion",
+      "since": "2026-09-25",
+      "reason": "#6 by 24h volume"
     }
   ],
   "dropped": [
     {
-      "id": "pm:will-anthropics-valuation-hit-by-december-31",
-      "title": "Will Anthropic’s valuation hit __ by December 31?",
+      "id": "pm:lal-bar-rea-2026-10-25",
+      "title": "FC Barcelona vs. Real Madrid CF",
       "why": "cooled: outside the ranking by volume, moved 0.0 pts"
     },
     {
-      "id": "pm:france-declares-state-of-emergency-byptptpt",
-      "title": "France declares state of emergency by...?",
-      "why": "cooled: #34 by volume, moved 0.0 pts"
+      "id": "pm:bab-el-mandeb-strait-effectively-closed-by",
+      "title": "Bab el-Mandeb Strait effectively closed by...?",
+      "why": "cooled: outside the ranking by volume, moved 0.6 pts"
     },
     {
-      "id": "pm:russia-x-ukraine-ceasefire-agreement-by",
-      "title": "Russia x Ukraine ceasefire agreement by...?",
-      "why": "carry cap of 6"
+      "id": "pm:where-will-zelenskyy-and-putin-meet-next",
+      "title": "Where will Zelenskyy and Putin meet next before 2027?",
+      "why": "cooled: outside the ranking by volume, moved 0.4 pts"
     },
     {
-      "id": "pm:bun-fre-bay-2026-10-25",
-      "title": "SC Freiburg vs. FC Bayern München",
+      "id": "pm:russia-x-ukraine-ceasefire-by",
+      "title": "Russia x Ukraine Ceasefire by...?",
       "why": "carry cap of 6"
     }
   ]

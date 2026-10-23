@@ -1,20 +1,8 @@
 {
-  "date": "2026-10-22",
+  "date": "2026-10-23",
   "source": "Cricbuzz",
-  "checked_at": "2026-10-22T08:42:45.175Z",
+  "checked_at": "2026-10-23T08:43:18.393Z",
   "matches": [
-    {
-      "desc": "1st T20I",
-      "format": "T20",
-      "series": "India tour of New Zealand 2026",
-      "opponent": "New Zealand",
-      "start": "2026-10-22T07:00:00.000Z",
-      "ist": "Thu 22 Oct, 12:30",
-      "time_announced": true,
-      "ground": "Hagley Oval",
-      "city": "Christchurch",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/161190"
-    },
     {
       "desc": "2nd T20I",
       "format": "T20",
@@ -404,12 +392,12 @@
     {
       "name": "India tour of New Zealand 2026",
       "opponent": "New Zealand",
-      "from": "2026-10-22",
+      "from": "2026-10-24",
       "parts": [
         {
           "format": "T20",
           "total": 5,
-          "played": 0
+          "played": 1
         },
         {
           "format": "ODI",
