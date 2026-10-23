@@ -14,6 +14,12 @@ async function ownFolder() {
   return (folderOf = blobs.map(b => b.pathname.match(/^podcast\/([a-f0-9]{24})\/feed\.xml$/)?.[1]).find(Boolean) || "");
 }
 
+export function feedAge(now = Date.now()) {
+  const ist = new Date(now + 5.5 * 36e5), m = ist.getUTCHours() * 60 + ist.getUTCMinutes();
+  if (m >= 810 && m < 990) return 300;
+  return Math.max(300, Math.min(21600, ((810 - m + 1440) % 1440) * 60));
+}
+
 async function serve(request, head) {
   const url = new URL(request.url), pub = url.searchParams.has("pub"), f = url.searchParams.get("f") || (pub ? "feed.xml" : "");
   let k = url.searchParams.get("k") || "";
@@ -30,7 +36,9 @@ async function serve(request, head) {
     "accept-ranges": "bytes",
     // the feed and transcripts held five minutes at Vercel's CDN too (20 Oct 2026: every Apple, Spotify and app check of
     // the feed was a function call and a Blob read); an episode's audio as before
-    "cache-control": mp3 ? "public, max-age=86400" : "public, max-age=300, s-maxage=300, stale-while-revalidate=600",
+    // (23 Oct 2026: still the month's Blob reads; Apple, Spotify and the apps poll the feed all day) five minutes only from
+    // 13:30 to 16:30 IST, when a new episode comes out; the rest of the day until 13:30, at most six hours
+    "cache-control": mp3 ? "public, max-age=86400" : `public, max-age=300, s-maxage=${feedAge()}, stale-while-revalidate=600`,
     "x-robots-tag": "noindex",
   });
   for (const k2 of ["content-length", "content-range", "etag", "last-modified"]) { const v = r.headers.get(k2); if (v) h.set(k2, v); }
