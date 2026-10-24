@@ -103,7 +103,7 @@ test("the gauge over the forecast: only when switched on; rain at home makes it 
   const both = applyRain(city("blr"), [{ ...wet[0], intensity: 0.2 }, { ...wet[1], intensity: 0.8 }], WORD, chipFor, now, { fresh_min: 75, apply: true });
   assert.equal(both.now.k, "rain"); // no earlier reading: 0.8 a minute is a guess of moderate
   const pour = applyRain(city("blr"), [{ ...wet[0], intensity: 0.6, today: 7.3, prev: { today: 4.8, at: new Date(now - 25 * 6e4).toISOString() } }], WORD, chipFor, now, { fresh_min: 75, apply: true });
-  const tip = applyRain(city("blr"), [{ ...wet[0], intensity: 0.2, today: 1, prev: { today: 1, at: new Date(now - 15 * 6e4).toISOString() } }], WORD, chipFor, now, { fresh_min: 75, apply: true });
+  const tip = applyRain(city("blr"), [{ ...wet[0], intensity: 0.2, today: 1, prev: { today: 1, at: new Date(now - 25 * 6e4).toISOString() } }], WORD, chipFor, now, { fresh_min: 75, apply: true });
   assert.equal(tip.now.k, "drizzle"); assert.equal(tip.hours[0].mm, 0.4);
   assert.equal(pour.now.k, "heavyrain"); assert.equal(pour.rain_now.rate_mm_h, 10); assert.equal(pour.rain_now.heavy, true);
   assert.equal(summary({ ok: false, at }, now), null);
