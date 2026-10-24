@@ -5,7 +5,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 
 process.env.house_KV_REST_API_URL = "https://store.test"; process.env.house_KV_REST_API_TOKEN = "t"; process.env.WU_KEY = "k";
-const { wuReadings, applyRain, summary, parse, due, rainSoon } = await import("../lib/wxrain.js");
+const { wuReadings, applyRain, summary, parse, due, rainSoon, rateOf } = await import("../lib/wxrain.js");
 const { WORD, chipFor } = await import("../lib/wxapp.js");
 
 // the store: INCR, DECR, EXPIRE, SET (NX, EX), MGET over a map with expiries
@@ -90,9 +90,9 @@ test("the gauge over the forecast: only when switched on; rain at home makes it 
   const now = IST0, at = new Date(now - 10 * 6e4).toISOString();
   const wet = [{ role: "home", name: "Brookefields", ok: true, intensity: 0.1, today: 2.3, at }, { role: "work", name: "Koramangala", ok: true, intensity: 0, today: 0.4, at }];
   const off = applyRain(city("blr"), wet, WORD, chipFor, now, { fresh_min: 75, apply: false });
-  assert.equal(off.now.k, "cloudy"); assert.equal(off.rain_now.station, "Brookefields"); assert.equal(off.rain_now.raining, true); assert.equal(off.rain_now.rate_mm_h, 6); assert.equal(off.rain_now.heavy, false); assert.equal(off.rain_now.work.raining, false);
+  assert.equal(off.now.k, "cloudy"); assert.equal(off.rain_now.station, "Brookefields"); assert.equal(off.rain_now.raining, true); assert.equal(off.rain_now.rate_mm_h, 1); assert.equal(off.rain_now.heavy, false); assert.equal(off.rain_now.work.raining, false);
   const on = applyRain(city("blr"), wet, WORD, chipFor, now, { fresh_min: 75, apply: true });
-  assert.equal(on.now.k, "rain"); assert.equal(on.now.word, "Rain"); assert.deepEqual(on.chip, { kind: "rain", text: "Rain now" });
+  assert.equal(on.now.k, "rain"); assert.equal(on.now.word, "Rain"); assert.equal(on.hours[0].mm, 1); assert.deepEqual(on.chip, { kind: "rain", text: "Rain now" });
   const dry = applyRain(city("blr", true), [{ ...wet[0], intensity: 0 }], WORD, chipFor, now, { fresh_min: 75, apply: true });
   assert.equal(dry.now.k, "cloudy"); assert.notEqual(dry.chip?.text, "Rain now");
   const old = applyRain(city("blr"), [{ ...wet[0], at: new Date(now - 90 * 6e4).toISOString() }], WORD, chipFor, now, { fresh_min: 75, apply: true });
@@ -101,6 +101,27 @@ test("the gauge over the forecast: only when switched on; rain at home makes it 
   const workOnly = applyRain(city("blr", true), [{ ...wet[0], intensity: 0 }, { ...wet[1], intensity: 0.4 }], WORD, chipFor, now, { fresh_min: 75, apply: true });
   assert.equal(workOnly.now.k, "rain"); assert.equal(workOnly.hours[0].p, 100); assert.equal(workOnly.rain_now.raining, false); assert.equal(workOnly.rain_now.work.raining, true);
   const both = applyRain(city("blr"), [{ ...wet[0], intensity: 0.2 }, { ...wet[1], intensity: 0.8 }], WORD, chipFor, now, { fresh_min: 75, apply: true });
-  assert.equal(both.now.k, "heavyrain");
+  assert.equal(both.now.k, "rain"); // no earlier reading: 0.8 a minute is a guess of moderate
+  const pour = applyRain(city("blr"), [{ ...wet[0], intensity: 0.6, today: 7.3, prev: { today: 4.8, at: new Date(now - 25 * 6e4).toISOString() } }], WORD, chipFor, now, { fresh_min: 75, apply: true });
+  const tip = applyRain(city("blr"), [{ ...wet[0], intensity: 0.2, today: 1, prev: { today: 1, at: new Date(now - 15 * 6e4).toISOString() } }], WORD, chipFor, now, { fresh_min: 75, apply: true });
+  assert.equal(tip.now.k, "drizzle"); assert.equal(tip.hours[0].mm, 0.4);
+  assert.equal(pour.now.k, "heavyrain"); assert.equal(pour.rain_now.rate_mm_h, 10); assert.equal(pour.rain_now.heavy, true);
   assert.equal(summary({ ok: false, at }, now), null);
+});
+
+test("how hard it rains: from how fast the day's total rose, not from the gauge's 0.2 mm a minute", () => {
+  const at = "2026-10-24T01:36:00Z", prev = { today: 1, at: "2026-10-24T01:21:00Z" };
+  assert.equal(rateOf({ intensity: 0.2, today: 1.6, at, prev }), 2.4); // Brookefields, 24 Oct: light rain, as Weather Union says
+  assert.equal(rateOf({ intensity: 0, today: 1.6, at, prev }), 0);
+  assert.equal(rateOf({ intensity: 0.2, today: 1, at, prev }), 0.4); // a tip, the total not yet risen
+  assert.equal(rateOf({ intensity: 0.2, today: 1.6, at }), 1); // the day's first reading
+  assert.equal(rateOf({ intensity: 0.2, today: 9, at, prev: { today: 1, at: "2026-10-23T20:00:00Z" } }), 1); // too long ago to tell
+});
+
+test("each reading keeps the day's previous one, and not yesterday's", async () => {
+  S = new Map(); wuRain = 0.2;
+  const id = "ZWL004341", st = () => JSON.parse(get(`wxwu:s:${id}`));
+  T = IST0 + 9 * 36e5; await wuReadings(CITIES(), T); assert.equal(st().prev, null);
+  T += 15 * 6e4; await wuReadings(CITIES(), T); assert.equal(st().prev.at, new Date(T - 15 * 6e4).toISOString());
+  T = IST0 + 86400e3 + 5 * 6e4; await wuReadings(CITIES(), T); assert.equal(st().prev, null);
 });
