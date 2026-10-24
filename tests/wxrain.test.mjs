@@ -90,7 +90,7 @@ test("the gauge over the forecast: only when switched on; rain at home makes it 
   const now = IST0, at = new Date(now - 10 * 6e4).toISOString();
   const wet = [{ role: "home", name: "Brookefields", ok: true, intensity: 0.1, today: 2.3, at }, { role: "work", name: "Koramangala", ok: true, intensity: 0, today: 0.4, at }];
   const off = applyRain(city("blr"), wet, WORD, chipFor, now, { fresh_min: 75, apply: false });
-  assert.equal(off.now.k, "cloudy"); assert.equal(off.rain_now.station, "Brookefields"); assert.equal(off.rain_now.raining, true); assert.equal(off.rain_now.rate_mm_h, 6); assert.equal(off.rain_now.word, "moderate"); assert.equal(off.rain_now.work.raining, false);
+  assert.equal(off.now.k, "cloudy"); assert.equal(off.rain_now.station, "Brookefields"); assert.equal(off.rain_now.raining, true); assert.equal(off.rain_now.rate_mm_h, 6); assert.equal(off.rain_now.heavy, false); assert.equal(off.rain_now.work.raining, false);
   const on = applyRain(city("blr"), wet, WORD, chipFor, now, { fresh_min: 75, apply: true });
   assert.equal(on.now.k, "rain"); assert.equal(on.now.word, "Rain"); assert.deepEqual(on.chip, { kind: "rain", text: "Rain now" });
   const dry = applyRain(city("blr", true), [{ ...wet[0], intensity: 0 }], WORD, chipFor, now, { fresh_min: 75, apply: true });
