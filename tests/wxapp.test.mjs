@@ -3,7 +3,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { indiaAqi, aqiCat, kindOf, compass, rainChances, fromOpenMeteo, fromMetno, fromGoogle, airFromCams, airFromGoogle, metarVis, assemble, lineFor, chipFor, headlineFor, points, gKind } from "../lib/wxapp.js";
+import { indiaAqi, aqiCat, kindOf, compass, rainChances, fromOpenMeteo, fromMetno, fromGoogle, airFromCams, airFromGoogle, metarVis, assemble, lineFor, chipFor, headlineFor, points, gKind, sanityFeels } from "../lib/wxapp.js";
 
 const fx = n => JSON.parse(readFileSync(new URL(`./fixtures/${n}`, import.meta.url), "utf8"));
 const NOW = Date.parse("2026-10-23T00:20:00Z"); // 5:50 am IST
@@ -133,4 +133,17 @@ test("the family points come from the environment; a bad value falls back to the
   assert.deepEqual(points(cs, '{"blr":[12.99,77.71]}').map(c => [c.lat, c.lon]), [[12.99, 77.71], [28.46, 77.03]]);
   assert.deepEqual(points(cs, "not json").map(c => c.lat), [12.97, 28.46]);
   assert.deepEqual(points(cs, '{"blr":[999,1]}').map(c => c.lat), [12.97, 28.46]);
+});
+
+test("Google's feels like checked against ECMWF's: more than 2.5 degrees apart and ECMWF's gap stands (24 Oct, Ranchi)", () => {
+  const g = { now: { temp: 18.8, feels: 22.1 }, hours: [{ t: "2026-10-24T22:00", temp: 19.1, feels: 24.6 }, { t: "2026-10-24T23:00", temp: 18.3, feels: 18.3 }], src: "Google Weather" };
+  const e = { now: { temp: 18.1, feels: 18.7 }, hours: [{ t: "2026-10-24T22:00", temp: 18.6, feels: 19.2 }, { t: "2026-10-24T23:00", temp: 18, feels: 18.4 }] };
+  const f = sanityFeels(g, e);
+  assert.equal(f.now.feels, 19.4); assert.equal(f.now.feels_from, "ECMWF");
+  assert.equal(f.hours[0].feels, 19.7); assert.equal(f.hours[1].feels, 18.3); assert.equal(f.hours[1].feels_from, undefined);
+  // Bengaluru the same night: Google +2.8, ECMWF +2.6, Google's stays
+  const b = sanityFeels({ now: { temp: 21.4, feels: 24.2 }, hours: [] }, { now: { temp: 21.2, feels: 23.8 }, hours: [] });
+  assert.equal(b.now.feels, 24.2);
+  // no ECMWF, or ECMWF is itself the forecast: unchanged
+  assert.equal(sanityFeels(g, null), g); assert.equal(sanityFeels(e, e), e);
 });
