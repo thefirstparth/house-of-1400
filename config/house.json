@@ -3621,7 +3621,7 @@
     "points_env": "WEATHER_POINTS",
     "google_env": "GOOGLE_MAPS_KEY",
     "wu": {
-      "note": "Measured rain for the weather app from Weather Union, on the app's own key (Vercel env WU_KEY; Parth, 24 Oct 2026: a new key, not the paper's WU). lib/wxrain.js. Fixed budget forever: day_cap a day and fy_cap a financial year (Weather Union allows 60,000 a profile a year, Terms 3(vii), and 1,000 a day), counted in the shared store before each call; each station every base_min, and every boost_min while it rains there or rain is due within the hour, from boost_cap a day. A reading is used for fresh_min. apply: whether the gauge overrides the forecast's now (off until Parth has seen it). Stations per city: [locality id, name, role]; Bengaluru's home station drives the card, the work one adds 'raining at work'.",
+      "note": "Measured rain for the weather app from Weather Union, on the app's own key (Vercel env WU_KEY; Parth, 24 Oct 2026: a new key, not the paper's WU). lib/wxrain.js. Fixed budget forever: day_cap a day and fy_cap a financial year (Weather Union allows 60,000 a profile a year, Terms 3(vii), and 1,000 a day), counted in the shared store before each call; each station every base_min, and every boost_min while it rains there or rain is due within the hour, from boost_cap a day. A reading is used for fresh_min. apply: whether the gauges override the forecast's now (on from 24 Oct 2026). Stations per city: [locality id, name, role]; in Bengaluru either gauge raining makes the card rain, and the app's chip says which.",
       "env": "WU_KEY",
       "day_cap": 150,
       "fy_cap": 54900,
@@ -3629,7 +3629,7 @@
       "boost_min": 15,
       "boost_cap": 54,
       "fresh_min": 75,
-      "apply": false,
+      "apply": true,
       "stations": {
         "blr": [["ZWL004341", "Brookefields", "home"], ["ZWL001156", "Koramangala", "work"]],
         "ggn": [["ZWL007840", "Sector 14", "home"]],
