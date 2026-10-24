@@ -97,5 +97,10 @@ test("the gauge over the forecast: only when switched on; rain at home makes it 
   assert.equal(dry.now.k, "cloudy"); assert.notEqual(dry.chip?.text, "Rain now");
   const old = applyRain(city("blr"), [{ ...wet[0], at: new Date(now - 90 * 6e4).toISOString() }], WORD, chipFor, now, { fresh_min: 75, apply: true });
   assert.equal(old.rain_now, undefined); assert.equal(old.now.k, "cloudy");
+  // only the work gauge raining still makes Bengaluru rain; a dry home gauge alone doesn't overrule a wet work gauge
+  const workOnly = applyRain(city("blr", true), [{ ...wet[0], intensity: 0 }, { ...wet[1], intensity: 0.4 }], WORD, chipFor, now, { fresh_min: 75, apply: true });
+  assert.equal(workOnly.now.k, "rain"); assert.equal(workOnly.hours[0].p, 100); assert.equal(workOnly.rain_now.raining, false); assert.equal(workOnly.rain_now.work.raining, true);
+  const both = applyRain(city("blr"), [{ ...wet[0], intensity: 0.2 }, { ...wet[1], intensity: 0.8 }], WORD, chipFor, now, { fresh_min: 75, apply: true });
+  assert.equal(both.now.k, "heavyrain");
   assert.equal(summary({ ok: false, at }, now), null);
 });
