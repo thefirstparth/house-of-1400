@@ -3620,6 +3620,22 @@
     "note": "The four-city weather app (the weather repo; /api/live/wx, lib/wxapp.js; Parth, 23 Oct 2026, design A). Coordinates here are city centres: the family points come from the Vercel env var WEATHER_POINTS ({\"blr\":[lat,lon],...}) and never leave the server (the feed carries no coordinates). Forecast: ECMWF IFS at 9 km via Open-Meteo (models tried in order), rain chances from ECMWF's 51-run ensemble, measured now from IMD and METAR stations, IMD warnings via Sachet and IMD's nowcast, air on India's CPCB scale from CAMS (Google's Air Quality API first when GOOGLE_MAPS_KEY is set). Google's Weather API, then MET Norway, stand in when Open-Meteo fails. docs/DATA.md, wx.",
     "points_env": "WEATHER_POINTS",
     "google_env": "GOOGLE_MAPS_KEY",
+    "wu": {
+      "note": "Measured rain for the weather app from Weather Union, on the app's own key (Vercel env WU_KEY; Parth, 24 Oct 2026: a new key, not the paper's WU). lib/wxrain.js. Fixed budget forever: day_cap a day and fy_cap a financial year (Weather Union allows 60,000 a profile a year, Terms 3(vii), and 1,000 a day), counted in the shared store before each call; each station every base_min, and every boost_min while it rains there or rain is due within the hour, from boost_cap a day. A reading is used for fresh_min. apply: whether the gauge overrides the forecast's now (off until Parth has seen it). Stations per city: [locality id, name, role]; Bengaluru's home station drives the card, the work one adds 'raining at work'.",
+      "env": "WU_KEY",
+      "day_cap": 150,
+      "fy_cap": 54900,
+      "base_min": 60,
+      "boost_min": 15,
+      "boost_cap": 54,
+      "fresh_min": 75,
+      "apply": false,
+      "stations": {
+        "blr": [["ZWL004341", "Brookefields", "home"], ["ZWL001156", "Koramangala", "work"]],
+        "ggn": [["ZWL007840", "Sector 14", "home"]],
+        "rnc": [["ZWL010070", "Lalpur", "home"]]
+      }
+    },
     "models": [
       "ecmwf_ifs",
       "ecmwf_ifs025"
