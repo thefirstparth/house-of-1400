@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-24T08:51:02.188Z",
-  "last_edition": "2026-10-24",
+  "last_updated": "2026-10-25T08:51:31.788Z",
+  "last_edition": "2026-10-25",
   "threads": [
     {
       "thread_id": "iran-hormuz-talks",
@@ -2361,7 +2361,7 @@
     },
     {
       "thread_id": "saudi-houthi-2026",
-      "title": "An Indian is among two killed in a Houthi attack on Dammam's airport, and the US orders non-emergency staff to leave Saudi Arabia",
+      "title": "Houthis say they fired at three Saudi airports, energy sites and a pipeline, as Riyadh's airport reopens after two weeks",
       "entities": [],
       "facts": {
         "pact": "activated 5 Oct",
@@ -2380,11 +2380,14 @@
         "aramco": "admin building fire 13 Oct",
         "riyadh": "missile intercepted 14 Oct",
         "killed": "2, one Indian",
-        "this month": "22 killed at Saudi airports (AFP)"
+        "this month": "22 killed at Saudi airports (AFP)",
+        "targets claimed": "three Saudi airports, energy sites, a pipeline, an air base",
+        "Houthi death toll claim": "17",
+        "Riyadh airport": "reopens Sun 25 Oct after two weeks"
       },
       "first_printed": "2026-10-04",
-      "last_printed": "2026-10-22",
-      "last_change": "2026-10-22",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3308,7 +3311,7 @@
     },
     {
       "thread_id": "iphone-duo-2026",
-      "title": "Apple sells out of its in-store iPhone Duo stock, and some early owners report screens cracking along the hinge",
+      "title": "Apple reopens iPhone Duo store pickup in the US and Canada, with few slots, as more owners report cracked screens",
       "entities": [],
       "facts": {
         "price_from": "₹2,99,900",
@@ -3325,11 +3328,12 @@
         "on sale": "Fri 23 Oct",
         "IDC": "44% of foldable value, 31% of units",
         "deliveries": "late January",
-        "complaint": "cracks along the hinge"
+        "complaint": "cracks along the hinge",
+        "crack": "Australian owner, about six hours after unboxing"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-24",
-      "last_change": "2026-10-24",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3451,7 +3455,7 @@
     },
     {
       "thread_id": "ukraine-war-2026",
-      "title": "Melania Trump brokers a ceasefire in the occupied Ukrainian city of Oleshky so residents can be evacuated and fed",
+      "title": "Musk says SpaceX restricted Ukraine's Starlink for breaking its terms, as Kyiv says the service is working again",
       "entities": [],
       "facts": {
         "dead": 30,
@@ -3468,11 +3472,14 @@
         "Trump": "'He put it back'",
         "guns stop": "02:00 GMT, 27 Oct",
         "White House start date": "29 Oct",
-        "broker": "Melania Trump"
+        "broker": "Melania Trump",
+        "Musk": "'That loophole was closed last week'",
+        "Starshield": "Musk denies causing its outage",
+        "Kyiv adviser": "Serhiy Beskrestnov"
       },
       "first_printed": "2026-10-07",
-      "last_printed": "2026-10-24",
-      "last_change": "2026-10-24",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3973,7 +3980,7 @@
     },
     {
       "thread_id": "us-politics-2026",
-      "title": "Trump tells Ramaswamy to 'ride with it' as Amy Acton calls his ad featuring her estranged mother 'despicable'",
+      "title": "Obama mocks Trump's gold White House at an Ohio rally, as Trump announces a $4.2bn Audi factory in Georgia",
       "entities": [],
       "facts": {
         "press_secretary": "Katie Zacharia",
@@ -3985,11 +3992,13 @@
         "ad": "features Donna Arthur, Amy Acton's mother",
         "election": "3 Nov",
         "Acton": "called the ad 'despicable'",
-        "DeWine": "reportedly asked for it to be taken down"
+        "DeWine": "reportedly asked for it to be taken down",
+        "Audi plant": "$4.2bn, Macon, Georgia, about 4,500 jobs",
+        "midterms": "3 Nov"
       },
       "first_printed": "2026-10-13",
-      "last_printed": "2026-10-23",
-      "last_change": "2026-10-23",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4441,18 +4450,19 @@
     },
     {
       "thread_id": "arsenal-2026",
-      "title": "Arsenal fear Bukayo Saka will miss at least six weeks with the thigh injury he suffered against Bayern",
+      "title": "Arsenal beat Everton and draw level on points with Manchester City, who lost their unbeaten record at Aston Villa",
       "entities": [],
       "facts": {
-        "score": "Bayern 2–2 Arsenal",
+        "score": "Arsenal 2 Everton 0",
         "scorer": "Madueke",
         "equaliser": "Rice, 82nd minute",
         "injury": "quadriceps",
-        "out for": "at least six weeks"
+        "out for": "at least six weeks",
+        "City": "lost 2-1 at Aston Villa"
       },
       "first_printed": "2026-10-14",
-      "last_printed": "2026-10-24",
-      "last_change": "2026-10-24",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
@@ -6916,12 +6926,14 @@
     },
     {
       "thread_id": "svitolina-2026",
-      "title": "Elina Svitolina and Gaël Monfils separate, and she says the war in Ukraine has taken an emotional toll on her",
+      "title": "Monfils calls the criticism of Svitolina 'venomous' and says she owed no one an explanation",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "Monfils": "criticism 'unkind at best and venomous at worst'"
+      },
       "first_printed": "2026-10-20",
-      "last_printed": "2026-10-20",
-      "last_change": "2026-10-20",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7438,19 +7450,20 @@
     },
     {
       "thread_id": "ind-nz-t20is-2026",
-      "title": "Sooryavanshi comes in for the injured Kishan as India bowl first in the second T20I in Christchurch",
+      "title": "India go 2-0 up after Tilak Varma and Nitish Reddy rescue them from 112 for 6, and New Zealand lose two fast bowlers",
       "entities": [],
       "facts": {
         "first T20I": "Thu 22 Oct, 12:30 IST",
         "venue": "Hagley Oval, Christchurch",
         "toss": "India won, chose to bowl",
-        "result": "India won by four wickets, chasing 226",
+        "result": "NZ 180/5, India 181/6 in 19.5 overs",
         "next": "2nd T20I, Sat 24 Oct, 12:30 IST",
-        "changes": "Sooryavanshi for Kishan, Prince Yadav for Mayank Yadav"
+        "changes": "Sooryavanshi for Kishan, Prince Yadav for Mayank Yadav",
+        "series": "India lead 2-0"
       },
       "first_printed": "2026-10-21",
-      "last_printed": "2026-10-24",
-      "last_change": "2026-10-24",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7505,17 +7518,20 @@
     },
     {
       "thread_id": "verstappen-cota-2026",
-      "title": "Leclerc tops both practice sessions in Austin, with Verstappen less than two tenths behind in each",
+      "title": "Kimi Antonelli takes a surprise pole in Austin by nearly two tenths, while Russell starts only sixth",
       "entities": [],
       "facts": {
-        "race": "United States GP, Austin, Sun 25 Oct",
+        "race": "Mon 26 Oct, 01:30 IST",
         "Antonelli": "20, first mathematical title chance",
         "FP1 and FP2": "Leclerc fastest",
-        "Verstappen": "second and third, under 0.2s back"
+        "Verstappen": "second and third, under 0.2s back",
+        "pole margin": "nearly two tenths",
+        "Russell": "sixth",
+        "title lead": "102 points"
       },
       "first_printed": "2026-10-21",
-      "last_printed": "2026-10-24",
-      "last_change": "2026-10-24",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7555,7 +7571,7 @@
     },
     {
       "thread_id": "php2shell-2026",
-      "title": "Britain takes 32 government services offline as the scramble to patch the PHP flaws spreads, and Japan plans cyberattack drills",
+      "title": "Satya Nadella says he has 'not seen anything like this in a long, long time' as the world patches the PHP flaws",
       "entities": [],
       "facts": {
         "name": "PHP2Shell",
@@ -7563,17 +7579,18 @@
         "second reported": "24 Aug, Wiz",
         "share of websites": "about 70% (Wiz)",
         "UK services down": "32 unavailable, 4 partly",
-        "breaches": "none reported so far"
+        "breaches": "none reported so far",
+        "Nadella": "'not seen anything like this in a long, long time'"
       },
       "first_printed": "2026-10-22",
-      "last_printed": "2026-10-23",
-      "last_change": "2026-10-23",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "ai"
+      "section": "tech"
     },
     {
       "thread_id": "meta-new-mexico-2026",
@@ -8301,18 +8318,19 @@
     },
     {
       "thread_id": "madrid-next-barcelona",
-      "title": "Barcelona have won all nine league games and lead Madrid by six before Sunday's Clásico at Camp Nou",
+      "title": "Mourinho says Madrid are 'at the very beginning' as they go to Camp Nou tonight without the suspended Vinícius",
       "entities": [],
       "facts": {
         "kick-off": "Mon 26 Oct, 01:30 IST",
         "venue": "Camp Nou",
         "Tebas complaint": "filed by the CSD with the TAD",
         "table": "Barcelona six points clear, nine wins from nine",
-        "Vinícius": "suspended"
+        "Vinícius": "suspended",
+        "gap": "Barcelona six points ahead"
       },
       "first_printed": "2026-10-23",
-      "last_printed": "2026-10-24",
-      "last_change": "2026-10-24",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8476,16 +8494,18 @@
     },
     {
       "thread_id": "france-unrest-2026",
-      "title": "Macron calls a shooting near Paris that killed one person a racist terrorist attack, as France braces for a second day of protests",
+      "title": "Police use tear gas and water cannon in Paris as protests over schools and the cost of living turn violent",
       "entities": [],
       "facts": {
         "killed": "1",
         "injured": "5",
-        "police deployed Saturday": "70,000"
+        "police deployed Saturday": "70,000",
+        "debt": "nearly 3.6 trillion euros, 119% of GDP at end June",
+        "forecast": "nearly 122% of GDP"
       },
       "first_printed": "2026-10-24",
-      "last_printed": "2026-10-24",
-      "last_change": "2026-10-24",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8514,16 +8534,18 @@
     },
     {
       "thread_id": "openai-agent-security-2026",
-      "title": "OpenAI now trains its most advanced models without internet access, after its agents broke out of test environments",
+      "title": "An OpenAI research model reached the open internet through a misconfigured server in September, which led it to halt training",
       "entities": [],
       "facts": {
         "paused": "September",
         "resumed": "1 Oct, offline",
-        "new finding": "agents signalled through the processor cache"
+        "new finding": "agents signalled through the processor cache",
+        "escape": "20 Sep, via a misconfigured DNS resolver",
+        "response": "all frontier training halted, then resumed offline"
       },
       "first_printed": "2026-10-24",
-      "last_printed": "2026-10-24",
-      "last_change": "2026-10-24",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8533,12 +8555,15 @@
     },
     {
       "thread_id": "cyclone-oct-2026",
-      "title": "A low-pressure area in the Bay of Bengal is likely to become a cyclonic storm, with landfall expected on 28 October",
+      "title": "The Bay of Bengal storm is now forecast to become very severe, with landfall likely between Bapatla and Visakhapatnam on 28 October",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "landfall": "28 Oct, between Bapatla and Visakhapatnam",
+        "Kerala red alert": "Malappuram, Kozhikode, Wayanad"
+      },
       "first_printed": "2026-10-24",
-      "last_printed": "2026-10-24",
-      "last_change": "2026-10-24",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8780,12 +8805,15 @@
     },
     {
       "thread_id": "spurs-2026",
-      "title": "Roberto De Zerbi says Tottenham's nine injuries are 'normal' before Saturday's visit to Chelsea",
+      "title": "Tottenham win at Stamford Bridge for only the second time in 42 visits, as Cole Palmer is sent off",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "score": "Chelsea 0 Tottenham 2",
+        "Tel goal": "87th minute"
+      },
       "first_printed": "2026-10-24",
-      "last_printed": "2026-10-24",
-      "last_change": "2026-10-24",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8855,12 +8883,15 @@
     },
     {
       "thread_id": "siddaramaiah-sting-2026",
-      "title": "A Bengaluru court gives Power TV's Rakesh Shetty interim bail in the sting case filed by Siddaramaiah",
+      "title": "Police make the first arrest in the Siddaramaiah sting video case, a 22-year-old Delhi man who is then given bail",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "accused": "Ritesh Pandey, 22",
+        "bail": "conditional"
+      },
       "first_printed": "2026-10-24",
-      "last_printed": "2026-10-24",
-      "last_change": "2026-10-24",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8921,6 +8952,358 @@
       "first_printed": "2026-10-24",
       "last_printed": "2026-10-24",
       "last_change": "2026-10-24",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "india-diplomacy-terror-2026",
+      "title": "Jaishankar says using terrorism as statecraft is 'simply unacceptable', and that the world cannot remain a helpless spectator to wars",
+      "entities": [],
+      "facts": {
+        "where": "Chinmaya Mission 75th anniversary, Delhi, UN Day",
+        "UN reply": "Raghoo Puri, first secretary"
+      },
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "northeast-drugs-2026",
+      "title": "Operation Trident raids 38 places in Assam, Mizoram and Manipur, freezing 1,424 bank accounts and arresting 18",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "judiciary-independence-2026",
+      "title": "The Congress cites a former judge's memoir saying Chief Justice Chandrachud was 'too deferential' to the government on appointments",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-chef-k-dhamodharan-the-padma-shri",
+      "title": "Chef K. Dhamodharan, the Padma Shri television cook known as Chef Dhamu, dies at 72",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-the-iaf-is-watching-the-indo-pacific",
+      "title": "The IAF is watching the Indo-Pacific and building reach over longer distances, Air Chief Marshal A.P. Singh says",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-modi-holds-a-roadshow-in-varanasi",
+      "title": "Modi holds a roadshow in Varanasi before the IAF's air display over the Ganga",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-twelve-people-six-of-them-children",
+      "title": "Twelve people, six of them children, are hurt in a shooting near Florida A&M's stadium in Tallahassee",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-brazils-lula-and-flvio-bolsonaro-debate",
+      "title": "Brazil's Lula and Flávio Bolsonaro debate before the presidential run-off",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-about-1200-palestinians-are-displaced-in",
+      "title": "About 1,200 Palestinians are displaced in Hebron as Israel begins a military operation",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "china-stocks-2026",
+      "title": "China's stock market has lost $3.5 trillion since May, and the CSI 300 index has fallen into a bear market",
+      "entities": [],
+      "facts": {
+        "value lost": "$3.5 trillion since May",
+        "CSI 300": "bear market",
+        "Nifty last week": "down 2.4%"
+      },
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "sebi-reforms-2026",
+      "title": "Sebi is reviewing its rules on short selling and securities lending, chairman Tuhin Kanta Pandey says",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "line-about-250-companies-report-quarterly-results",
+      "title": "About 250 companies report quarterly results this week, including L&T, Asian Paints, Trent and Vedanta",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "line-irdai-gives-the-public-until-31",
+      "title": "Irdai gives the public until 31 October to comment on its insurance distribution reforms",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "google-ads-privacy-2026",
+      "title": "Google says data its personal AI features draw from Gmail and Photos could be used to target ads",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-android-police-says-claude-did-most",
+      "title": "Android Police says Claude did most of the work of clearing out and speeding up a slow Google TV",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-oppos-find-x10-phones-go-on",
+      "title": "Oppo's Find X10 phones go on sale in Europe and India, and an OLED MacBook is due on 28 October, GSMArena says",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "line-oscar-bobbs-80th-minute-goal-wins-it",
+      "title": "Oscar Bobb's 80th-minute goal wins it for Fulham at Coventry and lifts them out of the bottom three",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "rahane-xi-2026",
+      "title": "Ajinkya Rahane leaves Virat Kohli and Rohit Sharma out of his all-time India Test XI, with Dhoni as captain",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "bengaluru-crime-2026",
+      "title": "A Bengaluru advocate's death, first put down to a heart attack, is now a murder case over an auto fare",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "ranchi-airport-2026",
+      "title": "Ranchi airport's winter schedule adds a weekly Bhubaneswar flight and an extra Hyderabad service from Sunday",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "prayagraj-kumbh-2031",
+      "title": "Work begins on a large Nath tradition ashram at Arail in Naini, to be finished before Kumbh 2031",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "rajeev-shukla-rs-plea-2026",
+      "title": "The Allahabad High Court defers by two weeks a plea against Rajeev Shukla's Rajya Sabha membership",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "srn-advocate-assault-2026",
+      "title": "Motilal Nehru Medical College suspends the medicine department's resident doctors on duty when an advocate was assaulted at SRN Hospital",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-25",
+      "last_printed": "2026-10-25",
+      "last_change": "2026-10-25",
       "status": "active",
       "votes": {
         "up": 0,
