@@ -3562,6 +3562,8 @@
     "max_items": 4,
     "long_name": 16,
     "long_name_note": "A side's name longer than this many characters is sent in its short form (follows.sport_app_short_teams, Real Madrid as Madrid); the TV can still step down to the short form when a line does not fit.",
+    "gp_short": { "United States GP": "US GP", "Mexico City GP": "Mexico GP", "Saudi Arabian GP": "Saudi GP", "Emilia Romagna GP": "Imola GP" },
+    "gp_short_note": "Grand Prix names the TV shows shorter, everywhere on the home screen (lib/tv.js item). The TV drops a competition that does not fit its THEN/LATER rows and F1 has no other short form, so a long name left a bare \"Race\" (Parth, 25 Oct 2026). The Sport app and the 1400 app keep the full names.",
     "minutes": { "football": 115, "intl": 115, "nba": 150, "tennis": 180, "f1": 60, "T20": 210, "ODI": 480, "TEST": 7200 },
     "minutes_note": "How long an event usually runs, for the results window (results_hours after the end): F1 sessions use their own length; a Test is held for its five days because its last day is not known in advance.",
     "evening_from": 18,

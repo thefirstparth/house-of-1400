@@ -86,7 +86,7 @@ test("tv: an item says only what it knows; long names step down; competitions ha
   const tn = run(ev("tennis", -3, "done", { a: "Carlos Alcaraz", b: "Jannik Sinner", won: "a", comp: "Shanghai" }));
   assert.deepEqual([tn.a, tn.b, tn.result], ["Alcaraz", "Sinner", "Alcaraz won"]);
   const f1 = run(ev("f1", -1, "live", { gp: "United States Grand Prix", session: "Qualifying", liveTop: ["Max Verstappen", "Lando Norris", "Charles Leclerc"], a: undefined, b: undefined }));
-  assert.deepEqual([f1.gp, f1.city, f1.session, f1.top], ["United States GP", "Austin", "Qualifying", ["VER", "NOR", "LEC"]]);
+  assert.deepEqual([f1.gp, f1.city, f1.session, f1.top], ["US GP", "Austin", "Qualifying", ["VER", "NOR", "LEC"]]);   // tv.gp_short (25 Oct)
   assert.ok(!("a" in f1));
   const off = run(ev("football", -2, "off", { a: "Real Madrid", b: "Sevilla", offWhy: "Postponed", comp: "La Liga" }));
   assert.equal(off.offWhy, "Postponed");
