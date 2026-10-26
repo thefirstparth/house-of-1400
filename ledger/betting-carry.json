@@ -1,64 +1,64 @@
 {
-  "date": "2026-10-25",
-  "from": "2026-10-24",
+  "date": "2026-10-26",
+  "from": "2026-10-25",
   "carry": [
     {
       "id": "pm:ballon-dor-winner-2026",
       "title": "Ballon d'Or Winner 2026",
       "since": "2026-09-25",
-      "reason": "#1 by 24h volume; Harry Kane moved 5.6 pts since printed"
+      "reason": "#1 by 24h volume"
     },
     {
       "id": "pm:us-iran-ceasefire-continues-throughptptpt",
       "title": "US-Iran ceasefire continues through...?",
       "since": "2026-10-08",
-      "reason": "#4 by 24h volume"
-    },
-    {
-      "id": "pm:next-french-presidential-election",
-      "title": "Next French Presidential Election",
-      "since": "2026-10-09",
-      "reason": "#6 by 24h volume"
+      "reason": "#2 by 24h volume; Through October 28 moved 5.0 pts since printed"
     },
     {
       "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
       "title": "Prime Minister of Israel after the next election?",
       "since": "2026-10-20",
-      "reason": "#7 by 24h volume"
+      "reason": "#3 by 24h volume"
     },
     {
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
       "title": "UEFA Champions League: 2027 Champion",
       "since": "2026-09-25",
-      "reason": "#8 by 24h volume"
+      "reason": "#5 by 24h volume"
     },
     {
-      "id": "pm:france-declares-state-of-emergency-byptptpt",
-      "title": "France declares state of emergency by...?",
-      "since": "2026-10-24",
-      "reason": "#17 by 24h volume"
+      "id": "pm:next-french-presidential-election",
+      "title": "Next French Presidential Election",
+      "since": "2026-10-09",
+      "reason": "#7 by 24h volume"
+    },
+    {
+      "id": "pm:epl-2027-champion-20260701200428749",
+      "title": "EPL: 2027 Champion",
+      "since": "2026-10-25",
+      "reason": "#8 by 24h volume"
     }
   ],
   "dropped": [
-    {
-      "id": "pm:brazil-presidential-election",
-      "title": "Brazil Presidential Election",
-      "why": "ended or decided, no next market in the same line"
-    },
     {
       "id": "pm:lal-bar-rea-2026-10-25",
       "title": "FC Barcelona vs. Real Madrid CF",
       "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:anthropic-ipo-by",
-      "title": "Anthropic IPO by __?",
-      "why": "cooled: outside the ranking by volume, moved 0.1 pts"
+      "id": "pm:brazil-presidential-election",
+      "title": "Brazil Presidential Election",
+      "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:russia-x-ukraine-ceasefire-agreement-by",
-      "title": "Russia x Ukraine ceasefire agreement by...?",
-      "why": "cooled: outside the ranking by volume, moved 0.7 pts"
+      "id": "pm:france-declares-state-of-emergency-byptptpt",
+      "title": "France declares state of emergency by...?",
+      "why": "carry cap of 6"
+    },
+    {
+      "id": "pm:will-the-us-invade-iran-before-2027",
+      "title": "Will the U.S. invade Iran before 2027?",
+      "why": "carry cap of 6"
     }
   ]
 }
