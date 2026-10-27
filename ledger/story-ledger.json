@@ -1,28 +1,8 @@
 {
   "version": 1,
-  "last_updated": "2026-10-26T08:51:28.166Z",
-  "last_edition": "2026-10-26",
+  "last_updated": "2026-10-27T08:48:56.053Z",
+  "last_edition": "2026-10-27",
   "threads": [
-    {
-      "thread_id": "iran-hormuz-talks",
-      "title": "Trump rejects Iran's plan to reopen Hormuz within seven days, reports say",
-      "entities": [],
-      "facts": {
-        "status": "US rejects 7-day plan (WSJ)",
-        "brent_close": "97.44",
-        "ceasefire_proposal_days": 60,
-        "reopen_days": 7
-      },
-      "first_printed": "2026-09-25",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "dateline"
-    },
     {
       "thread_id": "india-markets-daily",
       "title": "Sensex gives up a 500-point gain on crude and bank selling, while the rupee has its best day in a month",
@@ -223,30 +203,6 @@
       "section": "sidelines"
     },
     {
-      "thread_id": "irdai-distribution-reform-2026",
-      "title": "IRDAI's draft would cut dealers' commission on car insurance and bar them refusing cashless repairs",
-      "entities": [],
-      "facts": {
-        "status": "consultation paper",
-        "comments_until": "2026-10-25",
-        "pb_fintech_24sep": "-33.27%",
-        "commission_caps": "proposed return (removed 2023)",
-        "motor_tp_new_dealer_commission": "nil",
-        "cashless_refusal": "barred",
-        "bima_sugam_fee_cap": "5%",
-        "pb_fintech_25sep": "-3.41%"
-      },
-      "first_printed": "2026-09-25",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
       "thread_id": "upi-mdr-2026",
       "title": "NPCI puts off the UPI merchant fee until after Diwali, two days before it was due",
       "entities": [],
@@ -404,73 +360,6 @@
       "section": "madrid"
     },
     {
-      "thread_id": "f1-baku-quali",
-      "title": "Russell on pole in Baku; Verstappen starts eighth, Antonelli 16th",
-      "entities": [],
-      "facts": {
-        "pole": "Russell",
-        "verstappen_grid": 8,
-        "antonelli_grid": 16
-      },
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "paddock"
-    },
-    {
-      "thread_id": "maharashtra-drought-2026",
-      "title": "Maharashtra declares drought in 265 of its 358 talukas",
-      "entities": [],
-      "facts": {
-        "talukas": "265 of 358",
-        "share": "74%"
-      },
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "dateline"
-    },
-    {
-      "thread_id": "ni-georgia-unl-2026",
-      "title": "Northern Ireland win in Georgia with Shea Charles's late volley",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "pitch"
-    },
-    {
-      "thread_id": "belgium-italy-unl-2026",
-      "title": "Belgium win 2–0 in Rome in Van Bommel's first game, spoiling Mancini's return",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "pitch"
-    },
-    {
       "thread_id": "england-spain-unl-2026",
       "title": "Spain win 3–2 at Wembley after Kane misses a penalty",
       "entities": [],
@@ -486,89 +375,6 @@
         "down": 0
       },
       "section": "pitch"
-    },
-    {
-      "thread_id": "kohli-odi-approach",
-      "title": "Kohli says he will bat more freely against West Indies",
-      "entities": [],
-      "facts": {
-        "stance": "play more freely"
-      },
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "crease"
-    },
-    {
-      "thread_id": "us-china-trade-truce",
-      "title": "Xi's Washington visit ends with the trade truce extended to 10 January",
-      "entities": [],
-      "facts": {
-        "truce_until": "2027-01-10"
-      },
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "dateline"
-    },
-    {
-      "thread_id": "india-pak-unga-2026",
-      "title": "India calls Pakistan's UN speech false after Sharif credits Trump for the 2025 ceasefire",
-      "entities": [],
-      "facts": {
-        "event": "UNGA right of reply"
-      },
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "dateline"
-    },
-    {
-      "thread_id": "nagaland-hooch-2026",
-      "title": "Spurious liquor kills 19 in Nagaland, where alcohol is banned",
-      "entities": [],
-      "facts": {
-        "dead": 19
-      },
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "dateline"
-    },
-    {
-      "thread_id": "bangkok-floods-2026",
-      "title": "Bangkok declares a flood disaster zone",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "dateline"
     },
     {
       "thread_id": "openai-rogue-agents",
@@ -596,75 +402,6 @@
       "section": "ai"
     },
     {
-      "thread_id": "apple-leak-homepod-ipad",
-      "title": "Apple code points to a new HomePod mini, iPad mini and Apple TV 4K",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "workshop"
-    },
-    {
-      "thread_id": "rbi-bulk-deposit-rules-2026",
-      "title": "New rules on how banks set bulk deposit rates start on 1 October",
-      "entities": [],
-      "facts": {
-        "effective": "2026-10-01",
-        "bulk_threshold": "3 crore",
-        "publish_by": "10:00"
-      },
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
-      "thread_id": "epf-wage-ceiling-2026",
-      "title": "EPF wage ceiling rises to ₹25,000 a month",
-      "entities": [],
-      "facts": {
-        "ceiling": 25000,
-        "effective": "2026-09-17"
-      },
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
-      "thread_id": "nps-swasthya-2026",
-      "title": "NPS Swasthya, a pension account with health cover, is due on 1 October",
-      "entities": [],
-      "facts": {
-        "launch": "2026-10-01"
-      },
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
       "thread_id": "ola-electric-rights-2026",
       "title": "Ola Electric's board meets on the rights issue as shares slip again",
       "entities": [],
@@ -682,53 +419,6 @@
         "down": 0
       },
       "section": "ledger"
-    },
-    {
-      "thread_id": "blr-garbage-revamp",
-      "title": "New garbage trucks may be late in some constituencies after bidders refuse work orders",
-      "entities": [],
-      "facts": {
-        "accepted": "6 of 21"
-      },
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "namma"
-    },
-    {
-      "thread_id": "bwssb-jurisdiction-2026",
-      "title": "The water board now covers all of Bengaluru Urban district",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "namma"
-    },
-    {
-      "thread_id": "higher-ground-fest-2026",
-      "title": "Higher Ground indie festival runs to Sunday at Prism",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-26",
-      "last_change": "2026-09-26",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "namma"
     },
     {
       "thread_id": "f1-baku-race-2026",
@@ -1241,7 +931,7 @@
     },
     {
       "thread_id": "anthropic-ipo-2026",
-      "title": "Anthropic's draft IPO filing shows a net loss of more than $80bn in the first half of 2026, mostly accounting charges, the WSJ reports",
+      "title": "Anthropic files for a stock market listing that could value it at about $1.5 trillion, and Indian IT shares fall",
       "entities": [],
       "facts": {
         "revenue_2025": "$4.59bn",
@@ -1251,11 +941,15 @@
         "listing": "expected by year end",
         "H1 2026 net loss": "over $80bn",
         "accounting charges": "$72bn",
-        "H1 revenue": "$16.3bn"
+        "H1 revenue": "$16.3bn",
+        "ticker": "ANT",
+        "Q3 revenue": "$16.8bn, up 45% on the quarter",
+        "2025 net loss": "about $42bn, incl. a $34bn charge",
+        "IT stocks": "down up to 3%"
       },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-10-21",
-      "last_change": "2026-10-21",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2080,7 +1774,7 @@
     },
     {
       "thread_id": "saudi-houthi-2026",
-      "title": "Houthis say they fired at three Saudi airports, energy sites and a pipeline, as Riyadh's airport reopens after two weeks",
+      "title": "Saudi Arabia, Pakistan and Turkey hold talks in Tehran to head off a new war, as Saudi defences down more Houthi missiles",
       "entities": [],
       "facts": {
         "pact": "activated 5 Oct",
@@ -2102,11 +1796,13 @@
         "this month": "22 killed at Saudi airports (AFP)",
         "targets claimed": "three Saudi airports, energy sites, a pipeline, an air base",
         "Houthi death toll claim": "17",
-        "Riyadh airport": "reopens Sun 25 Oct after two weeks"
+        "Riyadh airport": "reopens Sun 25 Oct after two weeks",
+        "intercepted": "three ballistic missiles, four drones",
+        "talks": "Saudi Arabia, Pakistan, Turkey, Iran in Tehran"
       },
       "first_printed": "2026-10-04",
-      "last_printed": "2026-10-25",
-      "last_change": "2026-10-25",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2191,7 +1887,7 @@
     },
     {
       "thread_id": "jio-ipo-2026",
-      "title": "Jio Platforms' IPO is the first in the world to draw more than one crore applications, and closes today",
+      "title": "Jio Platforms lists on Wednesday, and a grey-market premium of 22% would make it India's second most valuable company",
       "entities": [],
       "facts": {
         "valuation": "about $114bn",
@@ -2202,11 +1898,15 @@
         "closes": "Fri 23 Oct",
         "overall": "3.64 times",
         "institutions": "9.42 times",
-        "applications": "over one crore"
+        "applications": "over one crore",
+        "listing": "Wed 28 Oct",
+        "grey-market premium": "22%",
+        "implied value": "about ₹12.5 lakh crore",
+        "issue size": "about ₹30,200 crore"
       },
       "first_printed": "2026-10-04",
-      "last_printed": "2026-10-23",
-      "last_change": "2026-10-23",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2216,16 +1916,18 @@
     },
     {
       "thread_id": "brazil-election-2026",
-      "title": "Lula wins a record fourth term as Brazil's president, beating Flávio Bolsonaro by about 4.4 million votes",
+      "title": "Bolsonaro's party now recognises Lula's win, while Trump calls Brazil's election 'rigged' and says he likes Lula",
       "entities": [],
       "facts": {
         "result": "Lula 51.8%, Bolsonaro 48.2%",
         "margin": "about 4.4 million votes",
-        "Lula's age": "81 on Tuesday"
+        "Lula's age": "81 on Tuesday",
+        "Trump": "'I like Lula' and 'rigged'",
+        "Flávio Bolsonaro": "ordered to surrender passports"
       },
       "first_printed": "2026-10-05",
-      "last_printed": "2026-10-26",
-      "last_change": "2026-10-26",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3034,7 +2736,7 @@
     },
     {
       "thread_id": "iphone-duo-2026",
-      "title": "iFixit's teardown of the iPhone Duo points to the hinge and a cable over it as the likely cause of the cracked screens",
+      "title": "Apple says it will replace iPhone Duos with faulty inner screens, admitting an issue on 'a small number' of phones",
       "entities": [],
       "facts": {
         "price_from": "₹2,99,900",
@@ -3054,11 +2756,13 @@
         "complaint": "cracks along the hinge",
         "crack": "Australian owner, about six hours after unboxing",
         "repairability": "5/10",
-        "suspected cause": "hinge and a cable over it"
+        "suspected cause": "hinge and a cable over it",
+        "Apple": "'an issue impacting the inner display on a small number'",
+        "UK price": "from £1,999"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-26",
-      "last_change": "2026-10-26",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5042,17 +4746,18 @@
     },
     {
       "thread_id": "man-united-2026",
-      "title": "Manchester United lose 3-0 at home to Bournemouth, their worst start to a league season since 1986",
+      "title": "Manchester United's bosses discuss sacking Michael Carrick, with Nagelsmann and Conte mentioned as possible successors",
       "entities": [],
       "facts": {
         "score": "Man United 0 Bournemouth 3",
         "points": "7 from 7",
         "winless run": "seven games",
-        "run": "eight games without a win"
+        "run": "eight games without a win",
+        "position": "16th"
       },
       "first_printed": "2026-10-16",
-      "last_printed": "2026-10-26",
-      "last_change": "2026-10-26",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7185,7 +6890,7 @@
     },
     {
       "thread_id": "ind-nz-t20is-2026",
-      "title": "Ishan Kishan misses Tuesday's third T20I in Wellington, and Morne Morkel tells Bhuvneshwar to 'block the expectation factor out'",
+      "title": "India bowl first with an unchanged side in Wellington, needing one more win to take the T20I series",
       "entities": [],
       "facts": {
         "first T20I": "Thu 22 Oct, 12:30 IST",
@@ -7196,11 +6901,13 @@
         "changes": "Sooryavanshi for Kishan, Prince Yadav for Mayank Yadav",
         "series": "India lead 2-0",
         "Kishan": "right adductor strain",
-        "Bhuvneshwar": "99 runs in two T20Is"
+        "Bhuvneshwar": "99 runs in two T20Is",
+        "New Zealand changes": "Fisher, Jamieson and Milne in",
+        "New Zealand after nine overs": "95 for 2"
       },
       "first_printed": "2026-10-21",
-      "last_printed": "2026-10-26",
-      "last_change": "2026-10-26",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7255,10 +6962,10 @@
     },
     {
       "thread_id": "verstappen-cota-2026",
-      "title": "Antonelli wins in Austin on a one-stop strategy and can clinch the title in Mexico unless Russell wins there",
+      "title": "Antonelli is champion in Mexico City on Sunday unless George Russell wins the race",
       "entities": [],
       "facts": {
-        "race": "Mon 26 Oct, 01:30 IST",
+        "race": "Mon 2 Nov, 01:30 IST",
         "Antonelli": "20, first mathematical title chance",
         "FP1 and FP2": "Leclerc fastest",
         "Verstappen": "second and third, under 0.2s back",
@@ -7267,11 +6974,12 @@
         "title lead": "123 points, five races left",
         "winner": "Antonelli, ninth win of 2026",
         "gap to Leclerc": "13.078s",
-        "Mexico City GP": "Sun 1 Nov"
+        "Mexico City GP": "Sun 1 Nov",
+        "lead": "123 points"
       },
       "first_printed": "2026-10-21",
-      "last_printed": "2026-10-26",
-      "last_change": "2026-10-26",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8028,15 +7736,18 @@
     },
     {
       "thread_id": "ballon-dor-2026",
-      "title": "The Ballon d'Or is announced in London tonight, with Lamine Yamal and Harry Kane the bookmakers' favourites",
+      "title": "Harry Kane wins the Ballon d'Or, the first Englishman in 25 years, and Alexia Putellas takes the women's award",
       "entities": [],
       "facts": {
         "when": "Mon 26 Oct, London",
-        "Kane": "73 goals"
+        "Kane": "73 goals",
+        "goals": "73 for Bayern and England",
+        "last English winner": "Michael Owen, 2001",
+        "women's award": "Alexia Putellas, third time"
       },
       "first_printed": "2026-10-23",
-      "last_printed": "2026-10-26",
-      "last_change": "2026-10-26",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8061,7 +7772,7 @@
     },
     {
       "thread_id": "madrid-next-barcelona",
-      "title": "Mbappé scores twice and Real Madrid win the Clásico 2-1 at Camp Nou, ending Barcelona's perfect start",
+      "title": "La Liga reports Barcelona fans who hit Camavinga with flagpoles as Madrid celebrated their late winner at Camp Nou",
       "entities": [],
       "facts": {
         "kick-off": "Mon 26 Oct, 01:30 IST",
@@ -8072,11 +7783,12 @@
         "gap": "Barcelona 27 points, Madrid 24",
         "score": "Barcelona 1 Real Madrid 2",
         "scorers": "Mbappé 2, Raphinha",
-        "next": "Racing Santander away, Sun 1 Nov"
+        "next": "Racing Santander away, Sun 1 Nov",
+        "referee": "Martínez Munuera"
       },
       "first_printed": "2026-10-23",
-      "last_printed": "2026-10-26",
-      "last_change": "2026-10-26",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8395,18 +8107,21 @@
     },
     {
       "thread_id": "jordan-karak-attack-2026",
-      "title": "Jordanian forces arrest and wound the three suspects in the Karak church funeral attack after a three-hour gunfight",
+      "title": "Jordan strikes militants in Syria in revenge for the Karak church attack, and Syria says five civilians were killed",
       "entities": [],
       "facts": {
         "killed": "8",
         "injured": "at least 34",
         "place": "Hmoud, Karak governorate",
         "in hospital": "27",
-        "gunfight": "about three hours"
+        "gunfight": "about three hours",
+        "killed in Syria": "five, per Syrian officials",
+        "church attack": "nine killed, 34 injured",
+        "border": "Nassib crossing closed"
       },
       "first_printed": "2026-10-24",
-      "last_printed": "2026-10-26",
-      "last_change": "2026-10-26",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9052,12 +8767,15 @@
     },
     {
       "thread_id": "srn-advocate-assault-2026",
-      "title": "Motilal Nehru Medical College suspends the medicine department's resident doctors on duty when an advocate was assaulted at SRN Hospital",
+      "title": "Lawyers block SRN Hospital for seven hours demanding arrests over the advocate assault, and more than 1,500 patients go untreated",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "blockade": "about seven hours",
+        "patients turned away": "more than 1,500"
+      },
       "first_printed": "2026-10-25",
-      "last_printed": "2026-10-25",
-      "last_change": "2026-10-25",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9136,16 +8854,18 @@
     },
     {
       "thread_id": "israel-election-2026",
-      "title": "Israel votes on Tuesday, with Netanyahu's bloc and the opposition neck and neck and Gadi Eisenkot leading recent polls",
+      "title": "Israel votes today in a near dead heat between Netanyahu and Eisenkot, and neither bloc is forecast to reach 61 seats",
       "entities": [],
       "facts": {
         "polling day": "Tue 27 Oct",
         "first-time voters": "half a million",
-        "flying in to vote": "about 70,000"
+        "flying in to vote": "about 70,000",
+        "majority": "61 of 120 seats",
+        "contenders": "Netanyahu (Likud) and Eisenkot (Yashar)"
       },
       "first_printed": "2026-10-26",
-      "last_printed": "2026-10-26",
-      "last_change": "2026-10-26",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9416,6 +9136,362 @@
       "first_printed": "2026-10-26",
       "last_printed": "2026-10-26",
       "last_change": "2026-10-26",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "big-tech-cuts-2026",
+      "title": "Microsoft offers voluntary buyouts to 60,000 employees as it cuts costs in the age of AI",
+      "entities": [],
+      "facts": {
+        "offer": "about 60,000 employees",
+        "global workforce": "about 223,000",
+        "excluded": "cybersecurity, data centres, marketing"
+      },
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "unsc-reform-2026",
+      "title": "India says new permanent Security Council members without a veto would be 'second-class', and the veto must be shared by all",
+      "entities": [],
+      "facts": {
+        "speaker": "Harish Parvathaneni, India's UN ambassador",
+        "Council": "15 members, five permanent"
+      },
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "guwahati-shooting-2026",
+      "title": "Five people are shot dead at a Guwahati hotel in a dispute between its owner and the man who leased it",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "siang-dam-2026",
+      "title": "Protests against the Siang dam spread to Upper Subansiri, and police arrest 26 over last week's violence in Pasighat",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "dpdp-act-2026",
+      "title": "The Supreme Court seeks the Centre's reply as 21 news groups challenge the data protection law, saying it would 'shut down the newsroom'",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-the-supreme-court-puts-off-hearing",
+      "title": "The Supreme Court puts off hearing pleas against the Chief Election Commissioner until after Diwali",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-the-vhp-asks-the-opposition-not",
+      "title": "The VHP asks the Opposition not to hold its 1 November rally during the festival season",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-serbias-student-movement-born-of-the",
+      "title": "Serbia's student movement, born of the Novi Sad canopy collapse, celebrates its win and faces the question of governing",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-russia-halts-strikes-on-kherson-as",
+      "title": "Russia halts strikes on Kherson as the Oleshky ceasefire takes effect",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-jay-z-will-headline-the-super",
+      "title": "Jay-Z will headline the Super Bowl half-time show in February",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-the-popes-south-american-trip-will",
+      "title": "The Pope's South American trip will go ahead after his lung cancer surgery",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "gold-2026",
+      "title": "Gold slips to about $4,005 an ounce ahead of Wednesday's Fed decision, as traders bet on a rate rise by December",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "ai-science-2026",
+      "title": "OpenAI says its models have proved a central conjecture in harmonic analysis and made two more discoveries",
+      "entities": [],
+      "facts": {
+        "maths": "local smoothing conjecture, all dimensions",
+        "computer science": "Exponential Time Hypothesis disproved",
+        "physics": "existence of quantum chromodynamics"
+      },
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-apple-launches-a-new-ipad-mini",
+      "title": "Apple launches a new iPad mini with an 8.5-inch OLED screen, from $699",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "line-apple-is-expected-to-announce-m6",
+      "title": "Apple is expected to announce M6 iMacs and 14-inch MacBook Pros today, before Wednesday's OLED models",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "line-microsoft-releases-an-emergency-net-update",
+      "title": "Microsoft releases an emergency .NET update to fix a critical flaw in Google's Brotli library",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "barcelona-2026",
+      "title": "Barcelona's defeat in the Clásico exposes how thin they are at centre-back after letting two leave in the summer",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "warriors-2026",
+      "title": "Rookie Yaxel Lendeborg scores 31 as the Warriors beat the Nuggets 134-114 in Denver for their first win of the season",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "atp-doubles-2026",
+      "title": "More than 150 doubles players, including the Bryan brothers, urge the ATP to drop plans that would cut draws and prize money",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "line-gareth-batty-leaves-surrey-to-join",
+      "title": "Gareth Batty leaves Surrey to join Chennai Super Kings' coaching staff",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "bengaluru-protest-rights-2026",
+      "title": "Groups give Karnataka until Constitution Day to lift Bengaluru's protest curbs, or face a civil disobedience campaign",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "cyclone-arnab-jharkhand-2026",
+      "title": "Cyclone Arnab will bring heavy rain to Ranchi from Wednesday, with a yellow alert for eight Jharkhand districts",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "vande-bharat-prayagraj-2026",
+      "title": "A Delhi-Varanasi Vande Bharat sleeper train via Prayagraj and Kanpur is due to start on 1 November",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-27",
+      "last_printed": "2026-10-27",
+      "last_change": "2026-10-27",
       "status": "active",
       "votes": {
         "up": 0,

@@ -1,64 +1,62 @@
 {
-  "date": "2026-10-26",
-  "from": "2026-10-25",
+  "date": "2026-10-27",
+  "from": "2026-10-26",
   "carry": [
     {
-      "id": "pm:ballon-dor-winner-2026",
-      "title": "Ballon d'Or Winner 2026",
-      "since": "2026-09-25",
-      "reason": "#1 by 24h volume"
+      "id": "pm:next-french-presidential-election",
+      "title": "Next French Presidential Election",
+      "since": "2026-10-09",
+      "reason": "#5 by 24h volume"
     },
     {
       "id": "pm:us-iran-ceasefire-continues-throughptptpt",
       "title": "US-Iran ceasefire continues through...?",
       "since": "2026-10-08",
-      "reason": "#2 by 24h volume; Through October 28 moved 5.0 pts since printed"
-    },
-    {
-      "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
-      "title": "Prime Minister of Israel after the next election?",
-      "since": "2026-10-20",
-      "reason": "#3 by 24h volume"
+      "reason": "#6 by 24h volume"
     },
     {
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
       "title": "UEFA Champions League: 2027 Champion",
       "since": "2026-09-25",
-      "reason": "#5 by 24h volume"
-    },
-    {
-      "id": "pm:next-french-presidential-election",
-      "title": "Next French Presidential Election",
-      "since": "2026-10-09",
       "reason": "#7 by 24h volume"
     },
     {
-      "id": "pm:epl-2027-champion-20260701200428749",
-      "title": "EPL: 2027 Champion",
-      "since": "2026-10-25",
-      "reason": "#8 by 24h volume"
+      "id": "pm:venezuela-leader-end-of-2026",
+      "title": "Venezuela leader end of 2026?",
+      "since": "2026-10-26",
+      "reason": "#16 by 24h volume; Nicolás Maduro moved 6.3 pts since printed"
     }
   ],
   "dropped": [
     {
-      "id": "pm:lal-bar-rea-2026-10-25",
-      "title": "FC Barcelona vs. Real Madrid CF",
+      "id": "pm:ballon-dor-winner-2026",
+      "title": "Ballon d'Or Winner 2026",
+      "why": "cooled: #32 by volume, moved 0.0 pts"
+    },
+    {
+      "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
+      "title": "Prime Minister of Israel after the next election?",
       "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:brazil-presidential-election",
-      "title": "Brazil Presidential Election",
+      "id": "pm:epl-2027-champion-20260701200428749",
+      "title": "EPL: 2027 Champion",
+      "why": "cooled: outside the ranking by volume, moved 0.5 pts"
+    },
+    {
+      "id": "pm:laliga-2027-champion-20260701200737375",
+      "title": "LALIGA: 2027 Champion",
+      "why": "cooled: outside the ranking by volume, moved 2.0 pts"
+    },
+    {
+      "id": "pm:israeli-legislative-election-winner",
+      "title": "Israeli Legislative Election Winner",
       "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:france-declares-state-of-emergency-byptptpt",
-      "title": "France declares state of emergency by...?",
-      "why": "carry cap of 6"
-    },
-    {
-      "id": "pm:will-the-us-invade-iran-before-2027",
-      "title": "Will the U.S. invade Iran before 2027?",
-      "why": "carry cap of 6"
+      "id": "pm:which-company-has-the-best-ai-model-end-of-october",
+      "title": "Which company has the best AI model end of October?",
+      "why": "cooled: #26 by volume, moved 2.6 pts"
     }
   ]
 }
