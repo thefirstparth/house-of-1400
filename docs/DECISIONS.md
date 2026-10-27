@@ -1199,3 +1199,6 @@ Parth, 22 to 23 Oct, in a build session for his new weather app (its own repo, `
 
 ## 24 Oct 2026: the weather app's feels like checked against ECMWF
 - Google's Weather API gave Ranchi 18.8° "feels 22.1°" (its 10 pm hour 19.1° "feels 24.6°") while Google's own Weather app said 18° feels 18°, ECMWF 18.7° and the standard formulas 19°; the app showed 20° feels 25° (Parth: "something surely did [break]"). Each of Google's gaps (feels less temperature), now and hourly, is now checked against ECMWF's for the same hour (lib/wxapp.js sanityFeels): more than 2.5° apart and ECMWF's gap stands, on Google's temperature (`feels_from: "ECMWF"`). Google stays the source where the two agree.
+
+## 28 Oct 2026: Netflix's chart from its India pages first
+- The streaming chart showed Netflix's week to 18 Oct on 28 Oct: Netflix's Top 10 file (`all-weeks-countries.tsv`) was last updated 20 Oct, while its India pages already had the week to 25 Oct. The pages (films, and `/tv` for series) are now read first, from the data embedded in each; the file is the fallback when they fail or lack either list. The pages also carry each title's synopsis, artwork and Netflix video ID, unused for now.

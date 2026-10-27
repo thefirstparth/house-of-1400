@@ -2,7 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { sameTitle, looseTitle, languageOf, isStandup, netflixRows, rankService, jwUpcomingRows, parseSacnilkList, parseSacnilkFilm, parseRT, classifyReviews,
+import { sameTitle, looseTitle, languageOf, isStandup, netflixRows, netflixPageRows, rankService, jwUpcomingRows, parseSacnilkList, parseSacnilkFilm, parseRT, classifyReviews,
   parseAllevents, parseDistrict, classify, inBengaluru, cleanTitle, mergeStage, districtCandidates } from "../lib/offduty.js";
 
 const S = {
@@ -47,6 +47,23 @@ test("netflixRows: India's newest week only, seasons read from the season title"
     { week: "2026-09-27", category: "Films", rank: 1, title: "Haiwaan", season: null },
     { week: "2026-09-27", category: "TV", rank: 1, title: "The Diplomat", season: 3 },
   ]);
+});
+
+test("netflixPageRows: the newest week from Netflix's India pages, each entry once, seasons from the season title", () => {
+  const item = (week, cat, rank, video) => `"PulseTop10ItemEntity:x":{"top10":{"__typename":"Top10Data","weekEndDate":"${week}","category":"${cat}","weeklyRank":${rank},"weeklyHoursViewed":null},"artwork":{"logoArt":{"url":"https://x/y.png"}},"top10Video":${video}}`;
+  const film = t => `{"__typename":"Top10PulseVideo","title":"${t}","videoId":1,"parentShow":null,"number":null}`;
+  const ep = (t, show, n) => `{"__typename":"Top10PulseVideo","title":"${t}","videoId":2,"parentShow":{"__typename":"Show","title":"${show}"},"number":${n}}`;
+  const html = [item("2026-10-25", "MOVIES", 1, film("Reporting Live")), item("2026-10-25", "MOVIES", 1, film("Reporting Live")),
+    item("2026-10-25", "MOVIES", 2, film("Gajab \\u0026 Raat")), item("2026-10-18", "MOVIES", 1, film("Old")),
+    item("2026-10-25", "SERIES", 1, ep("The Great Indian Kapil Show: Season 5", "The Great Indian Kapil Show", 5)),
+    item("2026-10-25", "SERIES", 2, ep("Take Charge of My Heart: Limited Series", "Take Charge of My Heart", 1))].join(",");
+  assert.deepEqual(netflixPageRows(html), [
+    { week: "2026-10-25", category: "Films", rank: 1, title: "Reporting Live", season: null },
+    { week: "2026-10-25", category: "Films", rank: 2, title: "Gajab & Raat", season: null },
+    { week: "2026-10-25", category: "TV", rank: 1, title: "The Great Indian Kapil Show", season: 5 },
+    { week: "2026-10-25", category: "TV", rank: 2, title: "Take Charge of My Heart", season: null },
+  ]);
+  assert.deepEqual(netflixPageRows("<html>nothing</html>"), []);
 });
 
 test("rankService: both charts together, English and Hindi, old chart titles dropped, stand-up marked", () => {
