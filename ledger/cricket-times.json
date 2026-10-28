@@ -1,20 +1,8 @@
 {
-  "date": "2026-10-27",
+  "date": "2026-10-28",
   "source": "Cricbuzz",
-  "checked_at": "2026-10-27T08:43:45.925Z",
+  "checked_at": "2026-10-28T08:43:22.342Z",
   "matches": [
-    {
-      "desc": "3rd T20I",
-      "format": "T20",
-      "series": "India tour of New Zealand 2026",
-      "opponent": "New Zealand",
-      "start": "2026-10-27T07:00:00.000Z",
-      "ist": "Tue 27 Oct, 12:30",
-      "time_announced": true,
-      "ground": "Hnry Stadium",
-      "city": "Wellington",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/161212"
-    },
     {
       "desc": "Group C",
       "format": "T20",
@@ -378,14 +366,27 @@
   ],
   "series": [
     {
+      "name": "Hong Kong Sixes 2026",
+      "opponent": "Pakistan",
+      "from": "2026-10-30",
+      "parts": [
+        {
+          "format": "T20",
+          "total": null,
+          "played": null
+        }
+      ],
+      "now": true
+    },
+    {
       "name": "India tour of New Zealand 2026",
       "opponent": "New Zealand",
-      "from": "2026-10-27",
+      "from": "2026-10-30",
       "parts": [
         {
           "format": "T20",
           "total": 5,
-          "played": 2
+          "played": 3
         },
         {
           "format": "ODI",
@@ -396,19 +397,6 @@
           "format": "TEST",
           "total": 2,
           "played": 0
-        }
-      ],
-      "now": true
-    },
-    {
-      "name": "Hong Kong Sixes 2026",
-      "opponent": "Pakistan",
-      "from": "2026-10-30",
-      "parts": [
-        {
-          "format": "T20",
-          "total": null,
-          "played": null
         }
       ],
       "now": true

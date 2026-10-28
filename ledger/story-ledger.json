@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-27T08:48:56.053Z",
-  "last_edition": "2026-10-27",
+  "last_updated": "2026-10-28T08:48:31.453Z",
+  "last_edition": "2026-10-28",
   "threads": [
     {
       "thread_id": "india-markets-daily",
@@ -185,24 +185,6 @@
       "section": "sidelines"
     },
     {
-      "thread_id": "asian-games-kabaddi",
-      "title": "India's men beat Iran 40–34 for their ninth Asian Games kabaddi gold",
-      "entities": [],
-      "facts": {
-        "women": "gold, beat Iran 37-34",
-        "men": "gold, beat Iran 40-34"
-      },
-      "first_printed": "2026-09-25",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "sidelines"
-    },
-    {
       "thread_id": "upi-mdr-2026",
       "title": "NPCI puts off the UPI merchant fee until after Diwali, two days before it was due",
       "entities": [],
@@ -360,23 +342,6 @@
       "section": "madrid"
     },
     {
-      "thread_id": "england-spain-unl-2026",
-      "title": "Spain win 3–2 at Wembley after Kane misses a penalty",
-      "entities": [],
-      "facts": {
-        "score": "England 2-3 Spain"
-      },
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "pitch"
-    },
-    {
       "thread_id": "openai-rogue-agents",
       "title": "OpenAI apologises to Australian lawmakers after its models got into government health systems during testing",
       "entities": [],
@@ -419,167 +384,6 @@
         "down": 0
       },
       "section": "ledger"
-    },
-    {
-      "thread_id": "f1-baku-race-2026",
-      "title": "Russell holds off Verstappen by 0.196s in Baku; Antonelli fifth from 16th",
-      "entities": [],
-      "facts": {
-        "winner": "Russell",
-        "verstappen": "P2 from P8",
-        "antonelli": "P5 from P16",
-        "gap_lead": 66
-      },
-      "first_printed": "2026-09-27",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "paddock"
-    },
-    {
-      "thread_id": "salah-egypt-turf-2026",
-      "title": "Salah skips Egypt's qualifier in South Sudan because of the artificial pitch",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-09-27",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "pitch"
-    },
-    {
-      "thread_id": "unsc-india-russia-2026",
-      "title": "Russia backs India and Brazil for permanent Security Council seats",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-09-27",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "dateline"
-    },
-    {
-      "thread_id": "india-rains-sep-2026",
-      "title": "Floods kill 18 across north and east India; Char Dham Yatra halted",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-09-27",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "dateline"
-    },
-    {
-      "thread_id": "manipur-violence-sep-2026",
-      "title": "Two Naga civilians shot dead in Manipur",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-09-27",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "dateline"
-    },
-    {
-      "thread_id": "apple-taction-verdict",
-      "title": "US jury orders Apple to pay $5.7 billion over the iPhone's haptic engine",
-      "entities": [],
-      "facts": {
-        "damages": "$5.7 billion",
-        "appeal": "planned"
-      },
-      "first_printed": "2026-09-27",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "workshop"
-    },
-    {
-      "thread_id": "nri-property-tds-2026",
-      "title": "Buying a home from an NRI no longer needs a separate TAN from 1 October",
-      "entities": [],
-      "facts": {
-        "effective": "2026-10-01",
-        "tan": "not needed; PAN-based"
-      },
-      "first_printed": "2026-09-27",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
-      "thread_id": "tax-audit-deadline-2026",
-      "title": "Tax audit reports are due on 30 September",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-09-27",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
-      "thread_id": "ipo-week-sep-2026",
-      "title": "Twenty IPOs open this week, the year's busiest",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-09-27",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
-      "thread_id": "blr-ai-camera-guitar",
-      "title": "A traffic AI camera fined a scooter rider because his guitar had no helmet",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-09-27",
-      "last_printed": "2026-09-27",
-      "last_change": "2026-09-27",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "namma"
     },
     {
       "thread_id": "ind-wi-1st-odi-2026",
@@ -861,21 +665,23 @@
     },
     {
       "thread_id": "tata-sons-listing-2026",
-      "title": "RBI governor Sanjay Malhotra says upper-layer finance companies must list, as pressure grows on Tata Sons",
+      "title": "Rahul Gandhi says the Tata Group is 'being criminally destroyed' and asks why business leaders are silent",
       "entities": [],
       "facts": {
         "speaker": "RBI governor Sanjay Malhotra",
-        "where": "NDTV World Summit, Fri 23 Oct"
+        "where": "NDTV World Summit, Fri 23 Oct",
+        "Tata Trusts' stake": "66% of Tata Sons",
+        "disputed vote": "17 Sep board meeting reappointing Chandrasekaran"
       },
       "first_printed": "2026-09-29",
-      "last_printed": "2026-10-24",
-      "last_change": "2026-10-24",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "ledger"
+      "section": "desh"
     },
     {
       "thread_id": "blr-tree-fall-hc-2026",
@@ -931,7 +737,7 @@
     },
     {
       "thread_id": "anthropic-ipo-2026",
-      "title": "Anthropic files for a stock market listing that could value it at about $1.5 trillion, and Indian IT shares fall",
+      "title": "Anthropic's filing shows Amazon, not the venture funds, stands to gain most from its listing, with notes Amazon values at $97.9bn",
       "entities": [],
       "facts": {
         "revenue_2025": "$4.59bn",
@@ -945,11 +751,14 @@
         "ticker": "ANT",
         "Q3 revenue": "$16.8bn, up 45% on the quarter",
         "2025 net loss": "about $42bn, incl. a $34bn charge",
-        "IT stocks": "down up to 3%"
+        "IT stocks": "down up to 3%",
+        "private valuation": "$965bn",
+        "Amazon notes": "$6.2bn principal, valued at $97.9bn",
+        "non-cash charge, H1 2026": "$72.4bn"
       },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-10-27",
-      "last_change": "2026-10-27",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1887,7 +1696,7 @@
     },
     {
       "thread_id": "jio-ipo-2026",
-      "title": "Jio Platforms lists on Wednesday, and a grey-market premium of 22% would make it India's second most valuable company",
+      "title": "Jio Platforms opens on the stock exchanges at a premium of 21.36% to its issue price",
       "entities": [],
       "facts": {
         "valuation": "about $114bn",
@@ -1902,11 +1711,13 @@
         "listing": "Wed 28 Oct",
         "grey-market premium": "22%",
         "implied value": "about ₹12.5 lakh crore",
-        "issue size": "about ₹30,200 crore"
+        "issue size": "about ₹30,200 crore",
+        "listing premium": "21.36%",
+        "issue": "₹30,187 crore"
       },
       "first_printed": "2026-10-04",
-      "last_printed": "2026-10-27",
-      "last_change": "2026-10-27",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1916,18 +1727,21 @@
     },
     {
       "thread_id": "brazil-election-2026",
-      "title": "Bolsonaro's party now recognises Lula's win, while Trump calls Brazil's election 'rigged' and says he likes Lula",
+      "title": "Flávio Bolsonaro flies to the US after missing a deadline to hand in his passports, and Washington says it will give his family visas",
       "entities": [],
       "facts": {
         "result": "Lula 51.8%, Bolsonaro 48.2%",
         "margin": "about 4.4 million votes",
         "Lula's age": "81 on Tuesday",
         "Trump": "'I like Lula' and 'rigged'",
-        "Flávio Bolsonaro": "ordered to surrender passports"
+        "Flávio Bolsonaro": "ordered to surrender passports",
+        "deadline missed": "24 hours to surrender passports",
+        "inquiry": "money laundering",
+        "US": "visas for him and his family"
       },
       "first_printed": "2026-10-05",
-      "last_printed": "2026-10-27",
-      "last_change": "2026-10-27",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2736,7 +2550,7 @@
     },
     {
       "thread_id": "iphone-duo-2026",
-      "title": "Apple says it will replace iPhone Duos with faulty inner screens, admitting an issue on 'a small number' of phones",
+      "title": "iFixit's lead teardown technician says a hinge support bar that does not drop far enough is pressing into the iPhone Duo's screen",
       "entities": [],
       "facts": {
         "price_from": "₹2,99,900",
@@ -2758,11 +2572,12 @@
         "repairability": "5/10",
         "suspected cause": "hinge and a cable over it",
         "Apple": "'an issue impacting the inner display on a small number'",
-        "UK price": "from £1,999"
+        "UK price": "from £1,999",
+        "source": "Shahram Mokhtari, iFixit"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-27",
-      "last_change": "2026-10-27",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3884,10 +3699,10 @@
     },
     {
       "thread_id": "arsenal-2026",
-      "title": "Arsenal beat Everton and draw level on points with Manchester City, who lost their unbeaten record at Aston Villa",
+      "title": "Arsenal, the Premier League champions, are knocked out of the Carabao Cup on penalties by League Two side Fleetwood",
       "entities": [],
       "facts": {
-        "score": "Arsenal 2 Everton 0",
+        "score": "1-1, Fleetwood won 5-3 on penalties",
         "scorer": "Madueke",
         "equaliser": "Rice, 82nd minute",
         "injury": "quadriceps",
@@ -3895,8 +3710,8 @@
         "City": "lost 2-1 at Aston Villa"
       },
       "first_printed": "2026-10-14",
-      "last_printed": "2026-10-25",
-      "last_change": "2026-10-25",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -4268,12 +4083,15 @@
     },
     {
       "thread_id": "openai-lawsuits-2026",
-      "title": "Eight US states sue OpenAI, saying ChatGPT harms children",
+      "title": "Parents sue OpenAI, saying ChatGPT coached their daughter to taper her epilepsy drug in secret before she died",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "who": "Bowen Wan, 31",
+        "messages reviewed": "270,000"
+      },
       "first_printed": "2026-10-15",
-      "last_printed": "2026-10-15",
-      "last_change": "2026-10-15",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -6890,24 +6708,26 @@
     },
     {
       "thread_id": "ind-nz-t20is-2026",
-      "title": "India bowl first with an unchanged side in Wellington, needing one more win to take the T20I series",
+      "title": "Abhishek Sharma hits 113 off 38 balls and India chase 199 in 13.2 overs to win the T20I series in Wellington",
       "entities": [],
       "facts": {
         "first T20I": "Thu 22 Oct, 12:30 IST",
         "venue": "Hagley Oval, Christchurch",
         "toss": "India won, chose to bowl",
-        "result": "NZ 180/5, India 181/6 in 19.5 overs",
+        "result": "India won by six wickets, chasing 199 in 13.2 overs",
         "next": "2nd T20I, Sat 24 Oct, 12:30 IST",
         "changes": "Sooryavanshi for Kishan, Prince Yadav for Mayank Yadav",
-        "series": "India lead 2-0",
+        "series": "India lead 3-0",
         "Kishan": "right adductor strain",
         "Bhuvneshwar": "99 runs in two T20Is",
         "New Zealand changes": "Fisher, Jamieson and Milne in",
-        "New Zealand after nine overs": "95 for 2"
+        "New Zealand after nine overs": "95 for 2",
+        "Abhishek": "113 off 38",
+        "Sooryavanshi": "45 off 19"
       },
       "first_printed": "2026-10-21",
-      "last_printed": "2026-10-27",
-      "last_change": "2026-10-27",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -6962,7 +6782,7 @@
     },
     {
       "thread_id": "verstappen-cota-2026",
-      "title": "Antonelli is champion in Mexico City on Sunday unless George Russell wins the race",
+      "title": "Red Bull says its radio problems will be fixed this year, but its poor starts may last into 2027",
       "entities": [],
       "facts": {
         "race": "Mon 2 Nov, 01:30 IST",
@@ -6975,11 +6795,13 @@
         "winner": "Antonelli, ninth win of 2026",
         "gap to Leclerc": "13.078s",
         "Mexico City GP": "Sun 1 Nov",
-        "lead": "123 points"
+        "lead": "123 points",
+        "radio": "fix by end of 2026",
+        "starts": "into 2027"
       },
       "first_printed": "2026-10-21",
-      "last_printed": "2026-10-27",
-      "last_change": "2026-10-27",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7736,18 +7558,20 @@
     },
     {
       "thread_id": "ballon-dor-2026",
-      "title": "Harry Kane wins the Ballon d'Or, the first Englishman in 25 years, and Alexia Putellas takes the women's award",
+      "title": "Kane's Ballon d'Or rewarded his goals over his team's trophies: he scored 64 in 56 club games",
       "entities": [],
       "facts": {
         "when": "Mon 26 Oct, London",
         "Kane": "73 goals",
         "goals": "73 for Bayern and England",
         "last English winner": "Michael Owen, 2001",
-        "women's award": "Alexia Putellas, third time"
+        "women's award": "Alexia Putellas, third time",
+        "club goals": "64 in 56",
+        "Bellingham": "11th"
       },
       "first_printed": "2026-10-23",
-      "last_printed": "2026-10-27",
-      "last_change": "2026-10-27",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7933,16 +7757,19 @@
     },
     {
       "thread_id": "iran-war-2026",
-      "title": "Trump says the US may do 'another little Epic Fury' against Iran, as a US memo warns Iranian plots against diplomats are advancing",
+      "title": "The US tells Gulf states to prepare for a short, intense campaign against Iran after the midterms, officials say",
       "entities": [],
       "facts": {
         "Trump": "'We may do another little Epic Fury'",
         "memo": "DNI Jay Clayton to Marco Rubio, dated 23 Oct",
-        "midterms": "3 Nov"
+        "midterms": "3 Nov",
+        "timing": "after the 3 Nov midterms",
+        "moves": "Patriot battery from Texas, extra carrier group next month",
+        "refinery hit": "550,000 barrels a day, per the Houthis"
       },
       "first_printed": "2026-10-24",
-      "last_printed": "2026-10-24",
-      "last_change": "2026-10-24",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8013,16 +7840,17 @@
     },
     {
       "thread_id": "cyclone-oct-2026",
-      "title": "Cyclone Arnab gets its name and is set to cross the Andhra coast between Visakhapatnam and Bapatla by Wednesday",
+      "title": "Cyclone Arnab crosses the Andhra Pradesh coast and weakens into a severe cyclonic storm, with heavy rain in Odisha",
       "entities": [],
       "facts": {
         "landfall": "between Visakhapatnam and Bapatla, by Wed 28 Oct",
         "Kerala red alert": "Malappuram, Kozhikode, Wayanad",
-        "name": "Arnab"
+        "name": "Arnab",
+        "ship": "Sigma Pearl, stranded off Konaseema"
       },
       "first_printed": "2026-10-24",
-      "last_printed": "2026-10-26",
-      "last_change": "2026-10-26",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8317,12 +8145,14 @@
     },
     {
       "thread_id": "world-series-2026",
-      "title": "The Milwaukee Brewers beat the Tampa Bay Rays in the World Series opener, their first since 1982",
+      "title": "The Rays score twice in the 12th to beat the Brewers 4-3 and force a fifth game in the World Series",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "score": "Rays 4 Brewers 3, 12 innings"
+      },
       "first_printed": "2026-10-24",
-      "last_printed": "2026-10-24",
-      "last_change": "2026-10-24",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8854,18 +8684,21 @@
     },
     {
       "thread_id": "israel-election-2026",
-      "title": "Israel votes today in a near dead heat between Netanyahu and Eisenkot, and neither bloc is forecast to reach 61 seats",
+      "title": "Israel's election ends in deadlock: Likud is the largest party, but neither Netanyahu's bloc nor Eisenkot's has a majority",
       "entities": [],
       "facts": {
         "polling day": "Tue 27 Oct",
         "first-time voters": "half a million",
         "flying in to vote": "about 70,000",
-        "majority": "61 of 120 seats",
-        "contenders": "Netanyahu (Likud) and Eisenkot (Yashar)"
+        "majority": "61",
+        "contenders": "Netanyahu (Likud) and Eisenkot (Yashar)",
+        "projection": "Netanyahu bloc 56, Eisenkot bloc 49 (Times of Israel)",
+        "Likud": "about 27 seats",
+        "Yashar": "about 21 seats"
       },
       "first_printed": "2026-10-26",
-      "last_printed": "2026-10-27",
-      "last_change": "2026-10-27",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9010,12 +8843,14 @@
     },
     {
       "thread_id": "apple-mac-2026",
-      "title": "Apple is expected to unveil touchscreen OLED MacBook Pros on Wednesday, possibly up to $500 dearer than today's models",
+      "title": "Apple puts its M6 chip in the base 14-inch MacBook Pro and the iMac, with 1TB of storage as standard on the laptop",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "chip": "M6, 12-core CPU and GPU"
+      },
       "first_printed": "2026-10-26",
-      "last_printed": "2026-10-26",
-      "last_change": "2026-10-26",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9471,12 +9306,15 @@
     },
     {
       "thread_id": "cyclone-arnab-jharkhand-2026",
-      "title": "Cyclone Arnab will bring heavy rain to Ranchi from Wednesday, with a yellow alert for eight Jharkhand districts",
+      "title": "Ranchi and East Singhbhum shut all schools on Wednesday and Thursday as Cyclone Arnab's rain bands arrive",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "closure": "28 and 29 Oct",
+        "winds": "50 to 60 km/h"
+      },
       "first_printed": "2026-10-27",
-      "last_printed": "2026-10-27",
-      "last_change": "2026-10-27",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9492,6 +9330,312 @@
       "first_printed": "2026-10-27",
       "last_printed": "2026-10-27",
       "last_change": "2026-10-27",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "india-us-defence-2026",
+      "title": "Rajnath Singh and Pete Hegseth review the 10-year India-US defence pact on its first anniversary, in Cebu",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-the-india-bloc-will-hold-a",
+      "title": "The INDIA bloc will hold a 'public impeachment' of the election chief at Kharge's home on Friday, before Sunday's rally",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-prashant-kishors-jan-suraaj-wins-its",
+      "title": "Prashant Kishor's Jan Suraaj wins its first Bihar council seat, in Darbhanga Teachers'",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-the-uae-honours-indian-captain-smit",
+      "title": "The UAE honours Indian captain Smit Machchhar and his flydubai crew for their bravery during a mid-air attack",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "uk-iran-plot-2026",
+      "title": "Two Britons are charged over an alleged Iran-linked plot at RAF Fairford, the US-run base in England",
+      "entities": [],
+      "facts": {
+        "charged": "Mohmed Abdulkarim, 24, and Nouman Essghir, 24",
+        "next hearing": "Old Bailey, 20 Nov"
+      },
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-king-charles-begins-a-caribbean-tour",
+      "title": "King Charles begins a Caribbean tour by acknowledging 'the great suffering of the past', without apologising for slavery",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-britains-chancellor-john-healey-will-end",
+      "title": "Britain's chancellor John Healey will end standing charges on gas bills for 23 million homes",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-congos-ebola-outbreak-passes-10000-cases",
+      "title": "Congo's Ebola outbreak passes 10,000 cases",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-a-nanotyrannus-skeleton-sells-for-473m",
+      "title": "A Nanotyrannus skeleton sells for $47.3m in New York, the second-highest price for a dinosaur at auction",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "fed-2026",
+      "title": "The US Federal Reserve decides on rates tonight and is expected to hold, a month after its first rise in three years",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "line-brent-rises-more-than-1-after",
+      "title": "Brent rises more than 1% after the Houthis say they hit Saudi Arabia's biggest refinery",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "line-google-shows-genie-4-a-world",
+      "title": "Google shows Genie 4, a world model that adds audio and lets users steer scenes in real time",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-vivo-launches-its-x500-phones-worldwide",
+      "title": "Vivo launches its X500 phones worldwide",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "line-police-were-called-to-a-florida",
+      "title": "Police were called to a Florida children's game after parents said their three-year-old was benched for being too good",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "mbappe-china-2026",
+      "title": "Mbappé apologises after calling Mao a 'Chinese dictator', as three Chinese brands drop him",
+      "entities": [],
+      "facts": {
+        "brands lost": "Dongpeng, Mengniu, Milkground",
+        "apology": "Tue 27 Oct"
+      },
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "line-former-castilla-players-nico-paz-and",
+      "title": "Former Castilla players Nico Paz and Jacobo Ramón both score as Como beat Torino 3-1",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "alcaraz-2026",
+      "title": "Alcaraz breaks Khachanov as he serves for the set and reaches the last 16 in Vienna, 6-4, 7-6",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "karnataka-politics-2026",
+      "title": "The BJP-led alliance wins all four Karnataka council seats, including Bengaluru Teachers, a setback for Shivakumar",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "ranchi-devpalik-2026",
+      "title": "Jan Suraaj's digital manager Devpalik Gupta, 31, is found dead near the tracks at Jarwadih after vanishing from a train",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "prayagraj-diaspora-2026",
+      "title": "More than 450 people with Prayagraj roots gather at JNU in Delhi for Prayag Utsav, a festival of the city's literary heritage",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-10-28",
+      "last_printed": "2026-10-28",
+      "last_change": "2026-10-28",
       "status": "active",
       "votes": {
         "up": 0,
