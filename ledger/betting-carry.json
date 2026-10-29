@@ -1,62 +1,64 @@
 {
-  "date": "2026-10-28",
-  "from": "2026-10-27",
+  "date": "2026-10-29",
+  "from": "2026-10-28",
   "carry": [
-    {
-      "id": "pm:next-french-presidential-election",
-      "title": "Next French Presidential Election",
-      "since": "2026-10-09",
-      "reason": "#4 by 24h volume"
-    },
     {
       "id": "pm:us-iran-ceasefire-continues-throughptptpt",
       "title": "US-Iran ceasefire continues through...?",
       "since": "2026-10-08",
-      "reason": "#5 by 24h volume"
-    },
-    {
-      "id": "pm:france-declares-state-of-emergency-byptptpt",
-      "title": "France declares state of emergency by...?",
-      "since": "2026-10-27",
-      "reason": "#6 by 24h volume"
+      "reason": "#3 by 24h volume"
     },
     {
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
       "title": "UEFA Champions League: 2027 Champion",
       "since": "2026-09-25",
+      "reason": "#5 by 24h volume"
+    },
+    {
+      "id": "pm:next-french-presidential-election",
+      "title": "Next French Presidential Election",
+      "since": "2026-10-09",
       "reason": "#7 by 24h volume"
-    }
-  ],
-  "dropped": [
-    {
-      "id": "pm:venezuela-leader-end-of-2026",
-      "title": "Venezuela leader end of 2026?",
-      "why": "cooled: outside the ranking by volume, moved 2.8 pts"
     },
     {
-      "id": "pm:israeli-legislative-election-winner",
-      "title": "Israeli Legislative Election Winner",
-      "why": "ended or decided, no next market in the same line"
-    },
-    {
-      "id": "pm:israel-election-likud-of-seats",
-      "title": "Israel Election: Likud # of seats?",
-      "why": "ended or decided, no next market in the same line"
+      "id": "pm:which-company-has-the-best-ai-model-end-of-october",
+      "title": "Which company has the best AI model end of October?",
+      "since": "2026-10-28",
+      "reason": "#11 by 24h volume"
     },
     {
       "id": "pm:anthropic-ipo-by",
       "title": "Anthropic IPO by __?",
-      "why": "cooled: #21 by volume, moved 0.1 pts"
+      "since": "2026-10-28",
+      "reason": "#20 by 24h volume"
     },
     {
-      "id": "pm:crint-nzl-ind-2026-10-27",
-      "title": "India Tour of New Zealand T20s: New Zealand vs India",
-      "why": "cooled: outside the ranking by volume, moved 4.5 pts"
+      "id": "pm:flavio-bolsonaro-returns-to-brazil-by-20261028",
+      "title": "Flávio Bolsonaro returns to Brazil by...?",
+      "since": "2026-10-28",
+      "reason": "next in line; By November 30, 2026 moved 74.4 pts since printed"
+    }
+  ],
+  "dropped": [
+    {
+      "id": "pm:france-declares-state-of-emergency-byptptpt",
+      "title": "France declares state of emergency by...?",
+      "why": "cooled: outside the ranking by volume, moved 0.7 pts"
     },
     {
-      "id": "pm:military-action-against-saudi-oil-pipeline-east-west-byptptpt",
-      "title": "Military action against Saudi Oil Pipeline (East-West) by...?",
-      "why": "cooled: outside the ranking by volume, moved 2.5 pts"
+      "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
+      "title": "Prime Minister of Israel after the next election?",
+      "why": "ended or decided, no next market in the same line"
+    },
+    {
+      "id": "pm:israel-election-any-coalition-wins-a-majority",
+      "title": "Israel Election: Any Coalition Wins a Majority?",
+      "why": "ended or decided, no next market in the same line"
+    },
+    {
+      "id": "pm:netanyahu-out-before-2027",
+      "title": "Netanyahu out by...?",
+      "why": "cooled: outside the ranking by volume, moved 1.0 pts"
     }
   ]
 }
