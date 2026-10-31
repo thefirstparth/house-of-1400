@@ -427,8 +427,8 @@ async function main() {
     const n = await publishFeed({ put, list, del, get }, vttMeta);
     log(`transcript ${vttFile} attached to ${date} (${(vtt.match(/-->/g) || []).length} lines); feed rebuilt (${n} in the feed)`); return;
   }
-  // --force on a published day is a redo: the new take goes up under a new file and episode id (-v2, -v3), the feed
-  // switches to it, and only then is the old file deleted, so a failed redo leaves the old episode up (Parth, 13 Oct)
+  // --force on a published day is a redo: the new take goes up under a new file and episode id (-v2, -v3) and the feed
+  // switches to it, so a failed redo leaves the old episode up (Parth, 13 Oct); the old file goes with its day (31 Oct)
   let prior = null;
   if (!DRY) {
     // today's record from the index (one read); a store without the index yet is listed as before
