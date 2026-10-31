@@ -1222,3 +1222,17 @@ only; nothing in Vercel's settings, and no Blob data deleted.
   day leaves the feed.
 - The 16:00 IST notify cron fires anywhere from 16:00 to 16:59 on Hobby: it is only the backstop (the summary if no run
   sent it, or "No paper today" after 15:55), so nothing depends on the exact minute.
+
+## Podcast audio: the scraper blocked, no other change (31 Oct 2026)
+Fast Origin Transfer (the Vercel audit): episodes going from the function to Vercel's CDN were about 188 MB a day
+(~5.6 GB a month). Vercel's request logs (25-31 Oct) showed who fetches them: Podscud (user agent "... Podscud/1.0
+(+https://podscud.com)", Hetzner AS24940, Germany) about 43% of it, fetching every episode two or three times and
+episodes up to 18 days old; Parth (Apple Podcasts and YouTube Music, Bengaluru) about 23%; directory crawlers and
+Apple's checks most of the rest; Spotify fetches each episode once and plays its own copy.
+- Parth: "Block only." He adds a Vercel Firewall rule himself: User Agent contains "Podscud" and path starts with
+  /listen, Log for a day, then Deny. Not by IP (the logs carry no client IPs) and not by AS24940 alone (PodscanBot
+  runs there too). Expected: about 115 MB a day (~3.5 GB a month).
+- Not done, by Parth's choice: moving the audio off Vercel (GitHub Pages) and smaller files ("audio quality must not
+  change"); keeping 7 days in the feed instead of 14 was weighed and dropped: episodes leave Apple, Spotify and
+  YouTube Music when they leave the feed, and with the block in place it would save only about 1 MB a day (the old
+  episodes were almost all fetched by Podscud). The feed keeps 14 days and the Blob copies are kept as before.
