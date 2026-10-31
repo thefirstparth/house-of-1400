@@ -1,32 +1,8 @@
 {
-  "date": "2026-10-30",
+  "date": "2026-10-31",
   "source": "Cricbuzz",
-  "checked_at": "2026-10-30T08:43:25.127Z",
+  "checked_at": "2026-10-31T08:43:18.458Z",
   "matches": [
-    {
-      "desc": "Group C",
-      "format": "T20",
-      "series": "Hong Kong Sixes 2026",
-      "opponent": "Pakistan",
-      "start": "2026-10-30T06:15:00.000Z",
-      "ist": "Fri 30 Oct, 11:45",
-      "time_announced": true,
-      "ground": "Mission Road Ground",
-      "city": "Mong Kok",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/175120"
-    },
-    {
-      "desc": "4th T20I",
-      "format": "T20",
-      "series": "India tour of New Zealand 2026",
-      "opponent": "New Zealand",
-      "start": "2026-10-30T07:00:00.000Z",
-      "ist": "Fri 30 Oct, 12:30",
-      "time_announced": true,
-      "ground": "Eden Park",
-      "city": "Auckland",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/161223"
-    },
     {
       "desc": "Group C",
       "format": "T20",
@@ -38,6 +14,30 @@
       "ground": "Mission Road Ground",
       "city": "Mong Kok",
       "url": "https://www.cricbuzz.com/live-cricket-scores/175153"
+    },
+    {
+      "desc": "Bowl, Semi Final 2",
+      "format": "T20",
+      "series": "Hong Kong Sixes 2026",
+      "opponent": "England",
+      "start": "2026-10-31T04:25:00.000Z",
+      "ist": "Sat 31 Oct, 09:55",
+      "time_announced": true,
+      "ground": "Mission Road Ground",
+      "city": "Mong Kok",
+      "url": "https://www.cricbuzz.com/live-cricket-scores/175161"
+    },
+    {
+      "desc": "11th/12th Bowl, Place Play-off",
+      "format": "T20",
+      "series": "Hong Kong Sixes 2026",
+      "opponent": "Bangladesh",
+      "start": "2026-11-01T01:40:00.000Z",
+      "ist": "Sun 1 Nov, 07:10",
+      "time_announced": true,
+      "ground": "Mission Road Ground",
+      "city": "Mong Kok",
+      "url": "https://www.cricbuzz.com/live-cricket-scores/175190"
     },
     {
       "desc": "5th T20I",
@@ -367,8 +367,8 @@
   "series": [
     {
       "name": "Hong Kong Sixes 2026",
-      "opponent": "Pakistan",
-      "from": "2026-10-30",
+      "opponent": "United Arab Emirates",
+      "from": "2026-10-31",
       "parts": [
         {
           "format": "T20",
@@ -381,12 +381,12 @@
     {
       "name": "India tour of New Zealand 2026",
       "opponent": "New Zealand",
-      "from": "2026-10-30",
+      "from": "2026-11-01",
       "parts": [
         {
           "format": "T20",
           "total": 5,
-          "played": 3
+          "played": 4
         },
         {
           "format": "ODI",

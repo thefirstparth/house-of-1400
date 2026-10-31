@@ -1,47 +1,49 @@
 {
-  "date": "2026-10-30",
-  "from": "2026-10-29",
+  "date": "2026-10-31",
+  "from": "2026-10-30",
   "carry": [
-    {
-      "id": "pm:us-iran-ceasefire-continues-throughptptpt",
-      "title": "US-Iran ceasefire continues through...?",
-      "since": "2026-10-08",
-      "reason": "#2 by 24h volume; Through October 31 moved 5.2 pts since printed"
-    },
     {
       "id": "pm:next-french-presidential-election",
       "title": "Next French Presidential Election",
       "since": "2026-10-09",
-      "reason": "#3 by 24h volume"
+      "reason": "#1 by 24h volume"
+    },
+    {
+      "id": "pm:us-iran-ceasefire-continues-throughptptpt",
+      "title": "US-Iran ceasefire continues through...?",
+      "since": "2026-10-08",
+      "reason": "#2 by 24h volume"
     },
     {
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
       "title": "UEFA Champions League: 2027 Champion",
       "since": "2026-09-25",
-      "reason": "#4 by 24h volume"
+      "reason": "#3 by 24h volume"
     },
     {
-      "id": "pm:will-the-us-invade-iran-before-2027",
-      "title": "Will the U.S. invade Iran before 2027?",
-      "since": "2026-10-29",
-      "reason": "#10 by 24h volume"
+      "id": "pm:us-iran-final-nuclear-deal-by-20260621201254412",
+      "title": "US-Iran Final Nuclear Deal by…?",
+      "since": "2026-10-30",
+      "reason": "#13 by 24h volume"
+    },
+    {
+      "id": "pm:will-the-iranian-regime-fall-by-the-end-of-2026",
+      "title": "Will the Iranian regime fall before 2027?",
+      "since": "2026-10-30",
+      "reason": "#19 by 24h volume"
+    },
+    {
+      "id": "pm:crint-nzl-ind-2026-11-01",
+      "title": "India Tour of New Zealand T20s: New Zealand vs India",
+      "since": "2026-10-30",
+      "reason": "next in line; New Zealand moved 29.5 pts since printed"
     }
   ],
   "dropped": [
     {
-      "id": "pm:which-company-has-the-best-ai-model-end-of-october",
-      "title": "Which company has the best AI model end of October?",
-      "why": "cooled: #28 by volume, moved 0.1 pts"
-    },
-    {
-      "id": "pm:anthropic-ipo-by",
-      "title": "Anthropic IPO by __?",
-      "why": "cooled: outside the ranking by volume, moved 0.0 pts"
-    },
-    {
-      "id": "pm:flavio-bolsonaro-returns-to-brazil-by-20261028",
-      "title": "Flávio Bolsonaro returns to Brazil by...?",
-      "why": "cooled: outside the ranking by volume, moved 0.3 pts"
+      "id": "pm:will-the-us-invade-iran-before-2027",
+      "title": "Will the U.S. invade Iran before 2027?",
+      "why": "cooled: #25 by volume, moved 0.0 pts"
     },
     {
       "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
@@ -49,14 +51,14 @@
       "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:who-will-receive-the-first-mandate-to-form-israels-next-government-20261019144924877",
-      "title": "Who will receive the first mandate to form Israel's next government?",
-      "why": "ended or decided, no next market in the same line"
+      "id": "pm:largest-company-end-of-december-2026",
+      "title": "Largest Company end of December 2026?",
+      "why": "cooled: #29 by volume, moved 2.5 pts"
     },
     {
-      "id": "pm:us-iran-hormuz-agreement-byptptpt-20260803235957575",
-      "title": "US-Iran Hormuz Agreement by...?",
-      "why": "cooled: outside the ranking by volume, moved 1.2 pts"
+      "id": "pm:billionaire-one-time-wealth-tax-passes-in-california-election-2026",
+      "title": "Billionaire one-time wealth tax passes in California election 2026?",
+      "why": "cooled: outside the ranking by volume, moved 3.0 pts"
     }
   ]
 }
