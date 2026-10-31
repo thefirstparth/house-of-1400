@@ -1,4 +1,4 @@
-import { blobConfigured, putJSON, readJSON } from "../lib/blob.js";
+import { stateConfigured, stateGet, stateSet } from "../lib/state.js";
 import { readLatest } from "../lib/edition-file.js";
 import { config } from "../lib/live.js";
 
@@ -20,13 +20,13 @@ const hm = () => new Date().toLocaleTimeString("en-GB", { timeZone: TZ, hour: "2
 const longDate = ymd => new Date(ymd + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" }).replace(/\bSept\b/, "Sep");
 const KEY_NAMES = { weather: "weather", f1_next: "F1 schedule", f1_standings: "F1 standings", f1_last: "F1 results", football: "Madrid fixtures", laliga_table: "La Liga table", nba: "NBA", tennis: "tennis", markets: "markets", fx: "rupee", crypto: "Bitcoin", gold_in: "gold", trends: "trends", betting: "betting prices", movers: "market movers" };
 
+// The markers (sent today, podcast sent, the chat) are in Redis since 31 Oct 2026 (lib/state.js): no list and no
+// Blob read each time; a day's marker lasts a week, the chat for good. Blob as before when there is no store.
 async function marker(name) {
-  if (!blobConfigured()) return null;
-  const { list } = await import("@vercel/blob");
-  const { blobs } = await list({ prefix: `notify/${name}`, limit: 1 });
-  return blobs[0] ? (await readJSON(blobs[0]).catch(() => ({}))) || {} : null;
+  if (!stateConfigured()) return null;
+  return stateGet(`notify-${name}`, `notify/${name}.json`);
 }
-const mark = (name, obj) => (blobConfigured() ? putJSON(`notify/${name}.json`, obj) : null);
+const mark = (name, obj) => (stateConfigured() ? stateSet(`notify-${name}`, `notify/${name}.json`, obj, name === "chat" ? 0 : 7) : null);
 
 async function chatId(token) {
   if (process.env.TELEGRAM_CHAT_ID) return process.env.TELEGRAM_CHAT_ID;

@@ -1202,3 +1202,23 @@ Parth, 22 to 23 Oct, in a build session for his new weather app (its own repo, `
 
 ## 28 Oct 2026: Netflix's chart from its India pages first
 - The streaming chart showed Netflix's week to 18 Oct on 28 Oct: Netflix's Top 10 file (`all-weeks-countries.tsv`) was last updated 20 Oct, while its India pages already had the week to 25 Oct. The pages (films, and `/tv` for series) are now read first, from the data embedded in each; the file is the fallback when they fail or lack either list. The pages also carry each title's synopsis, artwork and Netflix video ID, unused for now.
+
+## Blob budget for the free plan (31 Oct 2026)
+Parth wants the Vercel team back on Hobby; an audit of 24-30 Oct found this project's store at about 57% of the team's
+Blob reads (team 431 a day, Hobby about 330) and 75% of its writes and lists (team 68 a day, Hobby about 66). Code
+only; nothing in Vercel's settings, and no Blob data deleted.
+- **Small state files to Redis** (lib/state.js, the Upstash store already connected for the weather counter): the gold
+  history (lib/live.js), the TV feed's alarm state (lib/tv.js), the Telegram markers and chat (api/notify.js: no more
+  list + read for each marker) and the podcast folder's name (api/podcast.js: no list on a new server). The first read
+  of each copies it from Blob once; with no store, or when it does not answer, all of it falls back to Blob as before.
+  A day's marker lasts a week in Redis.
+- **The podcast function keeps what it read** (api/podcast.js): every region's CDN misses reach this one function, so
+  the last three episodes stay in its memory for good and the feed and transcripts for as long as the CDN may keep
+  them. The feed is held an hour at a time once today's episode is in it (five minutes before that, from 13:30 to
+  16:30 IST, as since 23 Oct). If Blob does not answer, an older copy is served rather than nothing.
+- **The podcast job keeps one index** (`podcast/<folder>/episodes.json`, scripts/podcast/make.mjs): each run checks it
+  (one read) instead of listing the store, and the feed is rebuilt from it instead of reading all 14 records. A redo
+  no longer deletes the older take at once (an app may hold the feed up to an hour); every file of a day goes when the
+  day leaves the feed.
+- The 16:00 IST notify cron fires anywhere from 16:00 to 16:59 on Hobby: it is only the backstop (the summary if no run
+  sent it, or "No paper today" after 15:55), so nothing depends on the exact minute.

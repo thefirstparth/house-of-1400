@@ -365,23 +365,36 @@ async function blob() { return import("@vercel/blob"); }
 const site = (cfg.site?.url || process.env.SITE_URL || "https://house14.vercel.app").replace(/\/+$/, "");
 // the site's public /listen/<file> route once the show is listed (14 Oct), else /podcast/<secret>/<file> (api/podcast.js)
 const served = f => (P.listed ? `${site}/listen/${f}` : `${site}/${folder}/${f}`);
-// the feed from every episode still kept; older ones are deleted
-async function publishFeed({ put, list, del, get }) {
+// The feed from every episode still kept; older ones are deleted. Every episode's record is also kept in one index
+// file (31 Oct 2026: the feed used to be rebuilt by reading each of the 14 records from Blob, and each run first
+// listed the store to see whether today was done; now it is one read of the index). A store without the index yet
+// builds it once from the records.
+const INDEX = `${folder}/episodes.json`;
+async function readIndex(get) {
+  const g = await get(INDEX, { access: "private", useCache: false, token: BLOB }).catch(() => null);
+  const j = g?.stream ? await new Response(g.stream).json().catch(() => null) : null;
+  return Array.isArray(j?.episodes) ? j.episodes : null;
+}
+async function publishFeed({ put, list, del, get }, add = null) {
   const { blobs } = await list({ prefix: `${folder}/`, token: BLOB }), cut = new Date(Date.now() - (P.keep_days || 14) * 864e5).toISOString().slice(0, 10);
-  const episodes = [], old = [];
-  for (const b of blobs.filter(b => /\d{4}-\d{2}-\d{2}\.json$/.test(b.pathname))) {
-    const d = b.pathname.match(/(\d{4}-\d{2}-\d{2})\.json$/)[1];
-    if (d < cut) { old.push(b.url, b.url.replace(/\.json$/, ".mp3")); continue; } // (an old transcript goes below)
-    const g = await get(b.pathname, { access: "private", useCache: false, token: BLOB }).catch(() => null);
-    const m = g?.stream ? await new Response(g.stream).json().catch(() => null) : null; if (m) episodes.push(m);
+  let episodes = await readIndex(get);
+  if (!episodes) {
+    episodes = [];
+    for (const b of blobs.filter(b => /\d{4}-\d{2}-\d{2}\.json$/.test(b.pathname))) {
+      const g = await get(b.pathname, { access: "private", useCache: false, token: BLOB }).catch(() => null);
+      const m = g?.stream ? await new Response(g.stream).json().catch(() => null) : null; if (m?.date) episodes.push(m);
+    }
   }
-  if (old.length) { await del(old, { token: BLOB }).catch(e => log("could not delete old episodes:", e.message)); log(`removed ${old.length / 2} old episode(s)`); }
-  const oldVtt = blobs.filter(b => /\.vtt$/.test(b.pathname) && (b.pathname.match(/(\d{4}-\d{2}-\d{2})/)?.[1] || "9") < cut).map(b => b.url);
-  if (oldVtt.length) await del(oldVtt, { token: BLOB }).catch(() => {});
+  if (add) episodes = [...episodes.filter(e => e.date !== add.date), add];
+  episodes = episodes.filter(e => e.date >= cut).sort((a, b) => (a.date < b.date ? 1 : -1));
+  // everything of a day older than the cut goes: its record, audio (every take) and transcript
+  const old = blobs.filter(b => { const d = b.pathname.slice(folder.length + 1).match(/^(\d{4}-\d{2}-\d{2})[.-]/)?.[1]; return d && d < cut; }).map(b => b.url);
+  if (old.length) { await del(old, { token: BLOB }).catch(e => log("could not delete old episodes:", e.message)); log(`removed ${old.length} old file(s)`); }
+  await put(INDEX, JSON.stringify({ note: "Every episode still in the feed (scripts/podcast/make.mjs)", episodes }), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", token: BLOB });
   const image = P.image ? new URL(P.image, site + "/").href : null;
   // every episode's address follows the route in use, whatever was recorded when it was published
-  for (const e of episodes) { if (e.url) e.url = served(e.url.split("/").pop()); if (e.transcript) e.transcript_url = served(e.transcript); }
-  await put(`${folder}/feed.xml`, feedXML({ P: { ...P, feed_url: `${site}/listen` }, base: site, episodes, image }), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/rss+xml; charset=utf-8", cacheControlMaxAge: 300, token: BLOB });
+  const shown = episodes.map(e => ({ ...e, ...(e.url ? { url: served(e.url.split("/").pop()) } : {}), ...(e.transcript ? { transcript_url: served(e.transcript) } : {}) }));
+  await put(`${folder}/feed.xml`, feedXML({ P: { ...P, feed_url: `${site}/listen` }, base: site, episodes: shown, image }), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/rss+xml; charset=utf-8", cacheControlMaxAge: 300, token: BLOB });
   return episodes.length;
 }
 async function main() {
@@ -407,19 +420,23 @@ async function main() {
     const g = await get(`${folder}/${date}.json`, { access: "private", useCache: false, token: BLOB }).catch(() => null);
     const meta = g?.stream ? await new Response(g.stream).json().catch(() => null) : null;
     if (!meta?.url) throw new Error(`no published episode for ${date}`);
+    const vttMeta = { ...meta, transcript: meta.url.split("/").pop().replace(/\.mp3$/, ".vtt") };
     const vttFile = meta.url.split("/").pop().replace(/\.mp3$/, ".vtt");
     await put(`${folder}/${vttFile}`, vtt, { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "text/vtt; charset=utf-8", token: BLOB });
-    await put(`${folder}/${date}.json`, JSON.stringify({ ...meta, transcript: vttFile }), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", token: BLOB });
-    const n = await publishFeed({ put, list, del, get });
+    await put(`${folder}/${date}.json`, JSON.stringify(vttMeta), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", token: BLOB });
+    const n = await publishFeed({ put, list, del, get }, vttMeta);
     log(`transcript ${vttFile} attached to ${date} (${(vtt.match(/-->/g) || []).length} lines); feed rebuilt (${n} in the feed)`); return;
   }
   // --force on a published day is a redo: the new take goes up under a new file and episode id (-v2, -v3), the feed
   // switches to it, and only then is the old file deleted, so a failed redo leaves the old episode up (Parth, 13 Oct)
   let prior = null;
   if (!DRY) {
-    const { blobs } = await list({ prefix: `${folder}/${date}.json`, token: BLOB });
-    if (blobs.length && !FORCE) { log(`episode for ${date} already published`); return; }
-    if (blobs.length) { const g = await get(`${folder}/${date}.json`, { access: "private", useCache: false, token: BLOB }).catch(() => null); prior = g?.stream ? await new Response(g.stream).json().catch(() => null) : null; }
+    // today's record from the index (one read); a store without the index yet is listed as before
+    const idx = await readIndex(get);
+    let done = idx ? idx.find(e => e.date === date) || null : null;
+    if (!idx) { const { blobs } = await list({ prefix: `${folder}/${date}.json`, token: BLOB }); if (blobs.length) { const g = await get(`${folder}/${date}.json`, { access: "private", useCache: false, token: BLOB }).catch(() => null); done = g?.stream ? await new Response(g.stream).json().catch(() => null) || {} : {}; } }
+    if (done && !FORCE) { log(`episode for ${date} already published`); return; }
+    if (done) prior = done;
   }
   const v = prior ? (prior.v || 1) + 1 : 1, file = v > 1 ? `${date}-v${v}.mp3` : `${date}.mp3`;
   // a big move after yesterday's paper went to press, with the paper's reason (from 15 Oct; lib/after-close.js)
@@ -470,11 +487,11 @@ async function main() {
   const day = new Date(date + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
   const meta = { date, title: `${day} · ${R.lead.headline}`, description: deepItems(R).map(s => s.headline).join(" · "), url: served(file), v, bytes, seconds, published: new Date().toISOString(), by, voice, voice_model: KOKORO ? "kokoro" : voiceModel, ...(vtt ? { transcript: vttFile } : {}) };
   await put(`${folder}/${date}.json`, JSON.stringify(meta), { access: "private", addRandomSuffix: false, allowOverwrite: true, contentType: "application/json", token: BLOB });
-  const n = await publishFeed({ put, list, del, get });
+  const n = await publishFeed({ put, list, del, get }, meta);
   log(`published ${date}${v > 1 ? ` (take ${v})` : ""} (${n} in the feed)`);
-  const was = prior?.url?.split("/").pop();
-  if (was && was !== file) await del(`${folder}/${was}`, { token: BLOB }).then(() => log(`removed the old take ${was}`)).catch(e => log(`could not remove the old take ${was}:`, e.message));
-  if (prior?.transcript && prior.transcript !== vttFile) await del(`${folder}/${prior.transcript}`, { token: BLOB }).catch(() => {});
+  // (31 Oct 2026) an older take is no longer deleted at once: an app may hold the feed for up to an hour (api/podcast.js),
+  // so its file stays until the day leaves the feed, when publishFeed deletes every file of that day
+
   log(`FEED ${served("feed.xml")}`);
   // a separate Telegram message that the episode is in Apple Podcasts, with its writer and voice (api/notify.js; once a day)
   await fetch(`${site}/api/notify?podcast=${date}&k=${folder.split("/")[1]}`, { method: "POST", signal: AbortSignal.timeout(30000) })
