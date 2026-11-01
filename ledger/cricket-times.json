@@ -1,34 +1,10 @@
 {
-  "date": "2026-10-31",
+  "date": "2026-11-01",
   "source": "Cricbuzz",
-  "checked_at": "2026-10-31T08:43:18.458Z",
+  "checked_at": "2026-11-01T08:42:39.032Z",
   "matches": [
     {
-      "desc": "Group C",
-      "format": "T20",
-      "series": "Hong Kong Sixes 2026",
-      "opponent": "United Arab Emirates",
-      "start": "2026-10-31T02:35:00.000Z",
-      "ist": "Sat 31 Oct, 08:05",
-      "time_announced": true,
-      "ground": "Mission Road Ground",
-      "city": "Mong Kok",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/175153"
-    },
-    {
-      "desc": "Bowl, Semi Final 2",
-      "format": "T20",
-      "series": "Hong Kong Sixes 2026",
-      "opponent": "England",
-      "start": "2026-10-31T04:25:00.000Z",
-      "ist": "Sat 31 Oct, 09:55",
-      "time_announced": true,
-      "ground": "Mission Road Ground",
-      "city": "Mong Kok",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/175161"
-    },
-    {
-      "desc": "11th/12th Bowl, Place Play-off",
+      "desc": "11th/12th Bowl, Play-off",
       "format": "T20",
       "series": "Hong Kong Sixes 2026",
       "opponent": "Bangladesh",
@@ -367,8 +343,8 @@
   "series": [
     {
       "name": "Hong Kong Sixes 2026",
-      "opponent": "United Arab Emirates",
-      "from": "2026-10-31",
+      "opponent": "Bangladesh",
+      "from": "2026-11-01",
       "parts": [
         {
           "format": "T20",

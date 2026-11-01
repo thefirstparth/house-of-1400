@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-10-31T08:49:46.869Z",
-  "last_edition": "2026-10-31",
+  "last_updated": "2026-11-01T08:49:32.526Z",
+  "last_edition": "2026-11-01",
   "threads": [
     {
       "thread_id": "india-markets-daily",
@@ -533,25 +533,6 @@
       "section": "ai"
     },
     {
-      "thread_id": "small-savings-q3-2026",
-      "title": "PPF stays at 7.1% for a tenth straight quarter; commercial LPG costs ₹67 more in Bengaluru",
-      "entities": [],
-      "facts": {
-        "ppf": "7.1%",
-        "quarter": "Oct-Dec 2026",
-        "commercial_lpg_blr": "2898"
-      },
-      "first_printed": "2026-10-01",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
       "thread_id": "gemini-4-2026",
       "title": "Google opens Gemini 4 Argon to paying users, weeks after holding it back over misuse risks",
       "entities": [],
@@ -568,81 +549,6 @@
         "down": 0
       },
       "section": "ai"
-    },
-    {
-      "thread_id": "asiad-wrestling-2026",
-      "title": "Nitesh Kumar is India's first Greco-Roman finalist at the Games since 1962",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-01",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "sidelines"
-    },
-    {
-      "thread_id": "sc-traffic-challans-2026",
-      "title": "Supreme Court floats blocking licence and RC renewals until traffic fines are paid",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-01",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "dateline"
-    },
-    {
-      "thread_id": "rabi-msp-2027",
-      "title": "Wheat's support price gets its smallest rise in 17 years in the new rabi MSPs",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-01",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "dateline"
-    },
-    {
-      "thread_id": "auto-sales-2026",
-      "title": "Auto shares slide on September sales; Bajaj Auto down about 8%",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-01",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
-      "thread_id": "kotak-ceo-2026",
-      "title": "Kotak Mahindra Bank names insider Anup Kumar Saha as its next managing director and CEO",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-01",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
     },
     {
       "thread_id": "blr-rain-oct-2026",
@@ -689,24 +595,6 @@
         "down": 0
       },
       "section": "pitch"
-    },
-    {
-      "thread_id": "ocon-haas-2027",
-      "title": "Ocon will leave Haas at the end of the season and says he would take a reserve role to stay in F1",
-      "entities": [],
-      "facts": {
-        "leaves": "Haas, end of 2026",
-        "open_2027_seats": "Racing Bulls, Haas"
-      },
-      "first_printed": "2026-10-01",
-      "last_printed": "2026-10-01",
-      "last_change": "2026-10-01",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "paddock"
     },
     {
       "thread_id": "negreira-case",
@@ -8210,7 +8098,7 @@
     },
     {
       "thread_id": "israel-election-2026",
-      "title": "Final results give Netanyahu's bloc 53 seats and Arab parties a record 19, and Likud claims the election was 'stolen'",
+      "title": "Thousands rally in Tel Aviv for Eisenkot to oust Netanyahu with Arab parties' support, after Tuesday's deadlocked election",
       "entities": [],
       "facts": {
         "polling day": "Tue 27 Oct",
@@ -8223,14 +8111,15 @@
         "Yashar": "about 21 seats",
         "turnout": "77.7%",
         "Arab turnout": "about 80% (Channel 12)",
-        "Netanyahu bloc": "53",
-        "Eisenkot bloc": "48",
+        "Netanyahu bloc": "53 seats",
+        "Eisenkot bloc": "48 seats",
         "Arab parties": "19, a record",
-        "to Herzog": "next Wednesday"
+        "to Herzog": "next Wednesday",
+        "Arab-led parties": "19 seats"
       },
       "first_printed": "2026-10-26",
-      "last_printed": "2026-10-30",
-      "last_change": "2026-10-30",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9131,18 +9020,22 @@
     },
     {
       "thread_id": "alcaraz-2026",
-      "title": "Alcaraz breaks Khachanov as he serves for the set and reaches the last 16 in Vienna, 6-4, 7-6",
+      "title": "Alcaraz will face Alex de Minaur in the Vienna final after de Minaur knocks out the top seed, Zverev",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "semi-final": "Alcaraz bt Medvedev 6-4, 7-6",
+        "other semi": "de Minaur bt Zverev 6-4, 1-6, 7-6",
+        "final": "Sun 1 Nov, 18:30 IST"
+      },
       "first_printed": "2026-10-28",
-      "last_printed": "2026-10-28",
-      "last_change": "2026-10-28",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "sidelines"
+      "section": "deuce"
     },
     {
       "thread_id": "karnataka-politics-2026",
@@ -9657,23 +9550,26 @@
     },
     {
       "thread_id": "binance-hack-2026",
-      "title": "Binance says $6.3bn was stolen in what may be the biggest hack ever, and analysts blame North Korea",
+      "title": "The FBI blames North Korea for the $6.3bn Binance hack, as the exchange says it has replaced 90% of the stolen funds",
       "entities": [],
       "facts": {
         "stolen": "$6.3bn",
         "frozen": "about half",
         "suspect": "North Korea's TraderTraitor unit (TRM Labs, Chainalysis)",
-        "previous record": "Bybit, $1.5bn, 2025"
+        "previous record": "Bybit, $1.5bn, 2025",
+        "attacker, per FBI": "TraderTraitor, North Korea",
+        "replaced": "90%",
+        "withdrawals": "resuming in phases from Sun 1 Nov"
       },
       "first_printed": "2026-10-30",
-      "last_printed": "2026-10-30",
-      "last_change": "2026-10-30",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "videsh"
+      "section": "ledger"
     },
     {
       "thread_id": "bhutan-glof-2026",
@@ -9990,16 +9886,19 @@
     },
     {
       "thread_id": "f1-mexico-2026",
-      "title": "Verstappen and Lawson each get a one-place grid penalty for a 'clumsy' clash in practice, as Leclerc tops Friday in Mexico",
+      "title": "Hamilton takes his first Ferrari pole in Mexico, and Lawson is thrown out of qualifying for a battery breach",
       "entities": [],
       "facts": {
         "penalty": "one grid place each",
         "fastest Friday": "Leclerc",
-        "race": "Mon 2 Nov, 01:30 IST"
+        "race": "Mon 2 Nov, 01:30 IST",
+        "pole": "Hamilton",
+        "front row": "Hamilton, Russell; Leclerc third",
+        "disqualified": "Lawson, MGU-K step-down breach"
       },
       "first_printed": "2026-10-30",
-      "last_printed": "2026-10-31",
-      "last_change": "2026-10-31",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10039,12 +9938,15 @@
     },
     {
       "thread_id": "up-teacher-recruitment-2026",
-      "title": "Police end a four-day protest by teacher job aspirants outside Prayagraj's education directorate and detain dozens",
+      "title": "The High Court orders two flawed UPTET-2026 questions dropped and results recomputed for every affected candidate",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "questions dropped": "36 and 37",
+        "test now counts": "148 questions"
+      },
       "first_printed": "2026-10-30",
-      "last_printed": "2026-10-30",
-      "last_change": "2026-10-30",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10215,12 +10117,15 @@
     },
     {
       "thread_id": "us-iran-talks-2026",
-      "title": "A draft US-Iran framework would move Iran's enriched uranium abroad and reopen Hormuz within seven days, Al Arabiya reports",
+      "title": "Rubio says Trump has not decided on new strikes on Iran, as Tehran offers to reopen Hormuz within two days if its demands are met",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "Rubio": "no decision on new strikes",
+        "Iran's offer": "reopen Hormuz within two days, on conditions"
+      },
       "first_printed": "2026-10-31",
-      "last_printed": "2026-10-31",
-      "last_change": "2026-10-31",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10369,12 +10274,14 @@
     },
     {
       "thread_id": "aston-villa-2026",
-      "title": "Aston Villa say they will sue Jamie Carragher over 'unacceptable insults' after he suggested Unai Emery wants the Manchester United job",
+      "title": "Jamie Carragher apologises to Aston Villa for 'clumsy and wrong' language after the club threatened to sue him",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "apology": "Sat 31 Oct, on social media"
+      },
       "first_printed": "2026-10-31",
-      "last_printed": "2026-10-31",
-      "last_change": "2026-10-31",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10465,6 +10372,351 @@
       "first_printed": "2026-10-31",
       "last_printed": "2026-10-31",
       "last_change": "2026-10-31",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "india-bloc-cec-2026",
+      "title": "The INDIA bloc rallies at Ramlila Maidan to demand the removal of election chief Gyanesh Kumar, a day after a mock impeachment",
+      "entities": [],
+      "facts": {
+        "rally": "Ramlila Maidan, Sun 1 Nov",
+        "mock impeachment": "Sat 31 Oct, six charges",
+        "voters deleted, alleged": "13.2 crore"
+      },
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "europe-youth-protests-2026",
+      "title": "Youth protests over living costs turn violent in Germany and France, with shops looted in Frankfurt and 565 arrests in France",
+      "entities": [],
+      "facts": {
+        "France turnout": "about 320,000",
+        "France arrests": "565",
+        "Germany": "up to 18,000, per authorities"
+      },
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "apple-intelligence-china-2026",
+      "title": "Apple will put Alibaba's Qwen models into Siri and Apple Intelligence in China, with testing from 4 November",
+      "entities": [],
+      "facts": {
+        "testing": "from 4 November, iOS developer beta",
+        "rollout": "December, iOS 27.3"
+      },
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "delhi-air-2026",
+      "title": "Delhi bans outdoor construction and older out-of-state vehicles from today, and orders offices to keep 50% of staff at home",
+      "entities": [],
+      "facts": {
+        "from": "1 November",
+        "until": "31 January; parking until 28 February",
+        "work from home": "50% of office staff"
+      },
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "anantapur-chainsaw-2026",
+      "title": "A Class 10 girl attacked with an electric chainsaw in her Anantapur classroom is stabilised in a Bengaluru hospital",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "iaf-2026",
+      "title": "Air Chief Marshal Ashutosh Dixit takes over as the 29th IAF chief and puts the LCA Mk-1A and a stealth fighter first",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-the-supreme-court-clears-the-way",
+      "title": "The Supreme Court clears the way for tax reassessments of former chief justice Y.K. Sabharwal's two sons over a 2010 Delhi property deal",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-tdp-and-ysrcp-workers-clash-in",
+      "title": "TDP and YSRCP workers clash in Pulivendula as Andhra Pradesh votes in urban local body elections",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "palestine-action-2026",
+      "title": "London police arrest 139 people outside the US embassy for supporting the banned group Palestine Action",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-hundreds-of-ukrainians-evacuated-from-russian",
+      "title": "Hundreds of Ukrainians evacuated from Russian-occupied Oleshky reunite with their families",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-a-judge-dismisses-trumps-lawsuit-against",
+      "title": "A judge dismisses Trump's lawsuit against The Wall Street Journal over the Epstein birthday book",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "gst-2026",
+      "title": "GST collections rise 23% to ₹2.31 lakh crore in October, the fastest growth in more than four years",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "fuel-export-duty-2026",
+      "title": "The Centre scraps its ₹2.5 a litre export duty on petrol and raises the levy on diesel exports to ₹11.5",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "nintendo-2026",
+      "title": "Nintendo makes today the first Pikmin Day and adds voice commands to Pikmin 4 on the Switch 2",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "aston-villa-fulham-2026",
+      "title": "Zion Suzuki drops a corner into his own net as Fulham hold Aston Villa to a 1-1 draw",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "real-madrid-squad-2026",
+      "title": "Trent Alexander-Arnold has started four of Real Madrid's 13 games, and Mourinho now prefers Valverde at right-back",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "boxing-2026",
+      "title": "Canelo Alvarez, 36, wins back the WBC super-middleweight title on a unanimous decision against Christian Mbilli in Riyadh",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "bundesliga-2026",
+      "title": "Kane misses a penalty as Dortmund equalise in the 89th minute to draw 2-2 at Bayern",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "sa-australia-tests-2026",
+      "title": "South Africa beat Australia in the Cape Town decider to win the Test series, as Rabada becomes the fastest to 350 Test wickets",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "vande-bharat-karnataka-2026",
+      "title": "The Bengaluru-Mangaluru-Goa Vande Bharat will leave Yesvantpur at 7.35am and reach Madgaon at 8.55pm",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "ranchi-diwali-2026",
+      "title": "Ranchi approves five sites for Diwali firecracker stalls from 4 to 8 November, with wholesale at Morabadi Ground",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "prayagraj-rail-2026",
+      "title": "A new MEMU train links Prayagraj with Kashi, as the Varanasi-Delhi Vande Bharat Sleeper is flagged off",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-01",
+      "last_printed": "2026-11-01",
+      "last_change": "2026-11-01",
       "status": "active",
       "votes": {
         "up": 0,
