@@ -1,32 +1,8 @@
 {
-  "date": "2026-11-01",
+  "date": "2026-11-02",
   "source": "Cricbuzz",
-  "checked_at": "2026-11-01T08:42:39.032Z",
+  "checked_at": "2026-11-02T08:42:54.512Z",
   "matches": [
-    {
-      "desc": "11th/12th Bowl, Play-off",
-      "format": "T20",
-      "series": "Hong Kong Sixes 2026",
-      "opponent": "Bangladesh",
-      "start": "2026-11-01T01:40:00.000Z",
-      "ist": "Sun 1 Nov, 07:10",
-      "time_announced": true,
-      "ground": "Mission Road Ground",
-      "city": "Mong Kok",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/175190"
-    },
-    {
-      "desc": "5th T20I",
-      "format": "T20",
-      "series": "India tour of New Zealand 2026",
-      "opponent": "New Zealand",
-      "start": "2026-11-01T07:00:00.000Z",
-      "ist": "Sun 1 Nov, 12:30",
-      "time_announced": true,
-      "ground": "Seddon Park",
-      "city": "Hamilton",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/161234"
-    },
     {
       "desc": "1st ODI",
       "format": "ODI",
@@ -342,28 +318,10 @@
   ],
   "series": [
     {
-      "name": "Hong Kong Sixes 2026",
-      "opponent": "Bangladesh",
-      "from": "2026-11-01",
-      "parts": [
-        {
-          "format": "T20",
-          "total": null,
-          "played": null
-        }
-      ],
-      "now": true
-    },
-    {
       "name": "India tour of New Zealand 2026",
       "opponent": "New Zealand",
-      "from": "2026-11-01",
+      "from": "2026-11-04",
       "parts": [
-        {
-          "format": "T20",
-          "total": 5,
-          "played": 4
-        },
         {
           "format": "ODI",
           "total": 5,
