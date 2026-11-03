@@ -1,7 +1,13 @@
 {
-  "date": "2026-11-02",
-  "from": "2026-11-01",
+  "date": "2026-11-03",
+  "from": "2026-11-02",
   "carry": [
+    {
+      "id": "pm:us-iran-ceasefire-continues-throughptptpt",
+      "title": "US-Iran ceasefire continues through...?",
+      "since": "2026-10-08",
+      "reason": "#1 by 24h volume"
+    },
     {
       "id": "pm:next-french-presidential-election",
       "title": "Next French Presidential Election",
@@ -9,10 +15,10 @@
       "reason": "#2 by 24h volume"
     },
     {
-      "id": "pm:us-iran-ceasefire-continues-throughptptpt",
-      "title": "US-Iran ceasefire continues through...?",
-      "since": "2026-10-08",
-      "reason": "#3 by 24h volume; Through November 4 moved 7.0 pts since printed"
+      "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
+      "title": "US announces end of Iranian blockade by...?",
+      "since": "2026-10-31",
+      "reason": "#3 by 24h volume"
     },
     {
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
@@ -21,29 +27,22 @@
       "reason": "#5 by 24h volume"
     },
     {
-      "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
-      "title": "US announces end of Iranian blockade by...?",
-      "since": "2026-10-31",
-      "reason": "#6 by 24h volume"
-    },
-    {
-      "id": "pm:epl-2027-champion-20260701200428749",
-      "title": "EPL: 2027 Champion",
-      "since": "2026-11-01",
-      "reason": "#9 by 24h volume; Arsenal moved 5.5 pts since printed"
-    },
-    {
-      "id": "pm:crint-nzl-ind-2026-11-03",
-      "title": "India Tour of New Zealand ODIs: New Zealand vs India",
-      "since": "2026-10-30",
-      "reason": "next in line; New Zealand moved 15.5 pts since printed"
+      "id": "pm:largest-ipo-by-market-cap-in-2026-287",
+      "title": "Largest IPO by market cap in 2026?",
+      "since": "2026-11-02",
+      "reason": "#12 by 24h volume; SpaceX moved 8.5 pts since printed"
     }
   ],
   "dropped": [
     {
-      "id": "pm:will-the-iranian-regime-fall-by-the-end-of-2026",
-      "title": "Will the Iranian regime fall before 2027?",
-      "why": "cooled: outside the ranking by volume, moved 0.0 pts"
+      "id": "pm:epl-2027-champion-20260701200428749",
+      "title": "EPL: 2027 Champion",
+      "why": "cooled: outside the ranking by volume, moved 0.5 pts"
+    },
+    {
+      "id": "pm:crint-nzl-ind-2026-11-03",
+      "title": "India Tour of New Zealand ODIs: New Zealand vs India",
+      "why": "cooled: outside the ranking by volume, moved 2.5 pts"
     },
     {
       "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
@@ -51,14 +50,14 @@
       "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:atp-biryuko-demin-2026-11-01",
-      "title": "Ningbo: Petr Bar Biryukov vs Yaroslav Demin",
-      "why": "ended or decided, no next market in the same line"
+      "id": "pm:epl-new-eve-2026-11-02",
+      "title": "Newcastle United FC vs. Everton FC",
+      "why": "cooled: outside the ranking by volume, moved 0.0 pts"
     },
     {
-      "id": "pm:lal-rrc-rea-2026-11-01",
-      "title": "Real Racing Club vs. Real Madrid CF",
-      "why": "cooled: outside the ranking by volume, moved 0.0 pts"
+      "id": "pm:wta-volynet-sasnovi-2026-11-02",
+      "title": "Prudential Hong Kong Tennis Open: Katie Volynets vs Aliaksandra Sasnovich",
+      "why": "ended or decided, no next market in the same line"
     }
   ]
 }

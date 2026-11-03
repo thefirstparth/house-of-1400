@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-11-02T08:50:20.055Z",
-  "last_edition": "2026-11-02",
+  "last_updated": "2026-11-03T08:47:26.498Z",
+  "last_edition": "2026-11-03",
   "threads": [
     {
       "thread_id": "india-markets-daily",
@@ -241,28 +241,6 @@
       "section": "desh"
     },
     {
-      "thread_id": "man-city-115-charges",
-      "title": "Manchester City lodge their appeal, saying the ruling has errors of law and fact",
-      "entities": [],
-      "facts": {
-        "verdict": "guilty on 114 of 115",
-        "sanction": "not set",
-        "appeal": "lodged 1 Oct",
-        "club_response": "chairman confident of innocence",
-        "inflated": "830m pounds disguised funding",
-        "pinto": "losing witness protection"
-      },
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "pitch"
-    },
-    {
       "thread_id": "mbappe-knee-2026",
       "title": "Mbappé expected to be fit for Villarreal, though Mourinho may save him for Roma",
       "entities": [],
@@ -307,27 +285,6 @@
         "down": 0
       },
       "section": "ai"
-    },
-    {
-      "thread_id": "asian-games-cricket-2026",
-      "title": "India beat Pakistan by 19 runs to keep the Asian Games cricket gold",
-      "entities": [],
-      "facts": {
-        "qf": "washed out, India through",
-        "sf": "beat Sri Lanka by 124 runs",
-        "final": "beat Pakistan by 19 runs",
-        "scores": "IND 211/6, PAK 192/6",
-        "medal": "gold"
-      },
-      "first_printed": "2026-09-28",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "crease"
     },
     {
       "thread_id": "india-us-ties-2026",
@@ -383,7 +340,7 @@
     },
     {
       "thread_id": "anthropic-ipo-2026",
-      "title": "Anthropic's filing shows Amazon, not the venture funds, stands to gain most from its listing, with notes Amazon values at $97.9bn",
+      "title": "Anthropic's revenue jumps to $17bn in the third quarter ahead of its IPO, as its filing warns it is close to AI that improves itself",
       "entities": [],
       "facts": {
         "revenue_2025": "$4.59bn",
@@ -395,16 +352,18 @@
         "accounting charges": "$72bn",
         "H1 revenue": "$16.3bn",
         "ticker": "ANT",
-        "Q3 revenue": "$16.8bn, up 45% on the quarter",
+        "Q3 revenue": "$17bn, from $1.4bn",
         "2025 net loss": "about $42bn, incl. a $34bn charge",
         "IT stocks": "down up to 3%",
         "private valuation": "$965bn",
         "Amazon notes": "$6.2bn principal, valued at $97.9bn",
-        "non-cash charge, H1 2026": "$72.4bn"
+        "non-cash charge, H1 2026": "$72.4bn",
+        "net loss": "$23.3bn",
+        "compute commitments": "about $895bn"
       },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-10-28",
-      "last_change": "2026-10-28",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -662,54 +621,6 @@
       "section": "back"
     },
     {
-      "thread_id": "g7-oil-release-2026",
-      "title": "G7 nations agree to release 100 million barrels of oil and diesel after Trump's export threat",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-03",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "videsh"
-    },
-    {
-      "thread_id": "nayara-fuel-prices-2026",
-      "title": "Nayara Energy raises petrol by ₹5 and diesel by ₹3 a litre at its pumps",
-      "entities": [],
-      "facts": {
-        "petrol": "+5",
-        "diesel": "+3"
-      },
-      "first_printed": "2026-10-03",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
-      "thread_id": "us-jobs-2026",
-      "title": "US adds just 29,000 jobs in September; unemployment rises to 4.2%",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-03",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
       "thread_id": "india-brazil-football-2026",
       "title": "Brazil beat India 4–0 in Kolkata after Gurpreet held Vinícius out for 27 minutes",
       "entities": [],
@@ -727,98 +638,26 @@
       "section": "pitch"
     },
     {
-      "thread_id": "pretorius-record-2026",
-      "title": "Lhuan-dre Pretorius makes 188 not out, the highest score in T20 history",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-03",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "sidelines"
-    },
-    {
-      "thread_id": "sri-city-blast-2026",
-      "title": "Boiler explosion at a Sri City pharma plant kills five and injures ten",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-03",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "desh"
-    },
-    {
       "thread_id": "hormuz-shipping-2026",
-      "title": "A tanker carrying 27 Indian seafarers is hit by limpet mines in the Strait of Hormuz, and all are safe",
+      "title": "An Indian seafarer is killed when an aerial object hits the vessel Al Jusufi off Oman, and 13 crew are rescued",
       "entities": [],
       "facts": {
         "ship": "MT Louise 1, Panama-flagged",
         "Indian crew": "27, all safe",
-        "place": "about 46 km northeast of Khasab, Oman"
+        "place": "about 46 km northeast of Khasab, Oman",
+        "killed": "Gandhar Nahim Ajij, from Gujarat",
+        "rescued": "13 Indians",
+        "where": "near Limah, Oman"
       },
       "first_printed": "2026-10-03",
-      "last_printed": "2026-10-31",
-      "last_change": "2026-10-31",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
       "section": "desh"
-    },
-    {
-      "thread_id": "us-temple-attack-2026",
-      "title": "A Swaminarayan temple in the US is attacked with bricks while devotees are inside",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-03",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "videsh"
-    },
-    {
-      "thread_id": "apple-mac-ai-agents",
-      "title": "Apple tightens Mac disk access because AI agents are reading too much",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-03",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "tech"
-    },
-    {
-      "thread_id": "karnataka-drought-2026",
-      "title": "Karnataka seeks ₹3,705 crore in drought relief; losses may reach ₹60,000 crore",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-03",
-      "last_printed": "2026-10-03",
-      "last_change": "2026-10-03",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "namma"
     },
     {
       "thread_id": "india-pak-border-2026",
@@ -1807,7 +1646,7 @@
     },
     {
       "thread_id": "iphone-duo-2026",
-      "title": "Apple sends stores a memo on fixing iPhone Duo screen cracks, and Samsung mocks the fault in a Galaxy Z Fold 8 advert",
+      "title": "Apple sets an all-time revenue record in India and iPhone sales rise 17%, but it cannot say when Duo shortages will end",
       "entities": [],
       "facts": {
         "price_from": "₹2,99,900",
@@ -1831,11 +1670,14 @@
         "Apple": "'an issue impacting the inner display on a small number'",
         "UK price": "from £1,999",
         "source": "Shahram Mokhtari, iFixit",
-        "memo": "inspect, then repair or replace"
+        "memo": "inspect, then repair or replace",
+        "iPhone revenue": "$57.6bn, up 17%",
+        "India": "all-time revenue record",
+        "Duo": "no date for supply to meet demand"
       },
       "first_printed": "2026-10-06",
-      "last_printed": "2026-10-31",
-      "last_change": "2026-10-31",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -1957,10 +1799,10 @@
     },
     {
       "thread_id": "ukraine-war-2026",
-      "title": "Russian and Ukrainian air raid alert apps are hacked as a local truce in Kherson ends",
+      "title": "Russian bombs kill at least 29 people at a school used to hand out aid in Zaporizhzhia, days after a truce ended",
       "entities": [],
       "facts": {
-        "dead": 30,
+        "dead": "at least 29",
         "place": "Kramatorsk",
         "meeting": "Putin and Witkoff, St Petersburg, Wed, about three hours",
         "strikes": "refineries to resume",
@@ -1980,11 +1822,13 @@
         "Kyiv adviser": "Serhiy Beskrestnov",
         "sale": "500 interceptors, $2.1bn",
         "Ukraine": "fake nuclear and chemical alerts",
-        "Russia": "emergencies app hit by cyberattack"
+        "Russia": "emergencies app hit by cyberattack",
+        "missing": "48",
+        "bombs": "at least nine 3,000kg aerial bombs"
       },
       "first_printed": "2026-10-07",
-      "last_printed": "2026-11-02",
-      "last_change": "2026-11-02",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2963,7 +2807,7 @@
     },
     {
       "thread_id": "arsenal-2026",
-      "title": "Arsenal win 1-0 at Anfield through Kai Havertz, with Declan Rice praised for a defensive masterclass",
+      "title": "Declan Rice calls Arsenal's 1-0 win at Anfield a performance of champions, their first league win there since 2012",
       "entities": [],
       "facts": {
         "score": "1-1, Fleetwood won 5-3 on penalties",
@@ -2973,11 +2817,13 @@
         "out for": "at least six weeks",
         "City": "lost 2-1 at Aston Villa",
         "ban": "three matches",
-        "result": "Liverpool 0-1 Arsenal"
+        "result": "Liverpool 0-1 Arsenal",
+        "last league win at Anfield": "2012",
+        "goal": "Havertz, 16th minute"
       },
       "first_printed": "2026-10-14",
-      "last_printed": "2026-11-02",
-      "last_change": "2026-11-02",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3447,12 +3293,15 @@
     },
     {
       "thread_id": "namma-metro-2026",
-      "title": "Namma Metro carries a donor heart across the city in 18 minutes",
+      "title": "The Pink Line's elevated stretch is likely to open on 13 November, MP Tejasvi Surya hints",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "Pink Line elevated stretch": "7.5 km, six stations",
+        "likely opening": "13 November"
+      },
       "first_printed": "2026-10-15",
-      "last_printed": "2026-10-15",
-      "last_change": "2026-10-15",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8457,12 +8306,15 @@
     },
     {
       "thread_id": "gold-2026",
-      "title": "Gold slips to about $4,005 an ounce ahead of Wednesday's Fed decision, as traders bet on a rate rise by December",
+      "title": "India's gold demand is set to fall to a six-year low of about 650 tonnes this year, the World Gold Council says",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "2026 demand forecast": "about 650 tonnes",
+        "Q3 demand": "162.5 tonnes, down 29%"
+      },
       "first_printed": "2026-10-27",
-      "last_printed": "2026-10-27",
-      "last_change": "2026-10-27",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10000,15 +9852,18 @@
     },
     {
       "thread_id": "us-iran-talks-2026",
-      "title": "Rubio says Trump has not decided on new strikes on Iran, as Tehran offers to reopen Hormuz within two days if its demands are met",
+      "title": "The US strikes Iran's Qeshm Island in the Strait of Hormuz, calling them defensive strikes, on the eve of the midterm elections",
       "entities": [],
       "facts": {
         "Rubio": "no decision on new strikes",
-        "Iran's offer": "reopen Hormuz within two days, on conditions"
+        "Iran's offer": "reopen Hormuz within two days, on conditions",
+        "targets": "Qeshm Island; blasts also at Bandar Lengeh",
+        "US description": "defensive strikes",
+        "Brent, Tue": "up 1.6%, about $106.50"
       },
       "first_printed": "2026-10-31",
-      "last_printed": "2026-11-01",
-      "last_change": "2026-11-01",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10617,16 +10472,18 @@
     },
     {
       "thread_id": "markets-india-2026",
-      "title": "The Sensex rises 0.9% to its highest level since September as oil falls and Reliance jumps on its results",
+      "title": "The Sensex closed Monday up 1.7% at 75,693 as Reliance extended its rally, and rose another 1.2% on Tuesday",
       "entities": [],
       "facts": {
         "Sensex, 2pm": "75,108, up 648 points (0.9%)",
         "Brent": "down 3.5%, about $109.50",
-        "Reliance": "up more than 5%"
+        "Reliance": "up more than 5%",
+        "Monday close": "75,693, up 1.7%",
+        "Tuesday 2pm": "76,630, up 1.2%"
       },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-02",
-      "last_change": "2026-11-02",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10636,16 +10493,19 @@
     },
     {
       "thread_id": "us-midterms-2026",
-      "title": "Americans vote on Tuesday for control of Congress, as a Michigan Democrat backs her party's Republican rival and a judge throws out a Trump-backed suit in Alaska",
+      "title": "Americans vote today for control of Congress, with prices and the Iran war weighing on Trump's Republicans",
       "entities": [],
       "facts": {
         "election day": "Tue 3 Nov",
         "Michigan": "Stevens endorsed Republican Mike Rogers",
-        "Alaska": "DOJ suit dismissed; appeal planned"
+        "Alaska": "DOJ suit dismissed; appeal planned",
+        "vote": "Tue 3 Nov",
+        "top issue": "cost of living",
+        "California ballots": "20,000; Supreme Court refused to set them aside"
       },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-02",
-      "last_change": "2026-11-02",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10778,12 +10638,15 @@
     },
     {
       "thread_id": "swift-telescope-2026",
-      "title": "NASA's Swift telescope will fall back to Earth in the next few days, after a rescue mission failed to lift its orbit",
+      "title": "NASA's Swift observatory is expected to fall back to Earth on Wednesday at about 14:00 IST, give or take 11 hours",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "re-entry": "Wed 4 Nov, about 08:30 GMT, plus or minus 11 hours",
+        "risk": "about one in 2,100"
+      },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-02",
-      "last_change": "2026-11-02",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10857,12 +10720,15 @@
     },
     {
       "thread_id": "india-nz-odis-2026",
-      "title": "Rachin Ravindra and Mark Chapman are ruled out of New Zealand's ODI series against India",
+      "title": "Devon Conway is ruled out of Wednesday's first ODI with concussion after colliding with Matt Henry in training",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "Conway": "concussion, out of 1st ODI",
+        "replacement": "Tim Seifert"
+      },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-02",
-      "last_change": "2026-11-02",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10908,6 +10774,313 @@
       "first_printed": "2026-11-02",
       "last_printed": "2026-11-02",
       "last_change": "2026-11-02",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "dia-mirza-diwali-2026",
+      "title": "The Bombay High Court orders the BMC to restore Dia Mirza's firecracker-free Diwali video, pulled after BJP objections",
+      "entities": [],
+      "facts": {
+        "order": "re-upload Mirza's clip",
+        "bench": "Justices Girish Kulkarni and Neela Gokhale"
+      },
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "indian-navy-piracy-2026",
+      "title": "Indian Navy commandos airdropped from a C-17 retake a hijacked fishing vessel off Somalia and free all 20 crew",
+      "entities": [],
+      "facts": {
+        "vessel": "Azini",
+        "crew freed": "20",
+        "operation": "more than 48 hours"
+      },
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "nepal-air-2026",
+      "title": "An Indian tourist is killed when two helicopters collide while landing near Everest Base Camp",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-delhi-police-suspend-acp-manasvi-vashishta",
+      "title": "Delhi Police suspend ACP Manasvi Vashishta, who led a protest by officers outside police headquarters",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-narendra-modi-opens-and-lays-foundation",
+      "title": "Narendra Modi opens and lays foundation stones for Pune Metro projects worth ₹21,800 crore",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-modi-says-india-aims-to-add",
+      "title": "Modi says India aims to add 500 GW of renewable capacity over the next decade",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "uk-immigration-2026",
+      "title": "Britain doubles the wait for permanent residency to 10 years for most migrants, but exempts care workers",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-a-child-in-new-york-dies",
+      "title": "A child in New York dies of measles, the state's first such death in 30 years",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-a-texas-tech-entrepreneur-his-wife",
+      "title": "A Texas tech entrepreneur, his wife and their two young children were among the nine killed in the Florida jet crash",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-nse-international-exchange-in-gift-city",
+      "title": "NSE International Exchange in GIFT City begins trading 23.5 hours a day",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "line-hundreds-of-ordinary-looking-ai-apps",
+      "title": "Hundreds of ordinary-looking AI apps hide tools for sexually abusive deepfakes, a WIRED investigation finds",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "android-security-2026",
+      "title": "Google says a Chinese partner built a backdoor into 1.3 million Android TV boxes and ran them as a botnet",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "nwsl-2026",
+      "title": "Gotham FC win the NWSL Shield on the league's biggest Decision Day, with all 16 teams playing at once",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "australia-cricket-2026",
+      "title": "Australia's 'Big Show' Maxwell retires from international cricket after 286 matches and three world titles",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "sri-lanka-tour-2026",
+      "title": "The first India-Sri Lanka ODI on 13 December is likely to be moved out of Delhi over pollution",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "indiranagar-snatch-2026",
+      "title": "Locals overpower a man who held a shop worker at knifepoint in Indiranagar and glued her hands to a table",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "mercedes-2026",
+      "title": "Toto Wolff calls Antonelli a role model for F1's 'entitled' drivers and 'endless moaners on the radio'",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "paddock"
+    },
+    {
+      "thread_id": "ranchi-festivals-2026",
+      "title": "Ranchi deploys more than 1,200 sanitation workers across 72 ghats before Chhath",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "ranchi-clinic-rates-2026",
+      "title": "Ranchi's hospitals and clinics get seven days to display their treatment rates and doctors' credentials",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "allahabad-hc-vandalism-2026",
+      "title": "The Allahabad High Court recommends FIRs and contempt action against lawyers who vandalised a courtroom",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-03",
+      "last_printed": "2026-11-03",
+      "last_change": "2026-11-03",
       "status": "active",
       "votes": {
         "up": 0,
