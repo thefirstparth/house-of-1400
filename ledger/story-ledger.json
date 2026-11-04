@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-11-03T08:47:26.498Z",
-  "last_edition": "2026-11-03",
+  "last_updated": "2026-11-04T08:46:46.028Z",
+  "last_edition": "2026-11-04",
   "threads": [
     {
       "thread_id": "india-markets-daily",
@@ -66,40 +66,6 @@
         "down": 0
       },
       "section": "madrid"
-    },
-    {
-      "thread_id": "asian-games-2026-india",
-      "title": "Men's hockey team beat Malaysia 5–1 for India's first hockey double; the Games end with India fourth on 85 medals",
-      "entities": [],
-      "facts": {
-        "hockey_men": "beat South Korea 8-2",
-        "rowing": "bronze men's double sculls",
-        "squash": "Anahat and Abhay silver",
-        "badminton": "Sen out; Sindhu and Hooda last 16",
-        "athletics": "Kushare and Sojan silver; Chaudhary NR bronze",
-        "shooting": "Neeru Dhanda trap gold; team silver",
-        "golds": "10",
-        "archery": "women's recurve team gold, men's silver",
-        "boxing": "Parveen 65kg and Ankush 80kg gold",
-        "day12": "sailing silver, squash team bronze, archery bronze",
-        "hockey_sf": "beat Pakistan 4-3",
-        "hockey_finals": "women v China 2 Oct, men v Malaysia 3 Oct, 15:30 IST",
-        "wrestling": "Nitesh 97kg Greco silver",
-        "women_hockey": "gold, beat China 1-0",
-        "tally": "81",
-        "men_hockey": "gold, beat Malaysia 5-1",
-        "final_tally": "85 (21-27-37)",
-        "rank": "4th"
-      },
-      "first_printed": "2026-09-25",
-      "last_printed": "2026-10-04",
-      "last_change": "2026-10-04",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "sidelines"
     },
     {
       "thread_id": "hebbal-tunnel",
@@ -372,26 +338,6 @@
       "section": "ai"
     },
     {
-      "thread_id": "ind-wi-odis-2026",
-      "title": "Shai Hope's 162 not out beats KL Rahul's 129 as West Indies chase 352; India take the series 2–1",
-      "entities": [],
-      "facts": {
-        "result": "lost 3rd ODI by 5 wickets",
-        "series": "won 2-1",
-        "gill": "223* off 133",
-        "squad": "Kamboj in for Prasidh"
-      },
-      "first_printed": "2026-09-30",
-      "last_printed": "2026-10-04",
-      "last_change": "2026-10-04",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "crease"
-    },
-    {
       "thread_id": "madrid-internationals-2026",
       "title": "Vinícius kept out by Gurpreet in Kolkata; Madrid's women lose the Clásico 7–0",
       "entities": [],
@@ -621,23 +567,6 @@
       "section": "back"
     },
     {
-      "thread_id": "india-brazil-football-2026",
-      "title": "Brazil beat India 4–0 in Kolkata after Gurpreet held Vinícius out for 27 minutes",
-      "entities": [],
-      "facts": {
-        "result": "lost 0-4"
-      },
-      "first_printed": "2026-10-03",
-      "last_printed": "2026-10-04",
-      "last_change": "2026-10-04",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "pitch"
-    },
-    {
       "thread_id": "hormuz-shipping-2026",
       "title": "An Indian seafarer is killed when an aerial object hits the vessel Al Jusufi off Oman, and 13 crew are rescued",
       "entities": [],
@@ -652,21 +581,6 @@
       "first_printed": "2026-10-03",
       "last_printed": "2026-11-03",
       "last_change": "2026-11-03",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "desh"
-    },
-    {
-      "thread_id": "india-pak-border-2026",
-      "title": "India and Pakistan summon each other's diplomats after two Pakistanis are shot dead at the Punjab border",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-04",
-      "last_printed": "2026-10-04",
-      "last_change": "2026-10-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -711,81 +625,6 @@
         "down": 0
       },
       "section": "videsh"
-    },
-    {
-      "thread_id": "bitchat-india-2026",
-      "title": "Bitchat, Jack Dorsey's offline messaging app, is pulled from Indian app stores on a government order",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-04",
-      "last_printed": "2026-10-04",
-      "last_change": "2026-10-04",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "tech"
-    },
-    {
-      "thread_id": "india-ukraine-peace-2026",
-      "title": "Ukraine says it will consider India's proposal for an energy and Black Sea truce",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-04",
-      "last_printed": "2026-10-04",
-      "last_change": "2026-10-04",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "desh"
-    },
-    {
-      "thread_id": "gas-prices-oct-2026",
-      "title": "Centre raises the price ceiling for deepwater gas to $9.89; the cap for older fields stays at $7",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-04",
-      "last_printed": "2026-10-04",
-      "last_change": "2026-10-04",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
-      "thread_id": "madrid-squad-oct-2026",
-      "title": "Konaté expected to miss the Villarreal game, reports say",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-04",
-      "last_printed": "2026-10-04",
-      "last_change": "2026-10-04",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "madrid"
-    },
-    {
-      "thread_id": "croatia-england-oct-2026",
-      "title": "England win 7–0 in Croatia, the heaviest defeat in Croatia's history",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-04",
-      "last_printed": "2026-10-04",
-      "last_change": "2026-10-04",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "pitch"
     },
     {
       "thread_id": "jio-ipo-2026",
@@ -2498,21 +2337,22 @@
     },
     {
       "thread_id": "man-utd-2026",
-      "title": "Lisandro Martínez blames Manchester United's board after a 2–0 defeat at Atlético Madrid",
+      "title": "Manchester United come from two down to beat Roma 3-2, with two late goals from Matheus Cunha",
       "entities": [],
       "facts": {
-        "score": "Atlético 2-0 United",
-        "red": "Yoro"
+        "score": "Man Utd 3-2 Roma",
+        "red": "Yoro",
+        "run": "first win in 10 games"
       },
       "first_printed": "2026-10-13",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "pitch"
+      "section": "sidelines"
     },
     {
       "thread_id": "icc-awards-2026",
@@ -5144,15 +4984,16 @@
     },
     {
       "thread_id": "oil-prices-2026",
-      "title": "Brent crude climbs again to $110 a barrel as US stockpiles fall and Gulf supply fears persist",
+      "title": "Brent recovers to about $103.60 a barrel after a four-week low, as analysts warn Gulf supply will be slow to return",
       "entities": [],
       "facts": {
-        "Brent": "$110.30",
-        "WTI": "$99.12"
+        "Brent": "about $103.60",
+        "WTI": "$99.12",
+        "Hormuz exports, October": "17.1 million barrels a day"
       },
       "first_printed": "2026-10-20",
-      "last_printed": "2026-10-21",
-      "last_change": "2026-10-21",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8814,7 +8655,7 @@
     },
     {
       "thread_id": "spain-train-crash-2026",
-      "title": "Four Americans and citizens of Canada, Japan and five other countries are among the 69 killed in Spain's train crash",
+      "title": "Spain's transport minister Óscar Puente resigns six days after the train crash that killed 69",
       "entities": [],
       "facts": {
         "killed": "at least 68",
@@ -8822,11 +8663,14 @@
         "place": "near Urda, Toledo, Madrid-Seville line",
         "mourning": "three days",
         "dead": "69, including 54 Spaniards",
-        "foreign dead": "four Americans among them"
+        "foreign dead": "four Americans among them",
+        "resigned": "Óscar Puente, transport minister",
+        "crash": "28 October, 69 dead",
+        "cause": "train authorised past a red signal"
       },
       "first_printed": "2026-10-29",
-      "last_printed": "2026-11-02",
-      "last_change": "2026-11-02",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9156,24 +9000,25 @@
     },
     {
       "thread_id": "djokovic-2026",
-      "title": "Djokovic, seeded 10th at the Paris Masters, opens against Valentin Vacherot and could meet Zverev in the quarter-finals",
+      "title": "Djokovic beats the Basel champion Valentin Vacherot from a set down in Paris, and plays Rinky Hijikata today",
       "entities": [],
       "facts": {
-        "score": "6-7, 7-5, 7-6",
+        "score": "6-7, 7-5, 6-1",
         "race gap": "319 points behind Jodar",
         "Finals": "15-22 Nov, Turin",
         "seed": "10",
-        "first match": "Valentin Vacherot"
+        "first match": "Valentin Vacherot",
+        "next": "Rinky Hijikata"
       },
       "first_printed": "2026-10-29",
-      "last_printed": "2026-10-31",
-      "last_change": "2026-10-31",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "sidelines"
+      "section": "deuce"
     },
     {
       "thread_id": "bayern-2026",
@@ -10119,7 +9964,7 @@
     },
     {
       "thread_id": "india-bloc-cec-2026",
-      "title": "Rahul Gandhi tells a vast Ramlila Maidan rally that the election chief 'carried out the biggest crime' as 130 million voters were struck off",
+      "title": "The Election Commission still makes struck-off Delhi voters reapply as new voters, petitioners tell the Supreme Court",
       "entities": [],
       "facts": {
         "rally": "Ramlila Maidan, Sun 1 Nov",
@@ -10127,11 +9972,13 @@
         "voters deleted, alleged": "13.2 crore",
         "crowd": "tens of thousands",
         "names removed, per The Guardian": "130 million",
-        "Ansari": "threatened to take Kumar to Ranchi"
+        "Ansari": "threatened to take Kumar to Ranchi",
+        "claims deadline": "25 November",
+        "hearing": "after the Deepavali break"
       },
       "first_printed": "2026-11-01",
-      "last_printed": "2026-11-02",
-      "last_change": "2026-11-02",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10178,18 +10025,20 @@
     },
     {
       "thread_id": "delhi-air-2026",
-      "title": "Delhi's air turns 'very poor' for the first time this season, a day after its winter curbs began",
+      "title": "Delhi brings in Stage II of its pollution plan, with extra Metro trips and staggered office hours, as the AQI stays above 300",
       "entities": [],
       "facts": {
         "from": "1 November",
         "until": "31 January; parking until 28 February",
         "work from home": "50% of office staff",
         "AQI": "312 at 9am, Mon 2 Nov",
-        "band": "very poor, first time this season"
+        "band": "very poor, first time this season",
+        "GRAP": "Stage II",
+        "Metro": "20 extra weekday trips"
       },
       "first_printed": "2026-11-01",
-      "last_printed": "2026-11-02",
-      "last_change": "2026-11-02",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10337,12 +10186,15 @@
     },
     {
       "thread_id": "nintendo-2026",
-      "title": "Nintendo makes today the first Pikmin Day and adds voice commands to Pikmin 4 on the Switch 2",
+      "title": "Nintendo's remake of The Legend of Zelda: Ocarina of Time comes out on the Switch 2 tomorrow, 28 years after the original",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "release": "5 November",
+        "platform": "Switch 2"
+      },
       "first_printed": "2026-11-01",
-      "last_printed": "2026-11-01",
-      "last_change": "2026-11-01",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10472,18 +10324,20 @@
     },
     {
       "thread_id": "markets-india-2026",
-      "title": "The Sensex closed Monday up 1.7% at 75,693 as Reliance extended its rally, and rose another 1.2% on Tuesday",
+      "title": "The Sensex gives up an early 478-point gain on profit booking, then recovers to stand 0.3% higher at 2pm",
       "entities": [],
       "facts": {
         "Sensex, 2pm": "75,108, up 648 points (0.9%)",
         "Brent": "down 3.5%, about $109.50",
         "Reliance": "up more than 5%",
         "Monday close": "75,693, up 1.7%",
-        "Tuesday 2pm": "76,630, up 1.2%"
+        "Tuesday 2pm": "76,630, up 1.2%",
+        "early gain": "478 points",
+        "2pm": "up 0.3%"
       },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-03",
-      "last_change": "2026-11-03",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10493,7 +10347,7 @@
     },
     {
       "thread_id": "us-midterms-2026",
-      "title": "Americans vote today for control of Congress, with prices and the Iran war weighing on Trump's Republicans",
+      "title": "Democrats win both houses of Congress in a 'blue wave', taking Senate seats in Kansas, Texas and South Carolina",
       "entities": [],
       "facts": {
         "election day": "Tue 3 Nov",
@@ -10501,11 +10355,14 @@
         "Alaska": "DOJ suit dismissed; appeal planned",
         "vote": "Tue 3 Nov",
         "top issue": "cost of living",
-        "California ballots": "20,000; Supreme Court refused to set them aside"
+        "California ballots": "20,000; Supreme Court refused to set them aside",
+        "Senate": "Democratic majority; seven seats flipped",
+        "House": "Democratic majority; more than two dozen seats flipped",
+        "Ohio governor": "Amy Acton beat Vivek Ramaswamy"
       },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-03",
-      "last_change": "2026-11-03",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10638,15 +10495,17 @@
     },
     {
       "thread_id": "swift-telescope-2026",
-      "title": "NASA's Swift observatory is expected to fall back to Earth on Wednesday at about 14:00 IST, give or take 11 hours",
+      "title": "NASA's Swift telescope is due to fall to Earth today after a $30m robotic rescue mission failed",
       "entities": [],
       "facts": {
         "re-entry": "Wed 4 Nov, about 08:30 GMT, plus or minus 11 hours",
-        "risk": "about one in 2,100"
+        "risk": "about one in 2,100",
+        "rescue cost": "$30m",
+        "launched": "2004"
       },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-03",
-      "last_change": "2026-11-03",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10720,15 +10579,18 @@
     },
     {
       "thread_id": "india-nz-odis-2026",
-      "title": "Devon Conway is ruled out of Wednesday's first ODI with concussion after colliding with Matt Henry in training",
+      "title": "Arshdeep's four wickets bowl New Zealand out for 185 in Auckland, and Kohli becomes the first to 13,000 ODI runs at No. 3",
       "entities": [],
       "facts": {
         "Conway": "concussion, out of 1st ODI",
-        "replacement": "Tim Seifert"
+        "replacement": "Tim Seifert",
+        "New Zealand": "185 all out, 40.2 overs",
+        "India at the cut": "64 for one after 12 overs, rain",
+        "Kohli": "13,000 ODI runs at No. 3"
       },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-03",
-      "last_change": "2026-11-03",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -11045,12 +10907,15 @@
     },
     {
       "thread_id": "ranchi-festivals-2026",
-      "title": "Ranchi deploys more than 1,200 sanitation workers across 72 ghats before Chhath",
+      "title": "Ranchi's mayor Roshni Khalkho orders changing rooms for women and stronger barricades at six Chhath ghats",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "ghats inspected": "six",
+        "orders": "changing rooms, barricades, lighting"
+      },
       "first_printed": "2026-11-03",
-      "last_printed": "2026-11-03",
-      "last_change": "2026-11-03",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
       "status": "active",
       "votes": {
         "up": 0,
@@ -11081,6 +10946,309 @@
       "first_printed": "2026-11-03",
       "last_printed": "2026-11-03",
       "last_change": "2026-11-03",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "two-child-norm-2026",
+      "title": "The Supreme Court says laws penalising people for having more than two children have lost their relevance as fertility falls",
+      "entities": [],
+      "facts": {
+        "fertility rate": "from 3 to 1.9",
+        "bench": "headed by Justice P.S. Narasimha",
+        "next": "question referred to a larger bench"
+      },
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "canva-2026",
+      "title": "Canva cuts 1,271 jobs, about 22% of its staff, as its chief executive calls this its 'hardest year yet'",
+      "entities": [],
+      "facts": {
+        "affected": "1,271 employees, about 22%",
+        "countries": "37"
+      },
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "line-the-delhi-high-court-will-hear",
+      "title": "The Delhi High Court will hear on Friday a plea by lawyers against suspended ACP Manasvi Vashishta",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-delhi-police-tell-the-supreme-court",
+      "title": "Delhi Police tell the Supreme Court that the right to protest does not mean a right to occupy one site indefinitely",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "us-senate-michigan-2026",
+      "title": "Michigan elects Abdul El-Sayed, a progressive doctor, as the first Muslim US senator",
+      "entities": [],
+      "facts": {
+        "winner": "Abdul El-Sayed",
+        "beat": "Mike Rogers",
+        "first": "first Muslim US senator"
+      },
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "europe-hybrid-war-2026",
+      "title": "Supermarket fridges fail in at least nine EU countries in a second cyberattack, and experts suspect Russia",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-king-charles-calls-the-slave-trade",
+      "title": "King Charles calls the slave trade a 'shameful chapter' at the Commonwealth summit, but stops short of an apology",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-labour-mps-mostly-accept-britains-longer",
+      "title": "Labour MPs mostly accept Britain's longer wait for settlement after care workers win an exemption",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "apple-intelligence-2026",
+      "title": "Apple lets any app plug into Siri AI in the iOS 27.3 beta, and gives Siri new actions across its own apps",
+      "entities": [],
+      "facts": {
+        "release": "iOS 27.3 developer beta",
+        "new languages": "Traditional Chinese, Vietnamese, Turkish, Norwegian"
+      },
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "google-education-2026",
+      "title": "Google turns its AI tools off by default for school students, but says blocking AI also blocks Search",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "cern-2026",
+      "title": "CERN physicists find the first evidence of a particle decay so rare it happens once in 10 billion, after 42 years of searching",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "champions-league-2026",
+      "title": "Barcelona beat Aston Villa 3-0 at the Camp Nou, with two goals from Raphinha, to go second in the table",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "psg-2026",
+      "title": "PSG win 6-0 at Villarreal and top the Champions League table with 20 goals in four games",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "nyc-marathon-2026",
+      "title": "A 24-year-old runner dies after collapsing two miles from the finish of the New York City Marathon",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "bengaluru-transport-2026",
+      "title": "BMTC's minimum bus fare rises from ₹6 to ₹10 from tonight, and the airport bus goes up to ₹425",
+      "entities": [],
+      "facts": {
+        "BMTC minimum": "₹6 to ₹10",
+        "BMTC maximum": "₹35 to ₹45",
+        "airport bus": "up to ₹425"
+      },
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "bengaluru-roads-2026",
+      "title": "A speeding SUV ploughs through parked bikes into a kebab shop near Bannerghatta, and three men are badly burned",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "jharkhand-drugs-2026",
+      "title": "Jharkhand builds an AI portal to track medicines from maker to patient and flag their misuse as intoxicants",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "prayagraj-students-2026",
+      "title": "The Congress asks the NHRC to investigate reports that poor students in Prayagraj sell blood to pay coaching fees",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "up-politics-2026",
+      "title": "A lawyer is dragged away after heckling Deputy CM Keshav Prasad Maurya about the UGC caste rules at a Prayagraj event",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-04",
+      "last_printed": "2026-11-04",
+      "last_change": "2026-11-04",
       "status": "active",
       "votes": {
         "up": 0,
