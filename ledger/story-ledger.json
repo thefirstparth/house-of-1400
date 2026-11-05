@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-11-04T08:46:46.028Z",
-  "last_edition": "2026-11-04",
+  "last_updated": "2026-11-05T08:47:12.005Z",
+  "last_edition": "2026-11-05",
   "threads": [
     {
       "thread_id": "india-markets-daily",
@@ -338,24 +338,6 @@
       "section": "ai"
     },
     {
-      "thread_id": "madrid-internationals-2026",
-      "title": "Vinícius kept out by Gurpreet in Kolkata; Madrid's women lose the Clásico 7–0",
-      "entities": [],
-      "facts": {
-        "vinicius": "no goal v India",
-        "women": "lost 0-7 to Barcelona"
-      },
-      "first_printed": "2026-09-30",
-      "last_printed": "2026-10-05",
-      "last_change": "2026-10-05",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "madrid"
-    },
-    {
       "thread_id": "dubai-tel-aviv-diversion",
       "title": "Israel scrambled jets and was ready to shoot down the flydubai plane before it turned for Saudi Arabia",
       "entities": [],
@@ -380,24 +362,6 @@
         "down": 0
       },
       "section": "videsh"
-    },
-    {
-      "thread_id": "us-ai-policy-2026",
-      "title": "Trump sets up a 'Super Intelligence Force' of officials, led by intelligence chief Jay Clayton",
-      "entities": [],
-      "facts": {
-        "force": "Super Intelligence Force",
-        "czar": "Jay Clayton"
-      },
-      "first_printed": "2026-09-30",
-      "last_printed": "2026-10-05",
-      "last_change": "2026-10-05",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ai"
     },
     {
       "thread_id": "gemini-4-2026",
@@ -677,66 +641,6 @@
       "first_printed": "2026-10-05",
       "last_printed": "2026-10-29",
       "last_change": "2026-10-29",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "videsh"
-    },
-    {
-      "thread_id": "anthropic-india-2026",
-      "title": "Claude can now run on servers in India through Amazon Bedrock",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-05",
-      "last_printed": "2026-10-05",
-      "last_change": "2026-10-05",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ai"
-    },
-    {
-      "thread_id": "indigo-fuel-charge-2026",
-      "title": "IndiGo raises its fuel charge on domestic and international tickets",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-05",
-      "last_printed": "2026-10-05",
-      "last_change": "2026-10-05",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
-      "thread_id": "everest-recall-2026",
-      "title": "FSSAI orders Everest to recall its cumin powder over unsafe pesticide levels",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-05",
-      "last_printed": "2026-10-05",
-      "last_change": "2026-10-05",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "desh"
-    },
-    {
-      "thread_id": "spain-election-2026",
-      "title": "Spain's Pedro Sánchez calls a snap election for 29 November after housing protests",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-05",
-      "last_printed": "2026-10-05",
-      "last_change": "2026-10-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -2647,7 +2551,7 @@
     },
     {
       "thread_id": "arsenal-2026",
-      "title": "Declan Rice calls Arsenal's 1-0 win at Anfield a performance of champions, their first league win there since 2012",
+      "title": "Arsenal beat Slavia Prague as Viktor Gyökeres scores one and sets up another",
       "entities": [],
       "facts": {
         "score": "1-1, Fleetwood won 5-3 on penalties",
@@ -2657,13 +2561,13 @@
         "out for": "at least six weeks",
         "City": "lost 2-1 at Aston Villa",
         "ban": "three matches",
-        "result": "Liverpool 0-1 Arsenal",
+        "result": "Slavia Prague lost to Arsenal",
         "last league win at Anfield": "2012",
         "goal": "Havertz, 16th minute"
       },
       "first_printed": "2026-10-14",
-      "last_printed": "2026-11-03",
-      "last_change": "2026-11-03",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7664,7 +7568,7 @@
     },
     {
       "thread_id": "israel-election-2026",
-      "title": "Thousands rally in Tel Aviv for Eisenkot to oust Netanyahu with Arab parties' support, after Tuesday's deadlocked election",
+      "title": "Israel's President Herzog begins talks on who should form a government after an election with no clear winner",
       "entities": [],
       "facts": {
         "polling day": "Tue 27 Oct",
@@ -7677,15 +7581,15 @@
         "Yashar": "about 21 seats",
         "turnout": "77.7%",
         "Arab turnout": "about 80% (Channel 12)",
-        "Netanyahu bloc": "53 seats",
-        "Eisenkot bloc": "48 seats",
+        "Netanyahu bloc": "53",
+        "Eisenkot bloc": "48",
         "Arab parties": "19, a record",
         "to Herzog": "next Wednesday",
-        "Arab-led parties": "19 seats"
+        "Arab-led parties": "19"
       },
       "first_printed": "2026-10-26",
-      "last_printed": "2026-11-01",
-      "last_change": "2026-11-01",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9000,7 +8904,7 @@
     },
     {
       "thread_id": "djokovic-2026",
-      "title": "Djokovic beats the Basel champion Valentin Vacherot from a set down in Paris, and plays Rinky Hijikata today",
+      "title": "Djokovic loses to qualifier Rinky Hijikata in Paris and misses the ATP Finals, while Alcaraz reaches the third round",
       "entities": [],
       "facts": {
         "score": "6-7, 7-5, 6-1",
@@ -9008,11 +8912,14 @@
         "Finals": "15-22 Nov, Turin",
         "seed": "10",
         "first match": "Valentin Vacherot",
-        "next": "Rinky Hijikata"
+        "next": "Rinky Hijikata",
+        "Djokovic": "lost 2-6, 6-3, 6-3 to Hijikata",
+        "Alcaraz": "bt Michelsen 7-6, 6-3",
+        "Alcaraz next": "Berrettini, 23:30 IST"
       },
       "first_printed": "2026-10-29",
-      "last_printed": "2026-11-04",
-      "last_change": "2026-11-04",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9022,18 +8929,21 @@
     },
     {
       "thread_id": "bayern-2026",
-      "title": "Bayern beat Magdeburg 6-1 in the German Cup on the day coach Vincent Kompany leaves hospital",
+      "title": "Harry Kane signs a new Bayern Munich contract until 2029",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "contract": "until 2029",
+        "last season": "61 goals in 51 games"
+      },
       "first_printed": "2026-10-29",
-      "last_printed": "2026-10-29",
-      "last_change": "2026-10-29",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "sidelines"
+      "section": "pitch"
     },
     {
       "thread_id": "line-waqar-younis-picks-tendulkar-over-inzamam",
@@ -10186,15 +10096,16 @@
     },
     {
       "thread_id": "nintendo-2026",
-      "title": "Nintendo's remake of The Legend of Zelda: Ocarina of Time comes out on the Switch 2 tomorrow, 28 years after the original",
+      "title": "Some of the developers behind the Ocarina of Time remake, out now on the Switch 2, had never played the original",
       "entities": [],
       "facts": {
         "release": "5 November",
-        "platform": "Switch 2"
+        "platform": "Switch 2",
+        "released": "5 November"
       },
       "first_printed": "2026-11-01",
-      "last_printed": "2026-11-04",
-      "last_change": "2026-11-04",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10324,20 +10235,21 @@
     },
     {
       "thread_id": "markets-india-2026",
-      "title": "The Sensex gives up an early 478-point gain on profit booking, then recovers to stand 0.3% higher at 2pm",
+      "title": "The Sensex jumps 2.7% to a three-month high as oil crashes 9% after the Democrats' sweep",
       "entities": [],
       "facts": {
-        "Sensex, 2pm": "75,108, up 648 points (0.9%)",
-        "Brent": "down 3.5%, about $109.50",
+        "Sensex, 2pm": "79,372, up 2.7%",
+        "Brent": "down about 9% on Wednesday, near $94",
         "Reliance": "up more than 5%",
         "Monday close": "75,693, up 1.7%",
         "Tuesday 2pm": "76,630, up 1.2%",
         "early gain": "478 points",
-        "2pm": "up 0.3%"
+        "2pm": "up 0.3%",
+        "FII buying, Wednesday": "₹7,284 crore"
       },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-04",
-      "last_change": "2026-11-04",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10347,7 +10259,7 @@
     },
     {
       "thread_id": "us-midterms-2026",
-      "title": "Democrats win both houses of Congress in a 'blue wave', taking Senate seats in Kansas, Texas and South Carolina",
+      "title": "JD Vance says the Iran war is 'the reason we lost', in a rare public break with Trump, who says he would do it again",
       "entities": [],
       "facts": {
         "election day": "Tue 3 Nov",
@@ -10358,11 +10270,13 @@
         "California ballots": "20,000; Supreme Court refused to set them aside",
         "Senate": "Democratic majority; seven seats flipped",
         "House": "Democratic majority; more than two dozen seats flipped",
-        "Ohio governor": "Amy Acton beat Vivek Ramaswamy"
+        "Ohio governor": "Amy Acton beat Vivek Ramaswamy",
+        "Vance": "\"The reason we lost is the war\"",
+        "Trump": "would \"do it again\""
       },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-04",
-      "last_change": "2026-11-04",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10387,12 +10301,15 @@
     },
     {
       "thread_id": "cyclone-murasu-2026",
-      "title": "Cyclone Murasu, now a severe storm, is due to cross the south Andhra coast tonight, India's second cyclone in a week",
+      "title": "Seven of 10 rescuers swept away when two boats capsized on a Telangana lake are saved, and the search goes on for three",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "rescuers swept away": "10",
+        "missing": "three"
+      },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-02",
-      "last_change": "2026-11-02",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10495,17 +10412,17 @@
     },
     {
       "thread_id": "swift-telescope-2026",
-      "title": "NASA's Swift telescope is due to fall to Earth today after a $30m robotic rescue mission failed",
+      "title": "NASA's Swift telescope falls back to Earth over northern Sumatra after 22 years in orbit",
       "entities": [],
       "facts": {
-        "re-entry": "Wed 4 Nov, about 08:30 GMT, plus or minus 11 hours",
+        "re-entry": "12:39 GMT, 4 Nov, over northern Sumatra",
         "risk": "about one in 2,100",
         "rescue cost": "$30m",
         "launched": "2004"
       },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-04",
-      "last_change": "2026-11-04",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10907,15 +10824,16 @@
     },
     {
       "thread_id": "ranchi-festivals-2026",
-      "title": "Ranchi's mayor Roshni Khalkho orders changing rooms for women and stronger barricades at six Chhath ghats",
+      "title": "Ranchi and Hatia stations set up holding areas, barricades and extra RPF staff for the Diwali and Chhath rush",
       "entities": [],
       "facts": {
         "ghats inspected": "six",
-        "orders": "changing rooms, barricades, lighting"
+        "orders": "changing rooms, barricades, lighting",
+        "holding areas": "two, about 250 each"
       },
       "first_printed": "2026-11-03",
-      "last_printed": "2026-11-04",
-      "last_change": "2026-11-04",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -11134,12 +11052,14 @@
     },
     {
       "thread_id": "champions-league-2026",
-      "title": "Barcelona beat Aston Villa 3-0 at the Camp Nou, with two goals from Raphinha, to go second in the table",
+      "title": "Como win 9-1 at Lens in their first Champions League season, equalling the competition's record margin",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "score": "Lens 1-9 Como"
+      },
       "first_printed": "2026-11-04",
-      "last_printed": "2026-11-04",
-      "last_change": "2026-11-04",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
       "status": "active",
       "votes": {
         "up": 0,
@@ -11249,6 +11169,326 @@
       "first_printed": "2026-11-04",
       "last_printed": "2026-11-04",
       "last_change": "2026-11-04",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "hong-kong-2026",
+      "title": "Joshua Wong, the face of Hong Kong's democracy movement, is jailed for another 10 years for colluding with foreign forces",
+      "entities": [],
+      "facts": {
+        "sentence": "10 years",
+        "charge": "colluding with foreign forces",
+        "age": "30"
+      },
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "somaya-medals-2026",
+      "title": "Burglars steal former India hockey captain MM Somaya's 1980 Olympic gold medal from his Bengaluru home",
+      "entities": [],
+      "facts": {
+        "stolen": "1980 Moscow Olympics gold and other medals",
+        "when": "about 2.34am, 28 October",
+        "where": "New Thippasandra"
+      },
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "iran-sanctions-india-2026",
+      "title": "The US sanctions an Indian couple, two other Indians and nine firms for helping ships carry Iranian oil",
+      "entities": [],
+      "facts": {
+        "named": "Suniel Kumar Sharma and Jaspreet Preeti Shahid",
+        "entities": "nine linked to Sharma",
+        "programme": "Operation Economic Outcast"
+      },
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "delhi-buildings-2026",
+      "title": "Two people die and several are feared trapped as a three-storey building collapses in Old Delhi's Chawri Bazar",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "sc-liberty-2026",
+      "title": "The Supreme Court rules the 24 hours to bring someone before a magistrate run from detention, not from formal arrest",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-asaduddin-owaisi-says-abdul-el-sayeds",
+      "title": "Asaduddin Owaisi says Abdul El-Sayed's US Senate win means 'the Abdul from Uttar Pradesh' must assert himself",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "us-midterms-indian-origin-2026",
+      "title": "Kerala-born Nithya Raman defeats Karen Bass to become mayor of Los Angeles",
+      "entities": [],
+      "facts": {
+        "winner": "Nithya Raman",
+        "defeated": "Karen Bass",
+        "city": "Los Angeles"
+      },
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-britain-commits-to-time-bound-talks",
+      "title": "Britain commits to 'time-bound' talks with Caribbean nations on a slavery apology",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-a-canadian-mother-and-daughter-are",
+      "title": "A Canadian mother and daughter are killed in a suspected grizzly bear attack on a hiking trail",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "ai-data-centres-2026",
+      "title": "US voters approve almost every data centre ban on the ballot, including in at least 14 Ohio towns",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "ai-security-2026",
+      "title": "OpenAI says an unreleased cyber model found and patched 948 Linux privilege-escalation flaws for $1.2m",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "openai-products-2026",
+      "title": "ChatGPT adds animated GIFs with Images 2.6, which OpenAI says makes pictures 50% faster",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "line-anthropics-researchers-use-claude-to-map",
+      "title": "Anthropic's researchers use Claude to map the first 3D structure of a bacterial 'vault' protein particle",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "voyager-2026",
+      "title": "Voyager 1 will become the first human-made object one light-day from Earth on 18 November",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "tenerife-2026",
+      "title": "Football pays tribute to Tenerife's Jesús de Miguel, 30, who died after a collision in a second-division match",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "west-ham-2026",
+      "title": "West Ham come from 3-0 down to draw 3-3 at Cardiff in Scott Parker's first game in charge",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "real-madrid-ucl-2026",
+      "title": "Valverde scores in stoppage time as Real Madrid come from behind twice to win 3-2 at AEK Athens",
+      "entities": [],
+      "facts": {
+        "score": "AEK Athens 2-3 Real Madrid",
+        "winner": "Valverde, stoppage time",
+        "next": "Valencia away, Saturday"
+      },
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "bidadi-township-2026",
+      "title": "Only about 22% of landowners in seven villages for the Bidadi township have been compensated in three months",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "ranchi-waste-2026",
+      "title": "Ranchi picks land at Tamtam Toli for a new waste recovery centre serving three wards",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "prayagraj-hotels-2026",
+      "title": "IHCL signs a 100-room Ginger hotel in Prayagraj, taking its Uttar Pradesh hotels to 64",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-05",
+      "last_printed": "2026-11-05",
+      "last_change": "2026-11-05",
       "status": "active",
       "votes": {
         "up": 0,
