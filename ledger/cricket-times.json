@@ -1,7 +1,7 @@
 {
-  "date": "2026-11-05",
+  "date": "2026-11-06",
   "source": "Cricbuzz",
-  "checked_at": "2026-11-05T08:43:03.903Z",
+  "checked_at": "2026-11-06T08:42:49.186Z",
   "matches": [
     {
       "desc": "2nd ODI",
@@ -83,8 +83,8 @@
       "start": "2026-12-13T08:30:00.000Z",
       "ist": "Sun 13 Dec, 14:00",
       "time_announced": true,
-      "ground": "Arun Jaitley Stadium",
-      "city": "Delhi",
+      "ground": "ACA-VDCA Cricket Stadium",
+      "city": "Visakhapatnam",
       "url": "https://www.cricbuzz.com/live-cricket-scores/151613"
     },
     {

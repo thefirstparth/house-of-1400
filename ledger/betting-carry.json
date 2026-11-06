@@ -1,42 +1,42 @@
 {
-  "date": "2026-11-05",
-  "from": "2026-11-04",
+  "date": "2026-11-06",
+  "from": "2026-11-05",
   "carry": [
-    {
-      "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
-      "title": "UEFA Champions League: 2027 Champion",
-      "since": "2026-09-25",
-      "reason": "#1 by 24h volume"
-    },
     {
       "id": "pm:israel-x-iran-ceasefire-continues-throughptptpt-20260716224448963",
       "title": "Israel x Iran ceasefire continues through...?",
       "since": "2026-11-04",
-      "reason": "#2 by 24h volume; Through November 6 moved 5.9 pts since printed"
+      "reason": "#2 by 24h volume"
     },
     {
       "id": "pm:next-french-presidential-election",
       "title": "Next French Presidential Election",
       "since": "2026-10-09",
+      "reason": "#3 by 24h volume"
+    },
+    {
+      "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
+      "title": "UEFA Champions League: 2027 Champion",
+      "since": "2026-09-25",
       "reason": "#4 by 24h volume"
     },
     {
-      "id": "pm:will-the-us-invade-iran-before-2027",
-      "title": "Will the U.S. invade Iran before 2027?",
-      "since": "2026-11-03",
+      "id": "pm:us-iran-effective-ceasefire-continues-throughptptpt-20261103",
+      "title": "US-Iran effective ceasefire continues through...?",
+      "since": "2026-10-08",
       "reason": "#5 by 24h volume"
+    },
+    {
+      "id": "pm:taipei-mayor-election-winner-20260813125857100",
+      "title": "Taipei Mayor Election Winner",
+      "since": "2026-11-05",
+      "reason": "#6 by 24h volume"
     },
     {
       "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
       "title": "US announces end of Iranian blockade by...?",
       "since": "2026-10-31",
       "reason": "#7 by 24h volume"
-    },
-    {
-      "id": "pm:us-iran-effective-ceasefire-continues-throughptptpt-20261103",
-      "title": "US-Iran effective ceasefire continues through...?",
-      "since": "2026-10-08",
-      "reason": "#9 by 24h volume"
     }
   ],
   "dropped": [
@@ -46,19 +46,19 @@
       "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:spl-qad-fay-2026-11-05",
-      "title": "Al Qadisiyah Saudi Club vs. Al Fayha Saudi Club",
-      "why": "ended or decided, no next market in the same line"
+      "id": "pm:wta-pridank-shublad-2026-11-05",
+      "title": "Prudential Hong Kong Tennis Open: Elena Pridankina vs Alexandra Shubladze",
+      "why": "cooled: outside the ranking by volume, moved 0.0 pts"
     },
     {
-      "id": "pm:ucl-por-nap-2026-11-04",
-      "title": "FC Porto vs. SSC Napoli",
-      "why": "ended or decided, no next market in the same line"
+      "id": "pm:will-the-us-invade-iran-before-2027",
+      "title": "Will the U.S. invade Iran before 2027?",
+      "why": "carry cap of 6"
     },
     {
-      "id": "pm:ucl-aek1-rma-2026-11-04",
-      "title": "AEK vs. Real Madrid CF",
-      "why": "ended or decided, no next market in the same line"
+      "id": "pm:wta-ruzic-eala-2026-11-06",
+      "title": "Prudential Hong Kong Tennis Open: Antonia Ruzic vs Alexandra Eala",
+      "why": "carry cap of 6"
     }
   ]
 }
