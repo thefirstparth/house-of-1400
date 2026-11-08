@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-11-07T08:46:43.013Z",
-  "last_edition": "2026-11-07",
+  "last_updated": "2026-11-08T08:46:43.528Z",
+  "last_edition": "2026-11-08",
   "threads": [
     {
       "thread_id": "india-markets-daily",
@@ -207,27 +207,6 @@
       "section": "desh"
     },
     {
-      "thread_id": "mbappe-knee-2026",
-      "title": "Mbappé expected to be fit for Villarreal, though Mourinho may save him for Roma",
-      "entities": [],
-      "facts": {
-        "injury": "left knee posterior capsule",
-        "status": "recovery work, not cleared",
-        "militao": "back in group training",
-        "target": "Villarreal 10 Oct",
-        "villarreal": "expected fit"
-      },
-      "first_printed": "2026-09-26",
-      "last_printed": "2026-10-08",
-      "last_change": "2026-10-08",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "madrid"
-    },
-    {
       "thread_id": "india-us-ties-2026",
       "title": "Trump says the India-US trade deal is 'pretty close' after Rubio and Jaishankar's talks in Mumbai, as Rubio urges India to buy more US energy and arms",
       "entities": [],
@@ -364,33 +343,6 @@
       "section": "pitch"
     },
     {
-      "thread_id": "f1-bahrain-gp-2026",
-      "title": "FIA finds the Sepang stall was a software bug in the wet-weather power cut, and changes the rule for Singapore",
-      "entities": [],
-      "facts": {
-        "fp1": "Verstappen P1, 1m37.520s",
-        "penalties": "Hadjar, Lindblad, Colapinto",
-        "fp3": "Antonelli P1, Verstappen P2",
-        "pole": "Verstappen",
-        "start": "abandoned after rain and software failures",
-        "winner": "Verstappen",
-        "p2": "Antonelli",
-        "p3": "Hamilton",
-        "russell": "retired",
-        "cause": "250kW wet power-cut software bug",
-        "singapore": "heat hazard"
-      },
-      "first_printed": "2026-10-02",
-      "last_printed": "2026-10-08",
-      "last_change": "2026-10-08",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "paddock"
-    },
-    {
       "thread_id": "russia-fuel-imports-2026",
       "title": "Zelensky backs Trump's 'energy ceasefire' if Moscow does, but says Russia is still hitting power plants",
       "entities": [],
@@ -411,7 +363,7 @@
     },
     {
       "thread_id": "hormuz-shipping-2026",
-      "title": "An Indian seafarer is killed when an aerial object hits the vessel Al Jusufi off Oman, and 13 crew are rescued",
+      "title": "Indian Oil will buy its own tankers as spot freight for crude hits $10 a barrel, four times what it pays on charter",
       "entities": [],
       "facts": {
         "ship": "MT Louise 1, Panama-flagged",
@@ -419,17 +371,20 @@
         "place": "about 46 km northeast of Khasab, Oman",
         "killed": "Gandhar Nahim Ajij, from Gujarat",
         "rescued": "13 Indians",
-        "where": "near Limah, Oman"
+        "where": "near Limah, Oman",
+        "spot freight": "$8 to $10 a barrel",
+        "IOC charter rate": "$2 to $2.50 a barrel",
+        "on charter": "three crude carriers, nine LPG ships"
       },
       "first_printed": "2026-10-03",
-      "last_printed": "2026-11-03",
-      "last_change": "2026-11-03",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "desh"
+      "section": "ledger"
     },
     {
       "thread_id": "saudi-houthi-2026",
@@ -528,34 +483,6 @@
       "section": "videsh"
     },
     {
-      "thread_id": "rbi-policy-oct-2026",
-      "title": "PNB, Bank of Baroda, Bank of India and Indian Bank pass on the rate rise to repo-linked loans",
-      "entities": [],
-      "facts": {
-        "repo": "5.50% from 5.25%",
-        "expected": "+25 bp to 5.50%",
-        "decision": "7 Oct 10:00",
-        "cpi_aug": "4.82%",
-        "vote": "unanimous",
-        "stance": "calibrated tightening",
-        "cpi_fy27": "5.2%",
-        "gdp_fy27": "7.1%",
-        "pnb": "8.35%",
-        "boi": "8.35%",
-        "indian_bank": "8.20%",
-        "bob": "8.15%"
-      },
-      "first_printed": "2026-10-06",
-      "last_printed": "2026-10-08",
-      "last_change": "2026-10-08",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
       "thread_id": "sebi-cas-2026",
       "title": "SEBI's market panel backs keeping a 30-minute average price to settle F&O expiries",
       "entities": [],
@@ -636,24 +563,6 @@
         "down": 0
       },
       "section": "deuce"
-    },
-    {
-      "thread_id": "liv-golf-2026",
-      "title": "Jon Rahm will leave LIV Golf, calling the terms of its rescue unacceptable",
-      "entities": [],
-      "facts": {
-        "rahm": "leaving LIV",
-        "settlement_hearing": "2026-11-05"
-      },
-      "first_printed": "2026-10-06",
-      "last_printed": "2026-10-08",
-      "last_change": "2026-10-08",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "sidelines"
     },
     {
       "thread_id": "iphone-duo-2026",
@@ -756,64 +665,6 @@
       "section": "videsh"
     },
     {
-      "thread_id": "nana-patekar-2026",
-      "title": "Nana Patekar dies at 75 at his home in Goa",
-      "entities": [],
-      "facts": {
-        "age": 75,
-        "place": "Goa",
-        "cause": "suspected cardiac arrest"
-      },
-      "first_printed": "2026-10-08",
-      "last_printed": "2026-10-08",
-      "last_change": "2026-10-08",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "desh"
-    },
-    {
-      "thread_id": "chatgpt-gpt6-2026",
-      "title": "GPT-6 reaches ChatGPT, free users included, with answers that can carry charts, maps and buttons",
-      "entities": [],
-      "facts": {
-        "paid": "GPT-6 Sol",
-        "free": "GPT-6 Luna from 8 Oct",
-        "feature": "Intelligent UI"
-      },
-      "first_printed": "2026-10-08",
-      "last_printed": "2026-10-08",
-      "last_change": "2026-10-08",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ai"
-    },
-    {
-      "thread_id": "us-student-work-fee-2026",
-      "title": "US proposes a $70,000 fee for each foreign student who works after graduating",
-      "entities": [],
-      "facts": {
-        "initial": "$70,000",
-        "later": "$30,000",
-        "payer": "schools",
-        "status": "proposed"
-      },
-      "first_printed": "2026-10-08",
-      "last_printed": "2026-10-08",
-      "last_change": "2026-10-08",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "videsh"
-    },
-    {
       "thread_id": "starlink-india-2026",
       "title": "Reliance says it has 'never feared competition' after Musk calls Ambani 'the real boss of India'",
       "entities": [],
@@ -829,36 +680,6 @@
         "down": 0
       },
       "section": "desh"
-    },
-    {
-      "thread_id": "nobel-chemistry-2026",
-      "title": "Chemistry Nobel to Henri Kagan and Kenso Soai for reactions that make one mirror-image form of a molecule",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-08",
-      "last_printed": "2026-10-08",
-      "last_change": "2026-10-08",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "tech"
-    },
-    {
-      "thread_id": "karnataka-hc-custody-2026",
-      "title": "Karnataka High Court tells courts to say 'parenting time', not 'visitation', in custody cases",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-08",
-      "last_printed": "2026-10-08",
-      "last_change": "2026-10-08",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "namma"
     },
     {
       "thread_id": "us-perm-suspension-2026",
@@ -6671,7 +6492,7 @@
     },
     {
       "thread_id": "israel-election-2026",
-      "title": "Israel's President Herzog begins talks on who should form a government after an election with no clear winner",
+      "title": "Israel's president asks Gadi Eisenkot, not Netanyahu, to form a government after he wins 67 recommendations",
       "entities": [],
       "facts": {
         "polling day": "Tue 27 Oct",
@@ -6688,11 +6509,13 @@
         "Eisenkot bloc": "48",
         "Arab parties": "19, a record",
         "to Herzog": "next Wednesday",
-        "Arab-led parties": "19"
+        "Arab-led parties": "19",
+        "recommendations": "Eisenkot 67, Netanyahu 46",
+        "time to form": "28 days, plus up to 14"
       },
       "first_printed": "2026-10-26",
-      "last_printed": "2026-11-05",
-      "last_change": "2026-11-05",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7598,22 +7421,23 @@
     },
     {
       "thread_id": "alcaraz-2026",
-      "title": "Alcaraz saves two match points to beat Fritz and reach his first Paris Masters semi-final, against Ruud tonight",
+      "title": "Alcaraz beats Ruud 6-4, 6-4 and plays Ben Shelton, who ended his US Open defence, in the Paris final tonight",
       "entities": [],
       "facts": {
-        "semi-final": "v Casper Ruud, 21:30 IST",
+        "semi-final": "bt Ruud 6-4, 6-4",
         "other semi": "de Minaur bt Zverev 6-4, 1-6, 7-6",
-        "final": "Alcaraz bt de Minaur 6-1, 6-4",
+        "final": "v Ben Shelton, 19:30 IST",
         "time": "1 hour 27 minutes",
         "head-to-head": "7-0 to Alcaraz",
         "quarter-final": "v Taylor Fritz, 23:30 IST",
         "walkover": "Berrettini withdrew, arm pain",
         "score": "6-7, 7-5, 6-3 v Fritz",
-        "match points saved": "two"
+        "match points saved": "two",
+        "run": "eight straight wins"
       },
       "first_printed": "2026-10-28",
-      "last_printed": "2026-11-07",
-      "last_change": "2026-11-07",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8149,7 +7973,7 @@
     },
     {
       "thread_id": "binance-hack-2026",
-      "title": "The FBI blames North Korea for the $6.3bn Binance hack, as the exchange says it has replaced 90% of the stolen funds",
+      "title": "Binance's finance chief Kaiser Ng leaves a week after the $6.3bn hack, and Justin Yek replaces him",
       "entities": [],
       "facts": {
         "stolen": "$6.3bn",
@@ -8158,11 +7982,13 @@
         "previous record": "Bybit, $1.5bn, 2025",
         "attacker, per FBI": "TraderTraitor, North Korea",
         "replaced": "90%",
-        "withdrawals": "resuming in phases from Sun 1 Nov"
+        "withdrawals": "resuming in phases from Sun 1 Nov",
+        "new CFO": "Justin Yek",
+        "net withdrawals": "$3.6bn in the first hours"
       },
       "first_printed": "2026-10-30",
-      "last_printed": "2026-11-01",
-      "last_change": "2026-11-01",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8931,12 +8757,14 @@
     },
     {
       "thread_id": "gba-2026",
-      "title": "The Greater Bengaluru Authority starts its 'Ward One' clean-up in 43 wards on 1 November",
+      "title": "The second phase of Bengaluru's 'Ward One' clean-up covers 40 more wards after 90% of first-phase works are done",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "phase two": "about 40 wards"
+      },
       "first_printed": "2026-10-31",
-      "last_printed": "2026-10-31",
-      "last_change": "2026-10-31",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9356,7 +9184,7 @@
     },
     {
       "thread_id": "markets-india-2026",
-      "title": "The Sensex closes the week at 81,028 after its biggest weekly gain in six years, and the Nifty passes 25,000",
+      "title": "Indian markets open for an hour of Muhurat trading this afternoon to start Samvat 2083",
       "entities": [],
       "facts": {
         "Sensex, 2pm": "79,372, up 2.7%",
@@ -9369,11 +9197,12 @@
         "FII buying, Wednesday": "₹7,284 crore",
         "Sensex close, Friday": "81,028, up 2.2%",
         "Nifty close": "25,030",
-        "seven sessions": "up 10.6%"
+        "seven sessions": "up 10.6%",
+        "session": "2.20pm to 3.30pm"
       },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-07",
-      "last_change": "2026-11-07",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9574,16 +9403,17 @@
     },
     {
       "thread_id": "real-madrid-liga-2026",
-      "title": "Real Madrid win 3-0 at Racing Santander for a sixth straight victory, with goals from Mbappé, Bellingham and Diomande",
+      "title": "Real Madrid beat 10-man Valencia 3-0 for an eighth straight win and draw level on points with Barcelona",
       "entities": [],
       "facts": {
-        "score": "Racing 0-3 Real Madrid",
+        "score": "Valencia 0-3 Real Madrid",
         "scorers": "Mbappé (pen), Bellingham, Diomande",
-        "run": "six straight wins"
+        "run": "eight straight wins",
+        "Mbappé": "scored in seven straight games"
       },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-02",
-      "last_change": "2026-11-02",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9626,7 +9456,7 @@
     },
     {
       "thread_id": "india-nz-odis-2026",
-      "title": "Gurnoor Brar's four wickets bowl New Zealand out for 134 in Wellington, and Kohli passes Ponting's record against them",
+      "title": "India edge a rain-hit second ODI by four runs on DLS to lead 2-0, after Gurnoor Brar's 4 for 30",
       "entities": [],
       "facts": {
         "Conway": "concussion, out of 1st ODI",
@@ -9635,11 +9465,14 @@
         "India at the cut": "89 for five, 21.1 overs, need 46",
         "Kohli": "13,000 ODI runs at No. 3",
         "second ODI": "Sat 7 Nov, Wellington",
-        "Kohli v NZ": "1,975 ODI runs"
+        "Kohli v NZ": "1,975 ODI runs",
+        "result": "India won by four runs (DLS)",
+        "series": "India lead 2-0",
+        "Brar": "4 for 30"
       },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-07",
-      "last_change": "2026-11-07",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9959,17 +9792,18 @@
     },
     {
       "thread_id": "ranchi-festivals-2026",
-      "title": "Ranchi's deputy commissioner inspects Kali Puja pandals and orders safe wiring, fire extinguishers and exits",
+      "title": "Ranchi's Sadar Hospital readies a 10-bed burn ward and RIMS puts its burn unit on alert for Diwali",
       "entities": [],
       "facts": {
         "ghats inspected": "six",
         "orders": "changing rooms, barricades, lighting",
         "holding areas": "two, about 250 each",
-        "inspected by": "DC Manjunath Bhajantri"
+        "inspected by": "DC Manjunath Bhajantri",
+        "burn ward": "10 beds, Sadar Hospital"
       },
       "first_printed": "2026-11-03",
-      "last_printed": "2026-11-06",
-      "last_change": "2026-11-06",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10254,15 +10088,16 @@
     },
     {
       "thread_id": "bengaluru-roads-2026",
-      "title": "Work on an elevated corridor disrupts the Bengaluru airport road for 18 months, and buses and goods vehicles are banned",
+      "title": "Only one lane each way on the airport road will be closed for the elevated corridor, the BDA says, after an outcry",
       "entities": [],
       "facts": {
         "duration": "18 months",
-        "stretch": "UAS Staff Quarters to Mekhri Circle"
+        "stretch": "UAS Staff Quarters to Mekhri Circle",
+        "open": "two lanes and service roads"
       },
       "first_printed": "2026-11-04",
-      "last_printed": "2026-11-06",
-      "last_change": "2026-11-06",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10468,21 +10303,22 @@
     },
     {
       "thread_id": "ai-data-centres-2026",
-      "title": "Crusoe sells its unfinished Wyoming data centre project to Google, which plans to spend $17bn developing it",
+      "title": "Anger over data centres and electricity bills helped sink Trump's party in the midterms, CNN reports",
       "entities": [],
       "facts": {
         "buyer": "Google",
-        "Google's planned spend": "$17bn"
+        "Google's planned spend": "$17bn",
+        "example": "Talarico v Paxton, Texas"
       },
       "first_printed": "2026-11-05",
-      "last_printed": "2026-11-07",
-      "last_change": "2026-11-07",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "tech"
+      "section": "ai"
     },
     {
       "thread_id": "ai-security-2026",
@@ -11091,12 +10927,14 @@
     },
     {
       "thread_id": "ranchi-activists-2026",
-      "title": "Tribal activist Nisha Kumari Bhagat dies in Ranchi after a Facebook Live accusing land brokers of harassment, and her father seeks a CBI probe",
+      "title": "The National Commission for Women seeks a report within seven days on the death of activist Nisha Bhagat",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "deadline": "seven days"
+      },
       "first_printed": "2026-11-07",
-      "last_printed": "2026-11-07",
-      "last_change": "2026-11-07",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
       "status": "active",
       "votes": {
         "up": 0,
@@ -11112,6 +10950,257 @@
       "first_printed": "2026-11-07",
       "last_printed": "2026-11-07",
       "last_change": "2026-11-07",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "krakow-shooting-2026",
+      "title": "A gunman kills six in Krakow's Main Market Square, and Poland calls it terrorism by a man fascinated with the far right",
+      "entities": [],
+      "facts": {
+        "dead in the square": "six, including a Briton",
+        "wounded": "15",
+        "suspect": "25-year-old military school cadet, shot and wounded"
+      },
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "modi-diwali-2026",
+      "title": "Modi spends Diwali with security forces in Bastar and calls it the first Diwali with no district under Naxalism",
+      "entities": [],
+      "facts": {
+        "where": "Bastar, Chhattisgarh",
+        "claim": "first Diwali with every district free of Naxalism"
+      },
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "bjp-2026",
+      "title": "LK Advani turns 99, and the BJP marks his birthday with a puja and havan as Modi praises his political acumen",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "faridabad-crime-2026",
+      "title": "A former Tech Mahindra Asia head home for Diwali is shot dead in a parking dispute in Faridabad, and a neighbour is arrested",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-rajnath-singh-warns-that-warfare-is",
+      "title": "Rajnath Singh warns that warfare is no longer limited to firing across borders, on a visit to Sikkim",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-a-thar-driver-kills-a-61",
+      "title": "A Thar driver kills a 61-year-old scooter rider in Kanpur on Diwali eve and flees",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "nz-election-2026",
+      "title": "New Zealand's tight election may leave Qiulae Wong, a politician of less than a year, holding the balance of power",
+      "entities": [],
+      "facts": {
+        "Luxon's majority, preliminary": "two seats",
+        "Opportunity": "5.96%, seven seats",
+        "official count": "27 November"
+      },
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "japan-2026",
+      "title": "A magnitude 5.7 earthquake in central Japan injures at least 22 people, and officials warn of more strong quakes this week",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-trump-offers-the-white-house-press",
+      "title": "Trump offers the White House press secretary's job to UFC boss Dana White",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "sony-2026",
+      "title": "Sony revives the headphones from the first 1979 Walkman as the $60 MDR-3R, with a USB-C plug",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "inter-miami-2026",
+      "title": "Messi becomes the first player to win MLS's Golden Boot in consecutive seasons, with 26 goals",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "nwsl-playoffs-2026",
+      "title": "Kansas City Current beat Angel City 1-0 in extra time with a disputed penalty to reach the NWSL semi-finals",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "man-city-2026",
+      "title": "Nottingham Forest beat Manchester City 3-1, City's third straight league defeat after winning their first seven",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "rising-stars-asia-cup-2026",
+      "title": "Rajat Patidar pulls out of India A's Rising Stars Asia Cup squad to manage injuries, and Ayush Badoni replaces him",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "indigo-hijack-threat-2026",
+      "title": "A Bengaluru-Lucknow IndiGo flight with 178 passengers turns back after a handwritten hijack threat is found in the toilet",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "prayagraj-property-fraud-2026",
+      "title": "A former UP education director says he was cheated of ₹12.5 crore over his property in Prayagraj's Dhoomanganj",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-08",
+      "last_printed": "2026-11-08",
+      "last_change": "2026-11-08",
       "status": "active",
       "votes": {
         "up": 0,
