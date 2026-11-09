@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-11-08T08:46:43.528Z",
-  "last_edition": "2026-11-08",
+  "last_updated": "2026-11-09T08:51:32.548Z",
+  "last_edition": "2026-11-09",
   "threads": [
     {
       "thread_id": "india-markets-daily",
@@ -501,26 +501,6 @@
       "section": "ledger"
     },
     {
-      "thread_id": "gst-council-oct-2026",
-      "title": "GST Council drops arrest powers, raises the prosecution threshold to ₹5 crore and allows tax credit on staff insurance",
-      "entities": [],
-      "facts": {
-        "arrest": "Section 69 to go",
-        "prosecution": "₹5 crore",
-        "penalty": "₹10,000 max",
-        "itc": "employee insurance"
-      },
-      "first_printed": "2026-10-06",
-      "last_printed": "2026-10-09",
-      "last_change": "2026-10-09",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
       "thread_id": "ind-wi-t20is-2026",
       "title": "Rain washes out the series decider at the Chinnaswamy, and India and West Indies share the T20I series 2–2",
       "entities": [],
@@ -680,55 +660,6 @@
         "down": 0
       },
       "section": "desh"
-    },
-    {
-      "thread_id": "us-perm-suspension-2026",
-      "title": "US bars TCS, Infosys, Wipro, HCL and four others from sponsoring green cards; India calls Vance's 'indentured servants' jibe deeply offensive",
-      "entities": [],
-      "facts": {
-        "firms": "Cognizant, Infosys, Capgemini, TCS, Wipro, HCL, Microsoft, Adobe",
-        "programme": "PERM",
-        "h1b_valid": "unaffected"
-      },
-      "first_printed": "2026-10-09",
-      "last_printed": "2026-10-09",
-      "last_change": "2026-10-09",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "desh"
-    },
-    {
-      "thread_id": "noida-airport-2026",
-      "title": "Noida's Jewar airport to be named Narendra Modi International Airport",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-09",
-      "last_printed": "2026-10-09",
-      "last_change": "2026-10-09",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "desh"
-    },
-    {
-      "thread_id": "openai-influence-2026",
-      "title": "OpenAI says it caught Russian and Iranian groups using ChatGPT for influence campaigns",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-09",
-      "last_printed": "2026-10-09",
-      "last_change": "2026-10-09",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ai"
     },
     {
       "thread_id": "rupee-defence-2026",
@@ -7421,23 +7352,25 @@
     },
     {
       "thread_id": "alcaraz-2026",
-      "title": "Alcaraz beats Ruud 6-4, 6-4 and plays Ben Shelton, who ended his US Open defence, in the Paris final tonight",
+      "title": "Alcaraz beats Shelton 7-6, 7-5 to win his first Paris Masters and avenge his US Open defeat",
       "entities": [],
       "facts": {
         "semi-final": "bt Ruud 6-4, 6-4",
         "other semi": "de Minaur bt Zverev 6-4, 1-6, 7-6",
-        "final": "v Ben Shelton, 19:30 IST",
+        "final": "bt Ben Shelton 7-6 (5), 7-5",
         "time": "1 hour 27 minutes",
         "head-to-head": "7-0 to Alcaraz",
         "quarter-final": "v Taylor Fritz, 23:30 IST",
         "walkover": "Berrettini withdrew, arm pain",
         "score": "6-7, 7-5, 6-3 v Fritz",
         "match points saved": "two",
-        "run": "eight straight wins"
+        "run": "eight straight wins",
+        "duration": "1h57",
+        "titles": "Vienna and Paris in consecutive weeks"
       },
       "first_printed": "2026-10-28",
-      "last_printed": "2026-11-08",
-      "last_change": "2026-11-08",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8201,22 +8134,24 @@
     },
     {
       "thread_id": "nvidia-china-2026",
-      "title": "US officials believe Nvidia's Jensen Huang had a relationship with a woman working for China's spy agency, the FT and NYT report",
+      "title": "Nvidia's board opens an independent investigation after Jensen Huang tells staff of an affair with a suspected Chinese spy",
       "entities": [],
       "facts": {
         "alleged asset": "Alice Huang (Huang Le), Megaspeed",
         "Nvidia": "'zero information relevant to national security'",
-        "woman": "Alice Huang, Megaspeed International"
+        "woman": "Alice Huang, Megaspeed International",
+        "investigation": "independent, announced by the board on Sunday",
+        "Sonnenfeld's odds on Huang staying": "about 50-50"
       },
       "first_printed": "2026-10-30",
-      "last_printed": "2026-11-07",
-      "last_change": "2026-11-07",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "ledger"
+      "section": "ai"
     },
     {
       "thread_id": "boj-2026",
@@ -8880,7 +8815,7 @@
     },
     {
       "thread_id": "delhi-air-2026",
-      "title": "Delhi's AQI is 364 on the eve of Diwali, with 18 of 59 monitoring stations in the 'severe' band",
+      "title": "Delhi's air turns severe after Diwali as monitors go dark, and the BJP blames Punjab's worst day of farm fires this season",
       "entities": [],
       "facts": {
         "from": "1 November",
@@ -8893,11 +8828,14 @@
         "stubble share": "14%, per the amicus",
         "bench": "CJI Surya Kant, Justices Bagchi and Mohana",
         "AQI, 9am Sat": "364",
-        "severe stations": "18 of 59"
+        "severe stations": "18 of 59",
+        "Delhi AQI, 11.05pm Sunday": "373",
+        "Punjab farm fires on Deepavali": "1,152",
+        "Punjab season total": "4,459"
       },
       "first_printed": "2026-11-01",
-      "last_printed": "2026-11-07",
-      "last_change": "2026-11-07",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9184,7 +9122,7 @@
     },
     {
       "thread_id": "markets-india-2026",
-      "title": "Indian markets open for an hour of Muhurat trading this afternoon to start Samvat 2083",
+      "title": "The Sensex gives up an early rise as investors take profits after a seven-session rally, and the rupee breaks below 94",
       "entities": [],
       "facts": {
         "Sensex, 2pm": "79,372, up 2.7%",
@@ -9198,11 +9136,14 @@
         "Sensex close, Friday": "81,028, up 2.2%",
         "Nifty close": "25,030",
         "seven sessions": "up 10.6%",
-        "session": "2.20pm to 3.30pm"
+        "session": "2.20pm to 3.30pm",
+        "Sensex, 1.30pm": "80,641.73, down 0.44%",
+        "seven-session gain": "about 10.5%",
+        "rupee, early trade": "93.74 a dollar"
       },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-08",
-      "last_change": "2026-11-08",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9729,21 +9670,22 @@
     },
     {
       "thread_id": "australia-cricket-2026",
-      "title": "Usman Khawaja says 'all of us' in Australia's team knew about the sandpaper used in Cape Town in 2018",
+      "title": "David Warner calls Usman Khawaja's account of the 2018 sandpaper scandal '100% accurate'",
       "entities": [],
       "facts": {
         "claim": "'all of us' knew",
-        "denied by": "Darren Lehmann"
+        "denied by": "Darren Lehmann",
+        "Warner": "100% accurate"
       },
       "first_printed": "2026-11-03",
-      "last_printed": "2026-11-07",
-      "last_change": "2026-11-07",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "sidelines"
+      "section": "crease"
     },
     {
       "thread_id": "sri-lanka-tour-2026",
@@ -10484,7 +10426,7 @@
     },
     {
       "thread_id": "srirampura-killings-2026",
-      "title": "An 11-year-old boy who survived the Rajajinagar killings says the accused drove him around while throwing bags from the car",
+      "title": "All seven bodies in the Rajajinagar family murders are recovered, the last two from Shiradi Ghat",
       "entities": [],
       "facts": {
         "dead": "seven, including a seven-year-old",
@@ -10492,11 +10434,14 @@
         "where": "59th Cross, Srirampura",
         "survivor": "11-year-old boy",
         "route": "airport, Kukke Subrahmanya, Dharmasthala, Sringeri",
-        "dinner": "31 October"
+        "dinner": "31 October",
+        "bodies recovered": "all seven",
+        "found on Sunday": "two near Chamundi Hills, Mysuru",
+        "last two": "Shiradi Ghat"
       },
       "first_printed": "2026-11-06",
-      "last_printed": "2026-11-07",
-      "last_change": "2026-11-07",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10912,12 +10857,16 @@
     },
     {
       "thread_id": "f1-brazil-2026",
-      "title": "New champion Antonelli tops second practice in Brazil after Lando Norris led the first in an upgraded McLaren",
+      "title": "Norris wins in Brazil as Verstappen charges from 21st to second, and Red Bull says he is beating the simulator",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "winner": "Lando Norris, McLaren",
+        "Verstappen": "21st on the grid to second",
+        "standings": "Verstappen 279, Russell 262, Hamilton 261"
+      },
       "first_printed": "2026-11-07",
-      "last_printed": "2026-11-07",
-      "last_change": "2026-11-07",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10959,16 +10908,18 @@
     },
     {
       "thread_id": "krakow-shooting-2026",
-      "title": "A gunman kills six in Krakow's Main Market Square, and Poland calls it terrorism by a man fascinated with the far right",
+      "title": "The Krakow gunman dies in hospital, and police confirm he had also killed his parents and sister",
       "entities": [],
       "facts": {
         "dead in the square": "six, including a Briton",
         "wounded": "15",
-        "suspect": "25-year-old military school cadet, shot and wounded"
+        "suspect": "25-year-old military school cadet, shot and wounded",
+        "gunman": "24, died early Monday",
+        "killed in the square": "six"
       },
       "first_printed": "2026-11-08",
-      "last_printed": "2026-11-08",
-      "last_change": "2026-11-08",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
       "status": "active",
       "votes": {
         "up": 0,
@@ -11201,6 +11152,272 @@
       "first_printed": "2026-11-08",
       "last_printed": "2026-11-08",
       "last_change": "2026-11-08",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "houthi-saudi-2026",
+      "title": "A Houthi strike hits Riyadh's Aramco Tower, and footage shows more damage than the 'minor' harm Saudi Arabia admits",
+      "entities": [],
+      "facts": {
+        "damage": "Saudi Arabia says minor; BBC Verify footage shows a floor badly hit",
+        "al-Shariyah strike": "at least 33 dead, the Houthis say"
+      },
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "ethanol-petrol-2026",
+      "title": "Karnataka finds petrol with up to 31.2% ethanol against a 20% limit, and Kerala starts testing its pumps",
+      "entities": [],
+      "facts": {
+        "locations tested in Karnataka": "67",
+        "highest ethanol found": "31.2%",
+        "limit": "20%"
+      },
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "katni-fire-2026",
+      "title": "Six of a family die in a Diwali-night fire at a crockery shop in Madhya Pradesh's Katni district",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "delhi-diwali-2026",
+      "title": "A 10-year-old boy dies in Delhi's Narela when a skyrocket hits him in the chest, and his family blames the hospital",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "hasina-return-2026",
+      "title": "Sheikh Hasina asks Bangladesh for a new passport and ID card so she can return from India in December",
+      "entities": [],
+      "facts": {
+        "asked for": "new passport and national identity card",
+        "planned return": "December",
+        "letter to": "acting high commissioner Preeti Rahman, Delhi"
+      },
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "trump-after-midterms-2026",
+      "title": "Trump says his deportation policy \"might be too tough\" and a deal with Democrats is doable, as Rubio defends the Iran war",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-russian-ukrainian-and-us-negotiators-meet",
+      "title": "Russian, Ukrainian and US negotiators meet in Abu Dhabi on Tuesday for the first time since February, and Europeans will join, France says",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "anthropic-power-2026",
+      "title": "Anthropic buys gas-fired generators for its data centres in what the FT calls the biggest such purchase by an AI lab",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "apple-ai-2026",
+      "title": "Apple's chief executive John Ternus presses Craig Federighi to turn Siri into a full AI agent faster, Bloomberg reports",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "nasa-2026",
+      "title": "NASA opens applications for a new astronaut class that would live and work on a future Moon base",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "chelsea-alonso-2026",
+      "title": "Sunderland beat Chelsea 1-0 with a Le Fée penalty, and Xabi Alonso is called the new 'Tinkerman'",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "crystal-palace-2026",
+      "title": "Crystal Palace are poised to sack Pierre Sage after a 3-1 loss to Liverpool leaves them bottom, with Thomas Frank the favourite",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "india-chess-2026",
+      "title": "Anuj Shrivatri, 22, becomes India's 100th grandmaster and the first from Madhya Pradesh",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "barcelona-atletico-2026",
+      "title": "Barcelona win 2-1 at Atlético with two goals from Fermín López and stay three points clear of Real Madrid",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "bengaluru-garbage-2026",
+      "title": "Bengaluru's waste marshals book 68 cases and collect ₹76,500 in fines in a Sunday drive against dumping",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "jharkhand-ganja-garhwa-2026",
+      "title": "Jharkhand police seize 441 kg of ganja worth ₹2.2 crore and arrest four, most of it from a truck in Garhwa",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "chitrakoot-trolley-2026",
+      "title": "Four devotees die and 12 are hurt when a tractor-trolley overturns in Chitrakoot, and five are sent to Prayagraj",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-09",
+      "last_printed": "2026-11-09",
+      "last_change": "2026-11-09",
       "status": "active",
       "votes": {
         "up": 0,

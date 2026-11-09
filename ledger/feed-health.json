@@ -1,668 +1,661 @@
 {
- "updated": "2026-11-08",
+ "updated": "2026-11-09",
  "note": "Written by scripts/pool.mjs. A feed failing 7 days in a row is rested (tried again on Mondays).",
- "resting": [
-  "autocar-india",
-  "news18-india",
-  "firstpost-india",
-  "androidpolice"
- ],
+ "resting": [],
  "feeds": {
   "gn-in-top": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-in-nation": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-in-world": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-in-business": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-in-sports": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-in-tech": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-us-top": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-us-business": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-us-tech": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-us-science": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "hindu-national": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "ie-india": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "ht-india": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "ndtv-top": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "toi-top": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "scroll": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "pib": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "pib-gnews": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "trai": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "bbc-world": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "guardian-world": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "aljazeera": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "reuters": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "ap": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "ht-explainers": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "ie-explained": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "rbi-press": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "rbi-notifications": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "rbi-speeches": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "sebi": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "et-wealth": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "mint-money": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "mint-insurance": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "bs-pf": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "et-markets": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "mint-markets": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "bs-markets": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "bl-markets": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "ndtv-profit": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "marketwatch": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-tax": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-gst": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-cards": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "lfal": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "managing-madrid": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-madrid": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "athletic-madrid": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "bbc-football": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "guardian-football": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "espn-fc": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "athletic-football": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "f1-com": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "motorsport-f1": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "the-race": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "racefans": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "sbn-f1": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "athletic-f1": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "fia": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "cricinfo": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "cricinfo-india": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "bbc-cricket": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "tennis-majors": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "bbc-tennis": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "athletic-tennis": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gsom": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "athletic-warriors": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "bbc-sport": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "sportstar": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-indian-sport": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "techmeme": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "verge": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "techcrunch": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gsmarena": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "ars": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "restofworld": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "axios": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "autocar-india": {
-   "fails": 7,
+   "fails": 8,
    "last_ok": "2026-10-29",
    "error": "410 https://www.autocarindia.com/rss/all"
   },
   "openai": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "deepmind": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-ai-labs": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "hindu-bengaluru": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "toi-bengaluru": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "ht-bengaluru": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-blr-civic": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-ranchi": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-prayagraj": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "variety": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "deadline": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "ie-entertainment": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "bollywood-hungama": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-ai": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "nyt-tech": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "nyt-science": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "nyt-well": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "bbc-top": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "dw": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "france24": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "abc-intl": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "cbs-world": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "independent-world": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "sky-world": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "hindu-intl": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "ie-world": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "ht-world": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-us-world": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-gb-top": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "guardian-intl": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "politico-eu": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "hindu-top": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "ie-top": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "news18-india": {
-   "fails": 9,
-   "last_ok": null,
-   "error": "403 https://www.news18.com/rss/india.xml"
+   "fails": 0,
+   "last_ok": "2026-11-09"
   },
   "indiatoday": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "firstpost-india": {
-   "fails": 9,
-   "last_ok": null,
-   "error": "403 https://www.firstpost.com/commonfeeds/v1/mfp/rss/india.xml"
+   "fails": 0,
+   "last_ok": "2026-11-09"
   },
   "mint-news": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "barandbench": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "et-top": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "bs-top": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "mint-companies": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "bl-economy": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "cnbctv18": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "reuters-biz": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-in-business-search": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "9to5mac": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "9to5google": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "macrumors": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "androidpolice": {
-   "fails": 9,
+   "fails": 10,
    "last_ok": null,
    "error": "fetch failed"
   },
   "androidauthority": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "engadget": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "wired": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "bbc-tech": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "guardian-tech": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "hn": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "theregister": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "zdnet": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "mittr": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "techradar": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gadgets360": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "fonearena": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "beebom": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "inc42": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "medianama": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "bleeping": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "thehackernews": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "krebs": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "google-blog": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "nvidia-blog": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "simonw": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "the-decoder": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "nasa": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "spacecom": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "sciencedaily": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-anthropic": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "saastr": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-saas": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "guardian-sport": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "ie-sports": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "ht-cricket": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "autosport-f1": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "thr": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-in-entertainment": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-in-science": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-in-health": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   },
   "gn-us-sports": {
    "fails": 0,
-   "last_ok": "2026-11-08"
+   "last_ok": "2026-11-09"
   }
  }
 }
