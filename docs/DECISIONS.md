@@ -1236,3 +1236,11 @@ Apple's checks most of the rest; Spotify fetches each episode once and plays its
   change"); keeping 7 days in the feed instead of 14 was weighed and dropped: episodes leave Apple, Spotify and
   YouTube Music when they leave the feed, and with the block in place it would save only about 1 MB a day (the old
   episodes were almost all fetched by Podscud). The feed keeps 14 days and the Blob copies are kept as before.
+
+## The TV leaves out international matches (10 Nov 2026)
+- Parth: "Remove Brazil and Spain international matches. Keep NBA." Config `tv.skip_sports` is now `["nba", "intl"]`:
+  national sides go from the home screen's lines and from the 1400 app's Sport headline, This week, Results and the
+  Sport-mode windows (lib/tv.js drops skipped sports before anything is picked). `tv.national_teams` stays but is
+  unused while `intl` is skipped. The Sport app and the paper keep all four national sides.
+- The Warriors' record in the 1400 app's Where you stand stays (Parth, same day): NBA games stay off the TV, the
+  standings row is kept.
