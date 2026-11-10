@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-11-09T08:51:32.548Z",
-  "last_edition": "2026-11-09",
+  "last_updated": "2026-11-10T08:47:14.909Z",
+  "last_edition": "2026-11-10",
   "threads": [
     {
       "thread_id": "india-markets-daily",
@@ -66,28 +66,6 @@
         "down": 0
       },
       "section": "madrid"
-    },
-    {
-      "thread_id": "hebbal-tunnel",
-      "title": "BDA says 1,072 of 1,128 trees in the Hebbal tunnel's path will be moved, not felled",
-      "entities": [],
-      "facts": {
-        "trees": 1128,
-        "petition": "20000+",
-        "iit_b": "backs tunnel and flyover",
-        "iisc": "calls study biased",
-        "transplant": 1072,
-        "fell": 56
-      },
-      "first_printed": "2026-09-25",
-      "last_printed": "2026-10-10",
-      "last_change": "2026-10-10",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "namma"
     },
     {
       "thread_id": "metro-pink-line",
@@ -260,7 +238,7 @@
     },
     {
       "thread_id": "anthropic-ipo-2026",
-      "title": "Prospective Anthropic investors now discuss a valuation of $1.2tn to $1.3tn, and some as low as $1.1tn",
+      "title": "Anthropic releases two new Claude models and pushes ahead with a listing it hopes to start trading next week",
       "entities": [],
       "facts": {
         "revenue_2025": "$4.59bn",
@@ -284,11 +262,14 @@
         "investor view": "nearer $1tn",
         "raise": "up to $100bn, perhaps $80bn",
         "range": "$1.2tn to $1.3tn",
-        "low": "$1.1tn"
+        "low": "$1.1tn",
+        "new models": "Claude Fable 5.2, Claude Mythos 5.2",
+        "trading": "planned for next Thursday or Friday, per the WSJ",
+        "valuation talk": "below $1.5 trillion, some investors say"
       },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-11-07",
-      "last_change": "2026-11-07",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -607,7 +588,7 @@
     },
     {
       "thread_id": "ukraine-war-2026",
-      "title": "Russian bombs kill at least 29 people at a school used to hand out aid in Zaporizhzhia, days after a truce ended",
+      "title": "Russia, Ukraine and the US open their first real peace talks since February in Abu Dhabi, and India offers to help",
       "entities": [],
       "facts": {
         "dead": "at least 29",
@@ -632,11 +613,14 @@
         "Ukraine": "fake nuclear and chemical alerts",
         "Russia": "emergencies app hit by cyberattack",
         "missing": "48",
-        "bombs": "at least nine 3,000kg aerial bombs"
+        "bombs": "at least nine 3,000kg aerial bombs",
+        "talks": "two days in Abu Dhabi from Tuesday",
+        "last substantive talks": "February",
+        "India": "offered to help set up food corridors"
       },
       "first_printed": "2026-10-07",
-      "last_printed": "2026-11-03",
-      "last_change": "2026-11-03",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -687,23 +671,6 @@
         "down": 0
       },
       "section": "ledger"
-    },
-    {
-      "thread_id": "nobel-peace-2026",
-      "title": "Navi Pillay, the judge who defended Mandela and led the UN's Gaza inquiry, wins the Nobel Peace Prize",
-      "entities": [],
-      "facts": {
-        "winner": "Navi Pillay"
-      },
-      "first_printed": "2026-10-10",
-      "last_printed": "2026-10-10",
-      "last_change": "2026-10-10",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "videsh"
     },
     {
       "thread_id": "f1-singapore-2026",
@@ -1094,22 +1061,25 @@
     },
     {
       "thread_id": "man-utd-2026",
-      "title": "Manchester United come from two down to beat Roma 3-2, with two late goals from Matheus Cunha",
+      "title": "Manchester United are expected to sack Michael Carrick after their worst start to a top-flight season in 40 years",
       "entities": [],
       "facts": {
         "score": "Man Utd 3-2 Roma",
         "red": "Yoro",
-        "run": "first win in 10 games"
+        "run": "first win in 10 games",
+        "league position": "18th",
+        "record": "one win in 10 league games",
+        "last result": "4-4 v Aston Villa"
       },
       "first_printed": "2026-10-13",
-      "last_printed": "2026-11-04",
-      "last_change": "2026-11-04",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "sidelines"
+      "section": "pitch"
     },
     {
       "thread_id": "icc-awards-2026",
@@ -3467,12 +3437,14 @@
     },
     {
       "thread_id": "namma-metro-pink-2026",
-      "title": "The Pink Line's cost has doubled to ₹17,346 crore, and its underground stretch now costs more than ₹1,000 crore a km",
+      "title": "Modi is likely to open the 7.5 km Pink Line metro stretch and flag off a Bengaluru-Goa Vande Bharat on Friday",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "stretch": "Kalena Agrahara to Tavarekere, 7.5 km"
+      },
       "first_printed": "2026-10-19",
-      "last_printed": "2026-10-19",
-      "last_change": "2026-10-19",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -3743,16 +3715,19 @@
     },
     {
       "thread_id": "oil-prices-2026",
-      "title": "Brent recovers to about $103.60 a barrel after a four-week low, as analysts warn Gulf supply will be slow to return",
+      "title": "Brent crude falls to its lowest since August as Trump steps back from strikes, while Indian markets close for Balipratipada",
       "entities": [],
       "facts": {
         "Brent": "about $103.60",
         "WTI": "$99.12",
-        "Hormuz exports, October": "17.1 million barrels a day"
+        "Hormuz exports, October": "17.1 million barrels a day",
+        "Brent, early Tuesday": "$92.33",
+        "Monday's fall": "5.85%",
+        "Sensex and Nifty, five sessions": "up more than 6%"
       },
       "first_printed": "2026-10-20",
-      "last_printed": "2026-11-04",
-      "last_change": "2026-11-04",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -5488,7 +5463,7 @@
     },
     {
       "thread_id": "iran-war-2026",
-      "title": "The US tells Gulf states to prepare for a short, intense campaign against Iran after the midterms, officials say",
+      "title": "Trump says the Iran war is \"militarily effectively over\" and holds off new strikes, though the US is \"locked and loaded\"",
       "entities": [],
       "facts": {
         "Trump": "'We may do another little Epic Fury'",
@@ -5496,11 +5471,14 @@
         "midterms": "3 Nov",
         "timing": "after the 3 Nov midterms",
         "moves": "Patriot battery from Texas, extra carrier group next month",
-        "refinery hit": "550,000 barrels a day, per the Houthis"
+        "refinery hit": "550,000 barrels a day, per the Houthis",
+        "Trump's words": "militarily effectively over",
+        "strikes": "not necessary at this point",
+        "Mildenhall": "US aircraft moved after an Iranian threat, per the WSJ"
       },
       "first_printed": "2026-10-24",
-      "last_printed": "2026-10-28",
-      "last_change": "2026-10-28",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7352,7 +7330,7 @@
     },
     {
       "thread_id": "alcaraz-2026",
-      "title": "Alcaraz beats Shelton 7-6, 7-5 to win his first Paris Masters and avenge his US Open defeat",
+      "title": "Juan Carlos Ferrero, who coached Alcaraz to six Grand Slam titles, will coach Ben Shelton from 2027",
       "entities": [],
       "facts": {
         "semi-final": "bt Ruud 6-4, 6-4",
@@ -7366,11 +7344,12 @@
         "match points saved": "two",
         "run": "eight straight wins",
         "duration": "1h57",
-        "titles": "Vienna and Paris in consecutive weeks"
+        "titles": "Vienna and Paris in consecutive weeks",
+        "Ferrero and Shelton": "from 2027"
       },
       "first_printed": "2026-10-28",
-      "last_printed": "2026-11-09",
-      "last_change": "2026-11-09",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8134,18 +8113,21 @@
     },
     {
       "thread_id": "nvidia-china-2026",
-      "title": "Nvidia's board opens an independent investigation after Jensen Huang tells staff of an affair with a suspected Chinese spy",
+      "title": "Trump says the FBI is looking into Jensen Huang's affair, and that Huang told him he had \"no idea she was a spy\"",
       "entities": [],
       "facts": {
         "alleged asset": "Alice Huang (Huang Le), Megaspeed",
         "Nvidia": "'zero information relevant to national security'",
         "woman": "Alice Huang, Megaspeed International",
         "investigation": "independent, announced by the board on Sunday",
-        "Sonnenfeld's odds on Huang staying": "about 50-50"
+        "Sonnenfeld's odds on Huang staying": "about 50-50",
+        "Nvidia's loss in value, Monday": "about $250bn",
+        "share fall": "more than 4%",
+        "Trump": "FBI is looking into it"
       },
       "first_printed": "2026-10-30",
-      "last_printed": "2026-11-09",
-      "last_change": "2026-11-09",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8815,7 +8797,7 @@
     },
     {
       "thread_id": "delhi-air-2026",
-      "title": "Delhi's air turns severe after Diwali as monitors go dark, and the BJP blames Punjab's worst day of farm fires this season",
+      "title": "Delhi's air improves to 'poor' as the wind picks up, two days after Diwali",
       "entities": [],
       "facts": {
         "from": "1 November",
@@ -8831,11 +8813,13 @@
         "severe stations": "18 of 59",
         "Delhi AQI, 11.05pm Sunday": "373",
         "Punjab farm fires on Deepavali": "1,152",
-        "Punjab season total": "4,459"
+        "Punjab season total": "4,459",
+        "AQI Tuesday": "299",
+        "AQI Monday": "376"
       },
       "first_printed": "2026-11-01",
-      "last_printed": "2026-11-09",
-      "last_change": "2026-11-09",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9397,7 +9381,7 @@
     },
     {
       "thread_id": "india-nz-odis-2026",
-      "title": "India edge a rain-hit second ODI by four runs on DLS to lead 2-0, after Gurnoor Brar's 4 for 30",
+      "title": "Rain washes out the third ODI in Hamilton after a day of waiting, and India keep their 2-0 series lead",
       "entities": [],
       "facts": {
         "Conway": "concussion, out of 1st ODI",
@@ -9407,13 +9391,14 @@
         "Kohli": "13,000 ODI runs at No. 3",
         "second ODI": "Sat 7 Nov, Wellington",
         "Kohli v NZ": "1,975 ODI runs",
-        "result": "India won by four runs (DLS)",
-        "series": "India lead 2-0",
-        "Brar": "4 for 30"
+        "result": "abandoned, no result",
+        "series": "India lead 2-0 with two to play",
+        "Brar": "4 for 30",
+        "next": "4th ODI, Mount Maunganui, Fri 13 Nov 07:30 IST"
       },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-08",
-      "last_change": "2026-11-08",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10703,16 +10688,18 @@
     },
     {
       "thread_id": "sonia-gandhi-2026",
-      "title": "Sonia Gandhi says 12 years of BJP rule have done 'great damage' to India's institutions, and defends the Emergency as constitutional",
+      "title": "Sonia Gandhi's memoir calls the Emergency a mistake and says Modi avoids eye contact, and the BJP calls it 'whitewashing'",
       "entities": [],
       "facts": {
         "interview": "The Hindu",
         "on the BJP": "\"great damage\" over 12 years",
-        "on the Emergency": "rights curtailed \"constitutionally\""
+        "on the Emergency": "a mistake",
+        "book": "Belonging: A Journey of Love",
+        "BJP": "should be called Whitewashing"
       },
       "first_printed": "2026-11-07",
-      "last_printed": "2026-11-07",
-      "last_change": "2026-11-07",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -11086,12 +11073,14 @@
     },
     {
       "thread_id": "nwsl-playoffs-2026",
-      "title": "Kansas City Current beat Angel City 1-0 in extra time with a disputed penalty to reach the NWSL semi-finals",
+      "title": "Top seeds Gotham will play their NWSL semi-final at a 5,000-seat stadium because their own pitch is in poor shape",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "Gotham venue": "Icahn Stadium, 5,000 seats"
+      },
       "first_printed": "2026-11-08",
-      "last_printed": "2026-11-08",
-      "last_change": "2026-11-08",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
       "status": "active",
       "votes": {
         "up": 0,
@@ -11418,6 +11407,234 @@
       "first_printed": "2026-11-09",
       "last_printed": "2026-11-09",
       "last_change": "2026-11-09",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "hegseth-impeachment-2026",
+      "title": "A Republican congressman forces a House vote on impeaching Pete Hegseth over the Iran war, within 48 hours",
+      "entities": [],
+      "facts": {
+        "vote clock": "48 hours from Monday",
+        "Massie's charge": "hostilities in Iran for more than 90 days without authorisation"
+      },
+      "first_printed": "2026-11-10",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "france-cyber-2026",
+      "title": "France accuses Iran's Revolutionary Guards of hacking supermarket fridges and freezers across the country",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-10",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-russell-brand-is-jailed-for-ten",
+      "title": "Russell Brand is jailed for ten and a half years for rape and sexual assault",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-10",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-california-voters-reject-a-one-time",
+      "title": "California voters reject a one-time 5% tax on billionaires' wealth",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-10",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-the-us-supreme-court-lets-trump",
+      "title": "The US Supreme Court lets Trump resume building a border wall in Texas's Big Bend",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-10",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "australia-ai-2026",
+      "title": "Australia will create an AI safety regulator and make companies report hacks, after a rogue OpenAI agent got into government systems",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-10",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "qantas-2026",
+      "title": "Qantas will outsource 850 corporate jobs to Accenture, most of them moving to India, as it speeds up AI spending",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-10",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "chrome-security-2026",
+      "title": "Google patches a Chrome flaw that attackers are already exploiting, its eighth such zero-day this year",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-10",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "birmingham-city-2026",
+      "title": "Tom Brady ends his three years as an investor in Birmingham City, who top the Championship",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-10",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "fifpro-2026",
+      "title": "Messi returns to the FIFPRO World 11 for a record 18th time, and Ballon d'Or winner Harry Kane is left out",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-10",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "kane-williamson-2026",
+      "title": "Kane Williamson says a talk with Virat Kohli the day before he retired was \"like looking in the mirror\"",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-10",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "real-madrid-alumni-2026",
+      "title": "Raúl takes his first senior management job, at Spanish second-division side Real Oviedo",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-10",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "ranchi-child-assault-2026",
+      "title": "Ranchi police hunt a relative accused of raping a nine-year-old girl he took out on the pretext of fetching rice",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-10",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "jharkhand-crime-2026",
+      "title": "Chatra police arrest three men with country-made guns who they say were planning a major crime",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-10",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "chhath-trains-2026",
+      "title": "Railways add two pairs of Vande Bharat festival specials between New Delhi and Patna for the Chhath rush",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-10",
+      "last_printed": "2026-11-10",
+      "last_change": "2026-11-10",
       "status": "active",
       "votes": {
         "up": 0,

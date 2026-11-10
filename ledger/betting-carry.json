@@ -1,63 +1,64 @@
 {
-  "date": "2026-11-09",
-  "from": "2026-11-08",
+  "date": "2026-11-10",
+  "from": "2026-11-09",
   "carry": [
-    {
-      "id": "pm:israel-x-iran-ceasefire-continues-throughptptpt-20260716224448963",
-      "title": "Israel x Iran ceasefire continues through...?",
-      "since": "2026-11-04",
-      "reason": "#1 by 24h volume"
-    },
     {
       "id": "pm:next-french-presidential-election",
       "title": "Next French Presidential Election",
       "since": "2026-10-09",
-      "reason": "#3 by 24h volume"
+      "reason": "#1 by 24h volume"
     },
     {
       "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
       "title": "US announces end of Iranian blockade by...?",
       "since": "2026-10-31",
-      "reason": "#4 by 24h volume"
+      "reason": "#2 by 24h volume"
+    },
+    {
+      "id": "pm:israel-x-iran-ceasefire-continues-throughptptpt-20260716224448963",
+      "title": "Israel x Iran ceasefire continues through...?",
+      "since": "2026-11-04",
+      "reason": "#3 by 24h volume"
     },
     {
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
       "title": "UEFA Champions League: 2027 Champion",
       "since": "2026-09-25",
-      "reason": "#7 by 24h volume"
+      "reason": "#5 by 24h volume"
     },
     {
-      "id": "pm:epl-hul-bri-2026-11-22",
-      "title": "Hull City AFC vs. Brighton & Hove Albion FC",
-      "since": "2026-11-08",
-      "reason": "next in line; Brighton & Hove Albion FC moved 11.5 pts since printed"
+      "id": "pm:will-the-us-invade-iran-before-2027",
+      "title": "Will the U.S. invade Iran before 2027?",
+      "since": "2026-11-09",
+      "reason": "#11 by 24h volume"
+    },
+    {
+      "id": "pm:us-x-iran-effective-ceasefire-begins-by-2-week-pause-20261108",
+      "title": "US x Iran Effective Ceasefire begins by...? (2 week pause)",
+      "since": "2026-11-09",
+      "reason": "#14 by 24h volume; By November 15 moved 5.5 pts since printed"
     }
   ],
   "dropped": [
+    {
+      "id": "pm:epl-hul-bri-2026-11-22",
+      "title": "Hull City AFC vs. Brighton & Hove Albion FC",
+      "why": "cooled: outside the ranking by volume, moved 0.5 pts"
+    },
+    {
+      "id": "pm:wta-tjen-linette-2026-11-08",
+      "title": "Chennai Open: Janice Tjen vs Magda Linette",
+      "why": "ended or decided, no next market in the same line"
+    },
     {
       "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
       "title": "Prime Minister of Israel after the next election?",
       "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:lal-mad-bar-2026-11-08",
-      "title": "Club Atlético de Madrid vs. FC Barcelona",
-      "why": "cooled: outside the ranking by volume, moved 3.5 pts"
-    },
-    {
-      "id": "pm:chi-sha-ron-2026-11-08",
-      "title": "Shandong Taishan FC vs. Chengdu Rongcheng FC",
-      "why": "ended or decided, no next market in the same line"
-    },
-    {
-      "id": "pm:epl-cry-liv-2026-11-08",
-      "title": "Crystal Palace FC vs. Liverpool FC",
-      "why": "cooled: outside the ranking by volume, moved 0.0 pts"
-    },
-    {
-      "id": "pm:epl-sun-che-2026-11-08",
-      "title": "Sunderland AFC vs. Chelsea FC",
-      "why": "cooled: outside the ranking by volume, moved 0.0 pts"
+      "id": "pm:iran-leadership-change-by",
+      "title": "Iran leadership change by...?",
+      "why": "cooled: #21 by volume, moved 0.3 pts"
     }
   ]
 }
