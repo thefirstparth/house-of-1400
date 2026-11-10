@@ -1244,3 +1244,14 @@ Apple's checks most of the rest; Spotify fetches each episode once and plays its
   unused while `intl` is skipped. The Sport app and the paper keep all four national sides.
 - The Warriors' record in the 1400 app's Where you stand stays (Parth, same day): NBA games stay off the TV, the
   standings row is kept.
+
+## Tennis on the TV: finished matches with a score, results kept after the tournament (10 Nov 2026)
+Parth: a finished tennis match showed in the home screen's THEN row like one still to come, and tennis results were
+missing. Both checked against the editions' snapshots of 3-9 Nov.
+- A finished match had no score in `/api/live/tv` (only `result`: "Alcaraz won", drawn small as the label), so its line
+  read "Alcaraz v Ruud". It now carries sets won as `sa`/`sb` ("Alcaraz 2–0 Ruud"), which the TV already draws for a
+  finished match; no TV change. A walkover has no sets and keeps only "Alcaraz won". Live tennis is unchanged.
+- ESPN's scoreboard drops a tournament the day after its final, and each player's last match with it (Alcaraz's Paris
+  title, 8 Nov, was gone at 14:00 IST on 9 Nov). `tennis_players` (lib/trial.js) also reads the scoreboard for the last
+  10 days (`?dates=`, one more ESPN call; 10 = `tv.saver.results_days`) and keeps whichever last match is later. The
+  Sport app reads the same key and gets the same results.

@@ -218,3 +218,15 @@ test("tv weather: the sky right now, from the current weather code", () => {
   assert.equal(cityLine({ name: "Bengaluru" }, w, null, T, at).sky, "overcast");
   assert.ok(!("sky" in cityLine({ name: "Bengaluru" }, { ...w, code: null }, null, T, at)), "no code, no sky (MET Norway's backup)");
 });
+
+test("tv: a finished tennis match carries its sets won, so the TV draws a score; a walkover only its winner", () => {
+  const ctx = { cfg, T, codes: {}, f1city: null };
+  const run = e => using({ data: {}, cfg, now: NOW }, () => item(e, ctx));
+  const done = run(ev("tennis", -4, "done", { a: "Carlos Alcaraz", b: "Taylor Fritz", setsA: [6, 7, 6], setsB: [7, 5, 3], won: "a" }));
+  assert.equal(done.sa, "2"); assert.equal(done.sb, "1"); assert.equal(done.result, "Alcaraz won");
+  const lost = run(ev("tennis", -4, "done", { a: "Novak Djokovic", b: "Rinky Hijikata", setsA: [6, 3, 3], setsB: [2, 6, 6], won: "b" }));
+  assert.equal(lost.sa, "1"); assert.equal(lost.sb, "2");
+  const wo = run(ev("tennis", -4, "done", { a: "Carlos Alcaraz", b: "Matteo Berrettini", setsA: [], setsB: [], won: "a" }));
+  assert.equal(wo.sa, undefined); assert.equal(wo.result, "Alcaraz won");
+  assert.equal(run(ev("tennis", 4, "next", { a: "Carlos Alcaraz", b: "Ben Shelton" })).sa, undefined);
+});
