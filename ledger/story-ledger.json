@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "last_updated": "2026-11-10T08:47:14.909Z",
-  "last_edition": "2026-11-10",
+  "last_updated": "2026-11-11T08:50:57.633Z",
+  "last_edition": "2026-11-11",
   "threads": [
     {
       "thread_id": "india-markets-daily",
@@ -40,32 +40,6 @@
         "down": 0
       },
       "section": "ledger"
-    },
-    {
-      "thread_id": "madrid-next-villarreal",
-      "title": "Diomande's first goal beats Villarreal 1–0, but Vinícius is sent off for pulling hair and may miss the Clásico",
-      "entities": [],
-      "facts": {
-        "next": "Villarreal (H) 2026-10-10T19:00:00Z",
-        "position": 4,
-        "points": 15,
-        "kickoff": "2026-10-10T19:00:00Z",
-        "valverde": "in squad",
-        "mbappe": "in squad",
-        "score": "1-0",
-        "scorer": "Diomande",
-        "red": "Vinícius",
-        "ban": "1-3 games possible"
-      },
-      "first_printed": "2026-09-25",
-      "last_printed": "2026-10-11",
-      "last_change": "2026-10-11",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "madrid"
     },
     {
       "thread_id": "metro-pink-line",
@@ -238,7 +212,7 @@
     },
     {
       "thread_id": "anthropic-ipo-2026",
-      "title": "Anthropic releases two new Claude models and pushes ahead with a listing it hopes to start trading next week",
+      "title": "Anthropic will sell shares at $70 to $78 each in a Nasdaq listing that could value it at up to $1.3 trillion",
       "entities": [],
       "facts": {
         "revenue_2025": "$4.59bn",
@@ -260,16 +234,18 @@
         "compute commitments": "about $895bn",
         "target valuation": "$1.5tn",
         "investor view": "nearer $1tn",
-        "raise": "up to $100bn, perhaps $80bn",
+        "raise": "up to $64bn",
         "range": "$1.2tn to $1.3tn",
         "low": "$1.1tn",
         "new models": "Claude Fable 5.2, Claude Mythos 5.2",
-        "trading": "planned for next Thursday or Friday, per the WSJ",
-        "valuation talk": "below $1.5 trillion, some investors say"
+        "trading": "from 19 November, ticker ANT",
+        "valuation talk": "below $1.5 trillion, some investors say",
+        "price range": "$70 to $78 a share",
+        "valuation": "$1.1tn to $1.3tn"
       },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-11-10",
-      "last_change": "2026-11-10",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
       "status": "active",
       "votes": {
         "up": 0,
@@ -344,10 +320,10 @@
     },
     {
       "thread_id": "hormuz-shipping-2026",
-      "title": "Indian Oil will buy its own tankers as spot freight for crude hits $10 a barrel, four times what it pays on charter",
+      "title": "A tanker carrying six Indian seafarers is hit by a projectile in the Gulf, and one Indian is among four crew injured",
       "entities": [],
       "facts": {
-        "ship": "MT Louise 1, Panama-flagged",
+        "ship": "MT Fujairah Energy, Liberia-flagged",
         "Indian crew": "27, all safe",
         "place": "about 46 km northeast of Khasab, Oman",
         "killed": "Gandhar Nahim Ajij, from Gujarat",
@@ -355,17 +331,19 @@
         "where": "near Limah, Oman",
         "spot freight": "$8 to $10 a barrel",
         "IOC charter rate": "$2 to $2.50 a barrel",
-        "on charter": "three crude carriers, nine LPG ships"
+        "on charter": "three crude carriers, nine LPG ships",
+        "Indians aboard": "six, one hurt",
+        "ships attacked in October": "37"
       },
       "first_printed": "2026-10-03",
-      "last_printed": "2026-11-08",
-      "last_change": "2026-11-08",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "ledger"
+      "section": "desh"
     },
     {
       "thread_id": "saudi-houthi-2026",
@@ -717,24 +695,6 @@
       "section": "ai"
     },
     {
-      "thread_id": "motogp-2026",
-      "title": "Bezzecchi wins in Indonesia and Martín takes the title lead back from Márquez",
-      "entities": [],
-      "facts": {
-        "winner": "Bezzecchi",
-        "leader": "Martín"
-      },
-      "first_printed": "2026-10-10",
-      "last_printed": "2026-10-11",
-      "last_change": "2026-10-11",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "sidelines"
-    },
-    {
       "thread_id": "messi-miami-2026",
       "title": "Messi's Inter Miami clinch an MLS playoff place by beating New York City",
       "entities": [],
@@ -750,51 +710,6 @@
         "down": 0
       },
       "section": "sidelines"
-    },
-    {
-      "thread_id": "kipchoge-2026",
-      "title": "Kipchoge, 41, breaks the course record at the Melbourne Marathon",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-11",
-      "last_printed": "2026-10-11",
-      "last_change": "2026-10-11",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "sidelines"
-    },
-    {
-      "thread_id": "nepal-floods-2026",
-      "title": "Flash floods in Nepal's Gorkha wash away six bridges; ten missing",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-11",
-      "last_printed": "2026-10-11",
-      "last_change": "2026-10-11",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "videsh"
-    },
-    {
-      "thread_id": "fpi-flows-2026",
-      "title": "Foreign investors have pulled ₹44,166 crore out of Indian shares in October so far",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-11",
-      "last_printed": "2026-10-11",
-      "last_change": "2026-10-11",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
     },
     {
       "thread_id": "bmtc-2026",
@@ -1061,7 +976,7 @@
     },
     {
       "thread_id": "man-utd-2026",
-      "title": "Manchester United are expected to sack Michael Carrick after their worst start to a top-flight season in 40 years",
+      "title": "Mauricio Pochettino wants the Manchester United job, and United are finalising a deal in case they sack Michael Carrick",
       "entities": [],
       "facts": {
         "score": "Man Utd 3-2 Roma",
@@ -1069,11 +984,13 @@
         "run": "first win in 10 games",
         "league position": "18th",
         "record": "one win in 10 league games",
-        "last result": "4-4 v Aston Villa"
+        "last result": "4-4 v Aston Villa",
+        "release clause": "about $10m",
+        "US contract": "through 2030"
       },
       "first_printed": "2026-10-13",
-      "last_printed": "2026-11-10",
-      "last_change": "2026-11-10",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
       "status": "active",
       "votes": {
         "up": 0,
@@ -7140,15 +7057,16 @@
     },
     {
       "thread_id": "uk-iran-plot-2026",
-      "title": "Two Britons are charged over an alleged Iran-linked plot at RAF Fairford, the US-run base in England",
+      "title": "The US charges three Iran-backed men over a string of plots in Europe and the US, including one at Britain's RAF Fairford",
       "entities": [],
       "facts": {
-        "charged": "Mohmed Abdulkarim, 24, and Nouman Essghir, 24",
-        "next hearing": "Old Bailey, 20 Nov"
+        "charged": "Mohsen Mohajeri, Mohammad Ali al-Hassani, Mohammad Baqer Saad Dawood al-Saadi",
+        "next hearing": "Old Bailey, 20 Nov",
+        "HAYI attacks in Europe, spring 2026": "18, seven in the UK"
       },
       "first_printed": "2026-10-28",
-      "last_printed": "2026-10-28",
-      "last_change": "2026-10-28",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8113,7 +8031,7 @@
     },
     {
       "thread_id": "nvidia-china-2026",
-      "title": "Trump says the FBI is looking into Jensen Huang's affair, and that Huang told him he had \"no idea she was a spy\"",
+      "title": "The US commerce secretary was sent a secret memo warning about Jensen Huang's affair with a suspected Chinese spy",
       "entities": [],
       "facts": {
         "alleged asset": "Alice Huang (Huang Le), Megaspeed",
@@ -8123,11 +8041,12 @@
         "Sonnenfeld's odds on Huang staying": "about 50-50",
         "Nvidia's loss in value, Monday": "about $250bn",
         "share fall": "more than 4%",
-        "Trump": "FBI is looking into it"
+        "Trump": "FBI is looking into it",
+        "alleged recruiter": "China's Ministry of State Security"
       },
       "first_printed": "2026-10-30",
-      "last_printed": "2026-11-10",
-      "last_change": "2026-11-10",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
       "status": "active",
       "votes": {
         "up": 0,
@@ -8797,7 +8716,7 @@
     },
     {
       "thread_id": "delhi-air-2026",
-      "title": "Delhi's air improves to 'poor' as the wind picks up, two days after Diwali",
+      "title": "Firecrackers caused more than 80% of Delhi's pollution the day after Diwali, a government institute estimates",
       "entities": [],
       "facts": {
         "from": "1 November",
@@ -8815,11 +8734,14 @@
         "Punjab farm fires on Deepavali": "1,152",
         "Punjab season total": "4,459",
         "AQI Tuesday": "299",
-        "AQI Monday": "376"
+        "AQI Monday": "376",
+        "firecrackers' share, Monday": "more than 80% of the load (IITM)",
+        "PM2.5 share, 1am to 9am 9 Nov": "71.1%",
+        "AQI Wednesday morning": "308"
       },
       "first_printed": "2026-11-01",
-      "last_printed": "2026-11-10",
-      "last_change": "2026-11-10",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9106,7 +9028,7 @@
     },
     {
       "thread_id": "markets-india-2026",
-      "title": "The Sensex gives up an early rise as investors take profits after a seven-session rally, and the rupee breaks below 94",
+      "title": "Indian shares hit an eight-month high as foreign investors return, then give back part of the gain",
       "entities": [],
       "facts": {
         "Sensex, 2pm": "79,372, up 2.7%",
@@ -9123,11 +9045,14 @@
         "session": "2.20pm to 3.30pm",
         "Sensex, 1.30pm": "80,641.73, down 0.44%",
         "seven-session gain": "about 10.5%",
-        "rupee, early trade": "93.74 a dollar"
+        "rupee, early trade": "93.74 a dollar",
+        "Sensex, 1.48pm": "81,697.99, up 0.73%",
+        "November gain": "Sensex 10.5%, Nifty 10%",
+        "foreign buying in November": "$5.68bn"
       },
       "first_printed": "2026-11-02",
-      "last_printed": "2026-11-09",
-      "last_change": "2026-11-09",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
       "status": "active",
       "votes": {
         "up": 0,
@@ -11416,15 +11341,17 @@
     },
     {
       "thread_id": "hegseth-impeachment-2026",
-      "title": "A Republican congressman forces a House vote on impeaching Pete Hegseth over the Iran war, within 48 hours",
+      "title": "The House blocks the bid to impeach Pete Hegseth by 211 votes to 204, and Trump hails his 'exoneration'",
       "entities": [],
       "facts": {
         "vote clock": "48 hours from Monday",
-        "Massie's charge": "hostilities in Iran for more than 90 days without authorisation"
+        "Massie's charge": "hostilities in Iran for more than 90 days without authorisation",
+        "vote": "211 to 204 to refer to committee",
+        "Republicans against": "only Massie"
       },
       "first_printed": "2026-11-10",
-      "last_printed": "2026-11-10",
-      "last_change": "2026-11-10",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
       "status": "active",
       "votes": {
         "up": 0,
@@ -11635,6 +11562,339 @@
       "first_printed": "2026-11-10",
       "last_printed": "2026-11-10",
       "last_change": "2026-11-10",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "ipl-trades-2026",
+      "title": "Hardik Pandya leaves Mumbai Indians for Punjab Kings, and Arshdeep Singh goes the other way in a straight swap",
+      "entities": [],
+      "facts": {
+        "Pandya's new fee": "₹18 crore, from ₹16.35 crore",
+        "Arshdeep": "111 IPL wickets in 96 matches"
+      },
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "assam-train-2026",
+      "title": "The engine and five coaches of the Sairang-Kolkata Express derail in Assam, and no one is hurt",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "milk-prices-2026",
+      "title": "Mother Dairy raises milk prices by ₹2 to ₹4 a litre in Delhi-NCR from Thursday",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-a-hijack-threat-note-found-in",
+      "title": "A hijack threat note found in the washroom of a Kolkata-Mumbai Air India flight sends the plane to an isolation bay",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-sonia-gandhis-memoir-recalls-her-unease",
+      "title": "Sonia Gandhi's memoir recalls her unease over allying with the DMK after Rajiv Gandhi's assassination",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "trump-arch-2026",
+      "title": "Nine members of the Kennedy family sue to block Trump's planned 250-foot arch near Arlington National Cemetery",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "russia-espionage-2026",
+      "title": "British police arrest a 41-year-old US Army soldier near Gloucester on suspicion of spying for Russia",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-jonathan-ross-says-he-is-horrified",
+      "title": "Jonathan Ross says he is \"horrified\" by allegations against David Walliams, who denies them, and by Russell Brand's crimes",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-jim-jordan-beats-steve-scalise-to",
+      "title": "Jim Jordan beats Steve Scalise to lead House Republicans after the midterm defeat",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-a-us-judge-lets-trumps-10bn",
+      "title": "A US judge lets Trump's $10bn defamation suit against the BBC go ahead",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "gemini-4-carbon-2026",
+      "title": "Google releases Gemini 4 Carbon, its strongest model, to the Gemini app, developers and businesses",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ai"
+    },
+    {
+      "thread_id": "microsoft-security-2026",
+      "title": "Microsoft fixes 1,094 bugs on Patch Tuesday, over 1,000 for a second month, including an Outlook flaw already exploited",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "gta-6-2026",
+      "title": "GTA 6 will be playable on the old Xbox One at launch on 19 November, but only by streaming it from the cloud",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "scotland-football-2026",
+      "title": "Scott McTominay reveals he had his heart shocked in hospital two days before Scotland's World Cup opener",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "pitch"
+    },
+    {
+      "thread_id": "endrick-2026",
+      "title": "Endrick says José Mourinho calls him every day but does not rule out a loan away from Real Madrid in January",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "northern-ireland-2026",
+      "title": "Northern Ireland top their Nations League group as they gather to play Ukraine and Hungary",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "india-nz-tests-2026",
+      "title": "New Zealand name Rachin Ravindra and Devon Conway in their Test squad to face India, both racing to be fit",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "crease"
+    },
+    {
+      "thread_id": "vijayanagar-metro-2026",
+      "title": "A passenger jumps onto the track at Vijayanagar metro station and Purple Line services are briefly cut",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "namma-metro-blue-2026",
+      "title": "Blue Line trial runs reach KR Puram as BMRCL moves towards mainline tests on the airport corridor",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "ranchi-people-2026",
+      "title": "A Ranchi designer helped make the bamboo armour worn by Ram and Lakshman in the film 'Ramayana'",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "prayagraj-air-2026",
+      "title": "Prayagraj's air turns 'poor' after Diwali, with the city's average AQI rising to 248",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "iiit-allahabad-2026",
+      "title": "IIIT Allahabad students build Swerve Drive, a robotic car that expands and shrinks to fit narrow roads",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-11",
+      "last_printed": "2026-11-11",
+      "last_change": "2026-11-11",
       "status": "active",
       "votes": {
         "up": 0,

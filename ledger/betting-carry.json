@@ -1,6 +1,6 @@
 {
-  "date": "2026-11-10",
-  "from": "2026-11-09",
+  "date": "2026-11-11",
+  "from": "2026-11-10",
   "carry": [
     {
       "id": "pm:next-french-presidential-election",
@@ -9,45 +9,40 @@
       "reason": "#1 by 24h volume"
     },
     {
-      "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
-      "title": "US announces end of Iranian blockade by...?",
-      "since": "2026-10-31",
-      "reason": "#2 by 24h volume"
-    },
-    {
-      "id": "pm:israel-x-iran-ceasefire-continues-throughptptpt-20260716224448963",
-      "title": "Israel x Iran ceasefire continues through...?",
-      "since": "2026-11-04",
-      "reason": "#3 by 24h volume"
-    },
-    {
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
       "title": "UEFA Champions League: 2027 Champion",
       "since": "2026-09-25",
-      "reason": "#5 by 24h volume"
+      "reason": "#2 by 24h volume"
+    },
+    {
+      "id": "pm:anthropic-ipo-by",
+      "title": "Anthropic IPO by __?",
+      "since": "2026-11-10",
+      "reason": "#3 by 24h volume"
     },
     {
       "id": "pm:will-the-us-invade-iran-before-2027",
       "title": "Will the U.S. invade Iran before 2027?",
       "since": "2026-11-09",
-      "reason": "#11 by 24h volume"
+      "reason": "#5 by 24h volume"
     },
     {
-      "id": "pm:us-x-iran-effective-ceasefire-begins-by-2-week-pause-20261108",
-      "title": "US x Iran Effective Ceasefire begins by...? (2 week pause)",
-      "since": "2026-11-09",
-      "reason": "#14 by 24h volume; By November 15 moved 5.5 pts since printed"
+      "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
+      "title": "US announces end of Iranian blockade by...?",
+      "since": "2026-10-31",
+      "reason": "#6 by 24h volume"
+    },
+    {
+      "id": "pm:jensen-huang-announced-resignation-or-removal-by-december-31",
+      "title": "Jensen Huang announced resignation or removal by...?",
+      "since": "2026-11-10",
+      "reason": "#7 by 24h volume"
     }
   ],
   "dropped": [
     {
-      "id": "pm:epl-hul-bri-2026-11-22",
-      "title": "Hull City AFC vs. Brighton & Hove Albion FC",
-      "why": "cooled: outside the ranking by volume, moved 0.5 pts"
-    },
-    {
-      "id": "pm:wta-tjen-linette-2026-11-08",
-      "title": "Chennai Open: Janice Tjen vs Magda Linette",
+      "id": "pm:israel-x-iran-ceasefire-continues-throughptptpt-20260716224448963",
+      "title": "Israel x Iran ceasefire continues through...?",
       "why": "ended or decided, no next market in the same line"
     },
     {
@@ -56,9 +51,14 @@
       "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:iran-leadership-change-by",
-      "title": "Iran leadership change by...?",
-      "why": "cooled: #21 by volume, moved 0.3 pts"
+      "id": "pm:strait-of-hormuz-traffic-returns-to-normal-by-december-31",
+      "title": "Strait of Hormuz traffic returns to normal by December 31?",
+      "why": "carry cap of 6"
+    },
+    {
+      "id": "pm:us-x-iran-effective-ceasefire-begins-by-2-week-pause-20261108",
+      "title": "US x Iran Effective Ceasefire begins by...? (2 week pause)",
+      "why": "carry cap of 6"
     }
   ]
 }

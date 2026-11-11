@@ -1,20 +1,8 @@
 {
-  "date": "2026-11-10",
+  "date": "2026-11-11",
   "source": "Cricbuzz",
-  "checked_at": "2026-11-10T08:42:36.045Z",
+  "checked_at": "2026-11-11T08:45:47.814Z",
   "matches": [
-    {
-      "desc": "3rd ODI",
-      "format": "ODI",
-      "series": "India tour of New Zealand 2026",
-      "opponent": "New Zealand",
-      "start": "2026-11-10T02:00:00.000Z",
-      "ist": "Tue 10 Nov, 07:30",
-      "time_announced": true,
-      "ground": "Seddon Park",
-      "city": "Hamilton",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/161260"
-    },
     {
       "desc": "4th ODI",
       "format": "ODI",
@@ -296,12 +284,12 @@
     {
       "name": "India tour of New Zealand 2026",
       "opponent": "New Zealand",
-      "from": "2026-11-10",
+      "from": "2026-11-13",
       "parts": [
         {
           "format": "ODI",
           "total": 5,
-          "played": 2
+          "played": 3
         },
         {
           "format": "TEST",
