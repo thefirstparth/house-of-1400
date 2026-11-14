@@ -1,69 +1,8 @@
 {
   "version": 1,
-  "last_updated": "2026-11-13T08:47:00.630Z",
-  "last_edition": "2026-11-13",
+  "last_updated": "2026-11-14T08:46:09.937Z",
+  "last_edition": "2026-11-14",
   "threads": [
-    {
-      "thread_id": "india-markets-daily",
-      "title": "Sensex gives up a 500-point gain on crude and bank selling, while the rupee has its best day in a month",
-      "entities": [],
-      "facts": {
-        "sensex_close": "71909.7",
-        "nifty_close": "22421.95",
-        "date": "2026-10-01",
-        "sensex_move": "down over 1,000 points intraday",
-        "nifty": "22,628 (-0.4%)",
-        "trigger": "Hormuz plan rejected, oil up",
-        "level": "2026 low",
-        "fii_sept": "20695 crore",
-        "fpi_sept": "-35861 crore",
-        "bofa": "100 bps hikes through H1 2027",
-        "us10y": ">5.3%",
-        "weeks": "8",
-        "sensex": "72,862 (-0.2%) 14:00",
-        "brent": ">$102",
-        "fii_9d": "~₹57,000 cr",
-        "tcs_pat": "₹13,884 cr (+15%)",
-        "revenue": "₹73,188 cr",
-        "dividend": "₹12, record 14 Oct",
-        "hcltech": "+7%",
-        "nifty_it": "+3%",
-        "usdinr": "95.09",
-        "fii_13oct": "-₹1,305 cr"
-      },
-      "first_printed": "2026-09-25",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ledger"
-    },
-    {
-      "thread_id": "metro-pink-line",
-      "title": "BMRCL will answer the safety commissioner's points on the Pink Line next week",
-      "entities": [],
-      "facts": {
-        "expected": "mid-October",
-        "stretch": "Kalena Agrahara–Tavarekere 7.5 km",
-        "protest": "symbolic opening by residents",
-        "cmrs": "6-8 Oct",
-        "status": "inspection complete",
-        "observations": "received 9 Oct",
-        "reply": "next week"
-      },
-      "first_printed": "2026-09-25",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "namma"
-    },
     {
       "thread_id": "eci-sir-dissent-2026",
       "title": "CJP leaders Das and Ranka are freed on bonds and summoned by the Crime Branch, as Amit Shah says the protests 'will not achieve anything'",
@@ -182,7 +121,7 @@
     },
     {
       "thread_id": "anthropic-ipo-2026",
-      "title": "Anthropic's listing draws about six times as many orders as there are shares, Bloomberg reports",
+      "title": "Investors in mainland China and Hong Kong are shut out of Anthropic's share sale, Bloomberg reports",
       "entities": [],
       "facts": {
         "revenue_2025": "$4.59bn",
@@ -214,29 +153,12 @@
         "valuation": "$1.1tn to $1.3tn",
         "Rao's stake": "9.4 million shares",
         "demand": "about six times the shares on offer",
-        "Nvidia": "about $10bn of the placement"
+        "Nvidia": "about $10bn of the placement",
+        "excluded": "mainland China and Hong Kong institutions"
       },
       "first_printed": "2026-09-30",
-      "last_printed": "2026-11-13",
-      "last_change": "2026-11-13",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ai"
-    },
-    {
-      "thread_id": "gemini-4-2026",
-      "title": "Google opens Gemini 4 Argon to paying users, weeks after holding it back over misuse risks",
-      "entities": [],
-      "facts": {
-        "access": "paying users",
-        "api": "50% off to end of November"
-      },
-      "first_printed": "2026-10-01",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -481,27 +403,8 @@
       "section": "tech"
     },
     {
-      "thread_id": "apple-october-event-2026",
-      "title": "Apple launches HomeView, a $299 screen for the home run by Siri AI, and a new HomePod mini",
-      "entities": [],
-      "facts": {
-        "price": "$299",
-        "on_sale": "November",
-        "screen": "7-inch"
-      },
-      "first_printed": "2026-10-06",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "ai"
-    },
-    {
       "thread_id": "ukraine-war-2026",
-      "title": "Russia, Ukraine and the US open their first real peace talks since February in Abu Dhabi, and India offers to help",
+      "title": "Germany, France, Britain, Italy and Poland will speak for Europe with the EU at any Ukraine peace talks",
       "entities": [],
       "facts": {
         "dead": "at least 29",
@@ -529,11 +432,12 @@
         "bombs": "at least nine 3,000kg aerial bombs",
         "talks": "two days in Abu Dhabi from Tuesday",
         "last substantive talks": "February",
-        "India": "offered to help set up food corridors"
+        "India": "offered to help set up food corridors",
+        "team": "Germany, France, UK, Italy, Poland and the EU"
       },
       "first_printed": "2026-10-07",
-      "last_printed": "2026-11-10",
-      "last_change": "2026-11-10",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -634,7 +538,7 @@
     },
     {
       "thread_id": "man-utd-2026",
-      "title": "Manchester United make formal contact with US Soccer about hiring Mauricio Pochettino",
+      "title": "Manchester United appoint Mauricio Pochettino after sacking Michael Carrick, and he will coach the US in two final games",
       "entities": [],
       "facts": {
         "score": "Man Utd 3-2 Roma",
@@ -645,11 +549,12 @@
         "last result": "4-4 v Aston Villa",
         "release clause": "about $10m",
         "US contract": "through 2030",
-        "approach": "formal contact with US Soccer"
+        "approach": "formal contact with US Soccer",
+        "Carrick sacked": "Thursday 12 November"
       },
       "first_printed": "2026-10-13",
-      "last_printed": "2026-11-12",
-      "last_change": "2026-11-12",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -677,23 +582,6 @@
       "section": "namma"
     },
     {
-      "thread_id": "iiit-ranchi-2026",
-      "title": "Education ministry sets up a three-member panel on the IIIT Ranchi student's death",
-      "entities": [],
-      "facts": {
-        "panel": "three members, led by Rajni Abbi"
-      },
-      "first_printed": "2026-10-13",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "back"
-    },
-    {
       "thread_id": "pope-leo-health-2026",
       "title": "Pope Leo needs no further treatment after his lung cancer surgery, doctors say",
       "entities": [],
@@ -715,26 +603,6 @@
       "section": "videsh"
     },
     {
-      "thread_id": "bihar-boat-2026",
-      "title": "Thirteen dead, most of them children, as a boat capsizes in the Ganga in Bihar's Vaishali",
-      "entities": [],
-      "facts": {
-        "dead": 13,
-        "missing": "3-4",
-        "rescued": 7,
-        "aid": "₹4 lakh each"
-      },
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "desh"
-    },
-    {
       "thread_id": "openai-security-2026",
       "title": "OpenAI bugging suspect had booked a one-way flight to Saudi Arabia, prosecutors say",
       "entities": [],
@@ -752,96 +620,6 @@
         "down": 0
       },
       "section": "ai"
-    },
-    {
-      "thread_id": "air-india-security-2026",
-      "title": "Frankfurt–Delhi Air India flight diverted to Jaipur after a bomb threat",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "desh"
-    },
-    {
-      "thread_id": "line-the-chemist-who-shot-dead-an",
-      "title": "The chemist who shot dead an anti-drug activist in Punjab's Mansa has been arrested",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "desh"
-    },
-    {
-      "thread_id": "line-canadas-prime-minister-mark-carney-is",
-      "title": "Canada's Prime Minister Mark Carney is reported to be in line as chief guest for Republic Day",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "desh"
-    },
-    {
-      "thread_id": "line-kimberly-guilfoyle-resigns-as-us-ambassador",
-      "title": "Kimberly Guilfoyle resigns as US ambassador to Greece after reports of misconduct; she calls the claims false",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "videsh"
-    },
-    {
-      "thread_id": "line-bank-of-america-is-fined-12bn",
-      "title": "Bank of America is fined $1.2bn for failing to stop money laundering",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "videsh"
-    },
-    {
-      "thread_id": "iss-cargo-2026",
-      "title": "SpaceX launches its 35th cargo mission to the International Space Station for NASA",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "tech"
     },
     {
       "thread_id": "arsenal-2026",
@@ -870,96 +648,6 @@
       "section": "pitch"
     },
     {
-      "thread_id": "world-cup-2030",
-      "title": "Netflix buys the 2030 World Cup rights in Spain, its first men's World Cup",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "pitch"
-    },
-    {
-      "thread_id": "kohli-business-2026",
-      "title": "Virat Kohli joins LinkedIn, and Satya Nadella welcomes him in the comments",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "sidelines"
-    },
-    {
-      "thread_id": "aus-in-sa-2026",
-      "title": "Hazlewood takes a career-best six for 49 as Australia beat South Africa by 214 runs in Durban",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "sidelines"
-    },
-    {
-      "thread_id": "afg-ban-test-2026",
-      "title": "Sediqullah Atal bats 332 balls for 111 to save Afghanistan's Test against Bangladesh",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "sidelines"
-    },
-    {
-      "thread_id": "line-yuvraj-singh-joins-delhi-capitals-coaching",
-      "title": "Yuvraj Singh joins Delhi Capitals' coaching staff for the next IPL season",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "sidelines"
-    },
-    {
-      "thread_id": "line-britains-sonay-kartal-ranked-170th-after",
-      "title": "Britain's Sonay Kartal, ranked 170th after injury, beats ninth seed Belinda Bencic 6–0 7–5 in Wuhan",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "deuce"
-    },
-    {
       "thread_id": "madrid-next-roma",
       "title": "Madrid come from 3–1 down to beat Roma 4–3, with Espí, Endrick and Rüdiger scoring off corners",
       "entities": [],
@@ -976,66 +664,6 @@
         "down": 0
       },
       "section": "madrid"
-    },
-    {
-      "thread_id": "line-kolkata-will-host-a-barcelona-v",
-      "title": "Kolkata will host a Barcelona v Real Madrid legends match",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "madrid"
-    },
-    {
-      "thread_id": "f1-calendar-2026",
-      "title": "Formula 1 returns to Africa with a 10-year deal to race in Rwanda",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "paddock"
-    },
-    {
-      "thread_id": "line-verstappen-races-in-the-gt-world",
-      "title": "Verstappen races in the GT World Challenge season finale at Portimão",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "paddock"
-    },
-    {
-      "thread_id": "allahabad-hc-2026",
-      "title": "Allahabad High Court says a late postal delivery cannot cost a candidate a job",
-      "entities": [],
-      "facts": {},
-      "first_printed": "2026-10-14",
-      "last_printed": "2026-10-14",
-      "last_change": "2026-10-14",
-      "status": "active",
-      "votes": {
-        "up": 0,
-        "down": 0
-      },
-      "section": "back"
     },
     {
       "thread_id": "conversion-reservation-2026",
@@ -3864,18 +3492,20 @@
     },
     {
       "thread_id": "sooryavanshi-2026",
-      "title": "Shreyas Iyer says Vaibhav Sooryavanshi 'can't walk in right now' because India's openers keep scoring",
+      "title": "Vaibhav Sooryavanshi, 15, becomes the youngest captain in men's T20 cricket as the Mushtaq Ali Trophy begins",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "record": "youngest men's T20 captain"
+      },
       "first_printed": "2026-10-21",
-      "last_printed": "2026-10-21",
-      "last_change": "2026-10-21",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "sidelines"
+      "section": "crease"
     },
     {
       "thread_id": "ind-nz-t20is-2026",
@@ -7593,7 +7223,7 @@
     },
     {
       "thread_id": "nvidia-china-2026",
-      "title": "Jensen Huang resigns as Nvidia's chief executive, and Congress summons him to testify about the suspected Chinese spy",
+      "title": "The Nvidia scandal turns on Howard Lutnick, as Treasury says Commerce sat on sanctions against Alice Huang's company",
       "entities": [],
       "facts": {
         "alleged asset": "Alice Huang (Huang Le), Megaspeed",
@@ -7610,11 +7240,13 @@
         "resigned": "Thursday 12 November, with immediate effect",
         "interim CEO": "Colette Kress",
         "value lost": "$550bn in five days",
-        "Senate hearing": "3 December"
+        "Senate hearing": "3 December",
+        "Bessent": "commerce has the pen",
+        "successor approach": "Arm's Rene Haas, per Reuters"
       },
       "first_printed": "2026-10-30",
-      "last_printed": "2026-11-13",
-      "last_change": "2026-11-13",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9153,17 +8785,18 @@
     },
     {
       "thread_id": "australia-cricket-2026",
-      "title": "Pat Cummins calls Khawaja's sandpaper claims 'complete and utter nonsense', and Warner says he threw Khawaja under the bus",
+      "title": "David Warner says Cricket Australia's 2018 ball-tampering inquiry \"stinks of a cover-up\"",
       "entities": [],
       "facts": {
         "claim": "'all of us' knew",
         "denied by": "Darren Lehmann",
         "Warner": "threw Khawaja under the bus",
-        "Cummins": "complete and utter nonsense"
+        "Cummins": "complete and utter nonsense",
+        "not interviewed": "Hazlewood, Starc, Lyon, per Warner"
       },
       "first_printed": "2026-11-03",
-      "last_printed": "2026-11-13",
-      "last_change": "2026-11-13",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -9218,18 +8851,19 @@
     },
     {
       "thread_id": "ranchi-festivals-2026",
-      "title": "Ranchi's Sadar Hospital readies a 10-bed burn ward and RIMS puts its burn unit on alert for Diwali",
+      "title": "NDRF teams are posted at Chhath ghats in Ranchi and three other districts to prevent drownings",
       "entities": [],
       "facts": {
         "ghats inspected": "six",
         "orders": "changing rooms, barricades, lighting",
         "holding areas": "two, about 250 each",
         "inspected by": "DC Manjunath Bhajantri",
-        "burn ward": "10 beds, Sadar Hospital"
+        "burn ward": "10 beds, Sadar Hospital",
+        "team size": "30"
       },
       "first_printed": "2026-11-03",
-      "last_printed": "2026-11-08",
-      "last_change": "2026-11-08",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -10719,22 +10353,24 @@
     },
     {
       "thread_id": "hasina-return-2026",
-      "title": "Sheikh Hasina asks Bangladesh for a new passport and ID card so she can return from India in December",
+      "title": "India wants Bangladesh's army to fly Sheikh Hasina home, and sets conditions for her return, BBC Bangla reports",
       "entities": [],
       "facts": {
         "asked for": "new passport and national identity card",
         "planned return": "December",
-        "letter to": "acting high commissioner Preeti Rahman, Delhi"
+        "letter to": "acting high commissioner Preeti Rahman, Delhi",
+        "first condition": "Bangladesh army to bring her back, ideally by military aircraft",
+        "her sentence": "death, by a Bangladeshi court"
       },
       "first_printed": "2026-11-09",
-      "last_printed": "2026-11-09",
-      "last_change": "2026-11-09",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
       "status": "active",
       "votes": {
         "up": 0,
         "down": 0
       },
-      "section": "videsh"
+      "section": "desh"
     },
     {
       "thread_id": "trump-after-midterms-2026",
@@ -11348,12 +10984,14 @@
     },
     {
       "thread_id": "scotland-football-2026",
-      "title": "Scott McTominay reveals he had his heart shocked in hospital two days before Scotland's World Cup opener",
+      "title": "John McGinn scores twice as Scotland struggle past North Macedonia 2-1, and Andy Robertson equals Dalglish's caps",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "score": "2-1"
+      },
       "first_printed": "2026-11-11",
-      "last_printed": "2026-11-11",
-      "last_change": "2026-11-11",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -11393,15 +11031,16 @@
     },
     {
       "thread_id": "india-nz-tests-2026",
-      "title": "Rishabh Pant gets clearance from the BCCI's Centre of Excellence and will fly to New Zealand for the Tests",
+      "title": "Gurnoor Brar replaces Kuldeep Yadav in India's Test squad for New Zealand",
       "entities": [],
       "facts": {
         "decision": "after the fourth ODI",
-        "Pant": "cleared by the Centre of Excellence"
+        "Pant": "cleared by the Centre of Excellence",
+        "replaces": "Kuldeep Yadav"
       },
       "first_printed": "2026-11-11",
-      "last_printed": "2026-11-13",
-      "last_change": "2026-11-13",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -11817,12 +11456,14 @@
     },
     {
       "thread_id": "prayagraj-property-2026",
-      "title": "The National Land Monetisation Corporation will e-auction 11 government flats in Prayagraj's Civil Lines on 11 December",
+      "title": "Prayagraj may lift curbs on group housing and multi-storey buildings in Civil Lines, Georgetown and Tagore Town",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "objections": "within 15 days"
+      },
       "first_printed": "2026-11-12",
-      "last_printed": "2026-11-12",
-      "last_change": "2026-11-12",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -12009,12 +11650,16 @@
     },
     {
       "thread_id": "microsoft-outage-2026",
-      "title": "Microsoft's outage of Outlook and its workplace apps enters a second day, and the company says it sees no attack",
+      "title": "Microsoft restores Outlook, Teams and Copilot after a day-long outage in over 70 countries, blaming a network upgrade",
       "entities": [],
-      "facts": {},
+      "facts": {
+        "countries hit": "more than 70",
+        "users of affected products": "more than 430 million",
+        "cause": "a network capacity upgrade, per Microsoft"
+      },
       "first_printed": "2026-11-13",
-      "last_printed": "2026-11-13",
-      "last_change": "2026-11-13",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
       "status": "active",
       "votes": {
         "up": 0,
@@ -12150,6 +11795,295 @@
       "first_printed": "2026-11-13",
       "last_printed": "2026-11-13",
       "last_change": "2026-11-13",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "trump-xi-putin-2026",
+      "title": "Trump, Xi and Putin plan their first three-way meeting next week in Shenzhen, with nuclear arms cuts on the table",
+      "entities": [],
+      "facts": {
+        "where": "APEC summit, Shenzhen",
+        "when": "late next week",
+        "agenda": "nuclear arms reduction; Iran possibly; not Ukraine"
+      },
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "assam-road-2026",
+      "title": "A minibus carrying college students collides with a truck near Kaziranga, killing 26 people",
+      "entities": [],
+      "facts": {
+        "dead": "26",
+        "critical": "seven in ICU at Jorhat",
+        "where": "Rangajan, NH 715, near Kaziranga"
+      },
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "us-aviation-2026",
+      "title": "A telecommunications failure grounds every departing flight in the US for hours, the longest such stop in 25 years",
+      "entities": [],
+      "facts": {
+        "cancelled Friday": "more than 4,700 flights",
+        "diverted": "at least 827",
+        "length": "more than four hours"
+      },
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "india-us-2026",
+      "title": "India's ambassador in Washington tells a US religious freedom panel it has \"no locus standi\" over Sharjeel Imam",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-s-jaishankar-says-indias-border-with",
+      "title": "S. Jaishankar says India's border with China has become \"more alive\"",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "line-a-guwahati-schoolboy-stabs-his-mother",
+      "title": "A Guwahati schoolboy stabs his mother and later dies in a fall from a building",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "desh"
+    },
+    {
+      "thread_id": "new-orleans-cruise-2026",
+      "title": "Everyone aboard a New Orleans riverboat survives after a tanker hits it on the Mississippi, leaving it on its side",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "line-more-than-15-million-people-greet",
+      "title": "More than 1.5 million people greet Pope Leo in Peru, near the city where he served as bishop",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "videsh"
+    },
+    {
+      "thread_id": "yes-bank-2026",
+      "title": "Yes Bank asks the Supreme Court to review its ruling against the write-down of ₹8,415 crore of AT-1 bonds",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "tata-trusts-2026",
+      "title": "Two Tata Trusts vice-chairmen accuse Darius Khambata of plotting to oust Venu Srinivasan as a trustee",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "ledger"
+    },
+    {
+      "thread_id": "spacex-starship-2026",
+      "title": "SpaceX aborts its first attempt to catch both halves of Starship, and the booster burns up in the Gulf",
+      "entities": [],
+      "facts": {
+        "rocket height": "124m",
+        "satellites": "26 Starlink",
+        "ship catch": "possible at about 15:15 local time Saturday"
+      },
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "apple-home-2026",
+      "title": "Apple's first home hub, HomeView, goes on sale, along with a new Apple TV 4K",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "tech"
+    },
+    {
+      "thread_id": "de-miguel-death-2026",
+      "title": "Goalkeeper Jesús Owono is banned for 12 matches over the collision that killed Tenerife's Jesús de Miguel",
+      "entities": [],
+      "facts": {
+        "ban": "12 matches, the maximum",
+        "collision": "2 November; De Miguel died 3 November"
+      },
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "wta-finals-2026",
+      "title": "Elina Svitolina beats Aryna Sabalenka 6-3, 3-6, 6-1 to end her season and reach the WTA Finals semi-finals",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "sidelines"
+    },
+    {
+      "thread_id": "guler-turkey-2026",
+      "title": "Arda Güler scores a free kick for Turkey, and Kevin De Bruyne calls him \"one of the best footballers in the world\"",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "madrid"
+    },
+    {
+      "thread_id": "mysuru-2026",
+      "title": "Modi opens the COSMOS planetarium in Mysuru, with a 15-metre tilted dome of around 6,150 panels",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "namma"
+    },
+    {
+      "thread_id": "jharkhand-politics-2026",
+      "title": "The BJP protests in Ranchi demanding the arrest of Congress MLA Bhushan Bara, accused of raping a minor",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
+      "status": "active",
+      "votes": {
+        "up": 0,
+        "down": 0
+      },
+      "section": "back"
+    },
+    {
+      "thread_id": "jhansi-temple-2026",
+      "title": "The Allahabad High Court gives the defence ministry four weeks to decide on removing an unauthorised temple in Jhansi",
+      "entities": [],
+      "facts": {},
+      "first_printed": "2026-11-14",
+      "last_printed": "2026-11-14",
+      "last_change": "2026-11-14",
       "status": "active",
       "votes": {
         "up": 0,

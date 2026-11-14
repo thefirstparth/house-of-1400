@@ -1,20 +1,8 @@
 {
-  "date": "2026-11-13",
+  "date": "2026-11-14",
   "source": "Cricbuzz",
-  "checked_at": "2026-11-13T08:42:51.456Z",
+  "checked_at": "2026-11-14T08:42:22.310Z",
   "matches": [
-    {
-      "desc": "4th ODI",
-      "format": "ODI",
-      "series": "India tour of New Zealand 2026",
-      "opponent": "New Zealand",
-      "start": "2026-11-13T02:00:00.000Z",
-      "ist": "Fri 13 Nov, 07:30",
-      "time_announced": true,
-      "ground": "Bay Oval",
-      "city": "Mount Maunganui",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/161271"
-    },
     {
       "desc": "5th ODI",
       "format": "ODI",
@@ -284,12 +272,12 @@
     {
       "name": "India tour of New Zealand 2026",
       "opponent": "New Zealand",
-      "from": "2026-11-13",
+      "from": "2026-11-15",
       "parts": [
         {
           "format": "ODI",
           "total": 5,
-          "played": 3
+          "played": 4
         },
         {
           "format": "TEST",
