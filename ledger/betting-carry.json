@@ -1,11 +1,11 @@
 {
-  "date": "2026-11-15",
-  "from": "2026-11-14",
+  "date": "2026-11-16",
+  "from": "2026-11-15",
   "carry": [
     {
-      "id": "pm:next-french-presidential-election",
-      "title": "Next French Presidential Election",
-      "since": "2026-10-09",
+      "id": "pm:jensen-huang-rejoins-nvidia-byptptpt",
+      "title": "Jensen Huang rejoins NVIDIA by...?",
+      "since": "2026-11-14",
       "reason": "#1 by 24h volume"
     },
     {
@@ -21,43 +21,43 @@
       "reason": "#3 by 24h volume"
     },
     {
-      "id": "pm:jensen-huang-rejoins-nvidia-byptptpt",
-      "title": "Jensen Huang rejoins NVIDIA by...?",
-      "since": "2026-11-14",
-      "reason": "#4 by 24h volume"
+      "id": "pm:anthropic-ipo-by",
+      "title": "Anthropic IPO by __?",
+      "since": "2026-11-10",
+      "reason": "#5 by 24h volume"
     },
     {
       "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
       "title": "US announces end of Iranian blockade by...?",
       "since": "2026-10-31",
-      "reason": "#5 by 24h volume"
+      "reason": "#7 by 24h volume"
     },
     {
-      "id": "pm:anthropic-ipo-by",
-      "title": "Anthropic IPO by __?",
-      "since": "2026-11-10",
-      "reason": "#6 by 24h volume"
+      "id": "pm:next-french-presidential-election",
+      "title": "Next French Presidential Election",
+      "since": "2026-10-09",
+      "reason": "#11 by 24h volume"
     }
   ],
   "dropped": [
     {
-      "id": "pm:ljubljana-mayoral-election-winner-2026",
-      "title": "Ljubljana Mayoral Election Winner",
+      "id": "pm:unl-fra-tur-2026-11-15",
+      "title": "France vs. Türkiye",
       "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:wta-andreev-muchova-2026-11-10",
-      "title": "WTA Finals, Group B: Mirra Andreeva vs Karolina Muchova",
+      "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
+      "title": "Prime Minister of Israel after the next election?",
       "why": "ended or decided, no next market in the same line"
-    },
-    {
-      "id": "pm:faa-outage-attributed-to-iran",
-      "title": "FAA outage attributed to Iran?",
-      "why": "cooled: outside the ranking by volume, moved 0.1 pts"
     },
     {
       "id": "pm:us-x-iran-effective-ceasefire-begins-by-2-week-pause-20261108",
       "title": "US x Iran Effective Ceasefire begins by...? (2 week pause)",
+      "why": "carry cap of 6"
+    },
+    {
+      "id": "pm:crint-aus-gbr-2026-11-17",
+      "title": "England Tour of Australia ODIs: Australia vs England",
       "why": "carry cap of 6"
     }
   ]
