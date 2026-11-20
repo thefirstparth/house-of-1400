@@ -1,20 +1,8 @@
 {
-  "date": "2026-11-19",
+  "date": "2026-11-20",
   "source": "Cricbuzz",
-  "checked_at": "2026-11-19T08:42:32.654Z",
+  "checked_at": "2026-11-20T08:42:22.896Z",
   "matches": [
-    {
-      "desc": "1st Test",
-      "format": "TEST",
-      "series": "India tour of New Zealand 2026",
-      "opponent": "New Zealand",
-      "start": "2026-11-18T22:00:00.000Z",
-      "ist": "Thu 19 Nov, 03:30",
-      "time_announced": true,
-      "ground": "Basin Reserve",
-      "city": "Wellington",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/161285"
-    },
     {
       "desc": "2nd Test",
       "format": "TEST",
@@ -143,7 +131,7 @@
       "start": "2027-01-21T04:00:00.000Z",
       "ist": "Thu 21 Jan, 09:30",
       "time_announced": true,
-      "ground": "Vidarbha Cricket Association Stadium",
+      "ground": "Vidarbha Cricket Association Stadium, Jamtha",
       "city": "Nagpur",
       "url": "https://www.cricbuzz.com/live-cricket-scores/151712"
     },
@@ -260,12 +248,12 @@
     {
       "name": "India tour of New Zealand 2026",
       "opponent": "New Zealand",
-      "from": "2026-11-18",
+      "from": "2026-11-26",
       "parts": [
         {
           "format": "TEST",
           "total": 2,
-          "played": 0
+          "played": 1
         }
       ],
       "now": true
