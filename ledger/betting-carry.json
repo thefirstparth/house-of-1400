@@ -1,6 +1,6 @@
 {
-  "date": "2026-11-20",
-  "from": "2026-11-19",
+  "date": "2026-11-21",
+  "from": "2026-11-20",
   "carry": [
     {
       "id": "pm:israel-x-iran-ceasefire-continues-throughptptpt-20260716224448963",
@@ -21,43 +21,44 @@
       "reason": "#4 by 24h volume"
     },
     {
-      "id": "pm:taipei-mayor-election-winner-20260813125857100",
-      "title": "Taipei Mayor Election Winner",
-      "since": "2026-11-16",
-      "reason": "#9 by 24h volume"
+      "id": "pm:will-anthropics-valuation-hit-by-december-31",
+      "title": "Will Anthropic’s valuation hit __ by December 31?",
+      "since": "2026-11-20",
+      "reason": "#5 by 24h volume; ↓$1.0T moved 19.5 pts since printed"
     },
     {
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
       "title": "UEFA Champions League: 2027 Champion",
       "since": "2026-09-25",
-      "reason": "#12 by 24h volume"
+      "reason": "#6 by 24h volume"
+    },
+    {
+      "id": "pm:taipei-mayor-election-winner-20260813125857100",
+      "title": "Taipei Mayor Election Winner",
+      "since": "2026-11-16",
+      "reason": "#10 by 24h volume"
     }
   ],
   "dropped": [
     {
-      "id": "pm:us-x-iran-effective-ceasefire-begins-by-2-week-pause-20261108",
-      "title": "US x Iran Effective Ceasefire begins by...? (2 week pause)",
-      "why": "cooled: #23 by volume, moved 3.0 pts"
-    },
-    {
-      "id": "pm:anthropic-ipo-closing-market-cap-higher-strikes",
-      "title": "Anthropic IPO Closing Market Cap",
-      "why": "cooled: outside the ranking by volume, moved 0.0 pts"
-    },
-    {
-      "id": "pm:what-will-anthropics-ipo-valuation-be",
-      "title": "What will Anthropic's IPO valuation be?",
+      "id": "pm:atp-alcaraz-cobolli-2026-11-17",
+      "title": "ATP World Tour Finals, Ivan Lendl Group: Carlos Alcaraz vs Flavio Cobolli",
       "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:itf-inglis1-koike1-2026-11-19",
-      "title": "W75 Sydney: Maddison Inglis vs Ena Koike",
+      "id": "pm:largest-ipo-by-market-cap-in-2026-287",
+      "title": "Largest IPO by market cap in 2026?",
+      "why": "cooled: outside the ranking by volume, moved 0.2 pts"
+    },
+    {
+      "id": "pm:itf-yesypc1-lacino1-2026-11-20",
+      "title": "W15 Antalya: Daria Yesypchuk vs Adelina Lacinova",
       "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
-      "title": "Prime Minister of Israel after the next election?",
-      "why": "ended or decided, no next market in the same line"
+      "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
+      "title": "US announces end of Iranian blockade by...?",
+      "why": "carry cap of 6"
     }
   ]
 }
