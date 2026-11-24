@@ -1,53 +1,63 @@
 {
-  "date": "2026-11-23",
-  "from": "2026-11-22",
+  "date": "2026-11-24",
+  "from": "2026-11-23",
   "carry": [
-    {
-      "id": "pm:israel-x-iran-ceasefire-continues-throughptptpt-20260716224448963",
-      "title": "Israel x Iran ceasefire continues through...?",
-      "since": "2026-11-12",
-      "reason": "#2 by 24h volume; Through November 30 moved 6.0 pts since printed"
-    },
-    {
-      "id": "pm:jensen-huang-rejoins-nvidia-byptptpt",
-      "title": "Jensen Huang rejoins NVIDIA by...?",
-      "since": "2026-11-14",
-      "reason": "#3 by 24h volume"
-    },
     {
       "id": "pm:next-french-presidential-election",
       "title": "Next French Presidential Election",
       "since": "2026-10-09",
-      "reason": "#4 by 24h volume"
+      "reason": "#1 by 24h volume"
+    },
+    {
+      "id": "pm:israel-x-iran-ceasefire-continues-throughptptpt-20260716224448963",
+      "title": "Israel x Iran ceasefire continues through...?",
+      "since": "2026-11-12",
+      "reason": "#2 by 24h volume"
     },
     {
       "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
       "title": "UEFA Champions League: 2027 Champion",
       "since": "2026-09-25",
-      "reason": "#6 by 24h volume"
+      "reason": "#4 by 24h volume"
+    },
+    {
+      "id": "pm:jensen-huang-out-as-nvidia-ceo-again-byptptpt",
+      "title": "Jensen Huang out as NVIDIA CEO again by...?",
+      "since": "2026-11-14",
+      "reason": "next in line; #5 by 24h volume; By December 31, 2026 moved 5.1 pts since printed"
+    },
+    {
+      "id": "pm:us-announces-end-of-iranian-blockade-byptptpt-20260713152715080",
+      "title": "US announces end of Iranian blockade by...?",
+      "since": "2026-11-23",
+      "reason": "#10 by 24h volume"
     },
     {
       "id": "pm:taipei-mayor-election-winner-20260813125857100",
       "title": "Taipei Mayor Election Winner",
       "since": "2026-11-16",
-      "reason": "#9 by 24h volume"
-    },
-    {
-      "id": "pm:ai-bubble-burst-by",
-      "title": "AI bubble burst by...?",
-      "since": "2026-11-21",
-      "reason": "By December 31, 2026 moved 13.2 pts since printed"
+      "reason": "#15 by 24h volume; Chiang Wan-an moved 5.0 pts since printed"
     }
   ],
   "dropped": [
     {
-      "id": "pm:atp-zverev-alcaraz-2026-11-22",
-      "title": "ATP World Tour Finals, Final Stage: Alexander Zverev vs Carlos Alcaraz",
+      "id": "pm:atp-ono-lennonr-2026-11-22",
+      "title": "Yokohama: Ryo Ono vs Lennon Roark Jones",
       "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:epl-eve-liv-2026-11-29",
-      "title": "Everton FC vs. Liverpool FC",
+      "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
+      "title": "Prime Minister of Israel after the next election?",
+      "why": "ended or decided, no next market in the same line"
+    },
+    {
+      "id": "pm:venezuela-leader-end-of-2026",
+      "title": "Venezuela leader end of 2026?",
+      "why": "cooled: #21 by volume, moved 1.2 pts"
+    },
+    {
+      "id": "pm:ai-bubble-burst-by",
+      "title": "AI bubble burst by...?",
       "why": "carry cap of 6"
     }
   ]
