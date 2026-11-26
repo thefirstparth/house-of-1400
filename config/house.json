@@ -3469,6 +3469,7 @@
     "first_writer_waits": 10,
     "writer_budget": 15,
     "text_models": [
+      "gemini-4-hydrogen",
       "gemini-3.8-flash",
       "gemini-3.7-flash",
       "gemini-3.6-flash",
@@ -3477,6 +3478,7 @@
     ],
     "tts_models": [
       "gemini-3.8-flash-tts",
+      "gemini-3.8-flash-lite-tts",
       "gemini-3.1-flash-tts-preview",
       "gemini-2.5-flash-preview-tts"
     ],

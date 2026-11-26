@@ -303,7 +303,8 @@ async function ttsGemini(turns) {
   const forms = { steady, "per-turn": perTurn, transcript };
   const lead = forms[P.voice_form] ? P.voice_form : "steady";
   const first = [...(P.voice_form === "solo" ? [[main, "solo", "solo"]] : []), [main, lead, forms[lead]], ...["steady", "per-turn"].filter(n => n !== lead).map(n => [main, n, forms[n]])];
-  const takes = SAMPLE && P.voice_form === "solo" ? [[main, "solo", "solo"]] : [...first, ...others.map(m => [m, "transcript", transcript])];
+  // (26 Nov 2026) a 3.8 voice model refuses the transcript form, so the 3.8 Flash-Lite backup takes the main form instead
+  const takes = SAMPLE && P.voice_form === "solo" ? [[main, "solo", "solo"]] : [...first, ...others.map(m => (/3\.8/.test(m) ? [m, lead, forms[lead]] : [m, "transcript", transcript]))];
   for (const [model, name, form] of takes) {
     try {
       soloPieces = null;

@@ -1255,3 +1255,12 @@ missing. Both checked against the editions' snapshots of 3-9 Nov.
   title, 8 Nov, was gone at 14:00 IST on 9 Nov). `tennis_players` (lib/trial.js) also reads the scoreboard for the last
   10 days (`?dates=`, one more ESPN call; 10 = `tv.saver.results_days`) and keeps whichever last match is later. The
   Sport app reads the same key and gets the same results.
+
+## The podcast's models, and a fix for its workflow (26 Nov 2026)
+- The 26 Nov episode failed before writing anything: both jobs stopped at `apt-get install ffmpeg` with 404s from
+  security.ubuntu.com (the runner's package list was stale). The workflow now runs `apt-get update` first (4857e31).
+- Parth checked the 1400podcast project's free tier in AI Studio (26 Nov): Gemini 4 Hydrogen has the same free
+  allowance as 3.8 Flash (5 requests and 250K tokens a minute); Gemini 4 Neon, Argon and Carbon have none (paid only).
+  Parth: "Go." The script is now written by **Gemini 4 Hydrogen** first, then 3.8 Flash and the older 3.x models as
+  before. The voice stays **Gemini 3.8 Flash TTS** (the sound does not change); **3.8 Flash-Lite TTS** is now its first
+  backup, in the same form (a 3.8 voice refuses the transcript form), ahead of the 3.1 preview Google is retiring.
