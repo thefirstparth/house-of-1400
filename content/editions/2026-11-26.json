@@ -122,7 +122,7 @@
           "personal": false
         },
         "more": [
-          "A bench headed by Justice Dipankar Datta said the right to life under Article 21 extends beyond the convict to victims, their families and society at large. It found Bihar's sudden departure from its earlier remission policy indefensible and unreasonable, and said the sole test for early release cannot be that a convict \"showed signs of reform\".",
+          "A bench headed by Justice Dipankar Datta said the right to life under Article 21 extends beyond the convict to the victims, their families and society at large. It found Bihar's sudden departure from its earlier remission policy indefensible and unreasonable, and said the sole test for early release cannot be that a convict \"showed signs of reform\".",
           "Mohan, a gangster-turned-politician from Bihar, walked out of Saharsa jail on 27 April after Bihar amended its prison rules. Krishnaiah's wife, Uma Krishnaiah, challenged the release. The court said any future attempt at remission in the case must give her a hearing."
         ],
         "sources": [
@@ -12715,5 +12715,26 @@
         "means": "crore rupees of damages"
       }
     ]
-  }
+  },
+  "art_orders": [
+    {
+      "story_id": "us-25pc-tariff-india"
+    },
+    {
+      "story_id": "kim-shows-nuclear-warheads"
+    },
+    {
+      "story_id": "spacex-million-satellites-approved"
+    },
+    {
+      "story_id": "sc-quashes-anand-mohan-release"
+    },
+    {
+      "story_id": "hera-dart-crater-images"
+    },
+    {
+      "story_id": "cairo-tanker-fire-31-dead"
+    }
+  ],
+  "printed_at": "2026-11-26T08:55:43.613Z"
 }
