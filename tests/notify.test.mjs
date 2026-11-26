@@ -32,3 +32,19 @@ test("telegram: missing data is left out and a retry says so", () => {
   assert.doesNotMatch(t, /Nifty|Bengaluru \d+°/);
   assert.match(t, /⚠️ published by the 14:29 retry/);
 });
+
+// 26 Nov 2026: the summary no longer depends on the daily run remembering step 8.
+import { readFileSync } from "node:fs";
+import { stateClaim } from "../lib/state.js";
+test("telegram: the notify Action waits for today's edition and posts once; two crons back it up", async () => {
+  const wf = readFileSync(new URL("../.github/workflows/notify.yml", import.meta.url), "utf8");
+  assert.match(wf, /paths: \[content\/latest\.json\]/);
+  assert.match(wf, /\/api\/health/);
+  assert.match(wf, /-X POST "\$SITE\/api\/notify\?run=\$run"/);
+  const crons = JSON.parse(readFileSync(new URL("../vercel.json", import.meta.url), "utf8")).crons.filter(c => c.path === "/api/notify").map(c => c.schedule);
+  assert.deepEqual(crons.sort(), ["30 10 * * *", "30 9 * * *"]);
+  const n = readFileSync(new URL("../api/notify.js", import.meta.url), "utf8");
+  assert.match(n, /stateClaim\(`notify-sent-\$\{day\}`\)/);
+  for (const k of Object.keys(process.env)) if (/KV|REDIS|UPSTASH/.test(k)) delete process.env[k];
+  assert.equal(await stateClaim("x"), true); // without Redis the day's marker is the only guard, as before
+});

@@ -1,14 +1,16 @@
-import { stateConfigured, stateGet, stateSet } from "../lib/state.js";
+import { stateClaim, stateConfigured, stateGet, stateRelease, stateSet } from "../lib/state.js";
 import { readLatest } from "../lib/edition-file.js";
 import { config } from "../lib/live.js";
 
 // Telegram for The House of 1400. No key needed: it can only ever send the deployed edition's own summary, at most
 // once per edition (a marker in Blob), so calling it twice or from anywhere does nothing more.
-//   POST /api/notify?run=main|retry1|retry2|retry3   the daily run, after the edition is live
+//   POST /api/notify?run=main|retry1|retry2|retry3   the daily run, after the edition is live, and the notify Action
+//        (.github/workflows/notify.yml) as soon as the pushed edition is deployed (26 Nov 2026: on 17, 18, 21 and 23 Nov
+//        the run published but never called this, and the summary waited for the 16:00 cron)
 //   POST /api/notify?podcast=YYYY-MM-DD&k=<folder>     the podcast job (scripts/podcast/make.mjs), once the day's episode
 //        is in the feed: a separate message, at most once a day, with the writer and voice that made it (Parth, 13 Oct)
-//   GET  /api/notify                                   the Vercel cron at 16:00 IST: sends the summary if the run
-//        did not, or one "no paper today" message if today's edition never went live.
+//   GET  /api/notify                                   the Vercel crons at 15:00 and 16:00 IST: send the summary if
+//        nothing else did; at 16:00 only, one "no paper today" message if today's edition never went live.
 // Setup: TELEGRAM_BOT_TOKEN in Vercel, then send any message to the bot once. TELEGRAM_CHAT_ID is optional: without
 // it the chat is found from the bot's recent messages and remembered.
 const TZ = "Asia/Kolkata";
@@ -177,8 +179,10 @@ async function handle(request, { cron }) {
   const day = today();
   if (E?.date === day) {
     if (await marker(`sent-${day}`)) return Response.json({ ok: true, sent: false, reason: "already sent today" });
+    if (!(await stateClaim(`notify-sent-${day}`))) return Response.json({ ok: true, sent: false, reason: "already being sent" });
     const out = await send(summary(E, origin, cron ? null : run, { cfg: config() }));
     if (out.sent) await mark(`sent-${day}`, { at: new Date().toISOString(), run: run || (cron ? "cron" : null) });
+    else await stateRelease(`notify-sent-${day}`);
     return Response.json({ ok: true, ...out });
   }
   // Today's edition is not live. Only the afternoon cron says so, once, after the last retry has had its chance.

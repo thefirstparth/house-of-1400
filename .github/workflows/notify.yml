@@ -1,0 +1,36 @@
+# Telegram summary as soon as an edition is live (26 Nov 2026). On 17, 18, 21 and 23 Nov the daily run pushed the
+# edition but ended before its notify step, so the summary only went at the 16:00 cron, about 1h40 late. This sends
+# it from the push itself: it waits for the deployed site to report today's edition, then calls /api/notify with the
+# run the push time belongs to. /api/notify sends at most once a day, so the run's own call and the crons do nothing
+# more. Needs no secrets; a push of an older or hand-fixed latest.json, or a second push the same day, sends nothing new.
+name: notify
+on:
+  push:
+    branches: [main]
+    paths: [content/latest.json]
+concurrency: { group: notify, cancel-in-progress: false }
+jobs:
+  telegram:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: { sparse-checkout: content/latest.json, sparse-checkout-cone-mode: false }
+      - name: Wait for today's edition on the site, then notify
+        env:
+          SITE: https://house14.vercel.app
+        run: |
+          d=$(jq -r .date content/latest.json); today=$(TZ=Asia/Kolkata date +%F); hm=$(TZ=Asia/Kolkata date +%H%M)
+          echo "pushed edition $d, today $today, IST $hm"
+          [ "$d" = "$today" ] || { echo "not today's edition: nothing to send"; exit 0; }
+          if [ "$hm" -lt 1429 ]; then run=main; elif [ "$hm" -lt 1458 ]; then run=retry1; elif [ "$hm" -lt 1527 ]; then run=retry2; else run=retry3; fi
+          for i in $(seq 1 40); do
+            live=$(curl -s --max-time 15 "$SITE/api/health" | jq -r '.edition // empty' 2>/dev/null || true)
+            if [ "$live" = "$d" ]; then
+              echo "live after try $i"
+              curl -s --max-time 30 -X POST "$SITE/api/notify?run=$run"; echo
+              exit 0
+            fi
+            sleep 20
+          done
+          echo "::warning::the site did not show $d within about 13 minutes; the 15:00 and 16:00 IST crons will send the summary"

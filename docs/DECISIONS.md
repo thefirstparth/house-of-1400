@@ -1264,3 +1264,17 @@ missing. Both checked against the editions' snapshots of 3-9 Nov.
   Parth: "Go." The script is now written by **Gemini 4 Hydrogen** first, then 3.8 Flash and the older 3.x models as
   before. The voice stays **Gemini 3.8 Flash TTS** (the sound does not change); **3.8 Flash-Lite TTS** is now its first
   backup, in the same form (a 3.8 voice refuses the transcript form), ahead of the 3.1 preview Google is retiring.
+
+## Telegram: the summary no longer waits for the daily run (26 Nov 2026)
+- Parth: "Sometimes I get the notifications late." Audit of 30 days of /api/notify logs (27 Oct to 26 Nov): the
+  summary normally goes at 14:16 to 14:22 IST, from the daily run's step 8. On 17, 18, 21 and 23 Nov it went at 16:00
+  from the cron, about 1h40 late, although each edition was live by 14:20. The run pushed the edition and then ended
+  without calling /api/notify (on 17, 18 and 21 Nov after polling /api/health, on 23 Nov before it). The podcast
+  message was late twice for other reasons: 6 Nov (22:25, the push run was cancelled and a delayed GitHub schedule
+  run made it) and 26 Nov (15:37, the ffmpeg install failure fixed the same day).
+- Fix, code only: `.github/workflows/notify.yml` runs on every push of `content/latest.json` (the push run has started
+  within a minute every day since 13 Oct), waits for /api/health to show today's edition, and posts
+  /api/notify with the run the push time belongs to (main before 14:29, then retry1, retry2, retry3). The daily run's
+  step 8 stays as a second caller. A second cron at 15:00 IST joins the 16:00 one as a backstop; only 16:00 sends
+  "no paper today". /api/notify takes a two-minute Redis lock before sending, so two callers at the same moment
+  cannot both send (`stateClaim` in lib/state.js); the day's marker still allows one summary a day.
