@@ -58,7 +58,7 @@ jobs:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with: { node-version: 22 }
-      - run: sudo apt-get install -y -qq ffmpeg >/dev/null && npm install --no-save --no-audit --no-fund @vercel/blob
+      - run: sudo apt-get update -qq >/dev/null && sudo apt-get install -y -qq ffmpeg >/dev/null && npm install --no-save --no-audit --no-fund @vercel/blob
       # the listening check for the solo voice form (scripts/podcast/verify_lines.py): open-source speech-to-text on the
       # runner's processor; the model (about 150 MB) is cached between runs
       # (none of these can stop the episode: if they fail, the check cannot run and solo is skipped that day)
@@ -109,7 +109,7 @@ jobs:
         with: { name: podcast-script, path: .podcast }
         continue-on-error: true
       - run: |
-          sudo apt-get install -y -qq ffmpeg espeak-ng >/dev/null
+          sudo apt-get update -qq >/dev/null && sudo apt-get install -y -qq ffmpeg espeak-ng >/dev/null
           npm install --no-save --no-audit --no-fund @vercel/blob
           python3 -m pip install -q torch --index-url https://download.pytorch.org/whl/cpu
           python3 -m pip install -q kokoro soundfile https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
