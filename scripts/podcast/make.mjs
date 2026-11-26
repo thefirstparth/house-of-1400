@@ -472,7 +472,13 @@ async function main() {
   if (!DRY && !KOKORO && !args.includes("--final") && early && (/lite/.test(by) || by === "code")) { log(`script by ${by}: holding it back for the 14:40 IST run, which publishes whatever it gets`); return; }
   // a redo never swaps a published episode for a weaker script (Flash Lite or the code's plain one); over a plain-script
   // episode, Flash Lite counts as better
-  if (prior && !DRY && (by === "code" || (/lite/.test(by) && prior.by !== "code"))) { log(`redo: script by ${by}, keeping the published episode`); return; }
+  if (prior && !DRY && (by === "code" || (/lite/.test(by) && prior.by !== "code"))) {
+    log(`redo: script by ${by}, keeping the published episode`);
+    // a plain-script episode that a retry could not replace: Parth hears so on Telegram (api/notify.js, 26 Nov 2026)
+    if (prior.by === "code") await fetch(`${site}/api/notify?podcast=${date}&k=${folder.split("/")[1]}&kept=1`, { method: "POST", signal: AbortSignal.timeout(30000) })
+      .then(r => r.json()).then(j => log("telegram:", j.sent ? "sent (still the plain script)" : j.reason)).catch(e => log("telegram: not sent:", e.message));
+    return;
+  }
   log(`script: ${turns.length} turns, ${turns.reduce((a, t) => a + t.text.split(/\s+/).length, 0)} words, by ${by}`);
   if (DRY && !KEY) { log("dry run: script written to .podcast/script.json"); return; }
   let pcm, voice = KOKORO ? "kokoro" : "gemini";

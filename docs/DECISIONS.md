@@ -1289,3 +1289,6 @@ missing. Both checked against the editions' snapshots of 3-9 Nov.
   published episode. A redo over an episode Gemini wrote still needs a strong writer, as before. Days already done
   well are untouched, so no writer or voice request is spent on them.
 - Telegram announces such a replacement once ("A better take of today's podcast"); otherwise still once a day.
+- Parth, the same day: "If it doesn't, can you give me an update on Telegram?" A retry that keeps a plain-script
+  episode now sends one short message (Gemini still busy; when the next try is, or that it was the last), at most
+  three a day, only while today's episode is the code's.

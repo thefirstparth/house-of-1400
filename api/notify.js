@@ -151,7 +151,10 @@ export function summary(E, origin, run, { cfg = {}, now = Date.now() } = {}) {
 // only ever announce an episode that is really in the feed, and only today's, once.
 const MODEL_NAMES = m => String(m || "").replace(/^gemini-/, "Gemini ").replace(/-flash-lite/, " Flash Lite").replace(/-flash-tts/, " Flash TTS").replace(/-flash/, " Flash").replace(/-preview/, " (preview)").replace(/-tts/, " TTS");
 async function podcast(url) {
-  const k = url.searchParams.get("k") || "", d = url.searchParams.get("podcast") || "", dry = url.searchParams.has("dry");
+  const d = url.searchParams.get("podcast") || "", dry = url.searchParams.has("dry");
+  // the folder: from the job, or the one the feed lives in (api/podcast.js remembers it in Redis)
+  const k = url.searchParams.get("k") || (await stateGet("podcast-folder", null).catch(() => null))?.k || "";
+  if (url.searchParams.has("kept")) return keptPlain(k, d);
   if (!/^[a-f0-9]{24}$/.test(k) || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return Response.json({ ok: false, sent: false, reason: "bad request" }, { status: 400 });
   if (!dry && d !== today()) return Response.json({ ok: true, sent: false, reason: "only today's episode is announced" });
   // once a day, except that a Gemini-written take replacing a plain-script episode is announced too (26 Nov 2026)
@@ -170,6 +173,22 @@ async function podcast(url) {
   if (dry) return Response.json({ ok: true, sent: false, text });
   const out = await send(text);
   if (out.sent) await mark(`podcast-${d}`, { at: new Date().toISOString(), by: m.by, voice: m.voice_model || m.voice });
+  return Response.json({ ok: true, ...out });
+}
+
+// Today's episode went out on the code's plain script and a retry found Gemini still busy (26 Nov 2026, Parth: "If it
+// doesn't, can you give me an update on Telegram?"). Only for an episode the code wrote, at most three a day.
+async function keptPlain(k, d) {
+  if (!/^[a-f0-9]{24}$/.test(k) || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return Response.json({ ok: false, sent: false, reason: "bad request" }, { status: 400 });
+  if (d !== today()) return Response.json({ ok: true, sent: false, reason: "only today's episode" });
+  let m = null;
+  try { const { get } = await import("@vercel/blob"); const r = await get(`podcast/${k}/${d}.json`, { access: "private", useCache: false }); m = r?.stream ? await new Response(r.stream).json() : null; } catch {}
+  if (m?.by !== "code") return Response.json({ ok: true, sent: false, reason: "today's episode was not written by code" });
+  const seen = (await marker(`podcast-kept-${d}`))?.n || 0;
+  if (seen >= 3) return Response.json({ ok: true, sent: false, reason: "already sent three today" });
+  const t = hm(), next = t < "18:30" ? "The next tries are around 19:00 and 22:00 IST; if one works, a better take replaces it and you get a message." : t < "21:30" ? "One more try around 22:00 IST; if it works, a better take replaces it and you get a message." : "That was the last try today, so today's episode stays as it is.";
+  const out = await send([`🎧 <b>Today's podcast: Gemini was still too busy</b> (${esc(longDate(d))})`, "", `A retry could not get a script from Gemini, so the episode in Apple Podcasts is still the plain one written by code.`, next].join("\n"));
+  if (out.sent) await mark(`podcast-kept-${d}`, { n: seen + 1, at: new Date().toISOString() });
   return Response.json({ ok: true, ...out });
 }
 

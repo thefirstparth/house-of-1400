@@ -466,3 +466,10 @@ test("evening retries replace a plain-script episode only with a script Gemini w
   assert.match(n, /before && before\.by !== "code"/);
   assert.match(n, /A better take of today's podcast/);
 });
+test("a retry that keeps a plain-script episode tells Parth on Telegram, at most three times a day", () => {
+  const s = readFileSync(new URL("../scripts/podcast/make.mjs", import.meta.url), "utf8");
+  assert.match(s, /if \(prior\.by === "code"\) await fetch\(`\$\{site\}\/api\/notify\?podcast=\$\{date\}&k=\$\{folder\.split\("\/"\)\[1\]\}&kept=1`/);
+  const n = readFileSync(new URL("../api/notify.js", import.meta.url), "utf8");
+  assert.match(n, /if \(m\?\.by !== "code"\) return/);
+  assert.match(n, /seen >= 3/);
+});
