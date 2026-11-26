@@ -60,9 +60,8 @@ export async function send(text) {
   return r.ok ? { sent: true } : { sent: false, reason: `telegram ${r.status}` };
 }
 
-// The message (Parth, 12 Oct 2026: short, structured, the right data): the day's headlines with their tags, then money,
-// what is coming up for the teams and players he follows, the weather, and the link. A warning line only when
-// something went wrong. Every figure comes from the edition's own snapshot; a missing one is left out, never guessed.
+// The message (Parth, 12 Oct 2026: short, structured, the right data; 26 Nov: easier to read, see summary). A warning
+// line only when something went wrong. Every figure comes from the edition's own snapshot; a missing one is left out, never guessed.
 const num = (n, d = 0) => Number(n).toLocaleString("en-IN", { minimumFractionDigits: d, maximumFractionDigits: d });
 const pct = x => `${x >= 0 ? "▲" : "▼"}${Math.abs(x).toFixed(1)}%`;
 const ymdIST = t => new Date(t).toLocaleDateString("en-CA", { timeZone: TZ });
@@ -89,22 +88,17 @@ function upNext(E, cfg, now) {
     const opp = (m.text || "").match(/\bv\.? ([A-Z][\p{L}'.-]+(?: [A-Z][\p{L}'.-]+)*)/u)?.[1];
     out.push([m.when_utc, `🎾 ${surname(p.name)}${opp ? ` v ${surname(opp)}` : ""}, ${whenIST(m.when_utc, now)}`]);
   }
-  return out.sort((a, b) => Date.parse(a[0]) - Date.parse(b[0])).map(x => x[1]);
+  return out.sort((a, b) => Date.parse(a[0]) - Date.parse(b[0])).map(x => ({ text: x[1], soon24: Date.parse(x[0]) < now + 864e5 }));
 }
 
-function money(E) {
+// one line: Nifty, the rupee, gold (Sensex and Bitcoin stay in the paper)
+function moneyLine(E) {
   const s = E.snapshot || {}, ok = k => s[k]?.value && !s[k]?.error ? s[k].value : null;
-  const m = ok("markets"), fx = ok("fx"), gold = ok("gold_in"), btc = ok("crypto"), parts = [];
-  const day = d => d && d !== E.date ? ` (${longDate(d).split(" ")[0]})` : "";
-  for (const name of ["Nifty 50", "Sensex"]) {
-    const i = m?.indices?.find(x => x.name === name);
-    if (i && Number.isFinite(i.price) && Number.isFinite(i.change_pct)) parts.push(`${name.replace(" 50", "")} ${num(i.price)} ${pct(i.change_pct)}${day(i.session_date)}`);
-  }
-  const line2 = [];
-  if (Number.isFinite(fx?.price)) line2.push(`₹${fx.price.toFixed(2)}/$`);
-  if (Number.isFinite(gold?.per_10g_24k)) line2.push(`Gold ₹${num(gold.per_10g_24k)}/10g`);
-  if (Number.isFinite(btc?.price)) line2.push(`BTC $${(btc.price / 1000).toFixed(1)}k`);
-  return [parts.join(" · "), line2.join(" · ")].filter(Boolean);
+  const nifty = ok("markets")?.indices?.find(x => x.name === "Nifty 50"), fx = ok("fx"), gold = ok("gold_in"), parts = [];
+  if (nifty && Number.isFinite(nifty.price) && Number.isFinite(nifty.change_pct)) parts.push(`Nifty ${num(nifty.price)} ${pct(nifty.change_pct)}${nifty.session_date && nifty.session_date !== E.date ? ` (${longDate(nifty.session_date).split(" ")[0]})` : ""}`);
+  if (Number.isFinite(fx?.price)) parts.push(`₹${fx.price.toFixed(2)}/$`);
+  if (Number.isFinite(gold?.per_10g_24k)) parts.push(`Gold ₹${num(gold.per_10g_24k)}`);
+  return parts.join(" · ");
 }
 
 // Headlines: the paper's own stories and briefs (front page first, then the sections), most important first by
@@ -121,29 +115,36 @@ function headlines(E) {
   return [lead, ...ranked.slice(0, Math.min(9, Math.max(3, strong.length)))].filter(Boolean);
 }
 
+// 26 Nov 2026 (Parth: "too cluttered or too clamped up to read"): the paper's own short lines ("the day in a minute"),
+// at most six, one per line with a blank line between, each with its desk's sign; the lead in bold. Then one money
+// line, at most two matches in the next 24 hours, and the link. Full headlines only if an edition has no short lines.
+const SIGN = { India: "🇮🇳", World: "🌍", Money: "💰", AI: "🤖", Tech: "💻", Sport: "🏅", Bengaluru: "🏙️", "Close to Home": "🏙️", Science: "🔬", Culture: "🎬", "Off Duty": "🎬" };
+function shortLines(E) {
+  const g = (E.glance || []).filter(x => x?.line);
+  if (g.length) return g.slice(0, 6).map(x => ({ text: x.line, sign: SIGN[x.section] || "•" }));
+  return headlines(E).slice(0, 6).map(x => ({ text: x.headline, sign: SIGN[String(x.kicker || "").split("·")[0].trim()] || "•" }));
+}
 export function summary(E, origin, run, { cfg = {}, now = Date.now() } = {}) {
-  const tag = i => esc(String(i.kicker || "").trim());
-  const heads = headlines(E);
-  const lines = [`📰 <b>The House of 1400</b> · ${esc(longDate(E.date))}`, ""];
-  if (heads.length) {
-    const [lead, ...rest] = heads;
-    lines.push(`<b>${esc(lead.headline)}</b>`, ...rest.map(i => `• ${tag(i) ? `${tag(i)}: ` : ""}${esc(i.headline)}`));
-  } else lines.push("<b>Today's paper is out</b>");
-  if (E.editor_note && E.big_day) lines.push("", `✒️ <i>${esc(E.editor_note)}</i>`);
-  const mo = money(E);
-  if (mo.length) lines.push("", `📈 ${esc(mo[0])}`, ...mo.slice(1).map(esc));
-  const next = upNext(E, cfg, now);
-  if (next.length) lines.push("", ...next.map(esc));
-  const city = E.snapshot?.weather?.value?.cities?.[0];
-  const wx = city?.current && Number.isFinite(city.current.temp) ? `☀️ ${esc(city.name)} ${Math.round(city.current.temp)}°${Number.isFinite(city.daily?.[0]?.rain_prob) ? ` · rain ${city.daily[0].rain_prob}%` : ""}` : null;
-  lines.push("", [wx, `<a href="${origin}/">Read the paper →</a>`].filter(Boolean).join("  ·  "));
+  const lines = [`📰 <b>The House of 1400</b> · ${esc(longDate(E.date))}`];
+  const items = shortLines(E);
+  if (items.length) {
+    const [lead, ...rest] = items;
+    lines.push("", `<b>${esc(lead.text)}</b>`);
+    for (const i of rest) lines.push("", `${i.sign} ${esc(i.text)}`);
+  } else lines.push("", "<b>Today's paper is out</b>");
+  const mo = moneyLine(E);
+  const next = upNext(E, cfg, now).filter(x => x.soon24).slice(0, 2);
+  if (mo || next.length) lines.push("", "—");
+  if (mo) lines.push(`📈 ${esc(mo)}`);
+  for (const n of next) lines.push(esc(n.text));
+  lines.push("", `<a href="${origin}/">Read the paper →</a>`);
   // Only when something went wrong: a retry published, or live data is older than it should be.
   const snap = E.snapshot || {};
   const down = LIVE_KEYS.filter(k => !snap[k]?.value || snap[k]?.error);
   const warn = [];
   if (run && run !== "main" && RUNS[run]) warn.push(`published by ${RUNS[run]}`);
   if (down.length) warn.push(`older data for ${down.map(k => KEY_NAMES[k] || k).join(", ")}`);
-  if (warn.length) lines.push("", `⚠️ ${esc(warn.join(" · "))}`);
+  if (warn.length) lines.push("", `⚠️ <i>${esc(warn.join(" · "))}</i>`);
   return lines.join("\n");
 }
 

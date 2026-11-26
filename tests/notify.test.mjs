@@ -14,23 +14,25 @@ const E = {
 };
 const now = Date.parse("2026-10-12T09:15:00Z"), cfg = { follows: { football_club: { name: "Real Madrid" } } };
 
-test("telegram: tagged headlines, money, what is coming up soon, weather and the link", () => {
+test("telegram (26 Nov 2026): the paper's short lines, spaced out, then one money line, matches in 24 hours and the link", () => {
   const t = summary(E, "https://x.app", "main", { cfg, now });
-  assert.match(t, /<b>Max wins in Singapore<\/b>/);
-  assert.match(t, /• India · T20Is: India beat West Indies/);
-  assert.match(t, /• Bengaluru · Buses: Live bus data/, "padded to four headlines from the next most important");
-  assert.doesNotMatch(t, /never used/, "the page's day-in-a-minute panel is not the message");
-  assert.match(t, /Nifty 22,365 ▼0\.7%/);
+  assert.match(t, /\n\n<b>never used in the message<\/b>\n/, "the day-in-a-minute lines lead, the first in bold, a blank line around it");
+  assert.doesNotMatch(t, /India · T20Is:/, "no full tagged headlines when the edition has short lines");
+  assert.match(t, /📈 Nifty 22,365 ▼0\.7%/);
   assert.match(t, /🎾 Alcaraz v Bergs, today 15:30/);
-  assert.match(t, /⚽ Madrid v AS Roma, Thu 15 Oct 00:30/);
-  assert.doesNotMatch(t, /United States GP/, "a race 13 days away is not 'up next'");
-  assert.match(t, /Bengaluru 30° · rain 27%/);
+  assert.doesNotMatch(t, /AS Roma/, "a match two days away is not in the message");
+  assert.doesNotMatch(t, /Bengaluru 30°/, "the weather stays in the paper");
+  assert.match(t, /<a href="https:\/\/x\.app\/">Read the paper →<\/a>/);
+  const long = summary({ ...E, glance: Array.from({ length: 9 }, (_, i) => ({ line: `Line ${i}`, section: "World" })) }, "https://x.app", "main", { cfg, now });
+  assert.equal((long.match(/Line \d/g) || []).length, 6, "at most six");
+  assert.match(long, /\n\n🌍 Line 1\n\n🌍 Line 2/);
 });
-
-test("telegram: missing data is left out and a retry says so", () => {
-  const t = summary({ ...E, snapshot: {} }, "https://x.app", "retry1", { cfg, now });
-  assert.doesNotMatch(t, /Nifty|Bengaluru \d+°/);
-  assert.match(t, /⚠️ published by the 14:29 retry/);
+test("telegram: without short lines, the full headlines; missing data is left out and a retry says so", () => {
+  const t = summary({ ...E, glance: [], snapshot: {} }, "https://x.app", "retry1", { cfg, now });
+  assert.match(t, /<b>Max wins in Singapore<\/b>/);
+  assert.match(t, /🇮🇳 India beat West Indies/);
+  assert.doesNotMatch(t, /Nifty/);
+  assert.match(t, /⚠️ <i>published by the 14:29 retry/);
 });
 
 // 26 Nov 2026: the summary no longer depends on the daily run remembering step 8.

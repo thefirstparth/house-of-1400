@@ -1292,3 +1292,11 @@ missing. Both checked against the editions' snapshots of 3-9 Nov.
 - Parth, the same day: "If it doesn't, can you give me an update on Telegram?" A retry that keeps a plain-script
   episode now sends one short message (Gemini still busy; when the next try is, or that it was the last), at most
   three a day, only while today's episode is the code's.
+
+## The paper's Telegram message, easier to read (26 Nov 2026)
+- Parth: the message is "too cluttered or too clamped up to read" (26 Nov's was 21 lines, about 317 words: ten full
+  tagged headlines, two money lines, three fixtures, weather). Now: the paper's own short lines ("the day in a minute",
+  which reverses the 12 Oct choice to keep them for the page), at most six, each on its own line with a blank line
+  between and its desk's sign, the lead in bold; then one money line (Nifty, rupee, gold), at most two matches in the
+  next 24 hours, and the link. The weather, Sensex and Bitcoin stay in the paper. 26 Nov's edition comes to about 85
+  words. Full headlines only for an edition without short lines; the warning line is unchanged.
