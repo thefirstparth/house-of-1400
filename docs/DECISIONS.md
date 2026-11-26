@@ -1302,3 +1302,43 @@ missing. Both checked against the editions' snapshots of 3-9 Nov.
   the structure". Then, shown the spaced version with each story's desk sign: "I like this style. Let's keep the
   top 7 headlines", so: the top seven short lines, the lead in bold, the rest with their desk's sign. The weather, Sensex and Bitcoin stay in the paper. 26 Nov's edition comes to about 96
   words. Full headlines only for an edition without short lines; the warning line is unchanged.
+
+## Podcast v2, from the 26 Nov 2026 audit
+- The audit: seven episodes (20-26 Nov) scored out of 100 on accuracy, coverage, pronunciation, voice and audio,
+  conversation, structure and clarity. The six Gemini episodes averaged 62: two or three bent facts a day, one host
+  reading while the other prompted, the paper's section names read out, number-heavy turns, the opening "T. A. Bhide"
+  garbled every day, and a mechanical rhythm. Audio levels (-16 LUFS), live data and fixture times were right.
+- Parth: "all of A plus, 8, 9, 10, 11, 12, 13 (Sample not needed)". What changed (scripts/podcast/lib.mjs unless named):
+  - A1. A fact guard before voicing (`auditChecks`): every figure the script gives must be one in the rundown (spoken
+    numbers, lakh and crore, rounding and "about", "over", "under" allowed for); a match's day must be the rundown's;
+    the paper's hedge ("alleged", "reportedly", "at least") must survive. The writer is told the same (a FACTS block).
+  - A2. The rundown: "flat" under 0.05%; "at its highest/lowest" when it is the high or low itself; the rupee on a
+    weekend is "at the last close (Friday)"; when the paper has a rupee story the live line gives the level only; the
+    live F1 table is left out when the paper reports a race the live results do not have yet (22 Nov).
+  - A3. A match starting before 4 am tonight is always in Fixture Watch, past the three-follow limit (22 Nov: Alcaraz's
+    final was dropped).
+  - A4. Every story the paper rates 2 or more is in the show (past quick_max if need be) and must be mentioned; the Tech
+    and AI desk's place goes to an AI story first when none is in the show yet.
+  - A5. Conversation and tone: never the same host twice in a row, no runs of three short questions from one host, no
+    echo reactions, at most two figures a turn, Hindi words only as reactions, a quiet beat after a story with deaths.
+  - A6. Pronunciation: HTML entities decoded before voicing ("S&amp;P" was "S and amp P"), cricket totals said as
+    "seven hundred and twenty for nine declared", "26/11" as "twenty-six eleven", and 23 names and abbreviations added
+    to config podcast.pronounce (Huang, Xi Jinping, Courtois, Mbappé, Tchouaméni, Vinícius, Mourinho, Zverev, Leclerc,
+    Alavés, Kumbh, Magh Mela, S&P 500, Nasdaq-100, COP31, USTR, FSSAI, ICICI, HDFC, CISF, ACB, IAS; Bhide is now
+    "Bhee-day"). The list now matches at letter edges, so a name ending in an accent is found.
+  - A7. The code's backup script: the hosts named, each big story then "Why does it matter?" answered from the
+    paper's line, a spoken bridge into each part, one market or match a turn (level and today's move only), never a
+    note meant for the writer read out, never the same host twice, no House Note recap.
+  - 8. The paper's section names are no longer read out ("On Page One today", "In Money today", "the Betting Window",
+    "Bhide's House Note"): spoken bridges instead. Only "Fixture Watch" stays. (Reverses 13 and 19 Oct.)
+  - 9. The House Note is told only for its joke or wry line; a plain summary is never read, and the close is one line
+    on one thing to watch. (Reverses the 20 Oct "light closing line" rule.)
+  - 10. Ranchi is "over in Ranchi"; only Prayagraj is "back home" (the hosts are from Allahabad).
+  - 11. One betting line at most (podcast.betting_max, default 1), said plainly with its question, never a list.
+  - 12. "Bhide's paper", never "T. A. Bhide" in the show (R.editor is the surname; the feed's author is unchanged).
+  - 13. The studio's rhythm (studio.mjs): gaps of about 0.15 to 0.8 seconds instead of 0.2 to 0.5, quicker after a
+    question, a slower beat before a long new turn, and reactions of up to five words slipping in over the other host.
+- None of the new checks can stop a script: they are soft problems with weights (a figure the paper does not give
+  counts 4, a stock phrase 1), sent back for a rewrite heaviest first, and the best draft is chosen by total weight
+  (make.mjs). A fault in the checks skips them. Replayed against the seven audited episodes they caught "up 462
+  points", the pre-race F1 table, the dropped importance-2 stories and every section name, with no false alarms left.

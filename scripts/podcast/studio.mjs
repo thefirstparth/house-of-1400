@@ -78,12 +78,17 @@ export function layout({ turns, pieces, take, date = "", pan = {}, music = true 
   lines.forEach((l, i) => {
     const prev = lines[i - 1], n = l.audio.length;
     if (i) {
-      let g = 0.3 + (rand() - 0.5) * 0.16;
-      if (/\?\s*$/.test(prev.text || "")) g = 0.2 + rand() * 0.08;
-      if (prev.speaker === l.speaker) g = 0.22;
-      if (SERIOUS.has(prev.mood) || SERIOUS.has(l.mood)) g = 0.5;
-      // a quick reaction slips in just before the other host finishes (never on serious news)
-      if (wordsIn(l.text) <= 3 && prev.speaker !== l.speaker && !SERIOUS.has(prev.mood) && !SERIOUS.has(l.mood)) g = -Math.min(0.22, place[i - 1].n / RATE * 0.12);
+      // (Parth, 26 Nov 2026: the gaps were always 0.2 to 0.5 seconds, with almost no overlap, so the rhythm sounded
+      // mechanical) varied gaps, mostly short with now and then a longer beat, quicker after a question, a slower beat
+      // before a long turn that starts something new, and more quick reactions slipping in over the other host
+      const r = rand(), serious = SERIOUS.has(prev.mood) || SERIOUS.has(l.mood), w = wordsIn(l.text);
+      let g = 0.16 + r * r * 0.62;
+      if (/\?\s*$/.test(prev.text || "")) g = 0.1 + rand() * 0.2;
+      if (prev.speaker === l.speaker) g = 0.24 + rand() * 0.16;
+      if (w >= 25 && wordsIn(prev.text) >= 12 && prev.speaker !== l.speaker && !/\?\s*$/.test(prev.text || "")) g = Math.max(g, 0.45 + rand() * 0.35);
+      if (serious) g = 0.55 + rand() * 0.3;
+      // a quick reaction (up to five words) slips in just before the other host finishes (never on serious news)
+      if (w <= 5 && prev.speaker !== l.speaker && !serious) g = -Math.min(0.3, place[i - 1].n / RATE * 0.12, 0.08 + rand() * 0.22);
       t = place[i - 1].at + place[i - 1].n + gap(g);
       // a sting before a marked part (not in the opening, never within twenty seconds of the last)
       if (music && l.segment && i > 2 && t - last > gap(20)) { t += gap(0.25); stings.push(t); last = t; t += gap(1.05); }

@@ -162,12 +162,13 @@ async function writeScript(R) {
         log(`script by ${model} (try ${attempt + 1}): ${turns.length} turns, ${probs.length ? probs.map(p => (p.hard ? "HARD " : "") + p.msg).slice(0, 8).join("; ") : "no problems"}`);
         // the best: no hard problem, within the length before over it, then the fewest problems; a draft whose only hard
         // problem is its length is kept apart, the shortest, for when nothing better comes before the rewrites stop
-        const isLong = probs.some(p => LEN.test(p.msg)) && wordsIn(turns) > (P.words?.max || 1400), rank = (isLong ? 1000 : 0) + probs.length;
+        // (26 Nov 2026) soft problems count by their weight: a figure the paper does not give outweighs a stock phrase
+        const isLong = probs.some(p => LEN.test(p.msg)) && wordsIn(turns) > (P.words?.max || 1400), rank = (isLong ? 1000 : 0) + probs.reduce((a, p) => a + (p.w || 1), 0);
         if (!hard.length && (!best || rank < best.rank)) best = { turns, by: model, n: probs.length, rank };
         if (hard.length && hard.every(p => LEN.test(p.msg)) && wordsIn(turns) > (P.words?.max || 1400) && (!long || wordsIn(turns) < long.w)) long = { turns, by: model, n: probs.length, w: wordsIn(turns) };
         usable = usable || !!best || !!long;
         if (!probs.length) break;
-        last = probs.map(p => p.msg);
+        last = [...probs].sort((a, b) => (b.hard - a.hard) || (b.w || 1) - (a.w || 1)).map(p => p.msg); // the heaviest first
         const cut = cutNote(turns, P);
         prompt = `${base}\n\nYOUR PREVIOUS SCRIPT (below) was sent back for: ${last.join("; ")}. Rewrite it, fixing exactly these and keeping everything else that works.${cut ? `\n${cut}` : ""}\n${JSON.stringify({ turns })}`;
       } catch (e) {

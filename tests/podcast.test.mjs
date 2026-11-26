@@ -244,6 +244,8 @@ test("podcast: only Ranchi and Prayagraj are 'back home' (14 Oct: 'back home in 
   const msgs = t => checkScript([...base, T(t)], { segments: [] }, { ...P, words: { min: 1, max: 9999 } }).map(p => p.msg);
   assert.ok(msgs("There is tragic news back home in Bihar.").some(m => /back home/.test(m)));
   assert.ok(!msgs("And back home in Prayagraj, the Magh Mela plans are out.").some(m => /back home/.test(m)));
+  // 26 Nov 2026: the hosts are from Allahabad, so Ranchi is "over in Ranchi"
+  assert.ok(msgs("And back home in Ranchi, flights are delayed.").some(m => /over in Ranchi/.test(m)));
 });
 
 test("podcast: the show is public, so no listener's name or family (15 Oct rehearsal)", () => {
@@ -336,7 +338,7 @@ test("podcast: Sport says where the follows stand: league, championship, series 
     snapshot: { laliga_table: { value: { rows: [{ rank: 1, team: "Barcelona", points: 24, played: 8 }, { rank: 2, team: "Atlético Madrid", points: 19, played: 8 }, { rank: 4, team: "Real Madrid", points: 18, played: 8 }] } },
       f1_standings: { value: { drivers: [{ pos: 1, name: "Andrea Kimi Antonelli", shown: "Kimi Antonelli", points: 340 }, { pos: 4, name: "Max Verstappen", points: 221 }] } } } };
   const g = rundown(Ed, P, undefined, { ...paper, follows: C.follows }).segments.find(x => x.standings);
-  assert.deepEqual(g.standings, ["Real Madrid: 4th in La Liga on 18 points after 8 games, 6 behind the leaders Barcelona", "Max Verstappen: 4th in the drivers' championship on 221 points, 119 behind the leader Kimi Antonelli", "India's cricket, West Indies: T20Is, 5 matches, 3 played, India lead 2–1"]);
+  assert.deepEqual(g.standings, ["Real Madrid: 4th in La Liga on 18 points after 8 games, 6 behind the leaders Barcelona (on 24)", "Max Verstappen: 4th in the drivers' championship on 221 points, 119 behind the leader Kimi Antonelli", "India's cricket, West Indies: T20Is, 5 matches, 3 played, India lead 2–1"]);
 });
 
 test("podcast feed, listed (14 Oct): no block, owner, category, the public address; unlisted stays blocked", () => {
@@ -428,9 +430,11 @@ test("podcast, 20 Oct audit: RB Leipzig is voiced as R B Leipzig, and the transc
   assert.match(vttOf([{ speaker: "Tarun", text: "Madrid host RB Leipzig." }], [[0, 2]]), /Madrid host RB Leipzig\./);
 });
 
-test("podcast, 20 Oct audit: a plain House Note may get one light closing line of the hosts' own", () => {
+test("podcast, 26 Nov 2026: the House Note is told only for its joke; a plain one is never read, the close is one thing to watch", () => {
   const w = writerPrompt(rundown(E, P, undefined, paper), P);
-  assert.match(w, /House Note is a plain summary with no joke in it, the hosts may close with one light, natural line of their own that fits the day: never forced, never a pun for its own sake/);
+  assert.match(w, /if the House Note has a joke or a wry line, retell just that/);
+  assert.match(w, /If it is only a summary of the day's stories, do NOT read it and do not recap the show/);
+  assert.match(w, /one line on one thing worth watching tomorrow or in the next few days/);
   assert.doesNotMatch(w, /—/, "no em dashes in the writers' brief");
 });
 
@@ -472,4 +476,118 @@ test("a retry that keeps a plain-script episode tells Parth on Telegram, at most
   const n = readFileSync(new URL("../api/notify.js", import.meta.url), "utf8");
   assert.match(n, /if \(m\?\.by !== "code"\) return/);
   assert.match(n, /seen >= 3/);
+});
+
+// ---- 26 Nov 2026 audit (podcast v2): Parth chose all of A plus 8 to 13 ----
+import { figures, auditChecks } from "../scripts/podcast/lib.mjs";
+const T2 = (speaker, text, mood = "neutral") => ({ speaker, mood, text });
+test("v2: figures are read the way they are said, and times, years, scores and ordinals are not figures", () => {
+  const v = t => figures(t).map(f => f.v);
+  assert.deepEqual(v("up four hundred and sixty-two points"), [462]);
+  assert.deepEqual(v("about one lakh twenty-four thousand rupees"), [124000]);
+  assert.deepEqual(v("three lakh crore"), [3e12]);
+  assert.deepEqual(v("fifteen thousand five hundred and eleven crore"), [15511e7]);
+  assert.deepEqual(v("eighty-one point three billion dollars"), [81.3e9]);
+  assert.deepEqual(v("ninety two point ninety"), [92.9]);
+  assert.deepEqual(v("ninety dollars and forty-five cents"), [90]);
+  assert.deepEqual(v("a hundred and thirty"), [130]);
+  for (const t of ["since March twenty twenty", "today at three thirty p m", "won five-one", "Saturday, twenty-first of November", "over a trillion dollars", "nineteen ninety-two"]) assert.deepEqual(v(t), [], t);
+  assert.deepEqual(v("₹1,24,000 and $81.3bn and ₹3 lakh crore"), [124000, 81.3, 81.3e9, 3, 3e12]);
+  assert.equal(figures("down eight per cent")[0].pct, true);
+  assert.equal(figures("about seventy-three thousand")[0].q, "~");
+});
+test("v2: the fact guard flags a figure the paper does not give, a match on the wrong day and a dropped hedge, and lets the paper's own pass", () => {
+  const R = { day: "Friday 20 November", segments: [
+    { desk: "Money", items: [{ id: "s", headline: "Sensex rallies", text: "The Sensex rose 990 points to 83,022, its highest close in three months.", depth: "deep" }], markets: ["Sensex at about 83,800, up 0.9% so far today"] },
+    { desk: "News", items: [{ id: "m", headline: "Mexico captures cartel boss Isidro", text: "The alleged leader of the Beltran Leyva group was caught.", depth: "quick" }, { id: "uk", must: true, headline: "Britain and the EU agree a food deal", text: "x", depth: "quick" }] },
+    { desk: "Sport", items: [], coming: ["India v New Zealand, 2nd Test, Christchurch, on Friday at three thirty a m, late on Thursday night"], results: [] }] };
+  const msgs = turns => auditChecks(turns, R, P).map(p => p.msg).join(" | ");
+  const bad = msgs([T2("Ashu", "The Sensex closed at eighty-three thousand and twenty-two, up four hundred and sixty-two points."), T2("Tarun", "And India's second Test against New Zealand is in Christchurch on Thursday."), T2("Ashu", "Mexico caught Isidro, who leads the Beltran Leyva cartel.")]);
+  assert.match(bad, /"four hundred and sixty two" is not a figure in the rundown/);
+  assert.doesNotMatch(bad, /eighty three thousand and twenty two" is not/);
+  assert.match(bad, /says "Thursday" for India v New Zealand/);
+  assert.match(bad, /without the paper's hedge \("alleged"\)/);
+  assert.match(bad, /leaves out "Britain and the EU agree a food deal"/);
+  const good = msgs([T2("Ashu", "The Sensex jumped about nine hundred and ninety points, so far today it's at about eighty-three thousand eight hundred."), T2("Tarun", "And the Christchurch Test starts on Friday at three thirty a m, late on Thursday night."), T2("Ashu", "Mexico caught Isidro, the alleged leader of the Beltran Leyva group. Britain and the EU agreed their food deal too.")]);
+  assert.equal(good, "", good);
+});
+test("v2: a conversation, not a reading: the same host twice, prompting runs, section names, Hindi as a news opener, cheer after deaths", () => {
+  const R = { day: "Friday 20 November", segments: [] };
+  const m = auditChecks([T2("Ashu", "On Page One today, a fire."), T2("Ashu", "Thirty-one people were killed in Cairo."), T2("Tarun", "Wonderful! And the weather is lovely."), T2("Ashu", "What happened?"), T2("Tarun", "Arre, the Supreme Court sent the former MP back to jail within a month today."), T2("Ashu", "Why?"), T2("Tarun", "A ruling."), T2("Ashu", "And then?"), T2("Tarun", "Here's Bhide's House Note.")], R, P).map(p => p.msg).join(" | ");
+  for (const re of [/same host speaks twice in a row at turn 2/, /reads out the paper's section name \("On Page One"\)/, /reads out the paper's section name \("House Note"\)/, /comes straight after a story with deaths/, /Ashu only asks short questions/, /opens a news sentence with a Hindi word/]) assert.match(m, re);
+});
+test("v2: the fact guard counts heavily but never stops a script: soft, weighted, sorted first for a rewrite", () => {
+  const R = rundown(E, P, undefined, paper);
+  const ps = checkScript(Array.from({ length: 10 }, (_, i) => T2(i % 2 ? "Tarun" : "Ashu", i === 3 ? "Riyadh says four hundred and nine people were hurt?" : "A line?")), R, P);
+  const f = ps.find(p => /four hundred and nine/.test(p.msg));
+  assert.ok(f && !f.hard && f.w === 4);
+  const make = readFileSync(new URL("../scripts/podcast/make.mjs", import.meta.url), "utf8");
+  assert.match(make, /probs\.reduce\(\(a, p\) => a \+ \(p\.w \|\| 1\), 0\)/);
+  assert.match(make, /sort\(\(a, b\) => \(b\.hard - a\.hard\) \|\| \(b\.w \|\| 1\) - \(a\.w \|\| 1\)\)/);
+});
+test("v2: money said right: flat, at its high, the rupee on a weekend and beside its own story", () => {
+  const Ed = { date: "2026-11-21", front: { lead: { id: "a", section: "desh", headline: "A lead", short: "x" } }, sections: {},
+    snapshot: { markets: { value: { indices: [{ name: "Sensex", price: 83919.71, change_pct: -0.02, session_date: "2026-11-21", live: true, market_time: "2026-11-21T08:20:00Z", lo3m: 71000, hi3m: 83919.71 }] } }, fx: { value: { price: 92.67, change_pct: -0.67, session_date: "2026-11-20", note: "Rupee at its strongest in 3 months" } } } };
+  const m = rundown(Ed, P, undefined, paper).segments.find(g => g.markets).markets;
+  assert.match(m[0], /Sensex at about 83,900, flat so far today/);
+  assert.match(m[0], /at its highest in three months/);
+  assert.match(m.find(x => /rupee/.test(x)), /stronger by 0\.7% at the last close \(Friday\)/);
+  const withStory = { ...Ed, date: "2026-11-26", sections: { ledger: { briefs: [{ id: "r", section: "ledger", headline: "The rupee closes at an eight-month high of 92.23", text: "Foreign money flowed in." }] } }, art_scores: [{ story_id: "r", importance: 2 }] };
+  withStory.snapshot = { ...Ed.snapshot, fx: { value: { ...Ed.snapshot.fx.value, session_date: "2026-11-26" } } };
+  const m2 = rundown(withStory, P, undefined, paper).segments.find(g => g.markets).markets.find(x => /rupee/.test(x));
+  assert.match(m2, /the rupee at 92\.67 to the dollar \(its story is in Money/);
+  assert.doesNotMatch(m2, /strongest in 3 months|stronger by/);
+});
+test("v2: no live F1 table older than the race the paper reports; tonight's match always in Fixture Watch; every importance-2 story in; one betting line; Bhide without initials", () => {
+  const Ed = { date: "2026-11-22", front: { lead: { id: "a", section: "desh", headline: "A lead", short: "x" } },
+    sections: { videsh: { briefs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(i => ({ id: `w${i}`, section: "videsh", headline: `World item ${i}`, text: "x" })) } },
+    art_scores: [{ story_id: "w11", importance: 2 }],
+    chronology: { f1: { last: { when_utc: "2026-11-22T04:00:00Z", label: "Las Vegas GP" } } },
+    snapshot: { f1_standings: { value: { drivers: [{ pos: 1, name: "Andrea Kimi Antonelli", shown: "Kimi Antonelli", points: 390 }, { pos: 2, name: "Max Verstappen", points: 279 }] } }, f1_last: { value: { round: 20, date: "2026-11-08T17:00:00Z" } },
+      tennis_players: { value: { players: [{ name: "Carlos Alcaraz", next: { when_utc: "2026-11-22T17:00:00Z", opponent: "Alexander Zverev", event: "ATP Finals", round: "Final" } }] } } } };
+  const F = { ...P, fixtures: { max: 0, order: ["madrid"] }, quick_max: 3 };
+  const R = rundown(Ed, F, undefined, { ...paper, follows: C.follows });
+  const sport = R.segments.find(g => g.desk === "Sport");
+  assert.ok(!(sport?.standings || []).some(x => /Verstappen/.test(x)), "the table is from before the race");
+  assert.match((sport?.coming || []).join(" | "), /Alcaraz v Alexander Zverev, ATP Finals, Final, today at ten thirty p m/);
+  assert.ok(R.segments.flatMap(g => g.items).some(i => i.id === "w11" && i.must), "an importance-2 story is in even past quick_max");
+  assert.equal(R.editor, "Bhide");
+  assert.match(writerPrompt(R, P), /say just "Bhide", never his initials/);
+  const src = readFileSync(new URL("../scripts/podcast/lib.mjs", import.meta.url), "utf8");
+  assert.match(src, /marketsExpect\(E, paper, P\.betting_max \?\? 1\)/);
+});
+test("v2: the writer is told to bridge in spoken words, keep only Fixture Watch, keep hedges, never derive a figure, and say 'over in Ranchi'", () => {
+  const w = writerPrompt(rundown(E, P, undefined, paper), P);
+  assert.match(w, /never by reading out the paper's section names/);
+  assert.match(w, /The one name the show keeps is "Fixture Watch"/);
+  assert.match(w, /a Ranchi story is "over in Ranchi"/);
+  assert.match(w, /Keep every hedge/);
+  assert.match(w, /Never work out a figure of your own/);
+  assert.match(w, /At most two figures in any one turn/);
+  assert.match(w, /ONE sentence, wherever it fits best, that says plainly what the question is/);
+  assert.doesNotMatch(w, /—/);
+});
+test("v2: the code's backup script names the hosts, asks why, bridges, gives one market a turn, never reads a writer's note or the House Note", () => {
+  const Ed = JSON.parse(readFileSync(new URL("../content/editions/2026-11-26.json", import.meta.url), "utf8"));
+  const R = rundown(Ed, P, undefined, { ...paper, follows: C.follows }), fb = fallbackScript(R, P), text = fb.map(t => t.text).join(" ");
+  assert.match(fb[0].text, /I'm Ashu/); assert.match(fb[1].text, /And I'm Tarun\. This is Bhide's paper/);
+  assert.ok(fb.every((t, i) => !i || t.speaker !== fb[i - 1].speaker), "never the same host twice in a row");
+  assert.match(text, /Why does it matter\?/);
+  assert.match(text, /On to money:/);
+  assert.match(text, /Fixture Watch:/);
+  assert.doesNotMatch(text, /tell them together|NOT overnight|House Note/);
+  assert.equal(fb.at(-1).text, P.signoff);
+  assert.ok(!checkScript(fb, R, P).some(p => p.hard));
+});
+test("v2: entities, cricket totals and the new names are said right; the studio's gaps vary and quick reactions overlap", () => {
+  assert.equal(spoken("the S&amp;P 500 fell", P.pronounce), "the S and P five hundred fell");
+  assert.equal(spoken("India 720/9 dec, New Zealand 368 & 239/5"), "India seven hundred and twenty for nine declared, New Zealand three hundred and sixty-eight and two hundred and thirty-nine for five");
+  assert.equal(spoken("on 26/11, open 24/7"), "on twenty-six eleven, open twenty-four seven");
+  assert.equal(spoken("Jensen Huang, Mbappé and Bhide's paper", P.pronounce), "Jensen Hwang, Em-bap-pay and Bhee-day's paper");
+  const turns = [], pieces = [];
+  for (let i = 0; i < 40; i++) { const sp = i % 2 ? "Tarun" : "Ashu", t = i % 4 === 3 ? "Arre, really?" : i % 3 ? "A fairly long line with many words in it that tells a whole story at length today." : "Is that so?"; turns.push({ speaker: sp, mood: "neutral", text: t }); pieces.push({ speaker: sp, pcm: Buffer.alloc(Math.round((t.split(" ").length / 2.6) * RATE) * 2) }); }
+  const L = layout({ turns, pieces, date: "2026-11-26", pan: {}, music: false });
+  const g = L.cues.slice(1).map((c, i) => c[0] - L.cues[i][1]);
+  assert.ok(Math.max(...g) - Math.min(...g.filter(x => x > 0)) > 0.35, `gaps vary: ${g.map(x => x.toFixed(2)).join(",")}`);
+  assert.ok(g.some(x => x < 0), "a quick reaction overlaps");
 });
