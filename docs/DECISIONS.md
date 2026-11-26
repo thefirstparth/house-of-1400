@@ -1342,3 +1342,7 @@ missing. Both checked against the editions' snapshots of 3-9 Nov.
   counts 4, a stock phrase 1), sent back for a rewrite heaviest first, and the best draft is chosen by total weight
   (make.mjs). A fault in the checks skips them. Replayed against the seven audited episodes they caught "up 462
   points", the pre-race F1 table, the dropped importance-2 stories and every section name, with no false alarms left.
+- 27 Nov 2026: the first evening retries never tried. GitHub started them at 00:26, 00:52 and 03:59 IST, after midnight,
+  when the 26 Nov episode was no longer "today's", so each exited with "already published" and sent nothing. An upgrade
+  (and its Telegram message) now covers the day's episode until noon the next day, and the retries run at 13:13 and
+  16:17 UTC (about 18:45 and 21:45 IST), off the half-hour when GitHub's queue is busiest.

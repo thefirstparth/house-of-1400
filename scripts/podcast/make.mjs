@@ -36,6 +36,11 @@ const UPGRADE = args.includes("--upgrade");
 const H = new URL("../../", import.meta.url).pathname, OUT = `${H}.podcast`;
 const cfg = JSON.parse(readFileSync(`${H}config/house.json`, "utf8")), P = cfg.podcast || {};
 const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
+// (27 Nov 2026) GitHub started the 19:00 and 22:00 retries at 00:26, 00:52 and 03:59 IST, after midnight, so "today's
+// episode" had become yesterday's: an upgrade covers the day's episode until noon the next day
+const yesterday = new Date(Date.now() - 864e5).toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
+const beforeNoon = Number(new Date().toLocaleTimeString("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", hour12: false })) < 12;
+const upgradable = d => d === today || (d === yesterday && beforeNoon);
 const latest = JSON.parse(readFileSync(`${H}content/latest.json`, "utf8"));
 const date = args.find(a => /^\d{4}-\d{2}-\d{2}$/.test(a)) || latest.edition || latest.date || today;
 const file = `${H}content/editions/${date}.json`;
@@ -441,7 +446,7 @@ async function main() {
     const idx = await readIndex(get);
     let done = idx ? idx.find(e => e.date === date) || null : null;
     if (!idx) { const { blobs } = await list({ prefix: `${folder}/${date}.json`, token: BLOB }); if (blobs.length) { const g = await get(`${folder}/${date}.json`, { access: "private", useCache: false, token: BLOB }).catch(() => null); done = g?.stream ? await new Response(g.stream).json().catch(() => null) || {} : {}; } }
-    if (done && !FORCE && !(UPGRADE && done.by === "code" && date === today)) { log(`episode for ${date} already published`); return; }
+    if (done && !FORCE && !(UPGRADE && done.by === "code" && upgradable(date))) { log(`episode for ${date} already published`); return; }
     if (done && !FORCE) log(`episode for ${date} went out on the code's plain script: trying the Gemini writers again`);
     if (done) prior = done;
   }

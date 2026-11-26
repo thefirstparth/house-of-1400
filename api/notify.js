@@ -18,6 +18,7 @@ const LIVE_KEYS = ["weather", "f1_next", "f1_standings", "f1_last", "football", 
 const RUNS = { main: "the 14:00 run", retry1: "the 14:29 retry", retry2: "the 14:58 retry", retry3: "the 15:27 retry" };
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const today = () => new Date().toLocaleDateString("en-CA", { timeZone: TZ });
+const yesterday = () => new Date(Date.now() - 864e5).toLocaleDateString("en-CA", { timeZone: TZ });
 const hm = () => new Date().toLocaleTimeString("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false });
 const longDate = ymd => new Date(ymd + "T12:00:00Z").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" }).replace(/\bSept\b/, "Sep");
 const KEY_NAMES = { weather: "weather", f1_next: "F1 schedule", f1_standings: "F1 standings", f1_last: "F1 results", football: "Madrid fixtures", laliga_table: "La Liga table", nba: "NBA", tennis: "tennis", markets: "markets", fx: "rupee", crypto: "Bitcoin", gold_in: "gold", trends: "trends", betting: "betting prices", movers: "market movers" };
@@ -159,7 +160,9 @@ async function podcast(url) {
   const k = url.searchParams.get("k") || (await stateGet("podcast-folder", null).catch(() => null))?.k || "";
   if (url.searchParams.has("kept")) return keptPlain(k, d);
   if (!/^[a-f0-9]{24}$/.test(k) || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return Response.json({ ok: false, sent: false, reason: "bad request" }, { status: 400 });
-  if (!dry && d !== today()) return Response.json({ ok: true, sent: false, reason: "only today's episode is announced" });
+  // (27 Nov 2026) a retry after midnight still announces the day's better take, until noon
+  const lateOk = d === yesterday() && hm() < "12:00";
+  if (!dry && d !== today() && !lateOk) return Response.json({ ok: true, sent: false, reason: "only today's episode is announced" });
   // once a day, except that a Gemini-written take replacing a plain-script episode is announced too (26 Nov 2026)
   const before = dry ? null : await marker(`podcast-${d}`);
   if (before && before.by !== "code") return Response.json({ ok: true, sent: false, reason: "already sent today" });
@@ -183,7 +186,7 @@ async function podcast(url) {
 // doesn't, can you give me an update on Telegram?"). Only for an episode the code wrote, at most three a day.
 async function keptPlain(k, d) {
   if (!/^[a-f0-9]{24}$/.test(k) || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return Response.json({ ok: false, sent: false, reason: "bad request" }, { status: 400 });
-  if (d !== today()) return Response.json({ ok: true, sent: false, reason: "only today's episode" });
+  if (d !== today() && !(d === yesterday() && hm() < "12:00")) return Response.json({ ok: true, sent: false, reason: "only today's episode" });
   let m = null;
   try { const { get } = await import("@vercel/blob"); const r = await get(`podcast/${k}/${d}.json`, { access: "private", useCache: false }); m = r?.stream ? await new Response(r.stream).json() : null; } catch {}
   if (m?.by !== "code") return Response.json({ ok: true, sent: false, reason: "today's episode was not written by code" });

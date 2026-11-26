@@ -14,10 +14,11 @@ on:
   schedule:
     - cron: "10 9 * * *"
     - cron: "55 9 * * *"
-    # evening retries (19:00 and 22:00 IST; GitHub may start them late): only if today's episode went out on the code's
-    # plain script, the Gemini writers try again and a script they write replaces it (--upgrade; 26 Nov 2026)
-    - cron: "30 13 * * *"
-    - cron: "30 16 * * *"
+    # evening retries (about 18:45 and 21:45 IST; off the busy half-hour, since GitHub started the first ones three to
+    # five hours late on 26 Nov): only if the day's episode went out on the code's plain script, the Gemini writers try
+    # again and a script they write replaces it (--upgrade; 26-27 Nov 2026). A late start still counts until noon.
+    - cron: "13 13 * * *"
+    - cron: "17 16 * * *"
   workflow_dispatch:
     inputs:
       date: { description: "Edition date (YYYY-MM-DD); empty = latest", required: false, default: "" }

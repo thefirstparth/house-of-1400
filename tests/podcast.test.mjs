@@ -460,11 +460,12 @@ print(json.dumps({
 // 26 Nov 2026: every Gemini writer answered 503 for fifteen minutes and the episode went out on the code's plain script.
 test("evening retries replace a plain-script episode only with a script Gemini wrote", () => {
   const wf = readFileSync(new URL("../.github/workflows/podcast.yml", import.meta.url), "utf8");
-  assert.match(wf, /cron: "30 13 \* \* \*"/);
-  assert.match(wf, /cron: "30 16 \* \* \*"/);
+  assert.match(wf, /cron: "13 13 \* \* \*"/);
+  assert.match(wf, /cron: "17 16 \* \* \*"/);
   assert.match(wf, /github\.event_name == 'schedule' && '--upgrade'/);
   const s = readFileSync(new URL("../scripts/podcast/make.mjs", import.meta.url), "utf8");
-  assert.match(s, /UPGRADE && done\.by === "code" && date === today/);
+  assert.match(s, /UPGRADE && done\.by === "code" && upgradable\(date\)/);
+  assert.match(s, /d === yesterday && beforeNoon/);
   assert.match(s, /by === "code" \|\| \(\/lite\/\.test\(by\) && prior\.by !== "code"\)/);
   const n = readFileSync(new URL("../api/notify.js", import.meta.url), "utf8");
   assert.match(n, /before && before\.by !== "code"/);
