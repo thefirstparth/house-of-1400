@@ -1296,8 +1296,9 @@ missing. Both checked against the editions' snapshots of 3-9 Nov.
 ## The paper's Telegram message, easier to read (26 Nov 2026)
 - Parth: the message is "too cluttered or too clamped up to read" (26 Nov's was 21 lines, about 317 words: ten full
   tagged headlines, two money lines, three fixtures, weather). Now: the paper's own short lines ("the day in a minute",
-  which reverses the 12 Oct choice to keep them for the page), at most six, each on its own line with a blank line
+  which reverses the 12 Oct choice to keep them for the page), each on its own line with a blank line
   between, the lead in bold; then one money line (Nifty, rupee, gold), every match in the next three days (as before),
   and the link. Parth, same day: "every match in the next 3 days should be listed"; "Not too many emojis, but I like
-  the structure", so the stories carry no signs; the emoji stay on the masthead, money and sport lines. The weather, Sensex and Bitcoin stay in the paper. 26 Nov's edition comes to about 96
+  the structure". Then, shown the spaced version with each story's desk sign: "I like this style. Let's keep the
+  top 7 headlines", so: the top seven short lines, the lead in bold, the rest with their desk's sign. The weather, Sensex and Bitcoin stay in the paper. 26 Nov's edition comes to about 96
   words. Full headlines only for an edition without short lines; the warning line is unchanged.

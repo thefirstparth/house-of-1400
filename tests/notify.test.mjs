@@ -25,13 +25,13 @@ test("telegram (26 Nov 2026): the paper's short lines, spaced out, then one mone
   assert.doesNotMatch(t, /Bengaluru 30°/, "the weather stays in the paper");
   assert.match(t, /<a href="https:\/\/x\.app\/">Read the paper →<\/a>/);
   const long = summary({ ...E, glance: Array.from({ length: 9 }, (_, i) => ({ line: `Line ${i}`, section: "World" })) }, "https://x.app", "main", { cfg, now });
-  assert.equal((long.match(/Line \d/g) || []).length, 6, "at most six");
-  assert.match(long, /\n\nLine 1\n\nLine 2\n/, "no signs on the stories");
+  assert.equal((long.match(/Line \d/g) || []).length, 7, "the top seven");
+  assert.match(long, /\n\n🌍 Line 1\n\n🌍 Line 2\n/, "each story after the lead with its desk's sign");
 });
 test("telegram: without short lines, the full headlines; missing data is left out and a retry says so", () => {
   const t = summary({ ...E, glance: [], snapshot: {} }, "https://x.app", "retry1", { cfg, now });
   assert.match(t, /<b>Max wins in Singapore<\/b>/);
-  assert.match(t, /\n\nIndia beat West Indies/);
+  assert.match(t, /\n\n🇮🇳 India beat West Indies/);
   assert.doesNotMatch(t, /Nifty/);
   assert.match(t, /⚠️ <i>published by the 14:29 retry/);
 });

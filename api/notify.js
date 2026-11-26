@@ -115,21 +115,24 @@ function headlines(E) {
   return [lead, ...ranked.slice(0, Math.min(9, Math.max(3, strong.length)))].filter(Boolean);
 }
 
-// 26 Nov 2026 (Parth: "too cluttered or too clamped up to read"; then "Not too many emojis, but I like the structure"):
-// the paper's own short lines ("the day in a minute"), at most six, one per line with a blank line between, the lead
-// in bold, no signs on the stories. Then one money line, every match in the next three days, and the link. Full
-// headlines only if an edition has no short lines.
+// 26 Nov 2026 (Parth: "too cluttered or too clamped up to read"; then, of the spaced version with signs, "I like this
+// style. Let's keep the top 7 headlines"): the paper's own short lines ("the day in a minute"), at most seven, one per
+// line with a blank line between, the lead in bold, every other line with its desk's sign. Then one money line, every
+// match in the next three days, and the link. Full headlines only if an edition has no short lines.
+const SIGN = { India: "🇮🇳", World: "🌍", Money: "💰", AI: "🤖", Tech: "💻", Sport: "🏅", Bengaluru: "🏙️", "Close to Home": "🏙️", Science: "🔬", Culture: "🎬", "Off Duty": "🎬" };
+const TOP = 7;
 function shortLines(E) {
   const g = (E.glance || []).filter(x => x?.line);
-  return g.length ? g.slice(0, 6).map(x => x.line) : headlines(E).slice(0, 6).map(x => x.headline);
+  if (g.length) return g.slice(0, TOP).map(x => ({ text: x.line, sign: SIGN[x.section] || "•" }));
+  return headlines(E).slice(0, TOP).map(x => ({ text: x.headline, sign: SIGN[String(x.kicker || "").split("·")[0].trim()] || "•" }));
 }
 export function summary(E, origin, run, { cfg = {}, now = Date.now() } = {}) {
   const lines = [`📰 <b>The House of 1400</b> · ${esc(longDate(E.date))}`];
   const items = shortLines(E);
   if (items.length) {
     const [lead, ...rest] = items;
-    lines.push("", `<b>${esc(lead)}</b>`);
-    for (const i of rest) lines.push("", esc(i));
+    lines.push("", `<b>${esc(lead.text)}</b>`);
+    for (const i of rest) lines.push("", `${i.sign} ${esc(i.text)}`);
   } else lines.push("", "<b>Today's paper is out</b>");
   const mo = moneyLine(E);
   const next = upNext(E, cfg, now);
