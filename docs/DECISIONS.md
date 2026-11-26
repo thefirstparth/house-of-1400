@@ -1278,3 +1278,14 @@ missing. Both checked against the editions' snapshots of 3-9 Nov.
   step 8 stays as a second caller. A second cron at 15:00 IST joins the 16:00 one as a backstop; only 16:00 sends
   "no paper today". /api/notify takes a two-minute Redis lock before sending, so two callers at the same moment
   cannot both send (`stateClaim` in lib/state.js); the day's marker still allows one summary a day.
+
+## The podcast: evening retries when Gemini was too busy (26 Nov 2026)
+- 26 Nov: the 14:25 run died installing ffmpeg (fixed the same day), and the 15:21 rerun, the day's last, found all
+  six Gemini writers answering 503 ("high demand") for fifteen minutes, so the episode went out on the code's plain
+  script. Parth: "I thought that could never happen" ... "Go, do both": remake today's episode, and stop it recurring.
+- Every scheduled run now passes `--upgrade`, and two evening runs are added (19:00 and 22:00 IST; GitHub may start them
+  late). With `--upgrade`, a run that finds today's episode published from the code's plain script tries the writers
+  again; a script Gemini writes (Flash Lite included) replaces it as a new take (-v2), any other result keeps the
+  published episode. A redo over an episode Gemini wrote still needs a strong writer, as before. Days already done
+  well are untouched, so no writer or voice request is spent on them.
+- Telegram announces such a replacement once ("A better take of today's podcast"); otherwise still once a day.

@@ -14,6 +14,10 @@ on:
   schedule:
     - cron: "10 9 * * *"
     - cron: "55 9 * * *"
+    # evening retries (19:00 and 22:00 IST; GitHub may start them late): only if today's episode went out on the code's
+    # plain script, the Gemini writers try again and a script they write replaces it (--upgrade; 26 Nov 2026)
+    - cron: "30 13 * * *"
+    - cron: "30 16 * * *"
   workflow_dispatch:
     inputs:
       date: { description: "Edition date (YYYY-MM-DD); empty = latest", required: false, default: "" }
@@ -77,7 +81,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
-        run: node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }} ${{ inputs.feed_only && '--feed' || '' }} ${{ inputs.dry && '--dry' || '' }} ${{ inputs.models && '--models' || '' }} ${{ inputs.sample && format('--sample={0}', inputs.sample) || '' }} ${{ inputs.transcript && format('--transcript={0}', inputs.transcript) || '' }} ${{ github.event_name != 'push' && '--final' || '' }}
+        run: node scripts/podcast/make.mjs ${{ inputs.date }} ${{ inputs.force && '--force' || '' }} ${{ inputs.feed_only && '--feed' || '' }} ${{ inputs.dry && '--dry' || '' }} ${{ inputs.models && '--models' || '' }} ${{ inputs.sample && format('--sample={0}', inputs.sample) || '' }} ${{ inputs.transcript && format('--transcript={0}', inputs.transcript) || '' }} ${{ github.event_name != 'push' && '--final' || '' }} ${{ github.event_name == 'schedule' && '--upgrade' || '' }}
       - if: always()
         uses: actions/upload-artifact@v4
         with: { name: podcast-script, path: .podcast/script.json, retention-days: 2, if-no-files-found: ignore }

@@ -154,15 +154,18 @@ async function podcast(url) {
   const k = url.searchParams.get("k") || "", d = url.searchParams.get("podcast") || "", dry = url.searchParams.has("dry");
   if (!/^[a-f0-9]{24}$/.test(k) || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return Response.json({ ok: false, sent: false, reason: "bad request" }, { status: 400 });
   if (!dry && d !== today()) return Response.json({ ok: true, sent: false, reason: "only today's episode is announced" });
-  if (!dry && await marker(`podcast-${d}`)) return Response.json({ ok: true, sent: false, reason: "already sent today" });
+  // once a day, except that a Gemini-written take replacing a plain-script episode is announced too (26 Nov 2026)
+  const before = dry ? null : await marker(`podcast-${d}`);
+  if (before && before.by !== "code") return Response.json({ ok: true, sent: false, reason: "already sent today" });
   let m = null;
   try { const { get } = await import("@vercel/blob"); const r = await get(`podcast/${k}/${d}.json`, { access: "private", useCache: false }); m = r?.stream ? await new Response(r.stream).json() : null; } catch {}
   if (!m) return Response.json({ ok: true, sent: false, reason: "no episode in the feed for that day" });
+  if (before && m.by === "code") return Response.json({ ok: true, sent: false, reason: "already sent today" });
   const backupW = /lite/.test(m.by) || m.by === "code", backupV = m.voice === "kokoro" || (m.voice_model && !/3\.8-flash-tts/.test(m.voice_model));
   const writer = m.by === "code" ? "the plain script made by code (every Gemini writer failed)" : `${MODEL_NAMES(m.by)}${backupW ? " (backup writer)" : ""}`;
   const voice = m.voice === "kokoro" ? "Kokoro (backup voice, no Gemini)" : `${MODEL_NAMES(m.voice_model || "gemini-3.8-flash-tts")}${backupV ? " (backup voice)" : ""}`;
   const mins = Number.isFinite(m.seconds) ? `${Math.floor(m.seconds / 60)} min ${String(Math.round(m.seconds % 60)).padStart(2, "0")} s` : null;
-  const text = [`🎧 <b>Today's podcast is in Apple Podcasts</b> (${esc(longDate(d))})`, `<i>${esc(String(m.title || "").replace(/^[^·]*·\s*/, ""))}</i>`, "",
+  const text = [before ? `🎧 <b>A better take of today's podcast is in Apple Podcasts</b> (${esc(longDate(d))}), written by Gemini this time` : `🎧 <b>Today's podcast is in Apple Podcasts</b> (${esc(longDate(d))})`, `<i>${esc(String(m.title || "").replace(/^[^·]*·\s*/, ""))}</i>`, "",
     [mins, `script: ${esc(writer)}`, `voice: ${esc(voice)}`].filter(Boolean).join("\n"), "", `<a href="${esc(m.url)}">Listen here →</a>`].join("\n");
   if (dry) return Response.json({ ok: true, sent: false, text });
   const out = await send(text);

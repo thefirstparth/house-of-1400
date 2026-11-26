@@ -29,6 +29,10 @@ const REHEARSE = args.includes("--rehearse"), DRY = args.includes("--dry") || RE
 // A voice sample (--sample) is a test run on the same day as the episode: it spends at most two voice requests (one
 // solo take per host, no retries, no fallbacks), so the day's episode always keeps at least eight of the ten
 const SAMPLE = args.some(a => a.startsWith("--sample="));
+// --upgrade (every scheduled run, 26 Nov 2026): if today's episode went out on the code's plain script because every
+// Gemini writer was busy, try the writers again and replace it only with a script Gemini wrote (Parth: "I thought that
+// could never happen"; that day all six writers answered 503 for fifteen minutes). Any other published day: nothing.
+const UPGRADE = args.includes("--upgrade");
 const H = new URL("../../", import.meta.url).pathname, OUT = `${H}.podcast`;
 const cfg = JSON.parse(readFileSync(`${H}config/house.json`, "utf8")), P = cfg.podcast || {};
 const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
@@ -436,7 +440,8 @@ async function main() {
     const idx = await readIndex(get);
     let done = idx ? idx.find(e => e.date === date) || null : null;
     if (!idx) { const { blobs } = await list({ prefix: `${folder}/${date}.json`, token: BLOB }); if (blobs.length) { const g = await get(`${folder}/${date}.json`, { access: "private", useCache: false, token: BLOB }).catch(() => null); done = g?.stream ? await new Response(g.stream).json().catch(() => null) || {} : {}; } }
-    if (done && !FORCE) { log(`episode for ${date} already published`); return; }
+    if (done && !FORCE && !(UPGRADE && done.by === "code" && date === today)) { log(`episode for ${date} already published`); return; }
+    if (done && !FORCE) log(`episode for ${date} went out on the code's plain script: trying the Gemini writers again`);
     if (done) prior = done;
   }
   const v = prior ? (prior.v || 1) + 1 : 1, file = v > 1 ? `${date}-v${v}.mp3` : `${date}.mp3`;
@@ -465,8 +470,9 @@ async function main() {
   // episode is ready before 15:45 IST at any cost).
   const ist = new Date(Date.now() + 5.5 * 36e5), early = ist.getUTCHours() * 60 + ist.getUTCMinutes() < 14 * 60 + 35;
   if (!DRY && !KOKORO && !args.includes("--final") && early && (/lite/.test(by) || by === "code")) { log(`script by ${by}: holding it back for the 14:40 IST run, which publishes whatever it gets`); return; }
-  // a redo never swaps a published episode for a weaker script (Flash Lite or the code's plain one)
-  if (prior && !DRY && (/lite/.test(by) || by === "code")) { log(`redo: script by ${by}, keeping the published episode`); return; }
+  // a redo never swaps a published episode for a weaker script (Flash Lite or the code's plain one); over a plain-script
+  // episode, Flash Lite counts as better
+  if (prior && !DRY && (by === "code" || (/lite/.test(by) && prior.by !== "code"))) { log(`redo: script by ${by}, keeping the published episode`); return; }
   log(`script: ${turns.length} turns, ${turns.reduce((a, t) => a + t.text.split(/\s+/).length, 0)} words, by ${by}`);
   if (DRY && !KEY) { log("dry run: script written to .podcast/script.json"); return; }
   let pcm, voice = KOKORO ? "kokoro" : "gemini";
