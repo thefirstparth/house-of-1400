@@ -47,7 +47,7 @@ test("resample: the last price at or before each grid point; nothing before the 
   const h = [{ t: 1000, p: 0.2 }, { t: 1000 + 2 * H, p: 0.5 }, { t: 1000 + 2 * H + 10, p: 0.55 }];
   const s = resample(h, 1000 - H, 1000 + 3 * H, H);
   assert.equal(s.t0, 1000);
-  assert.deepEqual(s.p, [20, 20, 55, 55]);
+  assert.deepEqual(s.p, [20, 20, 50, 55]);
   assert.equal(resample([{ t: 1, p: 0.5 }], 0, 10, 1), null);
 });
 
