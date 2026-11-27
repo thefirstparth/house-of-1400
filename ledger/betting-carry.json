@@ -1,63 +1,63 @@
 {
-  "date": "2026-11-26",
-  "from": "2026-11-25",
+  "date": "2026-11-27",
+  "from": "2026-11-26",
   "carry": [
     {
-      "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
-      "title": "UEFA Champions League: 2027 Champion",
-      "since": "2026-09-25",
+      "id": "pm:taipei-mayor-election-winner-20260813125857100",
+      "title": "Taipei Mayor Election Winner",
+      "since": "2026-11-16",
       "reason": "#1 by 24h volume"
+    },
+    {
+      "id": "pm:next-prime-minister-of-spain-20260625005215443",
+      "title": "Next Prime Minister of Spain?",
+      "since": "2026-11-26",
+      "reason": "#2 by 24h volume"
     },
     {
       "id": "pm:next-french-presidential-election",
       "title": "Next French Presidential Election",
       "since": "2026-10-09",
-      "reason": "#2 by 24h volume"
+      "reason": "#3 by 24h volume"
     },
     {
-      "id": "pm:taipei-mayor-election-winner-20260813125857100",
-      "title": "Taipei Mayor Election Winner",
-      "since": "2026-11-16",
-      "reason": "#3 by 24h volume; Chiang Wan-an moved 5.0 pts since printed"
-    },
-    {
-      "id": "pm:jensen-huang-out-as-nvidia-ceo-again-byptptpt",
-      "title": "Jensen Huang out as NVIDIA CEO again by...?",
-      "since": "2026-11-14",
+      "id": "pm:uefa-champions-league-2027-champion-20260701202025549",
+      "title": "UEFA Champions League: 2027 Champion",
+      "since": "2026-09-25",
       "reason": "#4 by 24h volume"
-    },
-    {
-      "id": "pm:israel-x-iran-ceasefire-continues-throughptptpt-20260716224448963",
-      "title": "Israel x Iran ceasefire continues through...?",
-      "since": "2026-11-12",
-      "reason": "#6 by 24h volume"
     },
     {
       "id": "pm:b200-average-rental-price-in-december-2026",
       "title": "B200 average rental price in December 2026?",
       "since": "2026-11-24",
+      "reason": "#5 by 24h volume"
+    },
+    {
+      "id": "pm:israel-x-iran-ceasefire-continues-throughptptpt-20260716224448963",
+      "title": "Israel x Iran ceasefire continues through...?",
+      "since": "2026-11-12",
       "reason": "#7 by 24h volume"
     }
   ],
   "dropped": [
     {
-      "id": "pm:who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
-      "title": "Prime Minister of Israel after the next election?",
-      "why": "ended or decided, no next market in the same line"
+      "id": "pm:will-anthropics-valuation-hit-by-december-31",
+      "title": "Will Anthropic’s valuation hit __ by December 31?",
+      "why": "cooled: outside the ranking by volume, moved 1.4 pts"
     },
     {
-      "id": "pm:ucl-shd-fen-2026-11-25",
-      "title": "FK Shakhtar Donetsk vs. Fenerbahçe SK",
-      "why": "ended or decided, no next market in the same line"
+      "id": "pm:which-math-problems-will-ai-solve-in-2026",
+      "title": "Which math problems will AI solve in 2026?",
+      "why": "carry cap of 6"
     },
     {
-      "id": "pm:marco-rubio-out-as-secretary-of-state-byptptpt",
-      "title": "Marco Rubio out as Secretary of State by...?",
-      "why": "cooled: outside the ranking by volume, moved 1.1 pts"
+      "id": "pm:jensen-huang-out-as-nvidia-ceo-again-byptptpt",
+      "title": "Jensen Huang out as NVIDIA CEO again by...?",
+      "why": "carry cap of 6"
     },
     {
-      "id": "pm:atp-serna-cigarra-2026-11-26",
-      "title": "Florianopolis: Juan Manuel La Serna vs Thiago Cigarran",
+      "id": "pm:venezuela-leader-end-of-2026",
+      "title": "Venezuela leader end of 2026?",
       "why": "carry cap of 6"
     }
   ]
