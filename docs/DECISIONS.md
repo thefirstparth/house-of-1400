@@ -1371,3 +1371,13 @@ missing. Both checked against the editions' snapshots of 3-9 Nov.
   a thick rule, section names in the grotesque, a larger lead with a drop cap; (13) a reading line in the desk's colour.
 - Open for Parth with the trial: the F1 countdown shows seconds, against the 2 Oct "countdowns to the minute" rule;
   The Search Bar's languages; whether to keep both the new Ranchi/Prayagraj rows and the old paragraphs in Sky & Streets.
+
+## The podcast: no episode on 27 Nov 2026, and the two fixes
+- What happened: the push run's writer (Hydrogen, then two Flash rewrites) kept the phrase "a source said" in one turn,
+  and the checker counted any "source" as talk about how the show is made, a hard fault, so all three scripts were
+  thrown out. The plain script made by code was then held back for the 14:40 IST run, and GitHub never started the
+  14:40 or 15:25 runs that day, so nothing was published.
+- Fix 1: only the show's own sourcing counts as process talk ("our sources", "the sources", "sourced from", "second
+  source", "we checked"). "A source said" is a news hedge and is allowed.
+- Fix 2: no run holds a script back any more. Every run publishes whatever it gets; the evening runs swap a plain-script
+  episode for a better take. GitHub's scheduled runs are too unreliable to wait on.

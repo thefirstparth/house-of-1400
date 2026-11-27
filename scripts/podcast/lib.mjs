@@ -458,7 +458,9 @@ RUNDOWN
 ${JSON.stringify(R, null, 1)}`;
 }
 
-const PROCESS = /\b(source[sd]?|sourcing|validator|edition file|the pool|pool story|rundown|script|prompt|we checked|second source|AI-generated|language model|generated)\b/i;
+// (27 Nov 2026: "a source said" is a hedge the paper keeps, and the bare word "source" threw out all three of the day's
+// scripts; only talk about the show's own sources and checking counts)
+const PROCESS = /\b(our sources?|the sources?|sourcing|sourced from|validator|edition file|the pool|pool story|rundown|script|prompt|we checked|second source|AI-generated|language model|generated)\b/i;
 const NUMW = new Set([...ONES, ...TENS.filter(Boolean), "hundred", "thousand", "lakh", "crore", "million", "billion", "point", "per", "cent", "percent"]);
 const words = t => String(t || "").replace(/<[^>]+>/g, " ").toLowerCase().replace(/[^a-z0-9' -]/g, " ").split(/[\s-]+/).filter(Boolean);
 const numberRuns = t => { let n = 0, inRun = false, only = true; for (const w of words(t)) { if (NUMW.has(w) || (inRun && w === "and")) { if (!inRun) { inRun = true; only = true; } if (w !== "one" && w !== "and") only = false; } else { if (inRun && !only) n++; inRun = false; } } if (inRun && !only) n++; return n; };

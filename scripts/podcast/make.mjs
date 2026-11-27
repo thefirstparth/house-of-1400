@@ -471,11 +471,10 @@ async function main() {
     turns.forEach((t, i) => console.log(`${String(i + 1).padStart(2)} ${t.speaker}: ${t.text}`));
     log("rehearsal: no voice, nothing published"); return;
   }
-  // A script from Flash Lite or the code is held back once: at the edition push, and only before 14:35 IST, so the
-  // 14:40 run can try the strong writers again. Every later run publishes whatever it gets (Parth, 13 Oct: the
-  // episode is ready before 15:45 IST at any cost).
-  const ist = new Date(Date.now() + 5.5 * 36e5), early = ist.getUTCHours() * 60 + ist.getUTCMinutes() < 14 * 60 + 35;
-  if (!DRY && !KOKORO && !args.includes("--final") && early && (/lite/.test(by) || by === "code")) { log(`script by ${by}: holding it back for the 14:40 IST run, which publishes whatever it gets`); return; }
+  // No script is held back any more (27 Nov 2026): the push run used to keep a Flash Lite or code script for the 14:40
+  // run, and on 27 Nov GitHub never started that run, so no episode went out. Every run now publishes whatever it gets
+  // (Parth, 13 Oct: the episode is ready before 15:45 IST at any cost); the evening runs swap a plain-script episode
+  // for a better take.
   // a redo never swaps a published episode for a weaker script (Flash Lite or the code's plain one); over a plain-script
   // episode, Flash Lite counts as better
   if (prior && !DRY && (by === "code" || (/lite/.test(by) && prior.by !== "code"))) {

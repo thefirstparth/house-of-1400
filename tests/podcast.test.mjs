@@ -592,3 +592,12 @@ test("v2: entities, cricket totals and the new names are said right; the studio'
   assert.ok(Math.max(...g) - Math.min(...g.filter(x => x > 0)) > 0.35, `gaps vary: ${g.map(x => x.toFixed(2)).join(",")}`);
   assert.ok(g.some(x => x < 0), "a quick reaction overlaps");
 });
+
+test("27 Nov 2026: \"a source said\" is the paper's hedge, not talk about how the show is made", () => {
+  const R = rundown(E, P, undefined, paper);
+  const base = Array.from({ length: 9 }, (_, i) => ({ speaker: i % 2 ? "Tarun" : "Ashu", mood: "neutral", text: "A line?" }));
+  const hard = t => checkScript([...base, { speaker: "Ashu", mood: "neutral", text: t }], R, P).filter(p => p.hard).map(p => p.msg).join(" | ");
+  assert.doesNotMatch(hard("A source said the deal is close, and sources told Reuters it may slip."), /how the show is made/);
+  assert.match(hard("Our sources checked this twice."), /how the show is made/);
+  assert.match(hard("We checked a second source before telling you."), /how the show is made/);
+});

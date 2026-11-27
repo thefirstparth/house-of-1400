@@ -1,7 +1,7 @@
 # The daily podcast (scripts/podcast/make.mjs): when each edition is pushed (about 14:12 IST; a push was proven to start
-# it on 12 Oct), and again at 14:40 and 15:25 IST in case it did not (late papers have landed at 15:20 and 15:37). A
-# script only Flash Lite could write waits once, from the push before 14:35 to the 14:40 run; every other run
-# publishes whatever it gets, so the episode is out before 15:45 IST (Parth, 13 Oct).
+# it on 12 Oct), and again at 14:40 and 15:25 IST in case it did not (late papers have landed at 15:20 and 15:37). Every
+# run publishes whatever it gets, so the episode is out before 15:45 IST (Parth, 13 Oct); nothing waits for a later run
+# since 27 Nov 2026, when GitHub skipped the 14:40 run a held-back script was waiting for.
 # It only writes to Vercel Blob, never to the repo. Free: Gemini free tier, Kokoro fallback.
 # Two jobs, so Gemini's log is readable as soon as it ends: "gemini" makes the episode; "kokoro" runs only if it failed,
 # voicing the same script (handed over as an artifact) with the open-source Kokoro; never on a forced redo, which
