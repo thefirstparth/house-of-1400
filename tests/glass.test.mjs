@@ -38,10 +38,12 @@ test("every rule in v2/glass.css is scoped under html.look-glass", () => {
 test("the build appends glass.css to /v2.css, after v2's own rules", () => {
   const { css } = assemble();
   const glass = readFileSync(root + "v2/glass.css", "utf8");
-  assert.ok(css.endsWith(glass), "glass.css closes /v2.css");
+  // (27 Nov 2026) the new look on trial follows it: its stylesheets close /v2.css, all under html.look-trial
+  const trial = ["v2/trial.css", "v2/trial-money.css", "v2/trial-bets.css", "v2/trial-sky.css", "v2/trial-sport.css"].map(f => readFileSync(root + f, "utf8")).join("\n");
+  assert.ok(css.endsWith(glass + "\n" + trial), "glass.css, then the trial's stylesheets, close /v2.css");
   assert.ok(css.indexOf(readFileSync(root + "v2/v2.css", "utf8")) < css.indexOf(glass));
   // nothing in /v2.css mentions the look except glass.css itself
-  assert.equal(css.slice(0, css.length - glass.length).includes("look-glass"), false);
+  assert.equal(css.slice(0, css.length - glass.length - trial.length - 1).includes("look-glass"), false);
 });
 
 test("the switch: /?glass turns the look on and the device remembers it, ?glass=off turns it off, ?v1 still wins", () => {
@@ -51,8 +53,9 @@ test("the switch: /?glass turns the look on and the device remembers it, ?glass=
   assert.match(out, /h1400-look/);
   assert.match(out, /look-glass/);
   // it runs last in the head, after the saved Night/Day choice, so the look's one theme wins
-  const glass = out.match(/<script>(\(function\(\)\{var q=location\.search,k="h1400-look"[\s\S]*?)<\/script>\n<\/head>/);
-  assert.ok(glass, "the glass script sits just before </head>");
+  // (27 Nov 2026) only the trial's switch, which also needs the look's one theme, comes after it
+  const glass = out.match(/<script>(\(function\(\)\{var q=location\.search,k="h1400-look"[\s\S]*?)<\/script>\n<script>\(function\(\)\{var q=location\.search,k="h1400-trial"[\s\S]*?<\/script>\n<\/head>/);
+  assert.ok(glass, "the glass script, then the trial's, sit just before </head>");
   assert.ok(out.indexOf('localStorage.getItem("h1400-theme")') < out.indexOf("h1400-look"));
   const run = (search, { v2 = true, stored = null } = {}) => {
     const store = new Map(stored ? [["h1400-look", stored]] : []), classes = new Set(), attrs = {}, preload = [];

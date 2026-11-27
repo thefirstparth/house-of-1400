@@ -12,9 +12,14 @@ import { SPORTAPP, SPORTAPP_CACHE } from "../../lib/sportapp.js";
 import { POOL, POOL_CACHE } from "../../lib/pool.js";
 import { TV, TV_CACHE } from "../../lib/tv.js";
 import { WXAPP, WXAPP_CACHE } from "../../lib/wxapp.js";
+// the new look on trial (/?trial, 27 Nov 2026): its own feeds
+import { LOOK_MONEY, LOOK_MONEY_CACHE } from "../../lib/look-money.js";
+import { LOOK_BETS, LOOK_BETS_CACHE } from "../../lib/look-bets.js";
+import { LOOK_SKY, LOOK_SKY_CACHE } from "../../lib/look-sky.js";
+import { LOOK_SPORT, LOOK_SPORT_CACHE } from "../../lib/look-sport.js";
 
 // The paper's keys, The Ledger's extra blocks (lib/money.js), Madridismo's competitions (lib/football.js), the odds on every followed match (lib/odds.js), Bengaluru's rain gauges (lib/rain.js), the TV launcher's lines (lib/tv.js), the weather app's feed (lib/wxapp.js) and the trial's keys (lib/trial.js).
-const LIVE = { ...PAPER, ...MONEY, ...CREASE, ...FOOTBALL, ...ODDS, ...RAIN, ...IMD, ...OPENAQ, ...OFFDUTY, ...SPORTAPP, ...POOL, ...TV, ...WXAPP, ...TRIAL }, CACHE = { ...PAPER_CACHE, ...MONEY_CACHE, ...CREASE_CACHE, ...FOOTBALL_CACHE, ...ODDS_CACHE, ...RAIN_CACHE, ...IMD_CACHE, ...OPENAQ_CACHE, ...OFFDUTY_CACHE, ...SPORTAPP_CACHE, ...POOL_CACHE, ...TV_CACHE, ...WXAPP_CACHE, ...TRIAL_CACHE };
+const LIVE = { ...PAPER, ...MONEY, ...CREASE, ...FOOTBALL, ...ODDS, ...RAIN, ...IMD, ...OPENAQ, ...OFFDUTY, ...SPORTAPP, ...POOL, ...TV, ...WXAPP, ...TRIAL, ...LOOK_MONEY, ...LOOK_BETS, ...LOOK_SKY, ...LOOK_SPORT }, CACHE = { ...PAPER_CACHE, ...MONEY_CACHE, ...CREASE_CACHE, ...FOOTBALL_CACHE, ...ODDS_CACHE, ...RAIN_CACHE, ...IMD_CACHE, ...OPENAQ_CACHE, ...OFFDUTY_CACHE, ...SPORTAPP_CACHE, ...POOL_CACHE, ...TV_CACHE, ...WXAPP_CACHE, ...TRIAL_CACHE, ...LOOK_MONEY_CACHE, ...LOOK_BETS_CACHE, ...LOOK_SKY_CACHE, ...LOOK_SPORT_CACHE };
 
 // GET /api/live/<key>. Returns {ok, value, source, as_of, stale}.
 export async function GET(request) {

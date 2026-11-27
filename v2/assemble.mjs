@@ -26,12 +26,24 @@ export const FONTS = () => [
   ...[400, 600, 700, 900].map(w => face("Titillium Web", `titillium-web-latin-${w}-normal.woff2`, { weight: String(w) })),
   // the record's face: the lead story's time-and-place stamp (3 Oct 2026, after Fern), and nothing else
   face("IBM Plex Mono", "ibm-plex-mono-latin-500-normal.woff2", { weight: "500" }),
+  // the new look on trial (/?trial, 27 Nov 2026): labels, figures and the masthead's words
+  face("Schibsted Grotesk", "schibsted-grotesk-latin-wght-normal.woff2", { weight: "400 900" }),
+  face("Schibsted Grotesk", "schibsted-grotesk-latin-ext-wght-normal.woff2", { weight: "400 900", range: EXT }),
+  face("Schibsted Grotesk", "schibsted-grotesk-latin-wght-italic.woff2", { weight: "400 900", style: "italic" }),
 ].join("\n");
+
+// The new look on trial (/?trial, 27 Nov 2026): the registry and the modules, the stylesheets, and the outlets' logos
+// stored with the paper (public/logos, scripts/logos.mjs)
+const TRIAL_JS = ["v2/trial.js", "v2/trial-money.js", "v2/trial-bets.js", "v2/trial-sky.js", "v2/trial-sport.js"];
+const TRIAL_CSS = ["v2/trial.css", "v2/trial-money.css", "v2/trial-bets.css", "v2/trial-sky.css", "v2/trial-sport.css"];
+function trialLogos() { try { return JSON.stringify(JSON.parse(read("public/logos/index.json"))); } catch { return "{}"; } }
 
 export function assemble({ app = read("public/app.js"), styles = read("public/styles.css") } = {}) {
   let js = app;
   const rep = (a, b) => { if (!js.includes(a)) throw new Error("v2: app.js anchor missing: " + a.slice(0, 80)); js = js.replace(a, () => b); };
-  const layer = `const GLYPHS = ${read("v2/glyphs.json").trim()};\n` + read("v2/sun.js") + "\n" + read("v2/layer.js") + "\n" + read("v2/sheet.js") + "\n" + read("v2/ink.js").replace(/^export /gm, "") + "\n" + read("v2/wordmark.js").replace(/^export /gm, "");
+  const layer = `const GLYPHS = ${read("v2/glyphs.json").trim()};\n` + read("v2/sun.js") + "\n" + read("v2/layer.js") + "\n" + read("v2/sheet.js") + "\n" + read("v2/ink.js").replace(/^export /gm, "") + "\n" + read("v2/wordmark.js").replace(/^export /gm, "")
+    // the new look on trial (/?trial, 27 Nov 2026): its registry, then its modules; each draws only under html.look-trial
+    + "\n" + `const TRIAL_LOGOS = ${trialLogos()};\n` + TRIAL_JS.map(read).join("\n");
   rep("function render() {", layer + "\nfunction render() {");
   // the desks: v2's own (config desks_v2), one desk to a page
   rep("function desksHTML(S) {", "function desksHTML_v1(S) {");
@@ -78,7 +90,10 @@ export function assemble({ app = read("public/app.js"), styles = read("public/st
   // a brief and "Also in" sit beside the section's stories (h3), under its h2: read as level 3, so no level is skipped
   rep("newFor(b)}<h4>${esc(b.headline)}</h4>", 'newFor(b)}<h4 role="heading" aria-level="3">${esc(b.headline)}</h4>');
   rep('<div class="alsoin"><h4>Also in', '<div class="alsoin"><h4 role="heading" aria-level="3">Also in');
-  rep("  paintSignals();\n", "  paintSignals(); paintJump(); liveFx(); flowAgenda(); paintMarks(); headingOrder();\n");
+  rep("  paintSignals();\n", "  paintSignals(); paintJump(); liveFx(); flowAgenda(); paintMarks(); headingOrder(); trialPaint();\n");
+  // the trial's blocks stand in for the live blocks they redraw, and its own feeds load with the paper's
+  rep("betting: bettingBlock };\n  for (const [k, fn] of Object.entries(map)) {", "betting: bettingBlock };\n  if (trialOn()) Object.assign(map, TRIAL_BLOCKS);\n  for (const [k, fn] of Object.entries(map)) {");
+  rep("  await Promise.all(jobs);\n  liveTried = true;", "  if (trialOn()) for (const [k, q] of TRIAL_KEYS) jobs.push(live(k, q || \"\").then(paintSoon));\n  await Promise.all(jobs);\n  liveTried = true;");
   // Page One fits one screen and desk pages fill the width, with their masthead and tabs (layer.js, fitOne, fitDesk)
   rep("function fitMonitor() {", "function fitMonitor() {\n  return E && DESK.id === \"one\" ? fitOne() : fitDesk();");
   rep("  render();\n  loadArt();", "  render();\n  loadArt(); showDesk(DESK.id); followSun(); dthemeLabel(); hereBoot();");
@@ -97,7 +112,9 @@ export function assemble({ app = read("public/app.js"), styles = read("public/st
   const css = styles.replace(/border-radius:([^;}]+)/g, (m, v) => "border-radius:" + v.replace(/(\d+(?:\.\d+)?)px/g, (x, n) => (Number(n) >= 99 ? "3px" : Number(n) > 4 ? "4px" : x)))
     + "\n" + FONTS() + "\n" + read("v2/v2.css")
     // the Glass look (Direction 10, behind ?glass from 20 Oct 2026): every rule scoped under html.look-glass
-    + "\n" + read("v2/glass.css");
+    + "\n" + read("v2/glass.css")
+    // the new look on trial: every rule under html.look-trial
+    + "\n" + TRIAL_CSS.map(read).join("\n");
   return { js, css, head: read("v2/head.html") };
 }
 
@@ -113,7 +130,7 @@ export function withV2(html, head, js, css, home = null) {
   return html
     .replace("</title>\n", () => `</title>\n${decide}\n${home ? night(home) : ""}`)
     .replace(v1head, () => `<script>document.write(window.H1400V2?${tag(`<link rel="stylesheet" href="${css}">`)}:${tag(v1head)})</script>`)
-    .replace("</head>\n", () => `${GLASS}\n</head>\n`)
+    .replace("</head>\n", () => `${GLASS}\n${TRIAL}\n</head>\n`)
     .replace("<body>\n", () => `<body>\n<script>if(window.H1400V2)document.write(${tag(head)})</script>\n`)
     .replace(app[0], () => `<script>document.write(window.H1400V2?${tag(`<script type="module" src="${js}"></script>`)}:${tag(app[0])})</script>`);
 }
@@ -124,6 +141,11 @@ export function withV2(html, head, js, css, home = null) {
 // html gets the class look-glass (v2/glass.css scopes every rule under it) and data-theme="light", before first paint,
 // and the browser's bar takes the look's ground (#e3e0d9, as the installed app's manifest has it).
 const GLASS = `<script>(function(){var q=location.search,k="h1400-look",m=q.match(/[?&]glass(?:=([^&]*))?(?:&|$)/),off=!!m&&/^(off|0|no|false)$/i.test(m[1]||""),G=!!m&&!off;try{if(off)localStorage.removeItem(k);else if(m)localStorage.setItem(k,"glass");G=localStorage.getItem(k)==="glass"}catch(e){}if(window.H1400V2&&G){var r=document.documentElement;r.classList.add("look-glass");r.setAttribute("data-theme","light");var t=document.querySelectorAll?document.querySelectorAll('meta[name="theme-color"]'):[];for(var i=0;i<t.length;i++)t[i].setAttribute("content","#e3e0d9");["unifrakturmaguntia-latin-400-normal","libre-franklin-latin-wght-normal"].forEach(function(f){var l=document.createElement("link");l.rel="preload";l.as="font";l.type="font/woff2";l.crossOrigin="anonymous";l.href="/fonts/"+f+".woff2";document.head.appendChild(l)})}})()</script>`;
+
+// The new look on trial (Parth, 27 Nov 2026: "don't make it live yet; first show me how today's newspaper would look"):
+// /?trial turns it on and this device remembers it (h1400-trial), /?trial=off turns it off, and ?v1 still wins. It is
+// built on the Glass look, so it adds look-glass as well as look-trial, and it is light only (Parth: no dark themes).
+const TRIAL = `<script>(function(){var q=location.search,k="h1400-trial",m=q.match(/[?&]trial(?:=([^&]*))?(?:&|$)/),off=!!m&&/^(off|0|no|false)$/i.test(m[1]||""),T=!!m&&!off;try{if(off)localStorage.removeItem(k);else if(m)localStorage.setItem(k,"on");T=localStorage.getItem(k)==="on"}catch(e){}if(window.H1400V2&&T){var r=document.documentElement;r.classList.add("look-glass","look-trial");r.setAttribute("data-theme","light");var t=document.querySelectorAll?document.querySelectorAll('meta[name="theme-color"]'):[];for(var i=0;i<t.length;i++)t[i].setAttribute("content","#e3e0d9");["schibsted-grotesk-latin-wght-normal","newsreader-latin-opsz-normal"].forEach(function(f){var l=document.createElement("link");l.rel="preload";l.as="font";l.type="font/woff2";l.crossOrigin="anonymous";l.href="/fonts/"+f+".woff2";document.head.appendChild(l)})}})()</script>`;
 
 // Night by the sun (Parth, 2 Oct: "auto-dark at night, chosen before the page appears"): before the first paint, a v2
 // page with no theme chosen on this device takes day or night from the home city's sunrise and sunset. A choice made

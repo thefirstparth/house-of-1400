@@ -1,0 +1,31 @@
+// The outlets' small logos for the new look on trial (Parth, 27 Nov 2026: "the source under the news with a logo"):
+// node scripts/logos.mjs. Every outlet the editions have cited since a date, plus the regular wires, saved once as
+// public/logos/<domain>.png (64 px, from Google's favicon service) and listed in public/logos/index.json. Stored with
+// the paper, so a reader's browser never asks another site for an image. An outlet with no real icon (the service's
+// default globe) is left out and the page draws its initials instead.
+import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { createHash } from "node:crypto";
+const H = new URL("../", import.meta.url).pathname, OUT = `${H}public/logos/`, SINCE = process.argv[2] || "2026-10-01";
+const WIRES = ["reuters.com", "apnews.com", "bloomberg.com", "cnbc.com", "ft.com", "wsj.com", "nytimes.com", "washingtonpost.com", "scroll.in", "thewire.in", "news18.com", "firstpost.com", "livelaw.in", "thequint.com", "wionews.com", "skysports.com", "autosport.com", "marca.com", "as.com", "realmadrid.com", "nba.com", "atptour.com", "variety.com", "hollywoodreporter.com", "deadline.com", "engadget.com", "wired.com", "9to5mac.com", "anthropic.com", "openai.com", "sebi.gov.in", "rbi.org.in", "pib.gov.in"];
+mkdirSync(OUT, { recursive: true });
+const seen = new Map();
+for (const f of readdirSync(`${H}content/editions`).filter(f => f >= SINCE && f.endsWith(".json"))) {
+  const walk = o => { if (Array.isArray(o)) return o.forEach(walk); if (o && typeof o === "object") { for (const s of Array.isArray(o.sources) ? o.sources : []) { try { const h = new URL(s.url).hostname.replace(/^www\./, ""); seen.set(h, (seen.get(h) || 0) + 1); } catch {} } Object.values(o).forEach(walk); } };
+  const E = JSON.parse(readFileSync(`${H}content/editions/${f}`, "utf8")); walk(E.front); walk(E.sections);
+}
+for (const w of WIRES) if (!seen.has(w)) seen.set(w, 0);
+const got = {}, hashes = {};
+for (const host of seen.keys()) {
+  try {
+    const r = await fetch(`https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=64`, { redirect: "follow", signal: AbortSignal.timeout(10000) });
+    if (!r.ok) continue;
+    const b = Buffer.from(await r.arrayBuffer()), h = createHash("sha1").update(b).digest("hex");
+    (hashes[h] ||= []).push(host); got[host] = b;
+  } catch {}
+}
+// the service's default globe comes back for many hosts with the same bytes: those hosts have no icon of their own
+const globe = new Set(Object.values(hashes).filter(a => a.length >= 4).flat());
+const index = {};
+for (const [host, b] of Object.entries(got)) { if (globe.has(host) || b.length < 120) continue; writeFileSync(`${OUT}${host}.png`, b); index[host] = 1; }
+writeFileSync(`${OUT}index.json`, JSON.stringify(index, null, 0) + "\n");
+console.log(`logos: ${Object.keys(index).length} saved, ${globe.size} without an icon of their own, of ${seen.size} outlets`);
