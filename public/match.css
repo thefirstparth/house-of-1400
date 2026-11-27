@@ -59,6 +59,7 @@ h1 span{font-weight:500;color:var(--muted)}
 .sv b{font:800 28px/1 var(--sans)}
 .bar{display:flex;gap:3px;height:6px}
 .bar i{display:block;border-radius:3px;min-width:3px}
+.momw svg rect{shape-rendering:crispEdges}
 
 /* momentum */
 .mom{margin:0 0 14px}
@@ -67,12 +68,15 @@ h1 span{font-weight:500;color:var(--muted)}
 .momw .base{stroke:var(--ink2);stroke-width:1;vector-effect:non-scaling-stroke}
 .momw .guides line{stroke:var(--rule2);stroke-width:1;vector-effect:non-scaling-stroke}
 .momw .guides line.ht{stroke:var(--rule);stroke-dasharray:3 3}
+.momw .gm{position:absolute;width:14px;height:14px;margin-left:-7px;border-radius:50%;border:2px solid var(--sheet);box-sizing:border-box}
+.momw .gm.h{top:5px;background:var(--home)}
+.momw .gm.a{top:calc(100% - 22px - 19px);background:var(--away)}
 .ticks{position:absolute;left:0;right:0;bottom:0;height:18px;font:500 12px/18px var(--sans);color:var(--muted)}
 .ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
 .ticks span:first-child{transform:none}
 .legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin:8px 0 0;font:500 13px/1.3 var(--sans);color:var(--ink2)}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
-.legend i.g{border-radius:50%;background:var(--sheet);box-shadow:inset 0 0 0 2px var(--ink2)}
+.legend i.g{border-radius:50%;background:var(--ink2)}
 
 /* goals and cards, commentary */
 .pair{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:14px;align-items:start}

@@ -56,7 +56,7 @@ ${row("FII", F.fii, F.fii_buy, F.fii_sell)}${row("DII", F.dii, F.dii_buy, F.dii_
 function mpRates() {
   const R = LIVE.look_rates?.value || {};
   const h = (R.policy || []).map(mpPolicy).join("") + mpYield(R.us10y) + mpFlows();
-  return h ? `<div class="mp-row mp-rates">${h}</div>` : "";
+  return h ? `<h4 class="mp-h">Rates and who's buying</h4><div class="mp-row mp-rates">${h}</div>` : "";
 }
 
 // ----- row 2: the indices and the mood
@@ -98,7 +98,7 @@ const mpWeekendShut = () => { const d = new Date(), wd = d.getUTCDay(), h = d.ge
 function mpCommodity({ name, unit, price, change_pct, spark, from, to, foot, wide = false, extra = "" }) {
   if (!(price > 0) && typeof price !== "string") return "";
   return `<div class="mp-card mp-co${wide ? " mp-wide" : ""}"><div class="mp-top"><div><h5 class="mp-n">${esc(name)}</h5><span class="mp-u">${esc(unit)}</span></div>${mpPill(change_pct)}</div>
-<div class="mp-big">${price}</div>${extra}${mpSpark(spark, { h: wide ? 46 : 36, from, to })}${foot ? `<p class="mp-asof">${foot}</p>` : ""}</div>`;
+<div class="mp-big">${price}</div>${extra}${mpSpark(spark, { h: 36, from, to })}${foot ? `<p class="mp-asof">${foot}</p>` : ""}</div>`;
 }
 function mpCommodities(M) {
   const G = LIVE.gold_in?.value, C = LIVE.look_commodities?.value?.items || [], X = s => M?.cross?.find(q => q.symbol === s);
@@ -106,7 +106,7 @@ function mpCommodities(M) {
   const cross = (s, name, unit, price) => { const q = X(s); if (!q || !(q.price > 0)) return ""; return mpCommodity({ name, unit, price: price(q), change_pct: q.change_pct, spark: q.spark30, foot: s !== "BTC-USD" && mpWeekendShut() ? `Closed, ${esc(mpDay(q.session_date))}` : "" }); };
   const gd = G?.rate_date?.split("/"), gday = gd?.length === 3 ? `${gd[2]}-${gd[1]}-${gd[0]}` : null;
   const gold = G?.per_10g_24k > 0 ? mpCommodity({ name: "Gold", unit: "₹ per 10 g, 24K", price: `₹${inr(G.per_10g_24k)}`, change_pct: G.change_pct, spark: G.spark?.slice(-22), wide: true,
-    extra: G.per_10g_22k > 0 ? `<p class="mp-sub">22K ₹${inr(G.per_10g_22k)}</p>` : "", foot: gday ? `IBJA rate, ${esc(mpDay(gday))}` : "" }) : "";
+    foot: [G.per_10g_22k > 0 && `22K ₹${inr(G.per_10g_22k)}`, gday && `IBJA rate, ${esc(mpDay(gday))}`].filter(Boolean).join(" · ") }) : "";
   const h = gold + fut("silver")
     + cross("BZ=F", "Brent crude", "$ per barrel", q => `$${q.price.toFixed(2)}`)
     + fut("natgas") + fut("copper")
@@ -126,7 +126,7 @@ function mpSources(M) {
   const R = LIVE.look_rates?.value || {}, pol = (R.policy || []).filter(p => Date.parse(p.next_at) > Date.now());
   const lev = [...new Set([...(M?.indices || []), ...(M?.cross || [])].map(q => q.source || "Yahoo Finance"))].join(" and ") || "Yahoo Finance";
   return aboutFig([
-    pol.length && `Policy rates from the central banks' own releases (${pol.map(p => `${esc(p.short)}: ${esc(p.source)}, set ${esc(mpDate(p.set_on))}`).join("; ")}), checked by hand; each card hides once its next decision is due until it is checked again.`,
+    pol.length && `Policy rates from the central banks' own releases (${pol.map(p => `${esc(p.short)}: ${esc(p.source)}, last decision ${esc(mpDate(p.set_on))}`).join("; ")}), checked by hand; each card hides once its next decision is due until it is checked again.`,
     R.us10y && `US 10-year yield: ${R.us10y.source === "US Treasury" ? "the US Treasury's daily par yield" : "Yahoo Finance (^TNX), else the US Treasury's daily par yield"}; the change is in percentage points.`,
     LIVE.flows?.value?.day && `Who's buying: NSE's provisional cash-market figures (${esc(LIVE.flows.value.day.scope || "NSE")}); the bar is the day's buying against its selling.`,
     `Indices, Brent, the rupee and Bitcoin: ${esc(lev)}. 7D and 1M as NSE publishes them; † where no source we can reach publishes the figure, it is worked out from daily closes. The lines are a month of daily closes; the dotted line is where the month began.`,

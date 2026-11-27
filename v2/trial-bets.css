@@ -1,1 +1,152 @@
-/* The trial's bets module: every rule under html.look-trial */
+/* ---------- (4) the betting cards: a trend line, the change in 24 hours, the outcomes in one bar (v2/trial-bets.js).
+   Every rule under html.look-trial. Forecasts stay inside a dashed frame, set apart from the facts. ---------- */
+html.look-trial{--tb-c0:#2b5aa0;--tb-c1:#d36a2b;--tb-c2:#8e5bc4}
+
+/* the small pieces */
+html.look-trial .tb-chg{display:inline-flex;align-items:baseline;gap:4px;font:600 12px/1.2 var(--sans);letter-spacing:.02em;color:var(--ink2);white-space:nowrap;font-variant-numeric:tabular-nums}
+html.look-trial .tb-chg b{font-size:9.5px;font-weight:700}
+html.look-trial .tb-chg.up b{color:var(--good)}
+html.look-trial .tb-chg.dn b{color:var(--bad)}
+html.look-trial .tb-chg em{font-style:normal;font-weight:500;color:var(--muted)}
+html.look-trial .tb-sp{position:relative;display:block;width:96px;height:30px;flex:none}
+html.look-trial .tb-sp svg{display:block;width:100%;height:100%;overflow:visible}
+html.look-trial .tb-sp polyline{fill:none;stroke:var(--c);stroke-width:1.75px;stroke-linejoin:round;stroke-linecap:round}
+html.look-trial .tb-sp i{position:absolute;right:-3px;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:var(--c);box-shadow:0 0 0 2px var(--sheet)}
+html.look-trial .tb-bar{display:flex;gap:2px;height:6px;border-radius:3px;overflow:hidden;background:var(--g-track)}
+html.look-trial .tb-bar i{display:block;height:100%;flex:none}
+html.look-trial .tb-bar i:last-child{border-radius:0 3px 3px 0}
+
+/* ---------- the Betting Window: cards in a dashed frame ---------- */
+html.look-trial #main #betting [data-live="betting"]>.tb-grid{background:none;padding:16px;border:1px dashed color-mix(in srgb,var(--ink) 30%,transparent);border-radius:var(--g-r)}
+html.look-trial .tb-grid{list-style:none;margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+html.look-trial .tb-cell{min-width:0;display:flex}
+html.look-trial .tb-cell.lead{grid-column:span var(--s3,1)}
+html.look-trial .tb-card{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;padding:16px 18px 14px;background:var(--sheet);border-radius:var(--g-r);cursor:pointer;
+  box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 1px 2px rgba(40,30,15,.06);transition:box-shadow .15s,transform .15s}
+@media (hover:hover){html.look-trial .tb-card:hover{box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 10px 24px -14px rgba(40,30,15,.35)}
+  html.look-trial .tb-card:hover .tb-q{text-decoration:underline;text-decoration-color:var(--d-news);text-decoration-thickness:2px;text-underline-offset:4px}}
+html.look-trial .tb-card:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+html.look-trial .tb-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;min-height:16px}
+html.look-trial .tb-cat{font:700 11px/1.2 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--d-news);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html.look-trial .tb-q{margin:0;font:500 18px/1.28 var(--hl);font-optical-sizing:auto;color:var(--ink);text-wrap:pretty}
+html.look-trial .tb-mid{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-top:auto;padding-top:2px}
+html.look-trial .tb-fig{display:flex;flex-direction:column;gap:3px;min-width:0}
+html.look-trial .tb-fig b{font:800 40px/.9 var(--sans);letter-spacing:-.04em;color:var(--ink);font-variant-numeric:tabular-nums}
+html.look-trial .tb-fig b small{font-size:.5em;font-weight:700;letter-spacing:0;margin-left:1px}
+html.look-trial .tb-fig span{font:600 13.5px/1.25 var(--sans);color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html.look-trial .tb-mid .tb-sp{width:min(44%,150px);height:40px;margin-bottom:6px}
+html.look-trial .tb-leg{display:flex;flex-wrap:nowrap;gap:4px 14px;margin:-2px 0 0;overflow:hidden;font:500 12.5px/1.3 var(--sans);color:var(--ink2);white-space:nowrap}
+html.look-trial .tb-leg span{display:inline-flex;align-items:center;gap:5px;min-width:0;flex:0 1 auto}
+html.look-trial .tb-leg em{font-style:normal;min-width:0;overflow:hidden;text-overflow:ellipsis}
+html.look-trial .tb-leg b{flex:none}
+html.look-trial .tb-leg i,html.look-trial .tb-key i,html.look-trial .tb-field .n i,html.look-trial .tb-tip i{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none}
+html.look-trial .tb-leg i.r,html.look-trial .tb-field .n i.r{background:var(--rule)}
+html.look-trial .tb-leg b{color:var(--ink);font-weight:700}
+html.look-trial :is(.tb-q,.tb-leg,.tb-src,.tb-asof,.tb-mv,.tb-lab){max-width:none}
+html.look-trial .tb-src{margin:0;padding-top:8px;border-top:1px solid var(--rule2);font:500 12px/1.3 var(--sans);color:var(--muted)}
+/* the lead card: a larger figure and a longer line */
+html.look-trial .tb-cell.lead .tb-q{font-size:22px}
+html.look-trial .tb-cell.lead .tb-fig b{font-size:52px}
+html.look-trial .tb-cell.lead .tb-mid .tb-sp{width:min(60%,420px);height:56px}
+html.look-trial .tb-asof{margin-top:12px}
+@media (max-width:1099px){
+  html.look-trial .tb-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html.look-trial .tb-cell.lead{grid-column:span var(--s2,1)}
+}
+@media (max-width:640px){
+  html.look-trial #main #betting [data-live="betting"]>.tb-grid{padding:10px}
+  html.look-trial .tb-grid{grid-template-columns:minmax(0,1fr);gap:10px}
+  html.look-trial .tb-cell.lead{grid-column:auto}
+  html.look-trial .tb-card{padding:13px 14px 11px;gap:8px}
+  html.look-trial .tb-q{font-size:17px}
+  html.look-trial .tb-fig b{font-size:34px}
+  html.look-trial .tb-mid .tb-sp{height:34px;margin-bottom:4px}
+  html.look-trial .tb-src{padding-top:7px}
+  html.look-trial .tb-cell.lead .tb-q{font-size:19px}
+  html.look-trial .tb-cell.lead .tb-fig b{font-size:44px}
+  html.look-trial .tb-cell.lead .tb-mid .tb-sp{width:50%;height:44px}
+}
+
+/* ---------- Page One, "The market expects": the figure, the name and its change, the week's line, one bar ---------- */
+html.look-trial .p1 ol.bets li{display:block}
+html.look-trial .p1 ol.bets button.bet.tb-p1{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto auto auto;column-gap:12px;row-gap:3px;align-items:end;width:100%;text-align:left}
+html.look-trial .p1 ol.bets .tb-p1 .t{grid-column:2/4;grid-row:1;margin:0}
+html.look-trial .p1 ol.bets .tb-p1 .tb-pc{grid-column:1;grid-row:1/3;align-self:end;font:800 30px/1 var(--sans);letter-spacing:-.035em;color:var(--ink);font-variant-numeric:tabular-nums}
+html.look-trial .p1 ol.bets .tb-p1 .tb-nm{grid-column:2;grid-row:2;display:flex;align-items:baseline;gap:8px;min-width:0;font:600 14px/1.2 var(--sans);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html.look-trial .p1 ol.bets .tb-p1 .tb-sp{grid-column:3;grid-row:2;width:72px;height:22px;align-self:center}
+html.look-trial .p1 ol.bets .tb-p1 .tb-bar{grid-column:1/-1;grid-row:3;height:4px;margin-top:5px}
+@media (max-width:1180px) and (min-width:861px){html.look-trial .p1 ol.bets .tb-p1 .tb-sp{width:56px}}
+
+/* ---------- the market's view in a sport desk: the line and the change, as a button that opens the market ---------- */
+html.look-trial #main .signal{grid-template-columns:auto 1fr auto auto}
+html.look-trial #main .signal .sg-src{grid-column:4}
+html.look-trial .tb-sg{grid-column:3;grid-row:1;display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:4px 10px;margin:-4px 0;border:0;border-radius:var(--g-r2);background:none;color:inherit;font:inherit;cursor:pointer}
+html.look-trial .tb-sg:hover{background:rgba(21,20,17,.05)}
+html.look-trial .tb-sg:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+html.look-trial .tb-sg .tb-sp{width:88px;height:26px}
+@media (max-width:720px){
+  html.look-trial #main .signal{grid-template-columns:minmax(0,1fr)}
+  html.look-trial #main .signal .sg-src,html.look-trial .tb-sg{grid-column:auto;grid-row:auto}
+  html.look-trial .tb-sg{justify-content:flex-start;margin:0 0 0 -10px}
+}
+
+/* ---------- the sheet: the favourite, the front-runners over time, the headlines around the moves, the field ---------- */
+html.look-trial .tb-panel{width:min(860px,calc(100vw - 48px))}
+html.look-trial .tb-sheet{display:flex;flex-direction:column;gap:22px;margin:0 0 16px}
+html.look-trial .tb-lab{margin:0;font:700 11px/1.2 var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+html.look-trial .tb-hero{display:flex;align-items:center;gap:16px;margin-top:-4px}
+html.look-trial .tb-hero>b{font:800 60px/.9 var(--sans);letter-spacing:-.045em;font-variant-numeric:tabular-nums}
+html.look-trial .tb-hero>div{display:flex;flex-direction:column;gap:6px;min-width:0}
+html.look-trial .tb-hn{font:600 19px/1.2 var(--sans);color:var(--ink)}
+html.look-trial .tb-hc{display:flex;flex-wrap:wrap;gap:4px 16px}
+html.look-trial .tb-hc .tb-chg{font-size:13px}
+html.look-trial .tb-chart{border:1px dashed color-mix(in srgb,var(--ink) 30%,transparent);border-radius:var(--g-r2);padding:14px 14px 8px}
+html.look-trial .tb-ch-h{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+html.look-trial .tb-rng{display:inline-flex;gap:2px;padding:2px;border-radius:999px;background:rgba(21,20,17,.06)}
+html.look-trial .tb-rng button{min-width:44px;min-height:32px;padding:0 10px;border:0;border-radius:999px;background:none;font:600 12.5px/1 var(--sans);color:var(--ink2);cursor:pointer}
+html.look-trial .tb-rng button[aria-pressed="true"]{background:var(--sheet);color:var(--ink);box-shadow:0 1px 2px rgba(40,30,15,.18)}
+html.look-trial .tb-rng button:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+html.look-trial .tb-key{list-style:none;display:flex;flex-wrap:wrap;gap:4px 18px;margin:12px 0 4px;padding:0;font:500 13px/1.3 var(--sans);color:var(--ink2)}
+html.look-trial .tb-key li{display:inline-flex;align-items:center;gap:6px}
+html.look-trial .tb-key b{color:var(--ink)}
+html.look-trial .tb-plot{position:relative;min-height:190px;touch-action:pan-y}
+html.look-trial .tb-plot svg{display:block;max-width:100%}
+html.look-trial .tb-plot .tb-g{stroke:var(--rule2);stroke-width:1}
+html.look-trial .tb-plot text{font:500 11px var(--sans);fill:var(--muted);font-variant-numeric:tabular-nums}
+html.look-trial .tb-plot .tb-yl{text-anchor:end}
+html.look-trial .tb-plot .tb-xl{text-anchor:middle}
+html.look-trial .tb-plot .tb-el{font-weight:700;fill:var(--ink)}
+html.look-trial .tb-plot .tb-ln{fill:none;stroke-width:2px;stroke-linejoin:round;stroke-linecap:round}
+html.look-trial .tb-plot .tb-ed{stroke:var(--sheet);stroke-width:2px}
+html.look-trial .tb-plot .tb-ml{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 3}
+html.look-trial .tb-plot .tb-mc{fill:var(--sheet);stroke:var(--ink);stroke-width:1.5}
+html.look-trial .tb-plot .tb-mt{font:700 11px var(--sans);fill:var(--ink);text-anchor:middle}
+html.look-trial .tb-plot .tb-xh{stroke:var(--ink2);stroke-width:1}
+html.look-trial .tb-plot .tb-hit{fill:transparent;cursor:crosshair}
+html.look-trial .tb-tip{position:absolute;top:8px;display:flex;flex-direction:column;gap:3px;padding:8px 10px;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--g-r2);box-shadow:0 8px 20px -10px rgba(40,30,15,.35);font:500 12.5px/1.3 var(--sans);color:var(--ink2);pointer-events:none;white-space:nowrap}
+html.look-trial .tb-tip>b{color:var(--ink);font-weight:600}
+html.look-trial .tb-tip span{display:flex;align-items:center;gap:6px}
+html.look-trial .tb-tip span b{margin-left:auto;padding-left:10px;color:var(--ink)}
+html.look-trial .tb-why ol{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:14px}
+html.look-trial .tb-mv{display:flex;align-items:flex-start;gap:10px;margin:0 0 6px;font:600 13px/1.4 var(--sans);color:var(--ink)}
+html.look-trial .tb-mv .tb-chg{font-size:13px}
+html.look-trial .tb-n{display:inline-grid;place-items:center;flex:none;width:20px;height:20px;border:1.5px solid var(--ink);border-radius:50%;font:700 11px/1 var(--sans);margin-top:-1px}
+html.look-trial .tb-why ul{list-style:none;margin:0 0 0 30px;padding:0;border-left:2px solid var(--rule2)}
+html.look-trial .tb-why ul li{display:flex;flex-direction:column;gap:3px;padding:7px 0 7px 14px}
+html.look-trial .tb-why ul a{font:500 16.5px/1.35 var(--hl);color:var(--ink);text-decoration:none}
+html.look-trial .tb-why ul a:hover{text-decoration:underline;text-decoration-color:var(--d-news);text-decoration-thickness:2px;text-underline-offset:3px}
+html.look-trial .tb-why ul small{font:500 12px/1.3 var(--sans);color:var(--muted)}
+html.look-trial .tb-field .vs-outs{margin:10px 0 0}
+html.look-trial .tb-field .vs-outs .n{display:inline-flex;align-items:center;gap:8px}
+html.look-trial .tb-field .vs-outs b{font-weight:800;font-variant-numeric:tabular-nums}
+html.look-trial .tb-field .vs-outs .bar{height:6px;border-radius:3px;background:var(--g-track)}
+html.look-trial .tb-field .vs-outs small{color:var(--ink2)}
+@media (max-width:720px){
+  html.look-trial .tb-panel{width:auto}
+  html.look-trial .tb-hero>b{font-size:48px}
+  html.look-trial .tb-hn{font-size:17px}
+  html.look-trial .tb-chart{padding:12px 10px 6px}
+  html.look-trial .tb-why ul{margin-left:9px}
+  html.look-trial .tb-why ul a{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){html.look-trial .tb-card{transition:none}}

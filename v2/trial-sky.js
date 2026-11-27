@@ -79,7 +79,7 @@ function tskPart(p, now) {
   const has = Number.isFinite(p.rain);
   const val = has ? `${p.rain}<small>%</small>` : esc(tskWord(p.code, night) || "");
   const word = has ? tskRainWord(p.rain) : p.rain_mm != null ? (p.rain_mm >= 0.2 ? `About ${p.rain_mm} mm of rain` : "Dry") : "";
-  return `<div class="tsk-p${has && p.rain >= 60 ? " wet" : ""}">${has ? `<i class="tsk-pbar" aria-hidden="true"><i style="height:${Math.max(4, p.rain)}%"></i></i>` : ""}<div class="tsk-pb"><p class="tsk-pl"><b>${esc(p.label)}</b>${tskIcon(p.code, night, 22)}</p><p class="tsk-pt">${underway ? `Now to ${esc(p.to)}` : `${esc(p.from)} to ${esc(p.to)}`}</p>${val ? `<p class="tsk-pv">${val}</p>` : ""}${word ? `<p class="tsk-pw">${esc(word)}</p>` : ""}<p class="tsk-pr">${esc(tskRange(p.tmin, p.tmax))}</p></div></div>`;
+  return `<div class="tsk-p${has && p.rain >= 60 ? " wet" : ""}">${has ? `<i class="tsk-pbar" aria-hidden="true"><i style="height:${Math.max(4, p.rain)}%"></i></i>` : ""}<div class="tsk-pb"><p class="tsk-pl"><b>${esc(p.label)}</b>${tskIcon(p.code, night, 22)}</p><p class="tsk-pt">${underway ? `Now to ${esc(p.to)}` : `${p.key !== "tonight" && istDate(new Date(tskP(p.start))) > istDate() ? "Tomorrow, " : ""}${esc(p.from)} to ${esc(p.to)}`}</p>${val ? `<p class="tsk-pv">${val}</p>` : ""}${word ? `<p class="tsk-pw">${esc(word)}</p>` : ""}<p class="tsk-pr">${esc(tskRange(p.tmin, p.tmax))}</p></div></div>`;
 }
 // today's low to high, with a dot where it is now
 function tskBar(lo, hi, now, compact = false) {
@@ -113,8 +113,8 @@ ${today ? tskBar(today.min, today.max, k.temp) : ""}</div>`;
   if (Number.isFinite(k.humidity)) meters.push(tskMeter("Humidity", Math.round(k.humidity), "%", k.humidity >= 85 ? "Very humid" : k.humidity >= 60 ? "Humid" : k.humidity >= 30 ? "Comfortable" : "Dry", k.humidity / 100));
   const aq = B.air?.now;
   if (Number.isFinite(aq) && aq >= 0) { const [w, tone] = TSK_AIR[aqiCat(aq)[2]] || ["", ""]; meters.push(tskMeter("Air", Math.round(aq), "", w, aq / 300, tone, "US AQI, this hour")); }
-  if (peak) meters.push(tskMeter("Rain", peak.rain, "%", peak.rain >= 15 ? `Peak, ${tskWhen(peak, td).replace(/^this /, "")}` : "Dry ahead", peak.rain / 100, "rain"));
-  else if (Number.isFinite(today?.rain_prob)) meters.push(tskMeter("Rain", Math.round(today.rain_prob), "%", "Today", today.rain_prob / 100, "rain"));
+  if (peak) meters.push(tskMeter("Rain", peak.rain, "%", peak.rain >= 15 ? `Peak, ${tskWhen(peak, td).replace(/^this /, "")}` : "Dry ahead", peak.rain / 100, "tsk-wet"));
+  else if (Number.isFinite(today?.rain_prob)) meters.push(tskMeter("Rain", Math.round(today.rain_prob), "%", "Today", today.rain_prob / 100, "tsk-wet"));
   const arc = tskArc(B, today, now);
   if (arc || meters.length) h += `<div class="tsk-side">${arc}${meters.length ? `<div class="tsk-meters">${meters.join("")}</div>` : ""}</div>`;
   h += `</div>`;

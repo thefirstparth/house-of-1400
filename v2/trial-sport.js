@@ -111,13 +111,28 @@ const tspCrest = (id, logo, name, size = 44) => {
   const src = logo && /^https:\/\/a\.espncdn\.com\//.test(logo) ? `https://a.espncdn.com/combiner/i?img=${encodeURIComponent(new URL(logo).pathname)}&h=96&w=96` : id ? `https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/${encodeURIComponent(id)}.png&h=96&w=96` : "";
   return src ? `<img class="tsp-crest" src="${esc(src)}" width="${size}" height="${size}" alt="${esc(name ? `${name} crest` : "")}" loading="lazy" decoding="async">` : "";
 };
-const tspScorers = list => (list?.length ? `<p class="tsp-scr">${list.map(s => `${esc(lastName(s.who || ""))} ${esc(String(s.minute || "").replace(/'$/, "’").replace(/'/g, "’"))}${s.pen ? " pen" : ""}${s.og ? " og" : ""}`).join(", ")}</p>` : "");
+// "Mbappé 64’, 84’"; a surname alone, unless the name ends in Júnior, Filho or the like (Vinícius Júnior stays whole)
+const tspWho = n => { const w = String(n || "").trim().split(/\s+/); return w.length > 1 && /^(j[uú]nior|jr\.?|filho|neto|sobrinho)$/i.test(w.at(-1)) ? w.join(" ") : w.at(-1) || ""; };
+function tspScorers(list) {
+  if (!list?.length) return "";
+  const by = new Map();
+  for (const s of list) { const k = tspWho(s.who) + (s.og ? " og" : ""); (by.get(k) || by.set(k, []).get(k)).push(String(s.minute || "").replace(/'/g, "’") + (s.pen ? " pen" : "")); }
+  return `<p class="tsp-scr">${[...by].map(([k, ms]) => `${esc(k.replace(/ og$/, ""))} ${esc(ms.join(", "))}${k.endsWith(" og") ? " og" : ""}`).join("; ")}</p>`;
+}
+// three of the match's figures under the score, when ESPN has them: possession, shots, on target
+function tspLastStats(st, homeIsUs = true) {
+  const [ch, ca] = homeIsUs ? [TSP_US, TSP_THEM] : [TSP_THEM, TSP_US];
+  const pick = ["possessionPct", "totalShots", "shotsOnTarget"].map(k => (st || []).find(s => s.key === k)).filter(Boolean);
+  if (pick.length < 2) return "";
+  return `<div class="tsp-ls">${pick.map(s => { const t = s.home + s.away, f = t ? s.home / t : 0.5, [vh, va] = s.key === "possessionPct" ? [`${Math.round(s.home)}%`, `${100 - Math.round(s.home)}%`] : [s.home, s.away];
+    return `<div><div class="l">${esc(s.label)}</div><div class="v"><span>${vh}</span><span>${va}</span></div><div class="b" aria-hidden="true"><i style="flex:${f.toFixed(3)};background:${ch}"></i><i style="flex:${(1 - f).toFixed(3)};background:${ca}"></i></div></div>`; }).join("")}</div>`;
+}
 function tspLastResult() {
   const club = CFG.follows.football_club, M = LIVE.look_last_match?.value, F = LIVE.football?.value?.last;
   let m = null;
   // ours, unless the paper's feed knows a newer result (then the paper's, which has no scorers)
   const ours = M?.teams?.length === 2 && M.status?.completed && M.teams.every(t => t.score != null) && !(F?.date && M.date && Date.parse(M.date) < Date.parse(F.date));
-  if (ours) m = { id: M.id, slug: M.league?.slug, comp: M.league?.name, date: M.date, teams: M.teams };
+  if (ours) m = { id: M.id, slug: M.league?.slug, comp: M.league?.name, date: M.date, teams: M.teams, stats: M.stats };
   else if (F?.id && F.score?.us != null && F.score?.them != null && !isNaN(Number(F.score.us)) && !isNaN(Number(F.score.them))) {
     const us = { id: String(club.espn_id), name: club.name, score: Number(F.score.us), scorers: null }, them = { id: F.opponent_id, name: F.opponent, score: Number(F.score.them), scorers: null };
     m = { id: F.id, slug: TSP_SLUG[F.competition] || null, comp: F.competition, date: F.date, teams: F.home ? [us, them] : [them, us] };
@@ -126,7 +141,7 @@ function tspLastResult() {
   const [h, a] = m.teams, link = `/match?e=${encodeURIComponent(m.id)}&l=${encodeURIComponent(m.slug || "all")}`;
   const side = (t, right) => `<div class="tsp-side${right ? " r" : ""}">${tspCrest(t.id, t.logo, t.name)}<div><b class="tsp-team">${esc(t.short || t.name)}</b>${tspScorers(t.scorers)}</div></div>`;
   return `<div class="tsp-card tsp-last"><div class="tsp-lh"><div class="tsp-k">Last result <span>${esc([m.date ? tspDay(m.date) : "", m.comp].filter(Boolean).join(" · "))}</span></div><a class="tsp-mc" href="${esc(link)}">Match centre <span aria-hidden="true">›</span></a></div>
-<div class="tsp-res">${side(h)}<div class="tsp-sc"><b class="tnum">${h.score}<i>–</i>${a.score}</b><small>Full time</small></div>${side(a, true)}</div></div>`;
+<div class="tsp-res">${side(h)}<div class="tsp-sc"><b class="tnum">${h.score}<i>–</i>${a.score}</b><small>Full time</small></div>${side(a, true)}</div>${tspLastStats(m.stats, String(h.id) === String(club.espn_id))}</div>`;
 }
 
 // ---------- (7) the Title Race card: points after each league match, two lines ----------
@@ -145,24 +160,25 @@ function tspTitleRace() {
   const same = us.played === them.played;
   const games = same ? `both after ${us.played} games` : `${us.short} after ${us.played}, ${them.short} after ${them.played}`;
   const line = lead ? `<b class="tnum">+${gap}</b> <span>${esc(lead.short)} on ${esc(trail.short)}, ${esc(games)}</span>` : `<b>Level</b> <span>on ${us.points} points, ${esc(games)}</span>`;
-  // the chart: x is the match number (0 to the most played), y the points, both lines start at 0
-  const W = 560, H = 210, L = 8, Rr = 76, Tp = 12, B = 26, n = Math.max(us.series.length, them.series.length), top = Math.max(us.points, them.points, 3);
-  const yMax = Math.ceil(top / 10) * 10 || 10;
-  const x = i => L + i * (W - L - Rr) / n, y = v => Tp + (1 - v / yMax) * (H - Tp - B);
-  const path = s => [0, ...s].map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join("");
-  const grid = [];
-  for (let v = 0; v <= yMax; v += yMax > 40 ? 20 : 10) grid.push(`<line x1="${L}" x2="${W - Rr}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/><text class="gy" x="${W - Rr + 6}" y="${(y(v) + 4).toFixed(1)}">${v}</text>`);
-  // end labels, kept apart when the two totals are close
+  // the chart: x is the match number (0 to the most played), y the points, both lines from 0. The lines are drawn in an
+  // SVG stretched to the box; the labels are HTML on top, so they stay legible at any width.
+  const W = 100, H = 100, n = Math.max(us.series.length, them.series.length), top = Math.max(us.points, them.points, 3);
+  const step = top > 40 ? 20 : 10, yMax = Math.ceil(top / step) * step;
+  const x = i => i * W / n, y = v => H - v / yMax * H;
+  const path = s => [0, ...s].map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(2)} ${y(v).toFixed(2)}`).join("");
+  const grid = [], ylab = [];
+  for (let v = 0; v <= yMax; v += step) { grid.push(`<line x1="0" x2="${W}" y1="${y(v).toFixed(2)}" y2="${y(v).toFixed(2)}"/>`); ylab.push(`<span class="gy" style="top:${y(v).toFixed(2)}%">${v}</span>`); }
+  // end labels at the lines' ends, kept apart when the two totals are close (in % of the box height)
   let yu = y(us.points), yt = y(them.points);
-  if (Math.abs(yu - yt) < 16) { const mid = (yu + yt) / 2, up = us.points >= them.points; yu = mid + (up ? -8 : 8); yt = mid + (up ? 8 : -8); }
-  const pts = (s, col, who) => s.series.map((v, i) => `<circle class="hit" cx="${x(i + 1).toFixed(1)}" cy="${y(v).toFixed(1)}" r="7" fill="transparent"><title>${esc(who)}: ${v} points after ${i + 1} game${i ? "s" : ""}${s.results?.[i] ? ` (${s.results[i]})` : ""}</title></circle>`).join("");
-  const svg = `<svg class="tsp-tr" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`League points after each match: ${us.short} ${us.points} after ${us.played}, ${them.short} ${them.points} after ${them.played}`)}">
-<g class="grid">${grid.join("")}</g><text class="gx" x="${L}" y="${H - 6}">Game 1</text><text class="gx" x="${(W - Rr).toFixed(1)}" y="${H - 6}" text-anchor="end">Game ${n}</text>
-<path d="${path(them.series)}" fill="none" stroke="${TSP_THEM}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-<path d="${path(us.series)}" fill="none" stroke="${TSP_US}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-<text class="el" x="${(x(them.series.length) + 8).toFixed(1)}" y="${(yt + 4).toFixed(1)}">${esc(them.abbr || them.short)} ${them.points}</text>
-<text class="el" x="${(x(us.series.length) + 8).toFixed(1)}" y="${(yu + 4).toFixed(1)}">${esc(us.abbr || us.short)} ${us.points}</text>
-${pts(them, TSP_THEM, them.short)}${pts(us, TSP_US, us.short)}</svg>`;
+  if (Math.abs(yu - yt) < 11) { const mid = (yu + yt) / 2, up = us.points >= them.points; yu = mid + (up ? -5.5 : 5.5); yt = mid + (up ? 5.5 : -5.5); }
+  // one hover column per game, naming both totals
+  const cols = Array.from({ length: n }, (_, i) => `<rect x="${(x(i) + x(1) / 2).toFixed(2)}" y="0" width="${x(1).toFixed(2)}" height="${H}" fill="transparent"><title>${esc(`Game ${i + 1}: ${us.short} ${us.series[i] ?? "-"}, ${them.short} ${them.series[i] ?? "-"}`)}</title></rect>`).join("");
+  const svg = `<div class="tsp-trw"><svg class="tsp-tr" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${esc(`League points after each match: ${us.short} ${us.points} after ${us.played}, ${them.short} ${them.points} after ${them.played}`)}">
+<g class="grid">${grid.join("")}</g>
+<path d="${path(them.series)}" fill="none" stroke="${TSP_THEM}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+<path d="${path(us.series)}" fill="none" stroke="${TSP_US}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>${cols}</svg>
+${ylab.join("")}<span class="el" style="top:${yt.toFixed(2)}%">${esc(them.abbr || them.short)} <b class="tnum">${them.points}</b></span><span class="el" style="top:${yu.toFixed(2)}%">${esc(us.abbr || us.short)} <b class="tnum">${us.points}</b></span>
+<span class="gx">Game 1</span><span class="gx r">Game ${n}</span></div>`;
   const key = `<p class="tsp-key"><span><i style="--c:${TSP_US}"></i>${esc(us.short)}</span><span><i style="--c:${TSP_THEM}"></i>${esc(them.short)}</span></p>`;
   const nx = R.next, next = nx?.date ? `<p class="tsp-next"><b>Next:</b> ${nx.home ? "v" : "at"} ${esc(nx.opponent)}, ${nx.time_confirmed ? `${esc(tspDay(nx.date))}, ${esc(tspTime(nx.date))} IST` : `${esc(tspDay(nx.date))}, time TBC`}</p>` : "";
   return `<div class="tsp-card tsp-race"><div class="tsp-k">Title race <span>${esc(R.league || "La Liga")} points after each match</span></div><p class="tsp-gap">${crest(lead?.id || us.id, "")}${line}</p>${svg}${key}${next}</div>`;

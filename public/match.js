@@ -13,8 +13,7 @@
   const TZ = "Asia/Kolkata";
   const day = iso => new Date(iso).toLocaleString("en-GB", { timeZone: TZ, weekday: "short", day: "numeric", month: "short" }).replace(/,/g, "").replace(/\bSept\b/, "Sep");
   const time = iso => new Date(iso).toLocaleString("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false });
-  const last = n => String(n || "").split(" ").pop();
-  const HOME = "#a9400c", AWAY = "#2e6da4"; // the Sport desk's orange and a blue, checked for colour-blind separation
+    const HOME = "#a9400c", AWAY = "#2e6da4"; // the Sport desk's orange and a blue, checked for colour-blind separation
 
   const q = new URLSearchParams(location.search);
   const e = String(q.get("e") || ""), l = String(q.get("l") || "all").toLowerCase();
@@ -26,7 +25,14 @@
     const src = `https://a.espncdn.com/combiner/i?img=${encodeURIComponent(new URL(t.logo).pathname)}&h=${size * 2}&w=${size * 2}`;
     return `<img class="crest" src="${esc(src)}" width="${size}" height="${size}" alt="${esc(t.name)} crest" decoding="async">`;
   };
-  const scorers = t => (t.scorers?.length ? `<p class="scr">${t.scorers.map(s => `${esc(last(s.who))} ${esc(min(s.minute))}${s.pen ? " pen" : ""}${s.og ? " og" : ""}`).join(", ")}</p>` : "");
+  // "Mbappé 64’, 84’"; a surname alone, unless the name ends in Júnior, Filho or the like (Vinícius Júnior stays whole)
+  const who = n => { const w = String(n || "").trim().split(/\s+/); return w.length > 1 && /^(j[uú]nior|jr\.?|filho|neto|sobrinho)$/i.test(w[w.length - 1]) ? w.join(" ") : w[w.length - 1] || ""; };
+  const scorers = t => {
+    if (!t.scorers?.length) return "";
+    const by = new Map();
+    for (const s of t.scorers) { const k = who(s.who) + (s.og ? " og" : ""); if (!by.has(k)) by.set(k, []); by.get(k).push(min(s.minute) + (s.pen ? " pen" : "")); }
+    return `<p class="scr">${[...by].map(([k, ms]) => `${esc(k.replace(/ og$/, ""))} ${esc(ms.join(", "))}${k.endsWith(" og") ? " og" : ""}`).join("; ")}</p>`;
+  };
   const status = m => {
     const s = m.status || {};
     if (s.state === "in") return `<span class="live"><i></i>Live${s.detail ? ` · ${esc(min(s.detail))}` : ""}</span>`;
@@ -46,12 +52,14 @@
   }
 
   const fmtStat = (k, v) => (k === "possessionPct" ? `${Math.round(v)}` : v.toLocaleString("en-IN"));
+  // possession as two whole numbers that add up to 100 (61.5 and 38.5 read 62 and 38)
+  const pair = s => (s.key === "possessionPct" ? [Math.round(s.home), 100 - Math.round(s.home)] : [s.home, s.away]);
   function stats(m) {
     if (!m.stats?.length) return "";
     return `<section class="stats" aria-label="Match stats">${m.stats.map(s => {
-      const tot = s.home + s.away, f = tot ? s.home / tot : 0.5;
-      return `<div class="card stat"><div class="sl">${esc(s.label)}${s.key === "possessionPct" ? " %" : ""}</div><div class="sv"><b class="tnum">${esc(fmtStat(s.key, s.home))}</b><b class="tnum">${esc(fmtStat(s.key, s.away))}</b></div>
-<div class="bar" role="img" aria-label="${esc(`${s.label}: ${m.teams[0].short} ${fmtStat(s.key, s.home)}, ${m.teams[1].short} ${fmtStat(s.key, s.away)}`)}"><i style="flex:${f.toFixed(3)};background:${HOME}"></i><i style="flex:${(1 - f).toFixed(3)};background:${AWAY}"></i></div></div>`;
+      const tot = s.home + s.away, f = tot ? s.home / tot : 0.5, [vh, va] = pair(s);
+      return `<div class="card stat"><div class="sl">${esc(s.label)}${s.key === "possessionPct" ? " %" : ""}</div><div class="sv"><b class="tnum">${esc(fmtStat(s.key, vh))}</b><b class="tnum">${esc(fmtStat(s.key, va))}</b></div>
+<div class="bar" role="img" aria-label="${esc(`${s.label}: ${m.teams[0].short} ${fmtStat(s.key, vh)}, ${m.teams[1].short} ${fmtStat(s.key, va)}`)}"><i style="flex:${f.toFixed(3)};background:${HOME}"></i><i style="flex:${(1 - f).toFixed(3)};background:${AWAY}"></i></div></div>`;
     }).join("")}</section>`;
   }
 
@@ -65,13 +73,13 @@
     const bars = M.buckets.map((b, i) => {
       const x0 = padX + i * bw + 1.5, w = Math.max(2, bw - 3), hh = b.home * unit, ah = b.away * unit;
       const tip = `${b.from}’ to ${b.from + M.step}’: ${m.teams[0].short} ${b.home}, ${m.teams[1].short} ${b.away}`;
-      return `<g><title>${esc(tip)}</title><rect x="${x0.toFixed(1)}" y="${(mid - 1 - hh).toFixed(1)}" width="${w.toFixed(1)}" height="${hh.toFixed(1)}" rx="${hh ? 3 : 0}" fill="${HOME}"/><rect x="${x0.toFixed(1)}" y="${mid + 1}" width="${w.toFixed(1)}" height="${ah.toFixed(1)}" rx="${ah ? 3 : 0}" fill="${AWAY}"/><rect x="${(padX + i * bw).toFixed(1)}" y="0" width="${bw.toFixed(1)}" height="${H}" fill="transparent"/></g>`;
+      return `<g><title>${esc(tip)}</title><rect x="${x0.toFixed(1)}" y="${(mid - 1 - hh).toFixed(1)}" width="${w.toFixed(1)}" height="${hh.toFixed(1)}"  fill="${HOME}"/><rect x="${x0.toFixed(1)}" y="${mid + 1}" width="${w.toFixed(1)}" height="${ah.toFixed(1)}"  fill="${AWAY}"/><rect x="${(padX + i * bw).toFixed(1)}" y="0" width="${bw.toFixed(1)}" height="${H}" fill="transparent"/></g>`;
     }).join("");
-    const goals = (M.goals || []).map(g => `<g><title>${esc(`Goal, ${g.who || m.teams[g.side].short}, ${g.m}’`)}</title><circle cx="${x(g.m + 0.5).toFixed(1)}" cy="${g.side ? H - 12 : 12}" r="7" fill="${g.side ? AWAY : HOME}" stroke="var(--sheet)" stroke-width="2"/></g>`).join("");
+    const goals = (M.goals || []).map(g => `<span class="gm ${g.side ? "a" : "h"}" style="left:${(x(g.m + 0.5) / W * 100).toFixed(2)}%" title="${esc(`Goal, ${g.who || m.teams[g.side].short}, ${g.m}’`)}"></span>`).join("");
     const ticks = [0, 15, 30, 45, 60, 75, 90, ...(M.end > 95 ? [105, 120].filter(t => t <= M.end) : [])].map(t => `<span style="left:${(x(t) / W * 100).toFixed(2)}%">${t === 45 ? "HT" : `${t}’`}</span>`).join("");
     const guides = [15, 30, 45, 60, 75, 90].filter(t => t < M.end).map(t => `<line x1="${x(t).toFixed(1)}" x2="${x(t).toFixed(1)}" y1="20" y2="${H - 20}" class="${t === 45 ? "ht" : ""}"/>`).join("");
     return `<section class="card mom" aria-label="Momentum"><div class="k">Momentum <span>Shots and corners, every ${M.step} minutes</span></div>
-<div class="momw"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${esc(`Shots and corners by five minutes: ${m.teams[0].short} above the line, ${m.teams[1].short} below; goals marked`)}"><g class="guides">${guides}</g><line class="base" x1="0" x2="${W}" y1="${mid}" y2="${mid}"/>${bars}${goals}</svg><div class="ticks" aria-hidden="true">${ticks}</div></div>
+<div class="momw"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${esc(`Shots and corners by five minutes: ${m.teams[0].short} above the line, ${m.teams[1].short} below; goals marked`)}"><g class="guides">${guides}</g><line class="base" x1="0" x2="${W}" y1="${mid}" y2="${mid}"/>${bars}</svg>${goals}<div class="ticks" aria-hidden="true">${ticks}</div></div>
 <p class="legend"><span><i style="background:${HOME}"></i>${esc(m.teams[0].short)}</span><span><i style="background:${AWAY}"></i>${esc(m.teams[1].short)}</span><span><i class="g"></i>Goal</span></p></section>`;
   }
 

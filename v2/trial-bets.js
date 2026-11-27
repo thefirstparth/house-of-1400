@@ -87,12 +87,13 @@ function tbChange(H, M) {
   if (was != null && Math.abs(M.fav.prob - was) >= (CFG.betting?.carry?.min_move_pts || 5)) return { d: M.fav.prob - was, txt: "since press" };
   return null;
 }
-const tbChg = (c, short) => (c ? `<span class="tb-chg ${c.d > 0 ? "up" : "dn"}"><b>${c.d > 0 ? "▲" : "▼"}</b> ${Math.abs(Math.round(c.d))}${short ? "" : " pts"}${short ? "" : ` <em>${c.txt}</em>`}</span>` : "");
+const tbPts = d => (Math.abs(Math.round(d)) === 1 ? "pt" : "pts");
+const tbChg = (c, short) => (c ? `<span class="tb-chg ${c.d > 0 ? "up" : "dn"}"><b>${c.d > 0 ? "▲" : "▼"}</b> ${Math.abs(Math.round(c.d))}${short ? "" : ` ${tbPts(c.d)}`}${short ? "" : ` <em>${c.txt}</em>`}</span>` : "");
 function tbBar(M) {
   if (M.yesNo || M.isLadder) return `<span class="tb-bar" aria-hidden="true"><i style="width:${tbW(M.fav.prob)}%;background:${tbCol(M, M.fav.name)}"></i></span>`;
   return `<span class="tb-bar" aria-hidden="true">${M.outs.map(o => `<i style="width:${tbW(o.prob)}%;background:${tbCol(M, o.name)}"></i>`).join("")}</span>`;
 }
-const tbLegend = M => (M.yesNo ? "" : M.outs.filter(o => o !== M.fav).map(o => `<span><i style="background:${tbCol(M, o.name)}"></i>${esc(tbLabel(M, o))} <b class="tnum">${Math.round(o.prob)}%</b></span>`).join("") + (M.rest >= 1 ? `<span><i class="r"></i>Others <b class="tnum">${Math.round(M.rest)}%</b></span>` : ""));
+const tbLegend = M => (M.yesNo ? "" : M.outs.filter(o => o !== M.fav).map(o => `<span><i style="background:${tbCol(M, o.name)}"></i><em>${esc(tbLabel(M, o))}</em><b class="tnum">${Math.round(o.prob)}%</b></span>`).join("") + (M.rest >= 1 ? `<span><i class="r"></i><em>Others</em><b class="tnum">${Math.round(M.rest)}%</b></span>` : ""));
 
 // ---------------------------------------------------------------- the Betting Window, as cards
 // The first card spans what is left of its row, so the grid ends on a full row at three columns and at two.
@@ -152,8 +153,8 @@ function tbSheet(id) {
   const chart = named.length ? `<div class="tb-chart"><div class="tb-ch-h"><span class="tb-lab">The front-runners over time</span><span class="tb-rng" role="group" aria-label="Time range">${[["d", "1D"], ["w", "1W"], ["m", "1M"]].map(([k, l]) => `<button type="button" data-tbr="${k}" aria-pressed="${TB.range === k}">${l}</button>`).join("")}</span></div>
 <ul class="tb-key">${named.map(o => `<li><i style="background:${tbCol(M, o.name)}"></i>${esc(tbLabel(M, o))} <b class="tnum">${Math.round(o.prob)}%</b></li>`).join("")}</ul><div class="tb-plot" data-tbplot="${esc(M.id)}"></div></div>` : "";
   const moves = (H?.moves || []).filter(m => m.heads?.length);
-  const why = moves.length ? `<div class="tb-why"><p class="tb-lab">Headlines around the move${moves.length > 1 ? "s" : ""}</p><ol>${[...moves].reverse().map(m => `<li><p class="tb-mv"><span class="tb-n" aria-label="Move ${m.n}">${m.n}</span><span>${esc(tbIST(m.at * 1000, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }))} IST · ${esc(M.yesNo ? "Yes" : outcomeLabel(m.name))} <span class="tb-chg ${m.pts > 0 ? "up" : "dn"}"><b>${m.pts > 0 ? "▲" : "▼"}</b> ${Math.abs(m.pts)} pts</span> within a day, ${Math.round(m.from)}% to ${Math.round(m.to)}%</span></p>
-<ul>${m.heads.map(h => `<li><a href="${esc(h.url)}" target="_blank" rel="noopener">${esc(h.title)}</a><small>${esc(h.source || "")}${h.source ? " · " : ""}${esc(tbAgo(h.at))}</small></li>`).join("")}</ul></li>`).join("")}</ol></div>` : "";
+  const why = moves.length ? `<div class="tb-why"><p class="tb-lab">Headlines around the move${moves.length > 1 ? "s" : ""}</p><ol>${[...moves].reverse().map(m => `<li><p class="tb-mv"><span class="tb-n" aria-label="Move ${m.n}">${m.n}</span><span>${esc(tbIST(m.at * 1000, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }))} IST · ${esc(M.yesNo ? "Yes" : outcomeLabel(m.name))} <span class="tb-chg ${m.pts > 0 ? "up" : "dn"}"><b>${m.pts > 0 ? "▲" : "▼"}</b> ${Math.abs(m.pts)} ${tbPts(m.pts)}</span> within a day, ${Math.round(m.from)}% to ${Math.round(m.to)}%</span></p>
+<ul>${m.heads.slice(0, moves.length > 1 ? 2 : 3).map(h => `<li><a href="${esc(h.url)}" target="_blank" rel="noopener">${esc(h.title)}</a><small>${esc(h.source || "")}${h.source ? " · " : ""}${esc(tbAgo(h.at))}</small></li>`).join("")}</ul></li>`).join("")}</ol></div>` : "";
   const field = `<div class="tb-field"><p class="tb-lab">The field</p><ol class="vs-outs">${M.outs.map(o => {
     const p = M.press?.[o.name], d = p != null ? o.prob - p : 0, h = tbHo(H, o.name);
     const notes = [h?.d24 != null && Math.abs(h.d24) >= 1 ? `${h.d24 > 0 ? "▲" : "▼"} ${Math.abs(Math.round(h.d24))} in 24h` : "", Math.abs(d) >= 1 ? `${d > 0 ? "▲" : "▼"} ${Math.abs(Math.round(d))} since press (${Math.round(p)}%)` : ""].filter(Boolean).join(" · ");
@@ -208,8 +209,8 @@ function tbDraw(el, H, M, range) {
   el.innerHTML = `<svg width="${W}" height="${Ht}" viewBox="0 0 ${W} ${Ht}" role="img" aria-label="${esc(`${M.full || M.title}: ${ser.map(s => `${tbLabel(M, s.o)} ${Math.round(s.pts[0][1])}% to ${Math.round(s.pts.at(-1)[1])}%`).join("; ")}`)}">
 ${ticks.map(v => `<line class="tb-g" x1="${L}" x2="${W - R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/><text class="tb-yl" x="${L - 6}" y="${(y(v) + 4).toFixed(1)}">${v}%</text>`).join("")}
 ${xt.map(t => `<text class="tb-xl" x="${x(t).toFixed(1)}" y="${Ht - 7}">${esc(xl(t))}</text>`).join("")}
-${marks}
 ${[...ser].reverse().map(s => `<path class="tb-ln" d="${path(s)}" stroke="${tbCol(M, s.o.name)}"/>`).join("")}
+${marks}
 ${ends.map(e => `<circle class="tb-ed" cx="${x(e.s.pts.at(-1)[0]).toFixed(1)}" cy="${y(e.v).toFixed(1)}" r="3.5" fill="${tbCol(M, e.s.o.name)}"/><text class="tb-el" x="${W - R + 8}" y="${(e.y + 4).toFixed(1)}">${Math.round(e.v)}%</text>`).join("")}
 <line class="tb-xh" x1="0" x2="0" y1="${T}" y2="${Ht - B}" visibility="hidden"/><rect class="tb-hit" x="${L}" y="0" width="${W - L - R}" height="${Ht}"/></svg><div class="tb-tip" hidden></div>`;
   const svg = el.querySelector("svg"), xh = svg.querySelector(".tb-xh"), tip = el.querySelector(".tb-tip");

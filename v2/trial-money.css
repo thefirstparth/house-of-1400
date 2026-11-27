@@ -4,6 +4,7 @@ html.look-trial #main #ledger>[data-live="ledger"]:not(:empty){background:none;p
 html.look-trial #main #ledger>[data-live="ledgerx"]:empty{display:none}
 html.look-trial .mp{--mp-gap:12px;display:flex;flex-direction:column;gap:var(--mp-gap);font-family:"Schibsted Grotesk",var(--sans);font-variant-numeric:tabular-nums}
 html.look-trial .mp-row{display:grid;gap:var(--mp-gap);min-width:0}
+html.look-trial #main .mp-h:first-child{margin-top:0}
 html.look-trial #main .mp-h{margin:14px 0 -2px;font:600 13px/1.3 "Schibsted Grotesk",var(--sans);letter-spacing:.01em;color:var(--ink2)}
 html.look-trial .mp-card{min-width:0;box-sizing:border-box;background:var(--g-card);border-radius:var(--g-r);padding:14px 16px 13px;display:flex;flex-direction:column}
 html.look-trial .mp-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;min-width:0}
@@ -33,7 +34,7 @@ html.look-trial .mp-pill.dn{color:var(--bad);background:color-mix(in srgb,var(--
 html.look-trial .mp-pill.dn::before{border-top:6px solid currentColor}
 
 /* a month's line */
-html.look-trial .mp-spark{position:relative;margin:8px 4px 0 0}
+html.look-trial .mp-spark{position:relative;flex:none;margin:8px 4px 0 0}
 html.look-trial .mp-spark svg{display:block;width:100%;height:100%;overflow:visible}
 html.look-trial .mp-line{fill:none;stroke:var(--c);stroke-width:1.75;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
 html.look-trial .mp-area{fill:var(--c);opacity:.08}
@@ -59,7 +60,7 @@ html.look-trial .mp-key i.dn{background:var(--bad)}
 html.look-trial .mp-ixs{grid-template-columns:repeat(3,minmax(0,1fr))}
 html.look-trial .mp-moods{grid-row:span 2}
 html.look-trial .mp-gg{display:flex;flex-direction:column;justify-content:space-around;gap:12px;flex:1;margin-top:6px}
-html.look-trial .mp-g{display:grid;grid-template-columns:minmax(0,150px) 1fr;grid-template-rows:auto auto 1fr;column-gap:16px;align-items:center}
+html.look-trial .mp-g{display:grid;grid-template-columns:minmax(0,190px) 1fr;grid-template-rows:auto auto 1fr;column-gap:16px;align-items:center}
 html.look-trial .mp-g svg{grid-row:1/4;width:100%;height:auto;display:block}
 html.look-trial .mp-gh .mp-k{margin:0}
 html.look-trial .mp-gs{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
@@ -102,7 +103,7 @@ html.look-trial .mp-wk>summary{cursor:pointer;padding:6px 0}
   html.look-trial .mp-rates>.mp-card{flex-basis:140px}
   html.look-trial .mp-rates>.mp-flows{flex-basis:100%}
   /* two across, the day's pill goes under the name so a long name never squeezes */
-  html.look-trial :is(.mp-ix,.mp-co) .mp-top{flex-direction:column;gap:6px}
+  html.look-trial :is(.mp-ix,.mp-co):not(.mp-wide) .mp-top{flex-direction:column;gap:6px}
   html.look-trial .mp-ix .mp-k{display:none}
   html.look-trial .mp-ixs,html.look-trial .mp-cos{grid-template-columns:repeat(2,minmax(0,1fr))}
   html.look-trial .mp-moods{grid-row:auto;grid-column:1/-1}
