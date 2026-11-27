@@ -39,6 +39,7 @@ html.look-trial .tb-leg{display:flex;flex-wrap:nowrap;gap:4px 14px;margin:-2px 0
 html.look-trial .tb-leg span{display:inline-flex;align-items:center;gap:5px;min-width:0;flex:0 1 auto}
 html.look-trial .tb-leg em{font-style:normal;min-width:0;overflow:hidden;text-overflow:ellipsis}
 html.look-trial .tb-leg b{flex:none}
+html.look-trial .tb-leg span.rest{flex:none}
 html.look-trial .tb-leg i,html.look-trial .tb-key i,html.look-trial .tb-field .n i,html.look-trial .tb-tip i{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none}
 html.look-trial .tb-leg i.r,html.look-trial .tb-field .n i.r{background:var(--rule)}
 html.look-trial .tb-leg b{color:var(--ink);font-weight:700}

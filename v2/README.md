@@ -7,6 +7,9 @@ Live on the real site since 1 Oct 2026; **the default for everyone since 4 Oct 2
 - **v1 is untouched.** `public/app.js` and `public/styles.css` are not changed by v2. The build (`scripts/build.mjs`) assembles `/v2.js` and `/v2.css` from them (`v2/assemble.mjs`), and `index.html` writes either v1's own tags, unchanged, or v2's (tests/v2.test.mjs). If a v2 patch no longer finds its anchor in `app.js` (after a change to the renderer), the build warns and ships v1 alone: the paper never fails to build because of v2.
 - **Same paper, same data:** every section is drawn by the paper's own renderer from the same edition and the same live functions, with the same fallbacks and "as of" lines. Nothing the daily run writes changes.
 
+## The new look on trial (/?trial, 27 Nov 2026)
+Behind /?trial only, on the Glass look, light only (DECISIONS.md, 27 Nov). v2/trial.js is a small registry: a module sets TRIAL_BLOCKS[key] to redraw a live block, pushes [key, query] to TRIAL_KEYS for its own feed, and pushes a function to TRIAL_PAINT to decorate after each paint; assemble.mjs adds the modules after the layer, their stylesheets after glass.css, and the switch after Glass's. Without the class look-trial nothing changes (tests/trial.test.mjs).
+
 ## Files
 - `layer.js` also draws the Fixture List (`fixturesV2`, from 10 Oct: design/fixtures-v3, 3b).
 - `layer.js`: the page around the sections: Page One, the desks (config `desks_v2`), the masthead, tabs, footers, the lead in its section, The market expects (config `betting.page_one`), Money's 1D and open/closed line, the Fixture List's sport groups.

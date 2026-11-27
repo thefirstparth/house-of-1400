@@ -93,7 +93,7 @@ function tbBar(M) {
   if (M.yesNo || M.isLadder) return `<span class="tb-bar" aria-hidden="true"><i style="width:${tbW(M.fav.prob)}%;background:${tbCol(M, M.fav.name)}"></i></span>`;
   return `<span class="tb-bar" aria-hidden="true">${M.outs.map(o => `<i style="width:${tbW(o.prob)}%;background:${tbCol(M, o.name)}"></i>`).join("")}</span>`;
 }
-const tbLegend = M => (M.yesNo ? "" : M.outs.filter(o => o !== M.fav).map(o => `<span><i style="background:${tbCol(M, o.name)}"></i><em>${esc(tbLabel(M, o))}</em><b class="tnum">${Math.round(o.prob)}%</b></span>`).join("") + (M.rest >= 1 ? `<span><i class="r"></i><em>Others</em><b class="tnum">${Math.round(M.rest)}%</b></span>` : ""));
+const tbLegend = M => (M.yesNo ? "" : M.outs.filter(o => o !== M.fav).map(o => `<span><i style="background:${tbCol(M, o.name)}"></i><em>${esc(tbLabel(M, o))}</em><b class="tnum">${Math.round(o.prob)}%</b></span>`).join("") + (M.rest >= 1 ? `<span class="rest"><i class="r"></i><em>Others</em><b class="tnum">${Math.round(M.rest)}%</b></span>` : ""));
 
 // ---------------------------------------------------------------- the Betting Window, as cards
 // The first card spans what is left of its row, so the grid ends on a full row at three columns and at two.

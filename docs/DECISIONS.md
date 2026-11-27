@@ -1346,3 +1346,28 @@ missing. Both checked against the editions' snapshots of 3-9 Nov.
   when the 26 Nov episode was no longer "today's", so each exited with "already published" and sent nothing. An upgrade
   (and its Telegram message) now covers the day's episode until noon the next day, and the retries run at 13:13 and
   16:17 UTC (about 18:45 and 21:45 IST), off the half-hour when GitHub's queue is busiest.
+
+## The new look, on trial behind /?trial (27 Nov 2026)
+- Parth reviewed the Daily Index (the-daily-index.vercel.app) and listed what he liked; "go with all 13, but don't make
+  it live yet. First, show me how today's newspaper would look in the new format in the new trial, and then I would
+  approve or reject and change." He does not like dark themes, so the trial is light only.
+- /?trial turns it on (the device remembers it; /?trial=off turns it off; ?v1 wins). It sits on the Glass look. Without
+  the switch the paper is exactly as before: every rule is under html.look-trial and every module returns early
+  (tests/trial.test.mjs). Files: v2/trial.js and v2/trial.css (the registry and the paper-wide items), v2/trial-money,
+  -bets, -sky, -sport (.js and .css), lib/look-money, -bets, -sky, -sport (feeds behind /api/live/look_*), public/match.*
+  (the match centre), public/logos (the outlets' icons, scripts/logos.mjs), v2/fonts/schibsted-grotesk-*.
+- The 13: (1) Newsreader for reading and headlines, Schibsted Grotesk for labels and figures; (2) a source line with each
+  outlet's logo, name and the story's date; (3) the headline underlines in the desk's colour on hover; (4) betting cards
+  with a week's line, the 24h change, a stacked bar, and a sheet with a 1D/1W/1M chart, numbered moves and "Headlines
+  around the move" (Google News, never given as the cause); (5) the Sky Report at the top of Sky & Streets (sun arc,
+  meters, the rest of the day from Open-Meteo hourly, Ranchi and Prayagraj rows); (6) the F1 race weekend card (countdown,
+  track map, sessions in IST and local time) and Paddock Chatter (r/formula1; hidden when Reddit refuses, which it does
+  from cloud servers); (7) Madridismo's Last Result card with a Match centre (/match, ESPN) and the Title Race chart
+  (hidden unless its sums match the table); (8) the trends as The Search Bar (English and Hindi rows for India; World
+  follows config trends.world_geos); (9) Money as a Market Pulse (repo rate and Fed funds from a checked table in
+  lib/look-money.js that hides at each next decision until updated, the US 10-year, who's buying, index cards, mood
+  gauges, commodities in their own units; the old table, flows and breadth in a "More" fold); (10) the Week Ahead
+  unchanged; (11) the masthead's words in the grotesque, no blackletter; (12) desk names large in the desk's colour over
+  a thick rule, section names in the grotesque, a larger lead with a drop cap; (13) a reading line in the desk's colour.
+- Open for Parth with the trial: the F1 countdown shows seconds, against the 2 Oct "countdowns to the minute" rule;
+  The Search Bar's languages; whether to keep both the new Ranchi/Prayagraj rows and the old paragraphs in Sky & Streets.
