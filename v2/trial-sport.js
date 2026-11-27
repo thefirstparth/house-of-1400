@@ -127,6 +127,7 @@ function tspLastStats(st, homeIsUs = true) {
   return `<div class="tsp-ls">${pick.map(s => { const t = s.home + s.away, f = t ? s.home / t : 0.5, [vh, va] = s.key === "possessionPct" ? [`${Math.round(s.home)}%`, `${100 - Math.round(s.home)}%`] : [s.home, s.away];
     return `<div><div class="l">${esc(s.label)}</div><div class="v"><span>${vh}</span><span>${va}</span></div><div class="b" aria-hidden="true"><i style="flex:${f.toFixed(3)};background:${ch}"></i><i style="flex:${(1 - f).toFixed(3)};background:${ca}"></i></div></div>`; }).join("")}</div>`;
 }
+const h0 = M => M.teams || [];
 function tspLastResult() {
   const club = CFG.follows.football_club, M = LIVE.look_last_match?.value, F = LIVE.football?.value?.last;
   let m = null;
@@ -138,10 +139,14 @@ function tspLastResult() {
     m = { id: F.id, slug: TSP_SLUG[F.competition] || null, comp: F.competition, date: F.date, teams: F.home ? [us, them] : [them, us] };
   }
   if (!m || !/^\d{5,12}$/.test(String(m.id))) return "";
+  // how it ended, as ESPN says it: after extra time or on penalties, else full time
+  const det = String((ours ? M.status?.detail || M.status?.description : F?.detail) || "");
+  const pens = ours && h0(M).every(t => t.shootout != null) ? ` ${M.teams[0].shootout}–${M.teams[1].shootout}` : "";
+  const end = /pen/i.test(det) ? `On penalties${pens}` : /aet|extra/i.test(det) ? "After extra time" : "Full time";
   const [h, a] = m.teams, link = `/match?e=${encodeURIComponent(m.id)}&l=${encodeURIComponent(m.slug || "all")}`;
   const side = (t, right) => `<div class="tsp-side${right ? " r" : ""}">${tspCrest(t.id, t.logo, t.name)}<div><b class="tsp-team">${esc(t.short || t.name)}</b>${tspScorers(t.scorers)}</div></div>`;
   return `<div class="tsp-card tsp-last"><div class="tsp-lh"><div class="tsp-k">Last result <span>${esc([m.date ? tspDay(m.date) : "", m.comp].filter(Boolean).join(" · "))}</span></div><a class="tsp-mc" href="${esc(link)}">Match centre <span aria-hidden="true">›</span></a></div>
-<div class="tsp-res">${side(h)}<div class="tsp-sc"><b class="tnum">${h.score}<i>–</i>${a.score}</b><small>Full time</small></div>${side(a, true)}</div>${tspLastStats(m.stats, String(h.id) === String(club.espn_id))}</div>`;
+<div class="tsp-res">${side(h)}<div class="tsp-sc"><b class="tnum">${h.score}<i>–</i>${a.score}</b><small>${esc(end)}</small></div>${side(a, true)}</div>${tspLastStats(m.stats, String(h.id) === String(club.espn_id))}</div>`;
 }
 
 // ---------- (7) the Title Race card: points after each league match, two lines ----------

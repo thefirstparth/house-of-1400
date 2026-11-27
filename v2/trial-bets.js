@@ -175,7 +175,8 @@ ${M.url ? `<a class="vs-pri vs-btn" href="${esc(M.url)}" target="_blank" rel="no
   return true;
 }
 
-// The chart: one line per front-runner (the favourite on top), a light grid, the current price at each line's end, the
+// The chart: one line per front-runner (the favourite on top), a light grid, each line's price as the paper prints it
+// (the same figure as the card) at its end, the
 // moves numbered where they happened, and a crosshair that reads every line at the pointer.
 function tbDraw(el, H, M, range) {
   const W = Math.max(260, el.clientWidth || 600), Ht = W < 520 ? 190 : 230, L = 34, R = 44, T = 14, B = 26;
@@ -195,7 +196,9 @@ function tbDraw(el, H, M, range) {
   for (let v = Math.ceil(lo / step) * step; v <= hi; v += step) ticks.push(v);
   const xt = [], dayS = 86400, tick = range === "d" ? 6 * 3600 : range === "w" ? dayS : 7 * dayS;
   const off = 19800; // IST
-  for (let t = Math.ceil((t0 + off) / tick) * tick - off; t <= t1; t += tick) xt.push(t);
+  // as many date labels as fit: one every 64 pixels at the least
+  const every = Math.max(1, Math.ceil(64 / ((tick / (t1 - t0 || 1)) * (W - L - R))));
+  for (let t = Math.ceil((t0 + off) / tick) * tick - off, i = 0; t <= t1; t += tick, i++) if (i % every === 0) xt.push(t);
   const xl = t => tbIST(t * 1000, range === "d" ? { hour: "2-digit", minute: "2-digit" } : { day: "numeric", month: "short" });
   // the current price at each line's end, nudged apart so the labels never overlap
   const ends = ser.map(s => ({ s, v: s.pts.at(-1)[1], y: y(s.pts.at(-1)[1]) })).sort((a, b) => a.y - b.y);
@@ -203,7 +206,8 @@ function tbDraw(el, H, M, range) {
   const path = s => s.pts.map(([t, v], i) => `${i ? "L" : "M"}${x(t).toFixed(1)},${y(v).toFixed(1)}`).join("");
   const marks = (H.moves || []).filter(m => m.at >= t0 && m.at <= t1).map(m => {
     const s = ser.find(s => s.o.name === m.name); if (!s) return "";
-    const p = s.pts.reduce((a, b) => (Math.abs(b[0] - m.at) < Math.abs(a[0] - m.at) ? b : a)), cx = x(p[0]), cy = y(p[1]);
+    // the marker sits halfway up the move, where it happened, whatever the chart's grain
+    const cx = x(m.at), cy = y((m.from + m.to) / 2);
     return `<line class="tb-ml" x1="${cx.toFixed(1)}" x2="${cx.toFixed(1)}" y1="${T}" y2="${Ht - B}"/><circle class="tb-mc" cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="9"/><text class="tb-mt" x="${cx.toFixed(1)}" y="${(cy + 3.6).toFixed(1)}">${m.n}</text>`;
   }).join("");
   el.innerHTML = `<svg width="${W}" height="${Ht}" viewBox="0 0 ${W} ${Ht}" role="img" aria-label="${esc(`${M.full || M.title}: ${ser.map(s => `${tbLabel(M, s.o)} ${Math.round(s.pts[0][1])}% to ${Math.round(s.pts.at(-1)[1])}%`).join("; ")}`)}">
@@ -211,7 +215,7 @@ ${ticks.map(v => `<line class="tb-g" x1="${L}" x2="${W - R}" y1="${y(v).toFixed(
 ${xt.map(t => `<text class="tb-xl" x="${x(t).toFixed(1)}" y="${Ht - 7}">${esc(xl(t))}</text>`).join("")}
 ${[...ser].reverse().map(s => `<path class="tb-ln" d="${path(s)}" stroke="${tbCol(M, s.o.name)}"/>`).join("")}
 ${marks}
-${ends.map(e => `<circle class="tb-ed" cx="${x(e.s.pts.at(-1)[0]).toFixed(1)}" cy="${y(e.v).toFixed(1)}" r="3.5" fill="${tbCol(M, e.s.o.name)}"/><text class="tb-el" x="${W - R + 8}" y="${(e.y + 4).toFixed(1)}">${Math.round(e.v)}%</text>`).join("")}
+${ends.map(e => `<circle class="tb-ed" cx="${x(e.s.pts.at(-1)[0]).toFixed(1)}" cy="${y(e.v).toFixed(1)}" r="3.5" fill="${tbCol(M, e.s.o.name)}"/><text class="tb-el" x="${W - R + 8}" y="${(e.y + 4).toFixed(1)}">${Math.round(e.s.o.prob)}%</text>`).join("")}
 <line class="tb-xh" x1="0" x2="0" y1="${T}" y2="${Ht - B}" visibility="hidden"/><rect class="tb-hit" x="${L}" y="0" width="${W - L - R}" height="${Ht}"/></svg><div class="tb-tip" hidden></div>`;
   const svg = el.querySelector("svg"), xh = svg.querySelector(".tb-xh"), tip = el.querySelector(".tb-tip");
   const move = ev => {

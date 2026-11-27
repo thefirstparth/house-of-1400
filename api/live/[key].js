@@ -33,6 +33,8 @@ export async function GET(request) {
   let [s, swr] = CACHE[key] || [300, 900];
   // No index trading anywhere: the market feed changes slowly (the rupee, oil, Bitcoin), so hold it for 30 minutes.
   if (key === "markets" && out.ok && !(out.value?.indices || []).some(i => i.live)) [s, swr] = [1800, 3600];
+  // the trial's match centre (/match, 27 Nov 2026): a match in play is held for a minute
+  if (key === "look_match" && out.ok && out.value?.status?.state === "in") [s, swr] = [60, 60];
   // A match in play: The Crease's score is held for a minute, not ten (Parth, 1 Oct: "Live now" showed a stale score).
   // ...and from 15 minutes before a start until the match is live or over, so the first ball is not ten minutes late
   if (key === "crease" && out.ok && [out.value?.today, out.value?.next, ...(out.value?.main?.formats || []).flatMap(f => f.matches)].some(m => m && (m.state === "live" || (m.state !== "done" && m.state !== "off" && Date.parse(m.start) - Date.now() < 15 * 6e4 && Date.now() - Date.parse(m.start) < 10 * 36e5)))) [s, swr] = [60, 60];

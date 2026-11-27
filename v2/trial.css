@@ -71,5 +71,4 @@ html:not(.look-trial) #treadline{display:none}
 
 /* Schibsted Grotesk's tabular figures give the comma, point and colon a digit's width ("84 , 329", "14 : 25"), so the
    trial sets figures proportionally everywhere and keeps tabular figures only in columns that line up */
-html.look-trial *:not(td):not(th){font-variant-numeric:lining-nums proportional-nums!important}
-html.look-trial :is(td,th){font-variant-numeric:lining-nums tabular-nums}
+html.look-trial *{font-variant-numeric:lining-nums proportional-nums!important}
