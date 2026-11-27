@@ -1,0 +1,93 @@
+/* The trial's sport module (v2/trial-sport.js): the Race Weekend and Paddock Chatter cards, the Last Result and Title
+   Race cards. Every rule under html.look-trial. */
+html.look-trial .tsp-card{background:var(--g-card);border:1px solid var(--rule2);border-radius:var(--g-r);padding:18px 20px;box-sizing:border-box;min-width:0}
+html.look-trial .tsp-k{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;font:700 12px/1.3 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+html.look-trial .tsp-k>span:not(.watch){font-weight:500;letter-spacing:.01em;text-transform:none;color:var(--muted);font-size:13px}
+html.look-trial .tsp-k .watch{font:500 12px/1.3 var(--sans);letter-spacing:0;text-transform:none;color:var(--muted)}
+
+/* ---------- (6) Race Weekend ---------- */
+html.look-trial .tsp-f1{display:grid;gap:16px;margin:0 0 18px}
+html.look-trial .tsp-rw{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;padding:22px 24px}
+html.look-trial .tsp-rwl{display:flex;flex-direction:column;gap:12px;min-width:0}
+html.look-trial .tsp-rwt{margin:4px 0 0;font:700 clamp(24px,2.6vw,34px)/1.05 var(--sans);letter-spacing:-.01em;color:var(--ink)}
+html.look-trial .tsp-rwp{margin:4px 0 0;font:500 14px/1.3 var(--sans);color:var(--muted)}
+html.look-trial .tsp-track{display:block;width:100%;max-width:420px;max-height:220px;object-fit:contain;margin:4px auto 0}
+html.look-trial .tsp-cd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;max-width:440px}
+html.look-trial .tsp-cdb{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px 8px;border:1px solid var(--rule);border-radius:var(--g-r2);background:var(--paper)}
+html.look-trial .tsp-cdb b{font:800 clamp(26px,2.8vw,36px)/1 var(--sans);font-variant-numeric:tabular-nums;color:var(--ink)}
+html.look-trial .tsp-cdb small{font:600 11px/1.2 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+html.look-trial .tsp-cdl,html.look-trial .tsp-cdlive{margin:0;font:500 13.5px/1.4 var(--sans);color:var(--ink2)}
+html.look-trial .tsp-sess{min-width:0}
+html.look-trial .tsp-sess ul{list-style:none;margin:0;padding:0}
+html.look-trial .tsp-day{margin:14px 0 4px;font:700 12px/1.3 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+html.look-trial .tsp-sess .tsp-k+.tsp-day{margin-top:12px}
+html.look-trial .tsp-s{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:6px 12px;border-radius:var(--g-r2);border-left:3px solid transparent}
+html.look-trial .tsp-s+.tsp-s{box-shadow:0 -1px 0 var(--rule2)}
+html.look-trial .tsp-s.on{background:color-mix(in srgb,var(--d-sport) 9%,var(--g-card));border-left-color:var(--d-sport);box-shadow:none}
+html.look-trial .tsp-s.on+.tsp-s{box-shadow:none}
+html.look-trial .tsp-s.done{color:var(--muted)}
+html.look-trial .tsp-sn{font:600 15px/1.3 var(--sans);color:inherit;min-width:0}
+html.look-trial .tsp-in{margin-left:6px;font:500 13px/1.3 var(--sans);color:var(--d-sport);white-space:nowrap}
+html.look-trial .tsp-done{margin-left:6px;font:500 12px/1 var(--sans);color:var(--muted)}
+html.look-trial .tsp-st{display:flex;flex-direction:column;align-items:flex-end;text-align:right;font-family:var(--sans);white-space:nowrap}
+html.look-trial .tsp-st b{font-weight:600;font-size:15px;color:var(--ink)}
+html.look-trial .tsp-s.done .tsp-st b{color:var(--muted);font-weight:500}
+html.look-trial .tsp-st small{font-size:13px;color:var(--muted)}
+html.look-trial .tsp-note{margin:10px 0 0;font:500 12.5px/1.3 var(--sans);color:var(--muted)}
+html.look-trial .tsp-under{display:grid;gap:16px}
+html.look-trial .tsp-under.two{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+html.look-trial .tsp-facts{padding:4px 2px}
+html.look-trial .tsp-facts p:first-child{margin-top:0}
+
+/* ---------- (6) Paddock Chatter ---------- */
+html.look-trial .tsp-chat ol{list-style:none;margin:10px 0 0;padding:0}
+html.look-trial .tsp-chat li{padding:10px 0;border-top:1px solid var(--rule2)}
+html.look-trial .tsp-chat li:first-child{border-top:0}
+html.look-trial .tsp-chat a{display:block;font:500 15.5px/1.4 var(--sans);color:var(--ink);text-decoration:none}
+html.look-trial .tsp-chat a:hover{text-decoration:underline;text-decoration-color:var(--d-sport);text-decoration-thickness:2px;text-underline-offset:3px}
+html.look-trial .tsp-chat small{display:block;margin-top:3px;font:500 12.5px/1.3 var(--sans);color:var(--muted)}
+
+/* ---------- (7) Madridismo: the Last Result and Title Race cards ---------- */
+html.look-trial .tsp-mad{display:grid;gap:16px;margin:0 0 20px}
+html.look-trial .tsp-mad.two{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:stretch}
+html.look-trial .tsp-lh{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+html.look-trial .tsp-mc{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 16px;border-radius:999px;background:var(--ink);color:var(--sheet);font:600 14px/1 var(--sans);text-decoration:none;white-space:nowrap}
+html.look-trial .tsp-mc:hover{background:var(--d-sport)}
+html.look-trial .tsp-mc:focus-visible{outline:2px solid var(--d-sport);outline-offset:2px}
+html.look-trial .tsp-res{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:16px;margin-top:18px}
+html.look-trial .tsp-side{display:flex;align-items:center;gap:12px;min-width:0}
+html.look-trial .tsp-side.r{flex-direction:row-reverse;text-align:right}
+html.look-trial .tsp-crest{width:44px;height:44px;flex:0 0 44px;object-fit:contain}
+html.look-trial .tsp-team{display:block;font:700 19px/1.15 var(--sans);color:var(--ink);overflow-wrap:anywhere}
+html.look-trial .tsp-scr{margin:4px 0 0;font:500 13px/1.4 var(--sans);color:var(--muted)}
+html.look-trial .tsp-sc{display:flex;flex-direction:column;align-items:center;gap:4px}
+html.look-trial .tsp-sc b{font:800 clamp(38px,4vw,54px)/1 var(--sans);font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
+html.look-trial .tsp-sc b i{font-style:normal;color:var(--muted);margin:0 .12em}
+html.look-trial .tsp-sc small{font:600 12px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+html.look-trial .tsp-gap{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:12px 0 4px;font:500 14px/1.3 var(--sans);color:var(--ink2)}
+html.look-trial .tsp-gap b{font:800 26px/1 var(--sans);font-variant-numeric:tabular-nums;color:var(--ink)}
+html.look-trial .tsp-gap .crest{width:24px;height:24px}
+html.look-trial .tsp-tr{display:block;width:100%;height:auto;margin-top:6px;overflow:visible}
+html.look-trial .tsp-tr .grid line{stroke:var(--rule2);stroke-width:1;vector-effect:non-scaling-stroke}
+html.look-trial .tsp-tr text{font:500 12px var(--sans);fill:var(--muted)}
+html.look-trial .tsp-tr text.el{font-weight:700;font-size:13px;fill:var(--ink)}
+html.look-trial .tsp-tr circle.hit:hover{fill:color-mix(in srgb,var(--ink) 15%,transparent)}
+html.look-trial .tsp-key{display:flex;gap:16px;margin:6px 0 0;font:500 13px/1.3 var(--sans);color:var(--ink2)}
+html.look-trial .tsp-key i{display:inline-block;width:14px;height:3px;border-radius:2px;background:var(--c);margin-right:6px;vertical-align:middle}
+html.look-trial .tsp-next{margin:10px 0 0;padding-top:10px;border-top:1px solid var(--rule2);font:500 13.5px/1.4 var(--sans);color:var(--ink2)}
+html.look-trial .tsp-next b{color:var(--ink)}
+
+/* ---------- phones and narrow columns ---------- */
+@media (max-width:900px){
+  html.look-trial .tsp-rw{grid-template-columns:minmax(0,1fr);gap:18px;padding:18px 16px}
+  html.look-trial .tsp-under.two,html.look-trial .tsp-mad.two{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  html.look-trial .tsp-card{padding:16px 14px}
+  html.look-trial .tsp-res{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px}
+  html.look-trial .tsp-side,html.look-trial .tsp-side.r{flex-direction:column;align-items:center;text-align:center;gap:6px}
+  html.look-trial .tsp-team{font-size:16px}
+  html.look-trial .tsp-crest{width:36px;height:36px;flex-basis:36px}
+  html.look-trial .tsp-s{padding:6px 8px}
+  html.look-trial .tsp-sn{font-size:14.5px}
+}
