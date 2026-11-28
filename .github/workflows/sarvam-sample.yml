@@ -20,7 +20,8 @@ jobs:
       - run: sudo apt-get update -qq >/dev/null && sudo apt-get install -y -qq ffmpeg >/dev/null && npm install --no-save --no-audit --no-fund @vercel/blob
       - name: Voice the script with Sarvam
         env:
-          SARVAM_API_KEY: ${{ secrets.SARVAM_API_KEY }}
+          # the key under whichever name it was saved as
+          SARVAM_API_KEY: ${{ secrets.SARVAM_API_KEY || secrets.SARVAM_KEY || secrets.SARVAM || secrets.SARVAM_AI_KEY || secrets.SARVAM_API || secrets.SARVAM_API_SUBSCRIPTION_KEY || vars.SARVAM_API_KEY || vars.SARVAM_KEY || vars.SARVAM }}
           BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
         run: node scripts/podcast/sarvam.mjs ${{ inputs.date }} --model=${{ inputs.model }} ${{ inputs.pairs && format('--pairs={0}', inputs.pairs) || '' }}
       - if: always()
