@@ -153,7 +153,9 @@ ${today ? tskBar(today.min, today.max, k.temp) : ""}</div>`;
   const arc = tskArc(B, today, now);
   if (arc || meters.length) h += `<div class="tsk-side">${arc}${meters.length ? `<div class="tsk-meters">${meters.join("")}</div>` : ""}</div>`;
   h += `</div>`;
-  if (parts.length) h += `<h3 class="tsk-h">The rest of the day<span>chance of rain</span></h3><div class="tsk-parts" data-n="${parts.length}">${parts.map(p => tskPart(p, now)).join("")}</div>`;
+  // a dry day: the parts keep their sky and temperatures, without four rain figures saying 0%
+  const dry = parts.length && parts.every(p => (Number.isFinite(p.rain) ? p.rain < 15 : !(p.rain_mm >= 0.2)));
+  if (parts.length) h += `<h3 class="tsk-h">The rest of the day<span>${dry ? "dry throughout" : "chance of rain"}</span></h3><div class="tsk-parts${dry ? " dry" : ""}" data-n="${parts.length}">${parts.map(p => tskPart(p, now)).join("")}</div>`;
   // Ranchi and Prayagraj: one row each
   const fam = W.filter(c => c.family && Number.isFinite(c.current?.temp));
   if (fam.length) h += `<h3 class="tsk-h">${esc(fam.map(c => c.name).join(" and "))}<span>today</span></h3><div class="tsk-fam">${fam.map(c => {

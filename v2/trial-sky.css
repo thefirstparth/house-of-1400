@@ -56,6 +56,9 @@ html.look-trial .tsk-pv{font:750 28px/1.1 var(--sans);letter-spacing:-.02em;font
 html.look-trial .tsk-pv small{font-size:15px;font-weight:600;color:var(--ink2)}
 html.look-trial .tsk-pw{font:500 13px/1.3 var(--sans);color:var(--ink2)}
 html.look-trial .tsk-p.wet .tsk-pw{color:var(--tsk-rain);font-weight:600}
+html.look-trial .tsk-parts.dry .tsk-pbar,html.look-trial .tsk-parts.dry .tsk-pv,html.look-trial .tsk-parts.dry .tsk-pw{display:none}
+html.look-trial .tsk-parts.dry .tsk-p{padding:12px 14px}
+html.look-trial .tsk-parts.dry .tsk-pr{font-size:17px;font-weight:700;margin-top:8px!important}
 html.look-trial .tsk-pr{font:600 13.5px/1.3 var(--sans);font-variant-numeric:tabular-nums;margin-top:6px!important}
 
 html.look-trial .tsk-fam{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
