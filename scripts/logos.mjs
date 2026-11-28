@@ -3,9 +3,24 @@
 // public/logos/<domain>.png (64 px, from Google's favicon service) and listed in public/logos/index.json. Stored with
 // the paper, so a reader's browser never asks another site for an image. An outlet with no real icon (the service's
 // default globe) is left out and the page draws its initials instead.
-import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+// node scripts/logos.mjs --curated <the-daily-index checkout>: copies the hand-picked 96 px logos from The Daily Index
+// (public/publishers/<slug>.light.png, matched by its lib/publishers.ts list; shared by its author, 28 Nov 2026) over the
+// favicons for the same outlets, and keeps the rest. Run it after every favicon pass, which rewrites the folder.
+import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync, copyFileSync } from "node:fs";
 import { createHash } from "node:crypto";
-const H = new URL("../", import.meta.url).pathname, OUT = `${H}public/logos/`, SINCE = process.argv[2] || "2026-10-01";
+const H = new URL("../", import.meta.url).pathname, OUT = `${H}public/logos/`;
+const CUR = process.argv.indexOf("--curated");
+if (CUR > -1) {
+  const dir = process.argv[CUR + 1].replace(/\/$/, ""), list = readFileSync(`${dir}/src/lib/publishers.ts`, "utf8");
+  const index = JSON.parse(readFileSync(`${OUT}index.json`, "utf8")); let n = 0;
+  for (const [, host, slug] of list.matchAll(/"([a-z0-9.-]+\.[a-z]{2,})":\s*\{[^}]*slug:\s*"([a-z0-9-]+)"/g)) {
+    const f = `${dir}/public/publishers/${slug}.light.png`; if (!existsSync(f)) continue;
+    copyFileSync(f, `${OUT}${host}.png`); index[host] = 1; n++;
+  }
+  writeFileSync(`${OUT}index.json`, JSON.stringify(Object.fromEntries(Object.entries(index).sort()), null, 0) + "\n");
+  console.log(`logos: ${n} curated logos copied`); process.exit(0);
+}
+const SINCE = process.argv[2] || "2026-10-01";
 const WIRES = ["reuters.com", "apnews.com", "bloomberg.com", "cnbc.com", "ft.com", "wsj.com", "nytimes.com", "washingtonpost.com", "scroll.in", "thewire.in", "news18.com", "firstpost.com", "livelaw.in", "thequint.com", "wionews.com", "skysports.com", "autosport.com", "marca.com", "as.com", "realmadrid.com", "nba.com", "atptour.com", "variety.com", "hollywoodreporter.com", "deadline.com", "engadget.com", "wired.com", "9to5mac.com", "anthropic.com", "openai.com", "sebi.gov.in", "rbi.org.in", "pib.gov.in"];
 mkdirSync(OUT, { recursive: true });
 const seen = new Map();

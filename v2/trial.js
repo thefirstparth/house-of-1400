@@ -37,7 +37,9 @@ function trialStory(id) {
   return TRIAL_STORIES.get(id) || null;
 }
 const trialDay = d => { const t = Date.parse(`${d}T12:00:00Z`); return Number.isFinite(t) ? new Date(t).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }) : ""; };
-const trialLogo = (url, label) => { const k = logoKey(hostOf(url)); return k ? `<img class="tlogo" src="/logos/${k}.png" alt="" width="16" height="16" loading="lazy" decoding="async">` : `<span class="tlogo ti" aria-hidden="true">${esc(initials(label))}</span>`; };
+// an outlet without a logo: its initials on a colour taken from its name, so it is the same colour every time
+const trialHue = t => { let h = 0; for (const c of String(t)) h = (h * 31 + c.charCodeAt(0)) % 360; return h; };
+const trialLogo = (url, label) => { const k = logoKey(hostOf(url)); return k ? `<img class="tlogo" src="/logos/${k}.png" alt="" width="16" height="16" loading="lazy" decoding="async">` : `<span class="tlogo ti" style="background:hsl(${trialHue(String(label || "").replace(/^the\s+/i, ""))} 42% 36%)" aria-hidden="true">${esc(initials(label))}</span>`; };
 // The line: each outlet once, its logo and name linking to the report, then the story's date
 function trialSourceLine(st) {
   const by = new Map(); for (const s of st.sources || []) if (s?.label && s?.url && !by.has(s.label)) by.set(s.label, s.url);
@@ -69,3 +71,16 @@ function trialProgressMove() {
   bar.firstChild.style.transform = `scaleX(${f})`;
 }
 TRIAL_PAINT.push(trialProgress);
+
+// ---------- (12) a desk's name rises word by word, and its rule draws, as the desk comes into view ----------
+let trialRiseSeen = null;
+function trialRise() {
+  if (!("IntersectionObserver" in window)) { document.querySelectorAll(".dopen").forEach(d => d.classList.add("trisen")); return; }
+  trialRiseSeen ||= new IntersectionObserver(es => { for (const e of es) if (e.isIntersecting) { e.target.classList.add("trisen"); trialRiseSeen.unobserve(e.target); } }, { rootMargin: "0px 0px -8% 0px" });
+  for (const d of document.querySelectorAll(".dopen:not([data-trise])")) {
+    const h = d.querySelector("h1"); d.dataset.trise = "1"; if (!h) continue;
+    if (h.children.length === 0) { const words = h.textContent.trim().split(/\s+/); h.setAttribute("aria-label", words.join(" ")); h.innerHTML = words.map((w, i) => `<span class="trw" aria-hidden="true"><span style="--i:${i}">${esc(w)}</span></span>`).join(" "); }
+    trialRiseSeen.observe(d);
+  }
+}
+TRIAL_PAINT.push(trialRise);

@@ -30,6 +30,8 @@ export const FONTS = () => [
   face("Schibsted Grotesk", "schibsted-grotesk-latin-wght-normal.woff2", { weight: "400 900" }),
   face("Schibsted Grotesk", "schibsted-grotesk-latin-ext-wght-normal.woff2", { weight: "400 900", range: EXT }),
   face("Schibsted Grotesk", "schibsted-grotesk-latin-wght-italic.woff2", { weight: "400 900", style: "italic" }),
+  // the trial's desk names, huge and condensed (from The Daily Index's section heads, 28 Nov 2026)
+  face("Big Shoulders", "big-shoulders-latin-800-normal.woff2", { weight: "800" }),
 ].join("\n");
 
 // The new look on trial (/?trial, 27 Nov 2026): the registry and the modules, the stylesheets, and the outlets' logos
