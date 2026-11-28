@@ -1,9 +1,13 @@
-// The trial's Sky Report feed (lib/look-sky.js): the parts of the day from Open-Meteo's hours, MET Norway as backup.
-// Fixtures: Open-Meteo for Bengaluru, Ranchi and Prayagraj and MET Norway for Bengaluru, as they answered on 27 Nov 2026.
+// The trial's sky feeds (lib/look-sky.js): the Sky Report's parts of the day from Open-Meteo's hours, MET Norway as
+// backup; The Search Bar's searches (Google's trending page, its RSS, Google News) and X's list (trends24, getdaytrends).
+// Fixtures: Open-Meteo for Bengaluru, Ranchi and Prayagraj and MET Norway for Bengaluru, as they answered on 27 Nov 2026;
+// India's trending page (cut to 60 searches), its RSS, a Google News search, trends24 and getdaytrends on 28 Nov 2026.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { groupParts, partOf, partCode, parseOpenMeteo, parseMetnoHours, metCode, lookSky, istHour, LOOK_SKY, LOOK_SKY_CACHE } from "../lib/look-sky.js";
+import { groupParts, partOf, partCode, parseOpenMeteo, parseMetnoHours, metCode, lookSky, istHour, LOOK_SKY, LOOK_SKY_CACHE,
+  parseTrendingPage, parseTrendsFeed, parseNewsSearch, parseTrends24, parseGetDayTrends, trendItem, rankSearches, sameStory, pickHeadline,
+  words, isLatin, isEnglishOrHindi, NOISY, lookSearch } from "../lib/look-sky.js";
 
 const OM = JSON.parse(readFileSync(new URL("./fixtures/look-sky-om.json", import.meta.url)));
 const MET = JSON.parse(readFileSync(new URL("./fixtures/look-sky-met.json", import.meta.url)));
@@ -88,4 +92,118 @@ test("lookSky: Open-Meteo first, MET Norway for a city it misses, nothing when b
   assert.equal(f.ok, false);
   assert.equal(typeof LOOK_SKY.look_sky, "function");
   assert.deepEqual(LOOK_SKY_CACHE.look_sky, [1800, 3600]);
+});
+
+// ---------- (8) The Search Bar ----------
+const fx = f => readFileSync(new URL(`./fixtures/${f}`, import.meta.url), "utf8");
+const PAGE = fx("look-search-page-IN.html"), RSS = fx("look-search-rss-IN.xml"), GNEWS = fx("look-search-gnews.xml"), T24 = fx("look-search-t24.html"), GDT = fx("look-search-gdt.html");
+
+test("the trending page's own list: volume, start, ended or not, related searches, category, news languages", () => {
+  const L = parseTrendingPage(PAGE);
+  assert.equal(L.length, 60);
+  assert.deepEqual([L[0].term, L[0].volume, L[0].traffic, L[0].active, L[0].cat, L[0].langs], ["man utd vs brentford", 200000, "200K+", true, "Sport", ["en"]]);
+  assert.equal(L[0].started, "2026-11-28T14:00:00.000Z");
+  assert.ok(!L[0].related.includes("man utd vs brentford") && L[0].related.includes("manchester united"));
+  assert.ok(L.some(t => !t.active));
+  assert.ok(L.some(t => t.langs.includes("ta")));
+  assert.deepEqual(parseTrendingPage("<html>no list</html>"), []);
+  assert.equal(trendItem(["", 1]), null);
+});
+
+test("Google's RSS: ten searches with Google's own news", () => {
+  const R = parseTrendsFeed(RSS);
+  assert.equal(R.length, 10);
+  const c = R.find(t => t.term === "indian cricket");
+  assert.equal(c.volume, 50000);
+  assert.ok(c.news.length && c.news.every(n => /^https?:/.test(n.url) && n.title && n.source));
+});
+
+test("Google News search: the outlet comes off the title", () => {
+  const N = parseNewsSearch(GNEWS);
+  assert.equal(N.length, 6);
+  assert.deepEqual([N[1].title, N[1].source], ["Match report: United 0 Brentford 4", "Manchester United"]);
+});
+
+test("a headline only when it is about the search, never a live page", () => {
+  const t = { term: "man utd vs brentford", related: ["man utd", "man united", "manchester united", "brentford fc"] };
+  // the first result is a live-score page; the match report is the first about it
+  assert.equal(pickHeadline(t, parseNewsSearch(GNEWS)).title, "Match report: United 0 Brentford 4");
+  assert.equal(pickHeadline({ term: "granada", related: ["granada terremoto", "terremoto hoy"] }, [{ title: "Thieves steal equipment at Granada Hills job", url: "https://x.y/1" }]), null);
+  assert.equal(pickHeadline({ term: "granada", related: ["granada terremoto"] }, [{ title: "Un terremoto en un pueblo de Granada", url: "https://x.y/2" }]).url, "https://x.y/2");
+  // a thin stats page only when nothing better is about it
+  const thin = { title: "Nottm Forest vs. Chelsea (28 Nov) Team Stats", url: "https://x.y/3" }, good = { title: "Gibbs-White fires Nottingham Forest past Chelsea", url: "https://x.y/4" };
+  assert.equal(pickHeadline({ term: "nottm forest vs chelsea", related: ["nottingham forest"] }, [thin, good]).url, "https://x.y/4");
+  assert.equal(pickHeadline({ term: "nottm forest vs chelsea", related: [] }, [thin]).url, "https://x.y/3");
+  assert.ok(NOISY("Wales vs Japan LIVE: build-up") && NOISY("There's a simple way to watch England vs New Zealand for *FREE*") && !NOISY("Live Nation shares fall"));
+  // a headline in the wrong language is not taken
+  assert.equal(pickHeadline({ term: "पेंशन", related: [] }, [{ title: "பென்ஷன் பற்றி", url: "https://x.y/5" }], isEnglishOrHindi), null);
+});
+
+test("one row per story, climbing searches first, India in English or Hindi", () => {
+  assert.ok(sameStory({ term: "man utd vs brentford", related: [] }, { term: "manchester united f.c. vs brentford f.c. standings", related: [] }));
+  assert.ok(sameStory({ term: "al-hazem vs al-nassr", related: [] }, { term: "al-hazem f.c. vs al-nassr standings", related: [] }));
+  assert.ok(sameStory({ term: "man city vs leeds", related: [] }, { term: "manchester city f.c. vs leeds united f.c. lineups", related: [] })); // a side in common: one match
+  assert.ok(!sameStory({ term: "leeds united vs coventry", related: [] }, { term: "west ham united vs stoke", related: [] }));
+  assert.ok(!sameStory({ term: "indigo", related: [] }, { term: "indian cricket", related: [] }));
+  const keep = t => isEnglishOrHindi(t.term) && (!t.langs.length || t.langs.some(l => l === "en" || l === "hi"));
+  const R = rankSearches(parseTrendingPage(PAGE), keep);
+  assert.equal(R[0].term, "man utd vs brentford");
+  assert.ok(R[0].related.includes("manchester united f.c. vs brentford f.c. standings"));
+  assert.ok(!R.some(t => /standings/.test(t.term) && /brentford|al-nassr/.test(t.term)));
+  assert.ok(R.every(t => isEnglishOrHindi(t.term)));
+  const firstEnded = R.findIndex(t => !t.active);
+  assert.ok(firstEnded === -1 || R.slice(firstEnded).every(t => !t.active));
+  for (let i = 1; i < R.length; i++) if (R[i].active === R[i - 1].active) assert.ok(R[i].volume <= R[i - 1].volume);
+  assert.ok(isLatin("elche vs atlético") && !isLatin("पेंशन") && isEnglishOrHindi("पेंशन") && !isEnglishOrHindi("அரசியல்"));
+  assert.deepEqual(words("Manchester United F.C. vs Brentford F.C. standings 2026"), ["manchester", "united", "brentford"]);
+});
+
+test("X's list: the latest hour, its posts, hours on the list; getdaytrends as backup", () => {
+  const X = parseTrends24(T24);
+  assert.equal(X.length, 20);
+  assert.deepEqual([X[0].name, X[0].count, X[0].url], ["QAZI SHINING WITH DIGNITY", 22238, "https://x.com/search?q=QAZI%20SHINING%20WITH%20DIGNITY"]);
+  assert.ok(X.every(x => x.hours >= 1 && x.hours <= 6));
+  assert.equal(new Set(X.map(x => x.name.toLowerCase())).size, X.length);
+  const G = parseGetDayTrends(GDT);
+  assert.equal(G.length, 12);
+  assert.deepEqual([G[0].name, G[0].count, G[0].hours], ["QAZI SHINING WITH DIGNITY", 32000, null]);
+  assert.deepEqual(parseTrends24("<html></html>"), []);
+});
+
+test("lookSearch: the page's list, headlines for the rest, the world in one list, X beside", async () => {
+  const fetchText = async u => {
+    if (u.includes("trends.google.com/trending?geo=IN")) return PAGE;
+    if (u.includes("trends.google.com/trending?geo=")) throw new Error("blocked");
+    if (u.includes("/trending/rss?geo=IN")) return RSS;
+    if (u.includes("/trending/rss")) return RSS.replace(/indian cricket/g, "england vs new zealand");
+    if (u.includes("news.google.com")) return GNEWS;
+    if (u.includes("trends24.in/india")) return T24;
+    if (u.includes("trends24")) throw new Error("down");
+    if (u.includes("getdaytrends")) return GDT;
+    throw new Error("unexpected " + u);
+  };
+  const fetchPost = async () => ')]}\'\n\n[["wrb.fr","i0OFE",null,null,null,[7],"generic"]]'; // turned away, as from Vercel
+  const r = await lookSearch(null, { fetchText, fetchPost, now: Date.parse("2026-11-28T18:30:00Z") });
+  assert.equal(r.ok, true);
+  assert.equal(r.value.from.IN, "page");
+  assert.equal(r.value.from.US, "rss");
+  const IN = r.value.geos.IN;
+  assert.ok(IN.length >= 5 && IN.length <= 10);
+  assert.equal(IN[0].term, "man utd vs brentford");
+  assert.equal(IN[0].news.title, "Match report: United 0 Brentford 4");
+  // a row either has a headline (and no related searches) or its related searches
+  assert.ok(IN.every(t => (t.news && !t.related.length) || (!t.news && t.related.length)));
+  // Google's own news for its RSS ten
+  assert.equal(IN.find(t => t.term === "indian cricket")?.news?.source, "Cricbuzz");
+  // the world: the countries' rows, one row per story, naming each country
+  const eng = r.value.world.find(t => t.term === "england vs new zealand");
+  assert.deepEqual(eng?.geos, ["US", "GB", "ES"]);
+  assert.equal(r.value.world[0].geos.length, 3);
+  assert.equal(r.value.x.india[0].name, "QAZI SHINING WITH DIGNITY");
+  assert.equal(r.value.x.world[0].hours, null); // from getdaytrends
+  assert.equal(r.source, "Google Trends, trends24");
+  const none = await lookSearch(null, { fetchText: async () => { throw new Error("down"); }, fetchPost });
+  assert.equal(none.ok, false);
+  assert.equal(typeof LOOK_SKY.look_search, "function");
+  assert.deepEqual(LOOK_SKY_CACHE.look_search, [1200, 2400]);
 });

@@ -130,40 +130,84 @@ ${today ? tskBar(today.min, today.max, k.temp) : ""}</div>`;
 }
 TRIAL_BLOCKS.sky = () => { const r = trialSafe("sky report", tskReport); const rest = skyBlock(); return r ? r + (rest ? `<div class="tsk-rest">${rest}</div>` : "") : rest; };
 
-// ---------- (8) The Search Bar: what India and the world are typing into Google ----------
-// Parth picked the Daily Index's Search Bar: a ranked list, each with a thin bar for its search volume, the volume, how
-// long ago it took off, and the headline that explains it with its outlet. India and World tabs (World: the paper's
-// own world list, the US, UK and Spain feeds mixed, each row named by its country). Top 7, "Show the top 10".
-// Data: LIVE.trends (Google Trends), else the edition's own list (E.trends, no times). A row without a headline is left
-// out. India keeps the rows in English or Hindi (most of India's list is in its own languages, which the paper cannot
-// translate); World keeps the rows in the Latin alphabet, as the paper's Talk of the Day does.
+// ---------- (8) The Search Bar: what India and the world are typing into Google, and posting on X ----------
+// Parth picked the Daily Index's Grapevine: its Search Bar and Trending, India and the world. Ours, calmer: one India /
+// World switch for both columns. On Google: a ranked list, each search with a thin bar for its volume, the volume, how
+// long ago it took off, and the headline that explains it with its outlet (or, with no headline about it, what else
+// people searched with it); "In today's paper" when the paper carries it. World rows name the countries it trends in
+// (one row when it trends in more than one). On X: the names, posts and hours on the list, as many as fit beside.
+// Data: LIVE.look_search (lib/look-sky.js: Google's trending page, its RSS and Google News; trends24 for X), else the
+// paper's own LIVE.trends, else the edition's list. India keeps searches in English or Hindi (the paper cannot translate
+// the rest), World the Latin alphabet. A row with nothing to explain it is left out; a failed X list drops its column.
 const TSB = { tab: "IN", more: false };
-// the paper fetches Google Trends only when the edition has no list of its own; The Search Bar always wants it live
+TRIAL_KEYS.push(["look_search", ""]);
+// the paper's own feed, the backup (the paper fetches it only when the edition has no list of its own)
 TRIAL_KEYS.push(["trends", ""]);
 const tsbLatin = t => /^[\x20-\x7E -ɏ‐-›₹]+$/.test(t || "");
 const tsbHindi = t => /^[\x20-\x7E -ÿऀ-ॿ‐-›₹]+$/.test(t || "") && /[ऀ-ॿ]/.test(t || "");
 const tsbHost = u => { try { return new URL(u).hostname.replace(/^(www|m|amp)\./, ""); } catch { return ""; } };
-const tsbVol = t => String(t || "").replace(/\d+/, n => (n >= 1e6 ? +(n / 1e6).toFixed(1) + "M" : n >= 1e3 ? +(n / 1e3).toFixed(1) + "K" : n));
-const tsbAgo = ms => { const m = Math.round((Date.now() - ms) / 6e4); if (!(m >= 0) || m > 72 * 60) return ""; return m < 60 ? `${Math.max(1, m)}m ago` : m < 48 * 60 ? `${Math.round(m / 60)}h ago` : `${Math.round(m / 1440)}d ago`; };
+const tsbVol = t => String(t || "").replace(/\d+(\.\d+)?/, n => (n >= 1e6 ? +(n / 1e6).toFixed(1) + "M" : n >= 1e3 ? +(n / 1e3).toFixed(1) + "K" : n));
+const tsbAgo = ms => { const m = Math.round((Date.now() - ms) / 6e4); if (!(m >= 0) || m > 72 * 60) return ""; return m < 60 ? `${Math.max(1, m)}m` : m < 48 * 60 ? `${Math.round(m / 60)}h` : `${Math.round(m / 1440)}d`; };
+const tsbN = n => (n >= 1e6 ? `${+(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}K` : String(n));
+// Google hands searches over as typed, mostly in lower case: shown as a title would be ("Man Utd vs Brentford"); a
+// search with a capital in it is left as it is. X's shouted campaign names ("SCOUT IS ABSOLUTELY RIGHT") are shown in
+// title case too, so the column does not shout; a short one ("BCCI") stays.
+const TSB_SMALL = new Set(["vs", "v", "of", "and", "the", "in", "on", "at", "for", "to", "a", "de", "la", "el", "y"]);
+const tsbTitle = t => String(t).split(" ").map((w, i) => (i > 0 && TSB_SMALL.has(w) ? w : /^([a-z]\.)+$/.test(w) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1))).join(" ");
+const tsbCase = t => (t === t.toLowerCase() ? tsbTitle(t) : t);
+const tsbShout = t => (/\p{Lu}/u.test(t) && t === t.toUpperCase() && t.split(/\s+/).length >= 3 ? tsbTitle(t.toLowerCase()) : t);
+// the edition's headlines as word lists, once per edition, for "In today's paper"
+let TSB_HEADS = null, TSB_HEADS_FOR = null;
+const tsbWords = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").split(/[^\p{L}\p{M}\p{N}]+/u).filter(w => w.length > 1 && !TSB_SMALL.has(w));
+function tsbInPaper(term) {
+  if (TSB_HEADS_FOR !== E) {
+    TSB_HEADS_FOR = E; TSB_HEADS = [];
+    const add = x => { if (x?.headline) TSB_HEADS.push(tsbWords(x.headline)); };
+    add(E?.front?.lead); (E?.front?.seconds || []).forEach(add);
+    for (const S of Object.values(E?.sections || {})) { (S.stories || []).forEach(add); (S.briefs || []).forEach(add); }
+  }
+  const w = tsbWords(term).filter(x => x.length >= 3);
+  // every word of the search in one headline (a one-word search: a name of five letters or more)
+  return w.length && (w.length > 1 || w[0].length >= 5) && TSB_HEADS.some(h => w.every(x => h.includes(x)));
+}
 function tsbLists() {
+  const V = LIVE.look_search?.value, cfg = CFG.trends || {}, inG = cfg.india_geo || "IN";
+  if (V?.geos && (V.geos[inG]?.length || V.world?.length)) {
+    const row = r => ({ term: r.term, traffic: r.traffic, vol: r.volume, ago: r.active === false ? "" : tsbAgo(Date.parse(r.started)), head: r.news?.title || "", url: r.news?.url || "", source: r.news?.source || (r.news ? tsbHost(r.news.url) : ""), related: r.related || [], geos: r.geos || null });
+    return { IN: (V.geos[inG] || []).map(row), WORLD: (V.world || []).map(row), live: "look", x: V.x || {} };
+  }
+  // the paper's own feed: a row needs a headline
   const G = LIVE.trends?.value?.geos;
-  const cfg = CFG.trends || {}, inG = cfg.india_geo || "IN";
   if (G && Object.values(G).some(l => l?.length)) {
     const row = (t, ok, geo) => {
       if (!t?.term || !ok(t.term)) return null;
       const n = (t.news || []).find(x => x?.title && ok(x.title)); if (!n) return null;
-      return { term: t.term, traffic: t.traffic, vol: volumeOf(t.traffic), head: n.title, url: n.url, source: n.source || tsbHost(n.url), ago: tsbAgo(Date.parse(t.published)), geo };
+      return { term: t.term, traffic: t.traffic, vol: volumeOf(t.traffic), head: n.title, url: n.url, source: n.source || tsbHost(n.url), ago: tsbAgo(Date.parse(t.published || t.started)), related: [], geos: geo ? [geo] : null };
     };
     const seen = new Set(), uniq = r => r && !seen.has(r.term.toLowerCase()) && seen.add(r.term.toLowerCase());
     const byVol = l => l.map((r, i) => ({ r, i })).sort((a, b) => b.r.vol - a.r.vol || a.i - b.i).map(x => x.r).slice(0, 10);
     const india = byVol((G[inG] || []).map(t => row(t, x => tsbLatin(x) || tsbHindi(x))).filter(uniq));
     const geos = (cfg.world_geos || ["US"]).filter(g => G[g]?.length), mixed = [];
     for (let i = 0; i < 20; i++) for (const g of geos) if (G[g][i]) mixed.push(row(G[g][i], tsbLatin, g));
-    return { IN: india, WORLD: byVol(mixed.filter(uniq)), live: true };
+    return { IN: india, WORLD: byVol(mixed.filter(uniq)), live: "trends", x: {} };
   }
   const T = E?.trends; if (!T) return null;
-  const ed = (l, world) => (l || []).filter(t => t?.term && t.what).map(t => ({ term: t.term, traffic: t.traffic, vol: volumeOf(t.traffic), head: t.what, url: t.url, source: tsbHost(t.url), ago: "", geo: world ? t.geo : null })).sort((a, b) => b.vol - a.vol).slice(0, 10);
-  return { IN: ed(T.india), WORLD: ed(T.world, true), live: false };
+  const ed = (l, world) => (l || []).filter(t => t?.term && t.what).map(t => ({ term: t.term, traffic: t.traffic, vol: volumeOf(t.traffic), head: t.what, url: t.url, source: tsbHost(t.url), ago: "", related: [], geos: world && t.geo ? [t.geo] : null })).sort((a, b) => b.vol - a.vol).slice(0, 10);
+  return { IN: ed(T.india), WORLD: ed(T.world, true), live: "", x: {} };
+}
+const tsbFeed = L => (L.live === "look" ? LIVE.look_search : L.live === "trends" ? LIVE.trends : null);
+function tsbRow(r, i, w) {
+  const name = esc(tsbCase(r.term)), paper = tsbInPaper(r.term);
+  const meta = [r.traffic ? esc(tsbVol(r.traffic)) : "", r.ago ? esc(r.ago) : ""].filter(Boolean).join(", ");
+  const ctx = r.head
+    ? `<p class="tsb-h">${paper ? `<span class="tsb-paper">In today's paper</span>` : ""}${r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.head)}</a>` : esc(r.head)}${r.source ? ` <span class="tsb-s">${esc(r.source)}</span>` : ""}</p>`
+    : r.related.length ? `<p class="tsb-h tsb-rel">${paper ? `<span class="tsb-paper">In today's paper</span>` : ""}<span>Also searched</span> ${r.related.map(q => esc(tsbCase(q))).join(", ")}</p>` : "";
+  return `<li class="tsb-r${i >= 7 ? " x" : ""}"><span class="tsb-n tnum">${String(i + 1).padStart(2, "0")}</span><div class="tsb-b"><p class="tsb-t"><a class="tsb-q" href="https://www.google.com/search?q=${encodeURIComponent(r.term)}" target="_blank" rel="noopener">${name}</a>${r.geos?.length ? `<span class="tsb-gs">${r.geos.map(g => `<span class="tsb-g">${esc(countryName(g))}</span>`).join("")}</span>` : ""}${meta ? `<span class="tsb-v tnum" title="Roughly how many searched, and how long ago it took off">${meta}</span>` : ""}</p>${r.vol > 0 ? `<i class="tsb-bar" aria-hidden="true"><i style="width:${w(r.vol).toFixed(1)}%"></i></i>` : ""}${ctx}</div></li>`;
+}
+function tsbX(list) {
+  if (!list?.length) return "";
+  const rows = list.slice(0, 15).map((t, i) => `<li class="tsx-r"><span class="tsb-n tnum">${String(i + 1).padStart(2, "0")}</span><a class="tsx-q" href="${esc(t.url)}" target="_blank" rel="noopener">${esc(tsbShout(t.name))}</a><span class="tsb-v tnum">${[t.count ? `${tsbN(t.count)} posts` : "", t.hours ? (t.hours >= 24 ? "all day" : `${t.hours}h`) : ""].filter(Boolean).join(", ")}</span></li>`).join("");
+  return `<section class="tsx" aria-label="On X"><h3 class="tsb-ch">On X<span>posts, and hours on the list today</span></h3><ol class="tsx-list">${rows}</ol></section>`;
 }
 function tsbBlock() {
   const L = tsbLists(); if (!L || (!L.IN.length && !L.WORLD.length)) return "";
@@ -171,12 +215,15 @@ function tsbBlock() {
   const tab = tabs.some(([k]) => k === TSB.tab) ? TSB.tab : tabs[0][0], list = L[tab];
   const vols = list.map(r => r.vol).filter(v => v > 0), lo = 2, hi = Math.log10(Math.max(1000, ...vols));
   const w = v => (v > 0 ? Math.max(6, Math.min(100, ((Math.log10(Math.max(v, 100)) - lo) / (hi - lo)) * 100)) : 0);
-  const fresh = L.live && !LIVE.trends?.stale;
-  const rows = list.map((r, i) => `<li class="tsb-r${i >= 7 ? " x" : ""}"><span class="tsb-n tnum">${String(i + 1).padStart(2, "0")}</span><div class="tsb-b"><p class="tsb-t"><b>${esc(r.term === r.term.toLowerCase() ? r.term[0].toUpperCase() + r.term.slice(1) : r.term)}</b>${r.geo ? `<span class="tsb-g">${esc(countryName(r.geo))}</span>` : ""}<span class="tsb-v tnum">${[r.traffic ? esc(tsbVol(r.traffic)) : "", r.ago ? esc(r.ago) : ""].filter(Boolean).join(", ")}</span></p>${r.vol > 0 ? `<i class="tsb-bar" aria-hidden="true"><i style="width:${w(r.vol).toFixed(1)}%"></i></i>` : ""}<p class="tsb-h">${r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.head)}</a>` : esc(r.head)}${r.source ? ` <span class="tsb-s">${esc(r.source)}</span>` : ""}</p></div></li>`).join("");
+  const F = tsbFeed(L), fresh = F && !F.stale;
   const more = list.length > 7 ? `<button type="button" class="tsb-more" aria-expanded="${TSB.more}">${TSB.more ? "Show the top 7" : `Show the top ${list.length}`}</button>` : "";
-  const when = L.live && LIVE.trends?.as_of ? (fresh ? `<span class="tsb-live"><i></i>Live</span>` : `<span class="tsb-asof">${esc(agoIST(LIVE.trends.as_of))}</span>`) : "";
-  return `<div class="tsb${TSB.more ? " open" : ""}"><div class="tsb-top"><div class="tsb-tabs" role="tablist" aria-label="Searches from">${tabs.map(([k, n]) => `<button type="button" role="tab" class="tsb-tab" data-tab="${k}" aria-selected="${k === tab}">${n}</button>`).join("")}</div>${when}</div>
-<ol class="tsb-list">${rows}</ol>${more}${aboutFig(L.live ? "Google Trends, the last 24 hours, with a headline for each search; the bar is the search volume. India shows the searches in English and Hindi; World mixes the US, UK and Spain." : "Searches from Google Trends, as the edition printed them; the bar is the search volume.")}</div>`;
+  const when = F?.as_of ? (fresh ? `<span class="tsb-live"><i></i>Live, ${esc(istTime(F.as_of))} IST</span>` : `<span class="tsb-asof">${esc(agoIST(F.as_of))}</span>`) : "";
+  const x = tsbX(L.x?.[tab === "IN" ? "india" : "world"]);
+  const about = L.live === "look"
+    ? "Google Trends' trending now, the last 24 hours: searches still climbing first, by volume; the bar is the search volume. Each search's headline is Google Trends' own or the day's first Google News story about it. India shows searches in English and Hindi; World joins the US, UK and Spain. On X: trends24's hourly copies of X's trending list."
+    : L.live ? "Google Trends, the last 24 hours, with a headline for each search; the bar is the search volume. India shows the searches in English and Hindi; World mixes the US, UK and Spain." : "Searches from Google Trends, as the edition printed them; the bar is the search volume.";
+  return `<div class="tsb${TSB.more ? " open" : ""}${x ? " has-x" : ""}"><div class="tsb-top"><div class="tsb-tabs" role="tablist" aria-label="Searches from">${tabs.map(([k, n]) => `<button type="button" role="tab" class="tsb-tab" data-tab="${k}" aria-selected="${k === tab}" tabindex="${k === tab ? 0 : -1}">${n}</button>`).join("")}</div>${when}</div>
+<div class="tsb-cols"><section class="tsg" aria-label="On Google">${x ? `<h3 class="tsb-ch">On Google<span>searches, and how long ago each took off</span></h3>` : ""}<ol class="tsb-list">${list.map((r, i) => tsbRow(r, i, w)).join("")}</ol>${more}</section>${x}</div>${aboutFig(about)}</div>`;
 }
 TRIAL_BLOCKS.talk = () => trialSafe("search bar", tsbBlock) || (typeof talkBlock === "function" ? talkBlock() : "");
 
@@ -184,14 +231,27 @@ function tsbRepaint(btn, sel) {
   const el = btn.closest('[data-live="talk"]'); if (!el) return;
   const html = tsbBlock(); el.innerHTML = html; el.dataset.html = html;
   el.querySelector(sel)?.focus();
+  tsbFit();
+}
+// Side by side, X's list shows as many whole rows as fit beside the searches (five at least); stacked, the first eight
+function tsbFit() {
+  const box = document.querySelector('#talk .tsb.has-x'); if (!box) return;
+  const g = box.querySelector(".tsg"), rows = [...box.querySelectorAll(".tsx-r")]; if (!g || !rows.length) return;
+  rows.forEach(r => (r.hidden = false));
+  const beside = getComputedStyle(box.querySelector(".tsb-cols")).display === "grid" && box.querySelector(".tsx").offsetTop === g.offsetTop;
+  if (!beside) { rows.forEach((r, i) => (r.hidden = i >= 8)); return; }
+  const limit = g.getBoundingClientRect().bottom;
+  rows.forEach((r, i) => { r.hidden = i >= 5 && r.getBoundingClientRect().bottom > limit + 2; });
 }
 function trialSearchBar() {
   const s = document.getElementById("talk"); if (!s) return;
   const h = s.querySelector(".sechead h2"); if (h && h.textContent !== "The Search Bar") h.textContent = "The Search Bar";
-  const sub = s.querySelector(".sechead h2 + span"); const want = "What India and the world are typing into Google";
+  const sub = s.querySelector(".sechead h2 + span"); const want = "What India and the world are searching for and posting about";
   if (sub && sub.textContent !== want) sub.textContent = want;
+  tsbFit();
   if (document.documentElement.dataset.tsb) return;
   document.documentElement.dataset.tsb = "1";
+  addEventListener("resize", () => { if (trialOn()) tsbFit(); }, { passive: true });
   document.addEventListener("click", e => {
     const t = e.target.closest?.(".tsb-tab, .tsb-more"); if (!t || !trialOn()) return;
     if (t.classList.contains("tsb-tab")) { TSB.tab = t.dataset.tab; TSB.more = false; tsbRepaint(t, `.tsb-tab[data-tab="${TSB.tab}"]`); }
