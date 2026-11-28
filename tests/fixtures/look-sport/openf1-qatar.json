@@ -1,0 +1,140 @@
+{
+ "sessions": [
+  {
+   "session_key": 9901,
+   "session_name": "Practice 1",
+   "date_start": "2026-11-27T13:30:00+00:00",
+   "meeting_key": 1290
+  },
+  {
+   "session_key": 9902,
+   "session_name": "Practice 2",
+   "date_start": "2026-11-27T17:00:00+00:00",
+   "meeting_key": 1290
+  },
+  {
+   "session_key": 9903,
+   "session_name": "Practice 3",
+   "date_start": "2026-11-28T14:30:00+00:00",
+   "meeting_key": 1290
+  }
+ ],
+ "drivers": [
+  {
+   "driver_number": 12,
+   "name_acronym": "ANT",
+   "last_name": "Antonelli",
+   "team_colour": "27F4D2"
+  },
+  {
+   "driver_number": 63,
+   "name_acronym": "RUS",
+   "last_name": "Russell",
+   "team_colour": "27F4D2"
+  },
+  {
+   "driver_number": 1,
+   "name_acronym": "VER",
+   "last_name": "Verstappen",
+   "team_colour": "3671C6"
+  },
+  {
+   "driver_number": 6,
+   "name_acronym": "HAD",
+   "last_name": "Hadjar",
+   "team_colour": "3671C6"
+  },
+  {
+   "driver_number": 4,
+   "name_acronym": "NOR",
+   "last_name": "Norris",
+   "team_colour": "FF8000"
+  }
+ ],
+ "results": [
+  {
+   "session_key": 9901,
+   "position": 1,
+   "driver_number": 12,
+   "duration": 83.217,
+   "gap_to_leader": 0
+  },
+  {
+   "session_key": 9901,
+   "position": 2,
+   "driver_number": 63,
+   "duration": 83.4,
+   "gap_to_leader": 0.183
+  },
+  {
+   "session_key": 9901,
+   "position": 3,
+   "driver_number": 6,
+   "duration": 83.5,
+   "gap_to_leader": 0.283
+  },
+  {
+   "session_key": 9901,
+   "position": 4,
+   "driver_number": 1,
+   "duration": 83.6,
+   "gap_to_leader": 0.383
+  },
+  {
+   "session_key": 9902,
+   "position": 1,
+   "driver_number": 63,
+   "duration": 83,
+   "gap_to_leader": 0
+  },
+  {
+   "session_key": 9902,
+   "position": 2,
+   "driver_number": 12,
+   "duration": 83.077,
+   "gap_to_leader": 0.077
+  },
+  {
+   "session_key": 9902,
+   "position": 3,
+   "driver_number": 4,
+   "duration": 83.2,
+   "gap_to_leader": 0.2
+  },
+  {
+   "session_key": 9902,
+   "position": 4,
+   "driver_number": 1,
+   "duration": 83.3,
+   "gap_to_leader": 0.3
+  },
+  {
+   "session_key": 9903,
+   "position": 1,
+   "driver_number": 12,
+   "duration": 82.4,
+   "gap_to_leader": 0
+  },
+  {
+   "session_key": 9903,
+   "position": 2,
+   "driver_number": 63,
+   "duration": 82.5,
+   "gap_to_leader": 0.1
+  },
+  {
+   "session_key": 9903,
+   "position": 3,
+   "driver_number": 1,
+   "duration": 82.6,
+   "gap_to_leader": 0.2
+  },
+  {
+   "session_key": 9903,
+   "position": 4,
+   "driver_number": 4,
+   "duration": 82.7,
+   "gap_to_leader": 0.3
+  }
+ ]
+}

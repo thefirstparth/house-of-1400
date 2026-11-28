@@ -136,21 +136,24 @@
 <div class="sb" role="img" aria-label="${esc(`${s.label}: ${m.teams[0].short} ${txt(vh)}, ${m.teams[1].short} ${txt(va)}`)}"><span><i style="width:${(vh / top * 100).toFixed(1)}%;background:${HOME}"></i></span><span><i style="width:${(va / top * 100).toFixed(1)}%;background:${AWAY}"></i></span></div></li>`;
     }).join("")}</ul></section>`;
   }
-  // the pitch markings, drawn in a 100-wide box (the whole pitch 100 x 150, half of it 100 x 68)
-  const HALF = `<rect x="1" y="1" width="98" height="66" /><rect x="21" y="1" width="58" height="25" /><rect x="37" y="1" width="26" height="9" /><path d="M38.5 26a12 12 0 0 0 23 0" /><path d="M44 1h12" class="gl" /><circle cx="50" cy="18" r=".7" class="spot" />`;
+  // The attacking end, drawn to scale in a box 100 wide (the pitch's width, 68 m): ESPN's x is a share of the length
+  // (105 m), so one unit of x is 1.544 units down the box. Deep enough for the furthest shot, at most half the pitch.
+  const DEEP = 105 / 68;
+  const end = h => `<rect x="1" y="1" width="98" height="${h - 2}" /><rect x="20.4" y="1" width="59.2" height="24.3" /><rect x="36.5" y="1" width="27" height="8.1" /><path d="M39.2 25.3a13.5 13.5 0 0 0 21.6 0" /><path d="M44.6 1h10.8" class="gl" /><circle cx="50" cy="17.2" r=".7" class="spot" />${h > 77 ? `<line x1="1" x2="99" y1="${h - 1}" y2="${h - 1}" />` : ""}`;
   function shotMap(m) {
     const S = m.shots || [];
     if (S.length < 5) return "";
+    const H = Math.min(78, Math.max(52, Math.ceil(Math.max(...S.map(s => (100 - s.x) * DEEP)) + 6)));
     const pts = S.map(s => {
-      const cx = (100 - s.y).toFixed(1), cy = ((100 - s.x) * 1.36 + 1).toFixed(1), c = s.side ? AWAY : HOME;
+      const cx = (100 - s.y).toFixed(1), cy = (1 + (100 - s.x) * DEEP).toFixed(1), c = s.side ? AWAY : HOME;
       const tip = `${s.who || m.teams[s.side].short}${s.m != null ? `, ${s.m}’` : ""}: ${s.out === "goal" ? "goal" : s.out === "on" ? "on target" : s.out === "post" ? "hit the woodwork" : s.out === "blocked" ? "blocked" : "off target"}`;
-      return s.out === "goal" ? `<g><title>${esc(tip)}</title><circle cx="${cx}" cy="${cy}" r="3.4" fill="none" stroke="${c}" stroke-width=".7"/><circle cx="${cx}" cy="${cy}" r="2.2" fill="${c}"/></g>`
-        : s.out === "on" ? `<circle cx="${cx}" cy="${cy}" r="1.7" fill="${c}" fill-opacity=".85"><title>${esc(tip)}</title></circle>`
-        : `<circle cx="${cx}" cy="${cy}" r="1.5" fill="#fff" fill-opacity=".7" stroke="${c}" stroke-width=".55"><title>${esc(tip)}</title></circle>`;
+      return s.out === "goal" ? `<g><title>${esc(tip)}</title><circle cx="${cx}" cy="${cy}" r="3.3" fill="none" stroke="${c}" stroke-width=".6"/><circle cx="${cx}" cy="${cy}" r="2.1" fill="${c}"/></g>`
+        : s.out === "on" ? `<circle cx="${cx}" cy="${cy}" r="1.5" fill="${c}" fill-opacity=".85"><title>${esc(tip)}</title></circle>`
+        : `<circle cx="${cx}" cy="${cy}" r="1.35" fill="#fff" fill-opacity=".75" stroke="${c}" stroke-width=".5"><title>${esc(tip)}</title></circle>`;
     }).join("");
     const n = [0, 1].map(i => S.filter(s => s.side === i).length);
-    return `<section class="card shots" aria-label="Shot map"><div class="k">Shot map <span>${S.length} shots with a place</span></div>
-<div class="pitchw half"><svg viewBox="0 0 100 68" role="img" aria-label="${esc(`Where the shots were taken, all drawn on one goal: ${m.teams[0].short} ${n[0]}, ${m.teams[1].short} ${n[1]}`)}"><g class="mk">${HALF}</g>${pts}</svg></div>
+    return `<section class="card shots" aria-label="Shot map"><div class="k">Shot map <span>${S.length} shots, all on one goal</span></div>
+<div class="pitchw half"><svg viewBox="0 0 100 ${H}" role="img" aria-label="${esc(`Where the shots were taken, all drawn on one goal: ${m.teams[0].short} ${n[0]}, ${m.teams[1].short} ${n[1]}`)}"><g class="mk">${end(H)}</g>${pts}</svg></div>
 <p class="legend">${legendTeams(m)}<span><i class="sw ring"></i>Goal</span><span><i class="sw solid"></i>On target</span><span><i class="sw hollow"></i>Off target or blocked</span></p></section>`;
   }
   function vStats(m) {
@@ -229,7 +232,7 @@ ${lu.bench.length ? `<div class="bk">Substitutes</div><ul>${lu.bench.map(row).jo
     if (!t) return;
     if (t.dataset.view) go(t.dataset.view);
     else if (t.dataset.go) { go(t.dataset.go); $(".tabs")?.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }
-    else { keyOnly = t.dataset.key === "1"; if (last) paint(last); }
+    else { keyOnly = t.dataset.key === "1"; if (last) paint(last); $(`[data-key="${keyOnly ? 1 : 0}"]`)?.focus(); }
   });
   // arrow keys move along the tabs
   document.addEventListener("keydown", ev => {

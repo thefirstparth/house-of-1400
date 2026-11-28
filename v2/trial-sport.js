@@ -1,12 +1,15 @@
 // ================================================================ THE TRIAL'S SPORT MODULE (items 6 and 7)
 // (6) Paddock Notes opens with a Race Weekend card (a countdown to lights out, the circuit map, the sessions by day in IST
-// with the circuit's local time, the next one marked) and a Paddock Chatter card (r/formula1's top posts of the day,
-// lib/look-sport.js look_f1_chatter; hidden when Reddit does not answer). The old session table goes; the market's view,
-// Max Watch, the race ahead, the stories, the standings and the calendar stay.
+// with the circuit's local time, the next one marked; ESPN's own state marks a session live, so a late start or an
+// overrun reads right; a finished session names its quickest driver, or its winner, in the team's colour with the lap,
+// and where Max finished, each only where two sources agree: lib/look-sport.js look_f1_weekend) and a Paddock Chatter
+// card (the newest worthwhile posts on r/formula1 and r/F1Technical, through Arctic Shift since Reddit refuses servers;
+// posts naming Max or his team first and tagged; look_f1_chatter, hidden with fewer than three posts). The old session
+// table goes; the market's view, Max Watch, the race ahead, the stories, the standings and the calendar stay.
 // (7) Madridismo opens with a Last Result card (crests, score, scorers, a Match centre button to /match) and a Title Race
 // card (points after each league match for Madrid and the leader, or the runner-up when Madrid lead; look_title_race),
 // then the paper's own fixtures, form and tables. Each card draws only from good data and hides otherwise.
-TRIAL_KEYS.push(["look_f1_chatter", ""], ["look_title_race", ""], ["look_last_match", ""]);
+TRIAL_KEYS.push(["look_f1_chatter", ""], ["look_f1_weekend", ""], ["look_title_race", ""], ["look_last_match", ""]);
 
 // The circuit's own clock, from an IANA zone by place (never a guessed offset). A place not listed shows IST only.
 const TSP_ZONE_PLACE = { melbourne: "Australia/Melbourne", "albert park": "Australia/Melbourne", miami: "America/New_York", austin: "America/Chicago", "las vegas": "America/Los_Angeles", montreal: "America/Toronto", "montréal": "America/Toronto", imola: "Europe/Rome", monza: "Europe/Rome", "mexico city": "America/Mexico_City", "são paulo": "America/Sao_Paulo", "sao paulo": "America/Sao_Paulo", madrid: "Europe/Madrid", barcelona: "Europe/Madrid", "montmeló": "Europe/Madrid", "kuala lumpur": "Asia/Kuala_Lumpur", sepang: "Asia/Kuala_Lumpur" };
@@ -42,42 +45,75 @@ function tspStartTimer() { if (!tspTimer && document.querySelector("[data-tcd]")
 TRIAL_PAINT.push(tspStartTimer);
 
 // ---------- (6) the Race Weekend card ----------
+// look_f1_weekend's session for one of the card's (Jolpica's "Sprint Shootout" is the same session), when the feed is
+// about this weekend
+const tspSessName = n => (/^sprint (shootout|qualifying)$/i.test(n) ? "Sprint Qualifying" : n);
+function tspWeekendFeed(race) {
+  const W = LIVE.look_f1_weekend?.value;
+  return W?.sessions?.length && W.name === race.name && String(W.season) === String(race.season) ? W : null;
+}
+// A driver's three-letter code and team colour from the championship table (F1's colours, via OpenF1), by surname
+const tspSur = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").trim().split(/\s+/).pop().toLowerCase();
+function tspDriver(sur) {
+  const d = (LIVE.f1_standings?.value?.drivers || []).find(x => tspSur(x.name) === tspSur(sur) || tspSur(x.shown) === tspSur(sur));
+  return d ? { code: d.code || null, colour: d.colour || null, name: f1Name(d) } : null;
+}
+// the quickest (or the winner) of a finished session, and Max's place, as "▌ANT 1:22.400 · VER 3rd"
+function tspTop(ws, fallback, isRace) {
+  const who = CFG.follows.f1_driver.name, me = tspSur(who);
+  const t = ws?.top || (fallback ? { name: fallback } : null);
+  if (!t?.name) return "";
+  const d = tspDriver(t.name), code = t.code || d?.code || t.name.slice(0, 3).toUpperCase(), colour = /^#[0-9a-f]{6}$/i.test(t.colour || "") ? t.colour : d?.colour || "";
+  const mine = tspSur(t.name) === me;
+  const label = `${isRace ? "Won by" : "Quickest"} ${d?.name || t.name}${t.time ? `, ${t.time}` : ""}`;
+  const max = !mine && ws?.max?.pos ? `<span class="tsp-mx">${esc((tspDriver(who)?.code) || lastName(who).slice(0, 3).toUpperCase())} ${esc(ordinal(ws.max.pos))}</span>` : "";
+  return `<span class="tsp-top${mine ? " me" : ""}" title="${esc(label)}"><span class="tsp-tv" aria-hidden="true"><i${colour ? ` style="background:${esc(colour)}"` : ""}></i><b>${esc(code)}</b>${t.time ? `<span class="tnum">${esc(t.time)}</span>` : isRace ? `<span>won</span>` : ""}</span><span class="vh">${esc(label)}</span></span>${max}`;
+}
 function tspRaceWeekend(N) {
   const race = N?.race, ss = race?.sessions || [];
   if (!race || !ss.length || ss.some(s => !s.start || isNaN(Date.parse(s.start)))) return "";
-  const n = Date.now(), zone = tspZone(race), place = race.locality || race.circuit || "local";
-  const st = s => stateOf({ start: Date.parse(s.start), end: Date.parse(s.start) + (s.minutes || 60) * 6e4 }, n);
+  const n = Date.now(), zone = tspZone(race), place = race.locality || race.circuit || "local", W = tspWeekendFeed(race);
+  const wsOf = s => W?.sessions.find(x => x.name === tspSessName(s.name) && Math.abs(Date.parse(x.start) - Date.parse(s.start)) < 12 * 36e5) || null;
+  // ESPN's state first (a late start or an overrun is still on; "End of Session" is over), else the clock
+  const st = s => { const w = wsOf(s); if (w?.state === "in") return "on"; if (w?.state === "post") return "done"; const k = stateOf({ start: Date.parse(s.start), end: Date.parse(s.start) + (s.minutes || 60) * 6e4 }, n); return w?.state === "pre" && k === "done" ? "next" : k; };
   const raceS = ss.find(s => /^race$/i.test(s.name)) || ss.at(-1);
   const nextS = ss.find(s => st(s) !== "done");
   const raceState = st(raceS);
   // the countdown, or the race live, or nothing once it is over (the card then shows the weekend as done)
-  const hero = raceState === "next" && raceS.time_confirmed !== false
+  const hero = raceState === "next" && raceS.time_confirmed !== false && Date.parse(raceS.start) > n
     ? `${tspCountdown(raceS.start)}<p class="tsp-cdl">Until lights out · <span class="tnum">${esc(tspDay(raceS.start))}, ${esc(tspTime(raceS.start))} IST${zone ? ` (${esc(tspTime(raceS.start, zone))} ${esc(place)})` : ""}</span></p>`
     : raceState === "on" ? `<p class="tsp-cdlive"><span class="live"><i></i>Live</span> The race is on</p>` : "";
-  const T = race.track;
-  const map = T?.image && /^https:\/\/media\.formula1\.com\//.test(T.image) ? `<img class="tsp-track" src="${esc(T.image)}" alt="${esc(`${T.circuit || race.locality || ""} circuit map`)}" loading="lazy" decoding="async">` : "";
+  const T = race.track, img = T?.image && /^https:\/\/media\.formula1\.com\//.test(T.image) ? T.image : W?.map && /^https:\/\/media\.formula1\.com\//.test(W.map) ? W.map : "";
+  const map = img ? `<img class="tsp-track" src="${esc(img)}" alt="${esc(`${T?.circuit || race.locality || ""} circuit map`)}" loading="lazy" decoding="async">` : "";
+  // the paper's own agreed top three (lib/live.js f1_sessions) stands in for a session the weekend feed has no top for
+  const agreed = s => (LIVE.f1_sessions?.value?.results || []).find(x => x.name === s.name && Math.abs(Date.parse(x.start) - Date.parse(s.start)) < 6e5)?.top?.[0] || null;
   // sessions under their IST day; the local time beside each, with its own day when that differs
   const days = [];
   for (const s of ss) { const d = tspDay(s.start); (days.at(-1)?.d === d ? days.at(-1) : (days.push({ d, list: [] }), days.at(-1))).list.push(s); }
   const row = s => {
-    const k = st(s), on = s === nextS, tbc = s.time_confirmed === false;
+    const k = st(s), on = s === nextS && k !== "on", tbc = s.time_confirmed === false, ws = wsOf(s);
     const loc = zone && !tbc ? (tspDay(s.start, zone) === tspDay(s.start) ? tspTime(s.start, zone) : `${tspDay(s.start, zone).split(" ")[0]} ${tspTime(s.start, zone)}`) : "";
-    const tag = k === "on" ? ` <span class="live"><i></i>Live</span>` : on && !tbc ? ` <span class="tsp-in">in <span data-until="${esc(s.start)}" data-min="${s.minutes || 60}">${esc(cd(Date.parse(s.start) - n))}</span></span>` : k === "done" ? ` <small class="tsp-done">done</small>` : "";
-    return `<li class="tsp-s${on ? " on" : ""}${k === "done" ? " done" : ""}"><span class="tsp-sn">${esc(s.name)}${tag}</span><span class="tsp-st tnum">${tbc ? "TBC" : `<b>${esc(tspTime(s.start))} IST</b>${loc ? `<small>${esc(loc)} ${esc(place)}</small>` : ""}`}</span></li>`;
+    const top = k === "done" ? tspTop(ws, agreed(s), /^(sprint|race)$/i.test(s.name)) : "";
+    const late = on && ws?.state === "pre" && Date.parse(s.start) < n;
+    const tag = k === "on" ? ` <span class="live"><i></i>Live</span>` : late ? ` <span class="tsp-in">delayed</span>` : on && !tbc ? ` <span class="tsp-in">in <span data-until="${esc(s.start)}" data-min="${s.minutes || 60}">${esc(cd(Date.parse(s.start) - n))}</span></span>` : k === "done" && !top ? ` <small class="tsp-done">done</small>` : "";
+    return `<li class="tsp-s${on || k === "on" ? " on" : ""}${k === "done" ? " done" : ""}"><span class="tsp-sn"><span class="tsp-nm">${esc(s.name)}${tag}</span>${top ? `<span class="tsp-tops">${top}</span>` : ""}</span><span class="tsp-st tnum">${tbc ? "TBC" : `<b>${esc(tspTime(s.start))} IST</b>${loc ? `<small>${esc(loc)} ${esc(place)}</small>` : ""}`}</span></li>`;
   };
-  const sessions = `<div class="tsp-sess"><div class="tsp-k">Race weekend${watchTag({ entity: "f1" })}</div>${days.map(g => `<div class="tsp-day">${esc(g.d)}</div><ul>${g.list.map(row).join("")}</ul>`).join("")}${zone ? "" : `<p class="tsp-note">Times in IST</p>`}</div>`;
+  const sprint = ss.some(s => /^sprint$/i.test(s.name));
+  const sessions = `<div class="tsp-sess"><div class="tsp-k">Race weekend${sprint ? " <span>Sprint weekend</span>" : ""}${watchTag({ entity: "f1" })}</div>${days.map(g => `<div class="tsp-day">${esc(g.d)}</div><ul>${g.list.map(row).join("")}</ul>`).join("")}${zone ? "" : `<p class="tsp-note">Times in IST</p>`}</div>`;
   const title = `<div class="tsp-rwh"><div class="tsp-k">${esc([race.flag, N.next_season ? `${race.season} opener` : race.round ? `Round ${race.round}` : ""].filter(Boolean).join(" "))}</div><h3 class="tsp-rwt">${esc(race.name)}</h3><p class="tsp-rwp">${esc([T?.circuit && T.circuit !== race.locality ? T.circuit : race.circuit, race.locality].filter(Boolean).join(" · "))}</p></div>`;
   return `<div class="tsp-card tsp-rw"><div class="tsp-rwl">${title}${map}${hero}</div>${sessions}</div>`;
 }
 
-// ---------- (6) Paddock Chatter: r/formula1's top posts of the day ----------
+// ---------- (6) Paddock Chatter: the newest worthwhile posts on r/formula1 and r/F1Technical ----------
 const tspAgo = iso => { const m = Math.round((Date.now() - Date.parse(iso)) / 6e4); return !Number.isFinite(m) || m < 0 ? "" : m < 60 ? `${Math.max(1, m)}m ago` : m < 48 * 60 ? `${Math.round(m / 60)}h ago` : ""; };
 function tspChatter() {
-  const C = LIVE.look_f1_chatter?.value, posts = (C?.posts || []).filter(p => p.title && /^https:\/\/(www\.)?reddit\.com\//.test(p.url || ""));
+  const C = LIVE.look_f1_chatter?.value, posts = (C?.posts || []).filter(p => p.title && /^https:\/\/(www\.)?reddit\.com\//.test(p.url || "") && (!p.at || tspAgo(p.at)));
   if (posts.length < 3) return "";
-  return `<div class="tsp-card tsp-chat"><div class="tsp-k">Paddock chatter <span>Top of ${esc(C.sub || "r/formula1")} today</span></div><ol>${posts.map(p => {
-    const meta = [C.sub || "r/formula1", p.author, p.at ? tspAgo(p.at) : "", p.comments != null ? `${inr(p.comments, 0)} comments` : ""].filter(Boolean);
-    return `<li><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a><small class="tnum">${meta.map(esc).join(" · ")}</small></li>`;
+  const subs = (C.subs || ["r/formula1"]).join(" and ");
+  return `<div class="tsp-card tsp-chat"><div class="tsp-k">Paddock chatter <span>${esc(C.order === "newest" ? `Newest on ${subs}` : `Top of ${subs} today`)}</span></div><ol>${posts.slice(0, 4).map(p => {
+    const meta = [p.outlet || p.domain, p.sub, p.at ? tspAgo(p.at) : ""].filter(Boolean);
+    const tags = (p.tags || []).slice(0, 2).map(t => `<span class="tsp-tag">${esc(t)}</span>`).join("");
+    return `<li><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a><small>${tags}<span class="tnum">${meta.map(esc).join(" · ")}</span></small></li>`;
   }).join("")}</ol></div>`;
 }
 
@@ -96,7 +132,7 @@ function tspPaddock() {
   if (!weekend && !chatter && !facts && !champ && !last) return stories;
   let calendar = "";
   if (N?.upcoming?.length) calendar = `<div class="f1-next"><h5>${N.next_season ? `${esc(N.race.season)} season` : "Next races"}</h5><ol>${N.upcoming.map(r => `<li><span class="flag" aria-hidden="true">${esc(r.flag)}</span><b>${esc(r.name.replace(/ Grand Prix$/, ""))}</b><small class="tnum">${r.round ? `R${r.round} · ` : ""}${esc(sparkLabel(istDate(new Date(r.date))))}</small></li>`).join("")}</ol></div>`;
-  const under = facts || chatter ? `<div class="tsp-under${facts && chatter ? " two" : ""}">${facts}${chatter}</div>` : "";
+  const under = facts || chatter ? `<div class="tsp-under">${facts}${chatter}</div>` : "";
   return `<div class="tsp-f1">${weekend}${under}</div>` + racePreview(D.preview, N?.race) + (stories ? `<div class="f1-stories">${stories}</div>` : "") +
     fold("f1-tables", [champ && "Championship", last && "Last race"].filter(Boolean).join(" and "), [
       max ? `${esc(lastName(f1Name(max)))} ${ordinal(max.pos)} on ${max.points}${lead && lead !== max ? `, ${esc(lastName(f1Name(lead)))} leads on ${lead.points}` : ""}` : "",
@@ -185,8 +221,8 @@ function tspTitleRace() {
 ${ylab.join("")}<span class="el" style="top:${yt.toFixed(2)}%">${esc(them.abbr || them.short)} <b class="tnum">${them.points}</b></span><span class="el" style="top:${yu.toFixed(2)}%">${esc(us.abbr || us.short)} <b class="tnum">${us.points}</b></span>
 <span class="gx">Game 1</span><span class="gx r">Game ${n}</span></div>`;
   const key = `<p class="tsp-key"><span><i style="--c:${TSP_US}"></i>${esc(us.short)}</span><span><i style="--c:${TSP_THEM}"></i>${esc(them.short)}</span></p>`;
-  const nx = R.next, next = nx?.date ? `<p class="tsp-next"><b>Next:</b> ${nx.home ? "v" : "at"} ${esc(nx.opponent)}, ${nx.time_confirmed ? `${esc(tspDay(nx.date))}, ${esc(tspTime(nx.date))} IST` : `${esc(tspDay(nx.date))}, time TBC`}</p>` : "";
-  return `<div class="tsp-card tsp-race"><div class="tsp-k">Title race <span>${esc(R.league || "La Liga")} points after each match</span></div><p class="tsp-gap">${crest(lead?.id || us.id, "")}${line}</p>${svg}${key}${next}</div>`;
+  // (no "Next" line here: the paper's fixture list straight under the cards opens on that match)
+  return `<div class="tsp-card tsp-race"><div class="tsp-k">Title race <span>${esc(R.league || "La Liga")} points after each match</span></div><p class="tsp-gap">${crest(lead?.id || us.id, "")}${line}</p>${svg}${key}</div>`;
 }
 
 // ---------- (7) Madridismo in the trial: the two cards, then the paper's own block less its "Last:" line ----------

@@ -26,7 +26,16 @@ html.look-trial .tsp-s+.tsp-s{box-shadow:0 -1px 0 var(--rule2)}
 html.look-trial .tsp-s.on{background:color-mix(in srgb,var(--d-sport) 9%,var(--g-card));border-left-color:var(--d-sport);box-shadow:none}
 html.look-trial .tsp-s.on+.tsp-s{box-shadow:none}
 html.look-trial .tsp-s.done{color:var(--muted)}
-html.look-trial .tsp-sn{font:600 15px/1.3 var(--sans);color:inherit;min-width:0}
+html.look-trial .tsp-sn{display:flex;flex-wrap:wrap;align-items:center;gap:2px 12px;font:600 15px/1.3 var(--sans);color:inherit;min-width:0}
+html.look-trial .tsp-tops{display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px 10px;font:500 13px/1.3 var(--sans);color:var(--ink2)}
+html.look-trial .tsp-top,html.look-trial .tsp-tv{display:inline-flex;align-items:center;gap:6px}
+html.look-trial .tsp-top i{display:inline-block;width:3px;height:14px;border-radius:2px;background:var(--muted)}
+html.look-trial .tsp-top b{font-weight:700;color:var(--ink);letter-spacing:.02em}
+html.look-trial .tsp-top.me b{color:var(--d-sport)}
+html.look-trial .tsp-mx{font-weight:600;color:var(--d-sport);white-space:nowrap}
+html.look-trial .tsp-mx::before{content:"·";margin-right:10px;color:var(--muted);font-weight:400}
+html.look-trial .tsp-k>span:not(.watch){white-space:nowrap}
+html.look-trial .vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 html.look-trial .tsp-in{margin-left:6px;font:500 13px/1.3 var(--sans);color:var(--d-sport);white-space:nowrap}
 html.look-trial .tsp-done{margin-left:6px;font:500 12px/1 var(--sans);color:var(--muted)}
 html.look-trial .tsp-st{display:flex;flex-direction:column;align-items:flex-end;text-align:right;font-family:var(--sans);white-space:nowrap}
@@ -40,12 +49,13 @@ html.look-trial .tsp-facts{padding:4px 2px}
 html.look-trial .tsp-facts p:first-child{margin-top:0}
 
 /* ---------- (6) Paddock Chatter ---------- */
-html.look-trial .tsp-chat ol{list-style:none;margin:10px 0 0;padding:0}
-html.look-trial .tsp-chat li{padding:10px 0;border-top:1px solid var(--rule2)}
-html.look-trial .tsp-chat li:first-child{border-top:0}
-html.look-trial .tsp-chat a{display:block;font:500 15.5px/1.4 var(--sans);color:var(--ink);text-decoration:none}
+html.look-trial .tsp-chat ol{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:28px}
+html.look-trial .tsp-chat li{padding:10px 0;border-top:1px solid var(--rule2);min-width:0}
+html.look-trial .tsp-chat li:nth-child(-n+2){border-top:0}
+html.look-trial .tsp-chat a{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font:500 15.5px/1.4 var(--sans);color:var(--ink);text-decoration:none;overflow-wrap:anywhere}
 html.look-trial .tsp-chat a:hover{text-decoration:underline;text-decoration-color:var(--d-sport);text-decoration-thickness:2px;text-underline-offset:3px}
-html.look-trial .tsp-chat small{display:block;margin-top:3px;font:500 12.5px/1.3 var(--sans);color:var(--muted)}
+html.look-trial .tsp-chat small{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-top:5px;font:500 12.5px/1.3 var(--sans);color:var(--muted)}
+html.look-trial .tsp-tag{display:inline-block;padding:2px 6px;border-radius:4px;background:color-mix(in srgb,var(--d-sport) 12%,var(--g-card));color:var(--d-sport);font:700 11px/1.2 var(--sans);letter-spacing:.06em;text-transform:uppercase}
 
 /* ---------- (7) Madridismo: the Last Result and Title Race cards ---------- */
 html.look-trial .tsp-mad{display:grid;gap:16px;margin:0 0 20px}
@@ -93,6 +103,8 @@ html.look-trial .tsp-next b{color:var(--ink)}
 @media (max-width:900px){
   html.look-trial .tsp-rw{grid-template-columns:minmax(0,1fr);gap:18px;padding:18px 16px}
   html.look-trial .tsp-under.two,html.look-trial .tsp-mad.two{grid-template-columns:minmax(0,1fr)}
+  html.look-trial .tsp-chat ol{grid-template-columns:minmax(0,1fr)}
+  html.look-trial .tsp-chat li:nth-child(2){border-top:1px solid var(--rule2)}
 }
 @media (max-width:560px){
   html.look-trial .tsp-card{padding:16px 14px}

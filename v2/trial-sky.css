@@ -6,7 +6,7 @@ html.look-trial .tsky{--tsk-rain:#2f6fd0;--tsk-in:var(--g-card2,#e9e6df);font-fa
 html.look-trial .tsky p{margin:0;max-width:none}
 html.look-trial .tsk-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:28px;align-items:stretch}
 html.look-trial .tsk-now{display:flex;flex-direction:column}
-html.look-trial .tsk-now .tsk-feel{margin-top:auto!important;padding-top:14px}
+html.look-trial .tsk-now .tsk-feel{margin-top:18px!important}
 html.look-trial .tsk-kick{font:700 12.5px/1.2 var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--d-home)}
 html.look-trial .tsk-big{display:flex;align-items:center;gap:14px;margin:6px 0 2px}
 html.look-trial .tsk-t{font:800 clamp(76px,8vw,112px)/.9 var(--sans);letter-spacing:-.05em;font-variant-numeric:tabular-nums;color:var(--ink)}
@@ -156,8 +156,9 @@ html.look-trial .tsx-q{font:500 18px/1.3 var(--hl);color:var(--ink);text-decorat
 html.look-trial .tsx .tsb-v{margin-left:0}
 html.look-trial .tsb>.figsrc{margin-top:14px}
 @media (max-width:480px){
-  html.look-trial .tsb-r,html.look-trial .tsx-r{grid-template-columns:32px minmax(0,1fr)}
-  html.look-trial .tsx-r .tsb-v{grid-column:2}
+  html.look-trial .tsb-r{grid-template-columns:32px minmax(0,1fr)}
+  html.look-trial .tsx-r{grid-template-columns:32px minmax(0,1fr) auto;gap:4px 8px}
+  html.look-trial .tsx .tsb-v{font-size:12.5px}
   html.look-trial .tsb-n{font-size:19px}
   html.look-trial .tsb-q{font-size:18px}
   html.look-trial .tsx-q{font-size:17px}

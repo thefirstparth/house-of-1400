@@ -59,8 +59,8 @@ function tskMoon(at = Date.now()) {
 function tskMoonSVG(x, y, r, m, id) {
   const dx = (m.phase < 0.5 ? -1 : 1) * 2.1 * r * m.lit;
   return `<defs><mask id="${id}"><circle cx="${x}" cy="${y}" r="${r}" fill="#fff"/><circle cx="${(x + dx).toFixed(1)}" cy="${y}" r="${(r * 1.05).toFixed(1)}" fill="#000"/></mask></defs>
-<circle cx="${x}" cy="${y}" r="${r + 7}" fill="#9aa3c0" opacity=".16"/><circle cx="${x}" cy="${y}" r="${r}" fill="#c9cee0" stroke="#7d86a3" stroke-width="1"/>
-<circle cx="${x}" cy="${y}" r="${r}" fill="#f4f1e6" mask="url(#${id})"/><circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#7d86a3" stroke-width="1.2"/>`;
+<circle cx="${x}" cy="${y}" r="${r + 7}" fill="#9aa3c0" opacity=".16"/><circle cx="${x}" cy="${y}" r="${r}" fill="#8e97b5"/>
+<circle cx="${x}" cy="${y}" r="${r}" fill="#fbf8ec" mask="url(#${id})"/><circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#7d86a3" stroke-width="1.2"/>`;
 }
 // The sun's arc between sunrise and sunset, or the night's between sunset and sunrise, with where we are in it now
 function tskArc(c, today, now) {
@@ -79,7 +79,7 @@ function tskArc(c, today, now) {
 ${f > 0.004 ? `<path d="M${cx - R} ${cy}A${R} ${R} 0 0 1 ${x.toFixed(1)} ${y.toFixed(1)}" fill="none" stroke="${day ? "#d99a1e" : "#7d86a3"}" stroke-width="3" stroke-linecap="round"/>` : ""}
 <line x1="14" y1="${cy}" x2="286" y2="${cy}" stroke="var(--rule)" stroke-width="1.5"/>
 ${day ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="15" fill="#f2c14e" opacity=".28"/>
-<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8" fill="#f2c14e" stroke="#d99a1e" stroke-width="1.5"/>` : tskMoonSVG(+x.toFixed(1), +y.toFixed(1), 9, moon, "tsk-moon")}</svg>`;
+<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8" fill="#f2c14e" stroke="#d99a1e" stroke-width="1.5"/>` : tskMoonSVG(+x.toFixed(1), +y.toFixed(1), 11, moon, "tsk-moon")}</svg>`;
   const left = day ? "Sunrise" : "Sunset", right = day ? "Sunset" : "Sunrise", mid = day ? `${tskDur(b - now)} of daylight left` : `${tskDur(b - now)} to sunrise`;
   return `<figure class="tsk-arc">${svg}<figcaption><span><small>${left}</small>${esc(tskT(a))}</span><b>${esc(mid)}${day ? "" : `<small>${esc(moon.name)}</small>`}</b><span class="r"><small>${right}</small>${esc(tskT(b))}</span></figcaption></figure>`;
 }
@@ -133,7 +133,7 @@ function tskReport() {
   // one short line: the rain to come and, before the afternoon is out, how warm it gets
   const bits = [];
   if (peak && peak.rain >= 35) bits.push(`${peak.rain >= 60 ? "Rain likely" : "Some chance of rain"} ${tskWhen(peak, td)}.`);
-  else if (peak && withRain.length >= 3) bits.push(`Dry until ${tskWhen(parts[parts.length - 1], td)}.`);
+  else if (peak && withRain.length >= 3) bits.push(`Dry through ${tskWhen(parts[parts.length - 1], td)}.`);
   if (Number.isFinite(today?.max) && hr < 15 && today.max - k.temp >= 2) bits.push(`Up to ${tskDeg(today.max)} today.`);
   const word = tskWord(k.code, night);
   let h = `<div class="tsk-top"><div class="tsk-now"><p class="tsk-kick">${esc(B.name)}, ${partNow}</p>
@@ -146,7 +146,8 @@ ${today ? tskBar(today.min, today.max, k.temp) : ""}</div>`;
   const aq = B.air?.now;
   if (Number.isFinite(aq) && aq >= 0) { const [w, tone] = TSK_AIR[aqiCat(aq)[2]] || ["", ""]; meters.push(tskMeter("Air", Math.round(aq), "", w, aq / 300, tone, "US AQI, this hour")); }
   // UV by day (from Open-Meteo's hour; a reading below zero is not a reading); at night the meter is not drawn
-  if (!night && Number.isFinite(k.uv) && k.uv >= 0 && k.uv < 20) { const [w, tone] = TSK_UV(k.uv); meters.splice(1, 0, tskMeter("UV", Math.round(k.uv), "", w, k.uv / 11, tone, "UV index, this hour")); }
+  const fresh = Math.abs(now - tskP(k.time)) < 90 * 6e4; // the reading's own hour, not one held from the night
+  if (!night && fresh && Number.isFinite(k.uv) && k.uv >= 0 && k.uv < 20) { const [w, tone] = TSK_UV(k.uv); meters.splice(1, 0, tskMeter("UV", Math.round(k.uv), "", w, k.uv / 11, tone, "UV index, this hour")); }
   // the rain is in the parts below; without them, today's chance here
   if (!parts.length && Number.isFinite(today?.rain_prob)) meters.push(tskMeter("Rain", Math.round(today.rain_prob), "%", "Today", today.rain_prob / 100, "tsk-wet"));
   const arc = tskArc(B, today, now);
@@ -184,12 +185,12 @@ const tsbVol = t => String(t || "").replace(/\d+(\.\d+)?/, n => (n >= 1e6 ? +(n 
 const tsbAgo = ms => { const m = Math.round((Date.now() - ms) / 6e4); if (!(m >= 0) || m > 72 * 60) return ""; return m < 60 ? `${Math.max(1, m)}m` : m < 48 * 60 ? `${Math.round(m / 60)}h` : `${Math.round(m / 1440)}d`; };
 const tsbN = n => (n >= 1e6 ? `${+(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}K` : String(n));
 // Google hands searches over as typed, mostly in lower case: shown as a title would be ("Man Utd vs Brentford"); a
-// search with a capital in it is left as it is. X's shouted campaign names ("SCOUT IS ABSOLUTELY RIGHT") are shown in
-// title case too, so the column does not shout; a short one ("BCCI") stays.
+// search with a capital in it is left as it is. X's shouted names of two words or more ("SCOUT IS ABSOLUTELY RIGHT")
+// are shown in title case too, so the column does not shout; one word ("BCCI") stays.
 const TSB_SMALL = new Set(["vs", "v", "of", "and", "the", "in", "on", "at", "for", "to", "a", "de", "la", "el", "y"]);
-const tsbTitle = t => String(t).split(" ").map((w, i) => (i > 0 && TSB_SMALL.has(w) ? w : /^([a-z]\.)+$/.test(w) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1))).join(" ");
+const tsbTitle = t => String(t).split(" ").map((w, i) => (i > 0 && TSB_SMALL.has(w) ? w : /^([a-z]\.)+$/.test(w) ? w.toUpperCase() : w.replace(/(^|-)(\p{Ll})/gu, (m, a, b) => a + b.toUpperCase()))).join(" ");
 const tsbCase = t => (t === t.toLowerCase() ? tsbTitle(t) : t);
-const tsbShout = t => (/\p{Lu}/u.test(t) && t === t.toUpperCase() && t.split(/\s+/).length >= 3 ? tsbTitle(t.toLowerCase()) : t);
+const tsbShout = t => (/\p{Lu}/u.test(t) && t === t.toUpperCase() && t.split(/\s+/).length >= 2 ? tsbTitle(t.toLowerCase()) : t);
 // the edition's headlines as word lists, once per edition, for "In today's paper"
 let TSB_HEADS = null, TSB_HEADS_FOR = null;
 const tsbWords = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").split(/[^\p{L}\p{M}\p{N}]+/u).filter(w => w.length > 1 && !TSB_SMALL.has(w));
@@ -267,14 +268,17 @@ function tsbRepaint(btn, sel) {
   el.querySelector(sel)?.focus();
   tsbFit();
 }
-// Side by side, X's list shows as many whole rows as fit beside the searches (five at least); stacked, the first eight
+// Side by side, X's list shows as many whole rows as fit beside the searches (five at least); stacked, the first five
 function tsbFit() {
   const box = document.querySelector('#talk .tsb.has-x'); if (!box) return;
   const g = box.querySelector(".tsg"), rows = [...box.querySelectorAll(".tsx-r")]; if (!g || !rows.length) return;
+  // again whenever the searches' column changes height (the fonts arriving, a wider window, the top 10 opened)
+  if (!g.dataset.fit && typeof ResizeObserver === "function") { g.dataset.fit = "1"; new ResizeObserver(() => tsbFit()).observe(g); }
   rows.forEach(r => (r.hidden = false));
   const beside = getComputedStyle(box.querySelector(".tsb-cols")).display === "grid" && box.querySelector(".tsx").offsetTop === g.offsetTop;
-  if (!beside) { rows.forEach((r, i) => (r.hidden = i >= 8)); return; }
-  const limit = g.getBoundingClientRect().bottom;
+  if (!beside) { rows.forEach((r, i) => (r.hidden = i >= 5)); return; }
+  // the searches' own bottom (the grid stretches their column to the row, so measure what is in it)
+  const limit = Math.max(...[...g.children].map(c => c.getBoundingClientRect().bottom));
   rows.forEach((r, i) => { r.hidden = i >= 5 && r.getBoundingClientRect().bottom > limit + 2; });
 }
 function trialSearchBar() {

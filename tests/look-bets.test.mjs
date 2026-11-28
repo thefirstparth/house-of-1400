@@ -1,9 +1,10 @@
 // The trial's bets feed (lib/look-bets.js): ids, outcome tokens, the series, the moves and the headlines around them.
-// Fixtures in tests/fixtures/look-bets (real gamma events, a real CLOB history and a real Google News search, 27 Nov 2026).
+// Fixtures in tests/fixtures/look-bets (real gamma events, a real CLOB history and a real Google News search, 27 Nov 2026;
+// event-taipei-resolved.json is the same market just after Polymarket settled it, 28 Nov, trimmed to six of its markets).
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { parseIds, outcomeTokens, resample, seriesOf, movesIn, pickMoves, parseRss, pickHeadlines, newsQuery, nameWorth, namesIn, look_bet_history, LOOK_BETS, LOOK_BETS_CACHE } from "../lib/look-bets.js";
+import { parseIds, outcomeTokens, resample, seriesOf, movesIn, pickMoves, parseRss, pickHeadlines, newsQuery, nameWorth, nameHead, namesIn, settlement, rulesOf, allSeries, look_bet_history, look_bet_all, LOOK_BETS, LOOK_BETS_CACHE } from "../lib/look-bets.js";
 
 const F = n => readFileSync(new URL(`./fixtures/look-bets/${n}`, import.meta.url), "utf8");
 const J = n => JSON.parse(F(n));
@@ -115,10 +116,74 @@ test("search words: the outcome's name with the question's names first; no date 
   assert.equal(nameWorth("Puma Shen"), true);
 });
 
-test("the feed: registered with a cache entry; no ids is a failure, not an empty success", async () => {
-  assert.equal(typeof LOOK_BETS.look_bet_history, "function");
-  assert.deepEqual(LOOK_BETS_CACHE.look_bet_history.length, 2);
+test("settled: a resolved market names its winner; an open one is not settled", () => {
+  const done = J("event-taipei-resolved.json")[0];
+  const s = settlement(done);
+  assert.equal(s.winner, "Chiang Wan-an");
+  assert.equal(s.at, Date.parse("2026-11-28T16:57:33Z"));
+  assert.equal(settlement(J("event-taipei.json")), null);
+  // a market closed but not yet resolved, or with two runners at 1, is not called
+  assert.equal(settlement({ ...done, markets: done.markets.map((m, i) => (i === 0 ? { ...m, umaResolutionStatus: "proposed" } : m)) }), null);
+  assert.equal(settlement({ ...done, markets: done.markets.map((m, i) => (i === 1 ? { ...m, outcomePrices: '["1","0"]' } : m)) }), null);
+  // a yes/no market's winner is Yes or No
+  assert.deepEqual(settlement({ markets: [{ closed: true, umaResolutionStatus: "resolved", outcomes: '["Yes","No"]', outcomePrices: '["0","1"]' }] }), { winner: "No", at: null });
+});
+
+test("outcome tokens: a settled market still gives its named runners' lines, never the placeholders", () => {
+  const t = outcomeTokens(J("event-taipei-resolved.json")[0]);
+  assert.deepEqual(t.map(o => o.name), ["Chiang Wan-an", "Puma Shen", "Kuo Hsi"]);
+  assert.ok(t.every(o => /^\d{20,}$/.test(o.token)));
+});
+
+test("how it is decided: the first sentences, no em dashes, no links", () => {
+  const long = "This market resolves Yes if X happens — as reported by https://example.com/rules. " + "More words here. ".repeat(40);
+  const r = rulesOf(long);
+  assert.ok(r.length <= 421);
+  assert.ok(!r.includes("—") && !r.includes("http"));
+  assert.match(r, /^This market resolves Yes if X happens, as reported by/);
+  assert.match(r, /\.$/);
+  assert.equal(rulesOf(""), "");
+});
+
+test("moves: a side that is not a name is told by the named side that moved with it", () => {
+  const up = [...Array(40).fill(25), ...Array(40).fill(45)], down = up.map(v => 75 - v + 25);
+  const o = [{ name: "None before 2027", t: 80 * H, w: { t0: 0, dt: H, p: down } }, { name: "Netanyahu - Israel PM", t: 80 * H, w: { t0: 0, dt: H, p: up } }];
+  const mv = pickMoves(o);
+  assert.equal(mv.length, 1);
+  assert.equal(mv[0].name, "Netanyahu - Israel PM");
+  assert.equal(mv[0].pts, 20);
+});
+
+test("headlines: with no name to hold on to, common words match nothing; a runner is held to its telling name", () => {
+  const at = Date.parse("2026-11-26T04:00:00Z"), w = { from: at - 1, to: at + 1, moveAt: at };
+  const junk = [{ title: "Thought Leader: the path to reclaiming your power", source: "A", url: "a", at }];
+  assert.deepEqual(pickHeadlines(junk, { title: "Next leader out of power before 2027?", name: "None before 2027", ...w }), []);
+  const heads = [
+    { title: "Leader of Israel's largest Arab party makes his case", source: "B", url: "b", at },
+    { title: "Will Netanyahu be forced from power? The coming days will decide", source: "C", url: "c", at },
+  ];
+  const got = pickHeadlines(heads, { title: "Next leader out of power before 2027?", name: "Netanyahu - Israel PM", ...w });
+  assert.deepEqual(got.map(g => g.url), ["c"]);
+  assert.equal(nameHead("Netanyahu - Israel PM"), "Netanyahu");
+  assert.equal(nameHead("Lula (Brazil)"), "Lula");
+  assert.equal(nameHead("Alberto Núñez Feijóo"), "Alberto Núñez Feijóo");
+  assert.equal(newsQuery("Next leader out of power before 2027?", "Netanyahu - Israel PM"), "Netanyahu leader power");
+});
+
+test("since it opened: one point a day, the latest price kept as the last point", () => {
+  const h = [{ t: 0, p: 0.1 }, { t: 86400 * 2 + 5, p: 0.2 }, { t: 86400 * 3 + 7200, p: 0.25 }];
+  const a = allSeries(h);
+  assert.equal(a.dt, 86400);
+  assert.deepEqual(a.p, [10, 10, 10, 20]); // the 2nd-day trade lands five seconds after its grid point
+  assert.deepEqual(a.last, [86400 * 3 + 7200, 25]);
+  assert.equal(allSeries([{ t: 1, p: 0.5 }]), null);
+});
+
+test("the feeds: registered with a cache entry; no ids is a failure, not an empty success", async () => {
+  for (const k of ["look_bet_history", "look_bet_all"]) { assert.equal(typeof LOOK_BETS[k], "function"); assert.equal(LOOK_BETS_CACHE[k].length, 2); }
   const r = await look_bet_history(new URLSearchParams({ ids: "ks:KXFOO" }));
   assert.equal(r.ok, false);
   assert.equal(r.value, null);
+  const a = await look_bet_all(new URLSearchParams({ id: "ks:KXFOO" }));
+  assert.equal(a.ok, false);
 });
