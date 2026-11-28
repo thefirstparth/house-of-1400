@@ -1388,3 +1388,12 @@ missing. Both checked against the editions' snapshots of 3-9 Nov.
   pairs and saves /listen/sample-<date>-<n>.mp3 beside the episode; the feed never changes. It needs a SARVAM_API_KEY
   Actions secret (Parth's own account; Rs 100 free credit at sign-up, then pay as you go, about Rs 15 a pair). The
   writer stays Gemini. Whether to switch voices is Parth's call after he listens.
+
+## Settled bets print as results (28 Nov 2026)
+- The bug: once Polymarket settles a market, every runner in it is closed. lib/live.js shapePolymarket only reads open
+  runners, so the live feed came back with no prices for it, and the Betting Window, Page One's list and the market
+  sheet quietly fell back to the edition's press-time chances while the footer said "Prices updated" (Manchester United
+  42% after Brentford won 4-0; the Taipei and Taoyuan mayoral races too). Fixed (Parth: "fix the live betting bug now"):
+  the live feed now carries `settled: {winner, at}` (lib/live.js settlement: every runner closed and resolved, exactly
+  one paid), and the page prints "Won" with the winner and the settle date; Since we printed lists it as a result. A
+  market the feed answered without a price says "price at press time".
