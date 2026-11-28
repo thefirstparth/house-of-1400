@@ -1,23 +1,17 @@
 {
-  "date": "2026-11-27",
-  "from": "2026-11-26",
+  "date": "2026-11-28",
+  "from": "2026-11-27",
   "carry": [
     {
-      "id": "pm:taipei-mayor-election-winner-20260813125857100",
-      "title": "Taipei Mayor Election Winner",
-      "since": "2026-11-16",
-      "reason": "#1 by 24h volume"
+      "id": "pm:next-french-presidential-election",
+      "title": "Next French Presidential Election",
+      "since": "2026-10-09",
+      "reason": "#2 by 24h volume"
     },
     {
       "id": "pm:next-prime-minister-of-spain-20260625005215443",
       "title": "Next Prime Minister of Spain?",
       "since": "2026-11-26",
-      "reason": "#2 by 24h volume"
-    },
-    {
-      "id": "pm:next-french-presidential-election",
-      "title": "Next French Presidential Election",
-      "since": "2026-10-09",
       "reason": "#3 by 24h volume"
     },
     {
@@ -33,31 +27,37 @@
       "reason": "#5 by 24h volume"
     },
     {
+      "id": "pm:spain-general-election-winner",
+      "title": "Spain General Election Winner",
+      "since": "2026-11-27",
+      "reason": "#10 by 24h volume"
+    },
+    {
       "id": "pm:israel-x-iran-ceasefire-continues-throughptptpt-20260716224448963",
       "title": "Israel x Iran ceasefire continues through...?",
       "since": "2026-11-12",
-      "reason": "#7 by 24h volume"
+      "reason": "#11 by 24h volume"
     }
   ],
   "dropped": [
     {
-      "id": "pm:will-anthropics-valuation-hit-by-december-31",
-      "title": "Will Anthropic’s valuation hit __ by December 31?",
-      "why": "cooled: outside the ranking by volume, moved 1.4 pts"
+      "id": "pm:taipei-mayor-election-winner-20260813125857100",
+      "title": "Taipei Mayor Election Winner",
+      "why": "ended or decided, no next market in the same line"
     },
     {
-      "id": "pm:which-math-problems-will-ai-solve-in-2026",
-      "title": "Which math problems will AI solve in 2026?",
+      "id": "pm:next-leader-out-of-power-before-2027-no-starmer-or-petro-20260630194619406",
+      "title": "Next leader out of power before 2027?",
       "why": "carry cap of 6"
     },
     {
-      "id": "pm:jensen-huang-out-as-nvidia-ceo-again-byptptpt",
-      "title": "Jensen Huang out as NVIDIA CEO again by...?",
+      "id": "pm:epl-hul-not-2026-12-02",
+      "title": "Hull City AFC vs. Nottingham Forest FC",
       "why": "carry cap of 6"
     },
     {
-      "id": "pm:venezuela-leader-end-of-2026",
-      "title": "Venezuela leader end of 2026?",
+      "id": "pm:what-technical-failure-caused-the-faas-nationwide-ground-stop",
+      "title": "What technical failure caused the FAA's nationwide ground stop?",
       "why": "carry cap of 6"
     }
   ]

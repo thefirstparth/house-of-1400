@@ -1,20 +1,8 @@
 {
-  "date": "2026-11-27",
+  "date": "2026-11-28",
   "source": "Cricbuzz",
-  "checked_at": "2026-11-27T08:43:13.539Z",
+  "checked_at": "2026-11-28T08:42:50.217Z",
   "matches": [
-    {
-      "desc": "2nd Test",
-      "format": "TEST",
-      "series": "India tour of New Zealand 2026",
-      "opponent": "New Zealand",
-      "start": "2026-11-26T22:00:00.000Z",
-      "ist": "Fri 27 Nov, 03:30",
-      "time_announced": true,
-      "ground": "Hagley Oval",
-      "city": "Christchurch",
-      "url": "https://www.cricbuzz.com/live-cricket-scores/161296"
-    },
     {
       "desc": "1st ODI",
       "format": "ODI",
@@ -245,19 +233,6 @@
     }
   ],
   "series": [
-    {
-      "name": "India tour of New Zealand 2026",
-      "opponent": "New Zealand",
-      "from": "2026-11-26",
-      "parts": [
-        {
-          "format": "TEST",
-          "total": 2,
-          "played": 1
-        }
-      ],
-      "now": true
-    },
     {
       "name": "Sri Lanka tour of India, 2026",
       "opponent": "Sri Lanka",
