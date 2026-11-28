@@ -1,0 +1,28 @@
+# A voice trial (Parth, 28 Nov 2026): the day's published script voiced again with Sarvam's Bulbul
+# (scripts/podcast/sarvam.mjs), saved as /listen/sample-<date>-<n>.mp3 beside the episode. Never touches the feed.
+# Spends Sarvam credit (about Rs 15 a voice pair on v4 Flash): run only when Parth asks.
+name: sarvam sample
+on:
+  workflow_dispatch:
+    inputs:
+      date: { description: "Episode date (YYYY-MM-DD); empty for today", required: false, default: "" }
+      model: { description: "bulbul:v4-flash or bulbul:v3", required: false, default: "bulbul:v4-flash" }
+      pairs: { description: "Voice pairs, Ashu+Tarun, comma-separated; empty for the two default pairs", required: false, default: "" }
+concurrency: { group: sarvam-sample, cancel-in-progress: false }
+jobs:
+  sample:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - run: sudo apt-get update -qq >/dev/null && sudo apt-get install -y -qq ffmpeg >/dev/null && npm install --no-save --no-audit --no-fund @vercel/blob
+      - name: Voice the script with Sarvam
+        env:
+          SARVAM_API_KEY: ${{ secrets.SARVAM_API_KEY }}
+          BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }}
+        run: node scripts/podcast/sarvam.mjs ${{ inputs.date }} --model=${{ inputs.model }} ${{ inputs.pairs && format('--pairs={0}', inputs.pairs) || '' }}
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with: { name: sarvam-sample, path: .podcast/sarvam/sample-*.mp3, retention-days: 7, if-no-files-found: ignore, include-hidden-files: true }

@@ -5,7 +5,8 @@
 // Since 14 Oct the show is listed (Apple Podcasts, Spotify): the public address is /listen (the feed) and
 // /listen/<file>. The folder is the one in the store that holds the feed (there is one), looked up once per instance,
 // so it never depends on which copy of the Blob token this function has. The old secret address still works.
-const OK_K = /^[a-f0-9]{24}$/, OK_F = /^(feed\.xml|\d{4}-\d{2}-\d{2}(-v\d+)?\.(mp3|vtt))$/;
+// (28 Nov 2026) also sample-<date>-<n>.mp3: a voice trial beside the day's episode (scripts/podcast/sarvam.mjs), not in the feed
+const OK_K = /^[a-f0-9]{24}$/, OK_F = /^(feed\.xml|\d{4}-\d{2}-\d{2}(-v\d+)?\.(mp3|vtt)|sample-\d{4}-\d{2}-\d{2}-\d\.mp3)$/;
 let folderOf = null;
 // (31 Oct 2026) remembered in Redis too (lib/state.js), so a new server does not list the store to find it
 async function ownFolder() {

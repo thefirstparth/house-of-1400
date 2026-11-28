@@ -1381,3 +1381,10 @@ missing. Both checked against the editions' snapshots of 3-9 Nov.
   source", "we checked"). "A source said" is a news hedge and is allowed.
 - Fix 2: no run holds a script back any more. Every run publishes whatever it gets; the evening runs swap a plain-script
   episode for a better take. GitHub's scheduled runs are too unreliable to wait on.
+
+## A Sarvam voice trial (28 Nov 2026)
+- Parth asked whether Sarvam's Bulbul voices could do the podcast better, and for a run on the day's script. A separate
+  workflow (sarvam sample, scripts/podcast/sarvam.mjs) voices a published transcript with Bulbul v4 Flash in two voice
+  pairs and saves /listen/sample-<date>-<n>.mp3 beside the episode; the feed never changes. It needs a SARVAM_API_KEY
+  Actions secret (Parth's own account; Rs 100 free credit at sign-up, then pay as you go, about Rs 15 a pair). The
+  writer stays Gemini. Whether to switch voices is Parth's call after he listens.
