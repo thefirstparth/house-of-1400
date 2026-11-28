@@ -602,7 +602,9 @@ function betsHTML(k = 3) {
   const list = betsPick(k); if (!list.length) return "";
   // live prices where the market is in the live feed (every 5 minutes), else the edition's own
   const liveM = !LIVE.betting?.stale && LIVE.betting?.value?.markets || [], idOf = b => (b.id?.includes(":") ? b.id : `pm:${b.id}`);
-  return `<ol class="bets" style="--c:var(--d-news)">${list.map(b => { const L = liveM.find(m => m.id === idOf(b)), o = [...((L?.outcomes?.length ? L.outcomes : b.outcomes) || [])].sort((x, y) => y.prob - x.prob)[0]; if (!o) return "";
+  return `<ol class="bets" style="--c:var(--d-news)">${list.map(b => { const { L, settled } = betNow(b);
+    if (settled) return `<li><button type="button" class="bet" data-bet="${esc(b.id)}" aria-label="${esc(b.title)}: settled, in detail"><span class="t">${esc(vsV(b.title).replace(/^UEFA /, ""))}</span><span class="o"><b>${/^(yes|no)$/i.test(settled.winner) ? esc(settled.winner) : "Won"}</b><span>${esc(/^(yes|no)$/i.test(settled.winner) ? `Settled ${betSettledDay(settled)}` : outcomeLabel(settled.winner))}</span></span></button></li>`;
+    const o = [...((L ? L.outcomes : b.outcomes) || [])].sort((x, y) => y.prob - x.prob)[0]; if (!o) return "";
     // a real button in each list item (QA panel, 20 Oct 2026: the list keeps its items, the button its role)
     return `<li><button type="button" class="bet" data-bet="${esc(b.id)}" aria-label="${esc(b.title)}: in detail"><span class="t">${esc(vsV(b.title).replace(/^UEFA /, ""))}</span><span class="o"><b class="tnum">${Math.round(o.prob)}%</b><span>${esc(outcomeLabel(o.name))}</span><span class="bar"><i style="width:${Math.max(0, Math.min(100, o.prob))}%"></i></span></span></button></li>`; }).join("")}</ol>`;
 }
@@ -672,6 +674,8 @@ function sinceItems() {
   const settled = Lm => (Lm.outcomes || []).some(o => o.prob >= 99 || (Lm.outcomes.length === 2 && o.prob <= 1));
   const moves = (E.betting || []).filter(b => !decided.some(m => b.title?.includes(m.home) && b.title?.includes(m.away))).map(b => { const Lm = liveM.find(m => m.id === (b.id?.includes(":") ? b.id : `pm:${b.id}`)); if (!Lm || settled(Lm)) return null; const o = [...(Lm.outcomes || [])].sort((x, y) => y.prob - x.prob)[0], w = o && b.outcomes?.find(q => q.name === o.name)?.prob; return o && w != null ? { b, o, w, d: o.prob - w } : null; })
     .filter(x => x && Math.abs(x.d) >= min).sort((x, y) => Math.abs(y.d) - Math.abs(x.d)).slice(0, 1);
+  // a market settled after press (28 Nov 2026): its result, at the time Polymarket closed it
+  for (const b of E.betting || []) { const { settled } = betNow(b); if (settled?.at && !decided.some(m => b.title?.includes(m.home) && b.title?.includes(m.away))) add(settled.at, "Result", "news", `${vsV(b.title).replace(/^UEFA /, "").replace(/\.\.\.\?$/, "…?").replace(/\?$/, "")}: ${/^(yes|no)$/i.test(settled.winner) ? settled.winner : `${outcomeLabel(settled.winner)} won`}.`, { bet: b.id }); }
   for (const m of moves) add(Math.min(n, Date.parse(LIVE.betting.as_of || n)), "Forecast", "news", `${vsV(m.b.title).replace(/^UEFA /, "")} · ${outcomeLabel(m.o.name)} ${Math.round(m.o.prob)}% now (${Math.round(m.w)}% at press).`, { forecast: true, bet: m.b.id });
   return out.sort((x, y) => x.t - y.t).slice(-4);
 }

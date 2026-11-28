@@ -1668,6 +1668,14 @@ function talkBlock() {
 const MONTHS = { january: "Jan", february: "Feb", march: "Mar", april: "Apr", may: "May", june: "Jun", july: "Jul", august: "Aug", september: "Sep", october: "Oct", november: "Nov", december: "Dec" };
 const vsV = t => String(t || "").replace(/ vs\.? /g, " v ");
 const outcomeLabel = n => String(n).replace(/^(By|Through) (January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2})(, \d{4})?$/i, (_, w, m, d, y) => `${w} ${d} ${MONTHS[m.toLowerCase()]}${y && !y.includes(String(E?.date || "").slice(0, 4)) ? y : ""}`);
+// A market's live reading (28 Nov 2026): its outcomes only when the live feed priced it. A settled market comes back with
+// no price and its winner (lib/live.js settlement), and prints as a result; before this the page fell back to the
+// edition's press-time chance under "Prices updated" (Brentford won 4-0 and the window still read "Manchester United 42%").
+const betNow = b => {
+  const id = b?.id?.includes(":") ? b.id : b?.id ? `pm:${b.id}` : null, L = id && !LIVE.betting?.stale && (LIVE.betting?.value?.markets || []).find(m => m.id === id);
+  return { L: L?.outcomes?.length ? L : null, settled: L?.settled?.winner ? L.settled : null };
+};
+const betSettledDay = s => (s?.at ? new Date(s.at).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "Asia/Kolkata" }) : "");
 
 // The market's view, one line in a section: what Polymarket traders make of the next race or match. Kept small and
 // set apart, so the section stays a newspaper.
@@ -1769,8 +1777,13 @@ function bettingBlock() {
   if (!list.length) return "";
   const idOf = b => (b.id?.includes(":") ? b.id : b.id ? `pm:${b.id}` : null);
   const slips = list.map((b, n) => {
-    const L = !LIVE.betting?.stale && liveM.find(m => m.id === idOf(b));
-    const got = ladder((L?.outcomes?.length ? L.outcomes : b.outcomes) || []);
+    const { L, settled } = betNow(b);
+    if (settled) {
+      const yn = /^(yes|no)$/i.test(settled.winner), day = betSettledDay(settled);
+      return `<li class="slip${n === 0 ? " lead" : ""} settled"><div class="stub"><b>${yn ? esc(settled.winner) : "Won"}</b><span>${esc(yn ? "Settled" : outcomeLabel(settled.winner))}</span></div>
+<div class="sb"><div class="meta">${esc(b.category || "World")}</div><a class="title" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(vsV(b.title).replace(/\.\.\.\?$/, "…?"))}</a><span class="mv">Settled${day ? ` ${esc(day)}` : ""}: ${esc(yn ? settled.winner : `${outcomeLabel(settled.winner)} won`)}</span></div></li>`;
+    }
+    const got = ladder((L ? L.outcomes : b.outcomes) || []);
     if (!got.length) return "";
     // A date ladder ("By 31 Oct", "By 15 Nov") stays in date order and its prices are not shares of one pie, so it has
     // no "Others"; any other market lists its outcomes from likeliest down. Either way the headline figure is the
@@ -1787,12 +1800,14 @@ function bettingBlock() {
       if (top && Math.abs(top.d) >= (CFG.betting.carry?.min_move_pts || 5)) mv = `<span class="mv ${top.d > 0 ? "up" : "dn"}">${top.d > 0 ? "▲" : "▼"} ${esc(outcomeLabel(top.o.name))}: ${Math.round(top.was)}% at press, ${Math.round(top.o.prob)}% now</span>`;
     }
     const since = b.since && b.since < E.date ? `<span class="since">since ${esc(sparkLabel(b.since))}</span>` : "";
+    // the live feed answered but had no price for this market: say its figure is from press time, not "updated"
+    const pressed = !L && LIVE.betting?.as_of && !LIVE.betting.stale ? `<span class="since">price at press time</span>` : "";
     const w = v => Math.max(0, Math.min(100, v)).toFixed(1);
     const bar = isLadder || yesNo ? `<i class="s0" style="width:${w(fav.prob)}%" title="${esc(outcomeLabel(fav.name))} ${fav.prob.toFixed(1)}%"></i>`
       : [fav, ...others].map((o, i) => `<i class="s${i}" style="width:${w(o.prob)}%" title="${esc(outcomeLabel(o.name))} ${o.prob.toFixed(1)}%"></i>`).join("");
     const lis = (yesNo ? [] : others).map((o, i) => `<li><i class="s${isLadder ? 9 : i + 1}"></i>${esc(outcomeLabel(o.name))} <b class="tnum">${Math.round(o.prob)}%</b></li>`).join("") + (rest >= 1 ? `<li><i class="s9"></i>Others <b class="tnum">${Math.round(rest)}%</b></li>` : "");
     return `<li class="slip${n === 0 ? " lead" : ""}"><div class="stub"><b class="tnum">${Math.round(fav.prob)}<small>%</small></b><span>${esc(yesNo ? "Yes" : outcomeLabel(fav.name))}</span></div>
-<div class="sb"><div class="meta">${esc(b.category || "World")}${since}</div><a class="title" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(vsV(b.title).replace(/\.\.\.\?$/, "…?"))}</a>${b.note ? `<small class="nt">${esc(b.note)}</small>` : ""}
+<div class="sb"><div class="meta">${esc(b.category || "World")}${since}${pressed}</div><a class="title" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(vsV(b.title).replace(/\.\.\.\?$/, "…?"))}</a>${b.note ? `<small class="nt">${esc(b.note)}</small>` : ""}
 <div class="bar">${bar}</div>${lis ? `<ul>${lis}</ul>` : ""}${mv}</div></li>`;
   }).join("");
   return `<ol class="slips">${slips}</ol><p class="asof" style="margin-top:12px">${LIVE.betting?.as_of ? `Prices ${LIVE.betting.stale ? "last read" : "updated"} ${esc(istFull(LIVE.betting.as_of))} IST` : "Prices at press time"}</p>${aboutFig("Prices from Polymarket. A price is what traders pay for a yes, read as the chance they give it.")}`;

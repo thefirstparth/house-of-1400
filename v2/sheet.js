@@ -93,8 +93,15 @@ ${link ? `<h3>Send the link</h3><div class="vs-two"><a data-act="wa" target="_bl
 // as a forecast, like every price in the paper.
 function betSheet(id) {
   const b = (E.betting || []).find(x => x.id === id); if (!b) return;
-  const liveM = !LIVE.betting?.stale && LIVE.betting?.value?.markets || [], L = liveM.find(m => m.id === (b.id.includes(":") ? b.id : `pm:${b.id}`));
-  const outs = [...((L?.outcomes?.length ? L.outcomes : b.outcomes) || [])].sort((p, q) => q.prob - p.prob);
+  const { L, settled } = betNow(b);
+  if (settled) {
+    const yn = /^(yes|no)$/i.test(settled.winner), day = betSettledDay(settled);
+    Sheet.open(`<p class="vs-k">${esc(b.category || "Market")} <span class="vs-fc">Settled</span></p><h2 class="vs-h vs-t">${esc(vsV(b.title))}</h2>
+<p class="vs-meta"><b>${esc(yn ? settled.winner : `${outcomeLabel(settled.winner)} won`)}</b>${day ? `, settled ${esc(day)}` : ""}. At press time the paper printed ${(b.outcomes || []).slice(0, 3).map(o => `${esc(outcomeLabel(o.name))} ${Math.round(o.prob)}%`).join(", ")}.</p>
+${b.url ? `<a class="vs-pri vs-btn" href="${esc(b.url)}" target="_blank" rel="noopener">Open on ${esc(b.source || "Polymarket")} ↗</a>` : ""}`, b.title);
+    return;
+  }
+  const outs = [...((L ? L.outcomes : b.outcomes) || [])].sort((p, q) => q.prob - p.prob);
   const was = n => b.outcomes?.find(o => o.name === n)?.prob, vol = v => (v >= 1e6 ? `$${(v / 1e6).toFixed(1)}m` : v >= 1e3 ? `$${Math.round(v / 1e3)}k` : `$${Math.round(v || 0)}`);
   Sheet.open(`<p class="vs-k">${esc(b.category || "Market")} <span class="vs-fc">Forecast</span></p><h2 class="vs-h vs-t">${esc(vsV(b.title))}</h2>
 <ol class="vs-outs">${outs.map(o => { const p = was(o.name), d = p != null && L ? o.prob - p : 0; return `<li><span class="n">${esc(outcomeLabel(o.name))}</span><b class="tnum">${Math.round(o.prob)}%</b><span class="bar"><i style="width:${Math.max(0, Math.min(100, o.prob)).toFixed(1)}%"></i></span>${Math.abs(d) >= 1 ? `<small class="tnum ${d > 0 ? "up" : "dn"}">${d > 0 ? "▲" : "▼"} ${Math.abs(Math.round(d))} since press (${Math.round(p)}%)</small>` : ""}</li>`; }).join("")}</ol>
