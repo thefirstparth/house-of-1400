@@ -69,8 +69,21 @@ html.look-trial .tsk-range.c .tsk-rb>i{width:11px;height:11px;margin:-5.5px 0 0 
 html.look-trial .tsk-rr{display:flex;flex-direction:column;align-items:flex-end;font:650 15px/1.15 var(--sans)}
 html.look-trial .tsk-rr small{font:500 11px/1.2 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 html.look-trial .tsky>.asof{margin-top:12px}
-/* the paper's own week and month, under the report */
+/* the paper's own week and month, under the report; its warnings are printed at the report's top instead */
 html.look-trial .tsk-rest{margin-top:28px;padding-top:22px;border-top:1px solid var(--rule)}
+html.look-trial .tsk-rest .wxalerts{display:none}
+/* warnings: one quiet line each, a stripe in the warning's colour */
+html.look-trial .tsk-alerts{list-style:none;margin:0 0 22px;padding:0;display:grid;gap:8px}
+html.look-trial .tsk-al{--c:#8b877d;border-left:4px solid var(--c);background:color-mix(in srgb,var(--c) 8%,var(--sheet));border-radius:0 var(--g-r2,8px) var(--g-r2,8px) 0;padding:10px 14px 11px}
+html.look-trial .tsk-al[data-c="yellow"]{--c:#c99a06}
+html.look-trial .tsk-al[data-c="orange"]{--c:#d06a0c}
+html.look-trial .tsk-al[data-c="red"]{--c:var(--bad)}
+html.look-trial .tsk-al>p:first-child{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;font:500 15px/1.35 var(--sans);color:var(--ink)}
+html.look-trial .tsk-al>p:first-child b{font-weight:700}
+html.look-trial .tsk-al>p:first-child span{font-size:13.5px;color:var(--ink2);font-variant-numeric:tabular-nums}
+html.look-trial .tsk-alm{font:400 14px/1.45 var(--serif);color:var(--ink2);margin-top:3px!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+html.look-trial .tsk-als{font:500 12px/1.3 var(--sans);color:var(--muted);margin-top:3px!important}
+html.look-trial .tsk-arc figcaption b small{display:block;font:500 12px/1.3 var(--sans);color:var(--muted);margin-top:2px}
 
 @media (max-width:1100px){
   html.look-trial .tsk-fam{grid-template-columns:1fr}

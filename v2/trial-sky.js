@@ -4,12 +4,15 @@
 
 // ---------- (5) the Sky Report: Sky & Streets opens with Bengaluru right now ----------
 // Parth picked the Daily Index's Sky Report ("very clean and very easy to understand, though it feels a bit
-// cluttered"), so it is trimmed: no moonlight, no chatty lines. The big temperature and its sky, feels like, today's
-// low to high with where it is now, the sun's arc (or the night's) with where we are in it, three meters (humidity, air,
-// rain), the rest of the day in four parts with the chance of rain, then one row each for Ranchi and Prayagraj. The
-// paper's own week-and-month chart and its words follow, unchanged (skyBlock in public/app.js).
-// Data: LIVE.weather (the paper's feed: now, today, sunrise and sunset, air) and LIVE.look_sky (lib/look-sky.js: the
-// parts of the day from Open-Meteo's hours, MET Norway as backup, which has no chance of rain).
+// cluttered"), so it is trimmed: no quips or chatty lines. Warnings first (as theirs, and only while one runs), then the
+// big temperature and its sky, feels like, today's low to high with where it is now; beside it the sun's arc (by night
+// the night's, with the moon in tonight's phase) and two or three meters (humidity, UV by day, air); then the rest of
+// the day in four parts with the chance of rain, and one row each for Ranchi and Prayagraj. The paper's own
+// week-and-month chart and its words follow, unchanged (skyBlock in public/app.js), less the warnings already printed.
+// Data: LIVE.weather (the paper's feed: now, today, sunrise and sunset, UV, air), LIVE.alerts and LIVE.nowcast (Sachet's
+// NDMA and IMD warnings within 60 km, IMD's three-hour nowcast: the paper's own, lib/trial.js and lib/imd.js) and
+// LIVE.look_sky (lib/look-sky.js: the parts of the day from Open-Meteo's hours, MET Norway as backup, which has no
+// chance of rain). A part of the report with no good figure is left out; with no temperature, the report is.
 TRIAL_KEYS.push(["look_sky", ""]);
 
 const tskP = s => (s ? Date.parse(String(s).length <= 16 ? s + ":00+05:30" : s) : NaN);
@@ -44,6 +47,21 @@ const tskWhen = (p, today) => {
   return p.key === "tonight" ? (tom ? "tomorrow night" : "tonight") : `${tom ? "tomorrow" : "this"} ${p.key}`;
 };
 
+// The moon tonight, worked out on the device (a mean lunation from a known new moon: good to about a day, enough to
+// draw it and name it): phase 0 new, 0.5 full; the lit share of the disc
+function tskMoon(at = Date.now()) {
+  const phase = ((((at - Date.UTC(2000, 0, 6, 18, 14)) / 864e5 / 29.530588853) % 1) + 1) % 1, lit = (1 - Math.cos(phase * 2 * Math.PI)) / 2;
+  const name = phase < 0.034 || phase >= 0.966 ? "New moon" : phase < 0.216 ? "Waxing crescent" : phase < 0.284 ? "First quarter" : phase < 0.466 ? "Waxing gibbous" : phase < 0.534 ? "Full moon" : phase < 0.716 ? "Waning gibbous" : phase < 0.784 ? "Last quarter" : "Waning crescent";
+  return { phase, lit, name };
+}
+// the moon at (x, y): the dark disc faintly, the lit part on top (a shadow disc slid off it: lit on the right while
+// waxing, as seen from India)
+function tskMoonSVG(x, y, r, m, id) {
+  const dx = (m.phase < 0.5 ? -1 : 1) * 2.1 * r * m.lit;
+  return `<defs><mask id="${id}"><circle cx="${x}" cy="${y}" r="${r}" fill="#fff"/><circle cx="${(x + dx).toFixed(1)}" cy="${y}" r="${(r * 1.05).toFixed(1)}" fill="#000"/></mask></defs>
+<circle cx="${x}" cy="${y}" r="${r + 7}" fill="#9aa3c0" opacity=".16"/><circle cx="${x}" cy="${y}" r="${r}" fill="#c9cee0" stroke="#7d86a3" stroke-width="1"/>
+<circle cx="${x}" cy="${y}" r="${r}" fill="#f4f1e6" mask="url(#${id})"/><circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#7d86a3" stroke-width="1.2"/>`;
+}
 // The sun's arc between sunrise and sunset, or the night's between sunset and sunrise, with where we are in it now
 function tskArc(c, today, now) {
   const rise = tskP(today?.sunrise), set = tskP(today?.sunset);
@@ -54,16 +72,30 @@ function tskArc(c, today, now) {
   else { b = rise; const y = c.past?.at(-1); a = y && y.date < today.date ? tskP(y.sunset) : NaN; if (!Number.isFinite(a)) a = set - 864e5; }
   const f = Math.min(1, Math.max(0, (now - a) / (b - a))), R = 120, cx = 150, cy = 132;
   const x = cx - R * Math.cos(Math.PI * f), y = cy - R * Math.sin(Math.PI * f);
+  const moon = tskMoon(now);
   const stars = day ? "" : [[70, 46], [112, 26], [196, 34], [236, 70], [150, 62], [92, 92]].map(([sx, sy]) => `<circle cx="${sx}" cy="${sy}" r="1.3" fill="#7d86a3" opacity=".45"/>`).join("");
-  const svg = `<svg viewBox="0 0 300 146" role="img" aria-label="${day ? `The sun is up: sunrise ${tskT(a)}, sunset ${tskT(b)}` : `Night: sunset ${tskT(a)}, sunrise ${tskT(b)}`}">${stars}
+  const svg = `<svg viewBox="0 0 300 146" role="img" aria-label="${day ? `The sun is up: sunrise ${tskT(a)}, sunset ${tskT(b)}` : `Night: sunset ${tskT(a)}, sunrise ${tskT(b)}, ${moon.name.toLowerCase()}`}">${stars}
 <path d="M${cx - R} ${cy}A${R} ${R} 0 0 1 ${cx + R} ${cy}" fill="none" stroke="var(--rule)" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/>
 ${f > 0.004 ? `<path d="M${cx - R} ${cy}A${R} ${R} 0 0 1 ${x.toFixed(1)} ${y.toFixed(1)}" fill="none" stroke="${day ? "#d99a1e" : "#7d86a3"}" stroke-width="3" stroke-linecap="round"/>` : ""}
 <line x1="14" y1="${cy}" x2="286" y2="${cy}" stroke="var(--rule)" stroke-width="1.5"/>
-<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="15" fill="${day ? "#f2c14e" : "#c5cadb"}" opacity=".28"/>
-<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8" fill="${day ? "#f2c14e" : "#e3e6ef"}" stroke="${day ? "#d99a1e" : "#7d86a3"}" stroke-width="1.5"/></svg>`;
+${day ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="15" fill="#f2c14e" opacity=".28"/>
+<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8" fill="#f2c14e" stroke="#d99a1e" stroke-width="1.5"/>` : tskMoonSVG(+x.toFixed(1), +y.toFixed(1), 9, moon, "tsk-moon")}</svg>`;
   const left = day ? "Sunrise" : "Sunset", right = day ? "Sunset" : "Sunrise", mid = day ? `${tskDur(b - now)} of daylight left` : `${tskDur(b - now)} to sunrise`;
-  return `<figure class="tsk-arc">${svg}<figcaption><span><small>${left}</small>${esc(tskT(a))}</span><b>${esc(mid)}</b><span class="r"><small>${right}</small>${esc(tskT(b))}</span></figcaption></figure>`;
+  return `<figure class="tsk-arc">${svg}<figcaption><span><small>${left}</small>${esc(tskT(a))}</span><b>${esc(mid)}${day ? "" : `<small>${esc(moon.name)}</small>`}</b><span class="r"><small>${right}</small>${esc(tskT(b))}</span></figcaption></figure>`;
 }
+
+// Warnings first, as the Daily Index puts them: Sachet's NDMA and IMD warnings near the three cities, then IMD's
+// three-hour nowcast, one quiet line each with a stripe in the warning's colour. Nothing on a quiet day.
+function tskAlerts() {
+  const A = (typeof alertsNow === "function" ? alertsNow() : []).map(a => {
+    const c = String(a.colour || "").toLowerCase(), u = alertUntil(a);
+    return `<li class="tsk-al" data-c="${esc(c)}"><p><b>${esc(alertWord(a))}</b> ${esc(a.type)}, ${esc(a.city)}${u ? `<span>${esc(u)} IST</span>` : ""}</p>${a.message ? `<p class="tsk-alm">${esc(a.message)}</p>` : ""}<p class="tsk-als">${esc(a.source || "NDMA")} via Sachet</p></li>`;
+  });
+  const N = (typeof nowcastNow === "function" ? nowcastNow() : []).map(c => `<li class="tsk-al" data-c="${ncColour(c.warning.level)}"><p><b>Next three hours</b> ${esc(ncWhat(c.warning).replace(/^./, x => x.toUpperCase()))}, ${esc(c.city)}<span>${esc(ncUntil(c.warning))} IST</span></p><p class="tsk-als">IMD nowcast, issued ${esc(istTime(c.warning.from))}</p></li>`);
+  const all = [...A, ...N].slice(0, 4);
+  return all.length ? `<ul class="tsk-alerts" aria-label="Weather warnings">${all.join("")}</ul>` : "";
+}
+const TSK_UV = uv => (uv < 3 ? ["Low", "ok"] : uv < 6 ? ["Moderate", "mid"] : uv < 8 ? ["High", "hi"] : uv < 11 ? ["Very high", "hi"] : ["Extreme", "hi"]);
 
 const tskMeter = (label, val, unit, word, frac, tone = "", title = "") => `<div class="tsk-m"${title ? ` title="${esc(title)}"` : ""}><p class="tsk-ml"><span>${esc(label)}</span>${word ? `<em>${esc(word)}</em>` : ""}</p><p class="tsk-mv">${val}${unit ? `<small>${unit}</small>` : ""}</p><i class="tsk-mb${tone ? " " + tone : ""}"><i style="width:${(Math.min(1, Math.max(0.03, frac)) * 100).toFixed(1)}%"></i></i></div>`;
 const TSK_AIR = { good: ["Good", "ok"], mod: ["Moderate", "mid"], usg: ["Poor for some", "hi"], bad: ["Unhealthy", "hi"], vbad: ["Very unhealthy", "hi"], haz: ["Hazardous", "hi"] };
@@ -113,8 +145,10 @@ ${today ? tskBar(today.min, today.max, k.temp) : ""}</div>`;
   if (Number.isFinite(k.humidity)) meters.push(tskMeter("Humidity", Math.round(k.humidity), "%", k.humidity >= 85 ? "Very humid" : k.humidity >= 60 ? "Humid" : k.humidity >= 30 ? "Comfortable" : "Dry", k.humidity / 100));
   const aq = B.air?.now;
   if (Number.isFinite(aq) && aq >= 0) { const [w, tone] = TSK_AIR[aqiCat(aq)[2]] || ["", ""]; meters.push(tskMeter("Air", Math.round(aq), "", w, aq / 300, tone, "US AQI, this hour")); }
-  if (peak) meters.push(tskMeter("Rain", peak.rain, "%", peak.rain >= 15 ? `Peak, ${tskWhen(peak, td).replace(/^this /, "")}` : "Dry ahead", peak.rain / 100, "tsk-wet"));
-  else if (Number.isFinite(today?.rain_prob)) meters.push(tskMeter("Rain", Math.round(today.rain_prob), "%", "Today", today.rain_prob / 100, "tsk-wet"));
+  // UV by day (from Open-Meteo's hour; a reading below zero is not a reading); at night the meter is not drawn
+  if (!night && Number.isFinite(k.uv) && k.uv >= 0 && k.uv < 20) { const [w, tone] = TSK_UV(k.uv); meters.splice(1, 0, tskMeter("UV", Math.round(k.uv), "", w, k.uv / 11, tone, "UV index, this hour")); }
+  // the rain is in the parts below; without them, today's chance here
+  if (!parts.length && Number.isFinite(today?.rain_prob)) meters.push(tskMeter("Rain", Math.round(today.rain_prob), "%", "Today", today.rain_prob / 100, "tsk-wet"));
   const arc = tskArc(B, today, now);
   if (arc || meters.length) h += `<div class="tsk-side">${arc}${meters.length ? `<div class="tsk-meters">${meters.join("")}</div>` : ""}</div>`;
   h += `</div>`;
@@ -126,7 +160,7 @@ ${today ? tskBar(today.min, today.max, k.temp) : ""}</div>`;
     return `<div class="tsk-row"><p class="tsk-rn">${esc(c.name)}</p><p class="tsk-rt">${tskIcon(c.current.code, n, 26)}<b class="tnum">${tskDeg(c.current.temp)}</b>${w ? `<span>${esc(w)}</span>` : ""}</p>${t ? tskBar(t.min, t.max, c.current.temp, true) : ""}${Number.isFinite(t?.rain_prob) ? `<p class="tsk-rr"><small>Rain</small><b class="tnum">${Math.round(t.rain_prob)}%</b></p>` : ""}</div>`;
   }).join("")}</div>`;
   const stale = LIVE.weather?.stale ? staleNote("weather") : "";
-  return `<div class="tsky">${h}${stale}</div>`;
+  return `<div class="tsky">${trialSafe("sky alerts", tskAlerts)}${h}${stale}</div>`;
 }
 TRIAL_BLOCKS.sky = () => { const r = trialSafe("sky report", tskReport); const rest = skyBlock(); return r ? r + (rest ? `<div class="tsk-rest">${rest}</div>` : "") : rest; };
 
